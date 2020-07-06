@@ -20,7 +20,7 @@
 #include "effect_rack.h"
 
 int 
-effect_rack (void *data, int len,
+effect_rack_process (void *data, int len,
                 int nfx, float **fx,
                 int nout, float **out)
 {
@@ -38,4 +38,10 @@ effect_rack (void *data, int len,
      */
 
     return FLUID_OK;
+}
+
+int
+effect_rack_print_hello (int n) {
+    printf ("Hello: %d\n", n);
+    return 0;
 }

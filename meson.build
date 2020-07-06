@@ -1,7 +1,7 @@
 # Project name, programming language and version
 project (
     'com.github.subhadeepjasu.ensembles',
-    'c',
+    'c', 'vala',
     version: '0.0.1',
 )
 
@@ -13,8 +13,8 @@ i18n = import ('i18n')
 
 # Project arguments
 add_project_arguments (
-    '-DGETTEXT_PACKAGE="@0@"'.format (meson.project_name ()),
-    language: 'c'
+    ['--vapidir', meson.source_root() / 'vapi'],
+    language: 'vala'
 )
 
 # Compiling resources
@@ -34,19 +34,21 @@ dependencies = [
     dependency ('gobject-2.0'),
     dependency ('libsoup-2.4'),
     dependency ('json-glib-1.0'),
-    dependency ('fluidsynth'),
+    meson.get_compiler ('vala').find_library ('posix'),
     meson.get_compiler ('c').find_library ('m', required : false),
+    meson.get_compiler ('c').find_library ('fluidsynth', required : true),
 ]
-
+config_h_dir = include_directories('.')
+subdir('data')
 subdir ('src')
-inc = include_directories ('src/Core')
 
 # Define executable
 executable (
     meson.project_name (),
     #asresources,
     ensembles_sources,
-    include_directories: inc,
+    config_header,
+    include_directories: config_h_dir,
     dependencies: dependencies,
     install : true
 )

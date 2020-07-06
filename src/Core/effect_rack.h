@@ -25,6 +25,8 @@ struct fx_data_t
     float gain;
 } fx_data_t;
 
-int effect_rack (void *data, int len,
+int effect_rack_process (void *data, int len,
                 int nfx, float **fx,
                 int nout, float **out);
+
+int effect_rack_print_hello (int n);
