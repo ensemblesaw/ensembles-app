@@ -22,7 +22,7 @@ namespace Ensembles.Shell {
         Ensembles.Core.EffectRack fx_rack;
         Ensembles.Core.RealTimePlay play;
 
-        string sf_loc = Constants.PKGDATADIR + "/SoundFonts/Synthia_Revamped_GM.sf2";
+        string sf_loc = Constants.PKGDATADIR + "/SoundFonts/FluidR3/FluidR3_GM.sf2";
         public MainWindow () {
             button = new Gtk.Button.with_label ("C");
             this.add (button);
