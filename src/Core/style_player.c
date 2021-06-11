@@ -2,10 +2,12 @@
 #include <gtk/gtk.h>
 #include "central_bus.h"
 
+// None of this will be used to actual rendering //////////
 fluid_settings_t* settings;
 fluid_synth_t* synth;
 fluid_audio_driver_t* adriver;
 fluid_player_t* player;
+///////////////////////////////////////////////////////////
 
 int looping = 0;
 int loop_start_tick = 0;
@@ -31,23 +33,9 @@ int ticks_since_measure = 0;
 int changing_variation = 0;
 
 int parse_midi_events (void *data, fluid_midi_event_t *event) {
-    fluid_synth_t* synth = (fluid_synth_t*) data;
-    int type = fluid_midi_event_get_type(event);
-    int chan = fluid_midi_event_get_channel(event);
-    int cont = fluid_midi_event_get_control(event);
-    int value= fluid_midi_event_get_value (event);
-
-    int gain;
-    fluid_synth_get_cc (synth, 0, 74, &gain);
-
-    // printf ("Type: %d, ", type);
-    // printf ("Channel: %d, ", chan);
-    // printf ("Control: %d, ", cont);
-    // printf ("Value: %d\n", value);
-    if (breaking == 1) {
-        return 0;
-    }
-    return fluid_synth_handle_midi_event( data, event);
+    // Send data to synth
+    handle_events_for_styles (event);
+    return 0;
 }
 
 int parse_ticks (void* data, int ticks) {
@@ -70,6 +58,7 @@ int parse_ticks (void* data, int ticks) {
         if (loop_start_tick != loaded_style_time_stamps[start_s]) {
             loop_start_tick = loaded_style_time_stamps[start_s];
             loop_end_tick = loaded_style_time_stamps[end_s];
+            synthesizer_halt_notes ();
             return fluid_player_seek (player, loop_start_tick);
         }
     } else {
@@ -97,6 +86,7 @@ int parse_ticks (void* data, int ticks) {
                 fill_queue = 0;
                 sync_stop = 0;
                 central_style_section = 0;
+                synthesizer_halt_notes ();
             }
             breaking = 0;
             return fluid_player_seek (player, loop_start_tick);
@@ -107,25 +97,18 @@ int parse_ticks (void* data, int ticks) {
 }
 
 
-void style_player_init (const gchar* loc, const gchar* mid_file) {
+void style_player_init (const gchar* mid_file) {
     int sfont_id;
     settings = new_fluid_settings();
-    fluid_settings_setstr(settings, "audio.driver", "alsa");
-    fluid_settings_setint(settings, "audio.periods", 16);
-    fluid_settings_setint(settings, "audio.period-size", 86);
-    fluid_settings_setint(settings, "audio.realtime-prio", 70);
-    fluid_settings_setstr(settings, "synth.midi-bank-select", "gs");
-
     synth = new_fluid_synth(settings);
-
     player = new_fluid_player(synth);
     fluid_player_set_playback_callback(player, parse_midi_events, synth);
     fluid_player_set_tick_callback (player, parse_ticks, synth);
     adriver = new_fluid_audio_driver(settings, synth);
 
-    if (fluid_is_soundfont(loc)) {
-        fluid_synth_sfload(synth, loc, 1);
-    }
+    // if (fluid_is_soundfont(loc)) {
+    //     //fluid_synth_sfload(synth, loc, 1);
+    // }
     if (fluid_is_midifile(mid_file)) {
         fluid_player_add(player, mid_file);
     }
@@ -190,6 +173,7 @@ void style_player_play () {
             fill_in = 0;
             fill_queue = 0;
             central_style_section = 0;
+            synthesizer_halt_notes ();
         }
     }
     central_clock = 0;

@@ -20,6 +20,7 @@ namespace Ensembles.Shell {
     public class MainWindow : Gtk.Window {
         StyleControllerView style_controller_view;
         BeatCounterView beat_counter_panel;
+        Ensembles.Core.Synthesizer synthesizer;
         Ensembles.Core.StylePlayer player;
         Ensembles.Core.StyleAnalyser analyser;
         Ensembles.Core.CentralBus bus;
@@ -49,7 +50,8 @@ namespace Ensembles.Shell {
 
             analyser.analyze_style(Constants.PKGDATADIR + "/Styles/DancePop_01.mid");
 
-            player = new Ensembles.Core.StylePlayer (sf_loc, Constants.PKGDATADIR + "/Styles/DancePop_01.mid");
+            synthesizer = new Ensembles.Core.Synthesizer (sf_loc);
+            player = new Ensembles.Core.StylePlayer (Constants.PKGDATADIR + "/Styles/DancePop_01.mid");
 
             make_events ();
         }

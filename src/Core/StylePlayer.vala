@@ -1,7 +1,7 @@
 namespace Ensembles.Core { 
     public class StylePlayer : Object {
-        public StylePlayer (string sf_loc, string mid_file) {
-            style_player_init (sf_loc, mid_file);
+        public StylePlayer (string mid_file) {
+            style_player_init (mid_file);
         }
         ~StylePlayer () {
             style_player_destruct ();
@@ -52,7 +52,7 @@ namespace Ensembles.Core {
     }
 }
 
-extern void style_player_init (string loc, string mid_file);
+extern void style_player_init (string mid_file);
 extern void style_player_destruct ();
 extern void style_player_play ();
 extern void style_player_play_loop (int start, int end);

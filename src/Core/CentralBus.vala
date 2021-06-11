@@ -4,7 +4,7 @@ namespace Ensembles.Core {
         int style_section = 0;
 
         public CentralBus () {
-            var thread = new Thread<int> ("bus_watch", bus_watch);
+            new Thread<int> ("bus_watch", bus_watch);
         }
         ~CentralBus () {
             thread_alive = false;
