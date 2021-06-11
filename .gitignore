@@ -1,4 +1,7 @@
 build
+_build
 .vscode
+.flatpak-builder
+null.d
 ~*
 *~

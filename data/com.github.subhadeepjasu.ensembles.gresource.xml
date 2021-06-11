@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/com/github/subhadeepjasu/ensembles">
+    <file alias="Application.css">Application.css</file>
+  </gresource>
+
+  <gresource prefix="/com/github/subhadeepjasu/ensembles/images/beat_counter">
+    <file alias="beat_counter_1_0.svg" compressed="true" preprocess="xml-stripblanks">Images/beat_counter_1_0.svg</file>
+    <file alias="beat_counter_1_1.svg" compressed="true" preprocess="xml-stripblanks">Images/beat_counter_1_1.svg</file>
+    <file alias="beat_counter_2_0.svg" compressed="true" preprocess="xml-stripblanks">Images/beat_counter_2_0.svg</file>
+    <file alias="beat_counter_2_1.svg" compressed="true" preprocess="xml-stripblanks">Images/beat_counter_2_1.svg</file>
+  </gresource>
+</gresources>

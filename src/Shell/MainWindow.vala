@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2018-2019 Subhadeep Jasu <subhajasu@gmail.com>
+ * Copyright (c) 2021-2022 Subhadeep Jasu <subhajasu@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
@@ -18,21 +18,93 @@
  */
 namespace Ensembles.Shell { 
     public class MainWindow : Gtk.Window {
-        Gtk.Button button;
-        Ensembles.Core.EffectRack fx_rack;
-        Ensembles.Core.RealTimePlay play;
+        StyleControllerView style_controller_view;
+        BeatCounterView beat_counter_panel;
+        Ensembles.Core.StylePlayer player;
+        Ensembles.Core.StyleAnalyser analyser;
+        Ensembles.Core.CentralBus bus;
 
-        string sf_loc = Constants.PKGDATADIR + "/SoundFonts/FluidR3/FluidR3_GM.sf2";
+        string sf_loc = Constants.PKGDATADIR + "/SoundFonts/EnsemblesGM.sf2";
         public MainWindow () {
-            button = new Gtk.Button.with_label ("C");
-            this.add (button);
+            Gtk.Settings settings = Gtk.Settings.get_default ();
+            settings.gtk_application_prefer_dark_theme = true;
+            bus = new Ensembles.Core.CentralBus ();
+
+            beat_counter_panel = new BeatCounterView ();
+            var headerbar = new Gtk.HeaderBar ();
+            headerbar.has_subtitle = false;
+            headerbar.set_show_close_button (true);
+            headerbar.title = "Ensembles";
+            headerbar.pack_start (beat_counter_panel);
+            this.set_titlebar (headerbar);
+
+            style_controller_view = new StyleControllerView ();
+
+            var grid = new Gtk.Grid ();
+            grid.attach (style_controller_view, 0, 0, 1, 1);
+            this.add (grid);
             this.show_all ();
-            fx_rack = new Ensembles.Core.EffectRack ();
-            play = new Ensembles.Core.RealTimePlay (sf_loc);
-            button.clicked.connect (() => {
-                fx_rack.print_hello (7);
-                play.note_on ();
+            
+            analyser = new Ensembles.Core.StyleAnalyser ();
+
+            analyser.analyze_style(Constants.PKGDATADIR + "/Styles/DancePop_01.mid");
+
+            player = new Ensembles.Core.StylePlayer (sf_loc, Constants.PKGDATADIR + "/Styles/DancePop_01.mid");
+
+            make_events ();
+        }
+
+        void make_events () {
+            bus.clock_tick.connect (() => {
+                beat_counter_panel.sync ();
             });
+            bus.style_section_change.connect ((section) => {
+                style_controller_view.set_style_section (section);
+            });
+            style_controller_view.start_stop.connect (() => {
+                player.play_style ();
+            });
+
+            style_controller_view.switch_var_a.connect (() => {
+                player.switch_var_a ();
+            });
+
+            style_controller_view.switch_var_b.connect (() => {
+                player.switch_var_b ();
+            });
+
+            style_controller_view.switch_var_c.connect (() => {
+                player.switch_var_c ();
+            });
+
+            style_controller_view.switch_var_d.connect (() => {
+                player.switch_var_d ();
+            });
+
+            style_controller_view.queue_intro_a.connect (() => {
+                player.queue_intro_a ();
+            });
+
+            style_controller_view.queue_intro_b.connect (() => {
+                player.queue_intro_b ();
+            });
+
+            style_controller_view.queue_ending_a.connect (() => {
+                player.queue_ending_a ();
+            });
+
+            style_controller_view.queue_ending_b.connect (() => {
+                player.queue_ending_b ();
+            });
+
+            style_controller_view.break_play.connect (() => {
+                player.break_play ();
+            });
+
+            style_controller_view.sync_stop.connect (() => {
+                player.sync_stop ();
+            });
+            print("Initialized...\n");
         }
     }
 }

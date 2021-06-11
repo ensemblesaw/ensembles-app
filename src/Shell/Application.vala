@@ -34,6 +34,8 @@ namespace Ensembles.Shell {
 
         Ensembles.Shell.MainWindow main_window;
 
+        Gtk.CssProvider css_provider;
+
 
         public EnsemblesApp () {
             Object (
@@ -46,6 +48,16 @@ namespace Ensembles.Shell {
             if (this.main_window == null) {
                 this.main_window = new Ensembles.Shell.MainWindow ();
                 this.add_window (main_window);
+            }
+            if (css_provider == null) {
+                css_provider = new Gtk.CssProvider();
+                css_provider.load_from_resource ("/com/github/subhadeepjasu/ensembles/Application.css");
+                // CSS Provider
+                Gtk.StyleContext.add_provider_for_screen (
+                    Gdk.Screen.get_default(),
+                    css_provider,
+                    Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+                );
             }
             this.main_window.show_all ();
         }

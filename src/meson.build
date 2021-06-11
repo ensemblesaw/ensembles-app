@@ -14,13 +14,21 @@ ensembles_sources_vala = files (
     'Main.vala',
     'Shell/Application.vala',
     'Shell/MainWindow.vala',
+    'Shell/Views/StyleControllerView.vala',
+    'Shell/Views/BeatCounterView.vala',
+    'Core/CentralBus.vala',
     'Core/EffectRack.vala',
-    'Core/RealTimePlay.vala'
+    'Core/RealTimePlay.vala',
+    'Core/StylePlayer.vala',
+    'Core/StyleAnalyser.vala'
 )
 
 ensembles_sources_c = files (
+    'Core/central_bus.h',
     'Core/effect_rack.c',
-    'Core/realtime_play.c'
+    'Core/realtime_play.c',
+    'Core/style_player.c',
+    'Core/style_analyser.c'
 )
 
 ensembles_sources = [
