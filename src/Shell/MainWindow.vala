@@ -30,6 +30,7 @@ namespace Ensembles.Shell {
             Gtk.Settings settings = Gtk.Settings.get_default ();
             settings.gtk_application_prefer_dark_theme = true;
             bus = new Ensembles.Core.CentralBus ();
+            make_bus_events ();
 
             beat_counter_panel = new BeatCounterView ();
             var headerbar = new Gtk.HeaderBar ();
@@ -53,16 +54,21 @@ namespace Ensembles.Shell {
             synthesizer = new Ensembles.Core.Synthesizer (sf_loc);
             player = new Ensembles.Core.StylePlayer (Constants.PKGDATADIR + "/Styles/DancePop_01.mid");
 
-            make_events ();
+            make_ui_events ();
         }
-
-        void make_events () {
+        void make_bus_events () {
             bus.clock_tick.connect (() => {
                 beat_counter_panel.sync ();
             });
             bus.style_section_change.connect ((section) => {
                 style_controller_view.set_style_section (section);
             });
+            bus.loaded_tempo_change.connect ((tempo) => {
+                beat_counter_panel.change_tempo (tempo);
+                print("tempo:%d\n", tempo);
+            });
+        }
+        void make_ui_events () {
             style_controller_view.start_stop.connect (() => {
                 player.play_style ();
             });

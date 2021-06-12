@@ -11,6 +11,9 @@ namespace Ensembles.Shell {
         Gtk.Image beat_counter_active_3;
 
         Gtk.Button tap_button;
+
+        int tempo = 10;
+
         public BeatCounterView() {
             var main_grid = new Gtk.Grid ();
             beat_counter_0 = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/beat_counter/beat_counter_1_0.svg");
@@ -23,7 +26,7 @@ namespace Ensembles.Shell {
 
 
 
-            tap_button = new Gtk.Button.with_label ("Tap");
+            tap_button = new Gtk.Button.with_label ("Tempo");
             tap_button.margin = 4;
             tap_button.margin_start = 8;
             main_grid.attach (beat_counter_0, 0, 0, 1, 1);
@@ -56,9 +59,15 @@ namespace Ensembles.Shell {
             this.add_overlay (main_grid);
             this.add_overlay (overlay_grid);
             this.show_all ();
-
-            this.width_request = 160;
+            this.set_overlay_pass_through (overlay_grid, true);
+            this.width_request = 170;
             this.height_request = 34;
+        }
+
+        public void change_tempo (int tempo) {
+            if (tempo > 0) {
+                this.tempo = tempo;
+            }
         }
 
         public void sync () {
@@ -66,11 +75,11 @@ namespace Ensembles.Shell {
                 pulse_0 ();
                 return false;
             });
-            Timeout.add ((uint)(60000/125), () => {
+            Timeout.add ((uint)(60000/tempo), () => {
                 pulse_1 ();
-                Timeout.add ((uint)(60000/125), () => {
+                Timeout.add ((uint)(60000/tempo), () => {
                     pulse_2 ();
-                    Timeout.add ((uint)(60000/125), () => {
+                    Timeout.add ((uint)(60000/tempo), () => {
                         pulse_3 ();
                         return false;
                     });

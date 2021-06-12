@@ -32,13 +32,17 @@ int ticks_since_measure = 0;
 
 int changing_variation = 0;
 
-int parse_midi_events (void *data, fluid_midi_event_t *event) {
+pthread_t style_swap_thread_id = 0;
+
+int
+parse_midi_events (void *data, fluid_midi_event_t *event) {
     // Send data to synth
     handle_events_for_styles (event);
     return 0;
 }
 
-int parse_ticks (void* data, int ticks) {
+int
+parse_ticks (void* data, int ticks) {
     if (fill_queue == 1) {
         fill_queue = 0;
         fill_in = 1;
@@ -97,24 +101,43 @@ int parse_ticks (void* data, int ticks) {
 }
 
 
-void style_player_init (const gchar* mid_file) {
+void
+style_player_init () {
     int sfont_id;
     settings = new_fluid_settings();
     synth = new_fluid_synth(settings);
+    adriver = new_fluid_audio_driver(settings, synth);
+}
+
+void*
+queue_style_file_change (char* loc) {
+    style_player_sync_stop ();
+    if (player) {
+        fluid_player_join (player);
+        delete_fluid_player(player);
+    }
     player = new_fluid_player(synth);
     fluid_player_set_playback_callback(player, parse_midi_events, synth);
     fluid_player_set_tick_callback (player, parse_ticks, synth);
-    adriver = new_fluid_audio_driver(settings, synth);
 
-    // if (fluid_is_soundfont(loc)) {
-    //     //fluid_synth_sfload(synth, loc, 1);
-    // }
-    if (fluid_is_midifile(mid_file)) {
-        fluid_player_add(player, mid_file);
+    if (fluid_is_midifile(loc)) {
+        fluid_player_add(player, loc);
+    }
+    if (looping) {
+        fluid_player_play(player);
+    }
+    style_swap_thread_id = 0;
+}
+
+void
+style_player_add_style_file (const gchar* mid_file) {
+    if (!style_swap_thread_id) {
+        pthread_create (&style_swap_thread_id, NULL, queue_style_file_change, mid_file);
     }
 }
 
-void style_player_destruct () {
+void
+style_player_destruct () {
     /* wait for playback termination */
     fluid_player_stop (player);
     fluid_player_join(player);
@@ -125,7 +148,8 @@ void style_player_destruct () {
     delete_fluid_settings(settings);
 }
 
-void style_player_play_loop (int start, int end) {
+void
+style_player_play_loop (int start, int end) {
     /* play the midi files, if any */
     measure_length = loaded_style_time_stamps[1];
     start_s = start;
@@ -151,7 +175,8 @@ void style_player_play_loop (int start, int end) {
     sync_stop = 0;
 }
 
-void style_player_play () {
+void
+style_player_play () {
     measure_length = loaded_style_time_stamps[1];
     if (looping == 0) {
         if (start_s == 0) {
@@ -180,7 +205,8 @@ void style_player_play () {
     sync_stop = 0;
 }
 
-void style_player_queue_intro (int start, int end) {
+void
+style_player_queue_intro (int start, int end) {
     printf("Intro>>>\n");
     if (start_s == 0) {
         start_s = 3;
@@ -193,7 +219,8 @@ void style_player_queue_intro (int start, int end) {
     intro_playing = 1;
 }
 
-void style_player_queue_ending (int start, int end) {
+void
+style_player_queue_ending (int start, int end) {
     printf("Ending>>>\n");
     start_temp = start_s;
     end_temp = end_s;
@@ -202,10 +229,12 @@ void style_player_queue_ending (int start, int end) {
     sync_stop = 1;
 }
 
-void style_player_break () {
+void
+style_player_break () {
     breaking = 1;
 }
 
-void style_player_sync_stop () {
+void
+style_player_sync_stop () {
     sync_stop = 1;
 }

@@ -70,7 +70,6 @@ synthesizer_init (const gchar* loc) {
     }
     fx_init ();
     style_adriver = new_fluid_audio_driver2(style_synth_settings, fx_function, (void *) &fx_data);
-    //style_adriver = new_fluid_audio_driver(style_synth_settings, style_synth);
 }
 
 

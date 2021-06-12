@@ -1,11 +1,17 @@
 namespace Ensembles.Core { 
     public class StylePlayer : Object {
-        public StylePlayer (string mid_file) {
-            style_player_init (mid_file);
+        public StylePlayer (string style_file) {
+            style_player_init ();
+            style_player_add_style_file (style_file);
         }
         ~StylePlayer () {
             style_player_destruct ();
         }
+
+        public void add_style_file (string style_file) {
+            style_player_add_style_file (style_file);
+        }
+
         public void play_style () {
             style_player_play ();
         }
@@ -52,7 +58,8 @@ namespace Ensembles.Core {
     }
 }
 
-extern void style_player_init (string mid_file);
+extern void style_player_init ();
+extern void style_player_add_style_file (string mid_file);
 extern void style_player_destruct ();
 extern void style_player_play ();
 extern void style_player_play_loop (int start, int end);
