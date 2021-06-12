@@ -4,6 +4,6 @@ install_data(
 )
 
 install_data(
-    join_paths('Styles', 'DancePop_01.mid'),
+    join_paths('Styles', 'EDM@Dance_Pop_1.enstl'),
     install_dir: join_paths(get_option('datadir'), meson.project_name(), 'Styles')
 )

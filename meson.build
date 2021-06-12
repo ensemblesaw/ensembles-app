@@ -13,8 +13,9 @@ i18n = import ('i18n')
 
 # Project arguments
 add_project_arguments (
-    ['--vapidir', meson.source_root() / 'vapi'],
-    language: 'vala'
+    '-DGETTEXT_PACKAGE="@0@"'.format (meson.project_name ()),
+    '-DHANDY_USE_UNSTABLE_API',
+    language: 'c'
 )
 
 # Compiling resources

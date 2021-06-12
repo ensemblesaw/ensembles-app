@@ -82,12 +82,13 @@ style_analyser (char* style) {
     }
     printf ("Done.\n");
     loaded_style_time_stamps = time_stamps;
+    return central_loaded_tempo;
 }
 
-void
+int
 style_analyser_analyze (char* mid_file) {
     time_stamp_index = 0;
     // pthread_t thread_id;
     // pthread_create(&thread_id, NULL, style_analyser, mid_file);
-    style_analyser (mid_file);
+    return style_analyser (mid_file);
 }

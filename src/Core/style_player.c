@@ -53,8 +53,7 @@ parse_ticks (void* data, int ticks) {
         }
     }
     //printf (">>> %d\n", (ticks - loop_start_tick) % measure_length);
-    if (((ticks - loop_start_tick) % measure_length) <= 1) {
-        changing_variation = 1;
+    if (central_clock == 0 && ((ticks - loop_start_tick) % measure_length) <= 1) {
         central_clock = 1;
         fill_queue = 0;
         fill_in = 0;
@@ -64,37 +63,29 @@ parse_ticks (void* data, int ticks) {
             loop_end_tick = loaded_style_time_stamps[end_s];
             synthesizer_halt_notes ();
             return fluid_player_seek (player, loop_start_tick);
-        }
-    } else {
-        changing_variation = 0;
-    }
-
-    if (changing_variation == 1) {
-        central_measure++;
-    }
-    
-    if (looping == 1) {
-        if (ticks > loop_end_tick && fill_in == 0) {
-            //printf("looping...%d -> %d\n", loop_start_tick, loop_end_tick);
-            if (intro_playing == 1) {
-                start_s = start_temp;
-                end_s = end_temp;
-                intro_playing = 0;
-            } else if (sync_stop) {
-                fluid_player_stop (player);
-                start_s = start_temp;
-                end_s = end_temp;
-                looping = 0;
-                intro_playing = 0;
-                fill_in = 0;
-                fill_queue = 0;
-                sync_stop = 0;
-                central_style_section = 0;
-                synthesizer_halt_notes ();
+        } else if (looping == 1) {
+                if (ticks >= loop_end_tick && fill_in == 0) {
+                    if (intro_playing == 1) {
+                        start_s = start_temp;
+                        end_s = end_temp;
+                        intro_playing = 0;
+                    } else if (sync_stop) {
+                        fluid_player_stop (player);
+                        start_s = start_temp;
+                        end_s = end_temp;
+                        looping = 0;
+                        intro_playing = 0;
+                        fill_in = 0;
+                        fill_queue = 0;
+                        sync_stop = 0;
+                        central_style_section = 0;
+                        central_measure = 0;
+                        synthesizer_halt_notes ();
+                    }
+                    breaking = 0;
+                    return fluid_player_seek (player, loop_start_tick);
+                }
             }
-            breaking = 0;
-            return fluid_player_seek (player, loop_start_tick);
-        }
     }
 
     return FLUID_OK;
@@ -198,6 +189,7 @@ style_player_play () {
             fill_in = 0;
             fill_queue = 0;
             central_style_section = 0;
+            central_measure = 0;
             synthesizer_halt_notes ();
         }
     }

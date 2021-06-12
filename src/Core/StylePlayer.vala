@@ -1,14 +1,17 @@
 namespace Ensembles.Core { 
     public class StylePlayer : Object {
-        public StylePlayer (string style_file) {
+        public StylePlayer (string? style_file = null) {
             style_player_init ();
-            style_player_add_style_file (style_file);
+            if (style_file != null) {
+                style_player_add_style_file (style_file);
+            }
         }
         ~StylePlayer () {
             style_player_destruct ();
         }
 
         public void add_style_file (string style_file) {
+            print ("loading style %s\n", style_file);
             style_player_add_style_file (style_file);
         }
 

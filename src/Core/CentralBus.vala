@@ -5,6 +5,11 @@ namespace Ensembles.Core {
         // Bus access for shell
         int style_section = 0;
         int loaded_tempo = 10;
+        int measure = 0;
+
+
+        // System Ready Messages
+        int styles_loaded_ready = 0;
 
         public CentralBus () {
             new Thread<int> ("bus_watch", bus_watch);
@@ -15,13 +20,10 @@ namespace Ensembles.Core {
         public signal void clock_tick ();
         public signal void style_section_change (int section);
         public signal void loaded_tempo_change (int tempo);
+
+        public signal void system_ready ();
         int bus_watch () {
             while (thread_alive) {
-                if (central_clock == 1) {
-                    clock_tick ();
-                    central_clock = 0;
-                    Thread.usleep (100);
-                }
                 if (style_section != central_style_section) {
                     style_section_change (central_style_section);
                     style_section = central_style_section;
@@ -30,13 +32,37 @@ namespace Ensembles.Core {
                     loaded_tempo_change (central_loaded_tempo);
                     loaded_tempo = central_loaded_tempo;
                 }
-                Thread.usleep (50);
+                if (styles_loaded_ready != styles_ready) {
+                    styles_loaded_ready = styles_ready;
+                    if (styles_loaded_ready > 0) {
+                        system_ready ();
+                    }
+                }
+                if (central_clock == 1) {
+                    clock_tick ();
+                    Thread.usleep (400000);
+                    central_measure ++;
+                    central_clock = 0;
+                }
             }
             return 0;
+        }
+
+        public static void set_styles_ready (bool ready) {
+            styles_ready = ready ? 1 : 0;
+        }
+
+        public static int get_measure () {
+            return central_measure;
         }
     }
 }
 
+// System Ready Messages
+extern int styles_ready;
+
+// Midi Player Info
 extern int central_clock;
+extern int central_measure;
 extern int central_style_section;
 extern int central_loaded_tempo;

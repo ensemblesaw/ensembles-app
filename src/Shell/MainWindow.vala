@@ -20,9 +20,10 @@ namespace Ensembles.Shell {
     public class MainWindow : Gtk.Window {
         StyleControllerView style_controller_view;
         BeatCounterView beat_counter_panel;
+        MainDisplayCasing main_display_unit;
         Ensembles.Core.Synthesizer synthesizer;
-        Ensembles.Core.StylePlayer player;
-        Ensembles.Core.StyleAnalyser analyser;
+        Ensembles.Core.StyleDiscovery style_discovery;
+        Ensembles.Core.StylePlayer style_player;
         Ensembles.Core.CentralBus bus;
 
         string sf_loc = Constants.PKGDATADIR + "/SoundFonts/EnsemblesGM.sf2";
@@ -40,77 +41,96 @@ namespace Ensembles.Shell {
             headerbar.pack_start (beat_counter_panel);
             this.set_titlebar (headerbar);
 
+            main_display_unit = new MainDisplayCasing ();
+
             style_controller_view = new StyleControllerView ();
 
             var grid = new Gtk.Grid ();
-            grid.attach (style_controller_view, 0, 0, 1, 1);
+            grid.attach (main_display_unit, 0, 0, 1, 1);
+            grid.attach (style_controller_view, 0, 1, 1, 1);
             this.add (grid);
             this.show_all ();
             
-            analyser = new Ensembles.Core.StyleAnalyser ();
 
-            analyser.analyze_style(Constants.PKGDATADIR + "/Styles/DancePop_01.mid");
+
+
+
 
             synthesizer = new Ensembles.Core.Synthesizer (sf_loc);
-            player = new Ensembles.Core.StylePlayer (Constants.PKGDATADIR + "/Styles/DancePop_01.mid");
+            style_player = new Ensembles.Core.StylePlayer ();
+
+            style_discovery = new Ensembles.Core.StyleDiscovery ();
+            style_discovery.analysis_complete.connect (() => {
+                style_player.add_style_file (style_discovery.style_files.nth_data (0));
+                main_display_unit.update_style_list (
+                    style_discovery.style_files,
+                    style_discovery.style_names,
+                    style_discovery.style_genre,
+                    style_discovery.style_tempo
+                );
+            });
 
             make_ui_events ();
         }
         void make_bus_events () {
             bus.clock_tick.connect (() => {
                 beat_counter_panel.sync ();
+                main_display_unit.set_measure_display (Ensembles.Core.CentralBus.get_measure ());
+            });
+            bus.system_ready.connect (() => {
+                main_display_unit.queue_remove_splash ();
             });
             bus.style_section_change.connect ((section) => {
                 style_controller_view.set_style_section (section);
             });
             bus.loaded_tempo_change.connect ((tempo) => {
                 beat_counter_panel.change_tempo (tempo);
-                print("tempo:%d\n", tempo);
+                main_display_unit.set_tempo_display (tempo);
             });
         }
         void make_ui_events () {
             style_controller_view.start_stop.connect (() => {
-                player.play_style ();
+                style_player.play_style ();
             });
 
             style_controller_view.switch_var_a.connect (() => {
-                player.switch_var_a ();
+                style_player.switch_var_a ();
             });
 
             style_controller_view.switch_var_b.connect (() => {
-                player.switch_var_b ();
+                style_player.switch_var_b ();
             });
 
             style_controller_view.switch_var_c.connect (() => {
-                player.switch_var_c ();
+                style_player.switch_var_c ();
             });
 
             style_controller_view.switch_var_d.connect (() => {
-                player.switch_var_d ();
+                style_player.switch_var_d ();
             });
 
             style_controller_view.queue_intro_a.connect (() => {
-                player.queue_intro_a ();
+                style_player.queue_intro_a ();
             });
 
             style_controller_view.queue_intro_b.connect (() => {
-                player.queue_intro_b ();
+                style_player.queue_intro_b ();
             });
 
             style_controller_view.queue_ending_a.connect (() => {
-                player.queue_ending_a ();
+                style_player.queue_ending_a ();
             });
 
             style_controller_view.queue_ending_b.connect (() => {
-                player.queue_ending_b ();
+                style_player.queue_ending_b ();
             });
 
             style_controller_view.break_play.connect (() => {
-                player.break_play ();
+                style_player.break_play ();
             });
 
             style_controller_view.sync_stop.connect (() => {
-                player.sync_stop ();
+                style_player.sync_stop ();
             });
             print("Initialized...\n");
         }

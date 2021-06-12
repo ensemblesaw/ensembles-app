@@ -1,5 +1,7 @@
 int central_clock;
 
+int styles_ready;
+
 
 int* loaded_style_time_stamps;
 int central_style_section;
