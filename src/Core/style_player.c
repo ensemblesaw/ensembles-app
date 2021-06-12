@@ -57,35 +57,42 @@ parse_ticks (void* data, int ticks) {
         central_clock = 1;
         fill_queue = 0;
         fill_in = 0;
-        central_style_section = start_s;
         if (loop_start_tick != loaded_style_time_stamps[start_s]) {
             loop_start_tick = loaded_style_time_stamps[start_s];
             loop_end_tick = loaded_style_time_stamps[end_s];
             synthesizer_halt_notes ();
+            central_style_section = start_s;
             return fluid_player_seek (player, loop_start_tick);
-        } else if (looping == 1) {
-                if (ticks >= loop_end_tick && fill_in == 0) {
-                    if (intro_playing == 1) {
-                        start_s = start_temp;
-                        end_s = end_temp;
-                        intro_playing = 0;
-                    } else if (sync_stop) {
-                        fluid_player_stop (player);
-                        start_s = start_temp;
-                        end_s = end_temp;
-                        looping = 0;
-                        intro_playing = 0;
-                        fill_in = 0;
-                        fill_queue = 0;
-                        sync_stop = 0;
-                        central_style_section = 0;
-                        central_measure = 0;
-                        synthesizer_halt_notes ();
-                    }
-                    breaking = 0;
+        }
+        if (looping == 1) {
+            if (ticks >= loop_end_tick && fill_in == 0) {
+                if (intro_playing == 1) {
+                    start_s = start_temp;
+                    end_s = end_temp;
+                    intro_playing = 0;
+                    loop_start_tick = loaded_style_time_stamps[start_s];
+                    loop_end_tick = loaded_style_time_stamps[end_s];
+                    central_style_section = start_s;
+                    synthesizer_halt_notes ();
                     return fluid_player_seek (player, loop_start_tick);
+                } else if (sync_stop) {
+                    fluid_player_stop (player);
+                    start_s = start_temp;
+                    end_s = end_temp;
+                    looping = 0;
+                    intro_playing = 0;
+                    fill_in = 0;
+                    fill_queue = 0;
+                    sync_stop = 0;
+                    central_style_section = 0;
+                    central_measure = 0;
+                    synthesizer_halt_notes ();
                 }
+                breaking = 0;
+                return fluid_player_seek (player, loop_start_tick);
             }
+        }
+        central_style_section = start_s;
     }
 
     return FLUID_OK;
