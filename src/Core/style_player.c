@@ -34,10 +34,39 @@ int changing_variation = 0;
 
 pthread_t style_swap_thread_id = 0;
 
+
+int chord_main = 2; // C
+
 int
 parse_midi_events (void *data, fluid_midi_event_t *event) {
+
+    fluid_midi_event_t* new_event = new_fluid_midi_event ();
+
+    fluid_midi_event_set_channel (new_event, fluid_midi_event_get_channel (event));
+    fluid_midi_event_set_control (new_event, fluid_midi_event_get_control (event));
+    fluid_midi_event_set_pitch (new_event, fluid_midi_event_get_pitch (event));
+    fluid_midi_event_set_program (new_event, fluid_midi_event_get_program (event));
+    fluid_midi_event_set_value (new_event, fluid_midi_event_get_value (event));
+    fluid_midi_event_set_velocity (new_event, fluid_midi_event_get_velocity (event));
+    fluid_midi_event_set_type (new_event, fluid_midi_event_get_type (event));
+
+    int type = fluid_midi_event_get_type (new_event);
+    int channel = fluid_midi_event_get_channel (new_event);
+    int key = fluid_midi_event_get_key (event);
+    if (channel != 9) {
+        if (type == 144 || type == 128) {
+            fluid_midi_event_set_key (new_event, key + chord_main);
+        }
+        printf("-> %d %d\n", type, key);
+    }
+    else {
+        fluid_midi_event_set_key (new_event, key);
+    }
+    
+    
+
     // Send data to synth
-    handle_events_for_styles (event);
+    handle_events_for_styles (new_event);
     return 0;
 }
 
@@ -91,6 +120,7 @@ parse_ticks (void* data, int ticks) {
                     synthesizer_halt_notes ();
                 }
                 breaking = 0;
+                synthesizer_halt_notes ();
                 return fluid_player_seek (player, loop_start_tick);
             }
         }
@@ -118,6 +148,7 @@ queue_style_file_change (char* loc) {
     player = new_fluid_player(synth);
     fluid_player_set_playback_callback(player, parse_midi_events, synth);
     fluid_player_set_tick_callback (player, parse_ticks, synth);
+    // fluid_player_set_tempo (player, FLUID_PLAYER_TEMPO_EXTERNAL_BPM, 90);
 
     if (fluid_is_midifile(loc)) {
         fluid_player_add(player, loc);

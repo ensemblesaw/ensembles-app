@@ -115,7 +115,7 @@ synthesizer_halt_notes () {
     fluid_synth_all_notes_off (style_synth, 6);
     fluid_synth_all_notes_off (style_synth, 7);
     fluid_synth_all_notes_off (style_synth, 8);
-    fluid_synth_all_notes_off (style_synth, 9);
+    //fluid_synth_all_notes_off (style_synth, 9);
     fluid_synth_all_notes_off (style_synth, 10);
     fluid_synth_all_notes_off (style_synth, 11);
     fluid_synth_all_notes_off (style_synth, 12);
