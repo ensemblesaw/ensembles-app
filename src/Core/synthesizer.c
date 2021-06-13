@@ -6,6 +6,10 @@ fluid_synth_t* style_synth;
 fluid_settings_t* style_synth_settings;
 fluid_audio_driver_t* style_adriver;
 
+fluid_synth_t* realtime_synth;
+fluid_settings_t* realtime_synth_settings;
+fluid_audio_driver_t* realtime_adriver;
+
 struct fx_data_t
 {
     fluid_synth_t *synth;
@@ -64,12 +68,22 @@ synthesizer_init (const gchar* loc) {
     fluid_settings_setnum(style_synth_settings, "synth.overflow.percussion", 5000.0);
     fluid_settings_setstr(style_synth_settings, "synth.midi-bank-select", "gs");
 
+    realtime_synth_settings = new_fluid_settings();
+    fluid_settings_setstr(realtime_synth_settings, "audio.driver", "alsa");
+    fluid_settings_setint(realtime_synth_settings, "audio.periods", 8);
+    fluid_settings_setint(realtime_synth_settings, "audio.realtime-prio", 70);
+    fluid_settings_setnum(realtime_synth_settings, "synth.gain", 2);
+    fluid_settings_setstr(realtime_synth_settings, "synth.midi-bank-select", "gs");
+
     style_synth = new_fluid_synth(style_synth_settings);
+    realtime_synth = new_fluid_synth(realtime_synth_settings);
     if (fluid_is_soundfont(loc)) {
         fluid_synth_sfload(style_synth, loc, 1);
+        fluid_synth_sfload(realtime_synth, loc, 1);
     }
     fx_init ();
     style_adriver = new_fluid_audio_driver2(style_synth_settings, fx_function, (void *) &fx_data);
+    realtime_adriver = new_fluid_audio_driver(realtime_synth_settings, realtime_synth);
 }
 
 
@@ -83,9 +97,17 @@ synthesizer_destruct () {
     {
         delete_fluid_synth(style_synth);
     }
+    if(realtime_synth)
+    {
+        delete_fluid_synth(realtime_synth);
+    }
     if(style_synth_settings)
     {
         delete_fluid_settings(style_synth_settings);
+    }
+    if(realtime_synth_settings)
+    {
+        delete_fluid_settings(realtime_synth_settings);
     }
 }
 
@@ -102,6 +124,15 @@ handle_events_for_styles (fluid_midi_event_t *event) {
     // printf ("Value: %d\n", value);
 
     return fluid_synth_handle_midi_event(style_synth, event);
+}
+
+int
+synthesizer_send_notes (int key, int on, int velocity) {
+    if (on == 144) {
+        fluid_synth_noteon (realtime_synth, 0, key, velocity);
+    } else if (on == 128) {
+        fluid_synth_noteoff (realtime_synth, 0, key);
+    }
 }
 
 void

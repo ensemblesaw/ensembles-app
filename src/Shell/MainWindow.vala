@@ -21,10 +21,12 @@ namespace Ensembles.Shell {
         StyleControllerView style_controller_view;
         BeatCounterView beat_counter_panel;
         MainDisplayCasing main_display_unit;
+        AppMenuView app_menu;
         Ensembles.Core.Synthesizer synthesizer;
         Ensembles.Core.StyleDiscovery style_discovery;
         Ensembles.Core.StylePlayer style_player;
         Ensembles.Core.CentralBus bus;
+        Ensembles.Core.Controller controller_connection;
 
         string sf_loc = Constants.PKGDATADIR + "/SoundFonts/EnsemblesGM.sf2";
         public MainWindow () {
@@ -39,7 +41,16 @@ namespace Ensembles.Shell {
             headerbar.set_show_close_button (true);
             headerbar.title = "Ensembles";
             headerbar.pack_start (beat_counter_panel);
+
+            Gtk.Button app_menu_button = new Gtk.Button.from_icon_name ("preferences-system-symbolic", Gtk.IconSize.BUTTON);
+            headerbar.pack_end (app_menu_button);
             this.set_titlebar (headerbar);
+
+            app_menu = new AppMenuView (app_menu_button);
+
+            app_menu_button.clicked.connect (() => {
+                app_menu.popup ();
+            });
 
             main_display_unit = new MainDisplayCasing ();
 
@@ -55,7 +66,13 @@ namespace Ensembles.Shell {
 
 
 
-
+            controller_connection = new Ensembles.Core.Controller ();
+            app_menu.change_enable_midi_input.connect ((enable) => {
+                if (enable) {
+                    var devices_found = controller_connection.get_device_list ();
+                    app_menu.update_devices (devices_found);
+                }
+            });
             synthesizer = new Ensembles.Core.Synthesizer (sf_loc);
             style_player = new Ensembles.Core.StylePlayer ();
 
@@ -95,6 +112,14 @@ namespace Ensembles.Shell {
             });
         }
         void make_ui_events () {
+            app_menu.change_active_input_device.connect ((device) => {
+                //  print("%d %s\n", device.id, device.name);
+                controller_connection.connect_device (device.id);
+            });
+            controller_connection.receive_note_event.connect ((key, on, velocity)=>{
+                //  print ("%d %d %d\n", key, on, velocity);
+                synthesizer.send_notes_realtime (key, on, velocity);
+            });
             style_controller_view.start_stop.connect (() => {
                 style_player.play_style ();
             });

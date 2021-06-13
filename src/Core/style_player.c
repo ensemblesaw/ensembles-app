@@ -57,7 +57,6 @@ parse_midi_events (void *data, fluid_midi_event_t *event) {
         if (type == 144 || type == 128) {
             fluid_midi_event_set_key (new_event, key + chord_main);
         }
-        printf("-> %d %d\n", type, key);
     }
     else {
         fluid_midi_event_set_key (new_event, key);
