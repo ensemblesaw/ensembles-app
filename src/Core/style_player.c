@@ -57,26 +57,28 @@ parse_ticks (void* data, int ticks) {
         central_clock = 1;
         fill_queue = 0;
         fill_in = 0;
+        central_style_section = start_s;
         if (loop_start_tick != loaded_style_time_stamps[start_s]) {
             loop_start_tick = loaded_style_time_stamps[start_s];
             loop_end_tick = loaded_style_time_stamps[end_s];
             synthesizer_halt_notes ();
-            central_style_section = start_s;
             return fluid_player_seek (player, loop_start_tick);
         }
         if (looping == 1) {
             if (ticks >= loop_end_tick && fill_in == 0) {
+                central_style_section = start_s;
                 if (intro_playing == 1) {
                     start_s = start_temp;
                     end_s = end_temp;
                     intro_playing = 0;
                     loop_start_tick = loaded_style_time_stamps[start_s];
                     loop_end_tick = loaded_style_time_stamps[end_s];
-                    central_style_section = start_s;
                     synthesizer_halt_notes ();
+                    central_style_section = start_s;
                     return fluid_player_seek (player, loop_start_tick);
                 } else if (sync_stop) {
                     fluid_player_stop (player);
+                    central_halt = 1;
                     start_s = start_temp;
                     end_s = end_temp;
                     looping = 0;
@@ -92,7 +94,6 @@ parse_ticks (void* data, int ticks) {
                 return fluid_player_seek (player, loop_start_tick);
             }
         }
-        central_style_section = start_s;
     }
 
     return FLUID_OK;
@@ -186,11 +187,14 @@ style_player_play () {
         loop_start_tick = loaded_style_time_stamps[start_s];
         loop_end_tick = loaded_style_time_stamps[end_s];
         fluid_player_seek (player, loop_start_tick);
+        printf ("Start Looping\n");
         fluid_player_play(player);
         looping = 1;
     } else {
         if (fluid_player_get_status (player) == FLUID_PLAYER_PLAYING) {
+            printf ("Stop Looping\n");
             fluid_player_stop (player);
+            central_halt = 1;
             looping = 0;
             intro_playing = 0;
             fill_in = 0;

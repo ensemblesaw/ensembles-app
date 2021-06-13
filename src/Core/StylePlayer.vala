@@ -48,7 +48,7 @@ namespace Ensembles.Core {
         }
 
         public void queue_ending_b () {
-            style_player_queue_ending (12, 13);
+            style_player_queue_ending (13, 14);
         }
 
         public void break_play () {

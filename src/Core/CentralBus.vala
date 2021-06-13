@@ -18,16 +18,13 @@ namespace Ensembles.Core {
             thread_alive = false;
         }
         public signal void clock_tick ();
+        public signal void system_halt ();
         public signal void style_section_change (int section);
         public signal void loaded_tempo_change (int tempo);
 
         public signal void system_ready ();
         int bus_watch () {
             while (thread_alive) {
-                if (style_section != central_style_section) {
-                    style_section_change (central_style_section);
-                    style_section = central_style_section;
-                }
                 if (loaded_tempo != central_loaded_tempo && central_loaded_tempo > 10) {
                     loaded_tempo_change (central_loaded_tempo);
                     loaded_tempo = central_loaded_tempo;
@@ -38,8 +35,16 @@ namespace Ensembles.Core {
                         system_ready ();
                     }
                 }
+                if (central_halt == 1) {
+                    central_halt = 0;
+                    system_halt ();
+                }
                 if (central_clock == 1) {
                     clock_tick ();
+                    if (style_section != central_style_section) {
+                        style_section_change (central_style_section);
+                        style_section = central_style_section;
+                    }
                     Thread.usleep (400000);
                     central_measure ++;
                     central_clock = 0;
@@ -63,6 +68,7 @@ extern int styles_ready;
 
 // Midi Player Info
 extern int central_clock;
+extern int central_halt;
 extern int central_measure;
 extern int central_style_section;
 extern int central_loaded_tempo;

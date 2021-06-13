@@ -75,10 +75,16 @@ namespace Ensembles.Shell {
         void make_bus_events () {
             bus.clock_tick.connect (() => {
                 beat_counter_panel.sync ();
+                style_controller_view.sync ();
                 main_display_unit.set_measure_display (Ensembles.Core.CentralBus.get_measure ());
+            });
+            bus.system_halt.connect (() => {
+                style_player.add_style_file (style_discovery.style_files.nth_data (0));
+                beat_counter_panel.halt ();
             });
             bus.system_ready.connect (() => {
                 main_display_unit.queue_remove_splash ();
+                style_controller_view.ready ();
             });
             bus.style_section_change.connect ((section) => {
                 style_controller_view.set_style_section (section);

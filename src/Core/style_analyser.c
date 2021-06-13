@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include "central_bus.h"
 
-int time_stamps[13];
+int time_stamps[14];
 int time_stamp_index;
 
 // long from_seq(char *in)
@@ -31,7 +31,6 @@ style_analyser (char* style) {
     fread(buffer, filelen, 1, fp);
     fclose(fp);
 
-    printf ("Analyzing...\n");
     for (long i = 0; i < filelen; i++) {
         if (*(buffer + i) == 0xffffffff) {
             if (*(buffer + i + 1) == 0x06) {
@@ -65,7 +64,7 @@ style_analyser (char* style) {
                     }
                 }
                 time_stamps[time_stamp_index++] = (int)(ticks/2);
-                //printf ("%s %d %d\n", string, ticks, central_loaded_tempo);
+                printf ("%s %d %d\n", string, ticks, central_loaded_tempo);
                 free(string);
                 //string = NULL;
             }
@@ -80,7 +79,6 @@ style_analyser (char* style) {
             // }
         }
     }
-    printf ("Done.\n");
     loaded_style_time_stamps = time_stamps;
     return central_loaded_tempo;
 }

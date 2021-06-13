@@ -120,3 +120,55 @@
     border-radius: 3px 0 0 3px;
     box-shadow: 0 2px 4px alpha(#000, 0.5);
 }
+
+.queue-measure {
+	animation: pulse 3s linear infinite;
+}
+
+@keyframes pulse {
+    0% {
+        background-color: #333; 
+        border-color: #222;
+        box-shadow: 0 0 0 1px alpha(#000, 0.1);
+    }
+    5% {
+        background-color: alpha(@accent_color, 0.7);
+        border-color: @accent_color;
+        box-shadow: 0 0 8px @accent_color;
+    }
+    25% {
+        background-color: #333; 
+        border-color: #222;
+        box-shadow: 0 0 0 1px alpha(#000, 0.1);
+	}
+    30% {
+        background-color: alpha(@accent_color, 0.5);
+        border-color: @accent_color;
+        box-shadow: 0 0 8px @accent_color;
+    }
+    50% {
+        background-color: #333; 
+        border-color: #222;
+        box-shadow: 0 0 0 1px alpha(#000, 0.1);
+    }
+    55% {
+        background-color: alpha(@accent_color, 0.7);
+        border-color: @accent_color;
+        box-shadow: 0 0 8px @accent_color;
+    }
+    75% {
+        background-color: #333; 
+        border-color: #222;
+        box-shadow: 0 0 0 1px alpha(#000, 0.1);
+    }
+    80% {
+        background-color: alpha(@accent_color, 0.5);
+        border-color: @accent_color;
+        box-shadow: 0 0 8px @accent_color;
+    }
+    100% {
+        background-color: #333; 
+        border-color: #222;
+        box-shadow: 0 0 0 1px alpha(#000, 0.1);
+    }
+}
