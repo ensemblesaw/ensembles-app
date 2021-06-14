@@ -39,7 +39,7 @@ dependencies = [
     meson.get_compiler ('c').find_library ('m', required : false),
     meson.get_compiler ('c').find_library ('fluidsynth', required : true),
     meson.get_compiler ('c').find_library ('portmidi', required : true),
-    meson.get_compiler ('c').find_library ('pthread', required : true),
+    meson.get_compiler ('c').find_library ('X11', required : false),
 ]
 config_h_dir = include_directories('.')
 subdir ('data')

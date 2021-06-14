@@ -44,6 +44,7 @@ namespace Ensembles.Shell {
             this.add (main_overlay);
             this.halign = Gtk.Align.CENTER;
             this.vexpand = false;
+            this.margin = 4;
 
             make_events ();
         }

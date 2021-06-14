@@ -10,6 +10,8 @@ fluid_synth_t* realtime_synth;
 fluid_settings_t* realtime_synth_settings;
 fluid_audio_driver_t* realtime_adriver;
 
+int accompaniment_enabled = 0;
+
 struct fx_data_t
 {
     fluid_synth_t *synth;
@@ -93,6 +95,10 @@ synthesizer_destruct () {
     {
         delete_fluid_audio_driver(style_adriver);
     }
+    if(realtime_adriver)
+    {
+        delete_fluid_audio_driver(realtime_adriver);
+    }
     if(style_synth)
     {
         delete_fluid_synth(style_synth);
@@ -122,17 +128,33 @@ handle_events_for_styles (fluid_midi_event_t *event) {
     // printf ("Channel: %d, ", chan);
     // printf ("Control: %d, ", cont);
     // printf ("Value: %d\n", value);
+    if (chan != 9 && accompaniment_enabled == 0 && type == 144) {
+        return 0;
+    } 
 
     return fluid_synth_handle_midi_event(style_synth, event);
 }
 
 int
 synthesizer_send_notes (int key, int on, int velocity) {
+    if (accompaniment_enabled > 0 && key < 54) {
+        //printf("%d\n", key);
+        if (key == 36 || key == 48) {
+            //printf("C\n");
+            return 0;
+        }
+        if (key == 43) {
+            //printf("G\n");
+            return 7;
+        }
+        return -1;
+    }
     if (on == 144) {
         fluid_synth_noteon (realtime_synth, 0, key, velocity);
     } else if (on == 128) {
         fluid_synth_noteoff (realtime_synth, 0, key);
     }
+    return -1;
 }
 
 void
@@ -153,4 +175,9 @@ synthesizer_halt_notes () {
     fluid_synth_all_notes_off (style_synth, 13);
     fluid_synth_all_notes_off (style_synth, 14);
     fluid_synth_all_notes_off (style_synth, 15);
+}
+
+
+void synthesizer_set_accomp_enable (int on) {
+    accompaniment_enabled = on;
 }

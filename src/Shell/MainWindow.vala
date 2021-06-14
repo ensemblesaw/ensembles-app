@@ -21,6 +21,7 @@ namespace Ensembles.Shell {
         StyleControllerView style_controller_view;
         BeatCounterView beat_counter_panel;
         MainDisplayCasing main_display_unit;
+        ControlPanel ctrl_panel;
         AppMenuView app_menu;
         Ensembles.Core.Synthesizer synthesizer;
         Ensembles.Core.StyleDiscovery style_discovery;
@@ -54,11 +55,14 @@ namespace Ensembles.Shell {
 
             main_display_unit = new MainDisplayCasing ();
 
+            ctrl_panel = new ControlPanel ();
+
             style_controller_view = new StyleControllerView ();
 
             var grid = new Gtk.Grid ();
             grid.attach (main_display_unit, 0, 0, 1, 1);
-            grid.attach (style_controller_view, 0, 1, 1, 1);
+            grid.attach (ctrl_panel, 1, 0, 1, 1);
+            grid.attach (style_controller_view, 0, 1, 2, 1);
             this.add (grid);
             this.show_all ();
             
@@ -92,8 +96,8 @@ namespace Ensembles.Shell {
         void make_bus_events () {
             bus.clock_tick.connect (() => {
                 beat_counter_panel.sync ();
-                style_controller_view.sync ();
                 main_display_unit.set_measure_display (Ensembles.Core.CentralBus.get_measure ());
+                this.queue_draw ();
             });
             bus.system_halt.connect (() => {
                 style_player.add_style_file (style_discovery.style_files.nth_data (0));
@@ -115,6 +119,10 @@ namespace Ensembles.Shell {
             app_menu.change_active_input_device.connect ((device) => {
                 //  print("%d %s\n", device.id, device.name);
                 controller_connection.connect_device (device.id);
+            });
+            ctrl_panel.accomp_change.connect ((active) => {
+                print("on\n");
+                synthesizer.set_accompaniment_on (active);
             });
             controller_connection.receive_note_event.connect ((key, on, velocity)=>{
                 //  print ("%d %d %d\n", key, on, velocity);
@@ -162,6 +170,9 @@ namespace Ensembles.Shell {
 
             style_controller_view.sync_stop.connect (() => {
                 style_player.sync_stop ();
+            });
+            synthesizer.detected_chord.connect ((chord) => {
+                style_player.change_chords (chord, 0);
             });
             print("Initialized...\n");
         }

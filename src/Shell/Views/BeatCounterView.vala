@@ -16,6 +16,8 @@ namespace Ensembles.Shell {
 
         bool halt_ack = false;
 
+        signal void set_pulse (int index, bool on);
+
         public BeatCounterView() {
             var main_grid = new Gtk.Grid ();
             beat_counter_0 = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/beat_counter/beat_counter_1_0.svg");
@@ -64,6 +66,23 @@ namespace Ensembles.Shell {
             this.set_overlay_pass_through (overlay_grid, true);
             this.width_request = 170;
             this.height_request = 34;
+
+            this.set_pulse.connect ((index, on) => {
+                switch (index) {
+                    case 0:
+                    beat_counter_active_0.set_opacity (on ? 1 : 0);;
+                    break;
+                    case 1:
+                    beat_counter_active_1.set_opacity (on ? 1 : 0);;
+                    break;
+                    case 2:
+                    beat_counter_active_2.set_opacity (on ? 1 : 0);;
+                    break;
+                    case 3:
+                    beat_counter_active_3.set_opacity (on ? 1 : 0);;
+                    break;
+                }
+            });
         }
 
         public void change_tempo (int tempo) {
@@ -72,10 +91,11 @@ namespace Ensembles.Shell {
             }
         }
 
-        public void sync () {
+        public async void sync () {
             if (halt_ack) {
                 halt_ack = false;
-            } else {
+            } 
+            else {
                 Timeout.add (1, () => {
                     pulse_0 ();
                     return false;
@@ -94,48 +114,53 @@ namespace Ensembles.Shell {
                                     pulse_3 ();
                                     return false;
                                 });
+                                yield;
                                 return false;
                             });
+                            yield;
                         }
                         return false;
                     });
+                    yield;
                 }
             }
+            yield;
         } 
 
-        public void halt () {
+        public async void halt () {
             halt_ack = true;
             Timeout.add (60000/(tempo * 2), () => {
                 halt_ack = false;
                 return false;
             });
+            yield;
         }
 
         void pulse_0 () {
-            beat_counter_active_0.opacity = 1;
+            set_pulse (0, true);
             Timeout.add (60000/(tempo * 2), () => {
-                beat_counter_active_0.opacity = 0;
+                set_pulse (0, false);
                 return false;
             });
         }
         void pulse_1 () {
-            beat_counter_active_1.opacity = 1;
+            set_pulse (1, true);
             Timeout.add (60000/(tempo * 2), () => {
-                beat_counter_active_1.opacity = 0;
+                set_pulse (1, false);
                 return false;
             });
         }
         void pulse_2 () {
-            beat_counter_active_2.opacity = 1;
+            set_pulse (2, true);
             Timeout.add (60000/(tempo * 2), () => {
-                beat_counter_active_2.opacity = 0;
+                set_pulse (2, false);
                 return false;
             });
         }
         void pulse_3 () {
-            beat_counter_active_3.opacity = 1;
+            set_pulse (3, true);
             Timeout.add (60000/(tempo * 2), () => {
-                beat_counter_active_3.opacity = 0;
+                set_pulse (3, false);
                 return false;
             });
         }

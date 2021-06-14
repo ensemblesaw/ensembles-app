@@ -25,6 +25,7 @@
  * @since 1.0.0
  */
 public static int main (string[] args) {
+    X.init_threads (); 
     var app = new Ensembles.Shell.EnsemblesApp ();
     var ret = app.run (args);
     return ret;

@@ -1,4 +1,3 @@
-#include <pthread.h>
 #include <stdio.h>
 #include "central_bus.h"
 

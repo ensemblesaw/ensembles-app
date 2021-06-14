@@ -1,5 +1,6 @@
 #include <fluidsynth.h>
 #include <gtk/gtk.h>
+#include <glib.h>
 #include "central_bus.h"
 
 // None of this will be used to actual rendering //////////
@@ -32,10 +33,59 @@ int ticks_since_measure = 0;
 
 int changing_variation = 0;
 
-pthread_t style_swap_thread_id = 0;
+int32_t style_swap_thread_id = 0;
+
+// Per channel chord change flags
+int chord_change_0 = 0;
+int chord_change_1 = 0;
+int chord_change_2 = 0;
+int chord_change_3 = 0;
+int chord_change_4 = 0;
+int chord_change_5 = 0;
+int chord_change_6 = 0;
+int chord_change_7 = 0;
+int chord_change_8 = 0;
+int chord_change_10 = 0;
+int chord_change_11 = 0;
+int chord_change_12 = 0;
+int chord_change_13 = 0;
+int chord_change_14 = 0;
+int chord_change_15 = 0;
+
+// Per channel note-on tracking flags
+int channel_note_on_0 = -1;
+int channel_note_on_1 = -1;
+int channel_note_on_2 = -1;
+int channel_note_on_3 = -1;
+int channel_note_on_4 = -1;
+int channel_note_on_5 = -1;
+int channel_note_on_6 = -1;
+int channel_note_on_7 = -1;
+int channel_note_on_8 = -1;
+int channel_note_on_10 = -1;
+int channel_note_on_11 = -1;
+int channel_note_on_12 = -1;
+int channel_note_on_13 = -1;
+int channel_note_on_14 = -1;
+int channel_note_on_15 = -1;
+
+// Chord tracking flags
+int chord_main = 0; // C
+int chord_type = 0; // Major
 
 
-int chord_main = 2; // C
+void
+style_player_change_chord (int cd_main, int cd_type) {
+    chord_main = cd_main;
+    chord_type = cd_type;
+    chord_change_0 = 1;
+    printf("%d\n", chord_main);
+}
+
+void
+handle_chord_changes () {
+
+}
 
 int
 parse_midi_events (void *data, fluid_midi_event_t *event) {
@@ -53,14 +103,55 @@ parse_midi_events (void *data, fluid_midi_event_t *event) {
     int type = fluid_midi_event_get_type (new_event);
     int channel = fluid_midi_event_get_channel (new_event);
     int key = fluid_midi_event_get_key (event);
-    if (channel != 9) {
-        if (type == 144 || type == 128) {
-            fluid_midi_event_set_key (new_event, key + chord_main);
-        }
+    switch (channel) {
+        case 0:
+        if (type == 144) channel_note_on_0 = key; else if (type == 128) channel_note_on_0 = -1;
+        break;
+        case 1:
+        if (type == 144) channel_note_on_1 = key; else if (type == 128) channel_note_on_1 = -1;
+        break;
+        case 2:
+        if (type == 144) channel_note_on_2 = key; else if (type == 128) channel_note_on_2 = -1;
+        break;
+        case 3:
+        if (type == 144) channel_note_on_3 = key; else if (type == 128) channel_note_on_3 = -1;
+        break;
+        case 4:
+        if (type == 144) channel_note_on_4 = key; else if (type == 128) channel_note_on_4 = -1;
+        break;
+        case 5:
+        if (type == 144) channel_note_on_5 = key; else if (type == 128) channel_note_on_5 = -1;
+        break;
+        case 6:
+        if (type == 144) channel_note_on_6 = key; else if (type == 128) channel_note_on_6 = -1;
+        break;
+        case 7:
+        if (type == 144) channel_note_on_7 = key; else if (type == 128) channel_note_on_7 = -1;
+        break;
+        case 8:
+        if (type == 144) channel_note_on_8 = key; else if (type == 128) channel_note_on_8 = -1;
+        break;
+        case 10:
+        if (type == 144) channel_note_on_10 = key; else if (type == 128) channel_note_on_10 = -1;
+        break;
+        case 11:
+        if (type == 144) channel_note_on_11 = key; else if (type == 128) channel_note_on_11 = -1;
+        break;
+        case 12:
+        if (type == 144) channel_note_on_12 = key; else if (type == 128) channel_note_on_12 = -1;
+        break;
+        case 13:
+        if (type == 144) channel_note_on_13 = key; else if (type == 128) channel_note_on_13 = -1;
+        break;
+        case 14:
+        if (type == 144) channel_note_on_14 = key; else if (type == 128) channel_note_on_14 = -1;
+        break;
+        case 15:
+        if (type == 144) channel_note_on_15 = key; else if (type == 128) channel_note_on_15 = -1;
+        break;
     }
-    else {
-        fluid_midi_event_set_key (new_event, key);
-    }
+
+    fluid_midi_event_set_key (new_event, key);
     
     
 
@@ -71,6 +162,10 @@ parse_midi_events (void *data, fluid_midi_event_t *event) {
 
 int
 parse_ticks (void* data, int ticks) {
+    if (chord_change_0) {
+        chord_change_0 = 1;
+        //printf ("chord -> %d\n", chord_main);
+    }
     if (fill_queue == 1) {
         fill_queue = 0;
         fill_in = 1;
@@ -156,12 +251,14 @@ queue_style_file_change (char* loc) {
         fluid_player_play(player);
     }
     style_swap_thread_id = 0;
+    g_thread_yield ();
 }
 
 void
 style_player_add_style_file (const gchar* mid_file) {
-    if (!style_swap_thread_id) {
-        pthread_create (&style_swap_thread_id, NULL, queue_style_file_change, mid_file);
+    if (style_swap_thread_id == 0) {
+       style_swap_thread_id = 1;
+       g_thread_new ("Style Swapper", queue_style_file_change, mid_file);
     }
 }
 
