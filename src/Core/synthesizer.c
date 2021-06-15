@@ -10,7 +10,20 @@ fluid_synth_t* realtime_synth;
 fluid_settings_t* realtime_synth_settings;
 fluid_audio_driver_t* realtime_adriver;
 
+
+// Accompaniment Flags
 int accompaniment_enabled = 0;
+int32_t accompaniment_mode = 0;
+int synthsizer_split_key = 54;
+
+// Voice Settings
+int realtime_synth_sf_id = 0;
+int synthesizer_voice_bank_l = 0;
+int synthesizer_voice_program_l = 0;
+int synthesizer_voice_bank_r1 = 0;
+int synthesizer_voice_program_r1 = 0;
+int synthesizer_voice_bank_r2 = 0;
+int synthesizer_voice_program_r3 = 0;
 
 struct fx_data_t
 {
@@ -81,7 +94,17 @@ synthesizer_init (const gchar* loc) {
     realtime_synth = new_fluid_synth(realtime_synth_settings);
     if (fluid_is_soundfont(loc)) {
         fluid_synth_sfload(style_synth, loc, 1);
-        fluid_synth_sfload(realtime_synth, loc, 1);
+        realtime_synth_sf_id = fluid_synth_sfload(realtime_synth, loc, 1);
+        
+        // Initialize voices
+        fluid_synth_program_select (realtime_synth, 0, realtime_synth_sf_id, 0, 0);
+        fluid_synth_program_select (realtime_synth, 1, realtime_synth_sf_id, 0, 49);
+        fluid_synth_program_select (realtime_synth, 2, realtime_synth_sf_id, 0, 33);
+
+        // Initialize chord voices
+        fluid_synth_program_select (realtime_synth, 3, realtime_synth_sf_id, 0, 5);
+        fluid_synth_program_select (realtime_synth, 4, realtime_synth_sf_id, 0, 33);
+        fluid_synth_program_select (realtime_synth, 5, realtime_synth_sf_id, 0, 49);
     }
     fx_init ();
     style_adriver = new_fluid_audio_driver2(style_synth_settings, fx_function, (void *) &fx_data);
@@ -138,10 +161,28 @@ handle_events_for_styles (fluid_midi_event_t *event) {
 int
 synthesizer_send_notes (int key, int on, int velocity, int* type) {
     if (accompaniment_enabled > 0) {
-        int chrd_type = 0;
-        int chrd_main = chord_finder_infer (key, on, &chrd_type);
-        *type = chrd_type;
-        return chrd_main;
+        if (accompaniment_mode == 0) {
+            if (key <= synthsizer_split_key) {
+                int chrd_type = 0;
+                int chrd_main = chord_finder_infer (key, on, &chrd_type);
+                *type = chrd_type;
+                if (central_style_looping == 0 && central_style_sync_start == 0 && on == 144) {
+                    fluid_synth_all_notes_off (realtime_synth, 4);
+                    fluid_synth_noteon (realtime_synth, 3, key + 12, velocity);
+                    fluid_synth_noteon (realtime_synth, 4, chrd_main + 36, velocity);
+                    fluid_synth_noteon (realtime_synth, 5, key + 36, velocity * 0.2);
+                    fluid_synth_noteon (realtime_synth, 5, key + 24, velocity * 0.4);
+                }
+                if (on == 128) {
+                    fluid_synth_noteoff (realtime_synth, 3, key + 12);
+                    fluid_synth_all_notes_off (realtime_synth, 4);
+                    fluid_synth_noteoff (realtime_synth, 5, key + 36);
+                    fluid_synth_noteoff (realtime_synth, 5, key + 24);
+                }
+                return chrd_main;
+            }
+        }
+        
     }
     if (on == 144) {
         fluid_synth_noteon (realtime_synth, 0, key, velocity);

@@ -139,6 +139,7 @@ namespace Ensembles.Shell {
             sync_box.add(sync_stop_button);
             sync_box.set_layout (Gtk.ButtonBoxStyle.EXPAND);
             sync_start_button.clicked.connect (() => {
+                sync_start_button.get_style_context ().add_class ("queue-measure");
                 sync_start ();
             });
             sync_stop_button.clicked.connect (() => {
@@ -198,6 +199,7 @@ namespace Ensembles.Shell {
             var_fill_button_d.get_style_context ().remove_class ("queue-measure");
             ending_button_a.get_style_context ().remove_class ("queue-measure");
             ending_button_b.get_style_context ().remove_class ("queue-measure");
+            sync_start_button.get_style_context ().remove_class ("queue-measure");
             sync_stop_button.get_style_context ().remove_class ("queue-measure");
         }
         public void set_style_section (int section) {

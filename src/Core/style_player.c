@@ -10,7 +10,6 @@ fluid_audio_driver_t* adriver;
 fluid_player_t* player;
 ///////////////////////////////////////////////////////////
 
-int looping = 0;
 int loop_start_tick = 0;
 int loop_end_tick = 0;
 int measure_length = 0;
@@ -83,6 +82,26 @@ style_player_change_chord (int cd_main, int cd_type) {
         chord_main = cd_main;
         chord_type = cd_type;
         chord_change_0 = 1;
+    }
+    measure_length = loaded_style_time_stamps[1];
+    if (central_style_sync_start == 1) {
+        central_style_sync_start = 0;
+        if (central_style_looping == 0) {
+            if (start_s == 0) {
+                start_s = 3;
+                end_s = 4;
+                start_temp = start_s;
+                end_temp = end_s;
+            }
+            loop_start_tick = loaded_style_time_stamps[start_s];
+            loop_end_tick = loaded_style_time_stamps[end_s];
+            fluid_player_seek (player, loop_start_tick);
+            printf ("Start central_style_looping\n");
+            fluid_player_play(player);
+            central_style_looping = 1;
+        }
+        central_clock = 0;
+        sync_stop = 0;
     }
     //printf("%d\n", chord_main);
 }
@@ -219,7 +238,7 @@ parse_ticks (void* data, int ticks) {
             synthesizer_halt_notes ();
             return fluid_player_seek (player, loop_start_tick);
         }
-        if (looping == 1) {
+        if (central_style_looping == 1) {
             if (ticks >= loop_end_tick && fill_in == 0) {
                 central_style_section = start_s;
                 if (intro_playing == 1) {
@@ -236,7 +255,7 @@ parse_ticks (void* data, int ticks) {
                     central_halt = 1;
                     start_s = start_temp;
                     end_s = end_temp;
-                    looping = 0;
+                    central_style_looping = 0;
                     intro_playing = 0;
                     fill_in = 0;
                     fill_queue = 0;
@@ -258,7 +277,7 @@ parse_ticks (void* data, int ticks) {
 
 void
 style_player_init () {
-    int sfont_id;
+    central_style_looping = 0;
     settings = new_fluid_settings();
     synth = new_fluid_synth(settings);
     adriver = new_fluid_audio_driver(settings, synth);
@@ -279,7 +298,7 @@ queue_style_file_change (char* loc) {
     if (fluid_is_midifile(loc)) {
         fluid_player_add(player, loc);
     }
-    if (looping) {
+    if (central_style_looping) {
         fluid_player_play(player);
     }
     style_swap_thread_id = 0;
@@ -314,7 +333,7 @@ style_player_play_loop (int start, int end) {
     end_s = end;
     start_temp = start_s;
     end_temp = end_s;
-    if (looping == 0) {
+    if (central_style_looping == 0) {
         loop_start_tick = loaded_style_time_stamps[start];
         loop_end_tick = loaded_style_time_stamps[end];
         printf("Queuing...%d -> %d\n", loop_start_tick, loop_end_tick);
@@ -336,7 +355,7 @@ style_player_play_loop (int start, int end) {
 void
 style_player_play () {
     measure_length = loaded_style_time_stamps[1];
-    if (looping == 0) {
+    if (central_style_looping == 0) {
         if (start_s == 0) {
             start_s = 3;
             end_s = 4;
@@ -346,15 +365,15 @@ style_player_play () {
         loop_start_tick = loaded_style_time_stamps[start_s];
         loop_end_tick = loaded_style_time_stamps[end_s];
         fluid_player_seek (player, loop_start_tick);
-        printf ("Start Looping\n");
+        printf ("Start central_style_looping\n");
         fluid_player_play(player);
-        looping = 1;
+        central_style_looping = 1;
     } else {
         if (fluid_player_get_status (player) == FLUID_PLAYER_PLAYING) {
-            printf ("Stop Looping\n");
+            printf ("Stop central_style_looping\n");
             fluid_player_stop (player);
             central_halt = 1;
-            looping = 0;
+            central_style_looping = 0;
             intro_playing = 0;
             fill_in = 0;
             fill_queue = 0;
@@ -399,4 +418,9 @@ style_player_break () {
 void
 style_player_sync_stop () {
     sync_stop = 1;
+}
+
+void
+style_player_sync_start () {
+    central_style_sync_start = 1;
 }

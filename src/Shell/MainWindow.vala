@@ -168,6 +168,10 @@ namespace Ensembles.Shell {
                 style_player.break_play ();
             });
 
+            style_controller_view.sync_start.connect (() => {
+                style_player.sync_start ();
+            });
+
             style_controller_view.sync_stop.connect (() => {
                 style_player.sync_stop ();
             });

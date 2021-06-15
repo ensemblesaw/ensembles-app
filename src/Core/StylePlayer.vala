@@ -55,6 +55,9 @@ namespace Ensembles.Core {
             style_player_break ();
         }
 
+        public void sync_start () {
+            style_player_sync_start ();
+        }
         public void sync_stop () {
             style_player_sync_stop ();
         }
@@ -73,6 +76,7 @@ extern void style_player_play_loop (int start, int end);
 extern void style_player_queue_intro (int start, int end);
 extern void style_player_queue_ending (int start, int end);
 extern void style_player_break ();
+extern void style_player_sync_start ();
 extern void style_player_sync_stop ();
 
 extern void style_player_change_chord (int cd_main, int cd_type);

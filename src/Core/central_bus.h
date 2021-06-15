@@ -12,3 +12,8 @@ int central_time_signature;
 int central_measure;
 int central_tempo;
 int central_loaded_tempo;
+
+
+// Style parameters
+int central_style_looping;
+int central_style_sync_start;
