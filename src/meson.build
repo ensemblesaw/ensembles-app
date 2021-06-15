@@ -39,7 +39,8 @@ ensembles_sources_c = files (
     'Core/central_bus.h',
     'Core/realtime_play.c',
     'Core/style_player.c',
-    'Core/style_analyser.c'
+    'Core/style_analyser.c',
+    'Core/chord_finder.c'
 )
 
 ensembles_sources = [

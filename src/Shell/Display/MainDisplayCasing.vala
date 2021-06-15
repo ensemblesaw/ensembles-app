@@ -95,5 +95,9 @@ namespace Ensembles.Shell {
         public void set_measure_display (int measure) {
             home_screen.set_measure (measure);
         }
+
+        public void set_chord_display (int chord_main, int chord_type) {
+            home_screen.set_chord (chord_main, chord_type);
+        }
     }
 }

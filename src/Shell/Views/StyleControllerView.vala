@@ -43,10 +43,16 @@ namespace Ensembles.Shell {
             intro_button_a.clicked.connect (() => {
                 queue_intro_a ();
                 intro_button_a.get_style_context ().add_class ("queue-measure");
+                intro_button_b.get_style_context ().remove_class ("queue-measure");
+                ending_button_a.get_style_context ().remove_class ("queue-measure");
+                ending_button_b.get_style_context ().remove_class ("queue-measure");
             });
             intro_button_b.clicked.connect (() => {
                 queue_intro_b ();
+                intro_button_a.get_style_context ().remove_class ("queue-measure");
                 intro_button_b.get_style_context ().add_class ("queue-measure");
+                ending_button_a.get_style_context ().remove_class ("queue-measure");
+                ending_button_b.get_style_context ().remove_class ("queue-measure");
             });
 
             var var_fill_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL);
@@ -66,20 +72,32 @@ namespace Ensembles.Shell {
             var_fill_button_a.clicked.connect (() => {
                 switch_var_a ();
                 var_fill_button_a.get_style_context ().add_class ("queue-measure");
+                var_fill_button_b.get_style_context ().remove_class ("queue-measure");
+                var_fill_button_c.get_style_context ().remove_class ("queue-measure");
+                var_fill_button_d.get_style_context ().remove_class ("queue-measure");
             });
 
             var_fill_button_b.clicked.connect (() => {
                 switch_var_b ();
+                var_fill_button_a.get_style_context ().remove_class ("queue-measure");
                 var_fill_button_b.get_style_context ().add_class ("queue-measure");
+                var_fill_button_c.get_style_context ().remove_class ("queue-measure");
+                var_fill_button_d.get_style_context ().remove_class ("queue-measure");
             });
 
             var_fill_button_c.clicked.connect (() => {
                 switch_var_c ();
+                var_fill_button_a.get_style_context ().remove_class ("queue-measure");
+                var_fill_button_b.get_style_context ().remove_class ("queue-measure");
                 var_fill_button_c.get_style_context ().add_class ("queue-measure");
+                var_fill_button_d.get_style_context ().remove_class ("queue-measure");
             });
 
             var_fill_button_d.clicked.connect (() => {
                 switch_var_d ();
+                var_fill_button_a.get_style_context ().remove_class ("queue-measure");
+                var_fill_button_b.get_style_context ().remove_class ("queue-measure");
+                var_fill_button_c.get_style_context ().remove_class ("queue-measure");
                 var_fill_button_d.get_style_context ().add_class ("queue-measure");
             });
 
@@ -100,10 +118,16 @@ namespace Ensembles.Shell {
             ending_button_a.clicked.connect (() => {
                 queue_ending_a ();
                 ending_button_a.get_style_context ().add_class ("queue-measure");
+                ending_button_b.get_style_context ().remove_class ("queue-measure");
+                intro_button_a.get_style_context ().remove_class ("queue-measure");
+                intro_button_b.get_style_context ().remove_class ("queue-measure");
             });
             ending_button_b.clicked.connect (() => {
                 queue_ending_b ();
+                ending_button_a.get_style_context ().remove_class ("queue-measure");
                 ending_button_b.get_style_context ().add_class ("queue-measure");
+                intro_button_a.get_style_context ().remove_class ("queue-measure");
+                intro_button_b.get_style_context ().remove_class ("queue-measure");
             });
 
             var sync_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL);
@@ -118,6 +142,7 @@ namespace Ensembles.Shell {
                 sync_start ();
             });
             sync_stop_button.clicked.connect (() => {
+                sync_stop_button.get_style_context ().add_class ("queue-measure");
                 sync_stop ();
             });
 
@@ -173,6 +198,7 @@ namespace Ensembles.Shell {
             var_fill_button_d.get_style_context ().remove_class ("queue-measure");
             ending_button_a.get_style_context ().remove_class ("queue-measure");
             ending_button_b.get_style_context ().remove_class ("queue-measure");
+            sync_stop_button.get_style_context ().remove_class ("queue-measure");
         }
         public void set_style_section (int section) {
             sync ();

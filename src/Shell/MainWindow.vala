@@ -96,6 +96,7 @@ namespace Ensembles.Shell {
         void make_bus_events () {
             bus.clock_tick.connect (() => {
                 beat_counter_panel.sync ();
+                style_controller_view.sync ();
                 main_display_unit.set_measure_display (Ensembles.Core.CentralBus.get_measure ());
                 this.queue_draw ();
             });
@@ -121,7 +122,6 @@ namespace Ensembles.Shell {
                 controller_connection.connect_device (device.id);
             });
             ctrl_panel.accomp_change.connect ((active) => {
-                print("on\n");
                 synthesizer.set_accompaniment_on (active);
             });
             controller_connection.receive_note_event.connect ((key, on, velocity)=>{
@@ -171,8 +171,9 @@ namespace Ensembles.Shell {
             style_controller_view.sync_stop.connect (() => {
                 style_player.sync_stop ();
             });
-            synthesizer.detected_chord.connect ((chord) => {
-                style_player.change_chords (chord, 0);
+            synthesizer.detected_chord.connect ((chord, type) => {
+                style_player.change_chords (chord, type);
+                main_display_unit.set_chord_display (chord, type);
             });
             print("Initialized...\n");
         }

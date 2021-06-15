@@ -17,7 +17,6 @@ namespace Ensembles.Shell {
 
         public void make_events () {
             accomp_toggle.toggled.connect ((active) => {
-                print("onn\n");
                 accomp_change (active);
             });
         }

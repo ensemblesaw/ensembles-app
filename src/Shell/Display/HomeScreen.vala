@@ -147,10 +147,10 @@ namespace Ensembles.Shell {
             chord_label.valign = Gtk.Align.START;
             chord_label.halign = Gtk.Align.END;
             chord_label.get_style_context ().add_class ("display-bottom-panel-label");
-            chord_flat_label = new Gtk.Label ("#");
+            chord_flat_label = new Gtk.Label ("");
             chord_flat_label.get_style_context ().add_class ("display-bottom-panel-label-small");
             chord_flat_label.halign = Gtk.Align.START;
-            chord_type_label = new Gtk.Label ("m");
+            chord_type_label = new Gtk.Label ("");
             chord_type_label.get_style_context ().add_class ("display-bottom-panel-label-small");
             chord_type_label.halign = Gtk.Align.START;
 
@@ -212,6 +212,7 @@ namespace Ensembles.Shell {
 
         public void set_style_name (string name) {
             selected_style_label.set_text (name);
+            selected_style_label.queue_draw ();
         }
         public void set_tempo (int tempo) {
             tempo_label.set_text (tempo.to_string ());
@@ -219,6 +220,70 @@ namespace Ensembles.Shell {
         public void set_measure (int measure) {
             measure_label.set_text (measure.to_string ());
             measure_label.queue_draw ();
+        }
+
+        public void set_chord (int chord_main, int chord_type) {
+            switch (chord_main) {
+                case 0:
+                chord_label.set_text ("C");
+                chord_flat_label.set_text ("");
+                break;
+                case 1:
+                chord_label.set_text ("C");
+                chord_flat_label.set_text ("♯");
+                break;
+                case 2:
+                chord_label.set_text ("D");
+                chord_flat_label.set_text ("");
+                break;
+                case 3:
+                chord_label.set_text ("E");
+                chord_flat_label.set_text ("♭");
+                break;
+                case 4:
+                chord_label.set_text ("E");
+                chord_flat_label.set_text ("");
+                break;
+                case 5:
+                chord_label.set_text ("F");
+                chord_flat_label.set_text ("");
+                break;
+                case 6:
+                chord_label.set_text ("F");
+                chord_flat_label.set_text ("♯");
+                break;
+                case -5:
+                chord_label.set_text ("G");
+                chord_flat_label.set_text ("");
+                break;
+                case -4:
+                chord_label.set_text ("A");
+                chord_flat_label.set_text ("♭");
+                break;
+                case -3:
+                chord_label.set_text ("A");
+                chord_flat_label.set_text ("");
+                break;
+                case -2:
+                chord_label.set_text ("B");
+                chord_flat_label.set_text ("♭");
+                break;
+                case -1:
+                chord_label.set_text ("B");
+                chord_flat_label.set_text ("");
+                break;
+            }
+            switch (chord_type) {
+                case 0:
+                chord_type_label.set_text ("");
+                break;
+                case 1:
+                chord_type_label.set_text ("min");
+                break;
+            }
+            chord_label.queue_draw ();
+            chord_flat_label.queue_draw ();
+            chord_type_label.queue_draw ();
         }
     }
 }

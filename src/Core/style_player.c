@@ -73,13 +73,18 @@ int channel_note_on_15 = -1;
 int chord_main = 0; // C
 int chord_type = 0; // Major
 
+int style_original_chord_main = 0;
+int style_original_chord_type = 1;
+
 
 void
 style_player_change_chord (int cd_main, int cd_type) {
-    chord_main = cd_main;
-    chord_type = cd_type;
-    chord_change_0 = 1;
-    printf("%d\n", chord_main);
+    if (cd_main != -6) {
+        chord_main = cd_main;
+        chord_type = cd_type;
+        chord_change_0 = 1;
+    }
+    //printf("%d\n", chord_main);
 }
 
 void
@@ -151,7 +156,33 @@ parse_midi_events (void *data, fluid_midi_event_t *event) {
         break;
     }
 
-    fluid_midi_event_set_key (new_event, key);
+    if (channel != 9 && (type == 144 || type == 128)) {
+        if (style_original_chord_type == 0) {
+            if (chord_type == 0) {
+                fluid_midi_event_set_key (new_event, key + chord_main);
+            } else {
+                if ((key - 4) % 12 == 0 || (key - 9) % 12 == 0 || (key - 11) % 12 == 0) {
+                    fluid_midi_event_set_key (new_event, key + chord_main - 1);
+                } else {
+                    fluid_midi_event_set_key (new_event, key + chord_main);
+                }
+            }
+        } else if (style_original_chord_type == 1) {
+            if (chord_type == 1) {
+                fluid_midi_event_set_key (new_event, key + chord_main);
+            } else {
+                if ((key - 3) % 12 == 0 || (key - 8) % 12 == 0 || (key - 10) % 12 == 0) {
+                    fluid_midi_event_set_key (new_event, key + chord_main + 1);
+                } else {
+                    fluid_midi_event_set_key (new_event, key + chord_main);
+                }
+            }
+        }
+        
+    } else {
+        fluid_midi_event_set_key (new_event, key);
+    }
+    
     
     
 
@@ -162,9 +193,10 @@ parse_midi_events (void *data, fluid_midi_event_t *event) {
 
 int
 parse_ticks (void* data, int ticks) {
-    if (chord_change_0) {
-        chord_change_0 = 1;
-        //printf ("chord -> %d\n", chord_main);
+    if (chord_change_0 == 1) {
+        chord_change_0 = 0;
+        printf ("chord -> %d\n", chord_main);
+        synthesizer_halt_notes ();
     }
     if (fill_queue == 1) {
         fill_queue = 0;

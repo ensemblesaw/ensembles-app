@@ -136,25 +136,19 @@ handle_events_for_styles (fluid_midi_event_t *event) {
 }
 
 int
-synthesizer_send_notes (int key, int on, int velocity) {
-    if (accompaniment_enabled > 0 && key < 54) {
-        //printf("%d\n", key);
-        if (key == 36 || key == 48) {
-            //printf("C\n");
-            return 0;
-        }
-        if (key == 43) {
-            //printf("G\n");
-            return 7;
-        }
-        return -1;
+synthesizer_send_notes (int key, int on, int velocity, int* type) {
+    if (accompaniment_enabled > 0) {
+        int chrd_type = 0;
+        int chrd_main = chord_finder_infer (key, on, &chrd_type);
+        *type = chrd_type;
+        return chrd_main;
     }
     if (on == 144) {
         fluid_synth_noteon (realtime_synth, 0, key, velocity);
     } else if (on == 128) {
         fluid_synth_noteoff (realtime_synth, 0, key);
     }
-    return -1;
+    return -6;
 }
 
 void
