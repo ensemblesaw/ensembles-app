@@ -186,6 +186,12 @@ synthesizer_send_notes (int key, int on, int velocity, int* type) {
         }
         
     }
+    fluid_synth_reverb_on (realtime_synth, -1, TRUE);
+    fluid_synth_set_reverb_group_roomsize (realtime_synth, -1, 0.7);
+    fluid_synth_set_reverb_group_damp (realtime_synth, -1, 0.1);
+    fluid_synth_set_reverb_group_width (realtime_synth, -1, 20);
+    fluid_synth_set_reverb_group_level (realtime_synth, -1, 1);
+
     if (on == 144) {
         fluid_synth_noteon (realtime_synth, 0, key, velocity);
     } else if (on == 128) {
