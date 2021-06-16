@@ -40,6 +40,7 @@ fx_function(void *data, int len,
     struct fx_data_t *fx_data = (struct fx_data_t *) data;
     int i, k;
 
+ // DO NOT add Low Pass or reverb or chorus here. Add them as modulators in soundfont first
     if(fx == 0) {
         if(fluid_synth_process(fx_data->synth, len, nout, out, nout, out) != FLUID_OK)
         {
@@ -58,9 +59,9 @@ fx_function(void *data, int len,
     for(i = 0; i < nout; i++)
     {
         float *out_i = out[i];
-        for(k = 0; k < len; k++)
+        for(int sample = 0; sample < len; sample++)
         {
-            out_i[k] *= fx_data->gain;
+            out_i[sample] *= fx_data->gain;
         }
     }
     return FLUID_OK;
@@ -77,7 +78,7 @@ synthesizer_init (const gchar* loc) {
     style_synth_settings = new_fluid_settings();
     fluid_settings_setstr(style_synth_settings, "audio.driver", "alsa");
     fluid_settings_setint(style_synth_settings, "audio.periods", 16);
-    fluid_settings_setint(style_synth_settings, "audio.period-size", 86);
+    fluid_settings_setint(style_synth_settings, "audio.period-size", 64);
     fluid_settings_setint(style_synth_settings, "audio.realtime-prio", 70);
     fluid_settings_setnum(style_synth_settings, "synth.gain", 2);
     fluid_settings_setnum(style_synth_settings, "synth.overflow.percussion", 5000.0);
@@ -154,7 +155,8 @@ handle_events_for_styles (fluid_midi_event_t *event) {
     if (chan != 9 && accompaniment_enabled == 0 && type == 144) {
         return 0;
     } 
-
+    // CC 74 CutOff Modulator 
+    // fluid_synth_cc (style_synth, 0, 74, 80);
     return fluid_synth_handle_midi_event(style_synth, event);
 }
 

@@ -127,7 +127,7 @@ namespace Ensembles.Shell {
             time_sig_header.get_style_context ().add_class ("display-bottom-panel-header");
             var transpose_header = new Gtk.Label ("Transpose");
             transpose_header.get_style_context ().add_class ("display-bottom-panel-header");
-            var octave_shift_header = new Gtk.Label ("Octave Shift");
+            var octave_shift_header = new Gtk.Label ("Octave");
             octave_shift_header.get_style_context ().add_class ("display-bottom-panel-header");
             var chord_header = new Gtk.Label ("Chord");
             chord_header.get_style_context ().add_class ("display-bottom-panel-header");
