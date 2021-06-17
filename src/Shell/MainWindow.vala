@@ -22,7 +22,13 @@ namespace Ensembles.Shell {
         BeatCounterView beat_counter_panel;
         MainDisplayCasing main_display_unit;
         ControlPanel ctrl_panel;
+        SliderBoardView slider_board;
+        VoiceCategoryView voice_category_panel;
+        MixerBoardView mixer_board_view;
+        MultipadView multipad_panel;
+        RegistryView registry_panel;
         AppMenuView app_menu;
+        SongControllerView song_control_panel;
         Ensembles.Core.Synthesizer synthesizer;
         Ensembles.Core.StyleDiscovery style_discovery;
         Ensembles.Core.StylePlayer style_player;
@@ -53,16 +59,37 @@ namespace Ensembles.Shell {
                 app_menu.popup ();
             });
 
+            song_control_panel = new SongControllerView ();
+            headerbar.pack_end (song_control_panel);
+
             main_display_unit = new MainDisplayCasing ();
 
             ctrl_panel = new ControlPanel ();
 
+            slider_board = new SliderBoardView ();
+
+            voice_category_panel = new VoiceCategoryView ();
+
+            mixer_board_view = new MixerBoardView ();
+
+            multipad_panel = new MultipadView ();
+
+            registry_panel = new RegistryView ();
+
             style_controller_view = new StyleControllerView ();
 
+            var style_registry_grid = new Gtk.Grid ();
+            style_registry_grid.attach (style_controller_view, 0, 0, 1, 1);
+            style_registry_grid.attach (registry_panel, 1, 0, 1, 1);
+
             var grid = new Gtk.Grid ();
-            grid.attach (main_display_unit, 0, 0, 1, 1);
-            grid.attach (ctrl_panel, 1, 0, 1, 1);
-            grid.attach (style_controller_view, 0, 1, 2, 1);
+            grid.attach (slider_board, 0, 0, 1, 1);
+            grid.attach (main_display_unit, 1, 0, 1, 1);
+            grid.attach (ctrl_panel, 2, 0, 1, 1);
+            grid.attach (voice_category_panel, 0, 1, 1, 1);
+            grid.attach (mixer_board_view, 1, 1, 1, 1);
+            grid.attach (multipad_panel, 2, 1, 1, 1);
+            grid.attach (style_registry_grid, 0, 2, 3, 1);
             this.add (grid);
             this.show_all ();
             

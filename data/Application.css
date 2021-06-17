@@ -1,3 +1,7 @@
+.rounded {
+	border-radius: 50%;
+}
+
 .display-background {
     background-color: #000;
 }
@@ -173,6 +177,10 @@
     }
 }
 
+.toggle-switch {
+	font-size: 10px;
+}
+
 .toggle-indicator {
     border: 1px solid #1f1f1f;
     border-bottom: 1px solid #111;
@@ -186,5 +194,157 @@
     border: 1px solid shade(@accent_color, 0.8);
     border-bottom: 1px solid alpha(#000, 0.4);
     background-color: shade(@accent_color, 1.1);
-    box-shadow: 0 0 4px @accent_color, inset 0 1px alpha(#fff, 0.5);
+    box-shadow: inset 0 1px alpha(#fff, 0.5);
+}
+
+.knob-cover-graphic {
+    background-image:linear-gradient(#222,#444);
+    border: 1px solid #000;
+    box-shadow: inset 0 1px 0 alpha(#fff, 0.1), inset 0 -1px 0 alpha(#000, 0.5),
+	0 -2px 4px alpha(#fff, 0.3), 0 2px 4px alpha(#000, 0.8);
+    border-radius: 50%;
+    margin: 6px
+}
+
+.dial-cover-graphic {
+    background-color: #333;
+    border: 1px solid #000;
+    box-shadow: inset 0 1px 0 alpha(#fff, 0.1), inset 0 -1px 0 alpha(#000, 0.5) ;
+    border-radius: 50%;
+    margin: 6px
+}
+
+.dial-socket-graphic {
+    background-image:radial-gradient(#222, #222 20%, #555);
+    background-size: 100% 200%;
+    background-position: center 100%;
+    box-shadow: inset 0 1px 0 alpha(#000, 0.8), inset 0 -1px alpha(#fff, 0.1);
+    border: 1px solid #222;
+    border-radius: 15px;
+    margin-left: -10px;
+    margin-top: -10px;
+    margin-right: 10px;
+    margin-bottom: 10px
+}
+
+.knob-socket-graphic {
+    background-color:#666;
+    border-radius: 5px;
+    margin-left: -2px;
+    margin-top: -2px;
+    margin-right: 2px;
+    margin-bottom: 2px
+}
+.dial-graphic{
+    background-image: linear-gradient(alpha(#333, 1.0), alpha(#000, 0.5));
+    background-position: 0% 0%;
+    background-size:100% 100%;
+    background-color: #333;
+    border: 1px solid #000;
+    border-radius : 50%;
+    box-shadow:  0 -3px 4px #666, 0 4px 5px alpha(#000, 0.5), inset 0 1px 0 alpha(#fff, 0.2), 0 1px 0 alpha(#fff, 0.1);
+    animation: rotate_dial_light 0.4s linear;
+}
+
+.dial-graphic-rotate-clockwise {
+    animation: rotate_dial_light-clockwise 0.4s linear;
+}
+
+.dial-graphic-rotate-anticlockwise {
+    animation: rotate_dial_light-anticlockwise 0.4s linear;
+}
+
+@keyframes rotate_dial_light-clockwise {
+    0% {
+        background-image: linear-gradient(alpha(@accent_color, 0.0), alpha(@accent_color, 0));
+    }
+    10% {
+        background-image: linear-gradient(15deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(30deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(45deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(60deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(75deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(90deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(105deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(120deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(135deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(150deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(165deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(180deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%);
+    }
+    80% {
+    background-image: linear-gradient(45deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0) 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(60deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(75deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(90deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(105deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(120deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(135deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(150deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(165deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(180deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(195deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(210deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%);
+    }
+}
+
+@keyframes rotate_dial_light-anticlockwise {
+    0% {
+        background-image: linear-gradient(alpha(@accent_color, 0.0), alpha(@accent_color, 0));
+    }
+    10% {
+        background-image: linear-gradient(15deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(30deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(45deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(60deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(75deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(90deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(105deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(120deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(135deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(150deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(165deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(180deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%);
+    }
+    80% {
+        background-image: linear-gradient(-15deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0) 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(0deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(15deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(30deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(45deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(60deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(75deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(90deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(105deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(120deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(135deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(150deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%);
+    }
+}
+
+.knob-background {
+    background-image:linear-gradient(#333, #111);
+    border-radius: 50%;
+    margin: 6px;
+    box-shadow: inset 0 0 0 2px alpha(#000, 0.5),
+        0 -2px 3px alpha(#fff, 0.3), 0 2px 4px alpha(#000, 0.8);
+}
+.super-knob-idle {
+    animation: super_idle 2s ease-out infinite;
+}
+.super-knob-cover-graphic{
+    margin:18px;
+    box-shadow: inset 0 0 0 1px #444, inset 0 -1px alpha(#000, 0.5), inset 0 1px alpha(#fff, 0.2)
+}
+
+@keyframes super_idle {
+    0% {
+        background-image:linear-gradient(#333, #111);
+    }
+    30% {
+        background-image:radial-gradient(@accent_color 40%, #333);
+    }
+    100% {
+        background-image:linear-gradient(#333, #111);
+    }
 }

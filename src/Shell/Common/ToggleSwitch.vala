@@ -27,6 +27,7 @@ namespace Ensembles.Shell {
                 toggled (on);
             });
             get_style_context ().remove_class ("toggle");
+            get_style_context ().add_class ("toggle-switch");
         }
     }
 }

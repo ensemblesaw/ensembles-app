@@ -5,8 +5,12 @@ namespace Ensembles.Shell {
             width_request = 424;
             height_request = 213;
         }
-        public void scroll_wheel_scroll (int scroll_location) {
-            scroll_wheel_location = scroll_location;
+        public void scroll_wheel_scroll (bool direction, int amount) {
+            if (direction) {
+                scroll_wheel_location += amount;
+            } else {
+                scroll_wheel_location -= amount;
+            }
         }
     }
 }

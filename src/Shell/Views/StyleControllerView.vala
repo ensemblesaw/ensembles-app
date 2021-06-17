@@ -157,11 +157,11 @@ namespace Ensembles.Shell {
             });
 
             var intro_label = new Gtk.Label ("       INTRO       ");
-            intro_label.set_opacity (0.3);
+            intro_label.set_opacity (0.4);
             var var_label = new Gtk.Label ("       VARIATION / FILL-IN       ");
-            var_label.set_opacity (0.3);
+            var_label.set_opacity (0.4);
             var ending_label = new Gtk.Label ("     ENDING     ");
-            ending_label.set_opacity (0.3);
+            ending_label.set_opacity (0.4);
 
             this.attach (intro_box, 0, 0, 1, 1);
             this.attach (var_fill_box, 1, 0, 1, 1);
@@ -174,7 +174,7 @@ namespace Ensembles.Shell {
             this.attach (var_label, 1, 1, 1, 1);
             this.attach (ending_label, 3, 1, 1, 1);
             this.column_spacing = 4;
-            this.margin = 8;
+            this.margin = 4;
         }
         public void ready () {
             intro_button_a.set_sensitive (true);
