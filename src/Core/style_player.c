@@ -236,7 +236,7 @@ parse_ticks (void* data, int ticks) {
             loop_start_tick = loaded_style_time_stamps[start_s];
             loop_end_tick = loaded_style_time_stamps[end_s];
             synthesizer_halt_notes ();
-            return fluid_player_seek (player, loop_start_tick);
+            return fluid_player_seek (player, loop_start_tick + 1);
         }
         if (central_style_looping == 1) {
             if (ticks >= loop_end_tick && fill_in == 0) {
@@ -266,7 +266,7 @@ parse_ticks (void* data, int ticks) {
                 }
                 breaking = 0;
                 synthesizer_halt_notes ();
-                return fluid_player_seek (player, loop_start_tick);
+                return fluid_player_seek (player, loop_start_tick + 1);
             }
         }
     }

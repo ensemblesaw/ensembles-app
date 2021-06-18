@@ -16,7 +16,6 @@ namespace Ensembles.Shell {
 
         bool halt_ack = false;
 
-        signal void set_pulse (int index, bool on);
 
         public BeatCounterView() {
             var main_grid = new Gtk.Grid ();
@@ -66,23 +65,6 @@ namespace Ensembles.Shell {
             this.set_overlay_pass_through (overlay_grid, true);
             this.width_request = 170;
             this.height_request = 34;
-
-            this.set_pulse.connect ((index, on) => {
-                switch (index) {
-                    case 0:
-                    beat_counter_active_0.set_opacity (on ? 1 : 0);;
-                    break;
-                    case 1:
-                    beat_counter_active_1.set_opacity (on ? 1 : 0);;
-                    break;
-                    case 2:
-                    beat_counter_active_2.set_opacity (on ? 1 : 0);;
-                    break;
-                    case 3:
-                    beat_counter_active_3.set_opacity (on ? 1 : 0);;
-                    break;
-                }
-            });
         }
 
         public void change_tempo (int tempo) {
@@ -91,41 +73,32 @@ namespace Ensembles.Shell {
             }
         }
 
-        public async void sync () {
+        public void sync () {
+            pulse_0 ();
             if (halt_ack) {
                 halt_ack = false;
-            } 
-            else {
-                Timeout.add (1, () => {
-                    pulse_0 ();
-                    return false;
-                });
-                if (halt_ack) {
-                    halt_ack = false;
-                } else {
-                    Timeout.add ((uint)(60000/tempo), () => {
-                        if (halt_ack) {
-                            halt_ack = false;
-                        } else {
-                            pulse_1 ();
+            } else {
+                Timeout.add ((uint)(60000/tempo), () => {
+                    if (halt_ack) {
+                        halt_ack = false;
+                    } else {
+                        pulse_1 ();
+                        Timeout.add ((uint)(60000/tempo), () => {
+                            pulse_2 ();
                             Timeout.add ((uint)(60000/tempo), () => {
-                                pulse_2 ();
-                                Timeout.add ((uint)(60000/tempo), () => {
-                                    pulse_3 ();
-                                    return false;
-                                });
-                                yield;
+                                pulse_3 ();
                                 return false;
                             });
                             yield;
-                        }
-                        return false;
-                    });
-                    yield;
-                }
+                            return false;
+                        });
+                        yield;
+                    }
+                    return false;
+                });
+                yield;
             }
-            yield;
-        } 
+        }
 
         public async void halt () {
             halt_ack = true;
@@ -137,30 +110,30 @@ namespace Ensembles.Shell {
         }
 
         void pulse_0 () {
-            set_pulse (0, true);
+            beat_counter_active_0.set_opacity (1);
             Timeout.add (60000/(tempo * 2), () => {
-                set_pulse (0, false);
+                beat_counter_active_0.set_opacity (0);
                 return false;
             });
         }
         void pulse_1 () {
-            set_pulse (1, true);
+            beat_counter_active_1.set_opacity (1);
             Timeout.add (60000/(tempo * 2), () => {
-                set_pulse (1, false);
+                beat_counter_active_1.set_opacity (0);
                 return false;
             });
         }
         void pulse_2 () {
-            set_pulse (2, true);
+            beat_counter_active_2.set_opacity (1);
             Timeout.add (60000/(tempo * 2), () => {
-                set_pulse (2, false);
+                beat_counter_active_2.set_opacity (0);
                 return false;
             });
         }
         void pulse_3 () {
-            set_pulse (3, true);
+            beat_counter_active_3.set_opacity (1);
             Timeout.add (60000/(tempo * 2), () => {
-                set_pulse (3, false);
+                beat_counter_active_3.set_opacity (0);
                 return false;
             });
         }

@@ -129,7 +129,6 @@ namespace Ensembles.Shell {
                 beat_counter_panel.sync ();
                 style_controller_view.sync ();
                 main_display_unit.set_measure_display (Ensembles.Core.CentralBus.get_measure ());
-                this.queue_draw ();
             });
             bus.system_halt.connect (() => {
                 style_player.add_style_file (style_discovery.style_files.nth_data (0));
