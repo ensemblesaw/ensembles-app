@@ -29,6 +29,7 @@ namespace Ensembles.Shell {
         RegistryView registry_panel;
         AppMenuView app_menu;
         SongControllerView song_control_panel;
+        KeyboardView main_keyboard;
         Ensembles.Core.Synthesizer synthesizer;
         Ensembles.Core.StyleDiscovery style_discovery;
         Ensembles.Core.StylePlayer style_player;
@@ -78,6 +79,8 @@ namespace Ensembles.Shell {
 
             style_controller_view = new StyleControllerView ();
 
+            main_keyboard = new KeyboardView ();
+
             var style_registry_grid = new Gtk.Grid ();
             style_registry_grid.attach (style_controller_view, 0, 0, 1, 1);
             style_registry_grid.attach (registry_panel, 1, 0, 1, 1);
@@ -90,6 +93,7 @@ namespace Ensembles.Shell {
             grid.attach (mixer_board_view, 1, 1, 1, 1);
             grid.attach (multipad_panel, 2, 1, 1, 1);
             grid.attach (style_registry_grid, 0, 2, 3, 1);
+            grid.attach (main_keyboard, 0, 3, 3, 1);
             this.add (grid);
             this.show_all ();
             

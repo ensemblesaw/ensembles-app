@@ -348,3 +348,52 @@
         background-image:linear-gradient(#333, #111);
     }
 }
+
+.white-key-normal {
+    background-image:linear-gradient(#585858, #2e2e2e);
+    border: 2px solid #000;
+}
+.white-key-normal:active {
+    background-image:linear-gradient(shade(@accent_color, 0.7), shade(@accent_color, 0.5));
+    box-shadow: 0 -12px 8px  -8px @accent_color, inset 0 -1px 4px @accent_color;
+}
+.black-key-normal {
+    background-image:linear-gradient(#444, #141414);
+    border: 2px solid #000;
+}
+.black-key-normal:active{
+    background-image:linear-gradient(shade(@accent_color, 0.7), shade(@accent_color, 0.5));
+    box-shadow: 0 -14px 12px -6px @accent_color, inset 0 -1px 4px @accent_color;
+}
+
+.keyboard-top-bar {
+    border-bottom: 2px solid #000;
+    border-top: 1px solid alpha(#ccc, 0.2);
+}
+
+.keyboard-top-bar > grid > label {
+    opacity: 0.4;
+    margin-top: 1px;
+}
+
+.keyboard-top-bar > grid > switch slider{
+    min-height: 16px;
+    min-width: 16px;
+}
+
+.keyboard-background {
+    background-image:linear-gradient(#505050 0%, #383838 23px, #000 24px, #333);
+	border-top: 1px solid #222;
+}
+
+.joystick-pad {
+    background-image:linear-gradient(#1f1f1f, #161616);
+    border: 1px solid alpha(#000, 0.7);
+    border-radius: 4px;
+    box-shadow: inset 0 1px 0 alpha(#fff, 0.2), inset 0 -1px 0 alpha(#fff, 0.1);
+}
+    
+.joystick-background {
+    background-color: #333;
+    border-right: 1px solid #222;
+}
