@@ -1,6 +1,7 @@
 #include <fluidsynth.h>
 #include <gtk/gtk.h>
 #include "central_bus.h"
+#include "synthesizer_settings.h"
 
 fluid_synth_t* style_synth;
 fluid_settings_t* style_synth_settings;
@@ -74,6 +75,39 @@ fx_init () {
 }
 
 void
+synthesizer_edit_master_reverb (int level) {
+    fluid_synth_reverb_on (realtime_synth, -1, TRUE);
+    fluid_synth_set_reverb_group_roomsize (realtime_synth, -1, reverb_room_size[level]);
+    fluid_synth_set_reverb_group_damp (realtime_synth, -1, 0.1);
+    fluid_synth_set_reverb_group_width (realtime_synth, -1, reverb_width[level]);
+    fluid_synth_set_reverb_group_level (realtime_synth, -1, reverb_level[level]);
+
+    fluid_synth_chorus_on (realtime_synth, -1, TRUE);
+    fluid_synth_set_chorus_group_depth (realtime_synth, -1, 80);
+    fluid_synth_set_chorus_group_level (realtime_synth, -1, 8);
+    fluid_synth_set_chorus_group_nr (realtime_synth, -1, 10);
+
+    fluid_synth_reverb_on (style_synth, -1, TRUE);
+    fluid_synth_set_reverb_group_roomsize (style_synth, -1, reverb_room_size[level]);
+    fluid_synth_set_reverb_group_damp (style_synth, -1, 0.1);
+    fluid_synth_set_reverb_group_width (style_synth, -1, reverb_width[level]);
+    fluid_synth_set_reverb_group_level (style_synth, -1, reverb_level[level]);
+}
+
+void
+synthesizer_edit_master_chorus (int level) {
+    fluid_synth_chorus_on (realtime_synth, -1, TRUE);
+    fluid_synth_set_chorus_group_depth (realtime_synth, -1, chorus_depth[level]);
+    fluid_synth_set_chorus_group_level (realtime_synth, -1, chorus_level[level]);
+    fluid_synth_set_chorus_group_nr (realtime_synth, -1, chorus_nr[level]);
+
+    fluid_synth_chorus_on (style_synth, -1, TRUE);
+    fluid_synth_set_chorus_group_depth (style_synth, -1, chorus_depth[level]);
+    fluid_synth_set_chorus_group_level (style_synth, -1, chorus_level[level]);
+    fluid_synth_set_chorus_group_nr (style_synth, -1, chorus_nr[level]);
+}
+
+void
 synthesizer_init (const gchar* loc) {
     style_synth_settings = new_fluid_settings();
     fluid_settings_setstr(style_synth_settings, "audio.driver", "alsa");
@@ -110,6 +144,8 @@ synthesizer_init (const gchar* loc) {
     fx_init ();
     style_adriver = new_fluid_audio_driver2(style_synth_settings, fx_function, (void *) &fx_data);
     realtime_adriver = new_fluid_audio_driver(realtime_synth_settings, realtime_synth);
+    synthesizer_edit_master_reverb (5);
+    synthesizer_edit_master_chorus (1);
 }
 
 
@@ -170,7 +206,9 @@ synthesizer_send_notes (int key, int on, int velocity, int* type) {
                 *type = chrd_type;
                 if (central_style_looping == 0 && central_style_sync_start == 0 && on == 144) {
                     fluid_synth_all_notes_off (realtime_synth, 4);
-                    fluid_synth_noteon (realtime_synth, 3, key + 12, velocity);
+                    fluid_synth_cc (realtime_synth, 3, 91, 0);
+                    fluid_synth_cc (realtime_synth, 4, 91, 0);
+                    fluid_synth_noteon (realtime_synth, 3, key + 12, velocity * 0.6);
                     fluid_synth_noteon (realtime_synth, 4, chrd_main + 36, velocity);
                     fluid_synth_noteon (realtime_synth, 5, key + 36, velocity * 0.2);
                     fluid_synth_noteon (realtime_synth, 5, key + 24, velocity * 0.4);
@@ -186,17 +224,16 @@ synthesizer_send_notes (int key, int on, int velocity, int* type) {
         }
         
     }
-    fluid_synth_reverb_on (realtime_synth, -1, TRUE);
-    fluid_synth_set_reverb_group_roomsize (realtime_synth, -1, 0.7);
-    fluid_synth_set_reverb_group_damp (realtime_synth, -1, 0.1);
-    fluid_synth_set_reverb_group_width (realtime_synth, -1, 20);
-    fluid_synth_set_reverb_group_level (realtime_synth, -1, 1);
-
+    fluid_synth_cc (realtime_synth, 0, 91, 4);
+    fluid_synth_cc (realtime_synth, 0, 93, 4);
     if (on == 144) {
         fluid_synth_noteon (realtime_synth, 0, key, velocity);
     } else if (on == 128) {
         fluid_synth_noteoff (realtime_synth, 0, key);
     }
+    // int reverb;
+    // fluid_synth_get_cc (realtime_synth, 0, 91, &reverb);
+    // printf("%d\n", reverb);
     return -6;
 }
 
