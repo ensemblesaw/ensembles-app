@@ -221,7 +221,7 @@ synthesizer_send_notes (int key, int on, int velocity, int* type) {
         
     }
     fluid_synth_cc (realtime_synth, 0, 91, 4);
-    fluid_synth_cc (realtime_synth, 0, 93, 4);
+    fluid_synth_cc (realtime_synth, 0, 93, 1);
     if (on == 144) {
         fluid_synth_noteon (realtime_synth, 0, key, velocity);
     } else if (on == 128) {
