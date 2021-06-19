@@ -23,6 +23,8 @@ namespace Ensembles.Shell {
         Dial main_dial;
 
         public signal void accomp_change (bool enable);
+        public signal void reverb_change (int level);
+        public signal void chorus_change (int level);
         public signal void dial_rotate (bool direction, int amount);
         public signal void dial_activate ();
         public ControlPanel () {
@@ -44,17 +46,31 @@ namespace Ensembles.Shell {
             arpeggiator_toggle = new ToggleSwitch ("Arpeggiator");
             harmonizer_toggle = new ToggleSwitch ("Harmonizer");
             reverb_toggle = new ToggleSwitch ("Reverb");
+            reverb_toggle.set_active (true);
             chorus_toggle = new ToggleSwitch ("Chorus");
+            chorus_toggle.set_active (true);
 
 
 
 
             transpose_spin_button = new Gtk.SpinButton.with_range (-12, 12, 1);
+            transpose_spin_button.set_value (0);
             octave_spin_button = new Gtk.SpinButton.with_range (-2, 2, 1);
-            arpeggiator_spin_button = new Gtk.SpinButton.with_range (0, 16, 1);
-            harmonizer_spin_button = new Gtk.SpinButton.with_range (0, 16, 1);
+            octave_spin_button.set_value (0);
+            arpeggiator_spin_button = new Gtk.SpinButton.with_range (1, 16, 1);
+            arpeggiator_spin_button.set_value (1);
+            harmonizer_spin_button = new Gtk.SpinButton.with_range (1, 16, 1);
+            harmonizer_spin_button.set_value (1);
             reverb_spin_button = new Gtk.SpinButton.with_range (0, 10, 1);
+            reverb_spin_button.set_value (5);
+            reverb_spin_button.value_changed.connect (() => {
+                reverb_change ((int)(reverb_spin_button.get_value ()));
+            });
             chorus_spin_button = new Gtk.SpinButton.with_range (0, 10, 1);
+            chorus_spin_button.set_value (1);
+            chorus_spin_button.value_changed.connect (() => {
+                chorus_change ((int)(chorus_spin_button.get_value ()));
+            });
 
             main_dial = new Dial ();
             attach (main_dial, 0, 0, 2, 4);

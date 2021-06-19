@@ -23,6 +23,14 @@ namespace Ensembles.Core {
             synthesizer_set_accomp_enable (active ? 1 : 0);
             if (!active) synthesizer_halt_notes ();
         }
+
+        public void set_master_reverb_level (int level) {
+            synthesizer_edit_master_reverb (level);
+        }
+
+        public void set_master_chorus_level (int level) {
+            synthesizer_edit_master_chorus (level);
+        }
     }
 }
 
@@ -32,3 +40,7 @@ extern int synthesizer_send_notes (int key, int on, int velocity, out int type);
 extern void synthesizer_halt_notes ();
 
 extern void synthesizer_set_accomp_enable (int on);
+
+
+extern void synthesizer_edit_master_reverb (int level);
+extern void synthesizer_edit_master_chorus (int level);

@@ -154,6 +154,12 @@ namespace Ensembles.Shell {
             ctrl_panel.accomp_change.connect ((active) => {
                 synthesizer.set_accompaniment_on (active);
             });
+            ctrl_panel.reverb_change.connect ((level) => {
+                synthesizer.set_master_reverb_level (level);
+            });
+            ctrl_panel.chorus_change.connect ((level) => {
+                synthesizer.set_master_chorus_level (level);
+            });
             controller_connection.receive_note_event.connect ((key, on, velocity)=>{
                 //  print ("%d %d %d\n", key, on, velocity);
                 synthesizer.send_notes_realtime (key, on, velocity);
