@@ -82,11 +82,6 @@ synthesizer_edit_master_reverb (int level) {
     fluid_synth_set_reverb_group_width (realtime_synth, -1, reverb_width[level]);
     fluid_synth_set_reverb_group_level (realtime_synth, -1, reverb_level[level]);
 
-    fluid_synth_chorus_on (realtime_synth, -1, TRUE);
-    fluid_synth_set_chorus_group_depth (realtime_synth, -1, 80);
-    fluid_synth_set_chorus_group_level (realtime_synth, -1, 8);
-    fluid_synth_set_chorus_group_nr (realtime_synth, -1, 10);
-
     fluid_synth_reverb_on (style_synth, -1, TRUE);
     fluid_synth_set_reverb_group_roomsize (style_synth, -1, reverb_room_size[level]);
     fluid_synth_set_reverb_group_damp (style_synth, -1, 0.1);
@@ -146,6 +141,7 @@ synthesizer_init (const gchar* loc) {
     realtime_adriver = new_fluid_audio_driver(realtime_synth_settings, realtime_synth);
     synthesizer_edit_master_reverb (5);
     synthesizer_edit_master_chorus (1);
+    fluid_synth_cc (realtime_synth, 0, 74, 40);
 }
 
 

@@ -18,16 +18,24 @@ namespace Ensembles.Shell {
 
             this.clicked.connect (() => {
                 if (on) {
-                    on = false;
-                    indicator_box.get_style_context ().remove_class ("toggle-indicator-active");
+                    set_active (false);
                 } else {
-                    on = true;
-                    indicator_box.get_style_context ().add_class ("toggle-indicator-active");
+                    set_active (true);
                 }
                 toggled (on);
             });
             get_style_context ().remove_class ("toggle");
             get_style_context ().add_class ("toggle-switch");
+        }
+
+        public void set_active (bool active) {
+            if (active) {
+                on = true;
+                indicator_box.get_style_context ().add_class ("toggle-indicator-active");
+            } else {
+                on = false;
+                indicator_box.get_style_context ().remove_class ("toggle-indicator-active");
+            }
         }
     }
 }

@@ -5,6 +5,6 @@ double reverb_width[11]     = { 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20 };
 double reverb_level[11]     = { 0, 1, 1, 1, 1, 1, 1, 0.8, 1, 0.7, 0.7 };
 
 // Chorus presets
-double chorus_depth[11] = {0, 1, 2, 3, 6, 10, 20, 30, 40, 60, 80 };
+double chorus_depth[11] = {0, 1, 2, 3, 6, 10, 20, 25, 30, 35, 40 };
 double chorus_nr[11] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 double chorus_level[11] = { 0, 1, 2, 2, 2, 3, 4, 5, 6, 7, 8 };
