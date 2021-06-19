@@ -53,4 +53,4 @@ ___________________________________
 _Rosegarden_
 _____________
 All the styles made by me were done in Rosegarden Midi Editor.
-In the `data/RoseGardenDevices` folder you will find the Ensembles device definition. In the `Styles` folder you will find a template style to get started, though you may need to place the markers manually. In the `data/Soundfonts` folder you can find the *EnsemblesGM.sf2* soundfont archive.
+In the `data/RoseGardenDevices` folder you will find the Ensembles device definition. In the `Styles` folder you will find a template style to get started, though you may need to place the markers manually. In the `data/Soundfonts` folder you can find the *EnsemblesGM.sf2* soundfont archive, if you want to use any other midi editor or DAW.
