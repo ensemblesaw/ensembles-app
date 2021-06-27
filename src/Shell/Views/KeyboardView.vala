@@ -66,5 +66,9 @@ namespace Ensembles.Shell {
                 key_grid.width_request = 1800;
             }
         }
+
+        public void set_note_on (int key, bool on) {
+            octaves[(int)(key/12) - 3].set_note_on (key % 12, on);
+        }
     }
 }

@@ -166,6 +166,7 @@ namespace Ensembles.Shell {
             controller_connection.receive_note_event.connect ((key, on, velocity)=>{
                 //  print ("%d %d %d\n", key, on, velocity);
                 synthesizer.send_notes_realtime (key, on, velocity);
+                main_keyboard.set_note_on (key, (on == 144));
             });
             style_controller_view.start_stop.connect (() => {
                 style_player.play_style ();
