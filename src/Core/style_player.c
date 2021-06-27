@@ -2,6 +2,7 @@
 #include <gtk/gtk.h>
 #include <glib.h>
 #include "central_bus.h"
+#include <string.h>
 
 // None of this will be used to actual rendering //////////
 fluid_settings_t* settings;
@@ -27,10 +28,13 @@ int sync_stop = 0;
 
 int breaking = 0;
 
+char* style_player_style_path;
+
 
 int ticks_since_measure = 0;
 
 int changing_variation = 0;
+int changing_style = 0;
 
 int32_t style_swap_thread_id = 0;
 
@@ -73,7 +77,6 @@ int chord_main = 0; // C
 int chord_type = 0; // Major
 
 int style_original_chord_main = 0;
-int style_original_chord_type = 1;
 
 
 void
@@ -176,7 +179,7 @@ parse_midi_events (void *data, fluid_midi_event_t *event) {
     }
 
     if (channel != 9 && (type == 144 || type == 128)) {
-        if (style_original_chord_type == 0) {
+        if (central_style_original_chord_type == 0) {
             if (chord_type == 0) {
                 fluid_midi_event_set_key (new_event, key + chord_main);
             } else {
@@ -186,7 +189,7 @@ parse_midi_events (void *data, fluid_midi_event_t *event) {
                     fluid_midi_event_set_key (new_event, key + chord_main);
                 }
             }
-        } else if (style_original_chord_type == 1) {
+        } else if (central_style_original_chord_type == 1) {
             if (chord_type == 1) {
                 fluid_midi_event_set_key (new_event, key + chord_main);
             } else {
@@ -284,33 +287,70 @@ style_player_init () {
 }
 
 void*
-queue_style_file_change (char* loc) {
-    style_player_sync_stop ();
-    if (player) {
+queue_style_file_change (int use_previous_tempo) {
+    printf("changing...to %s\n", style_player_style_path);
+    int previous_tempo = -1;
+    if (central_style_looping) {
+        previous_tempo = fluid_player_get_midi_tempo (player);
+        style_player_sync_stop ();
         fluid_player_join (player);
+        changing_style = 1;
+        printf ("a:\n");
+    } else {
+        printf ("e:\n");
+    }
+    if (use_previous_tempo) {
+        previous_tempo = fluid_player_get_midi_tempo (player);
+    }
+    if (player) {
+        printf ("b:\n");
         delete_fluid_player(player);
+        printf ("c:\n");
     }
     player = new_fluid_player(synth);
     fluid_player_set_playback_callback(player, parse_midi_events, synth);
     fluid_player_set_tick_callback (player, parse_ticks, synth);
     // fluid_player_set_tempo (player, FLUID_PLAYER_TEMPO_EXTERNAL_BPM, 90);
-
-    if (fluid_is_midifile(loc)) {
-        fluid_player_add(player, loc);
+    printf ("f:\n");
+    if (fluid_is_midifile(style_player_style_path)) {
+        fluid_player_add(player, style_player_style_path);
     }
-    if (central_style_looping) {
+    if (previous_tempo != -1 || use_previous_tempo) {
+        fluid_player_set_tempo (player, FLUID_PLAYER_TEMPO_EXTERNAL_MIDI, (double)previous_tempo);
+        central_loaded_tempo = previous_tempo / 3840;
+        printf("%d >>>>\n", previous_tempo);
+    }
+    if (changing_style) {
+        changing_style = 0;
+        loop_start_tick = loaded_style_time_stamps[start_s];
+        loop_end_tick = loaded_style_time_stamps[end_s];
+        fluid_player_seek (player, loop_start_tick);
+        printf ("Restart player with new style\n");
         fluid_player_play(player);
+        central_style_looping = 1;
+        central_clock = 0;
+        sync_stop = 0;
+        printf ("d:\n");
     }
     style_swap_thread_id = 0;
     g_thread_yield ();
 }
 
 void
-style_player_add_style_file (const gchar* mid_file) {
+style_player_add_style_file (const gchar* mid_file, int reload) {
+    printf("chan...to %s\n", mid_file);
     if (style_swap_thread_id == 0) {
        style_swap_thread_id = 1;
-       g_thread_new ("Style Swapper", queue_style_file_change, mid_file);
+       style_player_style_path = (char *)malloc(sizeof (char) * strlen (mid_file));
+       strcpy (style_player_style_path, mid_file);
+       style_analyser_analyze (style_player_style_path);
+       g_thread_new ("Style Swapper", queue_style_file_change, reload);
     }
+}
+
+void
+style_player_reload_style () {
+    style_player_add_style_file (style_player_style_path, 1);
 }
 
 void

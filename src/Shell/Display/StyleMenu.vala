@@ -80,7 +80,6 @@ namespace Ensembles.Shell {
                 main_list.insert (row, -1);
             }
             main_list.select_row (rows[0]);
-            change_style (style_path[0], style_name [0], style_tempo[0]);
             main_list.show_all ();
             Ensembles.Core.CentralBus.set_styles_ready (true);
         }

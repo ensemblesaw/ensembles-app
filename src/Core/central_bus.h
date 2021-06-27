@@ -17,3 +17,4 @@ int central_loaded_tempo;
 // Style parameters
 int central_style_looping;
 int central_style_sync_start;
+int central_style_original_chord_type;

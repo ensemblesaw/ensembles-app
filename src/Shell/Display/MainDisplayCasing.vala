@@ -9,6 +9,8 @@ namespace Ensembles.Shell {
         HomeScreen home_screen;
         StyleMenu style_menu;
 
+        public signal void change_style (string path, string name, int tempo);
+
         public MainDisplayCasing() {
             home_screen = new HomeScreen ();
             style_menu = new StyleMenu ();
@@ -66,6 +68,7 @@ namespace Ensembles.Shell {
             });
             style_menu.change_style.connect ((style_path, style_name, style_tempo) => {
                 home_screen.set_style_name (style_name);
+                this.change_style (style_path, style_name, style_tempo);
             });
         }
 

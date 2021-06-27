@@ -131,7 +131,7 @@ namespace Ensembles.Shell {
                 main_display_unit.set_measure_display (Ensembles.Core.CentralBus.get_measure ());
             });
             bus.system_halt.connect (() => {
-                style_player.add_style_file (style_discovery.style_files.nth_data (0));
+                style_player.reload_style ();
                 beat_counter_panel.halt ();
             });
             bus.system_ready.connect (() => {
@@ -150,6 +150,9 @@ namespace Ensembles.Shell {
             app_menu.change_active_input_device.connect ((device) => {
                 //  print("%d %s\n", device.id, device.name);
                 controller_connection.connect_device (device.id);
+            });
+            main_display_unit.change_style.connect ((path, name, tempo) => {
+                style_player.add_style_file (path);
             });
             ctrl_panel.accomp_change.connect ((active) => {
                 synthesizer.set_accompaniment_on (active);
