@@ -109,9 +109,29 @@ style_player_change_chord (int cd_main, int cd_type) {
     //printf("%d\n", chord_main);
 }
 
-void
-handle_chord_changes () {
-
+int
+get_chord_modified_key (key) {
+    if (central_style_original_chord_type == 0) {
+        if (chord_type == 0) {
+            return key + chord_main;
+        } else {
+            if ((key - 4) % 12 == 0 || (key - 9) % 12 == 0 || (key - 11) % 12 == 0) {
+                return (key + chord_main - 1);
+            } else {
+                return (key + chord_main);
+            }
+        }
+    } else if (central_style_original_chord_type == 1) {
+        if (chord_type == 1) {
+            return (key + chord_main);
+        } else {
+            if ((key - 3) % 12 == 0 || (key - 8) % 12 == 0 || (key - 10) % 12 == 0) {
+                return (key + chord_main + 1);
+            } else {
+                return (key + chord_main);
+            }
+        }
+    }
 }
 
 int
@@ -132,74 +152,54 @@ parse_midi_events (void *data, fluid_midi_event_t *event) {
     int key = fluid_midi_event_get_key (event);
     switch (channel) {
         case 0:
-        if (type == 144) channel_note_on_0 = key; else if (type == 128) channel_note_on_0 = -1;
+        if (type == 144) channel_note_on_0 = key | (fluid_midi_event_get_velocity (event) << 16); else if (type == 128) channel_note_on_0 = -1;
         break;
         case 1:
-        if (type == 144) channel_note_on_1 = key; else if (type == 128) channel_note_on_1 = -1;
+        if (type == 144) channel_note_on_1 = key | (fluid_midi_event_get_velocity (event) << 16); else if (type == 128) channel_note_on_1 = -1;
         break;
         case 2:
-        if (type == 144) channel_note_on_2 = key; else if (type == 128) channel_note_on_2 = -1;
+        if (type == 144) channel_note_on_2 = key | (fluid_midi_event_get_velocity (event) << 16); else if (type == 128) channel_note_on_2 = -1;
         break;
         case 3:
-        if (type == 144) channel_note_on_3 = key; else if (type == 128) channel_note_on_3 = -1;
+        if (type == 144) channel_note_on_3 = key | (fluid_midi_event_get_velocity (event) << 16); else if (type == 128) channel_note_on_3 = -1;
         break;
         case 4:
-        if (type == 144) channel_note_on_4 = key; else if (type == 128) channel_note_on_4 = -1;
+        if (type == 144) channel_note_on_4 = key | (fluid_midi_event_get_velocity (event) << 16); else if (type == 128) channel_note_on_4 = -1;
         break;
         case 5:
-        if (type == 144) channel_note_on_5 = key; else if (type == 128) channel_note_on_5 = -1;
+        if (type == 144) channel_note_on_5 = key | (fluid_midi_event_get_velocity (event) << 16); else if (type == 128) channel_note_on_5 = -1;
         break;
         case 6:
-        if (type == 144) channel_note_on_6 = key; else if (type == 128) channel_note_on_6 = -1;
+        if (type == 144) channel_note_on_6 = key | (fluid_midi_event_get_velocity (event) << 16); else if (type == 128) channel_note_on_6 = -1;
         break;
         case 7:
-        if (type == 144) channel_note_on_7 = key; else if (type == 128) channel_note_on_7 = -1;
+        if (type == 144) channel_note_on_7 = key | (fluid_midi_event_get_velocity (event) << 16); else if (type == 128) channel_note_on_7 = -1;
         break;
         case 8:
-        if (type == 144) channel_note_on_8 = key; else if (type == 128) channel_note_on_8 = -1;
+        if (type == 144) channel_note_on_8 = key | (fluid_midi_event_get_velocity (event) << 16); else if (type == 128) channel_note_on_8 = -1;
         break;
         case 10:
-        if (type == 144) channel_note_on_10 = key; else if (type == 128) channel_note_on_10 = -1;
+        if (type == 144) channel_note_on_10 = key | (fluid_midi_event_get_velocity (event) << 16); else if (type == 128) channel_note_on_10 = -1;
         break;
         case 11:
-        if (type == 144) channel_note_on_11 = key; else if (type == 128) channel_note_on_11 = -1;
+        if (type == 144) channel_note_on_11 = key | (fluid_midi_event_get_velocity (event) << 16); else if (type == 128) channel_note_on_11 = -1;
         break;
         case 12:
-        if (type == 144) channel_note_on_12 = key; else if (type == 128) channel_note_on_12 = -1;
+        if (type == 144) channel_note_on_12 = key | (fluid_midi_event_get_velocity (event) << 16); else if (type == 128) channel_note_on_12 = -1;
         break;
         case 13:
-        if (type == 144) channel_note_on_13 = key; else if (type == 128) channel_note_on_13 = -1;
+        if (type == 144) channel_note_on_13 = key | (fluid_midi_event_get_velocity (event) << 16); else if (type == 128) channel_note_on_13 = -1;
         break;
         case 14:
-        if (type == 144) channel_note_on_14 = key; else if (type == 128) channel_note_on_14 = -1;
+        if (type == 144) channel_note_on_14 = key | (fluid_midi_event_get_velocity (event) << 16); else if (type == 128) channel_note_on_14 = -1;
         break;
         case 15:
-        if (type == 144) channel_note_on_15 = key; else if (type == 128) channel_note_on_15 = -1;
+        if (type == 144) channel_note_on_15 = key | (fluid_midi_event_get_velocity (event) << 16); else if (type == 128) channel_note_on_15 = -1;
         break;
     }
 
     if (channel != 9 && (type == 144 || type == 128)) {
-        if (central_style_original_chord_type == 0) {
-            if (chord_type == 0) {
-                fluid_midi_event_set_key (new_event, key + chord_main);
-            } else {
-                if ((key - 4) % 12 == 0 || (key - 9) % 12 == 0 || (key - 11) % 12 == 0) {
-                    fluid_midi_event_set_key (new_event, key + chord_main - 1);
-                } else {
-                    fluid_midi_event_set_key (new_event, key + chord_main);
-                }
-            }
-        } else if (central_style_original_chord_type == 1) {
-            if (chord_type == 1) {
-                fluid_midi_event_set_key (new_event, key + chord_main);
-            } else {
-                if ((key - 3) % 12 == 0 || (key - 8) % 12 == 0 || (key - 10) % 12 == 0) {
-                    fluid_midi_event_set_key (new_event, key + chord_main + 1);
-                } else {
-                    fluid_midi_event_set_key (new_event, key + chord_main);
-                }
-            }
-        }
+        fluid_midi_event_set_key (new_event, get_chord_modified_key (key));
         
     } else {
         fluid_midi_event_set_key (new_event, key);
@@ -213,12 +213,37 @@ parse_midi_events (void *data, fluid_midi_event_t *event) {
     return 0;
 }
 
+void
+resend_key (int value, int channel) {
+    fluid_midi_event_t* new_event = new_fluid_midi_event ();
+    fluid_midi_event_set_channel (new_event, channel);
+    fluid_midi_event_set_type (new_event, 144);
+    fluid_midi_event_set_key (new_event, get_chord_modified_key (value & 0xFFFF));
+    fluid_midi_event_set_velocity (new_event, (value >> 16) & 0xFFFF);
+    handle_events_for_styles (new_event);
+}
+
 int
 parse_ticks (void* data, int ticks) {
     if (chord_change_0 == 1) {
         chord_change_0 = 0;
         printf ("chord -> %d\n", chord_main);
         synthesizer_halt_notes ();
+        if (channel_note_on_0 >= 0) resend_key (channel_note_on_0, 0);
+        if (channel_note_on_1 >= 0) resend_key (channel_note_on_1, 1);
+        if (channel_note_on_2 >= 0) resend_key (channel_note_on_2, 2);
+        if (channel_note_on_3 >= 0) resend_key (channel_note_on_3, 3);
+        if (channel_note_on_4 >= 0) resend_key (channel_note_on_4, 4);
+        if (channel_note_on_5 >= 0) resend_key (channel_note_on_5, 5);
+        if (channel_note_on_6 >= 0) resend_key (channel_note_on_6, 6);
+        if (channel_note_on_7 >= 0) resend_key (channel_note_on_7, 7);
+        if (channel_note_on_8 >= 0) resend_key (channel_note_on_8, 8);
+        if (channel_note_on_10 >= 0) resend_key (channel_note_on_10, 10);
+        if (channel_note_on_11 >= 0) resend_key (channel_note_on_11, 11);
+        if (channel_note_on_12 >= 0) resend_key (channel_note_on_12, 12);
+        if (channel_note_on_13 >= 0) resend_key (channel_note_on_13, 13);
+        if (channel_note_on_14 >= 0) resend_key (channel_note_on_14, 14);
+        if (channel_note_on_15 >= 0) resend_key (channel_note_on_15, 15);
     }
     if (fill_queue == 1) {
         fill_queue = 0;
