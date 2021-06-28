@@ -15,6 +15,7 @@ ensembles_sources_vala = files (
     'Shell/Application.vala',
     'Shell/MainWindow.vala',
     'Shell/Common/DeviceItem.vala',
+    'Shell/Common/VoiceItem.vala',
     'Shell/Common/ToggleSwitch.vala',
     'Shell/Common/Dial.vala',
     'Shell/Common/Knob.vala',
@@ -37,13 +38,16 @@ ensembles_sources_vala = files (
     'Shell/Display/HomeScreen.vala',
     'Shell/Display/MainDisplayCasing.vala',
     'Shell/Display/StyleMenu.vala',
+    'Shell/Display/VoiceMenu.vala',
     'Core/Synthesizer.vala',
     'Core/Controller.vala',
     'Core/StyleDiscovery.vala',
     'Core/CentralBus.vala',
     'Core/RealTimePlay.vala',
     'Core/StylePlayer.vala',
-    'Core/StyleAnalyser.vala'
+    'Core/StyleAnalyser.vala',
+    'Core/Voice.vala',
+    'Core/VoiceAnalyser.vala'
 )
 
 ensembles_sources_c = files (
@@ -53,7 +57,8 @@ ensembles_sources_c = files (
     'Core/realtime_play.c',
     'Core/style_player.c',
     'Core/style_analyser.c',
-    'Core/chord_finder.c'
+    'Core/chord_finder.c',
+    'Core/voice_analyser.c'
 )
 
 ensembles_sources = [

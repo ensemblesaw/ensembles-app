@@ -20,6 +20,9 @@ namespace Ensembles.Shell {
         Gtk.Label chord_type_label;
 
         public signal void open_style_menu ();
+        public signal void open_voice_l_menu ();
+        public signal void open_voice_r1_menu ();
+        public signal void open_voice_r2_menu ();
         
         public HomeScreen() {
             this.get_style_context ().add_class ("home-screen-background");
@@ -66,7 +69,7 @@ namespace Ensembles.Shell {
             voice_l_button.get_style_context ().add_class ("display-top-panel-button");
 
             voice_l_button.clicked.connect (() => {
-                open_style_menu ();
+                open_voice_l_menu ();
             });
 
             var voice_r1_button_box = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
@@ -86,7 +89,7 @@ namespace Ensembles.Shell {
             voice_r1_button.get_style_context ().add_class ("display-top-panel-button");
 
             voice_r1_button.clicked.connect (() => {
-                open_style_menu ();
+                open_voice_r1_menu ();
             });
 
             var voice_r2_button_box = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
@@ -106,7 +109,7 @@ namespace Ensembles.Shell {
             voice_r2_button.get_style_context ().add_class ("display-top-panel-button");
 
             voice_r2_button.clicked.connect (() => {
-                open_style_menu ();
+                open_voice_r2_menu ();
             });
 
 

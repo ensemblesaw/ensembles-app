@@ -8,15 +8,24 @@ namespace Ensembles.Shell {
 
         HomeScreen home_screen;
         StyleMenu style_menu;
+        VoiceMenu voice_menu_l;
+        VoiceMenu voice_menu_r1;
+        VoiceMenu voice_menu_r2;
 
         public signal void change_style (string path, string name, int tempo);
 
         public MainDisplayCasing() {
             home_screen = new HomeScreen ();
             style_menu = new StyleMenu ();
+            voice_menu_l = new VoiceMenu (2);
+            voice_menu_r1 = new VoiceMenu (0);
+            voice_menu_r2 = new VoiceMenu (1);
 
             main_stack = new Gtk.Stack ();
             main_stack.add_named (style_menu, "Styles Menu");
+            main_stack.add_named (voice_menu_l, "Voice L Menu");
+            main_stack.add_named (voice_menu_r1, "Voice R1 Menu");
+            main_stack.add_named (voice_menu_r2, "Voice R2 Menu");
 
 
             splash_screen = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/display_unit/ensembles_splash.svg");
@@ -62,8 +71,30 @@ namespace Ensembles.Shell {
         void make_events () {
             home_screen.open_style_menu.connect (() => {
                 main_display_leaflet.set_visible_child (main_stack);
+                main_stack.set_visible_child (style_menu);
+            });
+            home_screen.open_voice_l_menu.connect (() => {
+                main_display_leaflet.set_visible_child (main_stack);
+                main_stack.set_visible_child (voice_menu_l);
+            });
+            home_screen.open_voice_r1_menu.connect (() => {
+                main_display_leaflet.set_visible_child (main_stack);
+                main_stack.set_visible_child (voice_menu_r1);
+            });
+            home_screen.open_voice_r2_menu.connect (() => {
+                main_display_leaflet.set_visible_child (main_stack);
+                main_stack.set_visible_child (voice_menu_r2);
             });
             style_menu.close_menu.connect (() => {
+                main_display_leaflet.set_visible_child (home_screen);
+            });
+            voice_menu_l.close_menu.connect (() => {
+                main_display_leaflet.set_visible_child (home_screen);
+            });
+            voice_menu_r1.close_menu.connect (() => {
+                main_display_leaflet.set_visible_child (home_screen);
+            });
+            voice_menu_r2.close_menu.connect (() => {
                 main_display_leaflet.set_visible_child (home_screen);
             });
             style_menu.change_style.connect ((style_path, style_name, style_tempo) => {
@@ -90,6 +121,12 @@ namespace Ensembles.Shell {
                 tempo_arr [i] = tempo.nth_data (i);
             }
             style_menu.populate_style_menu (path_arr, name_arr, genre_arr, tempo_arr);
+        }
+
+        public void update_voice_list (Ensembles.Core.Voice[] voices) {
+            voice_menu_l.populate_voice_menu (voices);
+            voice_menu_r1.populate_voice_menu (voices);
+            voice_menu_r2.populate_voice_menu (voices);
         }
 
         public void set_tempo_display (int tempo) {

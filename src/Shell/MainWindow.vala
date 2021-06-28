@@ -30,6 +30,7 @@ namespace Ensembles.Shell {
         AppMenuView app_menu;
         SongControllerView song_control_panel;
         KeyboardView main_keyboard;
+        Ensembles.Core.Voice[] detected_voices;
         Ensembles.Core.Synthesizer synthesizer;
         Ensembles.Core.StyleDiscovery style_discovery;
         Ensembles.Core.StylePlayer style_player;
@@ -37,6 +38,7 @@ namespace Ensembles.Shell {
         Ensembles.Core.Controller controller_connection;
 
         string sf_loc = Constants.PKGDATADIR + "/SoundFonts/EnsemblesGM.sf2";
+        string sf_schema_loc = Constants.PKGDATADIR + "/SoundFonts/EnsemblesGMSchema.csv";
         public MainWindow () {
             Gtk.Settings settings = Gtk.Settings.get_default ();
             settings.gtk_application_prefer_dark_theme = true;
@@ -100,7 +102,6 @@ namespace Ensembles.Shell {
 
 
 
-
             controller_connection = new Ensembles.Core.Controller ();
             app_menu.change_enable_midi_input.connect ((enable) => {
                 if (enable) {
@@ -123,6 +124,8 @@ namespace Ensembles.Shell {
             });
 
             make_ui_events ();
+
+            load_voices ();
         }
         void make_bus_events () {
             bus.clock_tick.connect (() => {
@@ -220,6 +223,12 @@ namespace Ensembles.Shell {
                 main_display_unit.set_chord_display (chord, type);
             });
             print("Initialized...\n");
+        }
+
+        void load_voices () {
+            var voice_analyser = new Ensembles.Core.VoiceAnalyser (sf_loc, sf_schema_loc); 
+            detected_voices = voice_analyser.get_all_voices ();
+            main_display_unit.update_voice_list (detected_voices);
         }
     }
 }
