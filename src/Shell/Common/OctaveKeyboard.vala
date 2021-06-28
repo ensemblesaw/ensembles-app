@@ -40,5 +40,13 @@ namespace Ensembles.Shell {
 
             attach (octave_overlay, 0, 0, 1, 1);
         }
+
+        public void set_note_on (int key, bool on) {
+            if (on) {
+                keys[key].note_on ();
+            } else {
+                keys[key].note_off ();
+            }
+        }
     }
 }

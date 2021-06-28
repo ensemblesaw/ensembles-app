@@ -3,7 +3,7 @@ install_data(
     install_dir: join_paths(get_option('datadir'), meson.project_name(), 'SoundFonts')
 )
 
-install_data(
-    join_paths('Styles', 'EDM@Dance_Pop_1.enstl'),
-    install_dir: join_paths(get_option('datadir'), meson.project_name(), 'Styles')
+install_subdir(
+    join_paths('Styles'),
+    install_dir: join_paths(get_option('datadir'), meson.project_name())
 )

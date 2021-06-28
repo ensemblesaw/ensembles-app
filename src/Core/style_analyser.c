@@ -57,10 +57,21 @@ style_analyser (char* style) {
                     memcpy (subbuff, &string[index_tempo + 1], length - index_tempo );
                     subbuff[length - index_tempo] = '\0';
                     tempo = atoi (subbuff);
-                    if (tempo > 10) {
+                    if (tempo > 30) {
                         central_tempo = tempo;
                         central_loaded_tempo = tempo;
                     }
+                }
+                int chord_type = 0;
+                char* g;
+                g = strchr(string, ',');
+                int index_chord_type = (int)(g - string);
+                if (index_chord_type < length && index_chord_type > 0) {
+                    char subbuff[length - index_chord_type + 1];
+                    memcpy (subbuff, &string[index_chord_type + 1], length - index_chord_type );
+                    subbuff[length - index_chord_type] = '\0';
+                    chord_type = atoi (subbuff);
+                    central_style_original_chord_type = chord_type;
                 }
                 time_stamps[time_stamp_index++] = (int)(ticks/2);
                 //printf ("%s %d %d\n", string, ticks, central_loaded_tempo);

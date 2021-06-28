@@ -3,7 +3,7 @@ namespace Ensembles.Core {
         public StylePlayer (string? style_file = null) {
             style_player_init ();
             if (style_file != null) {
-                style_player_add_style_file (style_file);
+                style_player_add_style_file (style_file, 0);
             }
         }
         ~StylePlayer () {
@@ -12,7 +12,11 @@ namespace Ensembles.Core {
 
         public void add_style_file (string style_file) {
             print ("loading style %s\n", style_file);
-            style_player_add_style_file (style_file);
+            style_player_add_style_file (style_file, 0);
+        }
+
+        public void reload_style () {
+            style_player_reload_style ();
         }
 
         public void play_style () {
@@ -69,7 +73,8 @@ namespace Ensembles.Core {
 }
 
 extern void style_player_init ();
-extern void style_player_add_style_file (string mid_file);
+extern void style_player_add_style_file (string mid_file, int reload);
+extern void style_player_reload_style ();
 extern void style_player_destruct ();
 extern void style_player_play ();
 extern void style_player_play_loop (int start, int end);
