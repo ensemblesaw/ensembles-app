@@ -39,6 +39,7 @@ namespace Ensembles.Shell {
             style_label.halign = Gtk.Align.CENTER;
             style_label.get_style_context ().add_class ("display-top-panel-header");
             selected_style_label = new Gtk.Label ("Dance Pop");
+            selected_style_label.ellipsize = Pango.EllipsizeMode.MIDDLE;
             selected_style_label.halign = Gtk.Align.CENTER;
             selected_style_label.get_style_context ().add_class ("display-top-panel-subheader");
             style_button_box.pack_start (style_label, false, true, 0);
@@ -59,6 +60,7 @@ namespace Ensembles.Shell {
             voice_l_label.halign = Gtk.Align.CENTER;
             voice_l_label.get_style_context ().add_class ("display-top-panel-header");
             selected_voice_l_label = new Gtk.Label ("Finger Bass");
+            selected_voice_l_label.ellipsize = Pango.EllipsizeMode.MIDDLE;
             selected_voice_l_label.halign = Gtk.Align.CENTER;
             selected_voice_l_label.get_style_context ().add_class ("display-top-panel-subheader");
             voice_l_button_box.pack_start (voice_l_label, false, true, 0);
@@ -79,6 +81,7 @@ namespace Ensembles.Shell {
             voice_r1_label.halign = Gtk.Align.CENTER;
             voice_r1_label.get_style_context ().add_class ("display-top-panel-header");
             selected_voice_r1_label = new Gtk.Label ("Grand Piano");
+            selected_voice_r1_label.ellipsize = Pango.EllipsizeMode.MIDDLE;
             selected_voice_r1_label.halign = Gtk.Align.CENTER;
             selected_voice_r1_label.get_style_context ().add_class ("display-top-panel-subheader");
             voice_r1_button_box.pack_start (voice_r1_label, false, true, 0);
@@ -99,6 +102,7 @@ namespace Ensembles.Shell {
             voice_r2_label.halign = Gtk.Align.CENTER;
             voice_r2_label.get_style_context ().add_class ("display-top-panel-header");
             selected_voice_r2_label = new Gtk.Label ("Slow Strings");
+            selected_voice_r2_label.ellipsize = Pango.EllipsizeMode.MIDDLE;
             selected_voice_r2_label.halign = Gtk.Align.CENTER;
             selected_voice_r2_label.get_style_context ().add_class ("display-top-panel-subheader");
             voice_r2_button_box.pack_start (voice_r2_label, false, true, 0);
@@ -117,6 +121,8 @@ namespace Ensembles.Shell {
             top_panel.attach (voice_l_button, 1, 0, 1, 1);
             top_panel.attach (voice_r1_button, 2, 0, 1, 1);
             top_panel.attach (voice_r2_button, 3, 0, 1, 1);
+
+            top_panel.column_homogeneous = true;
 
 
 

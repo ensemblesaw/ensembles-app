@@ -44,7 +44,7 @@ voice_analyser_next () {
     sf_preset_name = fluid_preset_get_name (_soundfont_preset);
     sf_preset_bank_num = fluid_preset_get_banknum (_soundfont_preset);
     sf_preset_num = fluid_preset_get_num (_soundfont_preset);
-    printf ("%d-%d -> %s\n", sf_preset_bank_num, sf_preset_num, sf_preset_name);
+    //printf ("%d-%d -> %s\n", sf_preset_bank_num, sf_preset_num, sf_preset_name);
     return 1;
 }
 

@@ -31,6 +31,7 @@ namespace Ensembles.Shell {
         SongControllerView song_control_panel;
         KeyboardView main_keyboard;
         Ensembles.Core.Voice[] detected_voices;
+        int[] detected_voice_indices;
         Ensembles.Core.Synthesizer synthesizer;
         Ensembles.Core.StyleDiscovery style_discovery;
         Ensembles.Core.StylePlayer style_player;
@@ -225,12 +226,16 @@ namespace Ensembles.Shell {
                 style_player.change_chords (chord, type);
                 main_display_unit.set_chord_display (chord, type);
             });
+            voice_category_panel.voice_quick_select.connect ((index) => {
+                main_display_unit.quick_select_voice (detected_voice_indices[index]);
+            });
             print("Initialized...\n");
         }
 
         void load_voices () {
             var voice_analyser = new Ensembles.Core.VoiceAnalyser (sf_loc, sf_schema_loc); 
             detected_voices = voice_analyser.get_all_voices ();
+            detected_voice_indices = voice_analyser.get_all_category_indices ();
             main_display_unit.update_voice_list (detected_voices);
         }
     }

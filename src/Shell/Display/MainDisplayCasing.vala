@@ -77,14 +77,17 @@ namespace Ensembles.Shell {
             home_screen.open_voice_l_menu.connect (() => {
                 main_display_leaflet.set_visible_child (main_stack);
                 main_stack.set_visible_child (voice_menu_l);
+                voice_menu_l.scroll_to_selected_row ();
             });
             home_screen.open_voice_r1_menu.connect (() => {
                 main_display_leaflet.set_visible_child (main_stack);
                 main_stack.set_visible_child (voice_menu_r1);
+                voice_menu_r1.scroll_to_selected_row ();
             });
             home_screen.open_voice_r2_menu.connect (() => {
                 main_display_leaflet.set_visible_child (main_stack);
                 main_stack.set_visible_child (voice_menu_r2);
+                voice_menu_r2.scroll_to_selected_row ();
             });
             style_menu.close_menu.connect (() => {
                 main_display_leaflet.set_visible_child (home_screen);
@@ -140,6 +143,12 @@ namespace Ensembles.Shell {
             voice_menu_l.populate_voice_menu (voices);
             voice_menu_r1.populate_voice_menu (voices);
             voice_menu_r2.populate_voice_menu (voices);
+        }
+
+        public void quick_select_voice (int index) {
+            main_display_leaflet.set_visible_child (main_stack);
+            main_stack.set_visible_child (voice_menu_r1);
+            voice_menu_r1.quick_select_row (index);
         }
 
         public void set_tempo_display (int tempo) {

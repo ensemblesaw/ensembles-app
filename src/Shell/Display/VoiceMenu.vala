@@ -4,6 +4,7 @@ namespace Ensembles.Shell {
         Gtk.Button close_button;
         Gtk.ListBox main_list;
         VoiceItem[] voice_rows;
+        int _selected_index;
 
         public signal void close_menu ();
         public signal void change_voice (Ensembles.Core.Voice voice, int channel);
@@ -41,6 +42,7 @@ namespace Ensembles.Shell {
             main_list.set_selection_mode (Gtk.SelectionMode.BROWSE);
             main_list.row_activated.connect ((row) => {
                 int index = row.get_index ();
+                _selected_index = index;
                 change_voice (voice_rows[index].voice, channel);
             });
         }
@@ -60,16 +62,36 @@ namespace Ensembles.Shell {
             }
             switch (channel) {
                 case 0:
-                main_list.select_row (voice_rows[0]);
+                quick_select_row (0);
                 break;
                 case 1:
-                main_list.select_row (voice_rows[49]);
+                quick_select_row (49);
                 break;
                 case 2:
-                main_list.select_row (voice_rows[33]);
+                quick_select_row (33);
                 break;
             }
             main_list.show_all ();
+        }
+
+        public void scroll_to_selected_row () {
+            voice_rows[_selected_index].grab_focus ();
+            var adj = main_list.get_adjustment ();
+            if (adj != null) {
+                int height, _htemp;
+                voice_rows[_selected_index].get_preferred_height (out _htemp, out height);
+                Timeout.add (200, () => {
+                    adj.set_value (_selected_index * height);
+                    return false;
+                });
+            }
+        }
+
+        public void quick_select_row (int index) {
+            main_list.select_row (voice_rows[index]);
+            _selected_index = index;
+            change_voice (voice_rows[index].voice, channel);
+            scroll_to_selected_row ();
         }
     }
 }
