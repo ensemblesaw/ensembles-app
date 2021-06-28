@@ -6,6 +6,7 @@ namespace Ensembles.Shell {
         VoiceItem[] voice_rows;
 
         public signal void close_menu ();
+        public signal void change_voice (Ensembles.Core.Voice voice, int channel);
         public VoiceMenu(int channel) {
             this.channel = channel;
             this.get_style_context ().add_class ("menu-background");
@@ -40,6 +41,7 @@ namespace Ensembles.Shell {
             main_list.set_selection_mode (Gtk.SelectionMode.BROWSE);
             main_list.row_activated.connect ((row) => {
                 int index = row.get_index ();
+                change_voice (voice_rows[index].voice, channel);
             });
         }
 

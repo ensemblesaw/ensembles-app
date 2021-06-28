@@ -1,6 +1,6 @@
 namespace Ensembles.Shell { 
     public class VoiceItem : Gtk.ListBoxRow {
-        Ensembles.Core.Voice voice;
+        public Ensembles.Core.Voice voice;
         public VoiceItem (Ensembles.Core.Voice voice, bool show_category) {
             this.voice = voice;
 

@@ -157,6 +157,9 @@ namespace Ensembles.Shell {
             main_display_unit.change_style.connect ((path, name, tempo) => {
                 style_player.add_style_file (path);
             });
+            main_display_unit.change_voice.connect ((voice, channel) => {
+                synthesizer.change_voice (voice, channel);
+            });
             ctrl_panel.accomp_change.connect ((active) => {
                 synthesizer.set_accompaniment_on (active);
             });

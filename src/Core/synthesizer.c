@@ -144,6 +144,11 @@ synthesizer_init (const gchar* loc) {
     fluid_synth_cc (realtime_synth, 0, 74, 40);
 }
 
+void
+synthesizer_change_voice (int bank, int preset, int channel) {
+    fluid_synth_program_select (realtime_synth, channel, realtime_synth_sf_id, bank, preset);
+}
+
 
 void
 synthesizer_destruct () {

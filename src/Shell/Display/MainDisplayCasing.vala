@@ -13,6 +13,7 @@ namespace Ensembles.Shell {
         VoiceMenu voice_menu_r2;
 
         public signal void change_style (string path, string name, int tempo);
+        public signal void change_voice (Ensembles.Core.Voice voice, int channel);
 
         public MainDisplayCasing() {
             home_screen = new HomeScreen ();
@@ -100,6 +101,18 @@ namespace Ensembles.Shell {
             style_menu.change_style.connect ((style_path, style_name, style_tempo) => {
                 home_screen.set_style_name (style_name);
                 this.change_style (style_path, style_name, style_tempo);
+            });
+            voice_menu_l.change_voice.connect ((voice, channel) => {
+                home_screen.set_voice_l_name (voice.name);
+                this.change_voice (voice, channel);
+            });
+            voice_menu_r1.change_voice.connect ((voice, channel) => {
+                home_screen.set_voice_r1_name (voice.name);
+                this.change_voice (voice, channel);
+            });
+            voice_menu_r2.change_voice.connect ((voice, channel) => {
+                home_screen.set_voice_r2_name (voice.name);
+                this.change_voice (voice, channel);
             });
         }
 
