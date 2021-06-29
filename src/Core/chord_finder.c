@@ -1,14 +1,16 @@
-int key_track[12];
+int key_track[13];
 int chord_possibility [24];
-
-
 
 int
 chord_finder_infer (int key, int on, int* type) {
-    //printf("%d\n", key);
+    // /printf("%d\n", key);
 
     //printf("%d\n", key % 12);
     key_track [key % 12] = ((on == 144) ? 1 : 0);
+    // for (int i = 0; i < 12; i++) {
+    //     printf ("%d ", key_track[i]);
+    // }
+    // printf("\n");
 
     int i = 0;
     // Major
@@ -17,6 +19,7 @@ chord_finder_infer (int key, int on, int* type) {
     }
     for (; i < 9; i++) {
         chord_possibility [i] = key_track[i - 5] + 3*key_track[i] + key_track[i + 4];
+        //printf ("%d\n", chord_possibility[i]);
     }
     for (; i < 12; i++) {
         chord_possibility [i] = key_track[i - 8] + key_track[i - 5] + 3*key_track[i];
@@ -36,7 +39,7 @@ chord_finder_infer (int key, int on, int* type) {
     int max = -1;
     int max_index = 0;
     for (; i < 24; i++) {
-        //printf ("%d ", chord_possibility[i]);
+        // /printf ("%d ", chord_possibility[i]);
         if (max < chord_possibility[i]) {
             max = chord_possibility[i];
             max_index = i;

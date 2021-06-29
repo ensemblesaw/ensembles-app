@@ -11,6 +11,9 @@ namespace Ensembles.Core {
         // System Ready Messages
         int styles_loaded_ready = 0;
 
+        // Voice Split Updates
+        int split_key = 54;
+
         public CentralBus () {
             new Thread<int> ("bus_watch", bus_watch);
             yield;
@@ -22,7 +25,7 @@ namespace Ensembles.Core {
         public signal void system_halt ();
         public signal void style_section_change (int section);
         public signal void loaded_tempo_change (int tempo);
-
+        public signal void split_key_change ();
 
         public void clk() {
             print ("clk\n");
@@ -50,6 +53,10 @@ namespace Ensembles.Core {
                         return false;
                     });
                 }
+                if (split_key != central_split_key) {
+                    split_key = central_split_key;
+                    split_key_change ();
+                }
                 if (central_clock == 1) {
                     Idle.add (() => {
                         clock_tick ();
@@ -76,6 +83,30 @@ namespace Ensembles.Core {
         public static int get_measure () {
             return central_measure;
         }
+
+        public static int get_split_key () {
+            return central_split_key;
+        }
+
+        public static void set_split_key (int key) {
+            central_split_key = key;
+        }
+
+        public static bool get_accomp_on () {
+            return central_accompaniment_mode > 0;
+        }
+
+        public static bool get_split_on () {
+            return central_split_on > 0;
+        }
+
+        public static void set_split_on (bool active) {
+            central_split_on = active ? 1 : 0;
+        }
+
+        public static void set_layer_on (bool active) {
+            central_layer_on = active ? 1 : 0;
+        }
     }
 }
 
@@ -88,3 +119,7 @@ extern int central_halt;
 extern int central_measure;
 extern int central_style_section;
 extern int central_loaded_tempo;
+extern int central_split_key;
+extern int central_split_on;
+extern int central_accompaniment_mode;
+extern int central_layer_on;

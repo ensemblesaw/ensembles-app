@@ -1,7 +1,6 @@
 namespace Ensembles.Shell { 
     public class KeyboardView : Gtk.Grid {
         OctaveKeyboard[] octaves;
-        bool zoom = true;
         Gtk.Box key_grid;
         Gtk.Switch hold_switch;
         Gtk.Switch zoom_switch;
@@ -13,7 +12,7 @@ namespace Ensembles.Shell {
 
             octaves = new OctaveKeyboard[5];
             for (int i = 0; i < 5; i++) {
-                octaves[i] = new OctaveKeyboard ();
+                octaves[i] = new OctaveKeyboard (i + 3);
                 key_grid.pack_start (octaves[i]);
             }
 
@@ -28,6 +27,9 @@ namespace Ensembles.Shell {
             zoom_switch = new Gtk.Switch ();
             zoom_switch.margin_start = 8;
             zoom_switch.margin_end = 8;
+            zoom_switch.notify["active"].connect (() => {
+                toggle_zoom (zoom_switch.active);
+            });
             hold_switch = new Gtk.Switch ();
             hold_switch.margin_start = 8;
             hold_switch.margin_end = 14;
@@ -50,6 +52,7 @@ namespace Ensembles.Shell {
             
 
             keyboard_overlay.add_overlay (keyboard_top_bar);
+            keyboard_overlay.set_overlay_pass_through (keyboard_top_bar, true);
 
             joy_stick = new JoyStick ();
             add (joy_stick);
@@ -57,18 +60,22 @@ namespace Ensembles.Shell {
             show_all ();
         }
 
-        public void toggle_zoom () {
-            if (zoom) {
-                zoom = false;
-                key_grid.width_request = 1250;
-            } else {
-                zoom = true;
+        public void toggle_zoom (bool active) {
+            if (active) {
                 key_grid.width_request = 1800;
+            } else {
+                key_grid.width_request = -1;
             }
         }
 
         public void set_note_on (int key, bool on) {
             octaves[(int)(key/12) - 3].set_note_on (key % 12, on);
+        }
+
+        public void update_split () {
+            for (int i = 0; i < 5; i++) {
+                octaves[i].update_split ();
+            }
         }
     }
 }

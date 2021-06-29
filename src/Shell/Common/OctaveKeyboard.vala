@@ -1,10 +1,12 @@
 namespace Ensembles.Shell { 
     public class OctaveKeyboard : Gtk.Grid {
         Key[] keys;
-        public OctaveKeyboard() {
+        int _index;
+        public OctaveKeyboard(int index) {
+            _index = index;
             keys = new Key[12];
             for (int i = 0; i < 12; i++) {
-                keys[i] = new Key (((i == 1) || (i == 3) || (i == 6) || (i == 8) || (i == 10)) ? true : false);
+                keys[i] = new Key (_index * 12 + i, ((i == 1) || (i == 3) || (i == 6) || (i == 8) || (i == 10)) ? true : false);
             }
 
             var white_grid = new Gtk.Grid ();
@@ -37,6 +39,7 @@ namespace Ensembles.Shell {
             octave_overlay.hexpand = true;
             octave_overlay.add_overlay (white_grid);
             octave_overlay.add_overlay (black_grid);
+            octave_overlay.set_overlay_pass_through (black_grid, true);
 
             attach (octave_overlay, 0, 0, 1, 1);
         }
@@ -46,6 +49,11 @@ namespace Ensembles.Shell {
                 keys[key].note_on ();
             } else {
                 keys[key].note_off ();
+            }
+        }
+        public void update_split () {
+            for (int i = 0; i < 12; i++) {
+                keys[i].update_split ();
             }
         }
     }

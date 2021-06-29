@@ -12,6 +12,8 @@ namespace Ensembles.Shell {
         Gtk.Button synth_pad_button;
         Gtk.Button drums_set_button;
         Gtk.Button extras_button;
+
+        public signal void voice_quick_select (int index);
         public VoiceCategoryView () {
             piano_button = new Gtk.Button.with_label ("Piano");
             chromatic_perc = new Gtk.Button.with_label ("Crm Perc");
@@ -58,6 +60,45 @@ namespace Ensembles.Shell {
             column_homogeneous = true;
             margin = 4;
             this.show_all ();
+
+
+
+            piano_button.clicked.connect (() => {
+                voice_quick_select (0);
+            });
+            chromatic_perc.clicked.connect (() => {
+                voice_quick_select (1);
+            });
+            organ_button.clicked.connect (() => {
+                voice_quick_select (2);
+            });
+            guitar_button.clicked.connect (() => {
+                voice_quick_select (3);
+            });
+            bass_button.clicked.connect (() => {
+                voice_quick_select (4);
+            });
+            strings_button.clicked.connect (() => {
+                voice_quick_select (5);
+            });
+            brass_button.clicked.connect (() => {
+                voice_quick_select (6);
+            });
+            reed_pipe_button.clicked.connect (() => {
+                voice_quick_select (7);
+            });
+            synth_lead_button.clicked.connect (() => {
+                voice_quick_select (8);
+            });
+            synth_pad_button.clicked.connect (() => {
+                voice_quick_select (9);
+            });
+            drums_set_button.clicked.connect (() => {
+                voice_quick_select (16);
+            });
+            extras_button.clicked.connect (() => {
+                voice_quick_select (12);
+            });
         }
     }
 }

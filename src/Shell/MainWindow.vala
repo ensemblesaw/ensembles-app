@@ -30,6 +30,8 @@ namespace Ensembles.Shell {
         AppMenuView app_menu;
         SongControllerView song_control_panel;
         KeyboardView main_keyboard;
+        Ensembles.Core.Voice[] detected_voices;
+        int[] detected_voice_indices;
         Ensembles.Core.Synthesizer synthesizer;
         Ensembles.Core.StyleDiscovery style_discovery;
         Ensembles.Core.StylePlayer style_player;
@@ -37,6 +39,7 @@ namespace Ensembles.Shell {
         Ensembles.Core.Controller controller_connection;
 
         string sf_loc = Constants.PKGDATADIR + "/SoundFonts/EnsemblesGM.sf2";
+        string sf_schema_loc = Constants.PKGDATADIR + "/SoundFonts/EnsemblesGMSchema.csv";
         public MainWindow () {
             Gtk.Settings settings = Gtk.Settings.get_default ();
             settings.gtk_application_prefer_dark_theme = true;
@@ -100,7 +103,6 @@ namespace Ensembles.Shell {
 
 
 
-
             controller_connection = new Ensembles.Core.Controller ();
             app_menu.change_enable_midi_input.connect ((enable) => {
                 if (enable) {
@@ -123,6 +125,8 @@ namespace Ensembles.Shell {
             });
 
             make_ui_events ();
+
+            load_voices ();
         }
         void make_bus_events () {
             bus.clock_tick.connect (() => {
@@ -145,6 +149,9 @@ namespace Ensembles.Shell {
                 beat_counter_panel.change_tempo (tempo);
                 main_display_unit.set_tempo_display (tempo);
             });
+            bus.split_key_change.connect (() => {
+                main_keyboard.update_split ();
+            });
         }
         void make_ui_events () {
             app_menu.change_active_input_device.connect ((device) => {
@@ -154,6 +161,9 @@ namespace Ensembles.Shell {
             main_display_unit.change_style.connect ((path, name, tempo) => {
                 style_player.add_style_file (path);
             });
+            main_display_unit.change_voice.connect ((voice, channel) => {
+                synthesizer.change_voice (voice, channel);
+            });
             ctrl_panel.accomp_change.connect ((active) => {
                 synthesizer.set_accompaniment_on (active);
             });
@@ -162,6 +172,9 @@ namespace Ensembles.Shell {
             });
             ctrl_panel.chorus_change.connect ((level) => {
                 synthesizer.set_master_chorus_level (level);
+            });
+            ctrl_panel.update_split.connect (() => {
+                main_keyboard.update_split ();
             });
             controller_connection.receive_note_event.connect ((key, on, velocity)=>{
                 //  print ("%d %d %d\n", key, on, velocity);
@@ -219,7 +232,17 @@ namespace Ensembles.Shell {
                 style_player.change_chords (chord, type);
                 main_display_unit.set_chord_display (chord, type);
             });
+            voice_category_panel.voice_quick_select.connect ((index) => {
+                main_display_unit.quick_select_voice (detected_voice_indices[index]);
+            });
             print("Initialized...\n");
+        }
+
+        void load_voices () {
+            var voice_analyser = new Ensembles.Core.VoiceAnalyser (sf_loc, sf_schema_loc); 
+            detected_voices = voice_analyser.get_all_voices ();
+            detected_voice_indices = voice_analyser.get_all_category_indices ();
+            main_display_unit.update_voice_list (detected_voices);
         }
     }
 }

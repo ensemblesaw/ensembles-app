@@ -18,3 +18,9 @@ int central_loaded_tempo;
 int central_style_looping;
 int central_style_sync_start;
 int central_style_original_chord_type;
+
+// Voice parameters
+int central_split_key;
+int central_accompaniment_mode;
+int central_split_on;
+int central_layer_on;

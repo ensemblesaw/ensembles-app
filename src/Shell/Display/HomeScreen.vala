@@ -20,6 +20,9 @@ namespace Ensembles.Shell {
         Gtk.Label chord_type_label;
 
         public signal void open_style_menu ();
+        public signal void open_voice_l_menu ();
+        public signal void open_voice_r1_menu ();
+        public signal void open_voice_r2_menu ();
         
         public HomeScreen() {
             this.get_style_context ().add_class ("home-screen-background");
@@ -36,6 +39,7 @@ namespace Ensembles.Shell {
             style_label.halign = Gtk.Align.CENTER;
             style_label.get_style_context ().add_class ("display-top-panel-header");
             selected_style_label = new Gtk.Label ("Dance Pop");
+            selected_style_label.ellipsize = Pango.EllipsizeMode.MIDDLE;
             selected_style_label.halign = Gtk.Align.CENTER;
             selected_style_label.get_style_context ().add_class ("display-top-panel-subheader");
             style_button_box.pack_start (style_label, false, true, 0);
@@ -56,6 +60,7 @@ namespace Ensembles.Shell {
             voice_l_label.halign = Gtk.Align.CENTER;
             voice_l_label.get_style_context ().add_class ("display-top-panel-header");
             selected_voice_l_label = new Gtk.Label ("Finger Bass");
+            selected_voice_l_label.ellipsize = Pango.EllipsizeMode.MIDDLE;
             selected_voice_l_label.halign = Gtk.Align.CENTER;
             selected_voice_l_label.get_style_context ().add_class ("display-top-panel-subheader");
             voice_l_button_box.pack_start (voice_l_label, false, true, 0);
@@ -66,7 +71,7 @@ namespace Ensembles.Shell {
             voice_l_button.get_style_context ().add_class ("display-top-panel-button");
 
             voice_l_button.clicked.connect (() => {
-                open_style_menu ();
+                open_voice_l_menu ();
             });
 
             var voice_r1_button_box = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
@@ -76,6 +81,7 @@ namespace Ensembles.Shell {
             voice_r1_label.halign = Gtk.Align.CENTER;
             voice_r1_label.get_style_context ().add_class ("display-top-panel-header");
             selected_voice_r1_label = new Gtk.Label ("Grand Piano");
+            selected_voice_r1_label.ellipsize = Pango.EllipsizeMode.MIDDLE;
             selected_voice_r1_label.halign = Gtk.Align.CENTER;
             selected_voice_r1_label.get_style_context ().add_class ("display-top-panel-subheader");
             voice_r1_button_box.pack_start (voice_r1_label, false, true, 0);
@@ -86,7 +92,7 @@ namespace Ensembles.Shell {
             voice_r1_button.get_style_context ().add_class ("display-top-panel-button");
 
             voice_r1_button.clicked.connect (() => {
-                open_style_menu ();
+                open_voice_r1_menu ();
             });
 
             var voice_r2_button_box = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
@@ -96,6 +102,7 @@ namespace Ensembles.Shell {
             voice_r2_label.halign = Gtk.Align.CENTER;
             voice_r2_label.get_style_context ().add_class ("display-top-panel-header");
             selected_voice_r2_label = new Gtk.Label ("Slow Strings");
+            selected_voice_r2_label.ellipsize = Pango.EllipsizeMode.MIDDLE;
             selected_voice_r2_label.halign = Gtk.Align.CENTER;
             selected_voice_r2_label.get_style_context ().add_class ("display-top-panel-subheader");
             voice_r2_button_box.pack_start (voice_r2_label, false, true, 0);
@@ -106,7 +113,7 @@ namespace Ensembles.Shell {
             voice_r2_button.get_style_context ().add_class ("display-top-panel-button");
 
             voice_r2_button.clicked.connect (() => {
-                open_style_menu ();
+                open_voice_r2_menu ();
             });
 
 
@@ -114,6 +121,8 @@ namespace Ensembles.Shell {
             top_panel.attach (voice_l_button, 1, 0, 1, 1);
             top_panel.attach (voice_r1_button, 2, 0, 1, 1);
             top_panel.attach (voice_r2_button, 3, 0, 1, 1);
+
+            top_panel.column_homogeneous = true;
 
 
 
@@ -213,6 +222,18 @@ namespace Ensembles.Shell {
         public void set_style_name (string name) {
             selected_style_label.set_text (name);
             selected_style_label.queue_draw ();
+        }
+        public void set_voice_l_name (string name) {
+            selected_voice_l_label.set_text (name);
+            selected_voice_l_label.queue_draw ();
+        }
+        public void set_voice_r1_name (string name) {
+            selected_voice_r1_label.set_text (name);
+            selected_voice_r1_label.queue_draw ();
+        }
+        public void set_voice_r2_name (string name) {
+            selected_voice_r2_label.set_text (name);
+            selected_voice_r2_label.queue_draw ();
         }
         public void set_tempo (int tempo) {
             tempo_label.set_text (tempo.to_string ());
