@@ -71,5 +71,7 @@ Ensembles supports creation and distribution of external soundfonts (SF2), style
 
 <br>
 <sup><b>License</b>: GNU GPLv3</sup>
-<sup>Certain components like soundfonts and styles have their own Licensing<sup>
-<sup>© Copyright 2021-2022 Subhadeep Jasu
+<br>
+<sup>Certain components like soundfonts and styles have their own Licensing</sup>
+<br>
+<sup>© Copyright 2021-2022 Subhadeep Jasu</sup>
