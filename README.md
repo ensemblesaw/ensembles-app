@@ -24,8 +24,8 @@
 * Touch based on-screen assignable joystick
 * Play a one-man-band along with a Auto Accompaniment Style from over 100 [WIP] built-in styles based on various genres of music
 * Automate your band with Registration Memory and 12 assignable Multipad Variables
-* Record your playback using Sequencer with 8-Track playback (in future)
-* Record your playback into mp3 audio (in future)
+* Record your playback using Sequencer with 8-Track recording (in future)
+* Record your playback into MP3 audio (in future)
 * Connect to external MIDI keyboard/controller with General MIDI Standard compatibility
 
 ⚠️ **Ensembles is in early development and not ready for production just yet** ⚠️
@@ -43,7 +43,7 @@ You can install Ensembles by compiling it from source, here's a list of required
  - `gobject-2.0`
  - `meson`
  - `libhandy-1`
- - `fluidsynth`
+ - `fluidsynth>=2.2.1`
 
 Clone repository and change directory
 ```
@@ -70,4 +70,6 @@ Ensembles will have support for sampled voice, voice synthesis and DSP plug-ins.
 Ensembles supports creation and distribution of external soundfonts (SF2), style files and MIDI recordings. External content can be placed in special folders in user's document folder. Style files from other formats like *STY*,  *AC7*, etc. are not compatible with Ensembles. Ensembles has its own style format *ENSTL*, check out styles Readme file in your documents folder for style specifications. External MIDI recordings may have reserved copyrights.
 
 <br>
-<sup>**License**: GNU GPLv3</sup>
+<sup><b>License</b>: GNU GPLv3</sup>
+<sup>Certain components like soundfonts and styles have their own Licensing<sup>
+<sup>© Copyright 2021-2022 Subhadeep Jasu
