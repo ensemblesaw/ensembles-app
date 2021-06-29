@@ -349,31 +349,83 @@
     }
 }
 
+.common-key > * {
+    opacity: 0;
+}
+.common-key > * :active {
+    background: none;
+    background-color: alpha(#000, 0);
+    outline: 0;
+}
+.common-key > * > *  > * > * {
+    -gtk-icon-transform: rotate(90deg);
+}
 .white-key-normal {
     background-image:linear-gradient(#585858, #2e2e2e);
     border: 2px solid #000;
+    outline: 0;
+}
+.white-key-normal > * {
+    padding: 0;
+    margin: -8px;
+    margin-top: -172px;
 }
 .white-key-normal:active {
     background-image:linear-gradient(shade(@accent_color, 0.7), shade(@accent_color, 0.5));
     box-shadow: 0 -12px 8px  -8px @accent_color, inset 0 -1px 4px @accent_color;
 }
-.white-key-normal-active {
+.white-key-active {
     background-image:linear-gradient(shade(@accent_color, 0.7), shade(@accent_color, 0.5));
     box-shadow: 0 -12px 8px  -8px @accent_color, inset 0 -1px 4px @accent_color;
+    outline: 0;
+}
+.white-key-split {
+    background-image:linear-gradient(#585858, #2e2e2e);
+    border: 2px solid #000;
+}
+.white-key-split:active {
+    background-image:linear-gradient(shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 1.0));
+    box-shadow: 0 -12px 8px  -8px shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), inset 0 -1px 4px shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2);
+}
+.white-key-split-active {
+    background-image:linear-gradient(shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 1.0));
+    box-shadow: 0 -12px 8px  -8px shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), inset 0 -1px 4px shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2);
 }
 .black-key-normal {
     background-image:linear-gradient(#444, #141414);
     border: 2px solid #000;
+    outline: 0;
+}
+.black-key-normal > * {
+    padding: 0;
+    margin: -8px;
+    margin-top: -110px;
 }
 .black-key-normal:active{
     background-image:linear-gradient(shade(@accent_color, 0.7), shade(@accent_color, 0.5));
     box-shadow: 0 -14px 12px -6px @accent_color, inset 0 -1px 4px @accent_color;
 }
-.black-key-normal-active{
+.black-key-active{
     background-image:linear-gradient(shade(@accent_color, 0.7), shade(@accent_color, 0.5));
     box-shadow: 0 -14px 12px -6px @accent_color, inset 0 -1px 4px @accent_color;
 }
+.black-key-split {
+    background-image:linear-gradient(#444, #141414);
+    border: 2px solid #000;
+    outline: 0;
+}
+.black-key-split:active {
+    background-image:linear-gradient(shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 1.0));
+    box-shadow: 0 -12px 8px  -8px shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), inset 0 -1px 4px shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2);
+}
+.black-key-split-active {
+    background-image:linear-gradient(shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 1.0));
+    box-shadow: 0 -12px 8px  -8px shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), inset 0 -1px 4px shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2);
+}
 
+.common-key-split > *{
+    opacity: 0.2;
+}
 
 .keyboard-top-bar {
     border-bottom: 2px solid #000;

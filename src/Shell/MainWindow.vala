@@ -149,6 +149,9 @@ namespace Ensembles.Shell {
                 beat_counter_panel.change_tempo (tempo);
                 main_display_unit.set_tempo_display (tempo);
             });
+            bus.split_key_change.connect (() => {
+                main_keyboard.update_split ();
+            });
         }
         void make_ui_events () {
             app_menu.change_active_input_device.connect ((device) => {
@@ -169,6 +172,9 @@ namespace Ensembles.Shell {
             });
             ctrl_panel.chorus_change.connect ((level) => {
                 synthesizer.set_master_chorus_level (level);
+            });
+            ctrl_panel.update_split.connect (() => {
+                main_keyboard.update_split ();
             });
             controller_connection.receive_note_event.connect ((key, on, velocity)=>{
                 //  print ("%d %d %d\n", key, on, velocity);

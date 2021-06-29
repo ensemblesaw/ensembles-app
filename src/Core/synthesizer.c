@@ -13,9 +13,9 @@ fluid_audio_driver_t* realtime_adriver;
 
 
 // Accompaniment Flags
-int accompaniment_enabled = 0;
+int central_accompaniment_mode = 0;
 int32_t accompaniment_mode = 0;
-int synthsizer_split_key = 54;
+central_split_key = 54;
 
 // Voice Settings
 int realtime_synth_sf_id = 0;
@@ -189,7 +189,7 @@ handle_events_for_styles (fluid_midi_event_t *event) {
     // printf ("Channel: %d, ", chan);
     // printf ("Control: %d, ", cont);
     // printf ("Value: %d\n", value);
-    if (chan != 9 && accompaniment_enabled == 0 && type == 144) {
+    if (chan != 9 && central_accompaniment_mode == 0 && type == 144) {
         return 0;
     } 
     // CC 74 CutOff Modulator 
@@ -199,9 +199,9 @@ handle_events_for_styles (fluid_midi_event_t *event) {
 
 int
 synthesizer_send_notes (int key, int on, int velocity, int* type) {
-    if (accompaniment_enabled > 0) {
+    if (central_accompaniment_mode > 0) {
         if (accompaniment_mode == 0) {
-            if (key <= synthsizer_split_key) {
+            if (key <= central_split_key) {
                 int chrd_type = 0;
                 int chrd_main = chord_finder_infer (key, on, &chrd_type);
                 *type = chrd_type;
@@ -224,6 +224,15 @@ synthesizer_send_notes (int key, int on, int velocity, int* type) {
             }
         }
         
+    } else if (central_split_on > 0) {
+        if (key <= central_split_key) {
+            if (on == 144) {
+                fluid_synth_noteon (realtime_synth, 2, key, velocity);
+            } else if (on == 128) {
+                fluid_synth_noteoff (realtime_synth, 2, key);
+            }
+            return -6;
+        }
     }
     fluid_synth_cc (realtime_synth, 0, 91, 4);
     fluid_synth_cc (realtime_synth, 0, 93, 1);
@@ -231,6 +240,13 @@ synthesizer_send_notes (int key, int on, int velocity, int* type) {
         fluid_synth_noteon (realtime_synth, 0, key, velocity);
     } else if (on == 128) {
         fluid_synth_noteoff (realtime_synth, 0, key);
+    }
+    if (central_layer_on > 0) {
+        if (on == 144) {
+            fluid_synth_noteon (realtime_synth, 1, key, velocity);
+        } else if (on == 128) {
+            fluid_synth_noteoff (realtime_synth, 1, key);
+        }
     }
     // int reverb;
     // fluid_synth_get_cc (realtime_synth, 0, 91, &reverb);
@@ -260,5 +276,5 @@ synthesizer_halt_notes () {
 
 
 void synthesizer_set_accomp_enable (int on) {
-    accompaniment_enabled = on;
+    central_accompaniment_mode = on;
 }

@@ -27,6 +27,7 @@ namespace Ensembles.Shell {
         public signal void chorus_change (int level);
         public signal void dial_rotate (bool direction, int amount);
         public signal void dial_activate ();
+        public signal void update_split ();
         public ControlPanel () {
             row_spacing = 4;
             column_spacing = 4;
@@ -103,6 +104,14 @@ namespace Ensembles.Shell {
         public void make_events () {
             accomp_toggle.toggled.connect ((active) => {
                 accomp_change (active);
+                update_split ();
+            });
+            layer_toggle.toggled.connect ((active) => {
+                Ensembles.Core.CentralBus.set_layer_on (active);
+            });
+            split_toggle.toggled.connect ((active) => {
+                Ensembles.Core.CentralBus.set_split_on (active);
+                update_split ();
             });
             main_dial.activate.connect (() => {
                 dial_activate ();
