@@ -13,16 +13,17 @@ namespace Ensembles.Shell {
         }
 
         void make_ui () {
-            var header = new Gtk.Label ("Ensembles");
-            header.get_style_context ().add_class ("h2");
-            var subheader = new Gtk.Label ("Performance Workstation v1.0.0");
+            var header_logo = new Gdk.Pixbuf.from_resource ("/com/github/subhadeepjasu/ensembles/images/ensembles_logo.svg");
+            header_logo = header_logo.scale_simple (256, 59, Gdk.InterpType.HYPER);
+
+            var subheader = new Gtk.Label ("v1.0.0");
             subheader.margin = 8;
             subheader.margin_top = 2;
             subheader.get_style_context ().add_class ("h3");
             var header_separator = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
 
             var menu_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-            menu_box.pack_start (header);
+            menu_box.pack_start (new Gtk.Image.from_pixbuf (header_logo));
             menu_box.pack_start (subheader);
             menu_box.pack_start (header_separator);
 
