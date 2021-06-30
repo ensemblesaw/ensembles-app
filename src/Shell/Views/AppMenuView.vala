@@ -14,7 +14,7 @@ namespace Ensembles.Shell {
 
         void make_ui () {
             var header_logo = new Gdk.Pixbuf.from_resource ("/com/github/subhadeepjasu/ensembles/images/ensembles_logo.svg");
-            header_logo = header_logo.scale_simple (256, 59, Gdk.InterpType.HYPER);
+            header_logo = header_logo.scale_simple (256, 59, Gdk.InterpType.BILINEAR);
 
             var subheader = new Gtk.Label ("v1.0.0");
             subheader.margin = 8;

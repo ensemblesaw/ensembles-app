@@ -139,14 +139,62 @@ synthesizer_init (const gchar* loc) {
     fx_init ();
     style_adriver = new_fluid_audio_driver2(style_synth_settings, fx_function, (void *) &fx_data);
     realtime_adriver = new_fluid_audio_driver(realtime_synth_settings, realtime_synth);
+
+    synthesizer_set_defaults ();
+}
+
+void
+synthesizer_set_defaults () {
     synthesizer_edit_master_reverb (5);
     synthesizer_edit_master_chorus (1);
+    // CutOff for Realtime synth
     fluid_synth_cc (realtime_synth, 0, 74, 40);
+    fluid_synth_cc (realtime_synth, 1, 74, 0);
+    fluid_synth_cc (realtime_synth, 2, 74, 0);
+
+    // Default gain for Realtime synth
+    fluid_synth_cc (realtime_synth, 0, 7, 127);
+    fluid_synth_cc (realtime_synth, 1, 7, 107);
+    fluid_synth_cc (realtime_synth, 2, 7, 90);
 }
 
 void
 synthesizer_change_voice (int bank, int preset, int channel) {
     fluid_synth_program_select (realtime_synth, channel, realtime_synth_sf_id, bank, preset);
+}
+
+void
+synthesizer_change_modulator (int synth_index, int channel, int modulator, int value) {
+    if (synth_index == 0) {
+        fluid_synth_cc (realtime_synth, channel, modulator, value);
+    } else {
+        fluid_synth_cc (style_synth, channel, modulator, value);
+        if (modulator == 7) {
+            printf ("%d, %d\n", channel, value);
+            set_gain_value (channel, value);
+        }
+    }
+}
+
+void
+set_gain_value (int channel, int value) {
+    gain_value[channel] = value;
+}
+
+int
+get_gain_value (int channel) {
+    return gain_value[channel];
+}
+
+int
+synthesizer_get_modulator_values (int synth_index, int channel, int modulator) {
+    int mod_value = -1;
+    if (synth_index == 0) {
+        fluid_synth_get_cc (realtime_synth, channel, modulator, &mod_value);
+    } else {
+        fluid_synth_get_cc (style_synth, channel, modulator, &mod_value);
+    }
+    return mod_value;
 }
 
 
@@ -189,6 +237,13 @@ handle_events_for_styles (fluid_midi_event_t *event) {
     // printf ("Channel: %d, ", chan);
     // printf ("Control: %d, ", cont);
     // printf ("Value: %d\n", value);
+    if (type == 176) {
+        if (cont == 7) {
+            if (gain_value[chan] > 0) {
+                fluid_midi_event_set_value (event, gain_value[chan]);
+            }
+        }
+    }
     if (chan != 9 && central_accompaniment_mode == 0 && type == 144) {
         return 0;
     } 
