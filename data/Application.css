@@ -43,6 +43,16 @@
 	border-top: 1px solid alpha(#000, 0.5);
 }
 
+.home-screen-eq-labels {
+    margin-top: -12px;
+}
+    
+.home-screen-eq-labels > * {
+    font-size: 8px;
+    color: #CAE974;
+    border-top: 1px solid #6C9104;
+}
+
 .display-bottom-panel-header {
     font-size: 10px;
     font-weight: bold;

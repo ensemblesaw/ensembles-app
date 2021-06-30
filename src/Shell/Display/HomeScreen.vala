@@ -1,5 +1,6 @@
 namespace Ensembles.Shell { 
     public class HomeScreen : WheelScrollableWidget {
+        int tempo = 33;
         Gtk.Button style_button;
         Gtk.Button voice_l_button;
         Gtk.Button voice_r1_button;
@@ -18,6 +19,8 @@ namespace Ensembles.Shell {
         Gtk.Label chord_label;
         Gtk.Label chord_flat_label;
         Gtk.Label chord_type_label;
+
+        EqualizerBar[] equalizer_bar;
 
         public signal void open_style_menu ();
         public signal void open_voice_l_menu ();
@@ -199,7 +202,29 @@ namespace Ensembles.Shell {
             chord_box.attach (chord_flat_label, 1, 1, 2, 1);
             chord_box.attach (chord_type_label, 1, 2, 2, 1);
             chord_box.margin_top = 2;
-            
+
+            var equalizer_grid = new Gtk.Grid ();
+            equalizer_bar = new EqualizerBar[19];
+            for (int i = 0; i < 19; i++) {
+                equalizer_bar[i] = new EqualizerBar ();
+                equalizer_grid.attach (equalizer_bar[i], i, 0 ,1, 1);
+            }
+            equalizer_grid.column_spacing = 4;
+            equalizer_grid.margin = 5;
+
+            var equalizer_label_grid = new Gtk.Grid ();
+            for (int i = 0; i < 16; i++) {
+                equalizer_label_grid.attach (new Gtk.Label ((i + 1).to_string ()), i, 0, 1, 1);
+            }
+            equalizer_label_grid.attach (new Gtk.Label ("L"), 16, 0, 1, 1);
+            equalizer_label_grid.attach (new Gtk.Label ("R1"), 17, 0, 1, 1);
+            equalizer_label_grid.attach (new Gtk.Label ("R2"), 18, 0, 1, 1);
+
+            equalizer_label_grid.column_homogeneous = true;
+            equalizer_label_grid.column_spacing = 2;
+            equalizer_label_grid.margin_start = 4;
+            equalizer_label_grid.margin_end = 6;
+            equalizer_label_grid.get_style_context ().add_class ("home-screen-eq-labels");
 
 
 
@@ -213,10 +238,14 @@ namespace Ensembles.Shell {
             bottom_panel.attach (transpose_box, 3, 0, 1, 1);
             bottom_panel.attach (octave_shift_box, 4, 0, 1, 1);
             bottom_panel.attach (chord_box, 5, 0, 1, 1);
+            bottom_panel.attach (equalizer_grid, 0, 1, 6, 1);
+            bottom_panel.attach (equalizer_label_grid, 0, 3, 6, 1);
             bottom_panel.set_column_homogeneous (true);
 
             this.attach (top_panel, 0, 0, 1, 1);
             this.attach (bottom_panel, 0, 1, 1, 1);
+
+            update_equalizer ();
         }
 
         public void set_style_name (string name) {
@@ -237,6 +266,7 @@ namespace Ensembles.Shell {
         }
         public void set_tempo (int tempo) {
             tempo_label.set_text (tempo.to_string ());
+            this.tempo = tempo;
         }
         public void set_measure (int measure) {
             measure_label.set_text (measure.to_string ());
@@ -305,6 +335,18 @@ namespace Ensembles.Shell {
             chord_label.queue_draw ();
             chord_flat_label.queue_draw ();
             chord_type_label.queue_draw ();
+        }
+
+        void update_equalizer () {
+            Timeout.add (60000/(tempo * 16), () => {
+                for (int i = 0; i < 16; i++) {
+                    equalizer_bar[i].velocity = Ensembles.Core.Synthesizer.get_channel_velocity (1, i);
+                }
+                equalizer_bar[16].velocity = Ensembles.Core.Synthesizer.get_channel_velocity (0, 2);
+                equalizer_bar[17].velocity = Ensembles.Core.Synthesizer.get_channel_velocity (0, 0);
+                equalizer_bar[18].velocity = Ensembles.Core.Synthesizer.get_channel_velocity (0, 1);
+                return true;
+            });
         }
     }
 }

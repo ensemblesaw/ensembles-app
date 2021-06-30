@@ -26,6 +26,10 @@ int synthesizer_voice_program_r1 = 0;
 int synthesizer_voice_bank_r2 = 0;
 int synthesizer_voice_program_r3 = 0;
 
+// StyleEqualizer
+int style_velocity_buffer[16];
+int voice_velocity_buffer[3];
+
 struct fx_data_t
 {
     fluid_synth_t *synth;
@@ -170,7 +174,7 @@ synthesizer_change_modulator (int synth_index, int channel, int modulator, int v
     } else {
         fluid_synth_cc (style_synth, channel, modulator, value);
         if (modulator == 7) {
-            printf ("%d, %d\n", channel, value);
+            // printf ("%d, %d\n", channel, value);
             set_gain_value (channel, value);
         }
     }
@@ -195,6 +199,14 @@ synthesizer_get_modulator_values (int synth_index, int channel, int modulator) {
         fluid_synth_get_cc (style_synth, channel, modulator, &mod_value);
     }
     return mod_value;
+}
+
+int
+synthesizer_get_velocity_levels (int synth_index, int channel) {
+    if (synth_index == 0)
+        return voice_velocity_buffer [channel];
+    else
+        return style_velocity_buffer [channel];
 }
 
 
@@ -239,7 +251,7 @@ handle_events_for_styles (fluid_midi_event_t *event) {
     // printf ("Value: %d\n", value);
     if (type == 176) {
         if (cont == 7) {
-            if (gain_value[chan] > 0) {
+            if (gain_value[chan] >= 0) {
                 fluid_midi_event_set_value (event, gain_value[chan]);
             }
         }
@@ -247,6 +259,11 @@ handle_events_for_styles (fluid_midi_event_t *event) {
     if (chan != 9 && central_accompaniment_mode == 0 && type == 144) {
         return 0;
     } 
+    if (type == 144) {
+        style_velocity_buffer[chan] = value;
+    } else if (type == 128) {
+        style_velocity_buffer[chan] = 0;
+    }
     // CC 74 CutOff Modulator 
     // fluid_synth_cc (style_synth, 0, 74, 80);
     return fluid_synth_handle_midi_event(style_synth, event);
@@ -283,8 +300,10 @@ synthesizer_send_notes (int key, int on, int velocity, int* type) {
         if (key <= central_split_key) {
             if (on == 144) {
                 fluid_synth_noteon (realtime_synth, 2, key, velocity);
+                voice_velocity_buffer[2] = velocity;
             } else if (on == 128) {
                 fluid_synth_noteoff (realtime_synth, 2, key);
+                voice_velocity_buffer[2] = 0;
             }
             return -6;
         }
@@ -293,14 +312,18 @@ synthesizer_send_notes (int key, int on, int velocity, int* type) {
     fluid_synth_cc (realtime_synth, 0, 93, 1);
     if (on == 144) {
         fluid_synth_noteon (realtime_synth, 0, key, velocity);
+        voice_velocity_buffer[0] = velocity;
     } else if (on == 128) {
         fluid_synth_noteoff (realtime_synth, 0, key);
+        voice_velocity_buffer[0] = 0;
     }
     if (central_layer_on > 0) {
         if (on == 144) {
             fluid_synth_noteon (realtime_synth, 1, key, velocity);
+            voice_velocity_buffer[1] = velocity;
         } else if (on == 128) {
             fluid_synth_noteoff (realtime_synth, 1, key);
+            voice_velocity_buffer[1] = 0;
         }
     }
     // int reverb;

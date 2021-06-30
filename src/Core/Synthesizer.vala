@@ -47,6 +47,10 @@ namespace Ensembles.Core {
         public static void lock_gain (int channel) {
             set_gain_value (channel, -1);
         }
+
+        public static int get_channel_velocity (int synth_index, int channel) {
+            return synthesizer_get_velocity_levels (synth_index, channel);
+        }
     }
 }
 
@@ -66,3 +70,5 @@ extern void synthesizer_change_voice (int bank, int preset, int channel);
 extern void synthesizer_change_modulator (int synth_index, int channel, int modulator, int value);
 extern int  synthesizer_get_modulator_values (int synth_index, int channel, int modulator);
 extern void set_gain_value (int channel, int value);
+
+extern int  synthesizer_get_velocity_levels (int synth_index, int channel);
