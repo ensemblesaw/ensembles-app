@@ -157,9 +157,9 @@ synthesizer_set_defaults () {
     fluid_synth_cc (realtime_synth, 2, 74, 0);
 
     // Default gain for Realtime synth
-    fluid_synth_cc (realtime_synth, 0, 7, 127);
-    fluid_synth_cc (realtime_synth, 1, 7, 107);
-    fluid_synth_cc (realtime_synth, 2, 7, 90);
+    fluid_synth_cc (realtime_synth, 0, 7, 100);
+    fluid_synth_cc (realtime_synth, 1, 7, 90);
+    fluid_synth_cc (realtime_synth, 2, 7, 80);
 }
 
 void
