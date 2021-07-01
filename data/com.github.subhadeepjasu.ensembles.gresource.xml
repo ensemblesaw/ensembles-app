@@ -11,6 +11,7 @@
   <gresource prefix="/com/github/subhadeepjasu/ensembles/images/display_unit">
     <file alias="ensembles_splash.svg" compressed="true" preprocess="xml-stripblanks">Images/ensembles_splash.svg</file>
     <file alias="catalin-sandru-7SxSkCvVM1U-unsplash.jpg" compressed="true">Images/catalin-sandru-7SxSkCvVM1U-unsplash.jpg</file>
+    <file alias="catalin-sandru-7SxSkCvVM1U-unsplash-blurred.jpg" compressed="true">Images/catalin-sandru-7SxSkCvVM1U-unsplash-blurred.jpg</file>
     <!-- Photo by <a href="https://unsplash.com/@catalinsandru?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Catalin Sandru</a> on <a href="https://unsplash.com/s/photos/piano?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a> -->
   </gresource>
 

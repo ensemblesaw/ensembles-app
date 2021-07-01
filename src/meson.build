@@ -40,6 +40,7 @@ ensembles_sources_vala = files (
     'Shell/Display/MainDisplayCasing.vala',
     'Shell/Display/StyleMenu.vala',
     'Shell/Display/VoiceMenu.vala',
+    'Shell/Display/ChannelModulatorScreen.vala',
     'Core/Synthesizer.vala',
     'Core/Controller.vala',
     'Core/StyleDiscovery.vala',

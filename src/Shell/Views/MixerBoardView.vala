@@ -72,14 +72,11 @@ namespace Ensembles.Shell {
             attach (new Gtk.Label ("R2"), i++, 1, 1, 1);
             attach (new Gtk.Label ("C"), i++, 1, 1, 1);
 
-            lock_buttons = new Gtk.Button[20];
-            for (i = 0; i < 20; i++) {
+            lock_buttons = new Gtk.Button[16];
+            for (i = 0; i < 16; i++) {
                 lock_buttons[i] = new Gtk.Button.from_icon_name ("changes-prevent-symbolic", Gtk.IconSize.BUTTON);
                 lock_buttons[i].sensitive = false;
                 attach (lock_buttons[i], i, 2, 1, 1);
-                if (i == 16) {
-                    lock_buttons[i].margin_start = 4;
-                }
             }
             connect_unlock_buttons ();
 

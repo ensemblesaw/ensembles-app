@@ -8,7 +8,7 @@
 
 .home-screen-background {
 	background-image: url("resource://com/github/subhadeepjasu/ensembles/images/display_unit/catalin-sandru-7SxSkCvVM1U-unsplash.jpg");
-	background-size: 424px 213px;
+	background-size: 424px 236px;
 }
 
 .home-screen-panel-top {
@@ -44,7 +44,7 @@
 }
 
 .home-screen-eq-labels {
-    margin-top: -12px;
+    margin-top: -10px;
 }
     
 .home-screen-eq-labels > * {
@@ -53,6 +53,68 @@
     border-top: 1px solid #6C9104;
 }
 
+
+.channel-modulator-screen {
+    background-image: linear-gradient(alpha(#273445, 0.6), alpha(#273445, 0.6)), url("resource://com/github/subhadeepjasu/ensembles/images/display_unit/catalin-sandru-7SxSkCvVM1U-unsplash-blurred.jpg");
+    background-size: 424px 236px;
+}
+
+.channel-modulator-screen {
+    padding: 8px;
+}
+.channel-modulator-close-button {
+    background-color: #007367;
+    border-radius: 2px 0 0 2px;
+    margin-right: -2px;
+}
+.channel-modulator-close-button:hover {
+    background-color: #02A594;
+}
+.channel-modulator-header {
+    font-size: 22px;
+    margin-left: 4px;
+    background-image:linear-gradient(90deg, #007367, alpha(#007367, 0));
+    padding: 4px;
+}
+
+.channel-modulator-grid > * {
+    border: 1px solid #111;
+    border-radius: 0;
+    box-shadow: none;
+    color: #f3f3f3;
+}
+.channel-modulator-grid > spinbutton {
+    border: 1px solid #00A997;
+    background-color: alpha (#333, 0.5);
+    border-radius: 0;
+    box-shadow: none;
+    color: #00E9D0;
+}
+
+.channel-configure-button {
+	background-color: rgba (255, 255, 255, 0);
+    color: rgba (255, 255, 255, 0.4);
+}
+
+.channel-configure-button:hover {
+	background-color: rgba (255, 255, 255, 0.2);
+    color: rgba (255, 255, 255, 1);
+}
+.channel-modulator-grid > button {
+    background-color: rgba (50, 80, 50, 1);
+    background-image: -gtk-icontheme('insert-link-symbolic');
+    background-repeat: no-repeat;
+    background-position: 120% 90%; 
+    background-size: 14px;
+    outline: 0;
+}
+
+.channel-modulator-grid > button:hover {
+    background-color: rgba (100, 80, 0, 1);
+    background-image: -gtk-icontheme('insert-link-symbolic');
+    background-repeat: no-repeat;
+    background-position: 97% 90%; 
+}
 .display-bottom-panel-header {
     font-size: 10px;
     font-weight: bold;
