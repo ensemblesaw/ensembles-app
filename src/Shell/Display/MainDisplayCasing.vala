@@ -11,7 +11,8 @@ namespace Ensembles.Shell {
         VoiceMenu voice_menu_l;
         VoiceMenu voice_menu_r1;
         VoiceMenu voice_menu_r2;
-        ChannelModulatorScreen channel_mod_screen;
+
+        public ChannelModulatorScreen channel_mod_screen;
 
         public signal void change_style (string path, string name, int tempo);
         public signal void change_voice (Ensembles.Core.Voice voice, int channel);

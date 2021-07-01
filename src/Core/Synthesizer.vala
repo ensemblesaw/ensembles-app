@@ -36,7 +36,7 @@ namespace Ensembles.Core {
             synthesizer_change_voice (voice.bank, voice.preset, channel);
         }
 
-        public void set_modulator_value (int synth_index, int channel, int modulator, int value) {
+        public static void set_modulator_value (int synth_index, int channel, int modulator, int value) {
             synthesizer_change_modulator (synth_index, channel, modulator, value);
         }
 
@@ -46,6 +46,28 @@ namespace Ensembles.Core {
 
         public static void lock_gain (int channel) {
             set_gain_value (channel, -1);
+        }
+
+        public static void lock_modulator (int modulator, int channel) {
+            if (modulator == 10) {
+                set_mod_buffer_value (10, channel, -65);
+            } else {
+                set_mod_buffer_value (modulator, channel, -1);
+            }
+            
+        }
+
+        public static bool get_modulator_lock (int modulator, int channel) {
+            if (modulator == 10) {
+                if (get_mod_buffer_value (modulator, channel) > -65) {
+                    return true;
+                }
+                return false;
+            }
+            if (get_mod_buffer_value (modulator, channel) > -1) {
+                return true;
+            }
+            return false;
         }
 
         public static int get_channel_velocity (int synth_index, int channel) {
@@ -71,4 +93,6 @@ extern void synthesizer_change_modulator (int synth_index, int channel, int modu
 extern int  synthesizer_get_modulator_values (int synth_index, int channel, int modulator);
 extern void set_gain_value (int channel, int value);
 
+extern int  get_mod_buffer_value (int modulator, int channel);
+extern void set_mod_buffer_value (int modulator, int channel, int value);
 extern int  synthesizer_get_velocity_levels (int synth_index, int channel);

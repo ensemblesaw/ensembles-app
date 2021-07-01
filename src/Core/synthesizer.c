@@ -177,7 +177,12 @@ synthesizer_change_modulator (int synth_index, int channel, int modulator, int v
             // printf ("%d, %d\n", channel, value);
             set_gain_value (channel, value);
         }
-    }
+        if (modulator == 10) {
+            set_mod_buffer_value (modulator, channel, value >= -64 ? value : -64);
+        } else {
+            set_mod_buffer_value (modulator, channel, value >= 0 ? value : 0);
+        }
+    }   
 }
 
 void
@@ -185,9 +190,59 @@ set_gain_value (int channel, int value) {
     gain_value[channel] = value;
 }
 
+void
+set_mod_buffer_value (int modulator, int channel, int value) {
+    switch (modulator)
+    {
+        case 1:
+        modulation_value[channel] = value;
+        break;
+        case 10:
+        pan_value[channel] = value;
+        break;
+        case 11:
+        expression_value[channel] = value;
+        break;
+        case 66:
+        sustain_value[channel] = value;
+        break;
+        case 71:
+        resonance_value[channel] = value;
+        break;
+        case 74:
+        cut_off_value[channel] = value;
+        break;
+        case 91:
+        reverb_value[channel] = value;
+        break;
+        case 93:
+        chorus_value[channel] = value;
+        break;
+    }
+}
+
 int
-get_gain_value (int channel) {
-    return gain_value[channel];
+get_mod_buffer_value (int modulator, int channel) {
+    switch (modulator)
+    {
+        case 1:
+        return modulation_value[channel];
+        case 10:
+        return pan_value[channel];
+        case 11:
+        return expression_value[channel];
+        case 66:
+        return sustain_value[channel];
+        case 71:
+        return resonance_value[channel];
+        case 74:
+        return cut_off_value[channel];
+        case 91:
+        return reverb_value[channel];
+        case 93:
+        return chorus_value[channel];
+    }
+    return -1;
 }
 
 int
@@ -253,6 +308,15 @@ handle_events_for_styles (fluid_midi_event_t *event) {
         if (cont == 7) {
             if (gain_value[chan] >= 0) {
                 fluid_midi_event_set_value (event, gain_value[chan]);
+            }
+        }
+        if (cont == 10) {
+            if (get_mod_buffer_value (10, chan) >= -64) {
+                fluid_midi_event_set_value (event, get_mod_buffer_value (10, chan));
+            }
+        } else {
+            if (get_mod_buffer_value (cont, chan) >= 0) {
+                fluid_midi_event_set_value (event, get_mod_buffer_value (cont, chan));
             }
         }
     }

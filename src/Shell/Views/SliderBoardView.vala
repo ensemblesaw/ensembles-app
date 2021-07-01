@@ -20,6 +20,28 @@ namespace Ensembles.Shell {
         Gtk.Scale slider_8;
         Gtk.Scale slider_9;
 
+        public signal void change_modulator (int id, double value);
+        public signal void send_assignable_mode (bool assignable);
+
+        bool assign_mode;
+        int assignable_slider_index = -1;
+
+        int[] slider_0_variables;
+        int[] slider_1_variables;
+        int[] slider_2_variables;
+        int[] slider_3_variables;
+        int[] slider_4_variables;
+        int[] slider_5_variables;
+        int[] slider_6_variables;
+        int[] slider_7_variables;
+        int[] slider_8_variables;
+        int[] slider_9_variables;
+
+        int[] knob_a_variables;
+        int[] knob_b_variables;
+        int[] knob_c_variables;
+        int[] knob_d_variables;
+
         public SliderBoardView () {
             row_spacing = 4;
             halign = Gtk.Align.START;
@@ -121,6 +143,246 @@ namespace Ensembles.Shell {
 
             
             show_all ();
+
+
+            slider_assign_button.clicked.connect (() => {
+                assign_mode = !assign_mode;
+                send_assignable_mode (assign_mode);
+                if (assign_mode) {
+                    slider_0.get_style_context ().add_class ("slider-assignable");
+                    slider_1.get_style_context ().add_class ("slider-assignable");
+                    slider_2.get_style_context ().add_class ("slider-assignable");
+                    slider_3.get_style_context ().add_class ("slider-assignable");
+                    slider_4.get_style_context ().add_class ("slider-assignable");
+                    slider_5.get_style_context ().add_class ("slider-assignable");
+                    slider_6.get_style_context ().add_class ("slider-assignable");
+                    slider_7.get_style_context ().add_class ("slider-assignable");
+                    slider_8.get_style_context ().add_class ("slider-assignable");
+                    slider_9.get_style_context ().add_class ("slider-assignable");
+                } else {
+                    slider_0.get_style_context ().remove_class ("slider-assignable");
+                    slider_1.get_style_context ().remove_class ("slider-assignable");
+                    slider_2.get_style_context ().remove_class ("slider-assignable");
+                    slider_3.get_style_context ().remove_class ("slider-assignable");
+                    slider_4.get_style_context ().remove_class ("slider-assignable");
+                    slider_5.get_style_context ().remove_class ("slider-assignable");
+                    slider_6.get_style_context ().remove_class ("slider-assignable");
+                    slider_7.get_style_context ().remove_class ("slider-assignable");
+                    slider_8.get_style_context ().remove_class ("slider-assignable");
+                    slider_9.get_style_context ().remove_class ("slider-assignable");
+                }
+            });
+
+            slider_0.change_value.connect ((scroll, value) => {
+                if  (slider_0_variables != null) {
+                    Ensembles.Core.Synthesizer.set_modulator_value (slider_0_variables[0], slider_0_variables[1], slider_0_variables[2], (int)(value * 127));
+                }
+                assignable_slider_index = 0;
+                slider_1.get_style_context ().remove_class ("slider-assignable");
+                slider_2.get_style_context ().remove_class ("slider-assignable");
+                slider_3.get_style_context ().remove_class ("slider-assignable");
+                slider_4.get_style_context ().remove_class ("slider-assignable");
+                slider_5.get_style_context ().remove_class ("slider-assignable");
+                slider_6.get_style_context ().remove_class ("slider-assignable");
+                slider_7.get_style_context ().remove_class ("slider-assignable");
+                slider_8.get_style_context ().remove_class ("slider-assignable");
+                slider_9.get_style_context ().remove_class ("slider-assignable");
+                return false;
+            });
+            slider_1.change_value.connect ((scroll, value) => {
+                if  (slider_1_variables != null) {
+                    Ensembles.Core.Synthesizer.set_modulator_value (slider_1_variables[0], slider_1_variables[1], slider_1_variables[2], (int)(value * 127));
+                }
+                assignable_slider_index = 1;
+                slider_0.get_style_context ().remove_class ("slider-assignable");
+                slider_2.get_style_context ().remove_class ("slider-assignable");
+                slider_3.get_style_context ().remove_class ("slider-assignable");
+                slider_4.get_style_context ().remove_class ("slider-assignable");
+                slider_5.get_style_context ().remove_class ("slider-assignable");
+                slider_6.get_style_context ().remove_class ("slider-assignable");
+                slider_7.get_style_context ().remove_class ("slider-assignable");
+                slider_8.get_style_context ().remove_class ("slider-assignable");
+                slider_9.get_style_context ().remove_class ("slider-assignable");
+                return false;
+            });
+            slider_2.change_value.connect ((scroll, value) => {
+                if  (slider_2_variables != null) {
+                    Ensembles.Core.Synthesizer.set_modulator_value (slider_2_variables[0], slider_2_variables[1], slider_2_variables[2], (int)(value * 127));
+                }
+                assignable_slider_index = 2;
+                slider_0.get_style_context ().remove_class ("slider-assignable");
+                slider_1.get_style_context ().remove_class ("slider-assignable");
+                slider_3.get_style_context ().remove_class ("slider-assignable");
+                slider_4.get_style_context ().remove_class ("slider-assignable");
+                slider_5.get_style_context ().remove_class ("slider-assignable");
+                slider_6.get_style_context ().remove_class ("slider-assignable");
+                slider_7.get_style_context ().remove_class ("slider-assignable");
+                slider_8.get_style_context ().remove_class ("slider-assignable");
+                slider_9.get_style_context ().remove_class ("slider-assignable");
+                return false;
+            });
+            slider_3.change_value.connect ((scroll, value) => {
+                if  (slider_3_variables != null) {
+                    Ensembles.Core.Synthesizer.set_modulator_value (slider_3_variables[0], slider_3_variables[1], slider_3_variables[2], (int)(value * 127));
+                }
+                assignable_slider_index = 3;
+                slider_0.get_style_context ().remove_class ("slider-assignable");
+                slider_1.get_style_context ().remove_class ("slider-assignable");
+                slider_2.get_style_context ().remove_class ("slider-assignable");
+                slider_4.get_style_context ().remove_class ("slider-assignable");
+                slider_5.get_style_context ().remove_class ("slider-assignable");
+                slider_6.get_style_context ().remove_class ("slider-assignable");
+                slider_7.get_style_context ().remove_class ("slider-assignable");
+                slider_8.get_style_context ().remove_class ("slider-assignable");
+                slider_9.get_style_context ().remove_class ("slider-assignable");
+                return false;
+            });
+            slider_4.change_value.connect ((scroll, value) => {
+                if  (slider_4_variables != null) {
+                    Ensembles.Core.Synthesizer.set_modulator_value (slider_4_variables[0], slider_4_variables[1], slider_4_variables[2], (int)(value * 127));
+                }
+                assignable_slider_index = 4;
+                slider_0.get_style_context ().remove_class ("slider-assignable");
+                slider_1.get_style_context ().remove_class ("slider-assignable");
+                slider_2.get_style_context ().remove_class ("slider-assignable");
+                slider_3.get_style_context ().remove_class ("slider-assignable");
+                slider_5.get_style_context ().remove_class ("slider-assignable");
+                slider_6.get_style_context ().remove_class ("slider-assignable");
+                slider_7.get_style_context ().remove_class ("slider-assignable");
+                slider_8.get_style_context ().remove_class ("slider-assignable");
+                slider_9.get_style_context ().remove_class ("slider-assignable");
+                return false;
+            });
+            slider_5.change_value.connect ((scroll, value) => {
+                if  (slider_5_variables != null) {
+                    Ensembles.Core.Synthesizer.set_modulator_value (slider_5_variables[0], slider_5_variables[1], slider_5_variables[2], (int)(value * 127));
+                }
+                assignable_slider_index = 5;
+                slider_0.get_style_context ().remove_class ("slider-assignable");
+                slider_1.get_style_context ().remove_class ("slider-assignable");
+                slider_2.get_style_context ().remove_class ("slider-assignable");
+                slider_3.get_style_context ().remove_class ("slider-assignable");
+                slider_4.get_style_context ().remove_class ("slider-assignable");
+                slider_6.get_style_context ().remove_class ("slider-assignable");
+                slider_7.get_style_context ().remove_class ("slider-assignable");
+                slider_8.get_style_context ().remove_class ("slider-assignable");
+                slider_9.get_style_context ().remove_class ("slider-assignable");
+                return false;
+            });
+            slider_6.change_value.connect ((scroll, value) => {
+                if  (slider_6_variables != null) {
+                    Ensembles.Core.Synthesizer.set_modulator_value (slider_6_variables[0], slider_6_variables[1], slider_6_variables[2], (int)(value * 127));
+                }
+                assignable_slider_index = 6;
+                slider_0.get_style_context ().remove_class ("slider-assignable");
+                slider_1.get_style_context ().remove_class ("slider-assignable");
+                slider_2.get_style_context ().remove_class ("slider-assignable");
+                slider_3.get_style_context ().remove_class ("slider-assignable");
+                slider_4.get_style_context ().remove_class ("slider-assignable");
+                slider_5.get_style_context ().remove_class ("slider-assignable");
+                slider_7.get_style_context ().remove_class ("slider-assignable");
+                slider_8.get_style_context ().remove_class ("slider-assignable");
+                slider_9.get_style_context ().remove_class ("slider-assignable");
+                return false;
+            });
+            slider_7.change_value.connect ((scroll, value) => {
+                if  (slider_7_variables != null) {
+                    Ensembles.Core.Synthesizer.set_modulator_value (slider_7_variables[0], slider_7_variables[1], slider_7_variables[2], (int)(value * 127));
+                }
+                assignable_slider_index = 7;
+                slider_0.get_style_context ().remove_class ("slider-assignable");
+                slider_1.get_style_context ().remove_class ("slider-assignable");
+                slider_2.get_style_context ().remove_class ("slider-assignable");
+                slider_3.get_style_context ().remove_class ("slider-assignable");
+                slider_4.get_style_context ().remove_class ("slider-assignable");
+                slider_5.get_style_context ().remove_class ("slider-assignable");
+                slider_6.get_style_context ().remove_class ("slider-assignable");
+                slider_8.get_style_context ().remove_class ("slider-assignable");
+                slider_9.get_style_context ().remove_class ("slider-assignable");
+                return false;
+            });
+            slider_8.change_value.connect ((scroll, value) => {
+                if  (slider_8_variables != null) {
+                    Ensembles.Core.Synthesizer.set_modulator_value (slider_8_variables[0], slider_8_variables[1], slider_8_variables[2], (int)(value * 127));
+                }
+                assignable_slider_index = 8;
+                slider_0.get_style_context ().remove_class ("slider-assignable");
+                slider_1.get_style_context ().remove_class ("slider-assignable");
+                slider_2.get_style_context ().remove_class ("slider-assignable");
+                slider_3.get_style_context ().remove_class ("slider-assignable");
+                slider_4.get_style_context ().remove_class ("slider-assignable");
+                slider_5.get_style_context ().remove_class ("slider-assignable");
+                slider_6.get_style_context ().remove_class ("slider-assignable");
+                slider_7.get_style_context ().remove_class ("slider-assignable");
+                slider_9.get_style_context ().remove_class ("slider-assignable");
+                return false;
+            });
+            slider_9.change_value.connect ((scroll, value) => {
+                if  (slider_9_variables != null) {
+                    Ensembles.Core.Synthesizer.set_modulator_value (slider_9_variables[0], slider_9_variables[1], slider_9_variables[2], (int)(value * 127));
+                }
+                assignable_slider_index = 9;
+                slider_0.get_style_context ().remove_class ("slider-assignable");
+                slider_1.get_style_context ().remove_class ("slider-assignable");
+                slider_2.get_style_context ().remove_class ("slider-assignable");
+                slider_3.get_style_context ().remove_class ("slider-assignable");
+                slider_4.get_style_context ().remove_class ("slider-assignable");
+                slider_5.get_style_context ().remove_class ("slider-assignable");
+                slider_6.get_style_context ().remove_class ("slider-assignable");
+                slider_7.get_style_context ().remove_class ("slider-assignable");
+                slider_8.get_style_context ().remove_class ("slider-assignable");
+                return false;
+            });
+        }
+
+        public void send_modulator (int synth_index, int channel, int modulator) {
+            if (assign_mode) {
+                switch (assignable_slider_index) {
+                    case 0:
+                    slider_0_variables = { synth_index, channel, modulator };
+                    break;
+                    case 1:
+                    slider_1_variables = { synth_index, channel, modulator };
+                    break;
+                    case 2:
+                    slider_2_variables = { synth_index, channel, modulator };
+                    break;
+                    case 3:
+                    slider_3_variables = { synth_index, channel, modulator };
+                    break;
+                    case 4:
+                    slider_4_variables = { synth_index, channel, modulator };
+                    break;
+                    case 5:
+                    slider_5_variables = { synth_index, channel, modulator };
+                    break;
+                    case 6:
+                    slider_6_variables = { synth_index, channel, modulator };
+                    break;
+                    case 7:
+                    slider_7_variables = { synth_index, channel, modulator };
+                    break;
+                    case 8:
+                    slider_8_variables = { synth_index, channel, modulator };
+                    break;
+                    case 9:
+                    slider_9_variables = { synth_index, channel, modulator };
+                    break;
+                }
+                assignable_slider_index = -1;
+                assign_mode = false;
+                send_assignable_mode (false);
+                slider_0.get_style_context ().remove_class ("slider-assignable");
+                slider_1.get_style_context ().remove_class ("slider-assignable");
+                slider_2.get_style_context ().remove_class ("slider-assignable");
+                slider_3.get_style_context ().remove_class ("slider-assignable");
+                slider_4.get_style_context ().remove_class ("slider-assignable");
+                slider_5.get_style_context ().remove_class ("slider-assignable");
+                slider_6.get_style_context ().remove_class ("slider-assignable");
+                slider_7.get_style_context ().remove_class ("slider-assignable");
+                slider_8.get_style_context ().remove_class ("slider-assignable");
+                slider_9.get_style_context ().remove_class ("slider-assignable");
+            }
         }
     }
 }

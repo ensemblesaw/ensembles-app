@@ -13,7 +13,7 @@ namespace Ensembles.Shell {
 
         protected const double RADIUS = 10;
 
-        public signal void rotate (bool direction, int amount);
+        public signal void value_changed (double value);
 
         public Knob () {
             center = 25;
@@ -68,6 +68,7 @@ namespace Ensembles.Shell {
             double px = RADIUS * GLib.Math.cos (value/(Math.PI));
             double py = RADIUS * GLib.Math.sin (value/(Math.PI));
             fixed.move (knob_socket_graphic, (int)(px + center), (int)(py + center));
+            value_changed ((value - 27.0) / 15.0);
         }
 
         public bool handle_event (Gdk.Event event) {
