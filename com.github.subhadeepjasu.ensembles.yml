@@ -10,6 +10,7 @@ finish-args:
   - '--socket=fallback-x11'
   - '--socket=wayland'
   - '--socket=pulseaudio'
+  - '--device=all'
 modules:
   - name: granite
     buildsystem: meson
@@ -43,6 +44,28 @@ modules:
     sources:
       - type: git
         url: https://gitlab.gnome.org/GNOME/libhandy.git
+  
+  - name: portmidi
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_LIBRARY_OUTPUT_DIRECTORY=/app/lib
+      - -DCMAKE_ARCHIVE_OUTPUT_DIRECTORY=/app/lib
+      - -DCMAKE_RUNTIME_OUTPUT_DIRECTORY=/app/bin
+    post-install:
+      # MuseScore looks for this name for some reason
+      - ln -s libportmidi.so /app/lib/libporttime.so
+    sources:
+      - type: archive
+        url: https://sourceforge.net/projects/portmedia/files/portmidi/217/portmidi-src-217.zip
+        sha256: 08e9a892bd80bdb1115213fb72dc29a7bf2ff108b378180586aa65f3cfd42e0f
+      - type: patch
+        path: patches/portmidi-no-java.patch
+    cleanup:
+      - /bin
+      - /lib/pkgconfig
+      - /include
+      - '*.a'
+      - '*.la'
 
   - name: ensembles
     buildsystem: meson
