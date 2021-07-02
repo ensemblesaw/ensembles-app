@@ -125,6 +125,12 @@ namespace Ensembles.Shell {
             transpose_spin_button.value_changed.connect (() => {
                 Ensembles.Core.Synthesizer.set_transpose ((int)(transpose_spin_button.value));
             });
+            octave_toggle.toggled.connect ((active) => {
+                Ensembles.Core.Synthesizer.set_octave_shifted (active);
+            });
+            octave_spin_button.value_changed.connect (() => {
+                Ensembles.Core.Synthesizer.set_octave ((int)(octave_spin_button.value));
+            });
         }
     }
 }

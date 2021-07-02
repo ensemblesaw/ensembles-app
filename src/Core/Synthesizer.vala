@@ -85,6 +85,18 @@ namespace Ensembles.Core {
                 synthesizer_transpose_enable = 0;
             }
         }
+
+        public static void set_octave (int octave) {
+            synthesizer_octave = octave;
+        }
+
+        public static void set_octave_shifted (bool active) {
+            if (active) {
+                synthesizer_octave_shifted = 1;
+            } else {
+                synthesizer_octave_shifted = 0;
+            }
+        }
     }
 }
 
@@ -111,3 +123,5 @@ extern int  synthesizer_get_velocity_levels (int synth_index, int channel);
 
 extern int synthesizer_transpose;
 extern int synthesizer_transpose_enable;
+extern int synthesizer_octave;
+extern int synthesizer_octave_shifted;
