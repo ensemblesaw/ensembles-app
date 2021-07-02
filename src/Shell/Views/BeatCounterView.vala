@@ -89,14 +89,11 @@ namespace Ensembles.Shell {
                                 pulse_3 ();
                                 return false;
                             });
-                            yield;
                             return false;
                         });
-                        yield;
                     }
                     return false;
                 });
-                yield;
             }
         }
 

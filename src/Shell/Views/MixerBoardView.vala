@@ -83,7 +83,6 @@ namespace Ensembles.Shell {
             this.show_all ();
             watch = true;
             new Thread<int> ("synth_gain_watch", synth_gain_watch);
-            yield;
         }
 
         void connect_unlock_buttons () {

@@ -73,6 +73,18 @@ namespace Ensembles.Core {
         public static int get_channel_velocity (int synth_index, int channel) {
             return synthesizer_get_velocity_levels (synth_index, channel);
         }
+
+        public static void set_transpose (int transpose) {
+            synthesizer_transpose = transpose;
+        }
+
+        public static void set_transpose_active (bool active) {
+            if (active) {
+                synthesizer_transpose_enable = 1;
+            } else {
+                synthesizer_transpose_enable = 0;
+            }
+        }
     }
 }
 
@@ -96,3 +108,6 @@ extern void set_gain_value (int channel, int value);
 extern int  get_mod_buffer_value (int modulator, int channel);
 extern void set_mod_buffer_value (int modulator, int channel, int value);
 extern int  synthesizer_get_velocity_levels (int synth_index, int channel);
+
+extern int synthesizer_transpose;
+extern int synthesizer_transpose_enable;

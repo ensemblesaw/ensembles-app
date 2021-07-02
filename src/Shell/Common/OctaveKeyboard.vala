@@ -138,7 +138,7 @@ namespace Ensembles.Shell {
                 return false;
             });
             keys[11].button_release_event.connect ((event) => {
-                note_activate (12, false);
+                note_activate (11, false);
                 return false;
             });
         }
