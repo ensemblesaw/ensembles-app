@@ -13,7 +13,7 @@ namespace Ensembles.Shell {
         Gtk.SpinButton pan_spin_button;
         Gtk.SpinButton reverb_spin_button;
         Gtk.SpinButton chorus_spin_button;
-        Gtk.SpinButton sustain_spin_button;
+        Gtk.SpinButton pitch_spin_button;
         Gtk.SpinButton expression_spin_button;
         Gtk.SpinButton modulation_spin_button;
         Gtk.SpinButton cut_off_spin_button;
@@ -22,7 +22,7 @@ namespace Ensembles.Shell {
         Gtk.Button pan_button;
         Gtk.Button reverb_button;
         Gtk.Button chorus_button;
-        Gtk.Button sustain_button;
+        Gtk.Button pitch_button;
         Gtk.Button expression_button;
         Gtk.Button modulation_button;
         Gtk.Button cut_off_button;
@@ -31,7 +31,7 @@ namespace Ensembles.Shell {
         bool pan_lock;
         bool reverb_lock;
         bool chorus_lock;
-        bool sustain_lock;
+        bool pitch_lock;
         bool expression_lock;
         bool modulation_lock;
         bool cut_off_lock;
@@ -93,13 +93,13 @@ namespace Ensembles.Shell {
             mod_grid.attach (chorus_button, 4, 0, 2, 1);
             mod_grid.attach (chorus_spin_button, 4, 1, 2, 1);
 
-            sustain_button = new Gtk.Button.with_label ("Sustain");
-            sustain_button.get_style_context ().add_class ("channel-modulator-button");
-            sustain_spin_button = new Gtk.SpinButton.with_range (0, 127, 1);
-            sustain_spin_button.vexpand = true;
+            pitch_button = new Gtk.Button.with_label ("Pitch");
+            pitch_button.get_style_context ().add_class ("channel-modulator-button");
+            pitch_spin_button = new Gtk.SpinButton.with_range (-64, 63, 1);
+            pitch_spin_button.vexpand = true;
             pan_spin_button.vexpand = true;
-            mod_grid.attach (sustain_button, 6, 0, 2, 1);
-            mod_grid.attach (sustain_spin_button, 6, 1, 2, 1);
+            mod_grid.attach (pitch_button, 6, 0, 2, 1);
+            mod_grid.attach (pitch_spin_button, 6, 1, 2, 1);
 
             expression_button = new Gtk.Button.with_label ("Expression");
             expression_button.get_style_context ().add_class ("channel-modulator-button");
@@ -160,7 +160,7 @@ namespace Ensembles.Shell {
             modulation_button.get_style_context ().remove_class ("channel-modulator-lock");
             pan_button.get_style_context ().remove_class ("channel-modulator-lock");
             expression_button.get_style_context ().remove_class ("channel-modulator-lock");
-            sustain_button.get_style_context ().remove_class ("channel-modulator-lock");
+            pitch_button.get_style_context ().remove_class ("channel-modulator-lock");
             resonance_button.get_style_context ().remove_class ("channel-modulator-lock");
             cut_off_button.get_style_context ().remove_class ("channel-modulator-lock");
             reverb_button.get_style_context ().remove_class ("channel-modulator-lock");
@@ -175,8 +175,8 @@ namespace Ensembles.Shell {
                 if (Ensembles.Core.Synthesizer.get_modulator_lock (11, _channel) == true) {
                     expression_button.get_style_context ().add_class ("channel-modulator-lock");
                 }
-                if (Ensembles.Core.Synthesizer.get_modulator_lock (66, _channel) == true) {
-                    sustain_button.get_style_context ().add_class ("channel-modulator-lock");
+                if (Ensembles.Core.Synthesizer.get_modulator_lock (3, _channel) == true) {
+                    pitch_button.get_style_context ().add_class ("channel-modulator-lock");
                 }
                 if (Ensembles.Core.Synthesizer.get_modulator_lock (71, _channel) == true) {
                     resonance_button.get_style_context ().add_class ("channel-modulator-lock");
@@ -206,9 +206,9 @@ namespace Ensembles.Shell {
                 chorus_lock = false;
                 chorus_spin_button.value = (double)(Ensembles.Core.Synthesizer.get_modulator_value (_synth_index, _channel, 93));
                 chorus_lock = true;
-                sustain_lock = false;
-                sustain_spin_button.value = (double)(Ensembles.Core.Synthesizer.get_modulator_value (_synth_index, _channel, 64));
-                sustain_lock = true;
+                pitch_lock = false;
+                pitch_spin_button.value = (double)(Ensembles.Core.Synthesizer.get_modulator_value (_synth_index, _channel, 3)) - 64;
+                pitch_lock = true;
                 expression_lock = false;
                 expression_spin_button.value = (double)(Ensembles.Core.Synthesizer.get_modulator_value (_synth_index, _channel, 11));
                 expression_lock = true;
@@ -250,11 +250,11 @@ namespace Ensembles.Shell {
                     }
                 }
             });
-            sustain_spin_button.value_changed.connect (() => {
-                if (sustain_lock) {
-                    Ensembles.Core.Synthesizer.set_modulator_value (_synth_index, _channel, 66, (int)sustain_spin_button.value);
+            pitch_spin_button.value_changed.connect (() => {
+                if (pitch_lock) {
+                    Ensembles.Core.Synthesizer.set_modulator_value (_synth_index, _channel, 3, (int)pitch_spin_button.value + 64);
                     if (_synth_index == 1) {
-                        sustain_button.get_style_context ().add_class ("channel-modulator-lock");
+                        pitch_button.get_style_context ().add_class ("channel-modulator-lock");
                     }
                 }
             });
@@ -317,10 +317,10 @@ namespace Ensembles.Shell {
                 }
                 return false;
             });
-            sustain_button.button_release_event.connect ((event) => {
+            pitch_button.button_release_event.connect ((event) => {
                 if (event.button == 3 && _synth_index == 1) {
                     Ensembles.Core.Synthesizer.lock_modulator (66, _channel);
-                    sustain_button.get_style_context ().remove_class ("channel-modulator-lock");
+                    pitch_button.get_style_context ().remove_class ("channel-modulator-lock");
                 } else if (event.button == 1 && assignable) {
                     broadcast_assignment (_synth_index, _channel, 66);
                 }
@@ -370,7 +370,7 @@ namespace Ensembles.Shell {
                 modulation_button.get_style_context ().add_class ("channel-modulator-assignable");
                 pan_button.get_style_context ().add_class ("channel-modulator-assignable");
                 expression_button.get_style_context ().add_class ("channel-modulator-assignable");
-                sustain_button.get_style_context ().add_class ("channel-modulator-assignable");
+                pitch_button.get_style_context ().add_class ("channel-modulator-assignable");
                 resonance_button.get_style_context ().add_class ("channel-modulator-assignable");
                 cut_off_button.get_style_context ().add_class ("channel-modulator-assignable");
                 reverb_button.get_style_context ().add_class ("channel-modulator-assignable");
@@ -379,7 +379,7 @@ namespace Ensembles.Shell {
                 modulation_button.get_style_context ().remove_class ("channel-modulator-assignable");
                 pan_button.get_style_context ().remove_class ("channel-modulator-assignable");
                 expression_button.get_style_context ().remove_class ("channel-modulator-assignable");
-                sustain_button.get_style_context ().remove_class ("channel-modulator-assignable");
+                pitch_button.get_style_context ().remove_class ("channel-modulator-assignable");
                 resonance_button.get_style_context ().remove_class ("channel-modulator-assignable");
                 cut_off_button.get_style_context ().remove_class ("channel-modulator-assignable");
                 reverb_button.get_style_context ().remove_class ("channel-modulator-assignable");

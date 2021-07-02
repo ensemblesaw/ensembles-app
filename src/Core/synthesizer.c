@@ -164,6 +164,15 @@ synthesizer_set_defaults () {
     fluid_synth_cc (realtime_synth, 0, 7, 100);
     fluid_synth_cc (realtime_synth, 1, 7, 90);
     fluid_synth_cc (realtime_synth, 2, 7, 80);
+    
+
+    // Default pitch of all synths
+    for (int i = 0; i < 8; i++) {
+        fluid_synth_cc (realtime_synth, i, 3, 64);
+    }
+    for (int i = 0; i < 16; i++) {
+        fluid_synth_cc (style_synth, i, 3, 64);
+    }
 }
 
 void
@@ -181,7 +190,7 @@ synthesizer_change_modulator (int synth_index, int channel, int modulator, int v
             // printf ("%d, %d\n", channel, value);
             set_gain_value (channel, value);
         }
-        if (modulator == 10) {
+        if (modulator == 3 || modulator == 10) {
             set_mod_buffer_value (modulator, channel, value >= -64 ? value : -64);
         } else {
             set_mod_buffer_value (modulator, channel, value >= 0 ? value : 0);
@@ -208,7 +217,7 @@ set_mod_buffer_value (int modulator, int channel, int value) {
         expression_value[channel] = value;
         break;
         case 66:
-        sustain_value[channel] = value;
+        pitch_value[channel] = value;
         break;
         case 71:
         resonance_value[channel] = value;
@@ -236,7 +245,7 @@ get_mod_buffer_value (int modulator, int channel) {
         case 11:
         return expression_value[channel];
         case 66:
-        return sustain_value[channel];
+        return pitch_value[channel];
         case 71:
         return resonance_value[channel];
         case 74:
@@ -314,7 +323,11 @@ handle_events_for_styles (fluid_midi_event_t *event) {
                 fluid_midi_event_set_value (event, gain_value[chan]);
             }
         }
-        if (cont == 10) {
+        if (cont == 16) {
+            if (get_mod_buffer_value (16, chan) >= -64) {
+                fluid_midi_event_set_value (event, get_mod_buffer_value (9, chan));
+            }
+        } else if (cont == 10) {
             if (get_mod_buffer_value (10, chan) >= -64) {
                 fluid_midi_event_set_value (event, get_mod_buffer_value (10, chan));
             }
