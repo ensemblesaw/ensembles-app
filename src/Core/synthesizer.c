@@ -156,6 +156,10 @@ synthesizer_set_defaults () {
     fluid_synth_cc (realtime_synth, 1, 74, 0);
     fluid_synth_cc (realtime_synth, 2, 74, 0);
 
+    // Reverb and Chorus ro R1 voice
+    fluid_synth_cc (realtime_synth, 0, 91, 4);
+    fluid_synth_cc (realtime_synth, 0, 93, 1);
+
     // Default gain for Realtime synth
     fluid_synth_cc (realtime_synth, 0, 7, 100);
     fluid_synth_cc (realtime_synth, 1, 7, 90);
@@ -372,8 +376,6 @@ synthesizer_send_notes (int key, int on, int velocity, int* type) {
             return -6;
         }
     }
-    fluid_synth_cc (realtime_synth, 0, 91, 4);
-    fluid_synth_cc (realtime_synth, 0, 93, 1);
     if (on == 144) {
         fluid_synth_noteon (realtime_synth, 0, key, velocity);
         voice_velocity_buffer[0] = velocity;

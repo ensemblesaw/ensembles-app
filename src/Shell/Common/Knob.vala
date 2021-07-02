@@ -88,10 +88,10 @@ namespace Ensembles.Shell {
 
             if (event.type == Gdk.EventType.MOTION_NOTIFY && dragging) {
                 if (dragging_direction == 0) {
-                    dragging_direction = event.motion.y;
+                    dragging_direction = event.motion.y - event.motion.x;
                 }
     
-                if (dragging_direction > event.motion.y || event.motion.y_root == 0) {
+                if (dragging_direction > event.motion.y - event.motion.x || event.motion.y_root == 0 || event.motion.x_root == 0) {
                     value += 0.5;
                     if (value < 27) {
                         value = 27;
@@ -100,7 +100,7 @@ namespace Ensembles.Shell {
                         value = 42;
                     }
                     rotate_dial (value);
-                    dragging_direction = event.motion.y;
+                    dragging_direction = event.motion.y - event.motion.x;
                 } else {
                     value -= 0.5;
                     if (value < 27) {
@@ -110,7 +110,7 @@ namespace Ensembles.Shell {
                         value = 42;
                     }
                     rotate_dial (value);
-                    dragging_direction = event.motion.y;
+                    dragging_direction = event.motion.y - event.motion.x;
                 }
             }
             return false;
