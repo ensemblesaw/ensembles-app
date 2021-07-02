@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Ensembles
+GenericName=Ensembles Arranger Workstation
+Comment=Play and arrange music live as a one-man-band
+Categories=Audio;AudioVideo;Music;Midi;Education;GTK;
+Exec=com.github.subhadeepjasu.ensembles
+Icon=com.github.subhadeepjasu.ensembles
+Terminal=false
+Type=Application
+Keywords=midi;virtual;music;arranger;piano;keyboard;workstation;daw;
+X-GNOME-Gettext-Domain=com.github.subhadeepjasu.ensembles

@@ -12,6 +12,8 @@ namespace Ensembles.Shell {
         VoiceMenu voice_menu_r1;
         VoiceMenu voice_menu_r2;
 
+        public ChannelModulatorScreen channel_mod_screen;
+
         public signal void change_style (string path, string name, int tempo);
         public signal void change_voice (Ensembles.Core.Voice voice, int channel);
 
@@ -21,12 +23,14 @@ namespace Ensembles.Shell {
             voice_menu_l = new VoiceMenu (2);
             voice_menu_r1 = new VoiceMenu (0);
             voice_menu_r2 = new VoiceMenu (1);
+            channel_mod_screen = new ChannelModulatorScreen (0, 0);
 
             main_stack = new Gtk.Stack ();
             main_stack.add_named (style_menu, "Styles Menu");
             main_stack.add_named (voice_menu_l, "Voice L Menu");
             main_stack.add_named (voice_menu_r1, "Voice R1 Menu");
             main_stack.add_named (voice_menu_r2, "Voice R2 Menu");
+            main_stack.add_named (channel_mod_screen, "Channel Modulator Screen");
 
 
             splash_screen = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/display_unit/ensembles_splash.svg");
@@ -45,7 +49,7 @@ namespace Ensembles.Shell {
 
 
             main_overlay = new Gtk.Overlay ();
-            main_overlay.height_request = 213;
+            main_overlay.height_request = 236;
             main_overlay.width_request = 424;
             main_overlay.margin = 2;
 
@@ -89,6 +93,7 @@ namespace Ensembles.Shell {
                 main_stack.set_visible_child (voice_menu_r2);
                 voice_menu_r2.scroll_to_selected_row ();
             });
+            home_screen.edit_channel.connect (edit_channel);
             style_menu.close_menu.connect (() => {
                 main_display_leaflet.set_visible_child (home_screen);
             });
@@ -99,6 +104,9 @@ namespace Ensembles.Shell {
                 main_display_leaflet.set_visible_child (home_screen);
             });
             voice_menu_r2.close_menu.connect (() => {
+                main_display_leaflet.set_visible_child (home_screen);
+            });
+            channel_mod_screen.close_screen.connect (() => {
                 main_display_leaflet.set_visible_child (home_screen);
             });
             style_menu.change_style.connect ((style_path, style_name, style_tempo) => {
@@ -161,6 +169,12 @@ namespace Ensembles.Shell {
 
         public void set_chord_display (int chord_main, int chord_type) {
             home_screen.set_chord (chord_main, chord_type);
+        }
+
+        public void edit_channel (int synth_index, int channel) {
+            main_display_leaflet.set_visible_child (main_stack);
+            main_stack.set_visible_child (channel_mod_screen);
+            channel_mod_screen.set_synth_channel_to_edit (synth_index, channel);
         }
     }
 }

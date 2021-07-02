@@ -1,5 +1,6 @@
 namespace Ensembles.Shell { 
     public class HomeScreen : WheelScrollableWidget {
+        int tempo = 33;
         Gtk.Button style_button;
         Gtk.Button voice_l_button;
         Gtk.Button voice_r1_button;
@@ -19,10 +20,14 @@ namespace Ensembles.Shell {
         Gtk.Label chord_flat_label;
         Gtk.Label chord_type_label;
 
+        EqualizerBar[] equalizer_bar;
+        Gtk.Button[]   channel_configure_buttons;
+
         public signal void open_style_menu ();
         public signal void open_voice_l_menu ();
         public signal void open_voice_r1_menu ();
         public signal void open_voice_r2_menu ();
+        public signal void edit_channel (int synth_index, int channel);
         
         public HomeScreen() {
             this.get_style_context ().add_class ("home-screen-background");
@@ -199,13 +204,43 @@ namespace Ensembles.Shell {
             chord_box.attach (chord_flat_label, 1, 1, 2, 1);
             chord_box.attach (chord_type_label, 1, 2, 2, 1);
             chord_box.margin_top = 2;
-            
 
+            var equalizer_grid = new Gtk.Grid ();
+            equalizer_bar = new EqualizerBar[19];
+            for (int i = 0; i < 19; i++) {
+                equalizer_bar[i] = new EqualizerBar ();
+                equalizer_grid.attach (equalizer_bar[i], i, 0 ,1, 1);
+            }
+            equalizer_grid.column_spacing = 4;
+            equalizer_grid.margin = 5;
 
+            var equalizer_label_grid = new Gtk.Grid ();
+            for (int i = 0; i < 16; i++) {
+                equalizer_label_grid.attach (new Gtk.Label ((i + 1).to_string ()), i, 0, 1, 1);
+            }
+            equalizer_label_grid.attach (new Gtk.Label ("L"), 16, 0, 1, 1);
+            equalizer_label_grid.attach (new Gtk.Label ("R1"), 17, 0, 1, 1);
+            equalizer_label_grid.attach (new Gtk.Label ("R2"), 18, 0, 1, 1);
+
+            equalizer_label_grid.column_homogeneous = true;
+            equalizer_label_grid.column_spacing = 2;
+            equalizer_label_grid.margin_start = 4;
+            equalizer_label_grid.margin_end = 6;
+            equalizer_label_grid.get_style_context ().add_class ("home-screen-eq-labels");
+
+            var channel_button_grid = new Gtk.Grid ();
+            channel_button_grid.margin_start = 2;
+            channel_configure_buttons = new Gtk.Button [19];
+            for (int i = 0; i < 19; i++) {
+                channel_configure_buttons[i] = new Gtk.Button.from_icon_name ("preferences-system-symbolic", Gtk.IconSize.BUTTON);
+                channel_configure_buttons[i].get_style_context ().add_class ("channel-configure-button");
+                channel_button_grid.attach (channel_configure_buttons[i], i, 0, 1, 1);
+            }
+            connect_channel_buttons ();
 
             var bottom_panel = new Gtk.Grid ();
             bottom_panel.get_style_context ().add_class ("home-screen-panel-bottom");
-            bottom_panel.height_request = 90;
+            bottom_panel.height_request = 111;
             bottom_panel.margin_top = 78;
             bottom_panel.attach (tempo_box, 0, 0, 1, 1);
             bottom_panel.attach (measure_box, 1, 0, 1, 1);
@@ -213,10 +248,75 @@ namespace Ensembles.Shell {
             bottom_panel.attach (transpose_box, 3, 0, 1, 1);
             bottom_panel.attach (octave_shift_box, 4, 0, 1, 1);
             bottom_panel.attach (chord_box, 5, 0, 1, 1);
+            bottom_panel.attach (equalizer_grid, 0, 1, 6, 1);
+            bottom_panel.attach (equalizer_label_grid, 0, 3, 6, 1);
+            bottom_panel.attach (channel_button_grid, 0, 4, 6, 1);
             bottom_panel.set_column_homogeneous (true);
 
             this.attach (top_panel, 0, 0, 1, 1);
             this.attach (bottom_panel, 0, 1, 1, 1);
+
+            update_equalizer ();
+        }
+
+        public void connect_channel_buttons () {
+            channel_configure_buttons[0].clicked.connect (() => {
+                edit_channel (1, 0);
+            });
+            channel_configure_buttons[1].clicked.connect (() => {
+                edit_channel (1, 1);
+            });
+            channel_configure_buttons[2].clicked.connect (() => {
+                edit_channel (1, 2);
+            });
+            channel_configure_buttons[3].clicked.connect (() => {
+                edit_channel (1, 3);
+            });
+            channel_configure_buttons[4].clicked.connect (() => {
+                edit_channel (1, 4);
+            });
+            channel_configure_buttons[5].clicked.connect (() => {
+                edit_channel (1, 5);
+            });
+            channel_configure_buttons[6].clicked.connect (() => {
+                edit_channel (1, 6);
+            });
+            channel_configure_buttons[7].clicked.connect (() => {
+                edit_channel (1, 7);
+            });
+            channel_configure_buttons[8].clicked.connect (() => {
+                edit_channel (1, 8);
+            });
+            channel_configure_buttons[9].clicked.connect (() => {
+                edit_channel (1, 9);
+            });
+            channel_configure_buttons[10].clicked.connect (() => {
+                edit_channel (1, 10);
+            });
+            channel_configure_buttons[11].clicked.connect (() => {
+                edit_channel (1, 11);
+            });
+            channel_configure_buttons[12].clicked.connect (() => {
+                edit_channel (1, 12);
+            });
+            channel_configure_buttons[13].clicked.connect (() => {
+                edit_channel (1, 13);
+            });
+            channel_configure_buttons[14].clicked.connect (() => {
+                edit_channel (1, 14);
+            });
+            channel_configure_buttons[15].clicked.connect (() => {
+                edit_channel (1, 15);
+            });
+            channel_configure_buttons[17].clicked.connect (() => {
+                edit_channel (0, 0);
+            });
+            channel_configure_buttons[16].clicked.connect (() => {
+                edit_channel (0, 2);
+            });
+            channel_configure_buttons[18].clicked.connect (() => {
+                edit_channel (0, 1);
+            });
         }
 
         public void set_style_name (string name) {
@@ -237,6 +337,7 @@ namespace Ensembles.Shell {
         }
         public void set_tempo (int tempo) {
             tempo_label.set_text (tempo.to_string ());
+            this.tempo = tempo;
         }
         public void set_measure (int measure) {
             measure_label.set_text (measure.to_string ());
@@ -305,6 +406,18 @@ namespace Ensembles.Shell {
             chord_label.queue_draw ();
             chord_flat_label.queue_draw ();
             chord_type_label.queue_draw ();
+        }
+
+        void update_equalizer () {
+            Timeout.add (60000/(tempo * 16), () => {
+                for (int i = 0; i < 16; i++) {
+                    equalizer_bar[i].velocity = Ensembles.Core.Synthesizer.get_channel_velocity (1, i);
+                }
+                equalizer_bar[16].velocity = Ensembles.Core.Synthesizer.get_channel_velocity (0, 2);
+                equalizer_bar[17].velocity = Ensembles.Core.Synthesizer.get_channel_velocity (0, 0);
+                equalizer_bar[18].velocity = Ensembles.Core.Synthesizer.get_channel_velocity (0, 1);
+                return true;
+            });
         }
     }
 }

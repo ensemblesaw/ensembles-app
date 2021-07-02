@@ -119,6 +119,18 @@ namespace Ensembles.Shell {
             main_dial.rotate.connect ((direction, amount) => {
                 dial_rotate (direction, amount);
             });
+            transpose_toggle.toggled.connect ((active) => {
+                Ensembles.Core.Synthesizer.set_transpose_active (active);
+            });
+            transpose_spin_button.value_changed.connect (() => {
+                Ensembles.Core.Synthesizer.set_transpose ((int)(transpose_spin_button.value));
+            });
+            octave_toggle.toggled.connect ((active) => {
+                Ensembles.Core.Synthesizer.set_octave_shifted (active);
+            });
+            octave_spin_button.value_changed.connect (() => {
+                Ensembles.Core.Synthesizer.set_octave ((int)(octave_spin_button.value));
+            });
         }
     }
 }

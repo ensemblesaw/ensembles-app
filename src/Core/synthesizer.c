@@ -26,6 +26,17 @@ int synthesizer_voice_program_r1 = 0;
 int synthesizer_voice_bank_r2 = 0;
 int synthesizer_voice_program_r3 = 0;
 
+// StyleEqualizer
+int style_velocity_buffer[16];
+int voice_velocity_buffer[3];
+
+
+// Global scale shift
+int synthesizer_transpose = 0;
+int synthesizer_transpose_enable = 0;
+int synthesizer_octave = 0;
+int synthesizer_octave_shifted = 0;
+
 struct fx_data_t
 {
     fluid_synth_t *synth;
@@ -139,14 +150,138 @@ synthesizer_init (const gchar* loc) {
     fx_init ();
     style_adriver = new_fluid_audio_driver2(style_synth_settings, fx_function, (void *) &fx_data);
     realtime_adriver = new_fluid_audio_driver(realtime_synth_settings, realtime_synth);
+
+    synthesizer_set_defaults ();
+}
+
+void
+synthesizer_set_defaults () {
     synthesizer_edit_master_reverb (5);
     synthesizer_edit_master_chorus (1);
+    // CutOff for Realtime synth
     fluid_synth_cc (realtime_synth, 0, 74, 40);
+    fluid_synth_cc (realtime_synth, 1, 74, 0);
+    fluid_synth_cc (realtime_synth, 2, 74, 0);
+
+    // Reverb and Chorus ro R1 voice
+    fluid_synth_cc (realtime_synth, 0, 91, 4);
+    fluid_synth_cc (realtime_synth, 0, 93, 1);
+
+    // Default gain for Realtime synth
+    fluid_synth_cc (realtime_synth, 0, 7, 100);
+    fluid_synth_cc (realtime_synth, 1, 7, 90);
+    fluid_synth_cc (realtime_synth, 2, 7, 80);
+    
+
+    // Default pitch of all synths
+    for (int i = 0; i < 8; i++) {
+        fluid_synth_cc (realtime_synth, i, 3, 64);
+    }
+    for (int i = 0; i < 16; i++) {
+        fluid_synth_cc (style_synth, i, 3, 64);
+    }
 }
 
 void
 synthesizer_change_voice (int bank, int preset, int channel) {
     fluid_synth_program_select (realtime_synth, channel, realtime_synth_sf_id, bank, preset);
+}
+
+void
+synthesizer_change_modulator (int synth_index, int channel, int modulator, int value) {
+    if (synth_index == 0) {
+        fluid_synth_cc (realtime_synth, channel, modulator, value);
+    } else {
+        fluid_synth_cc (style_synth, channel, modulator, value);
+        if (modulator == 7) {
+            // printf ("%d, %d\n", channel, value);
+            set_gain_value (channel, value);
+        }
+        if (modulator == 3 || modulator == 10) {
+            set_mod_buffer_value (modulator, channel, value >= -64 ? value : -64);
+        } else {
+            set_mod_buffer_value (modulator, channel, value >= 0 ? value : 0);
+        }
+    }   
+}
+
+void
+set_gain_value (int channel, int value) {
+    gain_value[channel] = value;
+}
+
+void
+set_mod_buffer_value (int modulator, int channel, int value) {
+    switch (modulator)
+    {
+        case 1:
+        modulation_value[channel] = value;
+        break;
+        case 10:
+        pan_value[channel] = value;
+        break;
+        case 11:
+        expression_value[channel] = value;
+        break;
+        case 66:
+        pitch_value[channel] = value;
+        break;
+        case 71:
+        resonance_value[channel] = value;
+        break;
+        case 74:
+        cut_off_value[channel] = value;
+        break;
+        case 91:
+        reverb_value[channel] = value;
+        break;
+        case 93:
+        chorus_value[channel] = value;
+        break;
+    }
+}
+
+int
+get_mod_buffer_value (int modulator, int channel) {
+    switch (modulator)
+    {
+        case 1:
+        return modulation_value[channel];
+        case 10:
+        return pan_value[channel];
+        case 11:
+        return expression_value[channel];
+        case 66:
+        return pitch_value[channel];
+        case 71:
+        return resonance_value[channel];
+        case 74:
+        return cut_off_value[channel];
+        case 91:
+        return reverb_value[channel];
+        case 93:
+        return chorus_value[channel];
+    }
+    return -1;
+}
+
+int
+synthesizer_get_modulator_values (int synth_index, int channel, int modulator) {
+    int mod_value = -1;
+    if (synth_index == 0) {
+        fluid_synth_get_cc (realtime_synth, channel, modulator, &mod_value);
+    } else {
+        fluid_synth_get_cc (style_synth, channel, modulator, &mod_value);
+    }
+    return mod_value;
+}
+
+int
+synthesizer_get_velocity_levels (int synth_index, int channel) {
+    if (synth_index == 0)
+        return voice_velocity_buffer [channel];
+    else
+        return style_velocity_buffer [channel];
 }
 
 
@@ -189,9 +324,34 @@ handle_events_for_styles (fluid_midi_event_t *event) {
     // printf ("Channel: %d, ", chan);
     // printf ("Control: %d, ", cont);
     // printf ("Value: %d\n", value);
+    if (type == 176) {
+        if (cont == 7) {
+            if (gain_value[chan] >= 0) {
+                fluid_midi_event_set_value (event, gain_value[chan]);
+            }
+        }
+        if (cont == 16) {
+            if (get_mod_buffer_value (16, chan) >= -64) {
+                fluid_midi_event_set_value (event, get_mod_buffer_value (9, chan));
+            }
+        } else if (cont == 10) {
+            if (get_mod_buffer_value (10, chan) >= -64) {
+                fluid_midi_event_set_value (event, get_mod_buffer_value (10, chan));
+            }
+        } else {
+            if (get_mod_buffer_value (cont, chan) >= 0) {
+                fluid_midi_event_set_value (event, get_mod_buffer_value (cont, chan));
+            }
+        }
+    }
     if (chan != 9 && central_accompaniment_mode == 0 && type == 144) {
         return 0;
     } 
+    if (type == 144) {
+        style_velocity_buffer[chan] = value;
+    } else if (type == 128) {
+        style_velocity_buffer[chan] = 0;
+    }
     // CC 74 CutOff Modulator 
     // fluid_synth_cc (style_synth, 0, 74, 80);
     return fluid_synth_handle_midi_event(style_synth, event);
@@ -203,22 +363,22 @@ synthesizer_send_notes (int key, int on, int velocity, int* type) {
         if (accompaniment_mode == 0) {
             if (key <= central_split_key) {
                 int chrd_type = 0;
-                int chrd_main = chord_finder_infer (key, on, &chrd_type);
+                int chrd_main = chord_finder_infer (key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0), on, &chrd_type);
                 *type = chrd_type;
                 if (central_style_looping == 0 && central_style_sync_start == 0 && on == 144) {
                     fluid_synth_all_notes_off (realtime_synth, 4);
                     fluid_synth_cc (realtime_synth, 3, 91, 0);
                     fluid_synth_cc (realtime_synth, 4, 91, 0);
-                    fluid_synth_noteon (realtime_synth, 3, key + 12, velocity * 0.6);
+                    fluid_synth_noteon (realtime_synth, 3, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0) + 12, velocity * 0.6);
                     fluid_synth_noteon (realtime_synth, 4, chrd_main + 36, velocity);
-                    fluid_synth_noteon (realtime_synth, 5, key + 36, velocity * 0.2);
-                    fluid_synth_noteon (realtime_synth, 5, key + 24, velocity * 0.4);
+                    fluid_synth_noteon (realtime_synth, 5, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0) + 36, velocity * 0.2);
+                    fluid_synth_noteon (realtime_synth, 5, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0) + 24, velocity * 0.4);
                 }
                 if (on == 128) {
-                    fluid_synth_noteoff (realtime_synth, 3, key + 12);
+                    fluid_synth_noteoff (realtime_synth, 3, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0) + 12);
                     fluid_synth_all_notes_off (realtime_synth, 4);
-                    fluid_synth_noteoff (realtime_synth, 5, key + 36);
-                    fluid_synth_noteoff (realtime_synth, 5, key + 24);
+                    fluid_synth_noteoff (realtime_synth, 5, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0) + 36);
+                    fluid_synth_noteoff (realtime_synth, 5, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0) + 24);
                 }
                 return chrd_main;
             }
@@ -227,25 +387,29 @@ synthesizer_send_notes (int key, int on, int velocity, int* type) {
     } else if (central_split_on > 0) {
         if (key <= central_split_key) {
             if (on == 144) {
-                fluid_synth_noteon (realtime_synth, 2, key, velocity);
+                fluid_synth_noteon (realtime_synth, 2, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0), velocity);
+                voice_velocity_buffer[2] = velocity;
             } else if (on == 128) {
-                fluid_synth_noteoff (realtime_synth, 2, key);
+                fluid_synth_noteoff (realtime_synth, 2, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0));
+                voice_velocity_buffer[2] = 0;
             }
             return -6;
         }
     }
-    fluid_synth_cc (realtime_synth, 0, 91, 4);
-    fluid_synth_cc (realtime_synth, 0, 93, 1);
     if (on == 144) {
-        fluid_synth_noteon (realtime_synth, 0, key, velocity);
+        fluid_synth_noteon (realtime_synth, 0, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0), velocity);
+        voice_velocity_buffer[0] = velocity;
     } else if (on == 128) {
-        fluid_synth_noteoff (realtime_synth, 0, key);
+        fluid_synth_noteoff (realtime_synth, 0, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0));
+        voice_velocity_buffer[0] = 0;
     }
     if (central_layer_on > 0) {
         if (on == 144) {
-            fluid_synth_noteon (realtime_synth, 1, key, velocity);
+            fluid_synth_noteon (realtime_synth, 1, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0), velocity);
+            voice_velocity_buffer[1] = velocity;
         } else if (on == 128) {
-            fluid_synth_noteoff (realtime_synth, 1, key);
+            fluid_synth_noteoff (realtime_synth, 1, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0));
+            voice_velocity_buffer[1] = 0;
         }
     }
     // int reverb;

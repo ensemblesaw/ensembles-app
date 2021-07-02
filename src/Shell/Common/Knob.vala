@@ -13,7 +13,7 @@ namespace Ensembles.Shell {
 
         protected const double RADIUS = 10;
 
-        public signal void rotate (bool direction, int amount);
+        public signal void change_value (double value);
 
         public Knob () {
             center = 25;
@@ -68,6 +68,14 @@ namespace Ensembles.Shell {
             double px = RADIUS * GLib.Math.cos (value/(Math.PI));
             double py = RADIUS * GLib.Math.sin (value/(Math.PI));
             fixed.move (knob_socket_graphic, (int)(px + center), (int)(py + center));
+            change_value ((value - 27.0) / 15.0);
+        }
+
+        public void set_value (double _value) {
+            value = 15 * _value + 27;
+            double px = RADIUS * GLib.Math.cos (value/(Math.PI));
+            double py = RADIUS * GLib.Math.sin (value/(Math.PI));
+            fixed.move (knob_socket_graphic, (int)(px + center), (int)(py + center));
         }
 
         public bool handle_event (Gdk.Event event) {
@@ -87,10 +95,10 @@ namespace Ensembles.Shell {
 
             if (event.type == Gdk.EventType.MOTION_NOTIFY && dragging) {
                 if (dragging_direction == 0) {
-                    dragging_direction = event.motion.y;
+                    dragging_direction = event.motion.y - event.motion.x;
                 }
     
-                if (dragging_direction > event.motion.y || event.motion.y_root == 0) {
+                if (dragging_direction > event.motion.y - event.motion.x || event.motion.y_root == 0 || event.motion.x_root == 0) {
                     value += 0.5;
                     if (value < 27) {
                         value = 27;
@@ -99,7 +107,7 @@ namespace Ensembles.Shell {
                         value = 42;
                     }
                     rotate_dial (value);
-                    dragging_direction = event.motion.y;
+                    dragging_direction = event.motion.y - event.motion.x;
                 } else {
                     value -= 0.5;
                     if (value < 27) {
@@ -109,7 +117,7 @@ namespace Ensembles.Shell {
                         value = 42;
                     }
                     rotate_dial (value);
-                    dragging_direction = event.motion.y;
+                    dragging_direction = event.motion.y - event.motion.x;
                 }
             }
             return false;

@@ -16,7 +16,6 @@ namespace Ensembles.Core {
 
         public CentralBus () {
             new Thread<int> ("bus_watch", bus_watch);
-            yield;
         }
         ~CentralBus () {
             thread_alive = false;
@@ -71,7 +70,6 @@ namespace Ensembles.Core {
                     central_clock = 0;
                 }
                 Thread.usleep (400);
-                yield;
             }
             return 0;
         }

@@ -68,7 +68,7 @@ namespace Ensembles.Shell {
         }
 
         public void change_tempo (int tempo) {
-            if (tempo > 0) {
+            if (tempo > 30) {
                 this.tempo = tempo;
             }
         }
@@ -89,14 +89,11 @@ namespace Ensembles.Shell {
                                 pulse_3 ();
                                 return false;
                             });
-                            yield;
                             return false;
                         });
-                        yield;
                     }
                     return false;
                 });
-                yield;
             }
         }
 

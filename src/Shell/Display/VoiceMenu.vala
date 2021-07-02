@@ -76,14 +76,16 @@ namespace Ensembles.Shell {
 
         public void scroll_to_selected_row () {
             voice_rows[_selected_index].grab_focus ();
-            var adj = main_list.get_adjustment ();
-            if (adj != null) {
-                int height, _htemp;
-                voice_rows[_selected_index].get_preferred_height (out _htemp, out height);
-                Timeout.add (200, () => {
-                    adj.set_value (_selected_index * height);
-                    return false;
-                });
+            if (main_list != null) {
+                var adj = main_list.get_adjustment ();
+                if (adj != null) {
+                    int height, _htemp;
+                    voice_rows[_selected_index].get_preferred_height (out _htemp, out height);
+                    Timeout.add (200, () => {
+                        adj.set_value (_selected_index * height);
+                        return false;
+                    });
+                }
             }
         }
 

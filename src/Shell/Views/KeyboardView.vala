@@ -5,6 +5,7 @@ namespace Ensembles.Shell {
         Gtk.Switch hold_switch;
         Gtk.Switch zoom_switch;
         JoyStick joy_stick;
+        Ensembles.Core.Synthesizer _synth;
         public KeyboardView() {
             get_style_context ().add_class ("keyboard-background");
             key_grid = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
@@ -58,6 +59,25 @@ namespace Ensembles.Shell {
             add (joy_stick);
             add (keyboard_overlay);
             show_all ();
+        }
+
+        public void connect_synthesizer (Ensembles.Core.Synthesizer synth) {
+            _synth = synth;
+            octaves[0].note_activate.connect ((index, on) => {
+                _synth.send_notes_realtime (index + 36, on ? 144 : 128, 100);
+            });
+            octaves[1].note_activate.connect ((index, on) => {
+                _synth.send_notes_realtime (index + 48, on ? 144 : 128, 100);
+            });
+            octaves[2].note_activate.connect ((index, on) => {
+                _synth.send_notes_realtime (index + 60, on ? 144 : 128, 100);
+            });
+            octaves[3].note_activate.connect ((index, on) => {
+                _synth.send_notes_realtime (index + 72, on ? 144 : 128, 100);
+            });
+            octaves[4].note_activate.connect ((index, on) => {
+                _synth.send_notes_realtime (index + 108, on ? 144 : 128, 100);
+            });
         }
 
         public void toggle_zoom (bool active) {
