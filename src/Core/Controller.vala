@@ -42,6 +42,9 @@ namespace Ensembles.Core {
                     int key = (((0x00FF00 & message) - 9216)/256) + 36;
                     double velocity = 0.0 + ((127.0 - 0.0) / (8323072.0 - 65536.0)) * (double)((0xFF0000 & message) - 65536);
                     print ("Velocity: %d, Key: %d, Type:%d, Raw: %x\n", (int)velocity, key, message & 0x0000FF, message);
+                    if (velocity < 0) {
+                        key = 128;
+                    }
                     Idle.add (() => {
                         receive_note_event (key, message & 0x0000FF, (int)velocity);
                         return false;
