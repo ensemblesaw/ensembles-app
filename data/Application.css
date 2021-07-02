@@ -130,19 +130,33 @@
     animation: slider_pulse 1s linear infinite;
 }
 
+.slider-super-controlled > contents > trough {
+    background-color: alpha(@accent_color, 0.5);
+}
+
+.slider-super-assignable > contents > trough {
+    animation: slider_super_pulse 1s linear infinite;
+}
+
 @keyframes slider_pulse {
     50% {
         background-color: rgba (100, 80, 0, 1);
     }
 }
 
-.knob-assignable > contents > trough {
+@keyframes slider_super_pulse {
+    50% {
+        background-color: @accent_color;
+    }
+}
+
+.knob-assignable > .knob-cover-graphic {
     animation: knob_assign_pulse 1s linear infinite;
 }
 
 @keyframes knob_assign_pulse {
     50% {
-        border: 1px solid rgba (100, 80, 0, 1);
+        border: 1px solid rgba (127, 100, 0, 1);
     }
 }
 
@@ -451,6 +465,51 @@
         background-image:linear-gradient(#333, #111);
     }
 }
+
+.super-knob-connected-0 { 
+    background-image:radial-gradient(@accent_color 40%, #333); 
+}
+
+.super-knob-connected-1 { 
+    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.1) 40%, #333); 
+}
+
+.super-knob-connected-2 { 
+    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.2) 40%, #333); 
+}
+
+.super-knob-connected-3 { 
+    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.3) 40%, #333); 
+}
+
+.super-knob-connected-4 { 
+    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.4) 40%, #333); 
+}
+
+.super-knob-connected-5 { 
+    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.5) 40%, #333); 
+}
+
+.super-knob-connected-6 { 
+    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.6) 40%, #333); 
+}
+
+.super-knob-connected-7 { 
+    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.7) 40%, #333); 
+}
+
+.super-knob-connected-8 { 
+    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.8) 40%, #333); 
+}
+
+.super-knob-connected-9 { 
+    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.9) 40%, #333); 
+}
+
+.super-knob-connected-10 { 
+    background-image:radial-gradient(shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2) 40%, #333); 
+}
+
 
 .common-key > * {
     opacity: 0;

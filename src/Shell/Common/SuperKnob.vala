@@ -18,5 +18,22 @@ namespace Ensembles.Shell {
 
             knob_background.get_style_context ().add_class ("super-knob-idle");
         }
+
+        public void set_color (bool connected, int int_val) {
+            if (connected) {
+                for (int i = 0; i <= 10; i++) {
+                    if (i != int_val) {
+                        knob_background.get_style_context ().remove_class (("super-knob-connected-%d").printf (i));
+                    }
+                }
+                knob_background.get_style_context ().add_class (("super-knob-connected-%d").printf (int_val));
+                knob_background.get_style_context ().remove_class ("super-knob-idle");
+            } else {
+                for (int i = 0; i <= 10; i++) {
+                    knob_background.get_style_context ().remove_class (("super-knob-connected-%d").printf (i));
+                }
+                knob_background.get_style_context ().add_class ("super-knob-idle");
+            }
+        }
     }
 }
