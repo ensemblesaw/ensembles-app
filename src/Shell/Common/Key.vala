@@ -3,6 +3,7 @@ namespace Ensembles.Shell {
         bool _black_key;
         int _index;
         Gtk.Button split_button;
+
         public Key (int index, bool black_key) {
             margin_top = 23;
             _black_key = black_key;

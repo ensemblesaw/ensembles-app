@@ -111,6 +111,7 @@ namespace Ensembles.Shell {
                 }
             });
             synthesizer = new Ensembles.Core.Synthesizer (sf_loc);
+            main_keyboard.connect_synthesizer (synthesizer);
             style_player = new Ensembles.Core.StylePlayer ();
 
             style_discovery = new Ensembles.Core.StyleDiscovery ();
