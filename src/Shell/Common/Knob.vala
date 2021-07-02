@@ -71,6 +71,13 @@ namespace Ensembles.Shell {
             change_value ((value - 27.0) / 15.0);
         }
 
+        public void set_value (double _value) {
+            value = 15 * _value + 27;
+            double px = RADIUS * GLib.Math.cos (value/(Math.PI));
+            double py = RADIUS * GLib.Math.sin (value/(Math.PI));
+            fixed.move (knob_socket_graphic, (int)(px + center), (int)(py + center));
+        }
+
         public bool handle_event (Gdk.Event event) {
             //  if (event.type == Gdk.EventType.ENTER_NOTIFY) {
             //      set_cursor_from_name ("ew-resize");

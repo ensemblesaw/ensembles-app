@@ -160,6 +160,20 @@
     }
 }
 
+.knob-super-assignable > .knob-cover-graphic {
+    animation: knob_super_assign_pulse 1s linear infinite;
+}
+
+.knob-super-controlled > .knob-cover-graphic {
+    border: 1px solid @accent_color;
+}
+
+@keyframes knob_super_assign_pulse {
+    50% {
+        border: 1px solid @accent_color;
+    }
+}
+
 .display-bottom-panel-header {
     font-size: 10px;
     font-weight: bold;
