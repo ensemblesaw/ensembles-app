@@ -18,12 +18,6 @@ modules:
       - type: git
         url: https://github.com/elementary/granite.git
 
-  # - name: fluidsynth
-  #   buildsystem: cmake
-  #   sources:
-  #     - type: git
-  #       url: https://github.com/FluidSynth/fluidsynth.git
-
   - name: fluidsynth
     buildsystem: cmake-ninja
     config-opts:
@@ -52,7 +46,6 @@ modules:
       - -DCMAKE_ARCHIVE_OUTPUT_DIRECTORY=/app/lib
       - -DCMAKE_RUNTIME_OUTPUT_DIRECTORY=/app/bin
     post-install:
-      # MuseScore looks for this name for some reason
       - ln -s libportmidi.so /app/lib/libporttime.so
     sources:
       - type: archive
@@ -72,3 +65,11 @@ modules:
     sources:
       - type: dir
         path: .
+  
+  - name: ensemblesGMSoundfonts
+    buildsystem: meson
+    sources:
+      - type: archive
+        url: https://github.com/SubhadeepJasu/Ensembles/releases/download/v0.0.1/SoundFonts.tar.gz
+        sha256: 5c62b7fd42379e95b7831104e1d62f4300942ba9e8ecc7c831132926ae392f7e
+        strip-components: 0

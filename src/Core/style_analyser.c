@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include "central_bus.h"
 
 int time_stamps[14];
 int time_stamp_index;
@@ -58,8 +57,8 @@ style_analyser (char* style) {
                     subbuff[length - index_tempo] = '\0';
                     tempo = atoi (subbuff);
                     if (tempo > 30) {
-                        central_tempo = tempo;
-                        central_loaded_tempo = tempo;
+                        set_central_tempo (tempo);
+                        set_central_loaded_tempo (tempo);
                     }
                 }
                 int chord_type = 0;
@@ -71,7 +70,7 @@ style_analyser (char* style) {
                     memcpy (subbuff, &string[index_chord_type + 1], length - index_chord_type );
                     subbuff[length - index_chord_type] = '\0';
                     chord_type = atoi (subbuff);
-                    central_style_original_chord_type = chord_type;
+                    set_central_style_original_chord_type (chord_type);
                 }
                 time_stamps[time_stamp_index++] = (int)(ticks/2);
                 //printf ("%s %d %d\n", string, ticks, central_loaded_tempo);
@@ -89,8 +88,8 @@ style_analyser (char* style) {
             // }
         }
     }
-    loaded_style_time_stamps = time_stamps;
-    return central_loaded_tempo;
+    set_loaded_style_time_stamps (time_stamps);
+    return get_central_loaded_tempo ();
 }
 
 int

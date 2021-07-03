@@ -13,9 +13,7 @@ fluid_audio_driver_t* realtime_adriver;
 
 
 // Accompaniment Flags
-int central_accompaniment_mode = 0;
 int32_t accompaniment_mode = 0;
-central_split_key = 54;
 
 // Voice Settings
 int realtime_synth_sf_id = 0;
@@ -344,7 +342,7 @@ handle_events_for_styles (fluid_midi_event_t *event) {
             }
         }
     }
-    if (chan != 9 && central_accompaniment_mode == 0 && type == 144) {
+    if (chan != 9 && get_central_accompaniment_mode () == 0 && type == 144) {
         return 0;
     } 
     if (type == 144) {
@@ -359,13 +357,13 @@ handle_events_for_styles (fluid_midi_event_t *event) {
 
 int
 synthesizer_send_notes (int key, int on, int velocity, int* type) {
-    if (central_accompaniment_mode > 0) {
+    if (get_central_accompaniment_mode () > 0) {
         if (accompaniment_mode == 0) {
-            if (key <= central_split_key) {
+            if (key <= get_central_split_key ()) {
                 int chrd_type = 0;
                 int chrd_main = chord_finder_infer (key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0), on, &chrd_type);
                 *type = chrd_type;
-                if (central_style_looping == 0 && central_style_sync_start == 0 && on == 144) {
+                if (get_central_style_looping() == 0 && get_central_style_sync_start() == 0 && on == 144) {
                     fluid_synth_all_notes_off (realtime_synth, 4);
                     fluid_synth_cc (realtime_synth, 3, 91, 0);
                     fluid_synth_cc (realtime_synth, 4, 91, 0);
@@ -384,8 +382,8 @@ synthesizer_send_notes (int key, int on, int velocity, int* type) {
             }
         }
         
-    } else if (central_split_on > 0) {
-        if (key <= central_split_key) {
+    } else if (get_central_split_on () > 0) {
+        if (key <= get_central_split_key ()) {
             if (on == 144) {
                 fluid_synth_noteon (realtime_synth, 2, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0), velocity);
                 voice_velocity_buffer[2] = velocity;
@@ -403,7 +401,7 @@ synthesizer_send_notes (int key, int on, int velocity, int* type) {
         fluid_synth_noteoff (realtime_synth, 0, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0));
         voice_velocity_buffer[0] = 0;
     }
-    if (central_layer_on > 0) {
+    if (get_central_layer_on () > 0) {
         if (on == 144) {
             fluid_synth_noteon (realtime_synth, 1, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0), velocity);
             voice_velocity_buffer[1] = velocity;
@@ -440,5 +438,5 @@ synthesizer_halt_notes () {
 
 
 void synthesizer_set_accomp_enable (int on) {
-    central_accompaniment_mode = on;
+    set_central_accompaniment_mode (on);
 }

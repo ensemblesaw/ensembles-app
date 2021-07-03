@@ -1,8 +1,9 @@
 #include <fluidsynth.h>
 #include <gtk/gtk.h>
 #include <glib.h>
-#include "central_bus.h"
 #include <string.h>
+
+#include "central_bus.h"
 
 // None of this will be used to actual rendering //////////
 fluid_settings_t* settings;
@@ -86,24 +87,24 @@ style_player_change_chord (int cd_main, int cd_type) {
         chord_type = cd_type;
         chord_change_0 = 1;
     }
-    measure_length = loaded_style_time_stamps[1];
-    if (central_style_sync_start == 1) {
-        central_style_sync_start = 0;
-        if (central_style_looping == 0) {
+    measure_length = get_loaded_style_time_stamps_by_index (1);
+    if (get_central_style_sync_start () == 1) {
+        set_central_style_sync_start (0);
+        if (get_central_style_looping () == 0) {
             if (start_s == 0) {
                 start_s = 3;
                 end_s = 4;
                 start_temp = start_s;
                 end_temp = end_s;
             }
-            loop_start_tick = loaded_style_time_stamps[start_s];
-            loop_end_tick = loaded_style_time_stamps[end_s];
+            loop_start_tick = get_loaded_style_time_stamps_by_index (start_s);
+            loop_end_tick = get_loaded_style_time_stamps_by_index (end_s);
             fluid_player_seek (player, loop_start_tick);
             printf ("Start central_style_looping\n");
             fluid_player_play(player);
-            central_style_looping = 1;
+            set_central_style_looping (1);
         }
-        central_clock = 0;
+        set_central_clock (0);
         sync_stop = 0;
     }
     //printf("%d\n", chord_main);
@@ -111,7 +112,7 @@ style_player_change_chord (int cd_main, int cd_type) {
 
 int
 get_chord_modified_key (key) {
-    if (central_style_original_chord_type == 0) {
+    if (get_central_style_original_chord_type () == 0) {
         if (chord_type == 0) {
             return key + chord_main;
         } else {
@@ -121,7 +122,7 @@ get_chord_modified_key (key) {
                 return (key + chord_main);
             }
         }
-    } else if (central_style_original_chord_type == 1) {
+    } else if (get_central_style_original_chord_type () == 1) {
         if (chord_type == 1) {
             return (key + chord_main);
         } else {
@@ -255,41 +256,41 @@ parse_ticks (void* data, int ticks) {
         }
     }
     //printf (">>> %d\n", (ticks - loop_start_tick) % measure_length);
-    if (central_clock == 0 && ((ticks - loop_start_tick) % measure_length) <= 1) {
-        central_clock = 1;
+    if (get_central_clock () == 0 && ((ticks - loop_start_tick) % measure_length) <= 1) {
+        set_central_clock (1);
         fill_queue = 0;
         fill_in = 0;
-        central_style_section = start_s;
-        if (loop_start_tick != loaded_style_time_stamps[start_s]) {
-            loop_start_tick = loaded_style_time_stamps[start_s];
-            loop_end_tick = loaded_style_time_stamps[end_s];
+        set_central_style_section (start_s);
+        if (loop_start_tick != get_loaded_style_time_stamps_by_index (start_s)) {
+            loop_start_tick = get_loaded_style_time_stamps_by_index (start_s);
+            loop_end_tick = get_loaded_style_time_stamps_by_index (end_s);
             synthesizer_halt_notes ();
             return fluid_player_seek (player, loop_start_tick);
         }
-        if (central_style_looping == 1) {
+        if (get_central_style_looping () == 1) {
             if (ticks >= loop_end_tick && fill_in == 0) {
-                central_style_section = start_s;
+                set_central_style_section (start_s);
                 if (intro_playing == 1) {
                     start_s = start_temp;
                     end_s = end_temp;
                     intro_playing = 0;
-                    loop_start_tick = loaded_style_time_stamps[start_s];
-                    loop_end_tick = loaded_style_time_stamps[end_s];
+                    loop_start_tick = get_loaded_style_time_stamps_by_index(start_s);
+                    loop_end_tick = get_loaded_style_time_stamps_by_index(end_s);
                     synthesizer_halt_notes ();
-                    central_style_section = start_s;
+                    set_central_style_section (start_s);
                     return fluid_player_seek (player, loop_start_tick);
                 } else if (sync_stop) {
                     fluid_player_stop (player);
-                    central_halt = 1;
+                    set_central_halt (1);
                     start_s = start_temp;
                     end_s = end_temp;
-                    central_style_looping = 0;
+                    set_central_style_looping (0);
                     intro_playing = 0;
                     fill_in = 0;
                     fill_queue = 0;
                     sync_stop = 0;
-                    central_style_section = 0;
-                    central_measure = 0;
+                    set_central_style_section (0);
+                    set_central_measure (0);
                     synthesizer_halt_notes ();
                 }
                 breaking = 0;
@@ -305,7 +306,7 @@ parse_ticks (void* data, int ticks) {
 
 void
 style_player_init () {
-    central_style_looping = 0;
+    set_central_style_looping (0);
     settings = new_fluid_settings();
     synth = new_fluid_synth(settings);
     adriver = new_fluid_audio_driver(settings, synth);
@@ -315,7 +316,7 @@ void*
 queue_style_file_change (int use_previous_tempo) {
     printf("changing...to %s\n", style_player_style_path);
     int previous_tempo = -1;
-    if (central_style_looping) {
+    if (get_central_style_looping ()) {
         previous_tempo = fluid_player_get_midi_tempo (player);
         style_player_sync_stop ();
         fluid_player_join (player);
@@ -342,18 +343,18 @@ queue_style_file_change (int use_previous_tempo) {
     }
     if (previous_tempo != -1 || use_previous_tempo) {
         fluid_player_set_tempo (player, FLUID_PLAYER_TEMPO_EXTERNAL_MIDI, (double)previous_tempo);
-        central_loaded_tempo = previous_tempo / 3840;
+        set_central_loaded_tempo (previous_tempo / 3840);
         printf("%d >>>>\n", previous_tempo);
     }
     if (changing_style) {
         changing_style = 0;
-        loop_start_tick = loaded_style_time_stamps[start_s];
-        loop_end_tick = loaded_style_time_stamps[end_s];
+        loop_start_tick = get_loaded_style_time_stamps_by_index(start_s);
+        loop_end_tick = get_loaded_style_time_stamps_by_index(end_s);
         fluid_player_seek (player, loop_start_tick);
         printf ("Restart player with new style\n");
         fluid_player_play(player);
-        central_style_looping = 1;
-        central_clock = 0;
+        set_central_style_looping (1) ;
+        set_central_clock (0);
         sync_stop = 0;
         printf ("d:\n");
     }
@@ -393,17 +394,17 @@ style_player_destruct () {
 void
 style_player_play_loop (int start, int end) {
     /* play the midi files, if any */
-    measure_length = loaded_style_time_stamps[1];
+    measure_length = get_loaded_style_time_stamps_by_index(1);
     start_s = start;
     end_s = end;
     start_temp = start_s;
     end_temp = end_s;
-    if (central_style_looping == 0) {
-        loop_start_tick = loaded_style_time_stamps[start];
-        loop_end_tick = loaded_style_time_stamps[end];
+    if (get_central_style_looping () == 0) {
+        loop_start_tick = get_loaded_style_time_stamps_by_index(start);
+        loop_end_tick = get_loaded_style_time_stamps_by_index(end);
         printf("Queuing...%d -> %d\n", loop_start_tick, loop_end_tick);
     } else {
-        if (loop_start_tick == loaded_style_time_stamps[start_s]) {
+        if (loop_start_tick == get_loaded_style_time_stamps_by_index(start_s)) {
             if (fill_in == 0) {
                 fill_queue = 1;
             }
@@ -419,35 +420,35 @@ style_player_play_loop (int start, int end) {
 
 void
 style_player_play () {
-    measure_length = loaded_style_time_stamps[1];
-    if (central_style_looping == 0) {
+    measure_length = get_loaded_style_time_stamps_by_index(1);
+    if (get_central_style_looping () == 0) {
         if (start_s == 0) {
             start_s = 3;
             end_s = 4;
             start_temp = start_s;
             end_temp = end_s;
         }
-        loop_start_tick = loaded_style_time_stamps[start_s];
-        loop_end_tick = loaded_style_time_stamps[end_s];
+        loop_start_tick = get_loaded_style_time_stamps_by_index(start_s);
+        loop_end_tick = get_loaded_style_time_stamps_by_index(end_s);
         fluid_player_seek (player, loop_start_tick);
         printf ("Start central_style_looping\n");
         fluid_player_play(player);
-        central_style_looping = 1;
+        set_central_style_looping (1);
     } else {
         if (fluid_player_get_status (player) == FLUID_PLAYER_PLAYING) {
             printf ("Stop central_style_looping\n");
             fluid_player_stop (player);
-            central_halt = 1;
-            central_style_looping = 0;
+            set_central_halt (1);
+            set_central_style_looping (0);
             intro_playing = 0;
             fill_in = 0;
             fill_queue = 0;
-            central_style_section = 0;
-            central_measure = 0;
+            set_central_style_section (0);
+            set_central_measure (0);
             synthesizer_halt_notes ();
         }
     }
-    central_clock = 0;
+    set_central_clock (0);
     sync_stop = 0;
 }
 
@@ -487,5 +488,5 @@ style_player_sync_stop () {
 
 void
 style_player_sync_start () {
-    central_style_sync_start = 1;
+    set_central_style_sync_start (1);
 }
