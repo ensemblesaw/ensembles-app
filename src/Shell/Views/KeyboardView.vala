@@ -95,7 +95,7 @@ namespace Ensembles.Shell {
                 _synth.send_notes_realtime (index + 72, on ? 144 : 128, 100);
             });
             octaves[4].note_activate.connect ((index, on) => {
-                _synth.send_notes_realtime (index + 108, on ? 144 : 128, 100);
+                _synth.send_notes_realtime (index + 84, on ? 144 : 128, 100);
             });
         }
 

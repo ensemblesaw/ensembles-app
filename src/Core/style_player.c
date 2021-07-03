@@ -349,7 +349,7 @@ queue_style_file_change (int use_previous_tempo) {
     printf("changing...to %s\n", style_player_style_path);
     int previous_tempo = -1;
     if (get_central_style_looping ()) {
-        previous_tempo = fluid_player_get_midi_tempo (player);
+        previous_tempo = fluid_player_get_bpm (player);
         style_player_sync_stop ();
         fluid_player_join (player);
         changing_style = 1;
@@ -358,7 +358,7 @@ queue_style_file_change (int use_previous_tempo) {
         printf ("e:\n");
     }
     if (use_previous_tempo) {
-        previous_tempo = fluid_player_get_midi_tempo (player);
+        previous_tempo = fluid_player_get_bpm (player);
     }
     if (player) {
         printf ("b:\n");
@@ -374,8 +374,8 @@ queue_style_file_change (int use_previous_tempo) {
         fluid_player_add(player, style_player_style_path);
     }
     if (previous_tempo != -1 || use_previous_tempo) {
-        fluid_player_set_tempo (player, FLUID_PLAYER_TEMPO_EXTERNAL_MIDI, (double)previous_tempo);
-        set_central_loaded_tempo (previous_tempo / 3840);
+        fluid_player_set_tempo (player, FLUID_PLAYER_TEMPO_EXTERNAL_BPM, (double)previous_tempo);
+        set_central_loaded_tempo (previous_tempo);
         printf("%d >>>>\n", previous_tempo);
     }
     if (changing_style) {
