@@ -13,7 +13,12 @@ namespace Ensembles.Shell {
         }
 
         void make_ui () {
-            var header_logo = new Gdk.Pixbuf.from_resource ("/com/github/subhadeepjasu/ensembles/images/ensembles_logo.svg");
+            Gdk.Pixbuf header_logo = new Gdk.Pixbuf (Gdk.Colorspace.RGB, true, 8, 2, 2);
+            try {
+                header_logo = new Gdk.Pixbuf.from_resource ("/com/github/subhadeepjasu/ensembles/images/ensembles_logo.svg");
+            } catch (Error e) {
+                warning (e.message);
+            }
             header_logo = header_logo.scale_simple (256, 59, Gdk.InterpType.BILINEAR);
 
             var subheader = new Gtk.Label ("v1.0.0");
@@ -30,7 +35,7 @@ namespace Ensembles.Shell {
             var device_input_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
             var device_list_header = new Gtk.Label ("Midi Input");
             device_list_header.halign = Gtk.Align.START;
-            device_list_header.margin_left = 8;
+            device_list_header.margin_start = 8;
             device_list_header.get_style_context ().add_class ("h4");
             var device_monitor_toggle = new Gtk.Switch ();
             device_monitor_toggle.halign = Gtk.Align.END;
@@ -68,7 +73,8 @@ namespace Ensembles.Shell {
         void deselect_all_devices () {
             var items = device_list_box.get_children ();
             foreach (var item in items) {
-                (item as DeviceItem).radio.set_active (false);
+                if (item != null)
+                    (item as DeviceItem).radio.set_active (false);
             }
         }
 

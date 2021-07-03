@@ -19,8 +19,7 @@ controller_init () {
 
 void
 controller_query_device_info (int id) {
-    int number_of_devices = Pm_CountDevices ();
-    PmDeviceInfo* device = Pm_GetDeviceInfo (id);
+    const PmDeviceInfo* device = Pm_GetDeviceInfo (id);
     if (device->input > 0) {
         controller_input_device_available = 1;
     }

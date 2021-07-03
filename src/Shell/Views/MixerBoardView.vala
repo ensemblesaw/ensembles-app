@@ -11,7 +11,6 @@ namespace Ensembles.Shell {
 
         bool watch;
 
-        public signal void change_gain (int synth_index, int channel, int value);
         public MixerBoardView () {
             halign = Gtk.Align.CENTER;
             int i = 0;            
@@ -85,7 +84,11 @@ namespace Ensembles.Shell {
             new Thread<int> ("synth_gain_watch", synth_gain_watch);
         }
 
-        void connect_unlock_buttons () {
+        private void change_gain (int synth_index, int channel, int value) {
+            Ensembles.Core.Synthesizer.set_modulator_value (synth_index, channel, 7, value);
+        }
+
+        private void connect_unlock_buttons () {
             lock_buttons[0].clicked.connect (() => {
                 Ensembles.Core.Synthesizer.lock_gain (0);
                 lock_buttons[0].sensitive = false;
@@ -168,7 +171,7 @@ namespace Ensembles.Shell {
             });
         }
 
-        void connect_style_sliders () {
+        private void connect_style_sliders () {
             style_gain_sliders[0].change_value.connect ((scroll, value) => {
                 if (value >= 0) {
                     change_gain (1, 0, (int)(value * 127));

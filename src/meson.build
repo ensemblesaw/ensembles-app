@@ -53,6 +53,7 @@ ensembles_sources_vala = files (
 
 ensembles_sources_c = files (
     'Core/central_bus.c',
+    'Core/synthesizer_settings.c',
     'Core/synthesizer.c',
     'Core/controller.c',
     'Core/style_player.c',

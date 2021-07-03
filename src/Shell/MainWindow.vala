@@ -236,9 +236,6 @@ namespace Ensembles.Shell {
             voice_category_panel.voice_quick_select.connect ((index) => {
                 main_display_unit.quick_select_voice (detected_voice_indices[index]);
             });
-            mixer_board_view.change_gain.connect ((synth_index, channel, value) => {
-                synthesizer.set_modulator_value (synth_index, channel, 7, value);
-            });
             main_display_unit.channel_mod_screen.broadcast_assignment.connect (slider_board.send_modulator);
             slider_board.send_assignable_mode.connect (main_display_unit.channel_mod_screen.set_assignable);
             print("Initialized...\n");

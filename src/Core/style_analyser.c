@@ -1,4 +1,8 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "style_analyser.h"
+#include "central_bus.h"
 
 int time_stamps[14];
 int time_stamp_index;
@@ -14,7 +18,7 @@ int time_stamp_index;
 // 	return r;
 // }
 
-void*
+int
 style_analyser (char* style) {
     FILE *fp;
     char *buffer;
@@ -26,7 +30,9 @@ style_analyser (char* style) {
     rewind (fp);
 
     buffer = (char *)malloc(filelen * sizeof (char));
-    fread(buffer, filelen, 1, fp);
+    if (fread(buffer, filelen, 1, fp) == 0) {
+        printf ("Error: Invalid style\n");
+    }
     fclose(fp);
 
     for (long i = 0; i < filelen; i++) {
@@ -95,7 +101,5 @@ style_analyser (char* style) {
 int
 style_analyser_analyze (char* mid_file) {
     time_stamp_index = 0;
-    // pthread_t thread_id;
-    // pthread_create(&thread_id, NULL, style_analyser, mid_file);
     return style_analyser (mid_file);
 }

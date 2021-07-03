@@ -5,7 +5,6 @@ namespace Ensembles.Core {
         // Bus access for shell
         int style_section = 0;
         int loaded_tempo = 10;
-        int measure = 0;
 
 
         // System Ready Messages

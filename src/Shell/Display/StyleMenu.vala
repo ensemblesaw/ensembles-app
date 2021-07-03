@@ -14,7 +14,7 @@ namespace Ensembles.Shell {
             this.get_style_context ().add_class ("menu-background");
 
             close_button = new Gtk.Button.from_icon_name ("application-exit-symbolic", Gtk.IconSize.BUTTON);
-            close_button.margin_right = 4;
+            close_button.margin_end = 4;
             close_button.halign = Gtk.Align.END;
 
 

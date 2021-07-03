@@ -113,7 +113,7 @@ namespace Ensembles.Shell {
                 Ensembles.Core.CentralBus.set_split_on (active);
                 update_split ();
             });
-            main_dial.activate.connect (() => {
+            main_dial.activate_clicked.connect (() => {
                 dial_activate ();
             });
             main_dial.rotate.connect ((direction, amount) => {

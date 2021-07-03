@@ -97,13 +97,12 @@ namespace Ensembles.Shell {
             }
         }
 
-        public async void halt () {
+        public void halt () {
             halt_ack = true;
             Timeout.add (60000/(tempo * 2), () => {
                 halt_ack = false;
                 return false;
             });
-            yield;
         }
 
         void pulse_0 () {

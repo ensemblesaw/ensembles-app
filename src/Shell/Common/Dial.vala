@@ -15,7 +15,7 @@ namespace Ensembles.Shell {
         Gtk.Grid dial_light_graphics;
 
         public signal void rotate (bool direction, int amount);
-        public signal void activate ();
+        public signal void activate_clicked ();
         private const double RADIUS = 20;
 
         public Dial () {
@@ -89,7 +89,7 @@ namespace Ensembles.Shell {
             activate_button.get_style_context ().add_class ("rounded");
             activate_button.get_style_context ().remove_class ("image-button");
             activate_button.clicked.connect (() => {
-                activate ();
+                activate_clicked ();
             });
 
 

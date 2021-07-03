@@ -28,31 +28,35 @@ namespace Ensembles.Core {
         }
 
         public void find_styles () {
-            Dir dir = Dir.open (in_built_style_path, 0);
-            string? name = null;
-            while ((name = dir.read_name ()) != null) {
-                string path = Path.build_filename (in_built_style_path, name);
-                if (path.contains (".enstl")) {
-                    style_files.append (path);
-                    path = path.replace (in_built_style_path + "/", "");
-                    path = path.replace (".enstl", "");
-                    var temp = path.split ("@");
-                    style_names.append (temp[1].replace ("_", " "));
-                    style_genre.append (temp[0].replace ("_", " "));
+            try {
+                Dir dir = Dir.open (in_built_style_path, 0);
+                string? name = null;
+                while ((name = dir.read_name ()) != null) {
+                    string path = Path.build_filename (in_built_style_path, name);
+                    if (path.contains (".enstl")) {
+                        style_files.append (path);
+                        path = path.replace (in_built_style_path + "/", "");
+                        path = path.replace (".enstl", "");
+                        var temp = path.split ("@");
+                        style_names.append (temp[1].replace ("_", " "));
+                        style_genre.append (temp[0].replace ("_", " "));
+                    }
                 }
-            }
-            dir = Dir.open (user_style_path, 0);
-            name = null;
-            while ((name = dir.read_name ()) != null) {
-                string path = Path.build_filename (user_style_path, name);
-                if (path.contains (".enstl")) {
-                    style_files.append (path);
-                    path = path.replace (user_style_path + "/", "");
-                    path = path.replace (".enstl", "");
-                    var temp = path.split ("@");
-                    style_names.append (temp[1].replace ("_", " "));
-                    style_genre.append (temp[0].replace ("_", " "));
+                dir = Dir.open (user_style_path, 0);
+                name = null;
+                while ((name = dir.read_name ()) != null) {
+                    string path = Path.build_filename (user_style_path, name);
+                    if (path.contains (".enstl")) {
+                        style_files.append (path);
+                        path = path.replace (user_style_path + "/", "");
+                        path = path.replace (".enstl", "");
+                        var temp = path.split ("@");
+                        style_names.append (temp[1].replace ("_", " "));
+                        style_genre.append (temp[0].replace ("_", " "));
+                    }
                 }
+            } catch (FileError e) {
+                warning (e.message);
             }
         }
 

@@ -3,7 +3,6 @@ namespace Ensembles.Shell {
         Gtk.Button[] pads;
         Gtk.Button assign_button;
         Gtk.Button stop_button;
-        Gtk.SpinButton bank_select;
         public MultipadView () {
             var header = new Gtk.Label ("MULTIPAD VARIABLES");
             header.valign = Gtk.Align.CENTER;

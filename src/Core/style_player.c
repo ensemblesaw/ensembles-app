@@ -3,7 +3,9 @@
 #include <glib.h>
 #include <string.h>
 
+#include "style_analyser.h"
 #include "central_bus.h"
+#include "synthesizer.h"
 
 // None of this will be used to actual rendering //////////
 fluid_settings_t* settings;
@@ -111,7 +113,7 @@ style_player_change_chord (int cd_main, int cd_type) {
 }
 
 int
-get_chord_modified_key (key) {
+get_chord_modified_key (int key) {
     if (get_central_style_original_chord_type () == 0) {
         if (chord_type == 0) {
             return key + chord_main;
@@ -133,6 +135,7 @@ get_chord_modified_key (key) {
             }
         }
     }
+    return 0;
 }
 
 int
@@ -312,7 +315,17 @@ style_player_init () {
     adriver = new_fluid_audio_driver(settings, synth);
 }
 
-void*
+void
+style_player_sync_stop () {
+    sync_stop = 1;
+}
+
+void
+style_player_sync_start () {
+    set_central_style_sync_start (1);
+}
+
+GThreadFunc
 queue_style_file_change (int use_previous_tempo) {
     printf("changing...to %s\n", style_player_style_path);
     int previous_tempo = -1;
@@ -479,14 +492,4 @@ style_player_queue_ending (int start, int end) {
 void
 style_player_break () {
     breaking = 1;
-}
-
-void
-style_player_sync_stop () {
-    sync_stop = 1;
-}
-
-void
-style_player_sync_start () {
-    set_central_style_sync_start (1);
 }
