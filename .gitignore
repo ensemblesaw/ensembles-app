@@ -2,7 +2,7 @@ build
 _build
 .vscode
 .flatpak-builder
-.tar.gz
+*.tar.gz
 null.d
 ~*
 *~
