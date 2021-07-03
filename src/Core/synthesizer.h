@@ -17,19 +17,19 @@
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
  */
 
-namespace Ensembles.Core { 
-    public class Voice : Object {
-        public int index;
-        public int bank;
-        public int preset;
-        public string name;
-        public string category;
-        public Voice (int index, int bank, int preset, string name, string category) {
-            this.index = index;
-            this.bank = bank;
-            this.preset = preset;
-            this.name = name;
-            this.category = category;
-        }
-    }
-}
+
+#ifndef SYNTHESIZER_H
+#define SYNTHESIZER_H
+
+#include <fluidsynth.h>
+
+/** This function is used to receive midi events from style_player
+ */
+int handle_events_for_styles (fluid_midi_event_t *event);
+
+/** This function is used to stop all synthesizer sounds for styles
+ * except channel 10 i.e. drums
+ */
+void synthesizer_halt_notes ();
+
+#endif /* SYNTHESIZER_H */

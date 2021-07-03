@@ -1,3 +1,22 @@
+/*-
+ * Copyright (c) 2021-2022 Subhadeep Jasu <subhajasu@gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License 
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
+ */
+
 namespace Ensembles.Shell { 
     public class MixerBoardView : Gtk.Grid {
         Gtk.Scale[] style_gain_sliders;
@@ -11,7 +30,6 @@ namespace Ensembles.Shell {
 
         bool watch;
 
-        public signal void change_gain (int synth_index, int channel, int value);
         public MixerBoardView () {
             halign = Gtk.Align.CENTER;
             int i = 0;            
@@ -85,7 +103,11 @@ namespace Ensembles.Shell {
             new Thread<int> ("synth_gain_watch", synth_gain_watch);
         }
 
-        void connect_unlock_buttons () {
+        private void change_gain (int synth_index, int channel, int value) {
+            Ensembles.Core.Synthesizer.set_modulator_value (synth_index, channel, 7, value);
+        }
+
+        private void connect_unlock_buttons () {
             lock_buttons[0].clicked.connect (() => {
                 Ensembles.Core.Synthesizer.lock_gain (0);
                 lock_buttons[0].sensitive = false;
@@ -168,7 +190,7 @@ namespace Ensembles.Shell {
             });
         }
 
-        void connect_style_sliders () {
+        private void connect_style_sliders () {
             style_gain_sliders[0].change_value.connect ((scroll, value) => {
                 if (value >= 0) {
                     change_gain (1, 0, (int)(value * 127));

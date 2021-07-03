@@ -1,4 +1,26 @@
+/*-
+ * Copyright (c) 2021-2022 Subhadeep Jasu <subhajasu@gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License 
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
+ */
+
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "style_analyser.h"
 #include "central_bus.h"
 
 int time_stamps[14];
@@ -15,7 +37,7 @@ int time_stamp_index;
 // 	return r;
 // }
 
-void*
+int
 style_analyser (char* style) {
     FILE *fp;
     char *buffer;
@@ -27,7 +49,9 @@ style_analyser (char* style) {
     rewind (fp);
 
     buffer = (char *)malloc(filelen * sizeof (char));
-    fread(buffer, filelen, 1, fp);
+    if (fread(buffer, filelen, 1, fp) == 0) {
+        printf ("Error: Invalid style\n");
+    }
     fclose(fp);
 
     for (long i = 0; i < filelen; i++) {
@@ -58,8 +82,8 @@ style_analyser (char* style) {
                     subbuff[length - index_tempo] = '\0';
                     tempo = atoi (subbuff);
                     if (tempo > 30) {
-                        central_tempo = tempo;
-                        central_loaded_tempo = tempo;
+                        set_central_tempo (tempo);
+                        set_central_loaded_tempo (tempo);
                     }
                 }
                 int chord_type = 0;
@@ -71,7 +95,7 @@ style_analyser (char* style) {
                     memcpy (subbuff, &string[index_chord_type + 1], length - index_chord_type );
                     subbuff[length - index_chord_type] = '\0';
                     chord_type = atoi (subbuff);
-                    central_style_original_chord_type = chord_type;
+                    set_central_style_original_chord_type (chord_type);
                 }
                 time_stamps[time_stamp_index++] = (int)(ticks/2);
                 //printf ("%s %d %d\n", string, ticks, central_loaded_tempo);
@@ -89,14 +113,12 @@ style_analyser (char* style) {
             // }
         }
     }
-    loaded_style_time_stamps = time_stamps;
-    return central_loaded_tempo;
+    set_loaded_style_time_stamps (time_stamps);
+    return get_central_loaded_tempo ();
 }
 
 int
 style_analyser_analyze (char* mid_file) {
     time_stamp_index = 0;
-    // pthread_t thread_id;
-    // pthread_create(&thread_id, NULL, style_analyser, mid_file);
     return style_analyser (mid_file);
 }

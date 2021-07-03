@@ -1,7 +1,27 @@
+/*-
+ * Copyright (c) 2021-2022 Subhadeep Jasu <subhajasu@gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License 
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
+ */
+
 #include <fluidsynth.h>
 #include <gtk/gtk.h>
 #include "central_bus.h"
 #include "synthesizer_settings.h"
+#include "chord_finder.h"
 
 fluid_synth_t* style_synth;
 fluid_settings_t* style_synth_settings;
@@ -13,9 +33,7 @@ fluid_audio_driver_t* realtime_adriver;
 
 
 // Accompaniment Flags
-int central_accompaniment_mode = 0;
 int32_t accompaniment_mode = 0;
-central_split_key = 54;
 
 // Voice Settings
 int realtime_synth_sf_id = 0;
@@ -50,7 +68,7 @@ fx_function(void *data, int len,
             int nout, float **out) {
             
     struct fx_data_t *fx_data = (struct fx_data_t *) data;
-    int i, k;
+    int i;
 
  // DO NOT add Low Pass or reverb or chorus here. Add them as modulators in soundfont first
     if(fx == 0) {
@@ -88,45 +106,76 @@ fx_init () {
 void
 synthesizer_edit_master_reverb (int level) {
     fluid_synth_reverb_on (realtime_synth, -1, TRUE);
-    fluid_synth_set_reverb_group_roomsize (realtime_synth, -1, reverb_room_size[level]);
+    fluid_synth_set_reverb_group_roomsize (realtime_synth, -1, get_reverb_room_size(level));
     fluid_synth_set_reverb_group_damp (realtime_synth, -1, 0.1);
-    fluid_synth_set_reverb_group_width (realtime_synth, -1, reverb_width[level]);
-    fluid_synth_set_reverb_group_level (realtime_synth, -1, reverb_level[level]);
+    fluid_synth_set_reverb_group_width (realtime_synth, -1, get_reverb_width(level));
+    fluid_synth_set_reverb_group_level (realtime_synth, -1, get_reverb_level(level));
 
     fluid_synth_reverb_on (style_synth, -1, TRUE);
-    fluid_synth_set_reverb_group_roomsize (style_synth, -1, reverb_room_size[level]);
+    fluid_synth_set_reverb_group_roomsize (style_synth, -1, get_reverb_room_size(level));
     fluid_synth_set_reverb_group_damp (style_synth, -1, 0.1);
-    fluid_synth_set_reverb_group_width (style_synth, -1, reverb_width[level]);
-    fluid_synth_set_reverb_group_level (style_synth, -1, reverb_level[level]);
+    fluid_synth_set_reverb_group_width (style_synth, -1, get_reverb_width(level));
+    fluid_synth_set_reverb_group_level (style_synth, -1, get_reverb_level(level));
 }
 
 void
 synthesizer_edit_master_chorus (int level) {
     fluid_synth_chorus_on (realtime_synth, -1, TRUE);
-    fluid_synth_set_chorus_group_depth (realtime_synth, -1, chorus_depth[level]);
-    fluid_synth_set_chorus_group_level (realtime_synth, -1, chorus_level[level]);
-    fluid_synth_set_chorus_group_nr (realtime_synth, -1, chorus_nr[level]);
+    fluid_synth_set_chorus_group_depth (realtime_synth, -1, get_chorus_depth(level));
+    fluid_synth_set_chorus_group_level (realtime_synth, -1, get_chorus_level(level));
+    fluid_synth_set_chorus_group_nr (realtime_synth, -1, get_chorus_nr(level));
 
     fluid_synth_chorus_on (style_synth, -1, TRUE);
-    fluid_synth_set_chorus_group_depth (style_synth, -1, chorus_depth[level]);
-    fluid_synth_set_chorus_group_level (style_synth, -1, chorus_level[level]);
-    fluid_synth_set_chorus_group_nr (style_synth, -1, chorus_nr[level]);
+    fluid_synth_set_chorus_group_depth (style_synth, -1, get_chorus_depth(level));
+    fluid_synth_set_chorus_group_level (style_synth, -1, get_chorus_level(level));
+    fluid_synth_set_chorus_group_nr (style_synth, -1, get_chorus_nr(level));
+}
+
+void
+synthesizer_set_defaults () {
+    // Global reverb and chorus levels
+    synthesizer_edit_master_reverb (5);
+    synthesizer_edit_master_chorus (1);
+
+    // CutOff for Realtime synth
+    fluid_synth_cc (realtime_synth, 0, 74, 40);
+    fluid_synth_cc (realtime_synth, 1, 74, 0);
+    fluid_synth_cc (realtime_synth, 2, 74, 0);
+
+    // Reverb and Chorus ro R1 voice
+    fluid_synth_cc (realtime_synth, 0, 91, 4);
+    fluid_synth_cc (realtime_synth, 0, 93, 1);
+
+    // Default gain for Realtime synth
+    fluid_synth_cc (realtime_synth, 0, 7, 100);
+    fluid_synth_cc (realtime_synth, 1, 7, 90);
+    fluid_synth_cc (realtime_synth, 2, 7, 80);
+    
+
+    // Default pitch of all synths
+    for (int i = 0; i < 8; i++) {
+        fluid_synth_cc (realtime_synth, i, 3, 64);
+    }
+    for (int i = 0; i < 16; i++) {
+        fluid_synth_cc (style_synth, i, 3, 64);
+    }
 }
 
 void
 synthesizer_init (const gchar* loc) {
     style_synth_settings = new_fluid_settings();
-    fluid_settings_setstr(style_synth_settings, "audio.driver", "alsa");
+    fluid_settings_setstr(style_synth_settings, "audio.driver", "pulseaudio");
     fluid_settings_setint(style_synth_settings, "audio.periods", 16);
-    fluid_settings_setint(style_synth_settings, "audio.period-size", 64);
+    fluid_settings_setint(style_synth_settings, "audio.period-size", 1024);
     fluid_settings_setint(style_synth_settings, "audio.realtime-prio", 70);
     fluid_settings_setnum(style_synth_settings, "synth.gain", 2);
     fluid_settings_setnum(style_synth_settings, "synth.overflow.percussion", 5000.0);
     fluid_settings_setstr(style_synth_settings, "synth.midi-bank-select", "gs");
 
     realtime_synth_settings = new_fluid_settings();
-    fluid_settings_setstr(realtime_synth_settings, "audio.driver", "alsa");
+    fluid_settings_setstr(realtime_synth_settings, "audio.driver", "pulseaudio");
     fluid_settings_setint(realtime_synth_settings, "audio.periods", 8);
+    fluid_settings_setint(realtime_synth_settings, "audio.period-size", 1024);
     fluid_settings_setint(realtime_synth_settings, "audio.realtime-prio", 70);
     fluid_settings_setnum(realtime_synth_settings, "synth.gain", 2);
     fluid_settings_setstr(realtime_synth_settings, "synth.midi-bank-select", "gs");
@@ -155,34 +204,6 @@ synthesizer_init (const gchar* loc) {
 }
 
 void
-synthesizer_set_defaults () {
-    synthesizer_edit_master_reverb (5);
-    synthesizer_edit_master_chorus (1);
-    // CutOff for Realtime synth
-    fluid_synth_cc (realtime_synth, 0, 74, 40);
-    fluid_synth_cc (realtime_synth, 1, 74, 0);
-    fluid_synth_cc (realtime_synth, 2, 74, 0);
-
-    // Reverb and Chorus ro R1 voice
-    fluid_synth_cc (realtime_synth, 0, 91, 4);
-    fluid_synth_cc (realtime_synth, 0, 93, 1);
-
-    // Default gain for Realtime synth
-    fluid_synth_cc (realtime_synth, 0, 7, 100);
-    fluid_synth_cc (realtime_synth, 1, 7, 90);
-    fluid_synth_cc (realtime_synth, 2, 7, 80);
-    
-
-    // Default pitch of all synths
-    for (int i = 0; i < 8; i++) {
-        fluid_synth_cc (realtime_synth, i, 3, 64);
-    }
-    for (int i = 0; i < 16; i++) {
-        fluid_synth_cc (style_synth, i, 3, 64);
-    }
-}
-
-void
 synthesizer_change_voice (int bank, int preset, int channel) {
     fluid_synth_program_select (realtime_synth, channel, realtime_synth_sf_id, bank, preset);
 }
@@ -203,66 +224,6 @@ synthesizer_change_modulator (int synth_index, int channel, int modulator, int v
             set_mod_buffer_value (modulator, channel, value >= 0 ? value : 0);
         }
     }   
-}
-
-void
-set_gain_value (int channel, int value) {
-    gain_value[channel] = value;
-}
-
-void
-set_mod_buffer_value (int modulator, int channel, int value) {
-    switch (modulator)
-    {
-        case 1:
-        modulation_value[channel] = value;
-        break;
-        case 10:
-        pan_value[channel] = value;
-        break;
-        case 11:
-        expression_value[channel] = value;
-        break;
-        case 66:
-        pitch_value[channel] = value;
-        break;
-        case 71:
-        resonance_value[channel] = value;
-        break;
-        case 74:
-        cut_off_value[channel] = value;
-        break;
-        case 91:
-        reverb_value[channel] = value;
-        break;
-        case 93:
-        chorus_value[channel] = value;
-        break;
-    }
-}
-
-int
-get_mod_buffer_value (int modulator, int channel) {
-    switch (modulator)
-    {
-        case 1:
-        return modulation_value[channel];
-        case 10:
-        return pan_value[channel];
-        case 11:
-        return expression_value[channel];
-        case 66:
-        return pitch_value[channel];
-        case 71:
-        return resonance_value[channel];
-        case 74:
-        return cut_off_value[channel];
-        case 91:
-        return reverb_value[channel];
-        case 93:
-        return chorus_value[channel];
-    }
-    return -1;
 }
 
 int
@@ -326,8 +287,8 @@ handle_events_for_styles (fluid_midi_event_t *event) {
     // printf ("Value: %d\n", value);
     if (type == 176) {
         if (cont == 7) {
-            if (gain_value[chan] >= 0) {
-                fluid_midi_event_set_value (event, gain_value[chan]);
+            if (get_gain_value(chan) >= 0) {
+                fluid_midi_event_set_value (event, get_gain_value(chan));
             }
         }
         if (cont == 16) {
@@ -344,7 +305,7 @@ handle_events_for_styles (fluid_midi_event_t *event) {
             }
         }
     }
-    if (chan != 9 && central_accompaniment_mode == 0 && type == 144) {
+    if (chan != 9 && get_central_accompaniment_mode () == 0 && type == 144) {
         return 0;
     } 
     if (type == 144) {
@@ -359,13 +320,13 @@ handle_events_for_styles (fluid_midi_event_t *event) {
 
 int
 synthesizer_send_notes (int key, int on, int velocity, int* type) {
-    if (central_accompaniment_mode > 0) {
+    if (get_central_accompaniment_mode () > 0) {
         if (accompaniment_mode == 0) {
-            if (key <= central_split_key) {
+            if (key <= get_central_split_key ()) {
                 int chrd_type = 0;
                 int chrd_main = chord_finder_infer (key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0), on, &chrd_type);
                 *type = chrd_type;
-                if (central_style_looping == 0 && central_style_sync_start == 0 && on == 144) {
+                if (get_central_style_looping() == 0 && get_central_style_sync_start() == 0 && on == 144) {
                     fluid_synth_all_notes_off (realtime_synth, 4);
                     fluid_synth_cc (realtime_synth, 3, 91, 0);
                     fluid_synth_cc (realtime_synth, 4, 91, 0);
@@ -384,8 +345,8 @@ synthesizer_send_notes (int key, int on, int velocity, int* type) {
             }
         }
         
-    } else if (central_split_on > 0) {
-        if (key <= central_split_key) {
+    } else if (get_central_split_on () > 0) {
+        if (key <= get_central_split_key ()) {
             if (on == 144) {
                 fluid_synth_noteon (realtime_synth, 2, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0), velocity);
                 voice_velocity_buffer[2] = velocity;
@@ -403,7 +364,7 @@ synthesizer_send_notes (int key, int on, int velocity, int* type) {
         fluid_synth_noteoff (realtime_synth, 0, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0));
         voice_velocity_buffer[0] = 0;
     }
-    if (central_layer_on > 0) {
+    if (get_central_layer_on () > 0) {
         if (on == 144) {
             fluid_synth_noteon (realtime_synth, 1, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0), velocity);
             voice_velocity_buffer[1] = velocity;
@@ -440,5 +401,5 @@ synthesizer_halt_notes () {
 
 
 void synthesizer_set_accomp_enable (int on) {
-    central_accompaniment_mode = on;
+    set_central_accompaniment_mode (on);
 }

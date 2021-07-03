@@ -1,23 +1,62 @@
-// Reverb presets
+/*-
+ * Copyright (c) 2021-2022 Subhadeep Jasu <subhajasu@gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License 
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
+ */
 
-double reverb_room_size[11] = { 0.0, 0.1, 0.2, 0.3, 0.4, 0.4, 0.5, 0.5, 0.6, 0.6, 0.7};
-double reverb_width[11]     = { 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20 };
-double reverb_level[11]     = { 0, 1, 1, 1, 1, 1, 1, 0.8, 1, 0.7, 0.7 };
+#ifndef SYNTHESIZER_SETTINGS_H
+#define SYNTHESIZER_SETTINGS_H
+
+// Reverb presets
+/** Get reverb room size for given magnitude
+ */
+double get_reverb_room_size (int magnitude);
+/** Get reverb stereo width for given magnitude
+ */
+double get_reverb_width (int magnitude);
+/** Get reverb gain for given magnitude
+ */
+double get_reverb_level (int magnitude);
 
 // Chorus presets
-double chorus_depth[11] = {0, 1, 2, 3, 6, 10, 20, 25, 30, 35, 40 };
-double chorus_nr[11] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-double chorus_level[11] = { 0, 1, 2, 2, 2, 3, 4, 5, 6, 7, 8 };
+/** Get chorus depth for given magnitude
+ */
+double get_chorus_depth (int magnitude);
+/** Get number of chorus voices for given magnitude
+ */
+double get_chorus_nr (int magnitude);
+/** Get chorus gain for given magnitude
+ */
+double get_chorus_level (int magnitude);
 
+// Modulator buffers
+/** Get Gain value of style channel
+ */
+int get_gain_value (int channel);
 
-// Modulator values for style
-int gain_value[16] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
+/** Set Gain value of style channel
+ */
+void set_gain_value (int channel, int value);
 
-int pan_value[16] = { -65, -65, -65, -65, -65, -65, -65, -65, -65, -65, -65, -65, -65, -65, -65, -65 };
-int reverb_value[16] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
-int chorus_value[16] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
-int pitch_value[16] = { -65, -65, -65, -65, -65, -65, -65, -65, -65, -65, -65, -65, -65, -65, -65, -65 };
-int expression_value[16] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
-int modulation_value[16] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
-int cut_off_value[16] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
-int resonance_value[16] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
+/** Gets the modulator value of style channel by modulator number
+ */
+int get_mod_buffer_value (int modulator, int channel);
+
+/** Sets the modulator value of style channel by modulator number
+ */
+void set_mod_buffer_value (int modulator, int channel, int value);
+
+#endif /* SYNTHESIZER_SETTINGS_H */

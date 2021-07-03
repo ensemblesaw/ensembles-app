@@ -1,3 +1,22 @@
+/*-
+ * Copyright (c) 2021-2022 Subhadeep Jasu <subhajasu@gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License 
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
+ */
+
 namespace Ensembles.Shell { 
     public class Dial : Gtk.Overlay {
         public string tooltip;
@@ -15,7 +34,7 @@ namespace Ensembles.Shell {
         Gtk.Grid dial_light_graphics;
 
         public signal void rotate (bool direction, int amount);
-        public signal void activate ();
+        public signal void activate_clicked ();
         private const double RADIUS = 20;
 
         public Dial () {
@@ -89,7 +108,7 @@ namespace Ensembles.Shell {
             activate_button.get_style_context ().add_class ("rounded");
             activate_button.get_style_context ().remove_class ("image-button");
             activate_button.clicked.connect (() => {
-                activate ();
+                activate_clicked ();
             });
 
 

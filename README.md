@@ -17,7 +17,7 @@
 ## The main features:
 
 * Play any instrument from a selection of more than 200 in-built voices
-* 61-Key on-screen keyboard with mouse and touch support
+* 60-Key on-screen keyboard with mouse and touch support
 * Split Keyboard or Layer two voices for multiple voice playback
 * DSP (Digital Signal Processing) effects like filters, reverb and chorus
 * Assign knobs and sliders to multiple DSP effects along with a Master Knob which can be used to control multiple knobs and sliders

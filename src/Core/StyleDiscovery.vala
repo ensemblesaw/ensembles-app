@@ -1,3 +1,23 @@
+/*-
+ * Copyright (c) 2021-2022 Subhadeep Jasu <subhajasu@gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License 
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
+ */
+
+
 namespace Ensembles.Core { 
     public class StyleDiscovery {
         string in_built_style_path;
@@ -28,31 +48,35 @@ namespace Ensembles.Core {
         }
 
         public void find_styles () {
-            Dir dir = Dir.open (in_built_style_path, 0);
-            string? name = null;
-            while ((name = dir.read_name ()) != null) {
-                string path = Path.build_filename (in_built_style_path, name);
-                if (path.contains (".enstl")) {
-                    style_files.append (path);
-                    path = path.replace (in_built_style_path + "/", "");
-                    path = path.replace (".enstl", "");
-                    var temp = path.split ("@");
-                    style_names.append (temp[1].replace ("_", " "));
-                    style_genre.append (temp[0].replace ("_", " "));
+            try {
+                Dir dir = Dir.open (in_built_style_path, 0);
+                string? name = null;
+                while ((name = dir.read_name ()) != null) {
+                    string path = Path.build_filename (in_built_style_path, name);
+                    if (path.contains (".enstl")) {
+                        style_files.append (path);
+                        path = path.replace (in_built_style_path + "/", "");
+                        path = path.replace (".enstl", "");
+                        var temp = path.split ("@");
+                        style_names.append (temp[1].replace ("_", " "));
+                        style_genre.append (temp[0].replace ("_", " "));
+                    }
                 }
-            }
-            dir = Dir.open (user_style_path, 0);
-            name = null;
-            while ((name = dir.read_name ()) != null) {
-                string path = Path.build_filename (user_style_path, name);
-                if (path.contains (".enstl")) {
-                    style_files.append (path);
-                    path = path.replace (user_style_path + "/", "");
-                    path = path.replace (".enstl", "");
-                    var temp = path.split ("@");
-                    style_names.append (temp[1].replace ("_", " "));
-                    style_genre.append (temp[0].replace ("_", " "));
+                dir = Dir.open (user_style_path, 0);
+                name = null;
+                while ((name = dir.read_name ()) != null) {
+                    string path = Path.build_filename (user_style_path, name);
+                    if (path.contains (".enstl")) {
+                        style_files.append (path);
+                        path = path.replace (user_style_path + "/", "");
+                        path = path.replace (".enstl", "");
+                        var temp = path.split ("@");
+                        style_names.append (temp[1].replace ("_", " "));
+                        style_genre.append (temp[0].replace ("_", " "));
+                    }
                 }
+            } catch (FileError e) {
+                warning (e.message);
             }
         }
 

@@ -17,24 +17,13 @@
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
  */
 
-namespace Ensembles.Shell { 
-    public class SongControllerView : Gtk.Grid {
-        Gtk.Button prev_button;
-        Gtk.Button play_button;
-        Gtk.Button next_button;
 
-        public SongControllerView () {
-            prev_button = new Gtk.Button.from_icon_name ("media-skip-backward-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
-            play_button = new Gtk.Button.from_icon_name ("media-playback-start-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
-            next_button = new Gtk.Button.from_icon_name ("media-skip-forward-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
+#ifndef STYLE_ANALYSER_H
+#define STYLE_ANALYSER_H
 
-            attach (prev_button, 0, 0, 1, 1);
-            attach (play_button, 1, 0, 1, 1);
-            attach (next_button, 2, 0, 1, 1);
+/** This function is audit styles and fill the style specification buffers
+ * for use with style player and analysis
+ */
+int style_analyser_analyze (char* mid_file);
 
-            margin_end = 8;
-
-            this.show_all ();
-        }
-    }
-}
+#endif /* STYLE_ANALYSER_H */

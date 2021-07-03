@@ -1,6 +1,6 @@
 /*-
- * Copyright (c) 2018-2019 Subhadeep Jasu <subhajasu@gmail.com>
- * 
+ * Copyright (c) 2021-2022 Subhadeep Jasu <subhajasu@gmail.com>
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
  * License as published by the Free Software Foundation; either
@@ -14,13 +14,14 @@
  * You should have received a copy of the GNU General Public License 
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
- * Authored by: Subhadeep Jasu
+ * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
  */
 
+
 /**
- * Main method. Responsible for starting the {@code HemeraApp} class.
+ * Main method. Responsible for starting the {@code EnsemblesApp} class.
  *
- * @see Hemera.HemeraApp
+ * @see Ensembls.Shell.EnsemblesApp
  * @return {@code int}
  * @since 1.0.0
  */

@@ -52,9 +52,10 @@ ensembles_sources_vala = files (
 )
 
 ensembles_sources_c = files (
+    'Core/central_bus.c',
+    'Core/synthesizer_settings.c',
     'Core/synthesizer.c',
     'Core/controller.c',
-    'Core/central_bus.h',
     'Core/style_player.c',
     'Core/style_analyser.c',
     'Core/chord_finder.c',
