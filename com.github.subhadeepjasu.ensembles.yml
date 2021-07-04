@@ -70,6 +70,5 @@ modules:
     buildsystem: meson
     sources:
       - type: archive
-        url: https://github.com/SubhadeepJasu/Ensembles/releases/download/v0.0.1/SoundFonts.tar.gz
-        sha256: 5c62b7fd42379e95b7831104e1d62f4300942ba9e8ecc7c831132926ae392f7e
-        strip-components: 0
+        url: https://gitlab.com/SubhadeepJasu/ensemblesgmsoundfont/-/archive/v0.0.1/ensemblesgmsoundfont-v0.0.1.tar.gz
+        sha256: fefd91dab58ea941d1c3e807fae069ef26b1362f39126d23dc430e4e08254cc5

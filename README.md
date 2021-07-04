@@ -44,24 +44,32 @@ You can install Ensembles by compiling it from source, here's a list of required
  - `meson`
  - `libhandy-1`
  - `fluidsynth>=2.2.1`
+ - `portmidi`
 
 Clone repository and change directory
 ```
 git clone https://github.com/SubhadeepJasu/ensembles.git
 cd ensembles
 ```
-Compile, install and start Ensembles on your system
+Compile, install using meson and start Ensembles on your system *(Requires GIT-LFS)*
 ```
 meson _build --prefix=/usr
 cd _build
 sudo ninja install
 com.github.subhadeepjasu.ensembles
 ```
+
+... _OR_ as flatpak *(Does not require GIT-LFS)*
+```
+flatpak-builder build  com.github.subhadeepjasu.ensembles.yml --user --install --force-clean
+flatpak run com.github.subhadeepjasu.ensembles
+
+```
 ## Discussions
 If you want to ask any questions or provide feedback, you can make issues in this repository
 
 ## Contributing
-Feel free to send pull requests to this repository with your code, or other types of assets like soundfont voices, style files
+Feel free to send pull requests to this repository with your code, or other types of assets like soundfont voices, style files, etc. Soundfont in this repo is no longer updated and its available in a different repository https://gitlab.com/SubhadeepJasu/ensemblesgmsoundfont due to LFS concerns.
 
 ## Plug-In Development
 Ensembles will have support for sampled voice, voice synthesis and DSP plug-ins. Plug-ins may support their own UI which can be accessed from within Ensembles. You can create plug-ins and distribute them over Flathub or elementary OS AppCenter.
