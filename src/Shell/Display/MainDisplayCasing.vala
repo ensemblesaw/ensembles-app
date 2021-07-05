@@ -86,7 +86,7 @@ namespace Ensembles.Shell {
         }
 
         public void queue_remove_splash () {
-            Timeout.add (1000, () => {
+            Timeout.add (2000, () => {
                 main_overlay.remove (splash_screen);
                 return false;
             });

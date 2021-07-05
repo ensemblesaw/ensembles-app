@@ -166,7 +166,7 @@ synthesizer_init (const gchar* loc) {
     style_synth_settings = new_fluid_settings();
     fluid_settings_setstr(style_synth_settings, "audio.driver", "pulseaudio");
     fluid_settings_setint(style_synth_settings, "synth.cpu-cores", 2);
-    fluid_settings_setint(style_synth_settings, "audio.periods", 16);
+    fluid_settings_setint(style_synth_settings, "audio.periods", 8);
     fluid_settings_setint(style_synth_settings, "audio.period-size", 1024);
     fluid_settings_setint(style_synth_settings, "audio.realtime-prio", 70);
     fluid_settings_setnum(style_synth_settings, "synth.gain", 2);
@@ -176,7 +176,7 @@ synthesizer_init (const gchar* loc) {
 
     realtime_synth_settings = new_fluid_settings();
     fluid_settings_setstr(realtime_synth_settings, "audio.driver", "pulseaudio");
-    fluid_settings_setint(realtime_synth_settings, "audio.periods", 8);
+    fluid_settings_setint(realtime_synth_settings, "audio.periods", 3);
     fluid_settings_setint(realtime_synth_settings, "audio.period-size", 1024);
     fluid_settings_setint(realtime_synth_settings, "audio.realtime-prio", 70);
     fluid_settings_setnum(realtime_synth_settings, "synth.gain", 2);
