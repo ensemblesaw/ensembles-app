@@ -165,12 +165,14 @@ void
 synthesizer_init (const gchar* loc) {
     style_synth_settings = new_fluid_settings();
     fluid_settings_setstr(style_synth_settings, "audio.driver", "pulseaudio");
+    fluid_settings_setint(style_synth_settings, "synth.cpu-cores", 2);
     fluid_settings_setint(style_synth_settings, "audio.periods", 16);
     fluid_settings_setint(style_synth_settings, "audio.period-size", 1024);
     fluid_settings_setint(style_synth_settings, "audio.realtime-prio", 70);
     fluid_settings_setnum(style_synth_settings, "synth.gain", 2);
     fluid_settings_setnum(style_synth_settings, "synth.overflow.percussion", 5000.0);
     fluid_settings_setstr(style_synth_settings, "synth.midi-bank-select", "gs");
+    fluid_settings_setstr(style_synth_settings, "player.timing-source", "system");
 
     realtime_synth_settings = new_fluid_settings();
     fluid_settings_setstr(realtime_synth_settings, "audio.driver", "pulseaudio");

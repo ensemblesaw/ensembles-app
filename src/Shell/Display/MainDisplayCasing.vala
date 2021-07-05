@@ -69,7 +69,7 @@ namespace Ensembles.Shell {
 
             main_overlay = new Gtk.Overlay ();
             main_overlay.height_request = 236;
-            main_overlay.width_request = 424;
+            main_overlay.width_request = 460;
             main_overlay.margin = 2;
 
             main_overlay.add_overlay (main_display_deck);
@@ -164,6 +164,7 @@ namespace Ensembles.Shell {
                 tempo_arr [i] = tempo.nth_data (i);
             }
             style_menu.populate_style_menu (path_arr, name_arr, genre_arr, tempo_arr);
+            home_screen.set_style_name (name_arr[0]);
         }
 
         public void update_voice_list (Ensembles.Core.Voice[] voices) {

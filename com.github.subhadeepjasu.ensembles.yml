@@ -1,9 +1,7 @@
 app-id: com.github.subhadeepjasu.ensembles
-runtime: org.gnome.Platform
-runtime-version: '3.38'
-base: io.elementary.BaseApp
-base-version: juno-20.08
-sdk: org.gnome.Sdk
+runtime: io.elementary.Platform
+runtime-version: daily
+sdk: io.elementary.Sdk
 command: com.github.subhadeepjasu.ensembles
 finish-args: 
   - '--share=ipc'

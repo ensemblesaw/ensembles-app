@@ -28,7 +28,7 @@
 
 .home-screen-background {
 	background-image: url("resource://com/github/subhadeepjasu/ensembles/images/display_unit/catalin-sandru-7SxSkCvVM1U-unsplash.jpg");
-	background-size: 424px 236px;
+	background-size: 460px 236px;
 }
 
 .home-screen-panel-top {
@@ -64,7 +64,7 @@
 }
 
 .home-screen-eq-labels {
-    margin-top: -10px;
+    margin-top: -5px;
 }
     
 .home-screen-eq-labels > * {

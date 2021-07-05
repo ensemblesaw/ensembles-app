@@ -54,7 +54,7 @@ namespace Ensembles.Shell {
             var top_panel = new Gtk.Grid ();
             top_panel.get_style_context ().add_class ("home-screen-panel-top");
             top_panel.height_request = 46;
-            top_panel.width_request = 424;
+            top_panel.width_request = 460;
             
 
             var style_button_box = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
@@ -231,7 +231,10 @@ namespace Ensembles.Shell {
                 equalizer_grid.attach (equalizer_bar[i], i, 0 ,1, 1);
             }
             equalizer_grid.column_spacing = 4;
-            equalizer_grid.margin = 5;
+            equalizer_grid.column_homogeneous = true;
+            equalizer_grid.margin_start = 6;
+            equalizer_grid.margin_end   = 7;
+            equalizer_grid.margin_top   = 4;
 
             var equalizer_label_grid = new Gtk.Grid ();
             for (int i = 0; i < 16; i++) {
