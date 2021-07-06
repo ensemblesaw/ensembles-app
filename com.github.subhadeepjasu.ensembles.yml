@@ -68,5 +68,5 @@ modules:
     buildsystem: meson
     sources:
       - type: archive
-        url: https://gitlab.com/SubhadeepJasu/ensemblesgmsoundfont/-/archive/v0.0.1/ensemblesgmsoundfont-v0.0.1.tar.gz
-        sha256: fefd91dab58ea941d1c3e807fae069ef26b1362f39126d23dc430e4e08254cc5
+        url: https://gitlab.com/SubhadeepJasu/ensemblesgmsoundfont/-/archive/v0.0.2/ensemblesgmsoundfont-v0.0.2.tar.gz
+        sha256: c292bd20215e1aec6510182765bb218e0867454f3cb3b09df9c8f66dead41e9b

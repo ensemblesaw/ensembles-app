@@ -37,6 +37,7 @@ TBD
 
 ## Install from source
 You can install Ensembles by compiling it from source, here's a list of required dependencies:
+ - `elementary-sdk`
  - `gtk+-3.0>=3.18`
  - `granite>=5.3.0`
  - `glib-2.0`

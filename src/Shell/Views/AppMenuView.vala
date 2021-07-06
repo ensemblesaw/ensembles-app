@@ -92,8 +92,8 @@ namespace Ensembles.Shell {
         void deselect_all_devices () {
             var items = device_list_box.get_children ();
             foreach (var item in items) {
-                if (item != null)
-                    (item as DeviceItem).radio.set_active (false);
+                DeviceItem _item = item as DeviceItem;
+                _item.radio.set_active (false);
             }
         }
 
