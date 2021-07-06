@@ -155,6 +155,17 @@ namespace Ensembles.Shell {
             });
         }
         void make_ui_events () {
+            this.window_state_event.connect ((event) => {
+                if (event.type == Gdk.EventType.WINDOW_STATE) {
+                    warning("resizing");
+                    main_keyboard.visible = false;
+                    Timeout.add (100, () => {
+                        main_keyboard.visible = true;
+                        return false;
+                    }, Priority.DEFAULT_IDLE);
+                }
+                return false;
+            });
             app_menu.change_active_input_device.connect ((device) => {
                 //  print("%d %s\n", device.id, device.name);
                 controller_connection.connect_device (device.id);
