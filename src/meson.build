@@ -1,5 +1,6 @@
 conf_data = configuration_data()
 conf_data.set_quoted('PKGDATADIR', join_paths(get_option('prefix'), get_option('datadir'), meson.project_name()))
+conf_data.set_quoted('SF2DATADIR', join_paths(get_option('prefix'), get_option('datadir'), 'sounds', 'sf2'))
 config_header = configure_file(
     input: 'Config.vala.in',
     output: 'Config.vala',

@@ -72,7 +72,11 @@ namespace Ensembles.Shell {
             main_overlay.width_request = 460;
             main_overlay.margin = 2;
 
-            main_overlay.add_overlay (main_display_deck);
+            // This helps maintain fixed size for all children
+            var fixed_size_container = new Gtk.Overlay ();
+            fixed_size_container.add_overlay (main_display_deck);
+
+            main_overlay.add (fixed_size_container);
             main_overlay.add_overlay (splash_screen);
             this.get_style_context ().add_class ("display-background");
 

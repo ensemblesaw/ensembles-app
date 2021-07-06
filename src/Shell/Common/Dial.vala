@@ -74,10 +74,10 @@ namespace Ensembles.Shell {
 
 
             var plus_one_button = new Gtk.Button.from_icon_name ("list-add-symbolic", Gtk.IconSize.BUTTON);
-            plus_one_button.halign = Gtk.Align.END;
+            plus_one_button.halign = Gtk.Align.START;
             plus_one_button.valign = Gtk.Align.START;
             plus_one_button.margin_top = 8;
-            plus_one_button.margin_end = 36;
+            plus_one_button.margin_start = 110;
             plus_one_button.width_request = 30;
             plus_one_button.height_request = 30;
             plus_one_button.get_style_context ().add_class ("rounded");
@@ -87,10 +87,10 @@ namespace Ensembles.Shell {
             });
 
             var minus_one_button = new Gtk.Button.from_icon_name ("list-remove-symbolic", Gtk.IconSize.BUTTON);
-            minus_one_button.halign = Gtk.Align.END;
+            minus_one_button.halign = Gtk.Align.START;
             minus_one_button.valign = Gtk.Align.END;
             minus_one_button.margin_bottom = 8;
-            minus_one_button.margin_end = 36;
+            minus_one_button.margin_start = 110;
             minus_one_button.width_request = 30;
             minus_one_button.height_request = 30;
             minus_one_button.get_style_context ().add_class ("rounded");
@@ -100,9 +100,10 @@ namespace Ensembles.Shell {
             });
 
             var activate_button = new Gtk.Button.from_icon_name ("go-next-symbolic", Gtk.IconSize.BUTTON);
-            activate_button.halign = Gtk.Align.END;
+            activate_button.halign = Gtk.Align.START;
             activate_button.valign = Gtk.Align.CENTER;
-            activate_button.margin_end = 30;
+            activate_button.margin_start = 118;
+            activate_button.margin_bottom = 6;
             activate_button.width_request = 30;
             activate_button.height_request = 30;
             activate_button.get_style_context ().add_class ("rounded");

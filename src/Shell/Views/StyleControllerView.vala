@@ -51,6 +51,8 @@ namespace Ensembles.Shell {
         public signal void sync_start ();
 
         public StyleControllerView () {
+            row_homogeneous = true;
+            vexpand = true;
             var intro_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL);
             intro_button_a = new Gtk.Button.with_label ("1");
             intro_button_b = new Gtk.Button.with_label ("2");
@@ -75,6 +77,7 @@ namespace Ensembles.Shell {
             });
 
             var var_fill_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL);
+            var_fill_box.hexpand = true;
             var_fill_button_a = new Gtk.Button.with_label ("A");
             var_fill_button_b = new Gtk.Button.with_label ("B");
             var_fill_button_c = new Gtk.Button.with_label ("C");
@@ -127,6 +130,7 @@ namespace Ensembles.Shell {
             });
 
             var ending_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL);
+            ending_box.hexpand = true;
             ending_button_a = new Gtk.Button.with_label ("1");
             ending_button_b = new Gtk.Button.with_label ("2");
             ending_button_a.set_sensitive (false);
@@ -150,6 +154,7 @@ namespace Ensembles.Shell {
             });
 
             var sync_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL);
+            sync_box.hexpand = true;
             sync_start_button = new Gtk.Button.with_label ("Sync Start");
             sync_stop_button = new Gtk.Button.with_label ("Sync Stop");
             sync_start_button.set_sensitive (false);
@@ -167,6 +172,7 @@ namespace Ensembles.Shell {
             });
 
             start_button = new Gtk.Button.from_icon_name ("media-playback-start-symbolic");
+            start_button.hexpand = true;
             start_button.get_style_context ().add_class (Gtk.STYLE_CLASS_DESTRUCTIVE_ACTION);
             start_button.get_style_context ().remove_class ("image-button");
             start_button.width_request = 64;

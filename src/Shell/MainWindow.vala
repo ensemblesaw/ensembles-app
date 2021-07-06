@@ -38,8 +38,8 @@ namespace Ensembles.Shell {
         Ensembles.Core.CentralBus bus;
         Ensembles.Core.Controller controller_connection;
 
-        string sf_loc = Constants.PKGDATADIR + "/SoundFonts/EnsemblesGM.sf2";
-        string sf_schema_loc = Constants.PKGDATADIR + "/SoundFonts/EnsemblesGMSchema.csv";
+        string sf_loc = Constants.SF2DATADIR + "/EnsemblesGM.sf2";
+        string sf_schema_loc = Constants.SF2DATADIR + "/EnsemblesGMSchema.csv";
         public MainWindow () {
             Gtk.Settings settings = Gtk.Settings.get_default ();
             settings.gtk_application_prefer_dark_theme = true;

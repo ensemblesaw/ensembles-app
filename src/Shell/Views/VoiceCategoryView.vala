@@ -34,6 +34,7 @@ namespace Ensembles.Shell {
 
         public signal void voice_quick_select (int index);
         public VoiceCategoryView () {
+            row_homogeneous = true;
             piano_button = new Gtk.Button.with_label ("Piano");
             chromatic_perc = new Gtk.Button.with_label ("Crm Perc");
             organ_button = new Gtk.Button.with_label ("Organ");

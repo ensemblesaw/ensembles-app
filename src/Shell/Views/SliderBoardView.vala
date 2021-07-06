@@ -68,7 +68,6 @@ namespace Ensembles.Shell {
 
         public SliderBoardView () {
             row_spacing = 4;
-            halign = Gtk.Align.START;
             valign = Gtk.Align.START;
             margin = 4;
             width_request = 293;
@@ -147,6 +146,9 @@ namespace Ensembles.Shell {
             slider_grid.attach (slider_7, 7, 0, 1, 1);
             slider_grid.attach (slider_8, 8, 0, 1, 1);
             slider_grid.attach (slider_9, 9, 0, 1, 1);
+
+            slider_grid.column_homogeneous = true;
+            slider_grid.hexpand = true;
 
             for (int i = 0; i < 10; i++) {
                 slider_grid.attach (new Gtk.Label ((i + 1).to_string ()), i, 1, 1, 1);

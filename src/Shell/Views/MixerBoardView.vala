@@ -32,6 +32,7 @@ namespace Ensembles.Shell {
 
         public MixerBoardView () {
             halign = Gtk.Align.CENTER;
+            vexpand = true;
             int i = 0;            
             style_gain_sliders = new Gtk.Scale [16];
 
@@ -41,6 +42,7 @@ namespace Ensembles.Shell {
                 style_gain_sliders[i].draw_value = false;
                 attach (style_gain_sliders[i], i, 0, 1, 1);
             }
+            style_gain_sliders[0].vexpand = true;
             connect_style_sliders ();
 
             voice_l_gain_slider =     new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1);

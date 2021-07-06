@@ -27,6 +27,7 @@ namespace Ensembles.Shell {
         Ensembles.Core.Synthesizer _synth;
         public KeyboardView() {
             get_style_context ().add_class ("keyboard-background");
+            valign = Gtk.Align.END;
             key_grid = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
             //  key_grid.margin_start = 150;
 

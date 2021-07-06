@@ -51,10 +51,10 @@ namespace Ensembles.Shell {
             row_spacing = 4;
             column_spacing = 4;
             column_homogeneous = true;
-            halign = Gtk.Align.END;
+            hexpand = true;
             valign = Gtk.Align.START;
             margin = 4;
-            width_request = 294;
+            width_request = 340;
 
             accomp_toggle = new ToggleSwitch ("Accompaniment");
             layer_toggle = new ToggleSwitch ("Layer");

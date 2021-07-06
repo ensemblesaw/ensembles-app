@@ -23,6 +23,8 @@ namespace Ensembles.Shell {
         Gtk.Button[] registry_buttons;
         Gtk.Button memory_button;
         public RegistryView () {
+            row_homogeneous = true;
+            vexpand = true;
             bank_select = new Gtk.SpinButton.with_range (1, 10, 1);
             attach (bank_select, 0, 0, 1, 1);
 
@@ -35,6 +37,7 @@ namespace Ensembles.Shell {
                 button_box.pack_start (registry_buttons[i]);
             }
             button_box.set_layout (Gtk.ButtonBoxStyle.EXPAND);
+            button_box.hexpand = true;
             attach (button_box, 1, 0, 1, 1);
             memory_button = new Gtk.Button.with_label ("Memorize");
             attach (memory_button, 2, 0, 1, 1);

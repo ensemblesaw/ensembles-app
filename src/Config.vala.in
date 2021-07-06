@@ -1,3 +1,4 @@
 namespace Constants {
     public const string PKGDATADIR = @PKGDATADIR@;
+    public const string SF2DATADIR = @SF2DATADIR@;
 }
