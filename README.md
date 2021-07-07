@@ -22,7 +22,7 @@
 * DSP (Digital Signal Processing) effects like filters, reverb and chorus
 * Assign knobs and sliders to multiple DSP effects along with a Master Knob which can be used to control multiple knobs and sliders
 * Touch based on-screen assignable joystick
-* Play a one-man-band along with a Auto Accompaniment Style from over 100 [WIP] built-in styles based on various genres of music
+* Play a one-person band along with a Auto Accompaniment Style from over 100 [WIP] built-in styles based on various genres of music
 * Automate your band with Registration Memory and 12 assignable Multipad Variables
 * Record your playback using Sequencer with 8-Track recording (in future)
 * Record your playback into MP3 audio (in future)
