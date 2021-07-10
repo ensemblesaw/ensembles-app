@@ -1,5 +1,6 @@
 build
 _build
+builddir
 .vscode
 .flatpak-builder
 *.tar.gz

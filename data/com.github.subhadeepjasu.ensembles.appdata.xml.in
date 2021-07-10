@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2021-2022 Subhadeep Jasu <subhajasu@gmail.com> -->
+<component type="desktop-application">
+  <id>com.github.subhadeepjasu.ensembles</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0+</project_license>
+  <name>Ensembles</name>
+  <summary>Play and arrange music live as a one-person band</summary>
+  <description>
+    <p>Ensembles is a realtime musical performance arranger app. Its built using Vala and Gtk, powered by Fluidsynth.</p>
+    <p>Please note that Ensembles is currently in Beta. While it should work well for most users, there are still bugs and missing features that need to be addressed.</p>
+    <p>Features:</p>
+    <ul>
+        <li>Play any instrument from a selection of more than 200 in-built voices</li>
+        <li>60-Key on-screen keyboard with mouse and touch support</li>
+        <li>Split Keyboard or Layer two voices for multiple voice playback</li>
+        <li>DSP (Digital Signal Processing) effects like filters, reverb and chorus</li>
+        <li>Assign knobs and sliders to multiple DSP effects along with a Master Knob which can be used to control multiple knobs and sliders</li>
+        <li>Touch based on-screen assignable joystick</li>
+        <li>Play a one-person band along with a Auto Accompaniment Style from over 100 built-in styles based on various genres of music</li>
+        <li>Automate your band with Registration Memory and 12 assignable Multipad Variables</li>
+        <li>Record your playback using Sequencer with 8-Track recording</li>
+        <li>Record your playback into MP3 audio</li>
+        <li>Connect to external MIDI keyboard/controller with General MIDI Standard compatibility</li>
+    </ul>
+  </description>
+  <custom>
+    <value key="x-appcenter-color-primary">#D25017</value>
+    <value key="x-appcenter-color-primary-text">#FFFFFF</value>
+    <value key="x-appcenter-suggested-price">0</value>
+  </custom>
+  <translation type="gettext">com.github.subhadeepjasu.ensembles</translation>
+  <developer_name>Subhadeep Jasu</developer_name>
+  <url type="homepage">https://github.com/SubhadeepJasu/ensembles</url>
+  <url type="bugtracker">https://github.com/SubhadeepJasu/ensembles/issues</url>
+  <url type="help">https://github.com/SubhadeepJasu/ensembles/issues</url>
+  <update_contact>subhajasu@gmail.com</update_contact>
+  <launchable type="desktop-id">com.github.subhadeepjasu.ensembles.desktop</launchable>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/SubhadeepJasu/Ensembles/master/screenshots/Screenshot1.png</image>
+    </screenshot>
+  </screenshots>
+  <content_rating type="oars-1.1">
+    <content_attribute id="violence-cartoon">none</content_attribute>
+    <content_attribute id="violence-fantasy">none</content_attribute>
+    <content_attribute id="violence-realistic">none</content_attribute>
+    <content_attribute id="violence-bloodshed">none</content_attribute>
+    <content_attribute id="violence-sexual">none</content_attribute>
+    <content_attribute id="violence-desecration">none</content_attribute>
+    <content_attribute id="violence-slavery">none</content_attribute>
+    <content_attribute id="violence-worship">none</content_attribute>
+    <content_attribute id="drugs-alcohol">none</content_attribute>
+    <content_attribute id="drugs-narcotics">none</content_attribute>
+    <content_attribute id="drugs-tobacco">none</content_attribute>
+    <content_attribute id="sex-nudity">none</content_attribute>
+    <content_attribute id="sex-themes">none</content_attribute>
+    <content_attribute id="sex-homosexuality">none</content_attribute>
+    <content_attribute id="sex-prostitution">none</content_attribute>
+    <content_attribute id="sex-adultery">none</content_attribute>
+    <content_attribute id="sex-appearance">none</content_attribute>
+    <content_attribute id="language-profanity">none</content_attribute>
+    <content_attribute id="language-humor">none</content_attribute>
+    <content_attribute id="language-discrimination">none</content_attribute>
+    <content_attribute id="social-chat">none</content_attribute>
+    <content_attribute id="social-info">none</content_attribute>
+    <content_attribute id="social-audio">none</content_attribute>
+    <content_attribute id="social-location">none</content_attribute>
+    <content_attribute id="social-contacts">none</content_attribute>
+    <content_attribute id="money-purchasing">none</content_attribute>
+    <content_attribute id="money-gambling">none</content_attribute>
+  </content_rating>
+  <releases>
+    <release version="0.0.1" date="2021-07-14">
+      <description>
+        <p>Initial release of Ensembles 🚀</p>
+      </description>
+    </release>
+  </releases>
+</component>

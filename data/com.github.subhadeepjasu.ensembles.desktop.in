@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Ensembles
 GenericName=Ensembles Arranger Workstation
-Comment=Play and arrange music live as a one-man-band
+Comment=Play and arrange music live as a one-person band
 Categories=Audio;AudioVideo;Music;Midi;Education;GTK;
 Exec=com.github.subhadeepjasu.ensembles
 Icon=com.github.subhadeepjasu.ensembles

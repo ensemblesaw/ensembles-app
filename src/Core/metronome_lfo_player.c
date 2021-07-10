@@ -27,12 +27,48 @@
 #include "synthesizer.h"
 
 // None of this will be used for actual rendering /////////
-fluid_settings_t* settings;
-fluid_synth_t* synth;
-fluid_audio_driver_t* adriver;
-fluid_player_t* player;
+fluid_settings_t* lfo_settings;
+fluid_synth_t* lfo_synth;
+fluid_audio_driver_t* lfo_adriver;
+fluid_player_t* lfo_player;
 ///////////////////////////////////////////////////////////
 
-int measure_length = 0;
+int lfo_measure_length = 0;
+int lfo_looping = 0;
 
 char* metronome_file_path;
+
+
+void
+metronome_lfo_player_init () {
+    lfo_settings = new_fluid_settings();
+    lfo_synth = new_fluid_synth(lfo_settings);
+    lfo_adriver = new_fluid_audio_driver(lfo_settings, lfo_synth);
+}
+
+
+GThreadFunc
+queue_lfo_file_change (int tempo) {
+    printf("changing...to %s\n", metronome_file_path);
+}
+void
+metronome_lfo_player_change_time_signature (int tempo, float time_signature) {
+
+}
+
+void
+metronome_lfo_player_destruct () {
+    /* wait for playback termination */
+    fluid_player_stop (lfo_player);
+    fluid_player_join(lfo_player);
+    /* cleanup */
+    delete_fluid_audio_driver(lfo_adriver);
+    delete_fluid_player(lfo_player);
+    delete_fluid_synth(lfo_synth);
+    delete_fluid_settings(lfo_settings);
+}
+
+void
+metronome_lfo_player_loop () {
+
+}

@@ -368,7 +368,6 @@ queue_style_file_change (int use_previous_tempo) {
     player = new_fluid_player(synth);
     fluid_player_set_playback_callback(player, parse_midi_events, synth);
     fluid_player_set_tick_callback (player, parse_ticks, synth);
-    // fluid_player_set_tempo (player, FLUID_PLAYER_TEMPO_EXTERNAL_BPM, 90);
     printf ("f:\n");
     if (fluid_is_midifile(style_player_style_path)) {
         fluid_player_add(player, style_player_style_path);
