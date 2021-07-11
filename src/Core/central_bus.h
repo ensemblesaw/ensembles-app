@@ -58,6 +58,10 @@ int get_styles_ready ();
 void set_styles_ready (int value);
 
 int get_central_metronome_on ();
+
+int get_central_lfo_on ();
+
+int set_central_lfo_value (int on);
 /** UI signals are used to communicate with the UI frontend.
  */
 

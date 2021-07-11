@@ -35,7 +35,6 @@ namespace Ensembles.Core {
         public void play_loop (int time_signature_n, int time_signature_d) {
             if (!CentralBus.get_style_looping_on ()) {
                 looping = true;
-                CentralBus.set_metronome_on (true);
                 play_measure (time_signature_n, time_signature_d);
                 Timeout.add (240000/_tempo, () => {
                     metronome_lfo_player_play ();

@@ -128,6 +128,7 @@ namespace Ensembles.Shell {
             });
 
             metronome_player = new Ensembles.Core.MetronomeLFOPlayer (metronome_lfo_directory);
+            Ensembles.Core.CentralBus.set_lfo_on (1);
 
             make_ui_events ();
 
@@ -156,7 +157,8 @@ namespace Ensembles.Shell {
             bus.loaded_tempo_change.connect ((tempo) => {
                 beat_counter_panel.change_tempo (tempo);
                 main_display_unit.set_tempo_display (tempo);
-                metronome_player.set_tempo (tempo);
+                if (metronome_player != null)
+                    metronome_player.set_tempo (tempo);
             });
             bus.split_key_change.connect (() => {
                 main_keyboard.update_split ();
@@ -197,6 +199,7 @@ namespace Ensembles.Shell {
             });
             ctrl_panel.start_metronome.connect ((active) => {
                 if (active) {
+                    Ensembles.Core.CentralBus.set_metronome_on (true);
                     metronome_player.play_loop (4, 4);
                 } else {
                     metronome_player.stop_loop ();

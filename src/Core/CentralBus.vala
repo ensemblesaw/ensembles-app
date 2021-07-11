@@ -133,8 +133,20 @@ namespace Ensembles.Core {
             central_metronome_on = active ? 1 : 0;
         }
 
+        public static int get_lfo_type () {
+            return central_lfo_on;
+        }
+
+        public static void set_lfo_on (int type) {
+            central_lfo_on = type;
+        }
+
         public static bool get_style_looping_on () {
             return central_style_looping > 0 ? true : false;
+        }
+
+        public static float get_lfo () {
+            return ((float)central_lfo_value / 127.0f);
         }
     }
 }
@@ -158,3 +170,5 @@ extern int central_style_looping;
 
 // Metronome and LFO
 extern int central_metronome_on;
+extern int central_lfo_on;
+extern int central_lfo_value;
