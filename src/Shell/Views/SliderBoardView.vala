@@ -23,7 +23,7 @@ namespace Ensembles.Shell {
         Knob modulator_knob_b;
         Knob modulator_knob_c;
         Knob modulator_knob_d;
-        SuperKnob super_knob;
+        MasterKnob master_knob;
         Gtk.Button knob_assign_button;
         Gtk.Button super_assign_button;
         Gtk.Button slider_assign_button;
@@ -63,7 +63,7 @@ namespace Ensembles.Shell {
         int[] knob_c_variables;
         int[] knob_d_variables;
 
-        bool[] super_knob_assigns;
+        bool[] master_knob_assigns;
         bool super_assign_mode;
 
         public SliderBoardView () {
@@ -79,11 +79,11 @@ namespace Ensembles.Shell {
             modulator_knob_c = new Knob ();
             modulator_knob_d = new Knob ();
 
-            super_knob = new SuperKnob ();
+            master_knob = new MasterKnob ();
 
 
             knob_assign_button = new Gtk.Button.with_label ("Knob Assign");
-            super_assign_button = new Gtk.Button.with_label ("Super Assign");
+            super_assign_button = new Gtk.Button.with_label ("Master Knob Assign");
             var knob_assign_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL);
             knob_assign_box.add(knob_assign_button);
             knob_assign_box.add(super_assign_button);
@@ -164,7 +164,7 @@ namespace Ensembles.Shell {
             attach (modulator_knob_d, 3, 1, 1, 1);
             attach (new Gtk.Label ("4"), 3, 2, 1, 1);
             attach (slider_assign_button, 0, 3, 4, 1);
-            attach (super_knob, 4, 1, 1, 3);
+            attach (master_knob, 4, 1, 1, 3);
             attach (slider_grid, 0, 4, 5, 1);
 
             
@@ -223,7 +223,7 @@ namespace Ensembles.Shell {
 
             super_assign_button.clicked.connect (() => {
                 super_assign_mode = !super_assign_mode;
-                super_knob_assigns = new bool[14];
+                master_knob_assigns = new bool[14];
                 slider_0.get_style_context ().remove_class ("slider-super-controlled");
                 slider_1.get_style_context ().remove_class ("slider-super-controlled");
                 slider_2.get_style_context ().remove_class ("slider-super-controlled");
@@ -271,7 +271,7 @@ namespace Ensembles.Shell {
                 }
                 slider_assign_button.sensitive = !super_assign_mode;
                 knob_assign_button.sensitive = !super_assign_mode;
-                super_knob.set_color (false, 0);
+                master_knob.set_color (false, 0);
             });
 
             slider_0.change_value.connect ((scroll, value) => {
@@ -289,7 +289,7 @@ namespace Ensembles.Shell {
                 slider_8.get_style_context ().remove_class ("slider-assignable");
                 slider_9.get_style_context ().remove_class ("slider-assignable");
                 if (super_assign_mode) {
-                    super_knob_assigns[0] = true;
+                    master_knob_assigns[0] = true;
                     slider_0.get_style_context ().add_class ("slider-super-controlled");
                     slider_0.get_style_context ().remove_class ("slider-super-assignable");
                 }
@@ -313,7 +313,7 @@ namespace Ensembles.Shell {
                 slider_8.get_style_context ().remove_class ("slider-assignable");
                 slider_9.get_style_context ().remove_class ("slider-assignable");
                 if (super_assign_mode) {
-                    super_knob_assigns[1] = true;
+                    master_knob_assigns[1] = true;
                     slider_1.get_style_context ().add_class ("slider-super-controlled");
                     slider_1.get_style_context ().remove_class ("slider-super-assignable");
                 }
@@ -337,7 +337,7 @@ namespace Ensembles.Shell {
                 slider_8.get_style_context ().remove_class ("slider-assignable");
                 slider_9.get_style_context ().remove_class ("slider-assignable");
                 if (super_assign_mode) {
-                    super_knob_assigns[2] = true;
+                    master_knob_assigns[2] = true;
                     slider_2.get_style_context ().add_class ("slider-super-controlled");
                     slider_2.get_style_context ().remove_class ("slider-super-assignable");
                 }
@@ -361,7 +361,7 @@ namespace Ensembles.Shell {
                 slider_8.get_style_context ().remove_class ("slider-assignable");
                 slider_9.get_style_context ().remove_class ("slider-assignable");
                 if (super_assign_mode) {
-                    super_knob_assigns[3] = true;
+                    master_knob_assigns[3] = true;
                     slider_3.get_style_context ().add_class ("slider-super-controlled");
                     slider_3.get_style_context ().remove_class ("slider-super-assignable");
                 }
@@ -385,7 +385,7 @@ namespace Ensembles.Shell {
                 slider_8.get_style_context ().remove_class ("slider-assignable");
                 slider_9.get_style_context ().remove_class ("slider-assignable");
                 if (super_assign_mode) {
-                    super_knob_assigns[4] = true;
+                    master_knob_assigns[4] = true;
                     slider_4.get_style_context ().add_class ("slider-super-controlled");
                     slider_4.get_style_context ().remove_class ("slider-super-assignable");
                 }
@@ -409,7 +409,7 @@ namespace Ensembles.Shell {
                 slider_8.get_style_context ().remove_class ("slider-assignable");
                 slider_9.get_style_context ().remove_class ("slider-assignable");
                 if (super_assign_mode) {
-                    super_knob_assigns[5] = true;
+                    master_knob_assigns[5] = true;
                     slider_5.get_style_context ().add_class ("slider-super-controlled");
                     slider_5.get_style_context ().remove_class ("slider-super-assignable");
                 }
@@ -433,7 +433,7 @@ namespace Ensembles.Shell {
                 slider_8.get_style_context ().remove_class ("slider-assignable");
                 slider_9.get_style_context ().remove_class ("slider-assignable");
                 if (super_assign_mode) {
-                    super_knob_assigns[6] = true;
+                    master_knob_assigns[6] = true;
                     slider_6.get_style_context ().add_class ("slider-super-controlled");
                     slider_6.get_style_context ().remove_class ("slider-super-assignable");
                 }
@@ -457,7 +457,7 @@ namespace Ensembles.Shell {
                 slider_8.get_style_context ().remove_class ("slider-assignable");
                 slider_9.get_style_context ().remove_class ("slider-assignable");
                 if (super_assign_mode) {
-                    super_knob_assigns[7] = true;
+                    master_knob_assigns[7] = true;
                     slider_7.get_style_context ().add_class ("slider-super-controlled");
                     slider_7.get_style_context ().remove_class ("slider-super-assignable");
                 }
@@ -481,7 +481,7 @@ namespace Ensembles.Shell {
                 slider_7.get_style_context ().remove_class ("slider-assignable");
                 slider_9.get_style_context ().remove_class ("slider-assignable");
                 if (super_assign_mode) {
-                    super_knob_assigns[8] = true;
+                    master_knob_assigns[8] = true;
                     slider_8.get_style_context ().add_class ("slider-super-controlled");
                     slider_8.get_style_context ().remove_class ("slider-super-assignable");
                 }
@@ -505,7 +505,7 @@ namespace Ensembles.Shell {
                 slider_7.get_style_context ().remove_class ("slider-assignable");
                 slider_8.get_style_context ().remove_class ("slider-assignable");
                 if (super_assign_mode) {
-                    super_knob_assigns[9] = true;
+                    master_knob_assigns[9] = true;
                     slider_9.get_style_context ().add_class ("slider-super-controlled");
                     slider_9.get_style_context ().remove_class ("slider-super-assignable");
                 }
@@ -523,7 +523,7 @@ namespace Ensembles.Shell {
                 modulator_knob_c.get_style_context ().remove_class ("knob-assignable");
                 modulator_knob_d.get_style_context ().remove_class ("knob-assignable");
                 if (super_assign_mode) {
-                    super_knob_assigns[10] = true;
+                    master_knob_assigns[10] = true;
                     modulator_knob_a.get_style_context ().add_class ("knob-super-controlled");
                     modulator_knob_a.get_style_context ().remove_class ("knob-super-assignable");
                 }
@@ -540,7 +540,7 @@ namespace Ensembles.Shell {
                 modulator_knob_c.get_style_context ().remove_class ("knob-assignable");
                 modulator_knob_d.get_style_context ().remove_class ("knob-assignable");
                 if (super_assign_mode) {
-                    super_knob_assigns[11] = true;
+                    master_knob_assigns[11] = true;
                     modulator_knob_b.get_style_context ().add_class ("knob-super-controlled");
                     modulator_knob_b.get_style_context ().remove_class ("knob-super-assignable");
                 }
@@ -557,7 +557,7 @@ namespace Ensembles.Shell {
                 modulator_knob_b.get_style_context ().remove_class ("knob-assignable");
                 modulator_knob_d.get_style_context ().remove_class ("knob-assignable");
                 if (super_assign_mode) {
-                    super_knob_assigns[12] = true;
+                    master_knob_assigns[12] = true;
                     modulator_knob_c.get_style_context ().add_class ("knob-super-controlled");
                     modulator_knob_c.get_style_context ().remove_class ("knob-super-assignable");
                 }
@@ -574,7 +574,7 @@ namespace Ensembles.Shell {
                 modulator_knob_b.get_style_context ().remove_class ("knob-assignable");
                 modulator_knob_c.get_style_context ().remove_class ("knob-assignable");
                 if (super_assign_mode) {
-                    super_knob_assigns[13] = true;
+                    master_knob_assigns[13] = true;
                     modulator_knob_d.get_style_context ().add_class ("knob-super-controlled");
                     modulator_knob_d.get_style_context ().remove_class ("knob-super-assignable");
                 }
@@ -583,68 +583,68 @@ namespace Ensembles.Shell {
                 }
             });
 
-            super_knob.change_value.connect ((value) => {
+            master_knob.change_value.connect ((value) => {
                 bool assigned = false;
-                if (super_knob_assigns != null) {
-                    if (super_knob_assigns[0] && slider_0_variables != null) {
+                if (master_knob_assigns != null) {
+                    if (master_knob_assigns[0] && slider_0_variables != null) {
                         slider_0.set_value (value);
                         Ensembles.Core.Synthesizer.set_modulator_value (slider_0_variables[0], slider_0_variables[1], slider_0_variables[2], (int)(value * 127));
                     }
-                    if (super_knob_assigns[1] && slider_1_variables != null) {
+                    if (master_knob_assigns[1] && slider_1_variables != null) {
                         slider_1.set_value (value);
                         Ensembles.Core.Synthesizer.set_modulator_value (slider_1_variables[0], slider_1_variables[1], slider_1_variables[2], (int)(value * 127));
                     }
-                    if (super_knob_assigns[2] && slider_2_variables != null) {
+                    if (master_knob_assigns[2] && slider_2_variables != null) {
                         slider_2.set_value (value);
                         Ensembles.Core.Synthesizer.set_modulator_value (slider_2_variables[0], slider_2_variables[1], slider_2_variables[2], (int)(value * 127));
                     }
-                    if (super_knob_assigns[3] && slider_3_variables != null) {
+                    if (master_knob_assigns[3] && slider_3_variables != null) {
                         slider_3.set_value (value);
                         Ensembles.Core.Synthesizer.set_modulator_value (slider_3_variables[0], slider_3_variables[1], slider_3_variables[2], (int)(value * 127));
                     }
-                    if (super_knob_assigns[4] && slider_4_variables != null) {
+                    if (master_knob_assigns[4] && slider_4_variables != null) {
                         slider_4.set_value (value);
                         Ensembles.Core.Synthesizer.set_modulator_value (slider_4_variables[0], slider_4_variables[1], slider_4_variables[2], (int)(value * 127));
                     }
-                    if (super_knob_assigns[5] && slider_5_variables != null) {
+                    if (master_knob_assigns[5] && slider_5_variables != null) {
                         slider_5.set_value (value);
                         Ensembles.Core.Synthesizer.set_modulator_value (slider_5_variables[0], slider_5_variables[1], slider_5_variables[2], (int)(value * 127));
                     }
-                    if (super_knob_assigns[6] && slider_6_variables != null) {
+                    if (master_knob_assigns[6] && slider_6_variables != null) {
                         slider_6.set_value (value);
                         Ensembles.Core.Synthesizer.set_modulator_value (slider_6_variables[0], slider_6_variables[1], slider_6_variables[2], (int)(value * 127));
                     }
-                    if (super_knob_assigns[7] && slider_7_variables != null) {
+                    if (master_knob_assigns[7] && slider_7_variables != null) {
                         slider_7.set_value (value);
                         Ensembles.Core.Synthesizer.set_modulator_value (slider_7_variables[0], slider_7_variables[1], slider_7_variables[2], (int)(value * 127));
                     }
-                    if (super_knob_assigns[8] && slider_8_variables != null) {
+                    if (master_knob_assigns[8] && slider_8_variables != null) {
                         slider_8.set_value (value);
                         Ensembles.Core.Synthesizer.set_modulator_value (slider_8_variables[0], slider_8_variables[1], slider_8_variables[2], (int)(value * 127));
                     }
-                    if (super_knob_assigns[9] && slider_9_variables != null) {
+                    if (master_knob_assigns[9] && slider_9_variables != null) {
                         slider_9.set_value (value);
                         Ensembles.Core.Synthesizer.set_modulator_value (slider_9_variables[0], slider_9_variables[1], slider_9_variables[2], (int)(value * 127));
                     }
-                    if (super_knob_assigns[10] && knob_a_variables != null) {
+                    if (master_knob_assigns[10] && knob_a_variables != null) {
                         modulator_knob_a.set_value (value);
                         Ensembles.Core.Synthesizer.set_modulator_value (knob_a_variables[0], knob_a_variables[1], knob_a_variables[2], (int)(value * 127));
                     }
-                    if (super_knob_assigns[11] && knob_b_variables != null) {
+                    if (master_knob_assigns[11] && knob_b_variables != null) {
                         modulator_knob_b.set_value (value);
                         Ensembles.Core.Synthesizer.set_modulator_value (knob_b_variables[0], knob_b_variables[1], knob_b_variables[2], (int)(value * 127));
                     }
-                    if (super_knob_assigns[12] && knob_c_variables != null) {
+                    if (master_knob_assigns[12] && knob_c_variables != null) {
                         modulator_knob_c.set_value (value);
                         Ensembles.Core.Synthesizer.set_modulator_value (knob_c_variables[0], knob_c_variables[1], knob_c_variables[2], (int)(value * 127));
                     }
-                    if (super_knob_assigns[13] && knob_d_variables != null) {
+                    if (master_knob_assigns[13] && knob_d_variables != null) {
                         modulator_knob_d.set_value (value);
                         Ensembles.Core.Synthesizer.set_modulator_value (knob_d_variables[0], knob_d_variables[1], knob_d_variables[2], (int)(value * 127));
                     }
                     
                     for (int i = 0; i < 14; i++) {
-                        if (super_knob_assigns[i]) {
+                        if (master_knob_assigns[i]) {
                             assigned = true;
                             break;
                         }
@@ -664,7 +664,7 @@ namespace Ensembles.Shell {
                 modulator_knob_b.get_style_context ().remove_class ("knob-super-assignable");
                 modulator_knob_c.get_style_context ().remove_class ("knob-super-assignable");
                 modulator_knob_d.get_style_context ().remove_class ("knob-super-assignable");
-                super_knob.set_color (assigned, (int)(value * 10));
+                master_knob.set_color (assigned, (int)(value * 10));
                 super_assign_mode = false;
                 slider_assign_button.sensitive = true;
                 knob_assign_button.sensitive = true;

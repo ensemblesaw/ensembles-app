@@ -18,8 +18,8 @@
  */
 
 namespace Ensembles.Shell { 
-    public class SuperKnob : Knob {
-        public SuperKnob () {
+    public class MasterKnob : Knob {
+        public MasterKnob () {
 
             // Set up visuals
             center = 40;

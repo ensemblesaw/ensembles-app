@@ -20,7 +20,7 @@ ensembles_sources_vala = files (
     'Shell/Common/ToggleSwitch.vala',
     'Shell/Common/Dial.vala',
     'Shell/Common/Knob.vala',
-    'Shell/Common/SuperKnob.vala',
+    'Shell/Common/MasterKnob.vala',
     'Shell/Common/Key.vala',
     'Shell/Common/OctaveKeyboard.vala',
     'Shell/Common/EqualizerBar.vala',
