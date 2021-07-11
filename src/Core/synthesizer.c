@@ -142,9 +142,13 @@ synthesizer_set_defaults () {
     fluid_synth_cc (realtime_synth, 1, 74, 0);
     fluid_synth_cc (realtime_synth, 2, 74, 0);
 
-    // Reverb and Chorus ro R1 voice
+    // Reverb and Chorus for R1 voice
     fluid_synth_cc (realtime_synth, 0, 91, 4);
     fluid_synth_cc (realtime_synth, 0, 93, 1);
+
+    // Reverb and Chorus for Metronome
+    fluid_synth_cc (realtime_synth, 9, 91, 0);
+    fluid_synth_cc (realtime_synth, 9, 93, 0);
 
     // Default gain for Realtime synth
     fluid_synth_cc (realtime_synth, 0, 7, 100);
@@ -197,6 +201,9 @@ synthesizer_init (const gchar* loc) {
         fluid_synth_program_select (realtime_synth, 3, realtime_synth_sf_id, 0, 5);
         fluid_synth_program_select (realtime_synth, 4, realtime_synth_sf_id, 0, 33);
         fluid_synth_program_select (realtime_synth, 5, realtime_synth_sf_id, 0, 49);
+
+        // Initialize metronome voice
+        fluid_synth_program_select (realtime_synth, 9, realtime_synth_sf_id, 128, 0);
     }
     fx_init ();
     style_adriver = new_fluid_audio_driver2(style_synth_settings, fx_function, (void *) &fx_data);
@@ -321,6 +328,15 @@ handle_events_for_styles (fluid_midi_event_t *event) {
 }
 
 int
+synthesizer_send_notes_metronome (int key, int on) {
+    if (on == 144) {
+        fluid_synth_noteon (realtime_synth, 9, key, 127);
+    } else {
+        fluid_synth_noteoff (realtime_synth, 9, key);
+    }
+}
+
+int
 synthesizer_send_notes (int key, int on, int velocity, int* type) {
     if (get_central_accompaniment_mode () > 0) {
         if (accompaniment_mode == 0) {
@@ -362,6 +378,7 @@ synthesizer_send_notes (int key, int on, int velocity, int* type) {
     if (on == 144) {
         fluid_synth_noteon (realtime_synth, 0, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0), velocity);
         voice_velocity_buffer[0] = velocity;
+        printf("%d\n", key);
     } else if (on == 128) {
         fluid_synth_noteoff (realtime_synth, 0, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0));
         voice_velocity_buffer[0] = 0;

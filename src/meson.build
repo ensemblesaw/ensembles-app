@@ -47,6 +47,7 @@ ensembles_sources_vala = files (
     'Core/StyleDiscovery.vala',
     'Core/CentralBus.vala',
     'Core/StylePlayer.vala',
+    'Core/MetronomeLFOPlayer.vala',
     'Core/StyleAnalyser.vala',
     'Core/Voice.vala',
     'Core/VoiceAnalyser.vala'
@@ -58,6 +59,7 @@ ensembles_sources_c = files (
     'Core/synthesizer.c',
     'Core/controller.c',
     'Core/style_player.c',
+    'Core/metronome_lfo_player.c',
     'Core/style_analyser.c',
     'Core/chord_finder.c',
     'Core/voice_analyser.c'

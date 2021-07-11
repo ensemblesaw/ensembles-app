@@ -362,7 +362,10 @@ queue_style_file_change (int use_previous_tempo) {
     }
     if (player) {
         printf ("b:\n");
+        fluid_player_stop (player);
+        fluid_player_join(player);
         delete_fluid_player(player);
+        player = NULL;
         printf ("c:\n");
     }
     player = new_fluid_player(synth);
@@ -412,12 +415,15 @@ style_player_reload_style () {
 
 void
 style_player_destruct () {
-    /* wait for playback termination */
-    fluid_player_stop (player);
-    fluid_player_join(player);
     /* cleanup */
     delete_fluid_audio_driver(adriver);
-    delete_fluid_player(player);
+    if (player) {
+        /* wait for playback termination */
+        fluid_player_stop (player);
+        fluid_player_join(player);
+        delete_fluid_player(player);
+        player = NULL;
+    }
     delete_fluid_synth(synth);
     delete_fluid_settings(settings);
 }

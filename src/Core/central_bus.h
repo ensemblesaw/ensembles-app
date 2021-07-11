@@ -20,7 +20,7 @@
 #ifndef CENTRAL_BUS_H
 #define CENTRAL_BUS_H
 
-/** Central Clock becomes 1 every time a beat starts and then it goes to 0
+/** Central Clock becomes 1 every time a measure starts and then it goes to 0
  */
 /** This function gives you the current value of the clock
  */

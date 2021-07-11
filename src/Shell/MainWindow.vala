@@ -35,11 +35,13 @@ namespace Ensembles.Shell {
         Ensembles.Core.Synthesizer synthesizer;
         Ensembles.Core.StyleDiscovery style_discovery;
         Ensembles.Core.StylePlayer style_player;
+        Ensembles.Core.MetronomeLFOPlayer metronome_player;
         Ensembles.Core.CentralBus bus;
         Ensembles.Core.Controller controller_connection;
 
         string sf_loc = Constants.SF2DATADIR + "/EnsemblesGM.sf2";
         string sf_schema_loc = Constants.SF2DATADIR + "/EnsemblesGMSchema.csv";
+        string metronome_lfo_directory = Constants.PKGDATADIR + "/MetronomesAndLFO";
         public MainWindow () {
             Gtk.Settings settings = Gtk.Settings.get_default ();
             settings.gtk_application_prefer_dark_theme = true;
@@ -125,6 +127,8 @@ namespace Ensembles.Shell {
                 );
             });
 
+            metronome_player = new Ensembles.Core.MetronomeLFOPlayer (metronome_lfo_directory);
+
             make_ui_events ();
 
             load_voices ();
@@ -134,6 +138,7 @@ namespace Ensembles.Shell {
                 beat_counter_panel.sync ();
                 style_controller_view.sync ();
                 main_display_unit.set_measure_display (Ensembles.Core.CentralBus.get_measure ());
+                metronome_player.play_measure (4, 4);
             });
             bus.system_halt.connect (() => {
                 style_player.reload_style ();
@@ -149,6 +154,7 @@ namespace Ensembles.Shell {
             bus.loaded_tempo_change.connect ((tempo) => {
                 beat_counter_panel.change_tempo (tempo);
                 main_display_unit.set_tempo_display (tempo);
+                metronome_player.set_tempo (tempo);
             });
             bus.split_key_change.connect (() => {
                 main_keyboard.update_split ();
