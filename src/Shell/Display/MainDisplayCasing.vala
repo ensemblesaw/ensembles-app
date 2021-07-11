@@ -31,6 +31,8 @@ namespace Ensembles.Shell {
         VoiceMenu voice_menu_r1;
         VoiceMenu voice_menu_r2;
 
+        LFOEditScreen lfo_editor;
+
         public ChannelModulatorScreen channel_mod_screen;
 
         public signal void change_style (string path, string name, int tempo);
@@ -43,6 +45,7 @@ namespace Ensembles.Shell {
             voice_menu_r1 = new VoiceMenu (0);
             voice_menu_r2 = new VoiceMenu (1);
             channel_mod_screen = new ChannelModulatorScreen (0, 0);
+            lfo_editor = new LFOEditScreen ();
 
             main_stack = new Gtk.Stack ();
             main_stack.add_named (style_menu, "Styles Menu");
@@ -50,6 +53,7 @@ namespace Ensembles.Shell {
             main_stack.add_named (voice_menu_r1, "Voice R1 Menu");
             main_stack.add_named (voice_menu_r2, "Voice R2 Menu");
             main_stack.add_named (channel_mod_screen, "Channel Modulator Screen");
+            main_stack.add_named (lfo_editor, "LFO Editor");
 
 
             splash_screen = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/display_unit/ensembles_splash.svg");
@@ -148,6 +152,9 @@ namespace Ensembles.Shell {
                 home_screen.set_voice_r2_name (voice.name);
                 this.change_voice (voice, channel);
             });
+            lfo_editor.close_screen.connect (() => {
+                main_display_leaflet.set_visible_child (home_screen);
+            });
         }
 
         public void update_style_list (List<string> paths, List<string> names, List<string> genre, List<int> tempo) {
@@ -199,6 +206,11 @@ namespace Ensembles.Shell {
             main_display_leaflet.set_visible_child (main_stack);
             main_stack.set_visible_child (channel_mod_screen);
             channel_mod_screen.set_synth_channel_to_edit (synth_index, channel);
+        }
+
+        public void open_LFO_screen () {
+            main_display_leaflet.set_visible_child (main_stack);
+            main_stack.set_visible_child (lfo_editor);
         }
     }
 }

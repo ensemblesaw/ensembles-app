@@ -180,9 +180,9 @@ synthesizer_init (const gchar* loc) {
 
     realtime_synth_settings = new_fluid_settings();
     fluid_settings_setstr(realtime_synth_settings, "audio.driver", "pulseaudio");
-    fluid_settings_setint(realtime_synth_settings, "audio.periods", 3);
-    fluid_settings_setint(realtime_synth_settings, "audio.period-size", 1024);
-    fluid_settings_setint(realtime_synth_settings, "audio.realtime-prio", 70);
+    fluid_settings_setint(realtime_synth_settings, "audio.periods", 4);
+    fluid_settings_setint(realtime_synth_settings, "audio.period-size", 2048);
+    fluid_settings_setint(realtime_synth_settings, "audio.realtime-prio", 90);
     fluid_settings_setnum(realtime_synth_settings, "synth.gain", 2);
     fluid_settings_setstr(realtime_synth_settings, "synth.midi-bank-select", "gs");
 

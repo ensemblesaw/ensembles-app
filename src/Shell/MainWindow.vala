@@ -128,7 +128,6 @@ namespace Ensembles.Shell {
             });
 
             metronome_player = new Ensembles.Core.MetronomeLFOPlayer (metronome_lfo_directory);
-            Ensembles.Core.CentralBus.set_lfo_on (1);
 
             make_ui_events ();
 
@@ -267,6 +266,7 @@ namespace Ensembles.Shell {
             });
             main_display_unit.channel_mod_screen.broadcast_assignment.connect (slider_board.send_modulator);
             slider_board.send_assignable_mode.connect (main_display_unit.channel_mod_screen.set_assignable);
+            slider_board.open_LFO_editor.connect (main_display_unit.open_LFO_screen);
             print("Initialized...\n");
         }
 
