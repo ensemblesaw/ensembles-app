@@ -5,6 +5,7 @@ namespace Ensembles.Core {
         int _time_signature_d;
         string _lfo_file_location;
         int _tempo = 120;
+        public bool looping;
         public MetronomeLFOPlayer (string lfo_directory_location) {
             _lfo_directory_location = lfo_directory_location;
             metronome_lfo_player_init ();
@@ -29,6 +30,22 @@ namespace Ensembles.Core {
         public void set_tempo (int tempo) {
             _tempo = tempo;
             metronome_lfo_player_set_tempo (_tempo);
+        }
+
+        public void play_loop (int time_signature_n, int time_signature_d) {
+            if (!CentralBus.get_style_looping_on ()) {
+                looping = true;
+                CentralBus.set_metronome_on (true);
+                play_measure (time_signature_n, time_signature_d);
+                Timeout.add (240000/_tempo, () => {
+                    metronome_lfo_player_play ();
+                    return looping;
+                });
+            }
+        }
+
+        public void stop_loop () {
+            looping = false;
         }
     }
 }

@@ -45,6 +45,7 @@ namespace Ensembles.Shell {
         public signal void reverb_change (int level);
         public signal void chorus_change (int level);
         public signal void dial_rotate (bool direction, int amount);
+        public signal void start_metronome (bool active);
         public signal void dial_activate ();
         public signal void update_split ();
         public ControlPanel () {
@@ -131,6 +132,9 @@ namespace Ensembles.Shell {
             split_toggle.toggled.connect ((active) => {
                 Ensembles.Core.CentralBus.set_split_on (active);
                 update_split ();
+            });
+            metronome_toggle.toggled.connect ((active) => {
+                start_metronome (active);
             });
             main_dial.activate_clicked.connect (() => {
                 dial_activate ();

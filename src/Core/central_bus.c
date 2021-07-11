@@ -45,6 +45,15 @@ void set_styles_ready (int value) {
     styles_ready = value;
 }
 
+// Metronome & LFO signals
+int central_metronome_on;
+int get_central_metronome_on () {
+    return central_metronome_on;
+}
+int set_central_metronome_on (int on) {
+    central_metronome_on = on;
+}
+
 // UI signals
 int* loaded_style_time_stamps;
 int* get_loaded_style_time_stamps () {

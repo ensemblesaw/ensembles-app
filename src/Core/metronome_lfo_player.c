@@ -56,7 +56,8 @@ lfo_parse_midi_events (void *data, fluid_midi_event_t *event) {
 
     if (channel == 9) {
         // Send data to synth
-        synthesizer_send_notes_metronome (key, type);
+        if (get_central_metronome_on ())
+            synthesizer_send_notes_metronome (key, type);
     }
     return 0;
 }

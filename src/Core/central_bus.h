@@ -57,6 +57,7 @@ int get_styles_ready ();
  */
 void set_styles_ready (int value);
 
+int get_central_metronome_on ();
 /** UI signals are used to communicate with the UI frontend.
  */
 

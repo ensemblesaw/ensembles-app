@@ -138,11 +138,13 @@ namespace Ensembles.Shell {
                 beat_counter_panel.sync ();
                 style_controller_view.sync ();
                 main_display_unit.set_measure_display (Ensembles.Core.CentralBus.get_measure ());
+                if (metronome_player.looping) metronome_player.stop_loop ();
                 metronome_player.play_measure (4, 4);
             });
             bus.system_halt.connect (() => {
                 style_player.reload_style ();
                 beat_counter_panel.halt ();
+                metronome_player.stop_loop ();
             });
             bus.system_ready.connect (() => {
                 main_display_unit.queue_remove_splash ();
@@ -192,6 +194,14 @@ namespace Ensembles.Shell {
             });
             ctrl_panel.update_split.connect (() => {
                 main_keyboard.update_split ();
+            });
+            ctrl_panel.start_metronome.connect ((active) => {
+                if (active) {
+                    metronome_player.play_loop (4, 4);
+                } else {
+                    metronome_player.stop_loop ();
+                    Ensembles.Core.CentralBus.set_metronome_on (false);
+                }
             });
             controller_connection.receive_note_event.connect ((key, on, velocity)=>{
                 //  print ("%d %d %d\n", key, on, velocity);
