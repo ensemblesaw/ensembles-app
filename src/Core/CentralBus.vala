@@ -137,7 +137,7 @@ namespace Ensembles.Core {
             return central_lfo_on;
         }
 
-        public static void set_lfo_on (int type) {
+        public static void set_lfo_type (int type) {
             central_lfo_on = type;
         }
 

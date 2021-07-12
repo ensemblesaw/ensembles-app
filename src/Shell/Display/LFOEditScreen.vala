@@ -67,7 +67,7 @@ namespace Ensembles.Shell {
                 int index = (int)(lfo_spin_button.value);
                 lfo_graph.set_from_resource ("/com/github/subhadeepjasu/ensembles/images/lfo_graphics/LFO_4_4_" + index.to_string ());
                 lfo_type.set_text (lfo_names[index]);
-                Ensembles.Core.CentralBus.set_lfo_on (index);
+                Ensembles.Core.CentralBus.set_lfo_type (index);
             });
         }
     }

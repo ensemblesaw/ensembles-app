@@ -679,8 +679,12 @@ namespace Ensembles.Shell {
             monitor_lfo ();
         }
 
-        ~SliderBoardView () {
+        public void stop_monitoring () {
             monitoring_lfo = false;
+        }
+
+        ~SliderBoardView () {
+            stop_monitoring ();
         }
 
         public void send_modulator (int synth_index, int channel, int modulator) {
@@ -762,6 +766,9 @@ namespace Ensembles.Shell {
         public void monitor_lfo () {
             Timeout.add (10, () => {
                 if (Ensembles.Core.CentralBus.get_lfo_type () > 0) {
+                    if (!monitoring_lfo) {
+                        return false;
+                    }
                     float value = Ensembles.Core.CentralBus.get_lfo ();
                     value = value * 0.8f + 0.1f;
                     master_knob.set_value (value);

@@ -45,14 +45,17 @@ lfo_parse_midi_events (void *data, fluid_midi_event_t *event) {
     int channel = fluid_midi_event_get_channel (event);
     int key = fluid_midi_event_get_key (event);
 
-    if (channel < 9)
-        if (get_central_lfo_on () == (channel + 1) && fluid_midi_event_get_control (event) == 16) {
-            set_central_lfo_value (fluid_midi_event_get_value (event));
-        }
-    else if (channel > 9)
-        if (get_central_lfo_on () == (channel - 1) && fluid_midi_event_get_control (event) == 16) {
-            set_central_lfo_value (fluid_midi_event_get_value (event));
-        }
+    int lfo_type = get_central_lfo_on ();
+    if (lfo_type > 0 && lfo_type < 16) {
+        if (channel < 9)
+            if (lfo_type == (channel + 1) && fluid_midi_event_get_control (event) == 16) {
+                set_central_lfo_value (fluid_midi_event_get_value (event));
+            }
+        else if (channel > 9)
+            if (lfo_type == (channel - 1) && fluid_midi_event_get_control (event) == 16) {
+                set_central_lfo_value (fluid_midi_event_get_value (event));
+            }
+    }
     if (channel == 9) {
         // Send data to synth
         if (get_central_metronome_on ())
