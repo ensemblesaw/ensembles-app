@@ -33,14 +33,22 @@ namespace Ensembles.Core {
         }
 
         public void play_loop (int time_signature_n, int time_signature_d) {
-            if (!CentralBus.get_style_looping_on ()) {
+            _time_signature_n = time_signature_n;
+            _time_signature_d = time_signature_d;
+            if (!CentralBus.get_style_looping_on () && !looping) {
                 looping = true;
-                play_measure (time_signature_n, time_signature_d);
-                Timeout.add (240000/_tempo, () => {
-                    metronome_lfo_player_play ();
-                    return looping;
-                });
+                new Thread<int> ("metronome_loop", loop);
             }
+        }
+
+        int loop () {
+            play_measure (_time_signature_n, _time_signature_d);
+            while (looping) {
+                Thread.usleep ((ulong)(240000/_tempo) * 1000);
+                metronome_lfo_player_play ();
+                Thread.yield ();
+            }
+            return 0;
         }
 
         public void stop_loop () {
