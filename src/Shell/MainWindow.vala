@@ -267,6 +267,9 @@ namespace Ensembles.Shell {
             main_display_unit.channel_mod_screen.broadcast_assignment.connect (slider_board.send_modulator);
             slider_board.send_assignable_mode.connect (main_display_unit.channel_mod_screen.set_assignable);
             slider_board.open_LFO_editor.connect (main_display_unit.open_LFO_screen);
+            metronome_player.beat_sync.connect (() => {
+                beat_counter_panel.sync ();
+            });
             this.destroy.connect (() => {
                 slider_board.stop_monitoring ();
             });

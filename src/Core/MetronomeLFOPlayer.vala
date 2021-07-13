@@ -6,6 +6,7 @@ namespace Ensembles.Core {
         string _lfo_file_location;
         int _tempo = 120;
         public bool looping;
+        public signal void beat_sync ();
         public MetronomeLFOPlayer (string lfo_directory_location) {
             _lfo_directory_location = lfo_directory_location;
             metronome_lfo_player_init ();
@@ -14,8 +15,8 @@ namespace Ensembles.Core {
             metronome_lfo_player_destruct ();
         }
 
-        public void play_measure (int time_signature_n, int time_signature_d) {
-            if (_time_signature_n != time_signature_n || _time_signature_d != time_signature_d) {
+        public void play_measure (int time_signature_n, int time_signature_d, bool? initial = false) {
+            if (_time_signature_n != time_signature_n || _time_signature_d != time_signature_d || initial) {
                 _time_signature_n = time_signature_n;
                 _time_signature_d = time_signature_d;
                 _lfo_file_location = _lfo_directory_location + "/" + 
@@ -42,8 +43,9 @@ namespace Ensembles.Core {
         }
 
         int loop () {
-            play_measure (_time_signature_n, _time_signature_d);
+            play_measure (_time_signature_n, _time_signature_d, true);
             while (looping) {
+                beat_sync ();
                 Thread.usleep ((ulong)(240000/_tempo) * 1000);
                 metronome_lfo_player_play ();
                 Thread.yield ();
