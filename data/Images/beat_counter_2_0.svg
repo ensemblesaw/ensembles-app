@@ -1,11 +1,11 @@
 <svg width="26" height="18" viewBox="0 0 26 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M17.5241 17.4996H17.7494L17.8987 17.3308L24.9413 9.36436L25.234 9.0332L24.9413 8.70203L17.8987 0.735638L17.7494 0.566803H17.5241H2.89615H1.78089L2.52285 1.39945L9.32528 9.0332L2.52285 16.667L1.78089 17.4996H2.89615H17.5241Z" stroke="black" stroke-opacity="0.25"/>
+<path opacity="0.7" d="M17.524 17.4996H17.7494L17.8987 17.3308L24.9412 9.36436L25.234 9.0332L24.9412 8.70203L17.8987 0.735638L17.7494 0.566803H17.524H2.89612H1.78086L2.52282 1.39945L9.32525 9.0332L2.52282 16.667L1.78086 17.4996H2.89612H17.524Z" stroke="black"/>
 <g filter="url(#filter0_i)">
-<path d="M16.9899 15.9374H5.30819L11.3878 9.03321L5.15082 2.129H16.9855L23.2169 9.03321L16.9899 15.9374Z" fill="url(#paint0_linear)" fill-opacity="0.75"/>
+<path d="M16.9899 15.9374H5.30816L11.3877 9.03321L5.15079 2.129H16.9854L23.2169 9.03321L16.9899 15.9374Z" fill="url(#paint0_linear)" fill-opacity="0.75"/>
 </g>
-<path d="M16.9899 16.4374H17.2123L17.3612 16.2723L23.5882 9.36808L23.8903 9.03309L23.5881 8.6982L17.3566 1.79399L17.2077 1.629H16.9855H5.15082H4.02533L4.77979 2.46417L10.7178 9.03746L4.93294 15.607L4.20169 16.4374H5.30819H16.9899Z" stroke="url(#paint1_linear)" stroke-opacity="0.5"/>
+<path d="M16.9899 16.4374H17.2123L17.3612 16.2723L23.5882 9.36808L23.8903 9.03309L23.5881 8.6982L17.3566 1.79399L17.2077 1.629H16.9854H5.15079H4.0253L4.77976 2.46417L10.7178 9.03746L4.93291 15.607L4.20166 16.4374H5.30816H16.9899Z" stroke="url(#paint1_linear)" stroke-opacity="0.5"/>
 <defs>
-<filter id="filter0_i" x="1.89984" y="-0.871002" width="22.6639" height="17.8084" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<filter id="filter0_i" x="1.89981" y="-0.871002" width="22.6639" height="17.8084" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
 <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
 <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
@@ -21,10 +21,10 @@
 <stop offset="0.473958"/>
 <stop offset="1" stop-color="#252525"/>
 </linearGradient>
-<linearGradient id="paint1_linear" x1="14.0003" y1="2.129" x2="14.0003" y2="16.9838" gradientUnits="userSpaceOnUse">
+<linearGradient id="paint1_linear" x1="14.0002" y1="2.129" x2="14.0002" y2="16.9838" gradientUnits="userSpaceOnUse">
 <stop stop-color="white"/>
 <stop offset="0.0001" stop-color="#EDEDED"/>
-<stop offset="1" stop-color="#333333"/>
+<stop offset="1" stop-color="#666666"/>
 </linearGradient>
 </defs>
 </svg>
