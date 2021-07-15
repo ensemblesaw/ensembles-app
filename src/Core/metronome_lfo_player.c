@@ -97,7 +97,6 @@ metronome_lfo_player_change_base (const char* mid_file, int tempo, int eol) {
     }
     fluid_player_set_tempo (lfo_player, FLUID_PLAYER_TEMPO_EXTERNAL_BPM, (double)tempo);
     fluid_player_play (lfo_player);
-    printf ("d:\n");
 }
 
 void

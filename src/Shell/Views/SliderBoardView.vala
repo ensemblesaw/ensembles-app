@@ -770,66 +770,69 @@ namespace Ensembles.Shell {
                         return false;
                     }
                     float value = Ensembles.Core.CentralBus.get_lfo ();
-                    value = value * 0.8f + 0.1f;
-                    master_knob.set_value (value);
-                    if (master_knob_assigns != null) {
-                        if (master_knob_assigns[0] && slider_0_variables != null) {
-                            slider_0.set_value (value);
-                            Ensembles.Core.Synthesizer.set_modulator_value (slider_0_variables[0], slider_0_variables[1], slider_0_variables[2], (int)(value * 127));
+                    Idle.add (() => {
+                        value = value * 0.8f + 0.1f;
+                        master_knob.set_value (value);
+                        if (master_knob_assigns != null) {
+                            if (master_knob_assigns[0] && slider_0_variables != null) {
+                                slider_0.set_value (value);
+                                Ensembles.Core.Synthesizer.set_modulator_value (slider_0_variables[0], slider_0_variables[1], slider_0_variables[2], (int)(value * 127));
+                            }
+                            if (master_knob_assigns[1] && slider_1_variables != null) {
+                                slider_1.set_value (value);
+                                Ensembles.Core.Synthesizer.set_modulator_value (slider_1_variables[0], slider_1_variables[1], slider_1_variables[2], (int)(value * 127));
+                            }
+                            if (master_knob_assigns[2] && slider_2_variables != null) {
+                                slider_2.set_value (value);
+                                Ensembles.Core.Synthesizer.set_modulator_value (slider_2_variables[0], slider_2_variables[1], slider_2_variables[2], (int)(value * 127));
+                            }
+                            if (master_knob_assigns[3] && slider_3_variables != null) {
+                                slider_3.set_value (value);
+                                Ensembles.Core.Synthesizer.set_modulator_value (slider_3_variables[0], slider_3_variables[1], slider_3_variables[2], (int)(value * 127));
+                            }
+                            if (master_knob_assigns[4] && slider_4_variables != null) {
+                                slider_4.set_value (value);
+                                Ensembles.Core.Synthesizer.set_modulator_value (slider_4_variables[0], slider_4_variables[1], slider_4_variables[2], (int)(value * 127));
+                            }
+                            if (master_knob_assigns[5] && slider_5_variables != null) {
+                                slider_5.set_value (value);
+                                Ensembles.Core.Synthesizer.set_modulator_value (slider_5_variables[0], slider_5_variables[1], slider_5_variables[2], (int)(value * 127));
+                            }
+                            if (master_knob_assigns[6] && slider_6_variables != null) {
+                                slider_6.set_value (value);
+                                Ensembles.Core.Synthesizer.set_modulator_value (slider_6_variables[0], slider_6_variables[1], slider_6_variables[2], (int)(value * 127));
+                            }
+                            if (master_knob_assigns[7] && slider_7_variables != null) {
+                                slider_7.set_value (value);
+                                Ensembles.Core.Synthesizer.set_modulator_value (slider_7_variables[0], slider_7_variables[1], slider_7_variables[2], (int)(value * 127));
+                            }
+                            if (master_knob_assigns[8] && slider_8_variables != null) {
+                                slider_8.set_value (value);
+                                Ensembles.Core.Synthesizer.set_modulator_value (slider_8_variables[0], slider_8_variables[1], slider_8_variables[2], (int)(value * 127));
+                            }
+                            if (master_knob_assigns[9] && slider_9_variables != null) {
+                                slider_9.set_value (value);
+                                Ensembles.Core.Synthesizer.set_modulator_value (slider_9_variables[0], slider_9_variables[1], slider_9_variables[2], (int)(value * 127));
+                            }
+                            if (master_knob_assigns[10] && knob_a_variables != null) {
+                                modulator_knob_a.set_value (value);
+                                Ensembles.Core.Synthesizer.set_modulator_value (knob_a_variables[0], knob_a_variables[1], knob_a_variables[2], (int)(value * 127));
+                            }
+                            if (master_knob_assigns[11] && knob_b_variables != null) {
+                                modulator_knob_b.set_value (value);
+                                Ensembles.Core.Synthesizer.set_modulator_value (knob_b_variables[0], knob_b_variables[1], knob_b_variables[2], (int)(value * 127));
+                            }
+                            if (master_knob_assigns[12] && knob_c_variables != null) {
+                                modulator_knob_c.set_value (value);
+                                Ensembles.Core.Synthesizer.set_modulator_value (knob_c_variables[0], knob_c_variables[1], knob_c_variables[2], (int)(value * 127));
+                            }
+                            if (master_knob_assigns[13] && knob_d_variables != null) {
+                                modulator_knob_d.set_value (value);
+                                Ensembles.Core.Synthesizer.set_modulator_value (knob_d_variables[0], knob_d_variables[1], knob_d_variables[2], (int)(value * 127));
+                            }
                         }
-                        if (master_knob_assigns[1] && slider_1_variables != null) {
-                            slider_1.set_value (value);
-                            Ensembles.Core.Synthesizer.set_modulator_value (slider_1_variables[0], slider_1_variables[1], slider_1_variables[2], (int)(value * 127));
-                        }
-                        if (master_knob_assigns[2] && slider_2_variables != null) {
-                            slider_2.set_value (value);
-                            Ensembles.Core.Synthesizer.set_modulator_value (slider_2_variables[0], slider_2_variables[1], slider_2_variables[2], (int)(value * 127));
-                        }
-                        if (master_knob_assigns[3] && slider_3_variables != null) {
-                            slider_3.set_value (value);
-                            Ensembles.Core.Synthesizer.set_modulator_value (slider_3_variables[0], slider_3_variables[1], slider_3_variables[2], (int)(value * 127));
-                        }
-                        if (master_knob_assigns[4] && slider_4_variables != null) {
-                            slider_4.set_value (value);
-                            Ensembles.Core.Synthesizer.set_modulator_value (slider_4_variables[0], slider_4_variables[1], slider_4_variables[2], (int)(value * 127));
-                        }
-                        if (master_knob_assigns[5] && slider_5_variables != null) {
-                            slider_5.set_value (value);
-                            Ensembles.Core.Synthesizer.set_modulator_value (slider_5_variables[0], slider_5_variables[1], slider_5_variables[2], (int)(value * 127));
-                        }
-                        if (master_knob_assigns[6] && slider_6_variables != null) {
-                            slider_6.set_value (value);
-                            Ensembles.Core.Synthesizer.set_modulator_value (slider_6_variables[0], slider_6_variables[1], slider_6_variables[2], (int)(value * 127));
-                        }
-                        if (master_knob_assigns[7] && slider_7_variables != null) {
-                            slider_7.set_value (value);
-                            Ensembles.Core.Synthesizer.set_modulator_value (slider_7_variables[0], slider_7_variables[1], slider_7_variables[2], (int)(value * 127));
-                        }
-                        if (master_knob_assigns[8] && slider_8_variables != null) {
-                            slider_8.set_value (value);
-                            Ensembles.Core.Synthesizer.set_modulator_value (slider_8_variables[0], slider_8_variables[1], slider_8_variables[2], (int)(value * 127));
-                        }
-                        if (master_knob_assigns[9] && slider_9_variables != null) {
-                            slider_9.set_value (value);
-                            Ensembles.Core.Synthesizer.set_modulator_value (slider_9_variables[0], slider_9_variables[1], slider_9_variables[2], (int)(value * 127));
-                        }
-                        if (master_knob_assigns[10] && knob_a_variables != null) {
-                            modulator_knob_a.set_value (value);
-                            Ensembles.Core.Synthesizer.set_modulator_value (knob_a_variables[0], knob_a_variables[1], knob_a_variables[2], (int)(value * 127));
-                        }
-                        if (master_knob_assigns[11] && knob_b_variables != null) {
-                            modulator_knob_b.set_value (value);
-                            Ensembles.Core.Synthesizer.set_modulator_value (knob_b_variables[0], knob_b_variables[1], knob_b_variables[2], (int)(value * 127));
-                        }
-                        if (master_knob_assigns[12] && knob_c_variables != null) {
-                            modulator_knob_c.set_value (value);
-                            Ensembles.Core.Synthesizer.set_modulator_value (knob_c_variables[0], knob_c_variables[1], knob_c_variables[2], (int)(value * 127));
-                        }
-                        if (master_knob_assigns[13] && knob_d_variables != null) {
-                            modulator_knob_d.set_value (value);
-                            Ensembles.Core.Synthesizer.set_modulator_value (knob_d_variables[0], knob_d_variables[1], knob_d_variables[2], (int)(value * 127));
-                        }
-                    }
+                        return false;
+                    });
                 }
                 return monitoring_lfo;
             });

@@ -45,7 +45,10 @@ namespace Ensembles.Core {
         int loop () {
             play_measure (_time_signature_n, _time_signature_d, true);
             while (looping) {
-                beat_sync ();
+                Idle.add (() => {
+                    beat_sync ();
+                    return false;
+                });
                 Thread.usleep ((ulong)(240000/_tempo) * 1000);
                 metronome_lfo_player_play ();
                 Thread.yield ();
