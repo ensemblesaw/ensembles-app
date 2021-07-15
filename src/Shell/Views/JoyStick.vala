@@ -17,7 +17,7 @@
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
  */
 
-namespace Ensembles.Shell { 
+namespace Ensembles.Shell {
     public class JoyStick : Gtk.Grid {
         Gtk.Button x_assign_button;
         Gtk.Button y_assign_button;

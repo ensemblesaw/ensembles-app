@@ -17,7 +17,7 @@
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
  */
 
-namespace Ensembles.Shell { 
+namespace Ensembles.Shell {
     public class ControlPanel : Gtk.Grid {
 
         ToggleSwitch accomp_toggle;
@@ -95,7 +95,6 @@ namespace Ensembles.Shell {
 
             main_dial = new Dial ();
             attach (main_dial, 0, 0, 2, 4);
-            
 
             attach (accomp_toggle, 2, 0, 1, 1);
             attach (layer_toggle, 2, 1, 1, 1);

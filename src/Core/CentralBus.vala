@@ -45,9 +45,10 @@ namespace Ensembles.Core {
         public signal void loaded_tempo_change (int tempo);
         public signal void split_key_change ();
 
-        public void clk() {
+        public void clk () {
             print ("clk\n");
-        } 
+        }
+
         public signal void system_ready ();
         int bus_watch () {
             while (thread_alive) {

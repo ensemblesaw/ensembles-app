@@ -17,7 +17,7 @@
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
  */
 
-namespace Ensembles.Shell { 
+namespace Ensembles.Shell {
     public class AppMenuView : Gtk.Popover {
 
         Ensembles.Core.ControllerDevice[] controller_devices;
@@ -26,7 +26,7 @@ namespace Ensembles.Shell {
         public signal void change_enable_midi_input (bool enable);
         public signal void change_active_input_device (Ensembles.Core.ControllerDevice device);
 
-        public AppMenuView(Gtk.Widget? relative_to) {
+        public AppMenuView (Gtk.Widget? relative_to) {
             this.relative_to = relative_to;
             make_ui ();
         }
@@ -68,7 +68,7 @@ namespace Ensembles.Shell {
             device_monitor_toggle.notify["active"].connect (() => {
                 revealer.reveal_child = device_monitor_toggle.active;
                 change_enable_midi_input (device_monitor_toggle.active);
-            });          
+            });
 
             device_list_box = new Gtk.ListBox ();
             device_list_box.set_activate_on_single_click (false);
@@ -102,8 +102,8 @@ namespace Ensembles.Shell {
             controller_devices = null;
             controller_devices = devices;
 
-            print("Update Device list...\n");
-            
+            print ("Updating Device list\n");
+
             var previous_items = device_list_box.get_children ();
             foreach (var item in previous_items) {
                 device_list_box.remove (item);

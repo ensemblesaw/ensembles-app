@@ -17,7 +17,7 @@
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
  */
 
-namespace Ensembles.Shell { 
+namespace Ensembles.Shell {
     public class SliderBoardView : Gtk.Grid {
         Knob modulator_knob_a;
         Knob modulator_knob_b;
@@ -88,8 +88,8 @@ namespace Ensembles.Shell {
             knob_assign_button = new Gtk.Button.with_label ("Knob Assign");
             master_assign_button = new Gtk.Button.with_label ("Master Knob Assign");
             var knob_assign_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL);
-            knob_assign_box.add(knob_assign_button);
-            knob_assign_box.add(master_assign_button);
+            knob_assign_box.add (knob_assign_button);
+            knob_assign_box.add (master_assign_button);
             knob_assign_box.set_layout (Gtk.ButtonBoxStyle.EXPAND);
 
             slider_assign_button = new Gtk.Button.with_label ("Slider Assign");
@@ -157,7 +157,7 @@ namespace Ensembles.Shell {
                 slider_grid.attach (new Gtk.Label ((i + 1).to_string ()), i, 1, 1, 1);
             }
 
-            attach (knob_assign_box,  0, 0, 5, 1);
+            attach (knob_assign_box, 0, 0, 5, 1);
             attach (modulator_knob_a, 0, 1, 1, 1);
             attach (new Gtk.Label ("1"), 0, 2, 1, 1);
             attach (modulator_knob_b, 1, 1, 1, 1);
@@ -170,9 +170,7 @@ namespace Ensembles.Shell {
             attach (master_knob, 4, 1, 1, 3);
             attach (slider_grid, 0, 4, 5, 1);
 
-            
             show_all ();
-
 
             slider_assign_button.clicked.connect (() => {
                 slider_assign_mode = !slider_assign_mode;
@@ -278,8 +276,11 @@ namespace Ensembles.Shell {
             });
 
             slider_0.change_value.connect ((scroll, value) => {
-                if  (slider_0_variables != null) {
-                    Ensembles.Core.Synthesizer.set_modulator_value (slider_0_variables[0], slider_0_variables[1], slider_0_variables[2], (int)(value * 127));
+                if (slider_0_variables != null) {
+                    Ensembles.Core.Synthesizer.set_modulator_value (slider_0_variables[0],
+                                                                    slider_0_variables[1],
+                                                                    slider_0_variables[2],
+                                                                    (int)(value * 127));
                 }
                 assignable_slider_index = 0;
                 slider_1.get_style_context ().remove_class ("slider-assignable");
@@ -302,7 +303,7 @@ namespace Ensembles.Shell {
                 return false;
             });
             slider_1.change_value.connect ((scroll, value) => {
-                if  (slider_1_variables != null) {
+                if (slider_1_variables != null) {
                     Ensembles.Core.Synthesizer.set_modulator_value (slider_1_variables[0], slider_1_variables[1], slider_1_variables[2], (int)(value * 127));
                 }
                 assignable_slider_index = 1;
@@ -326,7 +327,7 @@ namespace Ensembles.Shell {
                 return false;
             });
             slider_2.change_value.connect ((scroll, value) => {
-                if  (slider_2_variables != null) {
+                if (slider_2_variables != null) {
                     Ensembles.Core.Synthesizer.set_modulator_value (slider_2_variables[0], slider_2_variables[1], slider_2_variables[2], (int)(value * 127));
                 }
                 assignable_slider_index = 2;
@@ -350,7 +351,7 @@ namespace Ensembles.Shell {
                 return false;
             });
             slider_3.change_value.connect ((scroll, value) => {
-                if  (slider_3_variables != null) {
+                if (slider_3_variables != null) {
                     Ensembles.Core.Synthesizer.set_modulator_value (slider_3_variables[0], slider_3_variables[1], slider_3_variables[2], (int)(value * 127));
                 }
                 assignable_slider_index = 3;
@@ -374,7 +375,7 @@ namespace Ensembles.Shell {
                 return false;
             });
             slider_4.change_value.connect ((scroll, value) => {
-                if  (slider_4_variables != null) {
+                if (slider_4_variables != null) {
                     Ensembles.Core.Synthesizer.set_modulator_value (slider_4_variables[0], slider_4_variables[1], slider_4_variables[2], (int)(value * 127));
                 }
                 assignable_slider_index = 4;
@@ -398,7 +399,7 @@ namespace Ensembles.Shell {
                 return false;
             });
             slider_5.change_value.connect ((scroll, value) => {
-                if  (slider_5_variables != null) {
+                if (slider_5_variables != null) {
                     Ensembles.Core.Synthesizer.set_modulator_value (slider_5_variables[0], slider_5_variables[1], slider_5_variables[2], (int)(value * 127));
                 }
                 assignable_slider_index = 5;
@@ -422,7 +423,7 @@ namespace Ensembles.Shell {
                 return false;
             });
             slider_6.change_value.connect ((scroll, value) => {
-                if  (slider_6_variables != null) {
+                if (slider_6_variables != null) {
                     Ensembles.Core.Synthesizer.set_modulator_value (slider_6_variables[0], slider_6_variables[1], slider_6_variables[2], (int)(value * 127));
                 }
                 assignable_slider_index = 6;
@@ -446,7 +447,7 @@ namespace Ensembles.Shell {
                 return false;
             });
             slider_7.change_value.connect ((scroll, value) => {
-                if  (slider_7_variables != null) {
+                if (slider_7_variables != null) {
                     Ensembles.Core.Synthesizer.set_modulator_value (slider_7_variables[0], slider_7_variables[1], slider_7_variables[2], (int)(value * 127));
                 }
                 assignable_slider_index = 7;
@@ -470,7 +471,7 @@ namespace Ensembles.Shell {
                 return false;
             });
             slider_8.change_value.connect ((scroll, value) => {
-                if  (slider_8_variables != null) {
+                if (slider_8_variables != null) {
                     Ensembles.Core.Synthesizer.set_modulator_value (slider_8_variables[0], slider_8_variables[1], slider_8_variables[2], (int)(value * 127));
                 }
                 assignable_slider_index = 8;
@@ -494,7 +495,7 @@ namespace Ensembles.Shell {
                 return false;
             });
             slider_9.change_value.connect ((scroll, value) => {
-                if  (slider_9_variables != null) {
+                if (slider_9_variables != null) {
                     Ensembles.Core.Synthesizer.set_modulator_value (slider_9_variables[0], slider_9_variables[1], slider_9_variables[2], (int)(value * 127));
                 }
                 assignable_slider_index = 9;
@@ -645,7 +646,6 @@ namespace Ensembles.Shell {
                         modulator_knob_d.set_value (value);
                         Ensembles.Core.Synthesizer.set_modulator_value (knob_d_variables[0], knob_d_variables[1], knob_d_variables[2], (int)(value * 127));
                     }
-                    
                     for (int i = 0; i < 14; i++) {
                         if (master_knob_assigns[i]) {
                             assigned = true;

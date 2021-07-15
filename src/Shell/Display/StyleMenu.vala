@@ -17,19 +17,19 @@
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
  */
 
-namespace Ensembles.Shell { 
+namespace Ensembles.Shell {
     public class StyleMenu : WheelScrollableWidget {
         Gtk.Button close_button;
         Gtk.ListBox main_list;
         string[] style_path;
         string[] style_genre;
         string[] style_name;
-        int[]    style_tempo;
+        int[] style_tempo;
         Gtk.ListBoxRow[] rows;
 
         public signal void close_menu ();
         public signal void change_style (string path, string name, int tempo);
-        public StyleMenu() {
+        public StyleMenu () {
             this.get_style_context ().add_class ("menu-background");
 
             close_button = new Gtk.Button.from_icon_name ("application-exit-symbolic", Gtk.IconSize.BUTTON);

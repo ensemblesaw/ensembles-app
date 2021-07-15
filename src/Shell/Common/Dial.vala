@@ -17,7 +17,7 @@
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
  */
 
-namespace Ensembles.Shell { 
+namespace Ensembles.Shell {
     public class Dial : Gtk.Overlay {
         public string tooltip;
         public bool dragging;
@@ -126,8 +126,8 @@ namespace Ensembles.Shell {
         }
 
         public void rotate_dial (double value) {
-            double px = RADIUS * GLib.Math.cos (value/(Math.PI));
-            double py = RADIUS * GLib.Math.sin (value/(Math.PI));
+            double px = RADIUS * GLib.Math.cos (value / (Math.PI));
+            double py = RADIUS * GLib.Math.sin (value / (Math.PI));
             fixed.move (knob_socket_graphic, (int)(px + 50), (int)(py + 50));
         }
 
@@ -170,9 +170,7 @@ namespace Ensembles.Shell {
                 if (over_centre == 0) {
                     over_centre = event.motion.y_root;
                 }
-    
                 if (dragging_direction > event.motion.x || event.motion.x_root == 0) {
-
                     if (over_centre > over_centre_initial) {
                         value+=0.5;
                         if (value >= 360 || value <= -360) {
@@ -194,11 +192,9 @@ namespace Ensembles.Shell {
                         }
                     }
                     rotate_dial (value);
-                    
                     dragging_direction = event.motion.x;
                     over_centre = event.motion.y_root;
                 } else {
-
                     if (over_centre > over_centre_initial) {
                         value-=0.5;
                         if (value >= 360 || value <= -360) {
@@ -220,7 +216,6 @@ namespace Ensembles.Shell {
                         }
                     }
                     rotate_dial (value);
-                    
                     dragging_direction = event.motion.x;
                     over_centre = event.motion.y_root;
                 }

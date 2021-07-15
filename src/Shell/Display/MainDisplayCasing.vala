@@ -17,7 +17,7 @@
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
  */
 
-namespace Ensembles.Shell { 
+namespace Ensembles.Shell {
     public class MainDisplayCasing : Gtk.Box {
         Gtk.Stack main_stack;
         Gtk.Overlay main_overlay;
@@ -38,7 +38,7 @@ namespace Ensembles.Shell {
         public signal void change_style (string path, string name, int tempo);
         public signal void change_voice (Ensembles.Core.Voice voice, int channel);
 
-        public MainDisplayCasing() {
+        public MainDisplayCasing () {
             home_screen = new HomeScreen ();
             style_menu = new StyleMenu ();
             voice_menu_l = new VoiceMenu (2);
@@ -55,9 +55,7 @@ namespace Ensembles.Shell {
             main_stack.add_named (channel_mod_screen, "Channel Modulator Screen");
             main_stack.add_named (lfo_editor, "LFO Editor");
 
-
             splash_screen = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/display_unit/ensembles_splash.svg");
-
 
             main_display_leaflet = new Hdy.Leaflet ();
             main_display_leaflet.set_mode_transition_duration (400);
@@ -66,10 +64,8 @@ namespace Ensembles.Shell {
             main_display_leaflet.set_can_swipe_back (true);
             main_display_leaflet.set_transition_type (Hdy.LeafletTransitionType.SLIDE);
 
-            main_display_deck = new Hdy.Deck();
+            main_display_deck = new Hdy.Deck ();
             main_display_deck.add (main_display_leaflet);
-
-
 
             main_overlay = new Gtk.Overlay ();
             main_overlay.height_request = 236;
@@ -163,16 +159,16 @@ namespace Ensembles.Shell {
             string[] genre_arr = new string [genre.length ()];
             int[] tempo_arr = new int [tempo.length ()];
             for(int i = 0; i < paths.length (); i++) {
-                path_arr [i] = paths.nth_data (i);
+                path_arr[i] = paths.nth_data (i);
             }
             for(int i = 0; i < names.length (); i++) {
-                name_arr [i] = names.nth_data (i);
+                name_arr[i] = names.nth_data (i);
             }
             for(int i = 0; i < genre.length (); i++) {
-                genre_arr [i] = genre.nth_data (i);
+                genre_arr[i] = genre.nth_data (i);
             }
             for(int i = 0; i < tempo.length (); i++) {
-                tempo_arr [i] = tempo.nth_data (i);
+                tempo_arr[i] = tempo.nth_data (i);
             }
             style_menu.populate_style_menu (path_arr, name_arr, genre_arr, tempo_arr);
             home_screen.set_style_name (name_arr[0]);
@@ -208,7 +204,7 @@ namespace Ensembles.Shell {
             channel_mod_screen.set_synth_channel_to_edit (synth_index, channel);
         }
 
-        public void open_LFO_screen () {
+        public void open_lfo_screen () {
             main_display_leaflet.set_visible_child (main_stack);
             main_stack.set_visible_child (lfo_editor);
         }

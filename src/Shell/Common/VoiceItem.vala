@@ -17,7 +17,7 @@
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
  */
 
-namespace Ensembles.Shell { 
+namespace Ensembles.Shell {
     public class VoiceItem : Gtk.ListBoxRow {
         public Ensembles.Core.Voice voice;
         public VoiceItem (Ensembles.Core.Voice voice, bool show_category) {
@@ -38,15 +38,21 @@ namespace Ensembles.Shell {
                 category_label.get_style_context ().add_class ("menu-item-annotation");
             }
             try {
-                Gdk.Pixbuf thumb = new Gdk.Pixbuf.from_file (Constants.PKGDATADIR + "/Instruments/" + voice.name + ".jpg");
-                thumb = thumb.scale_simple(54, 36, Gdk.InterpType.NEAREST);
+                Gdk.Pixbuf thumb = new Gdk.Pixbuf.from_file (Constants.PKGDATADIR +
+                                                             "/Instruments/" +
+                                                             voice.name +
+                                                             ".jpg");
+                thumb = thumb.scale_simple (54, 36, Gdk.InterpType.NEAREST);
                 var image = new Gtk.Image.from_pixbuf (thumb);
                 image.margin_end = 8;
                 voice_grid.attach (image, 0, 0, 1, 2);
             } catch (Error e) {
                 try {
-                    Gdk.Pixbuf thumb = new Gdk.Pixbuf.from_file (Constants.PKGDATADIR + "/Instruments/" + voice.category.replace ("/", "_") + ".jpg");
-                    thumb = thumb.scale_simple(54, 36, Gdk.InterpType.NEAREST);
+                    Gdk.Pixbuf thumb = new Gdk.Pixbuf.from_file (Constants.PKGDATADIR +
+                                                                 "/Instruments/" +
+                                                                 voice.category.replace ("/", "_") +
+                                                                 ".jpg");
+                    thumb = thumb.scale_simple (54, 36, Gdk.InterpType.NEAREST);
                     var image = new Gtk.Image.from_pixbuf (thumb);
                     image.margin_end = 8;
                     voice_grid.attach (image, 0, 0, 1, 2);

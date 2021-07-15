@@ -17,17 +17,19 @@
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
  */
 
-namespace Ensembles.Shell { 
+namespace Ensembles.Shell {
     public class OctaveKeyboard : Gtk.Grid {
         Key[] keys;
         int _index;
 
         public signal void note_activate (int index, bool on);
-        public OctaveKeyboard(int index) {
+        public OctaveKeyboard (int index) {
             _index = index;
             keys = new Key[12];
             for (int i = 0; i < 12; i++) {
-                keys[i] = new Key (_index * 12 + i, ((i == 1) || (i == 3) || (i == 6) || (i == 8) || (i == 10)) ? true : false);
+                keys[i] = new Key (_index * 12 + i, ((i == 1) || (i == 3) || (i == 6) || (i == 8) || (i == 10))
+                ? true
+                : false);
             }
 
             var white_grid = new Gtk.Grid ();
@@ -37,14 +39,14 @@ namespace Ensembles.Shell {
             white_grid.attach (keys[5], 3, 0, 1, 1);
             white_grid.attach (keys[7], 4, 0, 1, 1);
             white_grid.attach (keys[9], 5, 0, 1, 1);
-            white_grid.attach (keys[11],6, 0, 1, 1);
+            white_grid.attach (keys[11], 6, 0, 1, 1);
 
             var black_grid = new Gtk.Grid ();
             black_grid.attach (keys[1], 0, 0, 1, 1);
             black_grid.attach (keys[3], 1, 0, 1, 1);
             black_grid.attach (keys[6], 2, 0, 1, 1);
             black_grid.attach (keys[8], 3, 0, 1, 1);
-            black_grid.attach (keys[10],4, 0, 1, 1);
+            black_grid.attach (keys[10], 4, 0, 1, 1);
             keys[1].margin_start = 18;
             keys[1].margin_end = 5;
             keys[3].margin_start = 6;

@@ -17,7 +17,7 @@
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
  */
 
-namespace Ensembles.Core { 
+namespace Ensembles.Core {
     public class StyleAnalyser {
         public int analyze_style (string mid_file) {
             return style_analyser_analyze (mid_file);

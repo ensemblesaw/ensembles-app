@@ -17,7 +17,7 @@
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
  */
 
-namespace Ensembles.Shell { 
+namespace Ensembles.Shell {
     public class Key : Gtk.Button {
         bool _black_key;
         int _index;
@@ -39,12 +39,14 @@ namespace Ensembles.Shell {
 
         public void note_on () {
             if (_black_key) {
-                if ((_index <= Ensembles.Core.CentralBus.get_split_key ()) && (Ensembles.Core.CentralBus.get_accomp_on () || Ensembles.Core.CentralBus.get_split_on ()))
+                if ((_index <= Ensembles.Core.CentralBus.get_split_key ()) &&
+                   (Ensembles.Core.CentralBus.get_accomp_on () || Ensembles.Core.CentralBus.get_split_on ()))
                     get_style_context ().add_class ("black-key-split-active");
                 else
                     get_style_context ().add_class ("black-key-active");
             } else {
-                if ((_index <= Ensembles.Core.CentralBus.get_split_key ()) && (Ensembles.Core.CentralBus.get_accomp_on () || Ensembles.Core.CentralBus.get_split_on ()))
+                if ((_index <= Ensembles.Core.CentralBus.get_split_key ()) &&
+                   (Ensembles.Core.CentralBus.get_accomp_on () || Ensembles.Core.CentralBus.get_split_on ()))
                     get_style_context ().add_class ("white-key-split-active");
                 else
                     get_style_context ().add_class ("white-key-active");
@@ -69,13 +71,15 @@ namespace Ensembles.Shell {
                 hexpand = true;
                 height_request = 84;
                 get_style_context ().add_class ("black-key-normal");
-                if ((_index <= Ensembles.Core.CentralBus.get_split_key ()) && (Ensembles.Core.CentralBus.get_accomp_on () || Ensembles.Core.CentralBus.get_split_on ()))
+                if ((_index <= Ensembles.Core.CentralBus.get_split_key ()) &&
+                   (Ensembles.Core.CentralBus.get_accomp_on () || Ensembles.Core.CentralBus.get_split_on ()))
                     get_style_context ().add_class ("black-key-split");
             } else {
                 height_request = 146;
                 hexpand = true;
                 get_style_context ().add_class ("white-key-normal");
-                if ((_index <= Ensembles.Core.CentralBus.get_split_key ()) && (Ensembles.Core.CentralBus.get_accomp_on () || Ensembles.Core.CentralBus.get_split_on ()))
+                if ((_index <= Ensembles.Core.CentralBus.get_split_key ()) &&
+                   (Ensembles.Core.CentralBus.get_accomp_on () || Ensembles.Core.CentralBus.get_split_on ()))
                     get_style_context ().add_class ("white-key-split");
             }
             if (_index == Ensembles.Core.CentralBus.get_split_key ()) {

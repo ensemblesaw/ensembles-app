@@ -17,7 +17,7 @@
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
  */
 
-namespace Ensembles.Shell { 
+namespace Ensembles.Shell {
     public class ChannelModulatorScreen : Gtk.Grid {
         int _synth_index;
         int _channel;
@@ -46,7 +46,7 @@ namespace Ensembles.Shell {
         Gtk.Button modulation_button;
         Gtk.Button cut_off_button;
         Gtk.Button resonance_button;
-        
+
         bool pan_lock;
         bool reverb_lock;
         bool chorus_lock;
@@ -55,7 +55,6 @@ namespace Ensembles.Shell {
         bool modulation_lock;
         bool cut_off_lock;
         bool resonance_lock;
-
 
         bool assignable;
 

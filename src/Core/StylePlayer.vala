@@ -18,7 +18,7 @@
  */
 
 
-namespace Ensembles.Core { 
+namespace Ensembles.Core {
     public class StylePlayer : Object {
         public StylePlayer (string? style_file = null) {
             style_player_init ();
@@ -43,19 +43,19 @@ namespace Ensembles.Core {
             style_player_play ();
         }
 
-        public void switch_var_a() {
+        public void switch_var_a () {
             style_player_play_loop (3, 4);
         }
 
-        public void switch_var_b() {
+        public void switch_var_b () {
             style_player_play_loop (5, 6);
         }
 
-        public void switch_var_c() {
+        public void switch_var_c () {
             style_player_play_loop (7, 8);
         }
 
-        public void switch_var_d() {
+        public void switch_var_d () {
             style_player_play_loop (9, 10);
         }
 

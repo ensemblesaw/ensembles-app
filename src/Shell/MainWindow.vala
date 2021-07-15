@@ -16,7 +16,7 @@
  *
  * Authored by: Subhadeep Jasu
  */
-namespace Ensembles.Shell { 
+namespace Ensembles.Shell {
     public class MainWindow : Gtk.Window {
         StyleControllerView style_controller_view;
         BeatCounterView beat_counter_panel;
@@ -55,7 +55,8 @@ namespace Ensembles.Shell {
             headerbar.title = "Ensembles";
             headerbar.pack_start (beat_counter_panel);
 
-            Gtk.Button app_menu_button = new Gtk.Button.from_icon_name ("preferences-system-symbolic", Gtk.IconSize.BUTTON);
+            Gtk.Button app_menu_button = new Gtk.Button.from_icon_name ("preferences-system-symbolic",
+                                                                        Gtk.IconSize.BUTTON);
             headerbar.pack_end (app_menu_button);
             this.set_titlebar (headerbar);
 
@@ -101,9 +102,6 @@ namespace Ensembles.Shell {
             grid.attach (main_keyboard, 0, 3, 3, 1);
             this.add (grid);
             this.show_all ();
-            
-
-
 
             controller_connection = new Ensembles.Core.Controller ();
             app_menu.change_enable_midi_input.connect ((enable) => {
@@ -266,18 +264,18 @@ namespace Ensembles.Shell {
             });
             main_display_unit.channel_mod_screen.broadcast_assignment.connect (slider_board.send_modulator);
             slider_board.send_assignable_mode.connect (main_display_unit.channel_mod_screen.set_assignable);
-            slider_board.open_LFO_editor.connect (main_display_unit.open_LFO_screen);
+            slider_board.open_LFO_editor.connect (main_display_unit.open_lfo_screen);
             metronome_player.beat_sync.connect (() => {
                 beat_counter_panel.sync ();
             });
             this.destroy.connect (() => {
                 slider_board.stop_monitoring ();
             });
-            print("Initialized...\n");
+            print ("Initialized\n");
         }
 
         void load_voices () {
-            var voice_analyser = new Ensembles.Core.VoiceAnalyser (sf_loc, sf_schema_loc); 
+            var voice_analyser = new Ensembles.Core.VoiceAnalyser (sf_loc, sf_schema_loc);
             detected_voices = voice_analyser.get_all_voices ();
             detected_voice_indices = voice_analyser.get_all_category_indices ();
             main_display_unit.update_voice_list (detected_voices);

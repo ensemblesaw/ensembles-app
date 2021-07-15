@@ -18,7 +18,7 @@
  */
 
 
-namespace Ensembles.Core { 
+namespace Ensembles.Core {
     public class StyleDiscovery {
         string in_built_style_path;
         string user_style_path;
@@ -29,7 +29,7 @@ namespace Ensembles.Core {
         Ensembles.Core.StyleAnalyser analyser;
 
         public signal void analysis_complete ();
-        public StyleDiscovery() {
+        public StyleDiscovery () {
             in_built_style_path = Constants.PKGDATADIR + "/Styles";
             user_style_path = Environment.get_home_dir () + "/Documents/Ensembles/Styles";
             style_files = new List<string> ();
@@ -38,7 +38,8 @@ namespace Ensembles.Core {
             style_tempo = new List<int> ();
 
             if (DirUtils.create_with_parents (Environment.get_home_dir () + "/Documents/Ensembles", 2000) != -1) {
-                if (DirUtils.create_with_parents (Environment.get_home_dir () + "/Documents/Ensembles/Styles", 2000) != -1) {
+                if (DirUtils.create_with_parents (
+                    Environment.get_home_dir () + "/Documents/Ensembles/Styles", 2000) != -1) {
                     print ("Made user style_folder\n");
                 }
             }
@@ -89,7 +90,6 @@ namespace Ensembles.Core {
                 analysis_complete ();
                 return false;
             });
-            
         }
     }
 }

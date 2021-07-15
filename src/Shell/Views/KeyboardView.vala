@@ -17,7 +17,7 @@
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
  */
 
-namespace Ensembles.Shell { 
+namespace Ensembles.Shell {
     public class KeyboardView : Gtk.Grid {
         OctaveKeyboard[] octaves;
         Gtk.Box key_grid;
@@ -25,7 +25,7 @@ namespace Ensembles.Shell {
         Gtk.Switch zoom_switch;
         JoyStick joy_stick;
         Ensembles.Core.Synthesizer _synth;
-        public KeyboardView() {
+        public KeyboardView () {
             get_style_context ().add_class ("keyboard-background");
             valign = Gtk.Align.END;
             key_grid = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
@@ -69,8 +69,6 @@ namespace Ensembles.Shell {
             keyboard_top_bar.height_request = 24;
             keyboard_top_bar.get_style_context ().add_class ("keyboard-top-bar");
             keyboard_top_bar.add (switch_bar);
-            
-            
 
             keyboard_overlay.add_overlay (keyboard_top_bar);
             keyboard_overlay.set_overlay_pass_through (keyboard_top_bar, true);
@@ -109,7 +107,7 @@ namespace Ensembles.Shell {
         }
 
         public void set_note_on (int key, bool on) {
-            octaves[(int)(key/12) - 3].set_note_on (key % 12, on);
+            octaves[(int)(key / 12) - 3].set_note_on (key % 12, on);
         }
 
         public void update_split () {

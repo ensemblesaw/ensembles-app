@@ -17,7 +17,7 @@
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
  */
 
-namespace Ensembles.Shell { 
+namespace Ensembles.Shell {
     public class VoiceMenu : WheelScrollableWidget {
         int channel;
         Gtk.Button close_button;
@@ -27,7 +27,7 @@ namespace Ensembles.Shell {
 
         public signal void close_menu ();
         public signal void change_voice (Ensembles.Core.Voice voice, int channel);
-        public VoiceMenu(int channel) {
+        public VoiceMenu (int channel) {
             this.channel = channel;
             this.get_style_context ().add_class ("menu-background");
 
@@ -37,8 +37,12 @@ namespace Ensembles.Shell {
 
 
             var headerbar = new Hdy.HeaderBar ();
-            headerbar.set_title ("Voice - " + ((channel == 0) ? "Right 1 (Main)" : (channel == 1) ? "Right 2 (Layered)" : "Left (Split)"));
-            headerbar.set_subtitle ("Pick a Voice to play" + ((channel == 0) ? "" : (channel == 1) ? " on another layer" : " on left hand side of split"));
+            headerbar.set_title ("Voice - " + ((channel == 0) ? "Right 1 (Main)" : (channel == 1)
+            ? "Right 2 (Layered)"
+            : "Left (Split)"));
+            headerbar.set_subtitle ("Pick a Voice to play" + ((channel == 0) ? "" : (channel == 1)
+            ? " on another layer"
+            : " on left hand side of split"));
             headerbar.get_style_context ().add_class ("menu-header");
             headerbar.pack_start (close_button);
             main_list = new Gtk.ListBox ();

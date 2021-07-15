@@ -17,7 +17,7 @@
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
  */
 
-namespace Ensembles.Shell { 
+namespace Ensembles.Shell {
     public class SongControllerView : Gtk.Grid {
         Gtk.Button prev_button;
         Gtk.Button play_button;

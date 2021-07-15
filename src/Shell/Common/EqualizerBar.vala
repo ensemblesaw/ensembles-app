@@ -17,7 +17,7 @@
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
  */
 
-namespace Ensembles.Shell { 
+namespace Ensembles.Shell {
     public class EqualizerBar : Gtk.Bin {
         //  DrawingArea drawing_area;
         private int _velocity;
@@ -29,7 +29,7 @@ namespace Ensembles.Shell {
                 _velocity = 127 - value;
                 queue_draw ();
             }
-        } 
+        }
         public EqualizerBar () {
             set_size_request (19, 40);
             velocity = 0;
@@ -39,12 +39,12 @@ namespace Ensembles.Shell {
             cr.move_to (0, 0);
             cr.set_source_rgba (0.6, 0.6, 0.6, 0.2);
             for (int i = 0; i < 7; i++) {
-                cr.rectangle (0, i*5, 19, 4);
+                cr.rectangle (0, i * 5, 19, 4);
             }
             cr.fill ();
             cr.set_source_rgba (0.42, 0.56, 0.015, 1);
             for (int i = 6; i >= 0; i--) {
-                cr.rectangle (0, i*5, 19, 4);
+                cr.rectangle (0, i * 5, 19, 4);
                 if (i * 16 < _velocity) {
                     break;
                 }
@@ -55,4 +55,3 @@ namespace Ensembles.Shell {
         }
     }
 }
-

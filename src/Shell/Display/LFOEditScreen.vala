@@ -52,7 +52,7 @@ namespace Ensembles.Shell {
             lfo_type.vexpand = true;
             lfo_spin_button.vexpand = true;
             mod_grid.attach (lfo_spin_button, 0, 0, 1, 1);
-            mod_grid.attach (lfo_type,        1, 0, 1, 1);
+            mod_grid.attach (lfo_type, 1, 0, 1, 1);
 
             lfo_graph = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/lfo_graphics/LFO_4_4_0");
 
@@ -65,7 +65,8 @@ namespace Ensembles.Shell {
         public void make_events () {
             lfo_spin_button.value_changed.connect (() => {
                 int index = (int)(lfo_spin_button.value);
-                lfo_graph.set_from_resource ("/com/github/subhadeepjasu/ensembles/images/lfo_graphics/LFO_4_4_" + index.to_string ());
+                lfo_graph.set_from_resource ("/com/github/subhadeepjasu/ensembles/images/lfo_graphics/LFO_4_4_" +
+                                             index.to_string ());
                 lfo_type.set_text (lfo_names[index]);
                 Ensembles.Core.CentralBus.set_lfo_type (index);
             });
