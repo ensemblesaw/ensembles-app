@@ -35,7 +35,7 @@ namespace Ensembles.Core {
                     voices.resize (voices.length + 1);
                     if (line != null) {
                         string[] parts = line.split (",");
-                        int bank =  int.parse (parts[0]);
+                        int bank = int.parse (parts[0]);
                         int preset = int.parse (parts[1]);
                         if (bank == sf_preset_bank_num && preset == sf_preset_num) {
                             category = parts[2];

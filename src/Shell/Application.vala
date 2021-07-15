@@ -53,7 +53,7 @@ namespace Ensembles.Shell {
                 css_provider.load_from_resource ("/com/github/subhadeepjasu/ensembles/Application.css");
                 // CSS Provider
                 Gtk.StyleContext.add_provider_for_screen (
-                    Gdk.Screen.get_default(),
+                    Gdk.Screen.get_default (),
                     css_provider,
                     Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
                 );

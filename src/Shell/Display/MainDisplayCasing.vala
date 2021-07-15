@@ -158,16 +158,16 @@ namespace Ensembles.Shell {
             string[] name_arr = new string [names.length ()];
             string[] genre_arr = new string [genre.length ()];
             int[] tempo_arr = new int [tempo.length ()];
-            for(int i = 0; i < paths.length (); i++) {
+            for (int i = 0; i < paths.length (); i++) {
                 path_arr[i] = paths.nth_data (i);
             }
-            for(int i = 0; i < names.length (); i++) {
+            for (int i = 0; i < names.length (); i++) {
                 name_arr[i] = names.nth_data (i);
             }
-            for(int i = 0; i < genre.length (); i++) {
+            for (int i = 0; i < genre.length (); i++) {
                 genre_arr[i] = genre.nth_data (i);
             }
-            for(int i = 0; i < tempo.length (); i++) {
+            for (int i = 0; i < tempo.length (); i++) {
                 tempo_arr[i] = tempo.nth_data (i);
             }
             style_menu.populate_style_menu (path_arr, name_arr, genre_arr, tempo_arr);
