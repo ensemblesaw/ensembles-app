@@ -17,7 +17,7 @@
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
  */
 
-namespace Ensembles.Shell { 
+namespace Ensembles.Shell {
     public class ControlPanel : Gtk.Grid {
 
         ToggleSwitch accomp_toggle;
@@ -45,6 +45,7 @@ namespace Ensembles.Shell {
         public signal void reverb_change (int level);
         public signal void chorus_change (int level);
         public signal void dial_rotate (bool direction, int amount);
+        public signal void start_metronome (bool active);
         public signal void dial_activate ();
         public signal void update_split ();
         public ControlPanel () {
@@ -94,7 +95,6 @@ namespace Ensembles.Shell {
 
             main_dial = new Dial ();
             attach (main_dial, 0, 0, 2, 4);
-            
 
             attach (accomp_toggle, 2, 0, 1, 1);
             attach (layer_toggle, 2, 1, 1, 1);
@@ -131,6 +131,9 @@ namespace Ensembles.Shell {
             split_toggle.toggled.connect ((active) => {
                 Ensembles.Core.CentralBus.set_split_on (active);
                 update_split ();
+            });
+            metronome_toggle.toggled.connect ((active) => {
+                start_metronome (active);
             });
             main_dial.activate_clicked.connect (() => {
                 dial_activate ();

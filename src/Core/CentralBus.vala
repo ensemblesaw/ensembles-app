@@ -45,9 +45,10 @@ namespace Ensembles.Core {
         public signal void loaded_tempo_change (int tempo);
         public signal void split_key_change ();
 
-        public void clk() {
+        public void clk () {
             print ("clk\n");
-        } 
+        }
+
         public signal void system_ready ();
         int bus_watch () {
             while (thread_alive) {
@@ -124,6 +125,30 @@ namespace Ensembles.Core {
         public static void set_layer_on (bool active) {
             central_layer_on = active ? 1 : 0;
         }
+
+        public static bool get_metronome_on () {
+            return central_metronome_on > 0 ? true : false;
+        }
+
+        public static void set_metronome_on (bool active) {
+            central_metronome_on = active ? 1 : 0;
+        }
+
+        public static int get_lfo_type () {
+            return central_lfo_on;
+        }
+
+        public static void set_lfo_type (int type) {
+            central_lfo_on = type;
+        }
+
+        public static bool get_style_looping_on () {
+            return central_style_looping > 0 ? true : false;
+        }
+
+        public static float get_lfo () {
+            return ((float)central_lfo_value / 127.0f);
+        }
     }
 }
 
@@ -138,5 +163,13 @@ extern int central_style_section;
 extern int central_loaded_tempo;
 extern int central_split_key;
 extern int central_split_on;
-extern int central_accompaniment_mode;
 extern int central_layer_on;
+
+// Style
+extern int central_accompaniment_mode;
+extern int central_style_looping;
+
+// Metronome and LFO
+extern int central_metronome_on;
+extern int central_lfo_on;
+extern int central_lfo_value;

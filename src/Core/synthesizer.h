@@ -27,6 +27,8 @@
  */
 int handle_events_for_styles (fluid_midi_event_t *event);
 
+void synthesizer_send_notes_metronome (int key, int on);
+
 /** This function is used to stop all synthesizer sounds for styles
  * except channel 10 i.e. drums
  */

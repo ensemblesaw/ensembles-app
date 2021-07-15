@@ -17,8 +17,8 @@
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
  */
 
-namespace Ensembles.Shell { 
-    public class WheelScrollableWidget : Gtk.Grid { 
+namespace Ensembles.Shell {
+    public class WheelScrollableWidget : Gtk.Grid {
         public int scroll_wheel_location;
         public WheelScrollableWidget () {
             width_request = 424;

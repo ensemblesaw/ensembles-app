@@ -20,7 +20,7 @@
 #ifndef CENTRAL_BUS_H
 #define CENTRAL_BUS_H
 
-/** Central Clock becomes 1 every time a beat starts and then it goes to 0
+/** Central Clock becomes 1 every time a measure starts and then it goes to 0
  */
 /** This function gives you the current value of the clock
  */
@@ -57,6 +57,11 @@ int get_styles_ready ();
  */
 void set_styles_ready (int value);
 
+int get_central_metronome_on ();
+
+int get_central_lfo_on ();
+
+int set_central_lfo_value (int on);
 /** UI signals are used to communicate with the UI frontend.
  */
 

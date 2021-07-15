@@ -17,13 +17,13 @@
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
  */
 
-namespace Ensembles.Core { 
+namespace Ensembles.Core {
     public class VoiceAnalyser : Object {
         Voice[] voices;
         int[] category_indices;
         public VoiceAnalyser (string sf_path, string sf_schema_path) {
             FileStream stream = FileStream.open (sf_schema_path, "r");
-            
+
             if (voice_analyser_init (sf_path) == 0) {
                 voices = new Voice[0];
                 category_indices = new int[0];
@@ -35,8 +35,8 @@ namespace Ensembles.Core {
                     voices.resize (voices.length + 1);
                     if (line != null) {
                         string[] parts = line.split (",");
-                        int bank =  int.parse(parts[0]);
-                        int preset = int.parse(parts[1]);
+                        int bank = int.parse (parts[0]);
+                        int preset = int.parse (parts[1]);
                         if (bank == sf_preset_bank_num && preset == sf_preset_num) {
                             category = parts[2];
                             category_indices.resize (category_indices.length + 1);
@@ -67,7 +67,7 @@ namespace Ensembles.Core {
 }
 
 extern int voice_analyser_init (string sf_path);
-extern int  voice_analyser_next ();
+extern int voice_analyser_next ();
 extern void voice_analyser_deconstruct ();
 
 

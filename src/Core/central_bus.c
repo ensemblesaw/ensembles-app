@@ -45,6 +45,31 @@ void set_styles_ready (int value) {
     styles_ready = value;
 }
 
+// Metronome & LFO signals
+int central_metronome_on;
+int get_central_metronome_on () {
+    return central_metronome_on;
+}
+int set_central_metronome_on (int on) {
+    central_metronome_on = on;
+}
+
+int central_lfo_on;
+int get_central_lfo_on () {
+    return central_lfo_on;
+}
+int set_central_lfo_on (int on) {
+    central_lfo_on = on;
+}
+
+int central_lfo_value;
+int get_central_lfo_value () {
+    return central_lfo_value;
+}
+int set_central_lfo_value (int on) {
+    central_lfo_value = on;
+}
+
 // UI signals
 int* loaded_style_time_stamps;
 int* get_loaded_style_time_stamps () {

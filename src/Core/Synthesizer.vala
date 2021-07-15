@@ -17,7 +17,7 @@
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
  */
 
-namespace Ensembles.Core { 
+namespace Ensembles.Core {
     public class Synthesizer : Object {
         public Synthesizer (string soundfont) {
             synthesizer_init (soundfont);
@@ -73,7 +73,6 @@ namespace Ensembles.Core {
             } else {
                 set_mod_buffer_value (modulator, channel, -1);
             }
-            
         }
 
         public static bool get_modulator_lock (int modulator, int channel) {
@@ -121,7 +120,7 @@ namespace Ensembles.Core {
 
 extern void synthesizer_init (string loc);
 extern void synthesizer_destruct ();
-extern int  synthesizer_send_notes (int key, int on, int velocity, out int type);
+extern int synthesizer_send_notes (int key, int on, int velocity, out int type);
 extern void synthesizer_halt_notes ();
 
 extern void synthesizer_set_accomp_enable (int on);
@@ -133,12 +132,12 @@ extern void synthesizer_edit_master_chorus (int level);
 extern void synthesizer_change_voice (int bank, int preset, int channel);
 
 extern void synthesizer_change_modulator (int synth_index, int channel, int modulator, int value);
-extern int  synthesizer_get_modulator_values (int synth_index, int channel, int modulator);
+extern int synthesizer_get_modulator_values (int synth_index, int channel, int modulator);
 extern void set_gain_value (int channel, int value);
 
-extern int  get_mod_buffer_value (int modulator, int channel);
+extern int get_mod_buffer_value (int modulator, int channel);
 extern void set_mod_buffer_value (int modulator, int channel, int value);
-extern int  synthesizer_get_velocity_levels (int synth_index, int channel);
+extern int synthesizer_get_velocity_levels (int synth_index, int channel);
 
 extern int synthesizer_transpose;
 extern int synthesizer_transpose_enable;

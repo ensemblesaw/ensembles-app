@@ -17,7 +17,7 @@
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
  */
 
-namespace Ensembles.Shell { 
+namespace Ensembles.Shell {
     public class MixerBoardView : Gtk.Grid {
         Gtk.Scale[] style_gain_sliders;
 
@@ -33,7 +33,7 @@ namespace Ensembles.Shell {
         public MixerBoardView () {
             halign = Gtk.Align.CENTER;
             vexpand = true;
-            int i = 0;            
+            int i = 0;
             style_gain_sliders = new Gtk.Scale [16];
 
             for (i = 0; i < 16; i++) {
@@ -45,7 +45,7 @@ namespace Ensembles.Shell {
             style_gain_sliders[0].vexpand = true;
             connect_style_sliders ();
 
-            voice_l_gain_slider =     new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1);
+            voice_l_gain_slider = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1);
             voice_l_gain_slider.inverted = true;
             voice_l_gain_slider.draw_value = false;
             voice_l_gain_slider.margin_start = 4;
@@ -57,7 +57,7 @@ namespace Ensembles.Shell {
             });
 
 
-            voice_r1_gain_slider =    new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1);
+            voice_r1_gain_slider = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1);
             voice_r1_gain_slider.inverted = true;
             voice_r1_gain_slider.draw_value = false;
             attach (voice_r1_gain_slider, i++, 0, 1, 1);
@@ -67,7 +67,7 @@ namespace Ensembles.Shell {
             });
 
 
-            voice_r2_gain_slider =    new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1);
+            voice_r2_gain_slider = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1);
             voice_r2_gain_slider.inverted = true;
             voice_r2_gain_slider.draw_value = false;
             attach (voice_r2_gain_slider, i++, 0, 1, 1);
@@ -78,7 +78,6 @@ namespace Ensembles.Shell {
 
 
             style_chord_gain_slider = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1);
-            
             style_chord_gain_slider.inverted = true;
             style_chord_gain_slider.draw_value = false;
             attach (style_chord_gain_slider, i++, 0, 1, 1);
@@ -332,17 +331,17 @@ namespace Ensembles.Shell {
                 if (synth_index == 0) {
                     switch (channel) {
                         case 0:
-                        voice_r1_gain_slider.set_value ((double)value/127);
+                        voice_r1_gain_slider.set_value ((double)value / 127);
                         break;
                         case 1:
-                        voice_r2_gain_slider.set_value ((double)value/127);
+                        voice_r2_gain_slider.set_value ((double)value / 127);
                         break;
                         case 2:
-                        voice_l_gain_slider.set_value ((double)value/127);
+                        voice_l_gain_slider.set_value ((double)value / 127);
                         break;
                     }
                 } else {
-                    style_gain_sliders[channel].set_value ((double)value/127);
+                    style_gain_sliders[channel].set_value ((double)value / 127);
                 }
                 return false;
             });

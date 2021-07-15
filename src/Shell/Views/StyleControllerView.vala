@@ -56,8 +56,8 @@ namespace Ensembles.Shell {
             var intro_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL);
             intro_button_a = new Gtk.Button.with_label ("1");
             intro_button_b = new Gtk.Button.with_label ("2");
-            intro_box.add(intro_button_a);
-            intro_box.add(intro_button_b);
+            intro_box.add (intro_button_a);
+            intro_box.add (intro_button_b);
             intro_box.set_layout (Gtk.ButtonBoxStyle.EXPAND);
             intro_button_a.set_sensitive (false);
             intro_button_b.set_sensitive (false);
@@ -82,10 +82,10 @@ namespace Ensembles.Shell {
             var_fill_button_b = new Gtk.Button.with_label ("B");
             var_fill_button_c = new Gtk.Button.with_label ("C");
             var_fill_button_d = new Gtk.Button.with_label ("D");
-            var_fill_box.add(var_fill_button_a);
-            var_fill_box.add(var_fill_button_b);
-            var_fill_box.add(var_fill_button_c);
-            var_fill_box.add(var_fill_button_d);
+            var_fill_box.add (var_fill_button_a);
+            var_fill_box.add (var_fill_button_b);
+            var_fill_box.add (var_fill_button_c);
+            var_fill_box.add (var_fill_button_d);
             var_fill_box.set_layout (Gtk.ButtonBoxStyle.EXPAND);
             var_fill_button_a.set_sensitive (false);
             var_fill_button_b.set_sensitive (false);
@@ -135,8 +135,8 @@ namespace Ensembles.Shell {
             ending_button_b = new Gtk.Button.with_label ("2");
             ending_button_a.set_sensitive (false);
             ending_button_b.set_sensitive (false);
-            ending_box.add(ending_button_a);
-            ending_box.add(ending_button_b);
+            ending_box.add (ending_button_a);
+            ending_box.add (ending_button_b);
             ending_box.set_layout (Gtk.ButtonBoxStyle.EXPAND);
             ending_button_a.clicked.connect (() => {
                 queue_ending_a ();
@@ -159,8 +159,8 @@ namespace Ensembles.Shell {
             sync_stop_button = new Gtk.Button.with_label ("Sync Stop");
             sync_start_button.set_sensitive (false);
             sync_stop_button.set_sensitive (false);
-            sync_box.add(sync_start_button);
-            sync_box.add(sync_stop_button);
+            sync_box.add (sync_start_button);
+            sync_box.add (sync_stop_button);
             sync_box.set_layout (Gtk.ButtonBoxStyle.EXPAND);
             sync_start_button.clicked.connect (() => {
                 sync_start_button.get_style_context ().add_class ("queue-measure");
@@ -194,7 +194,6 @@ namespace Ensembles.Shell {
             this.attach (ending_box, 3, 0, 1, 1);
             this.attach (sync_box, 4, 0, 1, 1);
             this.attach (start_button, 5, 0, 1, 1);
-            
             this.attach (intro_label, 0, 1, 1, 1);
             this.attach (var_label, 1, 1, 1, 1);
             this.attach (ending_label, 3, 1, 1, 1);

@@ -17,7 +17,7 @@
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
  */
 
-namespace Ensembles.Shell { 
+namespace Ensembles.Shell {
     public class HomeScreen : WheelScrollableWidget {
         int tempo = 33;
         Gtk.Button style_button;
@@ -40,24 +40,23 @@ namespace Ensembles.Shell {
         Gtk.Label chord_type_label;
 
         EqualizerBar[] equalizer_bar;
-        Gtk.Button[]   channel_configure_buttons;
+        Gtk.Button[] channel_configure_buttons;
 
         public signal void open_style_menu ();
         public signal void open_voice_l_menu ();
         public signal void open_voice_r1_menu ();
         public signal void open_voice_r2_menu ();
         public signal void edit_channel (int synth_index, int channel);
-        
-        public HomeScreen() {
+
+        public HomeScreen () {
             this.get_style_context ().add_class ("home-screen-background");
 
             var top_panel = new Gtk.Grid ();
             top_panel.get_style_context ().add_class ("home-screen-panel-top");
             top_panel.height_request = 46;
             top_panel.width_request = 460;
-            
 
-            var style_button_box = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
+            var style_button_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
             style_button_box.height_request = 46;
             var style_label = new Gtk.Label ("Style");
             style_label.halign = Gtk.Align.CENTER;
@@ -77,7 +76,7 @@ namespace Ensembles.Shell {
                 open_style_menu ();
             });
 
-            var voice_l_button_box = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
+            var voice_l_button_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
             voice_l_button_box.height_request = 46;
             voice_l_button_box.get_style_context ().add_class ("display-top-panel-button");
             var voice_l_label = new Gtk.Label ("Voice L");
@@ -98,7 +97,7 @@ namespace Ensembles.Shell {
                 open_voice_l_menu ();
             });
 
-            var voice_r1_button_box = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
+            var voice_r1_button_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
             voice_r1_button_box.height_request = 46;
             voice_r1_button_box.get_style_context ().add_class ("display-top-panel-button");
             var voice_r1_label = new Gtk.Label ("Voice R1");
@@ -119,7 +118,7 @@ namespace Ensembles.Shell {
                 open_voice_r1_menu ();
             });
 
-            var voice_r2_button_box = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
+            var voice_r2_button_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
             voice_r2_button_box.height_request = 46;
             voice_r2_button_box.get_style_context ().add_class ("display-top-panel-button");
             var voice_r2_label = new Gtk.Label ("Voice R2");
@@ -204,7 +203,7 @@ namespace Ensembles.Shell {
             beat_box.pack_end (beat_label, false, true, 0);
             beat_box.valign = Gtk.Align.START;
             beat_box.margin_top = 2;
-            
+
             var transpose_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
             transpose_box.pack_start (transpose_header, false, true, 0);
             transpose_box.pack_end (transpose_label, false, true, 0);
@@ -228,13 +227,13 @@ namespace Ensembles.Shell {
             equalizer_bar = new EqualizerBar[19];
             for (int i = 0; i < 19; i++) {
                 equalizer_bar[i] = new EqualizerBar ();
-                equalizer_grid.attach (equalizer_bar[i], i, 0 ,1, 1);
+                equalizer_grid.attach (equalizer_bar[i], i, 0, 1, 1);
             }
             equalizer_grid.column_spacing = 4;
             equalizer_grid.column_homogeneous = true;
             equalizer_grid.margin_start = 6;
-            equalizer_grid.margin_end   = 7;
-            equalizer_grid.margin_top   = 4;
+            equalizer_grid.margin_end = 7;
+            equalizer_grid.margin_top = 4;
 
             var equalizer_label_grid = new Gtk.Grid ();
             for (int i = 0; i < 16; i++) {
@@ -254,7 +253,8 @@ namespace Ensembles.Shell {
             channel_button_grid.margin_start = 2;
             channel_configure_buttons = new Gtk.Button [19];
             for (int i = 0; i < 19; i++) {
-                channel_configure_buttons[i] = new Gtk.Button.from_icon_name ("preferences-system-symbolic", Gtk.IconSize.BUTTON);
+                channel_configure_buttons[i] = new Gtk.Button.from_icon_name ("preferences-system-symbolic",
+                                                                              Gtk.IconSize.BUTTON);
                 channel_configure_buttons[i].get_style_context ().add_class ("channel-configure-button");
                 channel_button_grid.attach (channel_configure_buttons[i], i, 0, 1, 1);
             }
@@ -431,7 +431,7 @@ namespace Ensembles.Shell {
         }
 
         void update_equalizer () {
-            Timeout.add (60000/(tempo * 16), () => {
+            Timeout.add (60000 / (tempo * 16), () => {
                 for (int i = 0; i < 16; i++) {
                     equalizer_bar[i].velocity = Ensembles.Core.Synthesizer.get_channel_velocity (1, i);
                 }

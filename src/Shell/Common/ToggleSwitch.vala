@@ -17,7 +17,7 @@
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
  */
 
-namespace Ensembles.Shell { 
+namespace Ensembles.Shell {
     public class ToggleSwitch : Gtk.Button {
         Gtk.Label text_label;
         Gtk.Box indicator_box;

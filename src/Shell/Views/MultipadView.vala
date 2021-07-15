@@ -17,7 +17,7 @@
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
  */
 
-namespace Ensembles.Shell { 
+namespace Ensembles.Shell {
     public class MultipadView : Gtk.Grid {
         Gtk.Button[] pads;
         Gtk.Button assign_button;
@@ -36,8 +36,8 @@ namespace Ensembles.Shell {
 
             pads = new Gtk.Button [12];
             for (int i = 0; i < 6; i++) {
-                pads[i] = new Gtk.Button();
-                pads[i + 6] = new Gtk.Button();
+                pads[i] = new Gtk.Button ();
+                pads[i + 6] = new Gtk.Button ();
                 pads[i].width_request = 32;
                 pads[i].hexpand = true;
                 pads[i + 6].width_request = 32;
@@ -50,7 +50,6 @@ namespace Ensembles.Shell {
             assign_button.vexpand = true;
             assign_button.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
             attach (assign_button, 7, 1, 1, 2);
-            
             stop_button = new Gtk.Button.with_label ("Stop");
             stop_button.width_request = 51;
             attach (stop_button, 8, 1, 1, 2);

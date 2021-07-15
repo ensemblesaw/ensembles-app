@@ -37,6 +37,8 @@ TBD
 
 ## Install from source
 You can install Ensembles by compiling it from source, here's a list of required dependencies:
+ - `io.elementary.Platform` (flatpak)
+ - `io.elementary.Sdk` (flatpak)
  - `elementary-sdk`
  - `gtk+-3.0>=3.18`
  - `granite>=5.3.0`
@@ -52,19 +54,18 @@ Clone repository and change directory
 git clone https://github.com/SubhadeepJasu/ensembles.git
 cd ensembles
 ```
-Compile, install using meson and start Ensembles on your system *(Requires GIT-LFS)*
+Compile, install using flatpak and start Ensembles on your system *(Recommended)*
+```
+flatpak-builder build  com.github.subhadeepjasu.ensembles.yml --user --install --force-clean
+flatpak run com.github.subhadeepjasu.ensembles
+
+```
+_OR_ using meson *(Requires GIT-LFS)*
 ```
 meson _build --prefix=/usr
 cd _build
 sudo ninja install
 com.github.subhadeepjasu.ensembles
-```
-
-... _OR_ as flatpak *(Does not require GIT-LFS)*
-```
-flatpak-builder build  com.github.subhadeepjasu.ensembles.yml --user --install --force-clean
-flatpak run com.github.subhadeepjasu.ensembles
-
 ```
 
 ## Realtime Audio Performance

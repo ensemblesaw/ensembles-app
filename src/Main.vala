@@ -23,10 +23,10 @@
  *
  * @see Ensembls.Shell.EnsemblesApp
  * @return {@code int}
- * @since 1.0.0
+ * @since 0.0.1
  */
 public static int main (string[] args) {
-    X.init_threads (); 
+    X.init_threads ();
     var app = new Ensembles.Shell.EnsemblesApp ();
     var ret = app.run (args);
     return ret;

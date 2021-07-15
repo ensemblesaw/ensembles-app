@@ -16,7 +16,7 @@
  *
  * Authored by: Subhadeep Jasu
  */
-namespace Ensembles.Shell { 
+namespace Ensembles.Shell {
     public class MainWindow : Gtk.Window {
         StyleControllerView style_controller_view;
         BeatCounterView beat_counter_panel;
@@ -35,11 +35,13 @@ namespace Ensembles.Shell {
         Ensembles.Core.Synthesizer synthesizer;
         Ensembles.Core.StyleDiscovery style_discovery;
         Ensembles.Core.StylePlayer style_player;
+        Ensembles.Core.MetronomeLFOPlayer metronome_player;
         Ensembles.Core.CentralBus bus;
         Ensembles.Core.Controller controller_connection;
 
         string sf_loc = Constants.SF2DATADIR + "/EnsemblesGM.sf2";
         string sf_schema_loc = Constants.SF2DATADIR + "/EnsemblesGMSchema.csv";
+        string metronome_lfo_directory = Constants.PKGDATADIR + "/MetronomesAndLFO";
         public MainWindow () {
             Gtk.Settings settings = Gtk.Settings.get_default ();
             settings.gtk_application_prefer_dark_theme = true;
@@ -53,7 +55,8 @@ namespace Ensembles.Shell {
             headerbar.title = "Ensembles";
             headerbar.pack_start (beat_counter_panel);
 
-            Gtk.Button app_menu_button = new Gtk.Button.from_icon_name ("preferences-system-symbolic", Gtk.IconSize.BUTTON);
+            Gtk.Button app_menu_button = new Gtk.Button.from_icon_name ("preferences-system-symbolic",
+                                                                        Gtk.IconSize.BUTTON);
             headerbar.pack_end (app_menu_button);
             this.set_titlebar (headerbar);
 
@@ -99,9 +102,6 @@ namespace Ensembles.Shell {
             grid.attach (main_keyboard, 0, 3, 3, 1);
             this.add (grid);
             this.show_all ();
-            
-
-
 
             controller_connection = new Ensembles.Core.Controller ();
             app_menu.change_enable_midi_input.connect ((enable) => {
@@ -125,6 +125,8 @@ namespace Ensembles.Shell {
                 );
             });
 
+            metronome_player = new Ensembles.Core.MetronomeLFOPlayer (metronome_lfo_directory);
+
             make_ui_events ();
 
             load_voices ();
@@ -134,10 +136,13 @@ namespace Ensembles.Shell {
                 beat_counter_panel.sync ();
                 style_controller_view.sync ();
                 main_display_unit.set_measure_display (Ensembles.Core.CentralBus.get_measure ());
+                if (metronome_player.looping) metronome_player.stop_loop ();
+                metronome_player.play_measure (4, 4);
             });
             bus.system_halt.connect (() => {
                 style_player.reload_style ();
                 beat_counter_panel.halt ();
+                metronome_player.stop_loop ();
             });
             bus.system_ready.connect (() => {
                 main_display_unit.queue_remove_splash ();
@@ -149,6 +154,8 @@ namespace Ensembles.Shell {
             bus.loaded_tempo_change.connect ((tempo) => {
                 beat_counter_panel.change_tempo (tempo);
                 main_display_unit.set_tempo_display (tempo);
+                if (metronome_player != null)
+                    metronome_player.set_tempo (tempo);
             });
             bus.split_key_change.connect (() => {
                 main_keyboard.update_split ();
@@ -186,6 +193,15 @@ namespace Ensembles.Shell {
             });
             ctrl_panel.update_split.connect (() => {
                 main_keyboard.update_split ();
+            });
+            ctrl_panel.start_metronome.connect ((active) => {
+                if (active) {
+                    Ensembles.Core.CentralBus.set_metronome_on (true);
+                    metronome_player.play_loop (4, 4);
+                } else {
+                    metronome_player.stop_loop ();
+                    Ensembles.Core.CentralBus.set_metronome_on (false);
+                }
             });
             controller_connection.receive_note_event.connect ((key, on, velocity)=>{
                 //  print ("%d %d %d\n", key, on, velocity);
@@ -248,11 +264,18 @@ namespace Ensembles.Shell {
             });
             main_display_unit.channel_mod_screen.broadcast_assignment.connect (slider_board.send_modulator);
             slider_board.send_assignable_mode.connect (main_display_unit.channel_mod_screen.set_assignable);
-            print("Initialized...\n");
+            slider_board.open_LFO_editor.connect (main_display_unit.open_lfo_screen);
+            metronome_player.beat_sync.connect (() => {
+                beat_counter_panel.sync ();
+            });
+            this.destroy.connect (() => {
+                slider_board.stop_monitoring ();
+            });
+            print ("Initialized\n");
         }
 
         void load_voices () {
-            var voice_analyser = new Ensembles.Core.VoiceAnalyser (sf_loc, sf_schema_loc); 
+            var voice_analyser = new Ensembles.Core.VoiceAnalyser (sf_loc, sf_schema_loc);
             detected_voices = voice_analyser.get_all_voices ();
             detected_voice_indices = voice_analyser.get_all_category_indices ();
             main_display_unit.update_voice_list (detected_voices);

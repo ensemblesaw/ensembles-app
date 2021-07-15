@@ -17,7 +17,7 @@
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
  */
 
-namespace Ensembles.Core { 
+namespace Ensembles.Core {
     public class Voice : Object {
         public int index;
         public int bank;

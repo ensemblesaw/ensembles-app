@@ -17,7 +17,7 @@
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
  */
 
-namespace Ensembles.Shell { 
+namespace Ensembles.Shell {
     public class Knob : Gtk.Overlay {
         public string tooltip;
         public bool dragging;
@@ -55,18 +55,16 @@ namespace Ensembles.Shell {
             fixed.margin_start = 4;
             fixed.width_request = 50;
             fixed.height_request = 50;
-            double px = RADIUS * GLib.Math.cos (value/(Math.PI));
-            double py = RADIUS * GLib.Math.sin (value/(Math.PI));
+            double px = RADIUS * GLib.Math.cos (value / Math.PI);
+            double py = RADIUS * GLib.Math.sin (value / Math.PI);
             fixed.put (knob_socket_graphic, (int)(px + center), (int)(py + center));
 
             knob_background = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
-            
             knob_background.halign = Gtk.Align.START;
             knob_background.valign = Gtk.Align.START;
             knob_background.margin_start = 4;
             knob_background.width_request = 50;
             knob_background.height_request = 50;
-
 
             var event_box = new Gtk.EventBox ();
             event_box.event.connect (handle_event);
@@ -84,16 +82,16 @@ namespace Ensembles.Shell {
         }
 
         public void rotate_dial (double value) {
-            double px = RADIUS * GLib.Math.cos (value/(Math.PI));
-            double py = RADIUS * GLib.Math.sin (value/(Math.PI));
+            double px = RADIUS * GLib.Math.cos (value / Math.PI);
+            double py = RADIUS * GLib.Math.sin (value / Math.PI);
             fixed.move (knob_socket_graphic, (int)(px + center), (int)(py + center));
             change_value ((value - 27.0) / 15.0);
         }
 
         public void set_value (double _value) {
             value = 15 * _value + 27;
-            double px = RADIUS * GLib.Math.cos (value/(Math.PI));
-            double py = RADIUS * GLib.Math.sin (value/(Math.PI));
+            double px = RADIUS * GLib.Math.cos (value / Math.PI);
+            double py = RADIUS * GLib.Math.sin (value / Math.PI);
             fixed.move (knob_socket_graphic, (int)(px + center), (int)(py + center));
         }
 
@@ -116,8 +114,9 @@ namespace Ensembles.Shell {
                 if (dragging_direction == 0) {
                     dragging_direction = event.motion.y - event.motion.x;
                 }
-    
-                if (dragging_direction > event.motion.y - event.motion.x || event.motion.y_root == 0 || event.motion.x_root == 0) {
+                if (dragging_direction > event.motion.y - event.motion.x ||
+                    event.motion.y_root == 0 ||
+                    event.motion.x_root == 0) {
                     value += 0.5;
                     if (value < 27) {
                         value = 27;

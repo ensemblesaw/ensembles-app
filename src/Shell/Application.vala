@@ -17,7 +17,7 @@
  * Authored by: Subhadeep Jasu
  */
 
-namespace Ensembles.Shell { 
+namespace Ensembles.Shell {
     public class EnsemblesApp : Gtk.Application {
         static EnsemblesApp _instance = null;
 
@@ -29,7 +29,6 @@ namespace Ensembles.Shell {
                 return _instance;
             }
         }
-        
         string version_string = "";
 
         Ensembles.Shell.MainWindow main_window;
@@ -50,11 +49,11 @@ namespace Ensembles.Shell {
                 this.add_window (main_window);
             }
             if (css_provider == null) {
-                css_provider = new Gtk.CssProvider();
+                css_provider = new Gtk.CssProvider ();
                 css_provider.load_from_resource ("/com/github/subhadeepjasu/ensembles/Application.css");
                 // CSS Provider
                 Gtk.StyleContext.add_provider_for_screen (
-                    Gdk.Screen.get_default(),
+                    Gdk.Screen.get_default (),
                     css_provider,
                     Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
                 );

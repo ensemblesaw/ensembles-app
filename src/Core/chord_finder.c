@@ -87,7 +87,5 @@ chord_finder_infer (int key, int on, int* type) {
             return max_index - 24;
         }
     }
-    
-    
     return -6;
 }

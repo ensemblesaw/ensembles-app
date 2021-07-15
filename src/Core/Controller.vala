@@ -17,7 +17,7 @@
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
  */
 
-namespace Ensembles.Core { 
+namespace Ensembles.Core {
     public struct ControllerDevice {
         string name;
         int id;
@@ -29,7 +29,7 @@ namespace Ensembles.Core {
         public Controller () {
             controller_init ();
         }
-        
+
         ~Controller () {
             stream_connected = false;
             controller_destruct ();
@@ -57,11 +57,15 @@ namespace Ensembles.Core {
             while (stream_connected) {
                 if (controller_poll_device () > 0) {
                     int message = controller_read_device_stream ();
-                    
-                    int key = (((0x00FF00 & message) - 9216)/256) + 36;
+                    int key = (((0x00FF00 & message) - 9216) / 256) + 36;
                     int type = message & 0x0000FF;
-                    double velocity = 0.0 + ((127.0 - 0.0) / (8323072.0 - 65536.0)) * (double)((0xFF0000 & message) - 65536);
-                    print ("Velocity: %d, Key: %d, Type:%d, Raw: %x\n", (int)velocity, key, message & 0x0000FF, message);
+                    double velocity = ((127.0 - 0.0) / (8323072.0 - 65536.0)) *
+                                      (double)((0xFF0000 & message) - 65536);
+                    print ("Velocity: %d, Key: %d, Type:%d, Raw: %x\n",
+                          (int)velocity,
+                          key,
+                          message & 0x0000FF,
+                          message);
                     if (velocity < 0) {
                         velocity = 1;
                         type = 128;

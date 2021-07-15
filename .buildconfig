@@ -1,9 +1,9 @@
-[default]
-name=Default
+[meson]
+name=Meson
 runtime=host
 config-opts=
 run-opts=
-prefix=/home/subhadeep/.cache/gnome-builder/install/.vscode/host
+prefix=/usr
 app-id=
 postbuild=
 prebuild=
