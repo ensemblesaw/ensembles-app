@@ -11,6 +11,7 @@
   <br>
   Ensembles is a realtime musical performance arranger app. Its built using Vala and Gtk, powered by Fluidsynth. Ensembles is different from other DAW (Digital Audio Workstations) in the fact that the focus here is on live performance (although it can record performance? Why not?).
 </div>
+
 ![elementary flatpak build status](https://github.com/SubhadeepJasu/Ensembles/actions/workflows/ci.yml/badge.svg)
 
 <br>
