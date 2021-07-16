@@ -330,6 +330,10 @@ void
 style_player_init () {
     set_central_style_looping (0);
     settings = new_fluid_settings();
+    fluid_settings_setstr(settings, "audio.driver", "pulseaudio");
+    fluid_settings_setint(settings, "audio.periods", 2);
+    fluid_settings_setint(settings, "audio.period-size", 64);
+    fluid_settings_setint(settings, "audio.realtime-prio", 90);
     synth = new_fluid_synth(settings);
     adriver = new_fluid_audio_driver(settings, synth);
 }

@@ -77,6 +77,10 @@ lfo_parse_ticks (void* data, int ticks) {
 void
 metronome_lfo_player_init () {
     lfo_settings = new_fluid_settings();
+    fluid_settings_setstr(lfo_settings, "audio.driver", "pulseaudio");
+    fluid_settings_setint(lfo_settings, "audio.periods", 2);
+    fluid_settings_setint(lfo_settings, "audio.period-size", 64);
+    fluid_settings_setint(lfo_settings, "audio.realtime-prio", 90);
     lfo_synth = new_fluid_synth(lfo_settings);
     lfo_adriver = new_fluid_audio_driver(lfo_settings, lfo_synth);
 }
