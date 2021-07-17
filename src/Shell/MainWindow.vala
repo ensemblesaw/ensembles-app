@@ -25,7 +25,7 @@ namespace Ensembles.Shell {
         SliderBoardView slider_board;
         VoiceCategoryView voice_category_panel;
         MixerBoardView mixer_board_view;
-        MultipadView multipad_panel;
+        SamplerPadView multipad_panel;
         RegistryView registry_panel;
         AppMenuView app_menu;
         SongControllerView song_control_panel;
@@ -79,7 +79,7 @@ namespace Ensembles.Shell {
 
             mixer_board_view = new MixerBoardView ();
 
-            multipad_panel = new MultipadView ();
+            multipad_panel = new SamplerPadView (this);
 
             registry_panel = new RegistryView ();
 
@@ -163,7 +163,7 @@ namespace Ensembles.Shell {
         }
         void make_ui_events () {
             this.window_state_event.connect ((event) => {
-                if (event.type == Gdk.EventType.WINDOW_STATE) {
+                if ((int)(event.changed_mask) == 4) {
                     main_keyboard.visible = false;
                     Timeout.add (100, () => {
                         main_keyboard.visible = true;
@@ -270,6 +270,17 @@ namespace Ensembles.Shell {
             });
             this.destroy.connect (() => {
                 slider_board.stop_monitoring ();
+
+                print ("CLEANUP: Unloading MIDI Controller Monitor\n");
+                controller_connection.unref ();
+                print ("CLEANUP: Unloading Metronome and LFO Engine\n");
+                metronome_player.unref ();
+                print ("CLEANUP: Unloading Style Engine\n");
+                style_player.unref ();
+                print ("CLEANUP: Unloading Synthesizer\n");
+                synthesizer.unref ();
+                print ("CLEANUP: Unloading Central Bus\n");
+                bus.unref ();
             });
             print ("Initialized\n");
         }

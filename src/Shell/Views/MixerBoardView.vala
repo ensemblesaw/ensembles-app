@@ -331,17 +331,21 @@ namespace Ensembles.Shell {
                 if (synth_index == 0) {
                     switch (channel) {
                         case 0:
-                        voice_r1_gain_slider.set_value ((double)value / 127);
+                        if (voice_r1_gain_slider.get_adjustment () != null)
+                            voice_r1_gain_slider.set_value ((double)value / 127);
                         break;
                         case 1:
-                        voice_r2_gain_slider.set_value ((double)value / 127);
+                        if (voice_r2_gain_slider.get_adjustment () != null)
+                            voice_r2_gain_slider.set_value ((double)value / 127);
                         break;
                         case 2:
-                        voice_l_gain_slider.set_value ((double)value / 127);
+                        if (voice_l_gain_slider.get_adjustment () != null)
+                            voice_l_gain_slider.set_value ((double)value / 127);
                         break;
                     }
                 } else {
-                    style_gain_sliders[channel].set_value ((double)value / 127);
+                    if (style_gain_sliders[channel].get_adjustment () != null)
+                        style_gain_sliders[channel].set_value ((double)value / 127);
                 }
                 return false;
             });

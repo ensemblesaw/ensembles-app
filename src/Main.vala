@@ -27,6 +27,7 @@
  */
 public static int main (string[] args) {
     X.init_threads ();
+    Gst.init (ref args);
     var app = new Ensembles.Shell.EnsemblesApp ();
     var ret = app.run (args);
     return ret;
