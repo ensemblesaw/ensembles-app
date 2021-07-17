@@ -40,7 +40,7 @@ namespace Ensembles.Core {
             if (DirUtils.create_with_parents (Environment.get_home_dir () + "/Documents/Ensembles", 2000) != -1) {
                 if (DirUtils.create_with_parents (
                     Environment.get_home_dir () + "/Documents/Ensembles/Styles", 2000) != -1) {
-                    print ("Made user style_folder\n");
+                    debug ("Made user style_folder\n");
                 }
             }
             find_styles ();

@@ -33,7 +33,7 @@ namespace Ensembles.Core {
             int chord_type = 0;
             int chord_feedback = synthesizer_send_notes (key, on, velocity, out chord_type);
             if (chord_feedback > -6) {
-                //print("chord: %d %d\n", chord_feedback, chord_type);
+                //debug("chord: %d %d\n", chord_feedback, chord_type);
                 detected_chord (chord_feedback, chord_type);
             }
         }

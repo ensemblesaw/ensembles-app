@@ -46,7 +46,7 @@ namespace Ensembles.Core {
         public signal void split_key_change ();
 
         public void clk () {
-            print ("clk\n");
+            debug ("clk\n");
         }
 
         public signal void system_ready ();

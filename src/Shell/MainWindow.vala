@@ -173,7 +173,7 @@ namespace Ensembles.Shell {
                 return false;
             });
             app_menu.change_active_input_device.connect ((device) => {
-                //  print("%d %s\n", device.id, device.name);
+                //  debug("%d %s\n", device.id, device.name);
                 controller_connection.connect_device (device.id);
             });
             main_display_unit.change_style.connect ((path, name, tempo) => {
@@ -204,7 +204,7 @@ namespace Ensembles.Shell {
                 }
             });
             controller_connection.receive_note_event.connect ((key, on, velocity)=>{
-                //  print ("%d %d %d\n", key, on, velocity);
+                //  debug ("%d %d %d\n", key, on, velocity);
                 synthesizer.send_notes_realtime (key, on, velocity);
                 main_keyboard.set_note_on (key, (on == 144));
             });
@@ -271,18 +271,18 @@ namespace Ensembles.Shell {
             this.destroy.connect (() => {
                 slider_board.stop_monitoring ();
 
-                print ("CLEANUP: Unloading MIDI Controller Monitor\n");
+                debug ("CLEANUP: Unloading MIDI Controller Monitor\n");
                 controller_connection.unref ();
-                print ("CLEANUP: Unloading Metronome and LFO Engine\n");
+                debug ("CLEANUP: Unloading Metronome and LFO Engine\n");
                 metronome_player.unref ();
-                print ("CLEANUP: Unloading Style Engine\n");
+                debug ("CLEANUP: Unloading Style Engine\n");
                 style_player.unref ();
-                print ("CLEANUP: Unloading Synthesizer\n");
+                debug ("CLEANUP: Unloading Synthesizer\n");
                 synthesizer.unref ();
-                print ("CLEANUP: Unloading Central Bus\n");
+                debug ("CLEANUP: Unloading Central Bus\n");
                 bus.unref ();
             });
-            print ("Initialized\n");
+            debug ("Initialized\n");
         }
 
         void load_voices () {

@@ -102,7 +102,7 @@ namespace Ensembles.Shell {
             controller_devices = null;
             controller_devices = devices;
 
-            print ("Updating Device list\n");
+            debug ("Updating Device list\n");
 
             var previous_items = device_list_box.get_children ();
             foreach (var item in previous_items) {

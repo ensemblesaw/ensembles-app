@@ -31,7 +31,7 @@ namespace Ensembles.Core {
         }
 
         public void add_style_file (string style_file) {
-            print ("loading style %s\n", style_file);
+            debug ("loading style %s\n", style_file);
             style_player_add_style_file (style_file, 0);
         }
 
