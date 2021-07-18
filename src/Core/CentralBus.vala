@@ -85,10 +85,12 @@ namespace Ensembles.Core {
                         style_section_change (central_style_section);
                         style_section = central_style_section;
                     }
+                    Thread.yield ();
                     Thread.usleep (300000);
                     central_measure ++;
                     central_clock = 0;
                 }
+                Thread.yield ();
                 Thread.usleep (400);
             }
             return 0;
