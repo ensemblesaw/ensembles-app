@@ -31,10 +31,15 @@ namespace Ensembles.Shell {
         }
         string version_string = "";
 
+        public static Settings settings;
+
         Ensembles.Shell.MainWindow main_window;
 
         Gtk.CssProvider css_provider;
 
+        construct {
+            settings = new Settings ("com.github.subhadeepjasu.ensembles");
+        }
 
         public EnsemblesApp () {
             Object (
@@ -59,6 +64,11 @@ namespace Ensembles.Shell {
                 );
             }
             this.main_window.show_all ();
+        }
+
+        public static bool get_is_running_from_flatpak () {
+            var flatpak_info = File.new_for_path ("/.flatpak-info");
+            return flatpak_info.query_exists ();
         }
     }
 }

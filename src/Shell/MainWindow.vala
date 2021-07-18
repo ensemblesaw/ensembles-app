@@ -25,7 +25,7 @@ namespace Ensembles.Shell {
         SliderBoardView slider_board;
         VoiceCategoryView voice_category_panel;
         MixerBoardView mixer_board_view;
-        SamplerPadView multipad_panel;
+        SamplerPadView sampler_panel;
         RegistryView registry_panel;
         AppMenuView app_menu;
         SongControllerView song_control_panel;
@@ -79,7 +79,7 @@ namespace Ensembles.Shell {
 
             mixer_board_view = new MixerBoardView ();
 
-            multipad_panel = new SamplerPadView (this);
+            sampler_panel = new SamplerPadView (this);
 
             registry_panel = new RegistryView ();
 
@@ -97,7 +97,7 @@ namespace Ensembles.Shell {
             grid.attach (ctrl_panel, 2, 0, 1, 1);
             grid.attach (voice_category_panel, 0, 1, 1, 1);
             grid.attach (mixer_board_view, 1, 1, 1, 1);
-            grid.attach (multipad_panel, 2, 1, 1, 1);
+            grid.attach (sampler_panel, 2, 1, 1, 1);
             grid.attach (style_registry_grid, 0, 2, 3, 1);
             grid.attach (main_keyboard, 0, 3, 3, 1);
             this.add (grid);
@@ -261,6 +261,9 @@ namespace Ensembles.Shell {
             });
             voice_category_panel.voice_quick_select.connect ((index) => {
                 main_display_unit.quick_select_voice (detected_voice_indices[index]);
+            });
+            mixer_board_view.set_sampler_gain.connect ((gain) => {
+                sampler_panel.set_sampler_volume (gain);
             });
             main_display_unit.channel_mod_screen.broadcast_assignment.connect (slider_board.send_modulator);
             slider_board.send_assignable_mode.connect (main_display_unit.channel_mod_screen.set_assignable);

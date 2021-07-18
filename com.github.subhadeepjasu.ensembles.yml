@@ -9,6 +9,7 @@ finish-args:
   - '--socket=wayland'
   - '--socket=pulseaudio'
   - '--device=all'
+  - '--filesystem=home'
 modules:
   - name: granite
     buildsystem: meson

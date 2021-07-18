@@ -17,8 +17,12 @@ namespace Ensembles.Core {
 
         public signal void handle_recording_complete (string tmp_full_path);
 
+        public SampleRecorder () {
+            flatpak_environment = Shell.EnsemblesApp.get_is_running_from_flatpak ();
+        }
+
         public void start_recording () {
-            SourceDevice device_id = SourceDevice.MIC;
+            SourceDevice device_id = (SourceDevice) Shell.EnsemblesApp.settings.get_enum ("device");
 
             pipeline = new Gst.Pipeline ("pipeline");
             var mic_sound = Gst.ElementFactory.make ("pulsesrc", "mic_sound");
@@ -37,14 +41,6 @@ namespace Ensembles.Core {
                 error ("The GStreamer element pulsesrc (named \"mic_sound\") was not created correctly");
             } else if (sink == null) {
                 error ("The GStreamer element filesink was not created correctly");
-            }
-
-            var flatpak_info = File.new_for_path ("/.flatpak-info");
-            flatpak_environment = flatpak_info.query_exists ();
-            if (flatpak_environment) {
-                print ("Running as flatpak\n");
-            } else {
-                print ("Running natively\n");
             }
 
             if (device_id != SourceDevice.MIC) {

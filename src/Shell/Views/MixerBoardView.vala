@@ -24,11 +24,13 @@ namespace Ensembles.Shell {
         Gtk.Scale voice_l_gain_slider;
         Gtk.Scale voice_r1_gain_slider;
         Gtk.Scale voice_r2_gain_slider;
-        Gtk.Scale style_chord_gain_slider;
+        Gtk.Scale sampler_pad_gain_slider;
 
         Gtk.Button[] lock_buttons;
 
         bool watch;
+
+        public signal void set_sampler_gain (double gain);
 
         public MixerBoardView () {
             halign = Gtk.Align.CENTER;
@@ -77,10 +79,17 @@ namespace Ensembles.Shell {
             });
 
 
-            style_chord_gain_slider = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1);
-            style_chord_gain_slider.inverted = true;
-            style_chord_gain_slider.draw_value = false;
-            attach (style_chord_gain_slider, i++, 0, 1, 1);
+            sampler_pad_gain_slider = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1);
+            sampler_pad_gain_slider.inverted = true;
+            sampler_pad_gain_slider.draw_value = false;
+            attach (sampler_pad_gain_slider, i++, 0, 1, 1);
+            sampler_pad_gain_slider.set_value (0.9);
+            sampler_pad_gain_slider.change_value.connect ((scroll, value) => {
+                if (value >= 0 && value <= 1.0) {
+                    set_sampler_gain (value);
+                }
+                return false;
+            });
 
             for (i = 0; i < 16; i++) {
                 attach (new Gtk.Label ((i + 1).to_string ()), i, 1, 1, 1);
@@ -89,7 +98,7 @@ namespace Ensembles.Shell {
             attach (new Gtk.Label (" L"), i++, 1, 1, 1);
             attach (new Gtk.Label ("R1"), i++, 1, 1, 1);
             attach (new Gtk.Label ("R2"), i++, 1, 1, 1);
-            attach (new Gtk.Label ("C"), i++, 1, 1, 1);
+            attach (new Gtk.Label ("SP"), i++, 1, 1, 1);
 
             lock_buttons = new Gtk.Button[16];
             for (i = 0; i < 16; i++) {

@@ -32,5 +32,9 @@ namespace Ensembles.Core {
         public void stop_sample () {
             sample_element.set_state (Gst.State.NULL);
         }
+
+        public void set_volume (double volume) {
+            sample_element.set ("volume",  volume);
+        }
     }
 }

@@ -46,3 +46,9 @@ install_subdir(
     join_paths('Images/', 'Instruments'),
     install_dir: join_paths(get_option('datadir'), meson.project_name())
 )
+
+install_data(
+    'com.github.subhadeepjasu.ensembles.gschema.xml',
+    rename: meson.project_name() + '.gschema.xml',
+    install_dir: get_option('datadir') / 'glib-2.0' / 'schemas'
+)

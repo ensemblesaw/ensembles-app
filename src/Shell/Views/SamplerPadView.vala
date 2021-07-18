@@ -63,7 +63,7 @@ namespace Ensembles.Shell {
             assign_record_button.vexpand = true;
             assign_record_button.get_style_context ().add_class ("sampler-record-button");
             assign_record_button.get_style_context ().remove_class ("image-button");
-            assign_record_button.tooltip_text = "Click and hold to record";
+            assign_record_button.tooltip_text = _("Click and hold to sample");
             attach (assign_record_button, 7, 1, 1, 1);
 
             assign_file_button = new Gtk.Button.from_icon_name ("document-open-symbolic", Gtk.IconSize.BUTTON);
@@ -82,7 +82,7 @@ namespace Ensembles.Shell {
             sample_players = new Core.SamplePlayer[12];
             sample_recorder = new Core.SampleRecorder ();
 
-            file_chooser = new Gtk.FileChooserDialog ("Open Sound Sample",
+            file_chooser = new Gtk.FileChooserDialog (_("Open Sound Sample"),
                                                       mainwindow,
                                                       Gtk.FileChooserAction.OPEN,
                                                       _("Cancel"),
@@ -93,10 +93,14 @@ namespace Ensembles.Shell {
             file_chooser.local_only = false;
             file_chooser.modal = true;
 
-            var file_filter = new Gtk.FileFilter ();
-            file_filter.add_mime_type ("audio/mp3");
-            file_filter.add_mime_type ("audio/wav");
-            file_chooser.add_filter (file_filter);
+            var file_filter_wav = new Gtk.FileFilter ();
+            file_filter_wav.add_mime_type ("audio/wav");
+            file_filter_wav.set_filter_name ("Waveform Audio");
+            var file_filter_mp3 = new Gtk.FileFilter ();
+            file_filter_mp3.add_mime_type ("audio/mp3");
+            file_filter_mp3.set_filter_name ("MPEG Audio Layer III");
+            file_chooser.add_filter (file_filter_wav);
+            file_chooser.add_filter (file_filter_mp3);
 
             make_events ();
         }
@@ -126,14 +130,16 @@ namespace Ensembles.Shell {
                 file_chooser.run ();
                 file_chooser.hide ();
             });
-            file_chooser.response.connect (() => {
-                current_file_path = file_chooser.get_file ().get_path ();
-                debug ("%s\n", current_file_path);
-                assign_mode = true;
-                recorded_audio = false;
-                stop_button.set_label ("Cancel");
-                for (int i = 0; i < 12; i++) {
-                    pads[i].get_style_context ().add_class ("sampler-pad-assignable");
+            file_chooser.response.connect ((response_id) => {
+                if (response_id == -3) {
+                    current_file_path = file_chooser.get_file ().get_path ();
+                    debug ("%d\n", response_id);
+                    assign_mode = true;
+                    recorded_audio = false;
+                    stop_button.set_label ("Cancel");
+                    for (int i = 0; i < 12; i++) {
+                        pads[i].get_style_context ().add_class ("sampler-pad-assignable");
+                    }
                 }
             });
 
@@ -333,6 +339,14 @@ namespace Ensembles.Shell {
                 }
             });
             
+        }
+
+        public void set_sampler_volume (double volume) {
+            for (int i = 0; i < 12; i++) {
+                if (sample_players[i] != null) {
+                    sample_players[i].set_volume (volume);
+                }
+            }
         }
     }
 }

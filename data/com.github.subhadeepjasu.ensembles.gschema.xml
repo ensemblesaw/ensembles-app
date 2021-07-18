@@ -1,0 +1,16 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <enum id="devicelist">
+    <value value="0" nick="mic"/>
+    <value value="1" nick="system"/>
+    <value value="2" nick="both"/>
+  </enum>
+
+  <schema path="/com/github/subhadeepjasu/ensembles/" id="com.github.subhadeepjasu.ensembles">
+    <key name="device" enum="devicelist">
+      <default>'system'</default>
+      <summary>Recording device</summary>
+    </key>
+  </schema>
+</schemalist>
