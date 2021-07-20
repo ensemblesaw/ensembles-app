@@ -18,7 +18,7 @@
  */
 
 namespace Ensembles.Core {
-    public class MetronomeLFOPlayer : Object{
+    public class MetronomeLFOPlayer : Object {
         string _lfo_directory_location;
         int _time_signature_n;
         int _time_signature_d;

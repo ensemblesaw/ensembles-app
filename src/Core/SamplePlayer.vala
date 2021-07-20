@@ -31,7 +31,7 @@ namespace Ensembles.Core {
             sample_element.set ("volume", 0.9);
         }
 
-        ~SamplePlayer() {
+        ~SamplePlayer () {
             if (recorded_audio) {
                 try {
                     File.new_for_path (file_path).delete ();
@@ -44,7 +44,7 @@ namespace Ensembles.Core {
         public void play_sample () {
             sample_element.set_state (Gst.State.NULL);
             if (sample_element.set_state (Gst.State.PLAYING) == Gst.StateChangeReturn.FAILURE) {
-                warning("Cannot play");
+                warning ("Cannot play");
             }
         }
 
@@ -53,7 +53,7 @@ namespace Ensembles.Core {
         }
 
         public void set_volume (double volume) {
-            sample_element.set ("volume",  volume);
+            sample_element.set ("volume", volume);
         }
     }
 }

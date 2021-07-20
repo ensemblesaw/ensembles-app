@@ -79,7 +79,7 @@ namespace Ensembles.Core {
                     if (!flatpak_environment) {
                         default_output += ".monitor";
                     }
-    
+
                     system_sound.set ("device", default_output);
                     debug ("Detected system sound device: %s", default_output);
                 } catch (Error e) {
@@ -159,9 +159,9 @@ namespace Ensembles.Core {
             }
             pipeline.get_bus ().add_watch (Priority.DEFAULT, bus_message_cb);
             if (pipeline.set_state (Gst.State.PLAYING) == Gst.StateChangeReturn.FAILURE) {
-                warning("Cannot record");
+                warning ("Cannot record");
             } else {
-                debug ("Recording...");
+                debug ("Recording");
             }
         }
 
@@ -169,32 +169,29 @@ namespace Ensembles.Core {
             switch (msg.type) {
                 case Gst.MessageType.ERROR:
                     cancel_recording ();
-    
+
                     Error err;
                     string debug;
                     msg.parse_error (out err, out debug);
-    
-                    //handle_error (err, debug);
-
                     warning ("%s. More Details: %s", err.message, debug);
                     break;
                 case Gst.MessageType.EOS:
                     pipeline.set_state (Gst.State.NULL);
                     pipeline.dispose ();
-    
+
                     handle_recording_complete (tmp_full_path);
                     break;
                 default:
                     break;
             }
-    
+
             return true;
         }
 
         public void cancel_recording () {
             pipeline.set_state (Gst.State.NULL);
             pipeline.dispose ();
-    
+
             // Remove canceled file in /tmp
             try {
                 File.new_for_path (tmp_full_path).delete ();
@@ -202,7 +199,7 @@ namespace Ensembles.Core {
                 warning (e.message);
             }
         }
-    
+
         public void stop_recording () {
             pipeline.send_event (new Gst.Event.eos ());
             debug ("Stopping");

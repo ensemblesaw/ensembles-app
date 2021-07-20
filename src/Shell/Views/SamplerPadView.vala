@@ -158,7 +158,7 @@ namespace Ensembles.Shell {
             });
 
             this.get_toplevel ().destroy.connect (() => {
-                debug("CLEANUP: Removing temporary sample recordings\n");
+                debug ("CLEANUP: Removing temporary sample recordings\n");
                 for (int i = 0; i < 12; i++) {
                     if (sample_players[i] != null) {
                         sample_players[i].unref ();
@@ -172,7 +172,7 @@ namespace Ensembles.Shell {
                        // sample_players[0].
                     }
                     sample_players[0] = new Core.SamplePlayer (current_file_path, recorded_audio);
-                    debug("Assigned\n");
+                    debug ("Assigned\n");
                     assign_mode = false;
                     stop_button.set_label ("Stop");
                     for (int i = 0; i < 12; i++) {
@@ -187,7 +187,7 @@ namespace Ensembles.Shell {
             pads[1].clicked.connect (() => {
                 if (assign_mode) {
                     sample_players[1] = new Core.SamplePlayer (current_file_path, recorded_audio);
-                    debug("Assigned\n");
+                    debug ("Assigned\n");
                     assign_mode = false;
                     for (int i = 0; i < 12; i++) {
                         pads[i].get_style_context ().remove_class ("sampler-pad-assignable");
@@ -201,7 +201,7 @@ namespace Ensembles.Shell {
             pads[2].clicked.connect (() => {
                 if (assign_mode) {
                     sample_players[2] = new Core.SamplePlayer (current_file_path, recorded_audio);
-                    debug("Assigned\n");
+                    debug ("Assigned\n");
                     assign_mode = false;
                     for (int i = 0; i < 12; i++) {
                         pads[i].get_style_context ().remove_class ("sampler-pad-assignable");
@@ -215,7 +215,7 @@ namespace Ensembles.Shell {
             pads[3].clicked.connect (() => {
                 if (assign_mode) {
                     sample_players[3] = new Core.SamplePlayer (current_file_path, recorded_audio);
-                    debug("Assigned\n");
+                    debug ("Assigned\n");
                     assign_mode = false;
                     for (int i = 0; i < 12; i++) {
                         pads[i].get_style_context ().remove_class ("sampler-pad-assignable");
@@ -229,7 +229,7 @@ namespace Ensembles.Shell {
             pads[4].clicked.connect (() => {
                 if (assign_mode) {
                     sample_players[4] = new Core.SamplePlayer (current_file_path, recorded_audio);
-                    debug("Assigned\n");
+                    debug ("Assigned\n");
                     assign_mode = false;
                     for (int i = 0; i < 12; i++) {
                         pads[i].get_style_context ().remove_class ("sampler-pad-assignable");
@@ -243,7 +243,7 @@ namespace Ensembles.Shell {
             pads[5].clicked.connect (() => {
                 if (assign_mode) {
                     sample_players[5] = new Core.SamplePlayer (current_file_path, recorded_audio);
-                    debug("Assigned\n");
+                    debug ("Assigned\n");
                     assign_mode = false;
                     for (int i = 0; i < 12; i++) {
                         pads[i].get_style_context ().remove_class ("sampler-pad-assignable");
@@ -257,7 +257,7 @@ namespace Ensembles.Shell {
             pads[6].clicked.connect (() => {
                 if (assign_mode) {
                     sample_players[6] = new Core.SamplePlayer (current_file_path, recorded_audio);
-                    debug("Assigned\n");
+                    debug ("Assigned\n");
                     assign_mode = false;
                     for (int i = 0; i < 12; i++) {
                         pads[i].get_style_context ().remove_class ("sampler-pad-assignable");
@@ -271,7 +271,7 @@ namespace Ensembles.Shell {
             pads[7].clicked.connect (() => {
                 if (assign_mode) {
                     sample_players[7] = new Core.SamplePlayer (current_file_path, recorded_audio);
-                    debug("Assigned\n");
+                    debug ("Assigned\n");
                     assign_mode = false;
                     for (int i = 0; i < 12; i++) {
                         pads[i].get_style_context ().remove_class ("sampler-pad-assignable");
@@ -285,7 +285,7 @@ namespace Ensembles.Shell {
             pads[8].clicked.connect (() => {
                 if (assign_mode) {
                     sample_players[8] = new Core.SamplePlayer (current_file_path, recorded_audio);
-                    debug("Assigned\n");
+                    debug ("Assigned\n");
                     assign_mode = false;
                     for (int i = 0; i < 12; i++) {
                         pads[i].get_style_context ().remove_class ("sampler-pad-assignable");
@@ -299,7 +299,7 @@ namespace Ensembles.Shell {
             pads[9].clicked.connect (() => {
                 if (assign_mode) {
                     sample_players[9] = new Core.SamplePlayer (current_file_path, recorded_audio);
-                    debug("Assigned\n");
+                    debug ("Assigned\n");
                     assign_mode = false;
                     for (int i = 0; i < 12; i++) {
                         pads[i].get_style_context ().remove_class ("sampler-pad-assignable");
@@ -313,7 +313,7 @@ namespace Ensembles.Shell {
             pads[10].clicked.connect (() => {
                 if (assign_mode) {
                     sample_players[10] = new Core.SamplePlayer (current_file_path, recorded_audio);
-                    debug("Assigned\n");
+                    debug ("Assigned\n");
                     assign_mode = false;
                     for (int i = 0; i < 12; i++) {
                         pads[i].get_style_context ().remove_class ("sampler-pad-assignable");
@@ -327,7 +327,7 @@ namespace Ensembles.Shell {
             pads[11].clicked.connect (() => {
                 if (assign_mode) {
                     sample_players[11] = new Core.SamplePlayer (current_file_path, recorded_audio);
-                    debug("Assigned\n");
+                    debug ("Assigned\n");
                     assign_mode = false;
                     for (int i = 0; i < 12; i++) {
                         pads[i].get_style_context ().remove_class ("sampler-pad-assignable");
@@ -338,7 +338,6 @@ namespace Ensembles.Shell {
                     }
                 }
             });
-            
         }
 
         public void set_sampler_volume (double volume) {
