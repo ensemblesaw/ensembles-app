@@ -25,7 +25,7 @@ namespace Ensembles.Shell {
         SliderBoardView slider_board;
         VoiceCategoryView voice_category_panel;
         MixerBoardView mixer_board_view;
-        MultipadView multipad_panel;
+        SamplerPadView sampler_panel;
         RegistryView registry_panel;
         AppMenuView app_menu;
         SongControllerView song_control_panel;
@@ -79,7 +79,7 @@ namespace Ensembles.Shell {
 
             mixer_board_view = new MixerBoardView ();
 
-            multipad_panel = new MultipadView ();
+            sampler_panel = new SamplerPadView (this);
 
             registry_panel = new RegistryView ();
 
@@ -97,7 +97,7 @@ namespace Ensembles.Shell {
             grid.attach (ctrl_panel, 2, 0, 1, 1);
             grid.attach (voice_category_panel, 0, 1, 1, 1);
             grid.attach (mixer_board_view, 1, 1, 1, 1);
-            grid.attach (multipad_panel, 2, 1, 1, 1);
+            grid.attach (sampler_panel, 2, 1, 1, 1);
             grid.attach (style_registry_grid, 0, 2, 3, 1);
             grid.attach (main_keyboard, 0, 3, 3, 1);
             this.add (grid);
@@ -163,7 +163,7 @@ namespace Ensembles.Shell {
         }
         void make_ui_events () {
             this.window_state_event.connect ((event) => {
-                if (event.type == Gdk.EventType.WINDOW_STATE) {
+                if ((int)(event.changed_mask) == 4) {
                     main_keyboard.visible = false;
                     Timeout.add (100, () => {
                         main_keyboard.visible = true;
@@ -173,7 +173,7 @@ namespace Ensembles.Shell {
                 return false;
             });
             app_menu.change_active_input_device.connect ((device) => {
-                //  print("%d %s\n", device.id, device.name);
+                //  debug("%d %s\n", device.id, device.name);
                 controller_connection.connect_device (device.id);
             });
             main_display_unit.change_style.connect ((path, name, tempo) => {
@@ -204,7 +204,7 @@ namespace Ensembles.Shell {
                 }
             });
             controller_connection.receive_note_event.connect ((key, on, velocity)=>{
-                //  print ("%d %d %d\n", key, on, velocity);
+                //  debug ("%d %d %d\n", key, on, velocity);
                 synthesizer.send_notes_realtime (key, on, velocity);
                 main_keyboard.set_note_on (key, (on == 144));
             });
@@ -262,6 +262,9 @@ namespace Ensembles.Shell {
             voice_category_panel.voice_quick_select.connect ((index) => {
                 main_display_unit.quick_select_voice (detected_voice_indices[index]);
             });
+            mixer_board_view.set_sampler_gain.connect ((gain) => {
+                sampler_panel.set_sampler_volume (gain);
+            });
             main_display_unit.channel_mod_screen.broadcast_assignment.connect (slider_board.send_modulator);
             slider_board.send_assignable_mode.connect (main_display_unit.channel_mod_screen.set_assignable);
             slider_board.open_LFO_editor.connect (main_display_unit.open_lfo_screen);
@@ -270,8 +273,19 @@ namespace Ensembles.Shell {
             });
             this.destroy.connect (() => {
                 slider_board.stop_monitoring ();
+
+                debug ("CLEANUP: Unloading MIDI Controller Monitor\n");
+                controller_connection.unref ();
+                debug ("CLEANUP: Unloading Metronome and LFO Engine\n");
+                metronome_player.unref ();
+                debug ("CLEANUP: Unloading Style Engine\n");
+                style_player.unref ();
+                debug ("CLEANUP: Unloading Synthesizer\n");
+                synthesizer.unref ();
+                debug ("CLEANUP: Unloading Central Bus\n");
+                bus.unref ();
             });
-            print ("Initialized\n");
+            debug ("Initialized\n");
         }
 
         void load_voices () {

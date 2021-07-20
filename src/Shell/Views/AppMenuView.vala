@@ -51,8 +51,49 @@ namespace Ensembles.Shell {
             menu_box.pack_start (subheader);
             menu_box.pack_start (header_separator);
 
+            var audio_input_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
+            var audio_input_label = new Gtk.Label (_("Sampler Source"));
+            audio_input_label.halign = Gtk.Align.START;
+            audio_input_label.margin_start = 8;
+            audio_input_label.get_style_context ().add_class ("h4");
+            var audio_input_buttons = new Granite.Widgets.ModeButton ();
+            audio_input_buttons.append_text (_("Mic"));
+            audio_input_buttons.append_text (_("System"));
+            audio_input_buttons.append_text (_("Both"));
+            audio_input_buttons.margin = 8;
+            switch (EnsemblesApp.settings.get_enum ("device")) {
+                case Core.SampleRecorder.SourceDevice.MIC:
+                audio_input_buttons.selected = 0;
+                break;
+                case Core.SampleRecorder.SourceDevice.SYSTEM:
+                audio_input_buttons.selected = 1;
+                break;
+                case Core.SampleRecorder.SourceDevice.BOTH:
+                audio_input_buttons.selected = 2;
+                break;
+            }
+            audio_input_buttons.mode_changed.connect (() => {
+                switch (audio_input_buttons.selected) {
+                    case 0:
+                    EnsemblesApp.settings.set_enum ("device", Core.SampleRecorder.SourceDevice.MIC);
+                    break;
+                    case 1:
+                    EnsemblesApp.settings.set_enum ("device", Core.SampleRecorder.SourceDevice.SYSTEM);
+                    break;
+                    case 2:
+                    EnsemblesApp.settings.set_enum ("device", Core.SampleRecorder.SourceDevice.BOTH);
+                    break;
+                }
+            });
+            audio_input_box.pack_start (audio_input_label);
+            audio_input_box.pack_end (audio_input_buttons);
+            menu_box.pack_start (audio_input_box);
+
+            var header_separator_b = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
+            menu_box.pack_start (header_separator_b);
+
             var device_input_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
-            var device_list_header = new Gtk.Label ("Midi Input");
+            var device_list_header = new Gtk.Label (_("Midi Input"));
             device_list_header.halign = Gtk.Align.START;
             device_list_header.margin_start = 8;
             device_list_header.get_style_context ().add_class ("h4");
@@ -102,7 +143,7 @@ namespace Ensembles.Shell {
             controller_devices = null;
             controller_devices = devices;
 
-            print ("Updating Device list\n");
+            debug ("Updating Device list\n");
 
             var previous_items = device_list_box.get_children ();
             foreach (var item in previous_items) {

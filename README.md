@@ -9,8 +9,8 @@
     <img src="screenshots/Screenshot1.png" width="500">
   </div>
   <br>
-  Ensembles is a realtime musical performance arranger app. Its built using Vala and Gtk, powered by Fluidsynth. Ensembles is different from other DAW (Digital Audio Workstations) in the fact that the focus here is on live performance (although it can record performance? Why not?).
 </div>
+Ensembles is a realtime musical performance arranger app. Its built using Vala and Gtk, powered by Fluidsynth. Ensembles is different from other DAW (Digital Audio Workstations) in the fact that the focus here is on live performance.
 
 ![elementary flatpak build status](https://github.com/SubhadeepJasu/Ensembles/actions/workflows/ci.yml/badge.svg)
 
@@ -25,9 +25,9 @@
 * Assign knobs and sliders to multiple DSP effects along with a Master Knob which can be used to control multiple knobs and sliders
 * Touch based on-screen assignable joystick
 * Play a one-person band along with a Auto Accompaniment Style from over 100 [WIP] built-in styles based on various genres of music
-* Automate your band with Registration Memory and 12 assignable Multipad Variables
-* Record your playback using Sequencer with 8-Track recording (in future)
-* Record your playback into MP3 audio (in future)
+* Automate your band with Registration Memory
+* Record and play audio files using 12 assignable Sampling Pads
+* Play MIDI files using the inbuilt synthesizer
 * Connect to external MIDI keyboard/controller with General MIDI Standard compatibility
 
 ⚠️ **Ensembles is in early development and not ready for production just yet** ⚠️
@@ -80,7 +80,7 @@ The software does require quiet a lot of CPU power. If you notice bad delay or s
 The problem currently usually happens with the flatpak version.
 
 ## Discussions
-If you want to ask any questions or provide feedback, you can make issues in this repository
+If you want to ask any questions or provide feedback, you can make issues in this repository or use the discussions section of this repository.
 
 ## Contributing
 Feel free to send pull requests to this repository with your code, or other types of assets like soundfont voices, style files, etc. Soundfont in this repo is no longer updated and its available in a different repository https://gitlab.com/SubhadeepJasu/ensemblesgmsoundfont due to LFS concerns.

@@ -322,8 +322,6 @@ handle_events_for_styles (fluid_midi_event_t *event) {
     } else if (type == 128) {
         style_velocity_buffer[chan] = 0;
     }
-    // CC 74 CutOff Modulator 
-    // fluid_synth_cc (style_synth, 0, 74, 80);
     return fluid_synth_handle_midi_event(style_synth, event);
 }
 
@@ -378,7 +376,6 @@ synthesizer_send_notes (int key, int on, int velocity, int* type) {
     if (on == 144) {
         fluid_synth_noteon (realtime_synth, 0, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0), velocity);
         voice_velocity_buffer[0] = velocity;
-        printf("%d\n", key);
     } else if (on == 128) {
         fluid_synth_noteoff (realtime_synth, 0, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0));
         voice_velocity_buffer[0] = 0;
@@ -392,9 +389,6 @@ synthesizer_send_notes (int key, int on, int velocity, int* type) {
             voice_velocity_buffer[1] = 0;
         }
     }
-    // int reverb;
-    // fluid_synth_get_cc (realtime_synth, 0, 91, &reverb);
-    // printf("%d\n", reverb);
     return -6;
 }
 

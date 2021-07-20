@@ -46,7 +46,7 @@ namespace Ensembles.Core {
         public signal void split_key_change ();
 
         public void clk () {
-            print ("clk\n");
+            debug ("clk\n");
         }
 
         public signal void system_ready ();
@@ -85,10 +85,12 @@ namespace Ensembles.Core {
                         style_section_change (central_style_section);
                         style_section = central_style_section;
                     }
+                    Thread.yield ();
                     Thread.usleep (300000);
                     central_measure ++;
                     central_clock = 0;
                 }
+                Thread.yield ();
                 Thread.usleep (400);
             }
             return 0;

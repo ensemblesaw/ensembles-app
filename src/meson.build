@@ -32,7 +32,7 @@ ensembles_sources_vala = files (
     'Shell/Views/MixerBoardView.vala',
     'Shell/Views/VoiceCategoryView.vala',
     'Shell/Views/RegistryView.vala',
-    'Shell/Views/MultipadView.vala',
+    'Shell/Views/SamplerPadView.vala',
     'Shell/Views/SongControllerView.vala',
     'Shell/Views/KeyboardView.vala',
     'Shell/Views/JoyStick.vala',
@@ -51,7 +51,9 @@ ensembles_sources_vala = files (
     'Core/MetronomeLFOPlayer.vala',
     'Core/StyleAnalyser.vala',
     'Core/Voice.vala',
-    'Core/VoiceAnalyser.vala'
+    'Core/VoiceAnalyser.vala',
+    'Core/SamplePlayer.vala',
+    'Core/SampleRecorder.vala'
 )
 
 ensembles_sources_c = files (

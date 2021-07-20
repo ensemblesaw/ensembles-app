@@ -580,11 +580,11 @@
     border: 2px solid #000;
 }
 .white-key-split:active {
-    background-image:linear-gradient(shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 1.0));
+    background-image:linear-gradient(shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 1.4), shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 1.0));
     box-shadow: 0 -12px 8px  -8px shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), inset 0 -1px 4px shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2);
 }
 .white-key-split-active {
-    background-image:linear-gradient(shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 1.0));
+    background-image:linear-gradient(shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 1.4), shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 1.0));
     box-shadow: 0 -12px 8px  -8px shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), inset 0 -1px 4px shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2);
 }
 .black-key-normal {
@@ -611,11 +611,11 @@
     outline: 0;
 }
 .black-key-split:active {
-    background-image:linear-gradient(shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 1.0));
+    background-image:linear-gradient(shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 1.4), shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 1.0));
     box-shadow: 0 -12px 8px  -8px shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), inset 0 -1px 4px shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2);
 }
 .black-key-split-active {
-    background-image:linear-gradient(shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 1.0));
+    background-image:linear-gradient(shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 1.4), shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 1.0));
     box-shadow: 0 -12px 8px  -8px shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), inset 0 -1px 4px shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2);
 }
 
@@ -653,4 +653,61 @@
 .joystick-background {
     background-color: #333;
     border-right: 1px solid #222;
+}
+
+.sampling-pad {
+	background-color: #666;
+	outline: 0;
+}
+.sampling-pad:active {
+	animation: pad_playing_pulse 2s;
+}
+
+@keyframes pad_playing_pulse {
+    0% {
+        background-color: alpha(@accent_color, 0.5);
+        border: 1px solid @accent_color;
+    }
+}
+
+.sampler-pad-assignable {
+    animation: sampler_pad_pulse 1s infinite;
+}
+
+@keyframes sampler_pad_pulse {
+    0% {
+        box-shadow: inset 0 0 8px alpha (rgb (100, 80, 0), 0.5);
+    }
+    50% {
+        box-shadow: inset 0 0 8px alpha (rgb (200, 100, 0), 1.0);
+    }
+    100% {
+        box-shadow: inset 0 0 8px alpha (rgb (100, 80, 0), 0.5);
+    }
+}
+
+.sampler-pad-playing {
+    background-color: alpha (@accent_color, 0.5);
+}
+
+.sampler-record-button {
+    background-color: #c6262e;
+    outline: 0;
+}
+    
+.sampler-record-button-active {
+    animation: sample_recording 1s infinite;
+}
+    
+@keyframes sample_recording {
+    0% {
+        background: alpha(#7a0000, 0);
+    }
+    50% {
+        background: #7a0000;
+        border: 1px solid #f00;
+    }
+    100% {
+        background: alpha(#7a0000, 0);
+    }
 }

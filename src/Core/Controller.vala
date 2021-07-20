@@ -41,14 +41,14 @@ namespace Ensembles.Core {
 
         public Ensembles.Core.ControllerDevice[] get_device_list () {
             int n = controller_query_input_device_count ();
-            //print ("Found %d devices...\n", n);
+            //debug ("Found %d devices...\n", n);
             controller_device = new ControllerDevice[n];
             for (int i = 0; i < n; i++) {
                 controller_query_device_info (i);
                 controller_device[i].name = controller_input_device_name;
                 controller_device[i].available = controller_input_device_available > 0 ? true : false;
                 controller_device[i].id = i;
-                //print("Found %s device: %s\n", controller_device[i].available ? "input" : "output", controller_device[i].name);
+                //debug("Found %s device: %s\n", controller_device[i].available ? "input" : "output", controller_device[i].name);
             }
             return controller_device;
         }
@@ -61,7 +61,7 @@ namespace Ensembles.Core {
                     int type = message & 0x0000FF;
                     double velocity = ((127.0 - 0.0) / (8323072.0 - 65536.0)) *
                                       (double)((0xFF0000 & message) - 65536);
-                    print ("Velocity: %d, Key: %d, Type:%d, Raw: %x\n",
+                    debug ("Velocity: %d, Key: %d, Type:%d, Raw: %x\n",
                           (int)velocity,
                           key,
                           message & 0x0000FF,

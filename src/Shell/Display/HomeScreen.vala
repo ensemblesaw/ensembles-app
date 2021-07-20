@@ -430,10 +430,12 @@ namespace Ensembles.Shell {
             chord_type_label.queue_draw ();
         }
 
-        void update_equalizer () {
+        async void update_equalizer () {
             Timeout.add (60000 / (tempo * 16), () => {
-                for (int i = 0; i < 16; i++) {
-                    equalizer_bar[i].velocity = Ensembles.Core.Synthesizer.get_channel_velocity (1, i);
+                if (Core.CentralBus.get_style_looping_on ()) {
+                    for (int i = 0; i < 16; i++) {
+                        equalizer_bar[i].velocity = Ensembles.Core.Synthesizer.get_channel_velocity (1, i);
+                    }
                 }
                 equalizer_bar[16].velocity = Ensembles.Core.Synthesizer.get_channel_velocity (0, 2);
                 equalizer_bar[17].velocity = Ensembles.Core.Synthesizer.get_channel_velocity (0, 0);
