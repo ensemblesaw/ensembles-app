@@ -113,7 +113,10 @@ music_player_seek (int seek_point) {
 
 int
 music_player_get_status () {
-    return fluid_player_get_status (mp_player);
+    if (mp_player) {
+        return fluid_player_get_status (mp_player);
+    }
+    return 0;
 }
 
 void

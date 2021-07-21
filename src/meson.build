@@ -55,7 +55,8 @@ ensembles_sources_vala = files (
     'Core/SamplePlayer.vala',
     'Core/SampleRecorder.vala',
     'Core/SongPlayer.vala',
-    'Interfaces/MediaKeyListener.vala'
+    'Interfaces/MediaKeyListener.vala',
+    'Interfaces/SoundIndicator.vala'
 )
 
 ensembles_sources_c = files (

@@ -48,6 +48,10 @@ namespace Ensembles.Shell {
         Gtk.Scale seek_bar;
         Gtk.Label custom_title_text;
         Gtk.Grid custom_title_grid;
+
+        string song_name;
+
+        public signal void song_player_state_changed (string song_name, Core.SongPlayer.PlayerStatus status);
         public MainWindow () {
             Gtk.Settings settings = Gtk.Settings.get_default ();
             settings.gtk_application_prefer_dark_theme = true;
@@ -301,8 +305,10 @@ namespace Ensembles.Shell {
                 if (song_player != null) {
                     if (song_player.get_status () == Core.SongPlayer.PlayerStatus.PLAYING) {
                         song_player.pause ();
+                        song_player_state_changed (song_name, Core.SongPlayer.PlayerStatus.READY);
                     } else {
                         song_player.play ();
+                        song_player_state_changed (song_name, Core.SongPlayer.PlayerStatus.PLAYING);
                     }
                 }
             });
@@ -343,6 +349,11 @@ namespace Ensembles.Shell {
                 metronome_player.unref ();
                 debug ("CLEANUP: Unloading Style Engine\n");
                 style_player.unref ();
+                if (song_player != null) {
+                    debug ("CLEANUP: Unloading Song Player\n");
+                    song_player.SongPlayer_Destroy ();
+                    song_player = null;
+                }
                 debug ("CLEANUP: Unloading Synthesizer\n");
                 synthesizer.unref ();
                 debug ("CLEANUP: Unloading Central Bus\n");
@@ -396,8 +407,10 @@ namespace Ensembles.Shell {
                 Regex regex = new Regex ("[ \\w-]+?(?=\\.)");
                 MatchInfo match_info;
                 if (regex.match (path, 0, out match_info)) {
-                    custom_title_text.set_text ("Now Playing - " + match_info.fetch (0));
+                    song_name = match_info.fetch (0);
+                    custom_title_text.set_text ("Now Playing - " + song_name);
                 }
+                song_player_state_changed (song_name, Core.SongPlayer.PlayerStatus.READY);
             } catch (RegexError e) {
                 warning (e.message);
             }
@@ -408,8 +421,10 @@ namespace Ensembles.Shell {
             if (song_player != null) {
                 if (song_player.get_status () == Core.SongPlayer.PlayerStatus.PLAYING) {
                     song_player.pause ();
+                    song_player_state_changed (song_name, Core.SongPlayer.PlayerStatus.READY);
                 } else {
                     song_player.play ();
+                    song_player_state_changed (song_name, Core.SongPlayer.PlayerStatus.PLAYING);
                 }
             } else {
                 style_player.play_style ();

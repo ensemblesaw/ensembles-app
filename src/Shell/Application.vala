@@ -33,7 +33,7 @@ namespace Ensembles.Shell {
 
         public static Settings settings;
 
-        Ensembles.Shell.MainWindow main_window;
+        public Ensembles.Shell.MainWindow main_window;
 
         Gtk.CssProvider css_provider;
 
@@ -59,6 +59,8 @@ namespace Ensembles.Shell {
                 media_key_listener.media_key_pressed_pause.connect (main_window.media_pause);
                 media_key_listener.media_key_pressed_prev.connect (main_window.media_prev);
                 this.add_window (main_window);
+                var sound_indicator_listener = Interfaces.SoundIndicator.listen (main_window);
+                main_window.song_player_state_changed.connect_after (sound_indicator_listener.change_song_state);
             }
             if (css_provider == null) {
                 css_provider = new Gtk.CssProvider ();
