@@ -37,13 +37,16 @@ namespace Ensembles.Shell {
 
         Gtk.CssProvider css_provider;
 
+        string[] ? arg_file = null;
+
         construct {
             settings = new Settings ("com.github.subhadeepjasu.ensembles");
         }
 
         public EnsemblesApp () {
             Object (
-                application_id: "com.github.subhadeepjasu.ensembles"
+                application_id: "com.github.subhadeepjasu.ensembles",
+                flags: ApplicationFlags.HANDLES_OPEN
             );
             version_string = "1.0.0";
         }
@@ -51,6 +54,10 @@ namespace Ensembles.Shell {
         protected override void activate () {
             if (this.main_window == null) {
                 this.main_window = new Ensembles.Shell.MainWindow ();
+                var media_key_listener = Interfaces.MediaKeyListener.listen ();
+                media_key_listener.media_key_pressed_play.connect (main_window.media_toggle_play);
+                media_key_listener.media_key_pressed_pause.connect (main_window.media_pause);
+                media_key_listener.media_key_pressed_prev.connect (main_window.media_prev);
                 this.add_window (main_window);
             }
             if (css_provider == null) {
@@ -64,6 +71,44 @@ namespace Ensembles.Shell {
                 );
             }
             this.main_window.show_all ();
+        }
+
+        public override void open (File[] files, string hint) {
+            activate ();
+            if (files [0].query_exists ()) {
+                main_window.open_file (files [0]);
+            }
+        }
+
+        public override int command_line (ApplicationCommandLine cmd) {
+            command_line_interpreter (cmd);
+            return 0;
+        }
+
+        private void command_line_interpreter (ApplicationCommandLine cmd) {
+            string[] args_cmd = cmd.get_arguments ();
+            unowned string[] args = args_cmd;
+
+            GLib.OptionEntry [] options = new OptionEntry [2];
+            options [0] = { "", 0, 0, OptionArg.STRING_ARRAY, ref arg_file, null, "URI" };
+            options [1] = { null };
+
+            var opt_context = new OptionContext ("actions");
+            opt_context.add_main_entries (options, null);
+            try {
+                opt_context.parse (ref args);
+            } catch (Error err) {
+                warning (err.message);
+                return;
+            }
+
+            if (GLib.FileUtils.test (arg_file[0], GLib.FileTest.EXISTS) && arg_file[0].down ().has_suffix (".mid")) {
+                File file = File.new_for_path (arg_file[0]);
+                open ({ file }, "");
+                return;
+            }
+
+            activate ();
         }
 
         public static bool get_is_running_from_flatpak () {
