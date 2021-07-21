@@ -45,7 +45,12 @@
         Shell.MainWindow main_window;
 
         private void initialize (Shell.MainWindow main_window) {
-            owner_id = Bus.own_name (BusType.SESSION, "org.mpris.MediaPlayer2.Ensembles", GLib.BusNameOwnerFlags.NONE, on_bus_acquired, on_name_acquired, on_name_lost);
+            owner_id = Bus.own_name (BusType.SESSION,
+                                    "org.mpris.MediaPlayer2.com.github.subhadeepjasu.ensembles",
+                                    GLib.BusNameOwnerFlags.NONE, 
+                                    on_bus_acquired, 
+                                    null,
+                                    null);
             if (owner_id == 0) {
                 warning ("Could not initialize MPRIS session.\n");
             }

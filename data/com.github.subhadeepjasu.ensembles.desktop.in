@@ -8,5 +8,5 @@ Exec=com.github.subhadeepjasu.ensembles %U
 Icon=com.github.subhadeepjasu.ensembles
 Terminal=false
 Type=Application
-Keywords=midi;virtual;music;arranger;piano;keyboard;workstation;daw;
+Keywords=midi;virtual;music;arranger;piano;keyboard;workstation;
 X-GNOME-Gettext-Domain=com.github.subhadeepjasu.ensembles

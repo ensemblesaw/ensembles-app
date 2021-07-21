@@ -55,6 +55,7 @@ namespace Ensembles.Shell {
         public MainWindow () {
             Gtk.Settings settings = Gtk.Settings.get_default ();
             settings.gtk_application_prefer_dark_theme = true;
+            debug ("STARTUP: Loading Central Bus");
             bus = new Ensembles.Core.CentralBus ();
             make_bus_events ();
 
@@ -123,6 +124,7 @@ namespace Ensembles.Shell {
             this.add (grid);
             this.show_all ();
 
+            debug ("STARTUP: Loading MIDI Input Monitor");
             controller_connection = new Ensembles.Core.Controller ();
             app_menu.change_enable_midi_input.connect ((enable) => {
                 if (enable) {
@@ -130,10 +132,13 @@ namespace Ensembles.Shell {
                     app_menu.update_devices (devices_found);
                 }
             });
+            debug ("STARTUP: Loading Synthesizer");
             synthesizer = new Ensembles.Core.Synthesizer (sf_loc);
             main_keyboard.connect_synthesizer (synthesizer);
+            debug ("STARTUP: Loading Style Engine");
             style_player = new Ensembles.Core.StylePlayer ();
 
+            debug ("STARTUP: Discovering Styles");
             style_discovery = new Ensembles.Core.StyleDiscovery ();
             style_discovery.analysis_complete.connect (() => {
                 style_player.add_style_file (style_discovery.style_files.nth_data (0));
@@ -145,6 +150,7 @@ namespace Ensembles.Shell {
                 );
             });
 
+            debug ("STARTUP: Loading Metronome and LFO Engine");
             metronome_player = new Ensembles.Core.MetronomeLFOPlayer (metronome_lfo_directory);
 
             make_ui_events ();
@@ -343,20 +349,20 @@ namespace Ensembles.Shell {
             this.destroy.connect (() => {
                 slider_board.stop_monitoring ();
 
-                debug ("CLEANUP: Unloading MIDI Controller Monitor\n");
+                debug ("CLEANUP: Unloading MIDI Input Monitor");
                 controller_connection.unref ();
-                debug ("CLEANUP: Unloading Metronome and LFO Engine\n");
+                debug ("CLEANUP: Unloading Metronome and LFO Engine");
                 metronome_player.unref ();
-                debug ("CLEANUP: Unloading Style Engine\n");
+                debug ("CLEANUP: Unloading Style Engine");
                 style_player.unref ();
                 if (song_player != null) {
-                    debug ("CLEANUP: Unloading Song Player\n");
-                    song_player.SongPlayer_Destroy ();
+                    debug ("CLEANUP: Unloading Song Player");
+                    song_player.songplayer_destroy ();
                     song_player = null;
                 }
-                debug ("CLEANUP: Unloading Synthesizer\n");
+                debug ("CLEANUP: Unloading Synthesizer");
                 synthesizer.unref ();
-                debug ("CLEANUP: Unloading Central Bus\n");
+                debug ("CLEANUP: Unloading Central Bus");
                 bus.unref ();
             });
             debug ("Initialized\n");
@@ -394,13 +400,13 @@ namespace Ensembles.Shell {
         public void queue_song (string path) {
             if (song_player != null) {
                 song_player.player_status_changed.disconnect (update_header_bar);
-                song_player.SongPlayer_Destroy ();
+                song_player.songplayer_destroy ();
                 song_player = null;
             }
+            debug ("Creating new Song Player instance with midi file: %s", path);
             song_player = new Core.SongPlayer (sf_loc, path);
             int song_tempo = song_player.current_file_tempo;
             song_player.player_status_changed.connect (update_header_bar);
-            print ("Tempp %d\n", song_tempo);
             style_player.change_tempo (song_tempo);
             main_display_unit.set_tempo_display (song_tempo);
             try {

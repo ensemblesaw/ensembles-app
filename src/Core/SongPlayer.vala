@@ -24,9 +24,8 @@ namespace Ensembles.Core {
             debug ("Starting monitor");
             new Thread<int> ("monitor_player", monitor_player);
         }
-        public void SongPlayer_Destroy () {
+        public void songplayer_destroy () {
             monitoring_player = false;
-            print ("Destruction/////////////////\n");
             music_player_destruct ();
         }
 
@@ -75,7 +74,7 @@ namespace Ensembles.Core {
         private int monitor_player () {
             while (monitoring_player) {
                 Idle.add (() => {
-                    if (total_ticks > 0) {
+                    if (total_ticks > 0 && monitoring_player) {
                         player_status_changed ((float) current_ticks / (float) total_ticks, current_file_tempo, get_status ());
                     } else {
                         player_status_changed (0.0f, current_file_tempo, get_status ());

@@ -10,6 +10,9 @@ finish-args:
   - '--socket=pulseaudio'
   - '--device=all'
   - '--filesystem=home'
+  - '--system-talk-name=org.freedesktop.Accounts'
+  - '--own-name=org.mpris.MediaPlayer2.com.github.subhadeepjasu.ensembles'
+  - '--talk-name=org.gnome.SettingsDaemon.MediaKeys'
 modules:
   - name: granite
     buildsystem: meson
