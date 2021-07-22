@@ -11,7 +11,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
  * Authored by: Subhadeep Jasu
@@ -38,25 +38,36 @@ namespace Ensembles.Shell {
         Ensembles.Core.MetronomeLFOPlayer metronome_player;
         Ensembles.Core.CentralBus bus;
         Ensembles.Core.Controller controller_connection;
+        Ensembles.Core.SongPlayer song_player;
 
         string sf_loc = Constants.SF2DATADIR + "/EnsemblesGM.sf2";
         string sf_schema_loc = Constants.SF2DATADIR + "/EnsemblesGMSchema.csv";
         string metronome_lfo_directory = Constants.PKGDATADIR + "/MetronomesAndLFO";
+
+        Gtk.HeaderBar headerbar;
+        Gtk.Scale seek_bar;
+        Gtk.Label custom_title_text;
+        Gtk.Grid custom_title_grid;
+
+        string song_name;
+
+        public signal void song_player_state_changed (string song_name, Core.SongPlayer.PlayerStatus status);
         public MainWindow () {
             Gtk.Settings settings = Gtk.Settings.get_default ();
             settings.gtk_application_prefer_dark_theme = true;
+            debug ("STARTUP: Loading Central Bus");
             bus = new Ensembles.Core.CentralBus ();
             make_bus_events ();
 
             beat_counter_panel = new BeatCounterView ();
-            var headerbar = new Gtk.HeaderBar ();
+            headerbar = new Gtk.HeaderBar ();
             headerbar.has_subtitle = false;
             headerbar.set_show_close_button (true);
             headerbar.title = "Ensembles";
             headerbar.pack_start (beat_counter_panel);
 
-            Gtk.Button app_menu_button = new Gtk.Button.from_icon_name ("preferences-system-symbolic",
-                                                                        Gtk.IconSize.BUTTON);
+            Gtk.Button app_menu_button = new Gtk.Button.from_icon_name ("open-menu",
+                                                                        Gtk.IconSize.LARGE_TOOLBAR);
             headerbar.pack_end (app_menu_button);
             this.set_titlebar (headerbar);
 
@@ -66,8 +77,18 @@ namespace Ensembles.Shell {
                 app_menu.popup ();
             });
 
-            song_control_panel = new SongControllerView ();
+            song_control_panel = new SongControllerView (this);
             headerbar.pack_end (song_control_panel);
+
+            custom_title_text = new Gtk.Label ("Ensembles");
+            custom_title_text.get_style_context ().add_class ("title");
+            seek_bar = new Gtk.Scale.with_range (Gtk.Orientation.HORIZONTAL, 0, 1, 0.01);
+            seek_bar.set_draw_value (false);
+            seek_bar.width_request = 400;
+            custom_title_grid = new Gtk.Grid ();
+            custom_title_grid.attach (custom_title_text, 0, 1, 1, 1);
+            custom_title_grid.attach (seek_bar, 0, 2, 1, 1);
+            custom_title_grid.show_all ();
 
             main_display_unit = new MainDisplayCasing ();
 
@@ -103,6 +124,7 @@ namespace Ensembles.Shell {
             this.add (grid);
             this.show_all ();
 
+            debug ("STARTUP: Loading MIDI Input Monitor");
             controller_connection = new Ensembles.Core.Controller ();
             app_menu.change_enable_midi_input.connect ((enable) => {
                 if (enable) {
@@ -110,10 +132,13 @@ namespace Ensembles.Shell {
                     app_menu.update_devices (devices_found);
                 }
             });
+            debug ("STARTUP: Loading Synthesizer");
             synthesizer = new Ensembles.Core.Synthesizer (sf_loc);
             main_keyboard.connect_synthesizer (synthesizer);
+            debug ("STARTUP: Loading Style Engine");
             style_player = new Ensembles.Core.StylePlayer ();
 
+            debug ("STARTUP: Discovering Styles");
             style_discovery = new Ensembles.Core.StyleDiscovery ();
             style_discovery.analysis_complete.connect (() => {
                 style_player.add_style_file (style_discovery.style_files.nth_data (0));
@@ -125,6 +150,7 @@ namespace Ensembles.Shell {
                 );
             });
 
+            debug ("STARTUP: Loading Metronome and LFO Engine");
             metronome_player = new Ensembles.Core.MetronomeLFOPlayer (metronome_lfo_directory);
 
             make_ui_events ();
@@ -147,6 +173,12 @@ namespace Ensembles.Shell {
             bus.system_ready.connect (() => {
                 main_display_unit.queue_remove_splash ();
                 style_controller_view.ready ();
+                Timeout.add (2000, () => {
+                    if (song_player != null) {
+                        song_player.play ();
+                    }
+                    return false;
+                });
             });
             bus.style_section_change.connect ((section) => {
                 style_controller_view.set_style_section (section);
@@ -271,18 +303,66 @@ namespace Ensembles.Shell {
             metronome_player.beat_sync.connect (() => {
                 beat_counter_panel.sync ();
             });
+            song_control_panel.change_song.connect ((path) => {
+                queue_song (path);
+                song_player.play ();
+            });
+            song_control_panel.play.connect (() => {
+                if (song_player != null) {
+                    if (song_player.get_status () == Core.SongPlayer.PlayerStatus.PLAYING) {
+                        song_player.pause ();
+                        song_player_state_changed (song_name, Core.SongPlayer.PlayerStatus.READY);
+                    } else {
+                        song_player.play ();
+                        song_player_state_changed (song_name, Core.SongPlayer.PlayerStatus.PLAYING);
+                    }
+                }
+            });
+            song_control_panel.rewind.connect (() => {
+                if (song_player != null) {
+                    song_player.rewind ();
+                }
+            });
+            song_control_panel.change_repeat.connect ((active) => {
+                if (song_player != null) {
+                    song_player.set_repeat (active);
+                }
+            });
+            seek_bar.change_value.connect (() => {
+                if (song_player != null) {
+                    song_player.seek ((float) (seek_bar.get_value ()));
+                }
+                return false;
+            });
+            seek_bar.button_press_event.connect (() => {
+                if (song_player != null) {
+                    song_player.seek_lock (true);
+                }
+                return false;
+            });
+            seek_bar.button_release_event.connect (() => {
+                if (song_player != null) {
+                    song_player.seek_lock (false);
+                }
+                return false;
+            });
             this.destroy.connect (() => {
                 slider_board.stop_monitoring ();
 
-                debug ("CLEANUP: Unloading MIDI Controller Monitor\n");
+                debug ("CLEANUP: Unloading MIDI Input Monitor");
                 controller_connection.unref ();
-                debug ("CLEANUP: Unloading Metronome and LFO Engine\n");
+                debug ("CLEANUP: Unloading Metronome and LFO Engine");
                 metronome_player.unref ();
-                debug ("CLEANUP: Unloading Style Engine\n");
+                debug ("CLEANUP: Unloading Style Engine");
                 style_player.unref ();
-                debug ("CLEANUP: Unloading Synthesizer\n");
+                if (song_player != null) {
+                    debug ("CLEANUP: Unloading Song Player");
+                    song_player.songplayer_destroy ();
+                    song_player = null;
+                }
+                debug ("CLEANUP: Unloading Synthesizer");
                 synthesizer.unref ();
-                debug ("CLEANUP: Unloading Central Bus\n");
+                debug ("CLEANUP: Unloading Central Bus");
                 bus.unref ();
             });
             debug ("Initialized\n");
@@ -293,6 +373,82 @@ namespace Ensembles.Shell {
             detected_voices = voice_analyser.get_all_voices ();
             detected_voice_indices = voice_analyser.get_all_category_indices ();
             main_display_unit.update_voice_list (detected_voices);
+        }
+
+        private void update_header_bar (float fraction, int tempo_bpm, Core.SongPlayer.PlayerStatus status) {
+            if (status == Core.SongPlayer.PlayerStatus.PLAYING || status == Core.SongPlayer.PlayerStatus.READY) {
+                if (headerbar.get_custom_title () == null) {
+                    headerbar.set_custom_title (custom_title_grid);
+                }
+                seek_bar.set_value ((double) fraction);
+            } else {
+                headerbar.set_custom_title (null);
+                seek_bar.set_value (0);
+            }
+            if (status == Core.SongPlayer.PlayerStatus.PLAYING) {
+                song_control_panel.set_playing (true);
+            } else {
+                song_control_panel.set_playing (false);
+            }
+        }
+
+        public void open_file (File file) {
+            string path = file.get_path ();
+            queue_song (path);
+        }
+
+        public void queue_song (string path) {
+            if (song_player != null) {
+                song_player.player_status_changed.disconnect (update_header_bar);
+                song_player.songplayer_destroy ();
+                song_player = null;
+            }
+            debug ("Creating new Song Player instance with midi file: %s", path);
+            song_player = new Core.SongPlayer (sf_loc, path);
+            int song_tempo = song_player.current_file_tempo;
+            song_player.player_status_changed.connect (update_header_bar);
+            style_player.change_tempo (song_tempo);
+            main_display_unit.set_tempo_display (song_tempo);
+            try {
+                Regex regex = new Regex ("[ \\w-]+?(?=\\.)");
+                MatchInfo match_info;
+                if (regex.match (path, 0, out match_info)) {
+                    song_name = match_info.fetch (0);
+                    custom_title_text.set_text ("Now Playing - " + song_name);
+                }
+                song_player_state_changed (song_name, Core.SongPlayer.PlayerStatus.READY);
+            } catch (RegexError e) {
+                warning (e.message);
+            }
+            song_control_panel.set_player_active ();
+        }
+
+        public void media_toggle_play () {
+            if (song_player != null) {
+                if (song_player.get_status () == Core.SongPlayer.PlayerStatus.PLAYING) {
+                    song_player.pause ();
+                    song_player_state_changed (song_name, Core.SongPlayer.PlayerStatus.READY);
+                } else {
+                    song_player.play ();
+                    song_player_state_changed (song_name, Core.SongPlayer.PlayerStatus.PLAYING);
+                }
+            } else {
+                style_player.play_style ();
+            }
+        }
+
+        public void media_pause () {
+            if (song_player != null) {
+                song_player.pause ();
+            } else {
+                style_player.sync_stop ();
+            }
+        }
+
+        public void media_prev () {
+            if (song_player != null) {
+                song_player.rewind ();
+            }
         }
     }
 }

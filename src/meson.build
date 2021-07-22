@@ -53,7 +53,10 @@ ensembles_sources_vala = files (
     'Core/Voice.vala',
     'Core/VoiceAnalyser.vala',
     'Core/SamplePlayer.vala',
-    'Core/SampleRecorder.vala'
+    'Core/SampleRecorder.vala',
+    'Core/SongPlayer.vala',
+    'Interfaces/MediaKeyListener.vala',
+    'Interfaces/SoundIndicator.vala'
 )
 
 ensembles_sources_c = files (
@@ -65,7 +68,8 @@ ensembles_sources_c = files (
     'Core/metronome_lfo_player.c',
     'Core/style_analyser.c',
     'Core/chord_finder.c',
-    'Core/voice_analyser.c'
+    'Core/voice_analyser.c',
+    'Core/music_player.c'
 )
 
 ensembles_sources = [
