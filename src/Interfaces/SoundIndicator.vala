@@ -25,6 +25,8 @@
  * Adapted from Melody by Artem Anufrij <artem.anufrij@live.de>
  */
 
+// vala-lint=skip-file
+
  namespace Ensembles.Interfaces {
     public class SoundIndicator {
         public static SoundIndicator instance { get; private set; }
@@ -47,8 +49,8 @@
         private void initialize (Shell.MainWindow main_window) {
             owner_id = Bus.own_name (BusType.SESSION,
                                     "org.mpris.MediaPlayer2.com.github.subhadeepjasu.ensembles",
-                                    GLib.BusNameOwnerFlags.NONE, 
-                                    on_bus_acquired, 
+                                    GLib.BusNameOwnerFlags.NONE,
+                                    on_bus_acquired,
                                     null,
                                     null);
             if (owner_id == 0) {
@@ -70,15 +72,9 @@
                 player = new SoundIndicatorPlayer (connection, main_window);
                 player_id = connection.register_object ("/org/mpris/MediaPlayer2", player);
             }
-            catch(Error e) {
+            catch (Error e) {
                 warning ("could not create MPRIS player: %s\n", e.message);
             }
-        }
-
-        private void on_name_acquired (DBusConnection connection, string name) {
-        }
-
-        private void on_name_lost (DBusConnection connection, string name) {
         }
 
         public void change_song_state (string song_name, Core.SongPlayer.PlayerStatus status) {

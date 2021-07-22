@@ -10,7 +10,9 @@ finish-args:
   - '--socket=pulseaudio'
   - '--device=all'
   - '--filesystem=home'
+  # Required for system wide dark style preference
   - '--system-talk-name=org.freedesktop.Accounts'
+  # Required for media keys and MPRIS access
   - '--own-name=org.mpris.MediaPlayer2.com.github.subhadeepjasu.ensembles'
   - '--talk-name=org.gnome.SettingsDaemon.MediaKeys'
 modules:

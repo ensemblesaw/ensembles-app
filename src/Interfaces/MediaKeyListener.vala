@@ -25,6 +25,8 @@
  * Adapted from Melody by Artem Anufrij <artem.anufrij@live.de>
  */
 
+// vala-lint=skip-file
+
 namespace Ensembles.Interfaces {
     [DBus (name = "org.gnome.SettingsDaemon.MediaKeys")]
     public interface GnomeMediaKeys : GLib.Object {
@@ -61,7 +63,7 @@ namespace Ensembles.Interfaces {
             }
         }
 
-        private MediaKeyListener (){}
+        private MediaKeyListener () {}
 
         public static MediaKeyListener listen () {
             instance = new MediaKeyListener ();
