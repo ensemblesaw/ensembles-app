@@ -51,6 +51,7 @@ ensembles_sources_vala = files (
     'Core/MetronomeLFOPlayer.vala',
     'Core/StyleAnalyser.vala',
     'Core/Voice.vala',
+    'Core/Registry.vala',
     'Core/VoiceAnalyser.vala',
     'Core/SamplePlayer.vala',
     'Core/SampleRecorder.vala',
