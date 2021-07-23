@@ -7,10 +7,136 @@
     <value value="2" nick="both"/>
   </enum>
 
-  <schema path="/com/github/subhadeepjasu/ensembles/" id="com.github.subhadeepjasu.ensembles">
+  <schema path="/com/github/subhadeepjasu/ensembles/" id="com.github.subhadeepjasu.ensembles"
+  gettext-domain="com.github.subhadeepjasu.ensembles">
+    <!-- Window Settings -->
+    <key name="window-x" type="i">
+			<default>-1</default>
+			<summary>The saved x-position of the window.</summary>
+			<description>The saved x-position of the window.</description>
+		</key>
+		<key name="window-y" type="i">
+			<default>-1</default>
+			<summary>The saved y-position of the window.</summary>
+			<description>The saved y-position of the window.</description>
+		</key>
+		<key name="window-w" type="i">
+			<default>800</default>
+			<summary>The saved width of the window.</summary>
+			<description>The saved width of the window.</description>
+		</key>
+		<key name="window-h" type="i">
+			<default>400</default>
+			<summary>The saved height of the window.</summary>
+			<description>The saved height of the window.</description>
+		</key>
+		<key name="window-maximized" type="b">
+			<default>false</default>
+			<summary>Window maximized</summary>
+			<description>If window should be maximized</description>
+		</key>
+
+    <!-- App Operational Settings -->
     <key name="device" enum="devicelist">
       <default>'system'</default>
       <summary>Recording device</summary>
+      <description>Device to use for recording audio for Sampling Pads</description>
     </key>
+    <key name="voice-r1-index" type="i">
+			<default>0</default>
+			<summary>Voice Right 1</summary>
+			<description>Main instrument (usually played with right hand if split)</description>
+		</key>
+    <key name="voice-r2-index" type="i">
+			<default>49</default>
+			<summary>Voice Right 2</summary>
+			<description>Instrument played along with main instrument on a layer</description>
+		</key>
+    <key name="voice-l-index" type="i">
+			<default>33</default>
+			<summary>Voice L</summary>
+			<description>Instrument played on the left side of keyboard split</description>
+		</key>
+    <key name="style-index" type="i">
+			<default>0</default>
+			<summary>Style</summary>
+			<description>Style / auto accompaniment</description>
+		</key>
+
+    <key name="transpose-level" type="i">
+			<default>0</default>
+			<summary>Transpose Level</summary>
+			<description>Number of semi-tones the keyboard is shifted</description>
+		</key>
+    <key name="transpose-on" type="b">
+			<default>false</default>
+			<summary>Transpose Enabled</summary>
+			<description>Keyboard shifted by semi-tones</description>
+		</key>
+    <key name="octave-shift-level" type="i">
+			<default>0</default>
+			<summary>Octave Shift Level</summary>
+			<description>Number of octaves the keyboard is shifted</description>
+		</key>
+    <key name="octave-shift-on" type="b">
+			<default>false</default>
+			<summary>Octave Shift Enabled</summary>
+			<description>Keyboard shifted by entire octaves</description>
+		</key>
+    <key name="reverb-level" type="i">
+			<default>0</default>
+			<summary>Reverb Level</summary>
+			<description>Magnitude of global reverb effect</description>
+		</key>
+    <key name="reverb-on" type="b">
+			<default>false</default>
+			<summary>Reverb Enabled</summary>
+			<description>Global reverb effect</description>
+		</key>
+    <key name="chorus-level" type="i">
+			<default>0</default>
+			<summary>Chorus Level</summary>
+			<description>Magnitude of global chorus effect</description>
+		</key>
+    <key name="chorus-on" type="b">
+			<default>false</default>
+			<summary>Chorus Enabled</summary>
+			<description>Global chorus effects</description>
+		</key>
+    <key name="accomp-on" type="b">
+			<default>false</default>
+			<summary>Accompaniment Enabled</summary>
+			<description>Style Chords Enabled</description>
+		</key>
+    <key name="layer-on" type="b">
+			<default>false</default>
+			<summary>Layering Enabled</summary>
+			<description>Voice Layering Enabled</description>
+		</key>
+    <key name="split-on" type="b">
+			<default>false</default>
+			<summary>Split Enabled</summary>
+			<description>Keyboard Split Enabled</description>
+		</key>
+    <key name="harmonizer-type" type="i">
+			<default>0</default>
+			<summary>Harmonizer Type</summary>
+			<description>Harmonizer Type</description>
+		</key>
+    <key name="harmonizer-on" type="b">
+			<default>false</default>
+			<summary>Harmonizer Enabled</summary>
+			<description>Harmonizer Enabled</description>
+		</key>
+    <key name="arpeggiator-type" type="i">
+			<default>0</default>
+			<summary>Arpeggiator Type</summary>
+			<description>Arpeggiator Type</description>
+		</key>
+    <key name="arpeggiator-on" type="b">
+			<default>false</default>
+			<summary>Arpeggiator Enabled</summary>
+			<description>Arpeggiator Enabled</description>
+		</key>
   </schema>
 </schemalist>
