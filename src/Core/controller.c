@@ -60,7 +60,7 @@ controller_query_input_device_count () {
 
 int
 controller_connect_device (int id) {
-    if (Pm_OpenInput (&controller_input_stream, id, NULL, 16, NULL, NULL) == 0) {
+    if (Pm_OpenInput (&controller_input_stream, id, NULL, 64, NULL, NULL) == 0) {
         printf("Connected\n");
         return 1;
     }
@@ -74,8 +74,8 @@ controller_poll_device() {
 
 int32_t
 controller_read_device_stream () {
-    PmEvent* controller_event_stream = (PmEvent*)malloc (sizeof (PmEvent)*8);
-    Pm_Read (controller_input_stream, controller_event_stream, 8);
+    PmEvent* controller_event_stream = (PmEvent*)malloc (sizeof (PmEvent)*64);
+    Pm_Read (controller_input_stream, controller_event_stream, 64);
     return (controller_event_stream->message);
 }
 

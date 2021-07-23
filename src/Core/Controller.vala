@@ -75,6 +75,8 @@ namespace Ensembles.Core {
                         return false;
                     });
                 }
+                Thread.yield ();
+                Thread.usleep (200);
             }
             controller_close_connection ();
             return 0;
