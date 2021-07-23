@@ -84,14 +84,8 @@ namespace Ensembles.Shell {
             harmonizer_spin_button.set_value (1);
             reverb_spin_button = new Gtk.SpinButton.with_range (0, 10, 1);
             reverb_spin_button.set_value (5);
-            reverb_spin_button.value_changed.connect (() => {
-                reverb_change ((int)(reverb_spin_button.get_value ()));
-            });
             chorus_spin_button = new Gtk.SpinButton.with_range (0, 10, 1);
             chorus_spin_button.set_value (1);
-            chorus_spin_button.value_changed.connect (() => {
-                chorus_change ((int)(chorus_spin_button.get_value ()));
-            });
 
             main_dial = new Dial ();
             attach (main_dial, 0, 0, 2, 4);
@@ -123,12 +117,15 @@ namespace Ensembles.Shell {
         public void make_events () {
             accomp_toggle.toggled.connect ((active) => {
                 accomp_change (active);
+                EnsemblesApp.settings.set_boolean ("accomp-on", active);
                 update_split ();
             });
             layer_toggle.toggled.connect ((active) => {
+                EnsemblesApp.settings.set_boolean ("layer-on", active);
                 Ensembles.Core.CentralBus.set_layer_on (active);
             });
             split_toggle.toggled.connect ((active) => {
+                EnsemblesApp.settings.set_boolean ("split-on", active);
                 Ensembles.Core.CentralBus.set_split_on (active);
                 update_split ();
             });
@@ -143,15 +140,37 @@ namespace Ensembles.Shell {
             });
             transpose_toggle.toggled.connect ((active) => {
                 Ensembles.Core.Synthesizer.set_transpose_active (active);
+                EnsemblesApp.settings.set_boolean ("transpose-on", active);
             });
             transpose_spin_button.value_changed.connect (() => {
-                Ensembles.Core.Synthesizer.set_transpose ((int)(transpose_spin_button.value));
+                int level = (int)(transpose_spin_button.value);
+                EnsemblesApp.settings.set_int ("transpose-level", level);
+                Ensembles.Core.Synthesizer.set_transpose (level);
             });
             octave_toggle.toggled.connect ((active) => {
                 Ensembles.Core.Synthesizer.set_octave_shifted (active);
+                EnsemblesApp.settings.set_boolean ("octave-shift-on", active);
             });
             octave_spin_button.value_changed.connect (() => {
-                Ensembles.Core.Synthesizer.set_octave ((int)(octave_spin_button.value));
+                int level = (int)(octave_spin_button.value);
+                EnsemblesApp.settings.set_int ("octave-shift-level", level);
+                Ensembles.Core.Synthesizer.set_octave (level);
+            });
+            reverb_spin_button.value_changed.connect (() => {
+                int level = (int)(reverb_spin_button.get_value ());
+                EnsemblesApp.settings.set_int ("reverb-level", level);
+                reverb_change (level);
+            });
+            chorus_spin_button.value_changed.connect (() => {
+                int level = (int)(chorus_spin_button.get_value ());
+                EnsemblesApp.settings.set_int ("chorus-level", level);
+                chorus_change (level);
+            });
+            reverb_toggle.toggled.connect ((active) => {
+                EnsemblesApp.settings.set_boolean ("reverb-on", active);
+            });
+            chorus_toggle.toggled.connect ((active) => {
+                EnsemblesApp.settings.set_boolean ("chorus-on", active);
             });
         }
     }
