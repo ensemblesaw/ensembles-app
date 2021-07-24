@@ -173,6 +173,7 @@ namespace Ensembles.Shell {
             bus.system_ready.connect (() => {
                 main_display_unit.queue_remove_splash ();
                 style_controller_view.ready ();
+                ctrl_panel.load_settings ();
                 Timeout.add (2000, () => {
                     if (song_player != null) {
                         song_player.play ();
