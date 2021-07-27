@@ -177,6 +177,20 @@ namespace Ensembles.Shell {
             chorus_toggle.toggled.connect ((active) => {
                 EnsemblesApp.settings.set_boolean ("chorus-on", active);
             });
+            arpeggiator_spin_button.value_changed.connect (() => {
+                int type = (int)(arpeggiator_spin_button.get_value ());
+                EnsemblesApp.settings.set_int ("arpeggiator-type", type);
+            });
+            harmonizer_spin_button.value_changed.connect (() => {
+                int type = (int)(harmonizer_spin_button.get_value ());
+                EnsemblesApp.settings.set_int ("harmonizer-type", type);
+            });
+            arpeggiator_toggle.toggled.connect ((active) => {
+                EnsemblesApp.settings.set_boolean ("arpeggiator-on", active);
+            });
+            harmonizer_toggle.toggled.connect ((active) => {
+                EnsemblesApp.settings.set_boolean ("harmonizer-on", active);
+            });
         }
 
         public void load_settings () {
@@ -203,6 +217,23 @@ namespace Ensembles.Shell {
             reverb_toggle.set_active (active);
             active = EnsemblesApp.settings.get_boolean ("chorus-on");
             chorus_toggle.set_active (active);
+
+            int level = EnsemblesApp.settings.get_int ("reverb-level");
+            reverb_change (level);
+            reverb_spin_button.set_value ((double) level);
+            level = EnsemblesApp.settings.get_int ("chorus-level");
+            chorus_change (level);
+            chorus_spin_button.set_value ((double) level);
+            level = EnsemblesApp.settings.get_int ("transpose-level");
+            Ensembles.Core.Synthesizer.set_transpose (level);
+            transpose_spin_button.set_value ((double) level);
+            level = EnsemblesApp.settings.get_int ("octave-shift-level");
+            octave_spin_button.set_value ((double) level);
+            Ensembles.Core.Synthesizer.set_octave (level);
+            level = EnsemblesApp.settings.get_int ("arpeggiator-type");
+            arpeggiator_spin_button.set_value ((double) level);
+            level = EnsemblesApp.settings.get_int ("harmonizer-type");
+            harmonizer_spin_button.set_value ((double) level);
 
             update_split ();
 

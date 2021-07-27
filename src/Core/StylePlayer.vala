@@ -27,7 +27,7 @@ namespace Ensembles.Core {
             }
         }
         ~StylePlayer () {
-            style_player_destruct ();
+           style_player_destruct ();
         }
 
         public void add_style_file (string style_file) {

@@ -106,6 +106,7 @@ metronome_lfo_player_change_base (const char* mid_file, int tempo, int eol) {
 void
 metronome_lfo_player_destruct () {
     /* wait for playback termination */
+    fluid_synth_all_sounds_off (lfo_synth, -1);
     if (lfo_player) {
         fluid_player_stop (lfo_player);
         fluid_player_join(lfo_player);
@@ -113,16 +114,27 @@ metronome_lfo_player_destruct () {
         lfo_player = NULL;
     }
     /* cleanup */
-    delete_fluid_audio_driver(lfo_adriver);
-    delete_fluid_synth(lfo_synth);
-    delete_fluid_settings(lfo_settings);
+    if (lfo_adriver) {
+        delete_fluid_audio_driver(lfo_adriver);
+        lfo_adriver = NULL;
+    }
+    if (lfo_synth) {
+        delete_fluid_synth(lfo_synth);
+        lfo_synth = NULL;
+    }
+    if (lfo_settings) {
+        delete_fluid_settings(lfo_settings);
+        lfo_settings = NULL;
+    }
 }
 
 void
 metronome_lfo_player_play () {
-    fluid_player_stop (lfo_player);
-    fluid_player_seek (lfo_player, 0);
-    fluid_player_play (lfo_player);
+    if (lfo_player) {
+        fluid_player_stop (lfo_player);
+        fluid_player_seek (lfo_player, 0);
+        fluid_player_play (lfo_player);
+    }
 }
 
 void

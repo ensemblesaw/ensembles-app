@@ -127,7 +127,17 @@ music_player_destruct () {
         delete_fluid_player(mp_player);
         mp_player = NULL;
     }
-    delete_fluid_synth(mp_synth);
-    delete_fluid_settings(mp_settings);
-    delete_fluid_audio_driver(mp_adriver);
+    if (mp_adriver) {
+        delete_fluid_audio_driver(mp_adriver);
+        mp_adriver = NULL;
+    }
+    if (mp_synth) {
+        fluid_synth_all_sounds_off (mp_synth, -1);
+        delete_fluid_synth(mp_synth);
+        mp_synth = NULL;
+    }
+    if (mp_settings) {
+        delete_fluid_settings(mp_settings);
+        mp_settings = NULL;
+    }
 }

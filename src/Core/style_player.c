@@ -415,7 +415,9 @@ style_player_add_style_file (const gchar* mid_file, int reload) {
 
 void
 style_player_set_tempo (int tempo_bpm) {
-    fluid_player_set_tempo (player, FLUID_PLAYER_TEMPO_EXTERNAL_BPM, (double)tempo_bpm);
+    if (player) {
+        fluid_player_set_tempo (player, FLUID_PLAYER_TEMPO_EXTERNAL_BPM, (double)tempo_bpm);
+    }
     set_central_loaded_tempo (tempo_bpm);
 }
 
@@ -427,16 +429,26 @@ style_player_reload_style () {
 void
 style_player_destruct () {
     /* cleanup */
-    if (player) {
+    fluid_synth_all_sounds_off (synth, -1);
+    if (player != NULL) {
         /* wait for playback termination */
         fluid_player_stop (player);
         fluid_player_join(player);
         delete_fluid_player(player);
         player = NULL;
     }
-    delete_fluid_synth(synth);
-    delete_fluid_settings(settings);
-    delete_fluid_audio_driver(adriver);
+    if (adriver) {
+        delete_fluid_audio_driver(adriver);
+        adriver = NULL;
+    }
+    if (synth) {
+        delete_fluid_synth(synth);
+        synth = NULL;
+    }
+    if (settings) {
+        delete_fluid_settings(settings);
+        settings = NULL;
+    }
 }
 
 void

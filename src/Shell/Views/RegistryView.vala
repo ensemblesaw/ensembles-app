@@ -22,6 +22,10 @@ namespace Ensembles.Shell {
         Gtk.SpinButton bank_select;
         Gtk.Button[] registry_buttons;
         Gtk.Button memory_button;
+
+        Core.Registry[,] registry_memory;
+
+        bool assignable = false;
         public RegistryView () {
             row_homogeneous = true;
             vexpand = true;
@@ -55,6 +59,38 @@ namespace Ensembles.Shell {
 
             this.show_all ();
 
+            make_events ();
+        }
+
+        void make_events () {
+            memory_button.clicked.connect (() => {
+                assignable = !assignable;
+                make_buttons_pulse (assignable);
+            });
+            registry_buttons[0].clicked.connect (() => {
+                if (assignable) {
+
+                }
+            });
+        }
+
+        void make_buttons_pulse (bool pulse) {
+            for (int i = 0; i < 10; i++) {
+                if (pulse) {
+                    registry_buttons[i].get_style_context ().add_class ("sampler-pad-assignable");
+                } else {
+                    registry_buttons[i].get_style_context ().remove_class ("sampler-pad-assignable");
+                }
+            }
+        }
+
+        void registry_memorize (int bank, int index) {
+            //  if (registry_memory == null) {
+            //      registry_memory = new Core.Registry [16, 10];
+            //  }
+            //  registry_memory[bank, index] = new Core.Registry (
+                
+            //  );
         }
     }
 }

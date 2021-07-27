@@ -99,6 +99,7 @@ style_analyser (char* style) {
                 }
                 time_stamps[time_stamp_index++] = (int)(ticks/2);
                 //printf ("%s %d %d\n", string, ticks, central_loaded_tempo);
+                printf ("done analysing\n");
                 free(string);
                 //string = NULL;
             }

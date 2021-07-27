@@ -348,7 +348,15 @@ namespace Ensembles.Shell {
                 return false;
             });
             this.destroy.connect (() => {
-                slider_board.stop_monitoring ();
+                print ("App Exit\n");
+                debug ("CLEANUP: Unloading Slider Board");
+                slider_board.unref ();
+                debug ("CLEANUP: Unloading Mixer Board");
+                mixer_board_view.unref ();
+                debug ("CLEANUP: Unloading On-screen Keyboard");
+                main_keyboard.unref ();
+                debug ("CLEANUP: Unloading Beat Counter");
+                beat_counter_panel.unref ();
 
                 debug ("CLEANUP: Unloading MIDI Input Monitor");
                 controller_connection.unref ();
@@ -356,15 +364,17 @@ namespace Ensembles.Shell {
                 metronome_player.unref ();
                 debug ("CLEANUP: Unloading Style Engine");
                 style_player.unref ();
+                debug ("Done!");
                 if (song_player != null) {
                     debug ("CLEANUP: Unloading Song Player");
                     song_player.songplayer_destroy ();
                     song_player = null;
                 }
-                debug ("CLEANUP: Unloading Synthesizer");
-                synthesizer.unref ();
                 debug ("CLEANUP: Unloading Central Bus");
                 bus.unref ();
+                debug ("CLEANUP: Unloading Synthesizer");
+                synthesizer.unref ();
+                debug ("Done!");
             });
             debug ("Initialized\n");
         }
