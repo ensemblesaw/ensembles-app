@@ -258,7 +258,13 @@ handle_events_for_styles (fluid_midi_event_t *event) {
     // printf ("Channel: %d, ", chan);
     // printf ("Control: %d, ", cont);
     // printf ("Value: %d\n", value);
+    
     if (type == 176) {
+        if (cont == 85 && (value == 1 || value == 8 || value == 126)) {
+            int sf_id, program_id, bank_id;
+            fluid_synth_get_program (style_synth, chan, &sf_id, &bank_id, &program_id);
+            fluid_synth_program_select (style_synth, chan, realtime_synth_sf_id, value, program_id);
+        }
         if (cont == 7) {
             if (get_gain_value(chan) >= 0) {
                 fluid_midi_event_set_value (event, get_gain_value(chan));
@@ -290,7 +296,9 @@ handle_events_for_styles (fluid_midi_event_t *event) {
     if (style_synth) {
         ret_val = fluid_synth_handle_midi_event(style_synth, event);
     }
-    delete_fluid_midi_event (event);
+    if (event) {
+        delete_fluid_midi_event (event);
+    }
     return ret_val;
 }
 
@@ -377,8 +385,8 @@ synthesizer_halt_notes () {
         fluid_synth_all_notes_off (style_synth, 6);
         fluid_synth_all_notes_off (style_synth, 7);
         fluid_synth_all_notes_off (style_synth, 8);
-        //fluid_synth_all_notes_off (style_synth, 9);
-        fluid_synth_all_notes_off (style_synth, 10);
+        // fluid_synth_all_notes_off (style_synth, 9);
+        // fluid_synth_all_notes_off (style_synth, 10);
         fluid_synth_all_notes_off (style_synth, 11);
         fluid_synth_all_notes_off (style_synth, 12);
         fluid_synth_all_notes_off (style_synth, 13);

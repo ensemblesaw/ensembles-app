@@ -1,8 +1,8 @@
 namespace Ensembles.Core {
     public class Registry : Object {
-        public Voice voice_r1;
-        public Voice voice_r2;
-        public Voice voice_l;
+        public int voice_r1;
+        public int voice_r2;
+        public int voice_l;
         public int style;
         public int tempo;
         public int transpose;
@@ -21,9 +21,9 @@ namespace Ensembles.Core {
         public int arpeggiator_type;
         public bool arpeggiator_on;
 
-        public Registry (Voice voice_r1,
-                         Voice voice_r2,
-                         Voice voice_l,
+        public Registry (int voice_r1,
+                         int voice_r2,
+                         int voice_l,
                          int style,
                          int tempo,
                          int transpose,
