@@ -276,7 +276,7 @@ parse_ticks (void* data, int ticks) {
         int loop_end_temp = measure_length + loop_end_tick;
         int loop_start_temp = loop_end_tick + ((ticks - loop_start_tick) % measure_length);
         if (loop_start_temp < loop_end_temp) {
-            return fluid_player_seek (player, loop_start_temp - 1);
+            return fluid_player_seek (player, loop_start_temp - 2);
         }
     }
     //printf (">>> %d\n", (ticks - loop_start_tick) % measure_length);
@@ -289,7 +289,7 @@ parse_ticks (void* data, int ticks) {
             loop_start_tick = get_loaded_style_time_stamps_by_index (start_s);
             loop_end_tick = get_loaded_style_time_stamps_by_index (end_s);
             style_player_halt_continuous_notes ();
-            return fluid_player_seek (player, loop_start_tick - 1);
+            return fluid_player_seek (player, loop_start_tick - 2);
         }
         if (get_central_style_looping () == 1) {
             if (ticks >= loop_end_tick && fill_in == 0) {
@@ -302,7 +302,7 @@ parse_ticks (void* data, int ticks) {
                     loop_end_tick = get_loaded_style_time_stamps_by_index(end_s);
                     style_player_halt_continuous_notes ();
                     set_central_style_section (start_s);
-                    return fluid_player_seek (player, loop_start_tick - 1);
+                    return fluid_player_seek (player, loop_start_tick - 2);
                 } else if (sync_stop) {
                     fluid_player_stop (player);
                     set_central_halt (1);
@@ -319,7 +319,7 @@ parse_ticks (void* data, int ticks) {
                 }
                 breaking = 0;
                 style_player_halt_continuous_notes ();
-                return fluid_player_seek (player, loop_start_tick - 1);
+                return fluid_player_seek (player, loop_start_tick - 2);
             }
         }
     }
@@ -509,7 +509,7 @@ style_player_play () {
             fill_queue = 0;
             set_central_style_section (0);
             set_central_measure (0);
-            synthesizer_halt_notes ();
+            style_player_halt_continuous_notes ();
         }
     }
     set_central_clock (0);
