@@ -26,6 +26,7 @@ namespace Ensembles.Core {
         public List<string> style_names;
         public List<string> style_genre;
         public List<int> style_tempo;
+        public List<Style> styles;
         Ensembles.Core.StyleAnalyser analyser;
 
         public signal void analysis_complete ();
@@ -36,6 +37,7 @@ namespace Ensembles.Core {
             style_names = new List<string> ();
             style_genre = new List<string> ();
             style_tempo = new List<int> ();
+            styles = new List<Style> ();
 
             if (DirUtils.create_with_parents (Environment.get_home_dir () + "/Documents/Ensembles", 2000) != -1) {
                 if (DirUtils.create_with_parents (
@@ -55,12 +57,20 @@ namespace Ensembles.Core {
                 while ((name = dir.read_name ()) != null) {
                     string path = Path.build_filename (in_built_style_path, name);
                     if (path.contains (".enstl")) {
-                        style_files.append (path);
+                        string temp_path = path;
                         path = path.replace (in_built_style_path + "/", "");
                         path = path.replace (".enstl", "");
                         var temp = path.split ("@");
                         style_names.append (temp[1].replace ("_", " "));
                         style_genre.append (temp[0].replace ("_", " "));
+                        styles.append (new Style (
+                            temp_path,
+                            temp[1].replace ("_", " "),
+                            temp[0].replace ("_", " "),
+                            30,
+                            4,
+                            4
+                        ));
                     }
                 }
                 dir = Dir.open (user_style_path, 0);
@@ -68,28 +78,41 @@ namespace Ensembles.Core {
                 while ((name = dir.read_name ()) != null) {
                     string path = Path.build_filename (user_style_path, name);
                     if (path.contains (".enstl")) {
-                        style_files.append (path);
+                        string temp_path = path;
                         path = path.replace (user_style_path + "/", "");
                         path = path.replace (".enstl", "");
                         var temp = path.split ("@");
                         style_names.append (temp[1].replace ("_", " "));
                         style_genre.append (temp[0].replace ("_", " "));
+                        styles.append (new Style (
+                            temp_path,
+                            temp[1].replace ("_", " "),
+                            temp[0].replace ("_", " "),
+                            30,
+                            4,
+                            4
+                        ));
                     }
                 }
+                styles.sort (stylecmp);
             } catch (FileError e) {
                 warning (e.message);
             }
         }
 
         public void run_analysis () {
-            for (int i = 0; i < style_files.length (); i++) {
-                int tempo = analyser.analyze_style (style_files.nth_data (i));
-                style_tempo.append (tempo);
+            for (int i = 0; i < styles.length (); i++) {
+                int tempo = analyser.analyze_style (styles.nth_data (i).path);
+                styles.nth_data (i).tempo = tempo;
             }
             Timeout.add (1000, () => {
                 analysis_complete ();
                 return false;
             });
         }
+
+        private CompareFunc<Style> stylecmp = (a, b) => {
+            return (a.genre).ascii_casecmp (b.genre);
+        };
     }
 }

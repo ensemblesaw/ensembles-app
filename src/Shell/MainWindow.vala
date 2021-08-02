@@ -141,13 +141,8 @@ namespace Ensembles.Shell {
             debug ("STARTUP: Discovering Styles");
             style_discovery = new Ensembles.Core.StyleDiscovery ();
             style_discovery.analysis_complete.connect (() => {
-                style_player.add_style_file (style_discovery.style_files.nth_data (0));
-                main_display_unit.update_style_list (
-                    style_discovery.style_files,
-                    style_discovery.style_names,
-                    style_discovery.style_genre,
-                    style_discovery.style_tempo
-                );
+                style_player.add_style_file (style_discovery.styles.nth_data (0).path);
+                main_display_unit.update_style_list (style_discovery.styles);
             });
 
             debug ("STARTUP: Loading Metronome and LFO Engine");
@@ -209,8 +204,8 @@ namespace Ensembles.Shell {
                 //  debug("%d %s\n", device.id, device.name);
                 controller_connection.connect_device (device.id);
             });
-            main_display_unit.change_style.connect ((path, name, tempo) => {
-                style_player.add_style_file (path);
+            main_display_unit.change_style.connect ((accomp_style) => {
+                style_player.add_style_file (accomp_style.path);
             });
             main_display_unit.change_voice.connect ((voice, channel) => {
                 synthesizer.change_voice (voice, channel);
