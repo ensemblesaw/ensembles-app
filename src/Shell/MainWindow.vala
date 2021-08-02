@@ -185,6 +185,9 @@ namespace Ensembles.Shell {
                 if (metronome_player != null)
                     metronome_player.set_tempo (tempo);
             });
+            bus.loaded_time_signature_change.connect ((n, d) => {
+                beat_counter_panel.change_beats_per_bar (n);
+            });
             bus.split_key_change.connect (() => {
                 main_keyboard.update_split ();
             });

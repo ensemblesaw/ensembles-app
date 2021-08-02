@@ -104,6 +104,8 @@ namespace Ensembles.Core {
             for (int i = 0; i < styles.length (); i++) {
                 int tempo = analyser.analyze_style (styles.nth_data (i).path);
                 styles.nth_data (i).tempo = tempo;
+                styles.nth_data (i).timesignature_n = analyser.time_sig_n;
+                styles.nth_data (i).timesignature_d = analyser.time_sig_d;
             }
             Timeout.add (1000, () => {
                 analysis_complete ();

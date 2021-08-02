@@ -31,7 +31,7 @@
             var tempo_label = new Gtk.Label (accomp_style.timesignature_n.to_string () +
                                             "/" +
                                             accomp_style.timesignature_d.to_string () +
-                                            " | ♩ =  " + accomp_style.tempo.to_string ());
+                                            "\t|\t♩ =  " + accomp_style.tempo.to_string ());
             tempo_label.get_style_context ().add_class ("menu-item-description");
             tempo_label.halign = Gtk.Align.END;
             var category_label = new Gtk.Label ("");

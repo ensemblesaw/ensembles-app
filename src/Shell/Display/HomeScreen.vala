@@ -278,7 +278,7 @@ namespace Ensembles.Shell {
             this.attach (top_panel, 0, 0, 1, 1);
             this.attach (bottom_panel, 0, 1, 1, 1);
 
-            update_equalizer ();
+            update_equalizer.begin ();
         }
 
         public void connect_channel_buttons () {

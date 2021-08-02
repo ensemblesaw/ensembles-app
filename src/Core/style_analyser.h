@@ -21,6 +21,8 @@
 #ifndef STYLE_ANALYSER_H
 #define STYLE_ANALYSER_H
 
+#include <math.h>
+
 /** This function is audit styles and fill the style specification buffers
  * for use with style player and analysis
  */
