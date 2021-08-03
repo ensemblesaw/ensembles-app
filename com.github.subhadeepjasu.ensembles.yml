@@ -1,6 +1,6 @@
 app-id: com.github.subhadeepjasu.ensembles
 runtime: io.elementary.Platform
-runtime-version: daily
+runtime-version: '6'
 sdk: io.elementary.Sdk
 command: com.github.subhadeepjasu.ensembles
 finish-args: 
@@ -16,12 +16,6 @@ finish-args:
   - '--own-name=org.mpris.MediaPlayer2.com.github.subhadeepjasu.ensembles'
   - '--talk-name=org.gnome.SettingsDaemon.MediaKeys'
 modules:
-  - name: granite
-    buildsystem: meson
-    sources:
-      - type: git
-        url: https://github.com/elementary/granite.git
-
   - name: fluidsynth
     buildsystem: cmake-ninja
     config-opts:
@@ -36,12 +30,6 @@ modules:
       - type: archive
         url: https://github.com/FluidSynth/fluidsynth/archive/refs/tags/v2.2.1.tar.gz
         sha256: 1c56660f23f6c406b36646cc619fc2d2a5265d1d3290e79bcef4505bcd985fdd
-  
-  - name: libhandy-1
-    buildsystem: meson
-    sources:
-      - type: git
-        url: https://gitlab.gnome.org/GNOME/libhandy.git
   
   - name: portmidi
     buildsystem: cmake-ninja
