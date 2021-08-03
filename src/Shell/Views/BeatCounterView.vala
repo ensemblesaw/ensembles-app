@@ -97,7 +97,7 @@ namespace Ensembles.Shell {
         }
 
         public void change_beats_per_bar (int beats) {
-            if (this != null && beats > 0) {
+            if (beats > 0) {
                 this.beats_per_bar = beats;
             }
         }
