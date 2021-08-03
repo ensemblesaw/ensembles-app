@@ -33,7 +33,7 @@ i18n.merge_file (
 
 
 install_subdir(
-    join_paths('Styles'),
+    join_paths('Styles', 'StyleFiles'),
     install_dir: join_paths(get_option('datadir'), meson.project_name())
 )
 

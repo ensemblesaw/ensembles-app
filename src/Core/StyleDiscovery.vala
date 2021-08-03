@@ -31,8 +31,8 @@ namespace Ensembles.Core {
 
         public signal void analysis_complete ();
         public StyleDiscovery () {
-            in_built_style_path = Constants.PKGDATADIR + "/Styles";
-            user_style_path = Environment.get_home_dir () + "/Documents/Ensembles/Styles";
+            in_built_style_path = Constants.PKGDATADIR + "/StyleFiles";
+            user_style_path = Environment.get_home_dir () + "/Documents/Ensembles/StyleFiles";
             style_files = new List<string> ();
             style_names = new List<string> ();
             style_genre = new List<string> ();
@@ -41,7 +41,7 @@ namespace Ensembles.Core {
 
             if (DirUtils.create_with_parents (Environment.get_home_dir () + "/Documents/Ensembles", 2000) != -1) {
                 if (DirUtils.create_with_parents (
-                    Environment.get_home_dir () + "/Documents/Ensembles/Styles", 2000) != -1) {
+                    Environment.get_home_dir () + "/Documents/Ensembles/StyleFiles", 2000) != -1) {
                     debug ("Made user style_folder\n");
                 }
             }
