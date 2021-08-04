@@ -215,6 +215,10 @@ namespace Ensembles.Shell {
             main_display_unit.change_voice.connect ((voice, channel) => {
                 synthesizer.change_voice (voice, channel);
             });
+            main_display_unit.change_tempo.connect ((tempo) => {
+                style_player.change_tempo (tempo);
+            });
+            beat_counter_panel.open_tempo_editor.connect (main_display_unit.open_tempo_screen);
             ctrl_panel.accomp_change.connect ((active) => {
                 synthesizer.set_accompaniment_on (active);
             });

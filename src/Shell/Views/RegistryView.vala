@@ -69,7 +69,9 @@ namespace Ensembles.Shell {
             });
             registry_buttons[0].clicked.connect (() => {
                 if (assignable) {
-
+                    registry_memorize ((int) bank_select.get_value (), 0);
+                    assignable = false;
+                    make_buttons_pulse (false);
                 }
             });
         }
@@ -85,12 +87,31 @@ namespace Ensembles.Shell {
         }
 
         void registry_memorize (int bank, int index) {
-            //  if (registry_memory == null) {
-            //      registry_memory = new Core.Registry [16, 10];
-            //  }
-            //  registry_memory[bank, index] = new Core.Registry (
-                
-            //  );
+            if (registry_memory == null) {
+                registry_memory = new Core.Registry [16, 10];
+            }
+            registry_memory[bank, index] = new Core.Registry (
+                EnsemblesApp.settings.get_int ("voice-r1-index"),
+                EnsemblesApp.settings.get_int ("voice-r2-index"),
+                EnsemblesApp.settings.get_int ("voice-l-index"),
+                EnsemblesApp.settings.get_int ("style-index"),
+                Core.CentralBus.get_tempo (),
+                EnsemblesApp.settings.get_int ("transpose-level"),
+                EnsemblesApp.settings.get_boolean ("transpose-on"),
+                EnsemblesApp.settings.get_int ("octave-shift-level"),
+                EnsemblesApp.settings.get_boolean ("octave-shift-on"),
+                EnsemblesApp.settings.get_int ("reverb-level"),
+                EnsemblesApp.settings.get_boolean ("reverb-on"),
+                EnsemblesApp.settings.get_int ("chorus-level"),
+                EnsemblesApp.settings.get_boolean ("chorus-on"),
+                EnsemblesApp.settings.get_boolean ("accomp-on"),
+                EnsemblesApp.settings.get_boolean ("layer-on"),
+                EnsemblesApp.settings.get_boolean ("split-on"),
+                EnsemblesApp.settings.get_int ("harmonizer-type"),
+                EnsemblesApp.settings.get_boolean ("harmonizer-on"),
+                EnsemblesApp.settings.get_int ("arpeggiator-type"),
+                EnsemblesApp.settings.get_boolean ("arpeggiator-on")
+            );
         }
     }
 }

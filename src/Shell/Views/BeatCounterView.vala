@@ -29,12 +29,14 @@ namespace Ensembles.Shell {
         Gtk.Image beat_counter_active_2;
         Gtk.Image beat_counter_active_3;
 
-        Gtk.Button tap_button;
+        Gtk.Button tempo_button;
 
         int tempo = 10;
         int beats_per_bar = 4;
 
         bool halt_ack = false;
+
+        public signal void open_tempo_editor ();
 
 
         public BeatCounterView () {
@@ -51,14 +53,17 @@ namespace Ensembles.Shell {
 
 
 
-            tap_button = new Gtk.Button.with_label ("Tempo");
-            tap_button.margin = 4;
-            tap_button.margin_start = 8;
+            tempo_button = new Gtk.Button.with_label ("Tempo");
+            tempo_button.margin = 4;
+            tempo_button.margin_start = 8;
+            tempo_button.clicked.connect (() => {
+                open_tempo_editor ();
+            });
             main_grid.attach (beat_counter_0, 0, 0, 1, 1);
             main_grid.attach (beat_counter_1, 1, 0, 1, 1);
             main_grid.attach (beat_counter_2, 2, 0, 1, 1);
             main_grid.attach (beat_counter_3, 3, 0, 1, 1);
-            main_grid.attach (tap_button, 4, 0, 1, 1);
+            main_grid.attach (tempo_button, 4, 0, 1, 1);
 
 
 

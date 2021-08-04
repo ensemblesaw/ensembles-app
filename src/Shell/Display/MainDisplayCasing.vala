@@ -26,6 +26,7 @@ namespace Ensembles.Shell {
         Hdy.Leaflet main_display_leaflet;
 
         HomeScreen home_screen;
+        TempoScreen tempo_screen;
         StyleMenu style_menu;
         VoiceMenu voice_menu_l;
         VoiceMenu voice_menu_r1;
@@ -37,9 +38,11 @@ namespace Ensembles.Shell {
 
         public signal void change_style (Ensembles.Core.Style accomp_style);
         public signal void change_voice (Ensembles.Core.Voice voice, int channel);
+        public signal void change_tempo (int tempo);
 
         public MainDisplayCasing () {
             home_screen = new HomeScreen ();
+            tempo_screen = new TempoScreen ();
             style_menu = new StyleMenu ();
             voice_menu_l = new VoiceMenu (2);
             voice_menu_r1 = new VoiceMenu (0);
@@ -48,6 +51,7 @@ namespace Ensembles.Shell {
             lfo_editor = new LFOEditScreen ();
 
             main_stack = new Gtk.Stack ();
+            main_stack.add_named (tempo_screen, "Tempo Screen");
             main_stack.add_named (style_menu, "Styles Menu");
             main_stack.add_named (voice_menu_l, "Voice L Menu");
             main_stack.add_named (voice_menu_r1, "Voice R1 Menu");
@@ -151,6 +155,12 @@ namespace Ensembles.Shell {
             lfo_editor.close_screen.connect (() => {
                 main_display_leaflet.set_visible_child (home_screen);
             });
+            tempo_screen.close_screen.connect (() => {
+                main_display_leaflet.set_visible_child (home_screen);
+            });
+            tempo_screen.changed.connect ((tempo) => {
+                change_tempo (tempo);
+            });
         }
 
         public void update_style_list (List<Ensembles.Core.Style> accomp_styles) {
@@ -176,6 +186,11 @@ namespace Ensembles.Shell {
 
         public void set_tempo_display (int tempo) {
             home_screen.set_tempo (tempo);
+            tempo_screen.set_tempo (tempo);
+        }
+
+        public void set_tempo (int tempo) {
+            tempo_screen.set_tempo (tempo);
         }
 
         public void set_measure_display (int measure) {
@@ -195,6 +210,11 @@ namespace Ensembles.Shell {
         public void open_lfo_screen () {
             main_display_leaflet.set_visible_child (main_stack);
             main_stack.set_visible_child (lfo_editor);
+        }
+
+        public void open_tempo_screen () {
+            main_display_leaflet.set_visible_child (main_stack);
+            main_stack.set_visible_child (tempo_screen);
         }
     }
 }

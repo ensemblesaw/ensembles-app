@@ -61,7 +61,7 @@ namespace Ensembles.Core {
                     int type = message & 0x0000FF;
                     double velocity = ((127.0 - 0.0) / (8323072.0 - 65536.0)) *
                                       (double)((0xFF0000 & message) - 65536);
-                    debug ("Velocity: %d, Key: %d, Type:%d, Raw: %x\n",
+                    print ("Velocity: %d, Key: %d, Type:%d, Raw: %x\n",
                           (int)velocity,
                           key,
                           message & 0x0000FF,

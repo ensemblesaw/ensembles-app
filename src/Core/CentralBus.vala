@@ -110,6 +110,10 @@ namespace Ensembles.Core {
             return central_measure;
         }
 
+        public static int get_tempo () {
+            return central_loaded_tempo;
+        }
+
         public static int get_beats_per_bar () {
             return central_beats_per_bar;
         }
