@@ -26,7 +26,6 @@ namespace Ensembles.Shell {
         Core.Registry[,] registry_memory;
 
         bool assignable = false;
-        public signal void change_tempo (int tempo);
         public signal void notify_recall (int tempo);
         public RegistryView () {
             row_homogeneous = true;
@@ -77,6 +76,78 @@ namespace Ensembles.Shell {
                     registry_recall (bank_select.get_value_as_int (), 0);
                 }
             });
+            registry_buttons[1].clicked.connect (() => {
+                if (assignable) {
+                    registry_memorize (bank_select.get_value_as_int (), 1);
+                    assignable = false;
+                } else {
+                    registry_recall (bank_select.get_value_as_int (), 1);
+                }
+            });
+            registry_buttons[2].clicked.connect (() => {
+                if (assignable) {
+                    registry_memorize (bank_select.get_value_as_int (), 2);
+                    assignable = false;
+                } else {
+                    registry_recall (bank_select.get_value_as_int (), 2);
+                }
+            });
+            registry_buttons[3].clicked.connect (() => {
+                if (assignable) {
+                    registry_memorize (bank_select.get_value_as_int (), 3);
+                    assignable = false;
+                } else {
+                    registry_recall (bank_select.get_value_as_int (), 3);
+                }
+            });
+            registry_buttons[4].clicked.connect (() => {
+                if (assignable) {
+                    registry_memorize (bank_select.get_value_as_int (), 4);
+                    assignable = false;
+                } else {
+                    registry_recall (bank_select.get_value_as_int (), 4);
+                }
+            });
+            registry_buttons[5].clicked.connect (() => {
+                if (assignable) {
+                    registry_memorize (bank_select.get_value_as_int (), 5);
+                    assignable = false;
+                } else {
+                    registry_recall (bank_select.get_value_as_int (), 5);
+                }
+            });
+            registry_buttons[6].clicked.connect (() => {
+                if (assignable) {
+                    registry_memorize (bank_select.get_value_as_int (), 6);
+                    assignable = false;
+                } else {
+                    registry_recall (bank_select.get_value_as_int (), 6);
+                }
+            });
+            registry_buttons[7].clicked.connect (() => {
+                if (assignable) {
+                    registry_memorize (bank_select.get_value_as_int (), 7);
+                    assignable = false;
+                } else {
+                    registry_recall (bank_select.get_value_as_int (), 7);
+                }
+            });
+            registry_buttons[8].clicked.connect (() => {
+                if (assignable) {
+                    registry_memorize (bank_select.get_value_as_int (), 8);
+                    assignable = false;
+                } else {
+                    registry_recall (bank_select.get_value_as_int (), 8);
+                }
+            });
+            registry_buttons[9].clicked.connect (() => {
+                if (assignable) {
+                    registry_memorize (bank_select.get_value_as_int (), 9);
+                    assignable = false;
+                } else {
+                    registry_recall (bank_select.get_value_as_int (), 9);
+                }
+            });
         }
 
         void make_buttons_pulse (bool pulse) {
@@ -124,7 +195,6 @@ namespace Ensembles.Shell {
                 EnsemblesApp.settings.set_int ("voice-r2-index", registry_memory[bank, index].voice_r2);
                 EnsemblesApp.settings.set_int ("voice-l-index", registry_memory[bank, index].voice_l);
                 EnsemblesApp.settings.set_int ("style-index", registry_memory[bank, index].style);
-                change_tempo (registry_memory[bank, index].tempo);
                 EnsemblesApp.settings.set_int ("transpose-level", registry_memory[bank, index].transpose);
                 EnsemblesApp.settings.set_boolean ("transpose-on", registry_memory[bank, index].transpose_on);
                 EnsemblesApp.settings.set_int ("octave-shift-level", registry_memory[bank, index].octave);

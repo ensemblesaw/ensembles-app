@@ -118,6 +118,17 @@ namespace Ensembles.Shell {
             _selected_index = index;
             change_voice (voice_rows[index].voice, channel);
             scroll_to_selected_row ();
+            switch (channel) {
+                case 0:
+                EnsemblesApp.settings.set_int ("voice-r1-index", index);
+                break;
+                case 1:
+                EnsemblesApp.settings.set_int ("voice-r2-index", index);
+                break;
+                case 2:
+                EnsemblesApp.settings.set_int ("voice-l-index", index);
+                break;
+            }
         }
 
         public void load_settings () {
