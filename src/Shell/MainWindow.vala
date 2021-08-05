@@ -141,7 +141,7 @@ namespace Ensembles.Shell {
             debug ("STARTUP: Discovering Styles");
             style_discovery = new Ensembles.Core.StyleDiscovery ();
             style_discovery.analysis_complete.connect (() => {
-                style_player.add_style_file (style_discovery.styles.nth_data (0).path);
+                //  style_player.add_style_file (style_discovery.styles.nth_data (0).path);
                 main_display_unit.update_style_list (style_discovery.styles);
             });
 
@@ -210,7 +210,7 @@ namespace Ensembles.Shell {
                 controller_connection.connect_device (device.id);
             });
             main_display_unit.change_style.connect ((accomp_style) => {
-                style_player.add_style_file (accomp_style.path);
+                style_player.add_style_file (accomp_style.path, accomp_style.tempo);
             });
             main_display_unit.change_voice.connect ((voice, channel) => {
                 synthesizer.change_voice (voice, channel);
@@ -239,6 +239,10 @@ namespace Ensembles.Shell {
                     metronome_player.stop_loop ();
                     Ensembles.Core.CentralBus.set_metronome_on (false);
                 }
+            });
+            registry_panel.notify_recall.connect ((tempo) => {
+                ctrl_panel.load_settings ();
+                main_display_unit.load_settings (tempo);
             });
             controller_connection.receive_note_event.connect ((key, on, velocity)=>{
                 //  debug ("%d %d %d\n", key, on, velocity);

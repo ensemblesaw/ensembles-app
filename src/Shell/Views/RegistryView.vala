@@ -26,6 +26,8 @@ namespace Ensembles.Shell {
         Core.Registry[,] registry_memory;
 
         bool assignable = false;
+        public signal void change_tempo (int tempo);
+        public signal void notify_recall (int tempo);
         public RegistryView () {
             row_homogeneous = true;
             vexpand = true;
@@ -69,9 +71,10 @@ namespace Ensembles.Shell {
             });
             registry_buttons[0].clicked.connect (() => {
                 if (assignable) {
-                    registry_memorize ((int) bank_select.get_value (), 0);
+                    registry_memorize (bank_select.get_value_as_int (), 0);
                     assignable = false;
-                    make_buttons_pulse (false);
+                } else {
+                    registry_recall (bank_select.get_value_as_int (), 0);
                 }
             });
         }
@@ -112,6 +115,35 @@ namespace Ensembles.Shell {
                 EnsemblesApp.settings.get_int ("arpeggiator-type"),
                 EnsemblesApp.settings.get_boolean ("arpeggiator-on")
             );
+            make_buttons_pulse (false);
+        }
+
+        void registry_recall (int bank, int index) {
+            if (registry_memory != null && registry_memory[bank, index] != null) {
+                EnsemblesApp.settings.set_int ("voice-r1-index", registry_memory[bank, index].voice_r1);
+                EnsemblesApp.settings.set_int ("voice-r2-index", registry_memory[bank, index].voice_r2);
+                EnsemblesApp.settings.set_int ("voice-l-index", registry_memory[bank, index].voice_l);
+                EnsemblesApp.settings.set_int ("style-index", registry_memory[bank, index].style);
+                change_tempo (registry_memory[bank, index].tempo);
+                EnsemblesApp.settings.set_int ("transpose-level", registry_memory[bank, index].transpose);
+                EnsemblesApp.settings.set_boolean ("transpose-on", registry_memory[bank, index].transpose_on);
+                EnsemblesApp.settings.set_int ("octave-shift-level", registry_memory[bank, index].octave);
+                EnsemblesApp.settings.set_boolean ("octave-shift-on", registry_memory[bank, index].octave_shift_on);
+                EnsemblesApp.settings.set_int ("reverb-level", registry_memory[bank, index].reverb_level);
+                EnsemblesApp.settings.set_boolean ("reverb-on", registry_memory[bank, index].reverb_on);
+                EnsemblesApp.settings.set_int ("chorus-level", registry_memory[bank, index].chorus_level);
+                EnsemblesApp.settings.set_boolean ("chorus-on", registry_memory[bank, index].chorus_on);
+                EnsemblesApp.settings.set_boolean ("accomp-on", registry_memory[bank, index].accomp_on);
+                EnsemblesApp.settings.set_boolean ("layer-on", registry_memory[bank, index].layer_on);
+                EnsemblesApp.settings.set_boolean ("split-on", registry_memory[bank, index].split_on);
+                EnsemblesApp.settings.set_int ("harmonizer-type", registry_memory[bank, index].harmonizer_type);
+                EnsemblesApp.settings.set_boolean ("harmonizer-on", registry_memory[bank, index].harmonizer_on);
+                EnsemblesApp.settings.set_int ("arpeggiator-type", registry_memory[bank, index].arpeggiator_type);
+                EnsemblesApp.settings.set_boolean ("arpeggiator-on", registry_memory[bank, index].arpeggiator_on);
+
+                notify_recall (registry_memory[bank, index].tempo);
+            }
+            make_buttons_pulse (false);
         }
     }
 }

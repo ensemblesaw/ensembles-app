@@ -30,9 +30,9 @@ namespace Ensembles.Core {
            style_player_destruct ();
         }
 
-        public void add_style_file (string style_file) {
+        public void add_style_file (string style_file, int tempo) {
             debug ("loading style %s\n", style_file);
-            style_player_add_style_file (style_file, 0);
+            style_player_add_style_file (style_file, tempo);
         }
 
         public void reload_style () {
@@ -97,7 +97,7 @@ namespace Ensembles.Core {
 }
 
 extern void style_player_init ();
-extern void style_player_add_style_file (string mid_file, int reload);
+extern void style_player_add_style_file (string mid_file, int custom_tempo);
 extern void style_player_reload_style ();
 extern void style_player_destruct ();
 extern void style_player_play ();

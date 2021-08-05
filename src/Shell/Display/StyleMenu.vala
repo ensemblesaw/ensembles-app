@@ -24,6 +24,8 @@ namespace Ensembles.Shell {
 
         StyleItem[] style_rows;
 
+        int _selected_index;
+
         public signal void close_menu ();
         public signal void change_style (Ensembles.Core.Style accomp_style);
         public StyleMenu () {
@@ -59,7 +61,9 @@ namespace Ensembles.Shell {
             main_list.set_selection_mode (Gtk.SelectionMode.BROWSE);
             main_list.row_activated.connect ((row) => {
                 int index = row.get_index ();
+                _selected_index = index;
                 change_style (style_rows[index].accomp_style);
+                EnsemblesApp.settings.set_int ("style-index", index);
             });
         }
 
@@ -76,10 +80,38 @@ namespace Ensembles.Shell {
                 style_rows[i] = row;
                 main_list.insert (row, -1);
             }
-
-            main_list.select_row (style_rows[0]);
             main_list.show_all ();
             Ensembles.Core.CentralBus.set_styles_ready (true);
+        }
+
+        public void scroll_to_selected_row () {
+            style_rows[_selected_index].grab_focus ();
+            if (main_list != null) {
+                var adj = main_list.get_adjustment ();
+                if (adj != null) {
+                    int height, _htemp;
+                    style_rows[_selected_index].get_preferred_height (out _htemp, out height);
+                    Timeout.add (200, () => {
+                        adj.set_value (_selected_index * height);
+                        return false;
+                    });
+                }
+            }
+        }
+
+        public void quick_select_row (int index, int tempo) {
+            main_list.select_row (style_rows[index]);
+            _selected_index = index;
+            Core.Style selected_style = style_rows[index].accomp_style;
+            if (tempo > 0) {
+                selected_style.tempo = tempo;
+            }
+            change_style (selected_style);
+            scroll_to_selected_row ();
+        }
+
+        public void load_settings (int? tempo = 0) {
+            quick_select_row (EnsemblesApp.settings.get_int ("style-index"), tempo);
         }
     }
 }

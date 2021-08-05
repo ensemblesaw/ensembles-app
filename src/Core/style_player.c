@@ -352,20 +352,15 @@ style_player_sync_start () {
 }
 
 GThreadFunc
-queue_style_file_change (int use_previous_tempo) {
+queue_style_file_change (int custom_tempo) {
     printf("changing...to %s\n", style_player_style_path);
-    int previous_tempo = -1;
     if (get_central_style_looping ()) {
-        previous_tempo = fluid_player_get_bpm (player);
         style_player_sync_stop ();
         fluid_player_join (player);
         changing_style = 1;
         printf ("a:\n");
     } else {
         printf ("e:\n");
-    }
-    if (use_previous_tempo) {
-        previous_tempo = fluid_player_get_bpm (player);
     }
     if (player) {
         printf ("b:\n");
@@ -383,10 +378,10 @@ queue_style_file_change (int use_previous_tempo) {
         fluid_player_add(player, style_player_style_path);
     }
     printf ("g:\n");
-    if (previous_tempo != -1 || use_previous_tempo) {
-        fluid_player_set_tempo (player, FLUID_PLAYER_TEMPO_EXTERNAL_BPM, (double)previous_tempo);
-        set_central_loaded_tempo (previous_tempo);
-        printf("%d >>>>\n", previous_tempo);
+    if (custom_tempo >= 40) {
+        fluid_player_set_tempo (player, FLUID_PLAYER_TEMPO_EXTERNAL_BPM, (double)custom_tempo);
+        set_central_loaded_tempo (custom_tempo);
+        printf("%d >>>>\n", custom_tempo);
     }
     printf ("h:\n");
     if (changing_style) {
@@ -406,14 +401,17 @@ queue_style_file_change (int use_previous_tempo) {
 }
 
 void
-style_player_add_style_file (const gchar* mid_file, int reload) {
+style_player_add_style_file (const gchar* mid_file, int custom_tempo) {
     printf("chan...to %s\n", mid_file);
+    int c_tempo = (get_central_style_looping () > 0) ?
+                    fluid_player_get_bpm (player):
+                    custom_tempo;
     if (style_swap_thread_id == 0) {
        style_swap_thread_id = 1;
        style_player_style_path = (char *)malloc(sizeof (char) * 200);
        strcpy (style_player_style_path, mid_file);
        style_analyser_analyze (style_player_style_path);
-       g_thread_new ("Style Swapper", queue_style_file_change, reload);
+       g_thread_new ("Style Swapper", queue_style_file_change, c_tempo);
     }
 }
 
@@ -427,7 +425,10 @@ style_player_set_tempo (int tempo_bpm) {
 
 void
 style_player_reload_style () {
-    style_player_add_style_file (style_player_style_path, 1);
+    int previous_tempo = fluid_player_get_bpm (player);
+    set_central_loaded_tempo (previous_tempo);
+    style_player_add_style_file (style_player_style_path, previous_tempo);
+    set_central_loaded_tempo (previous_tempo);
 }
 
 void

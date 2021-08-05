@@ -67,6 +67,17 @@ namespace Ensembles.Shell {
                 int index = row.get_index ();
                 _selected_index = index;
                 change_voice (voice_rows[index].voice, channel);
+                switch (channel) {
+                    case 0:
+                    EnsemblesApp.settings.set_int ("voice-r1-index", index);
+                    break;
+                    case 1:
+                    EnsemblesApp.settings.set_int ("voice-r2-index", index);
+                    break;
+                    case 2:
+                    EnsemblesApp.settings.set_int ("voice-l-index", index);
+                    break;
+                }
             });
         }
 
@@ -83,17 +94,7 @@ namespace Ensembles.Shell {
                 voice_rows[i] = row;
                 main_list.insert (row, -1);
             }
-            switch (channel) {
-                case 0:
-                quick_select_row (0);
-                break;
-                case 1:
-                quick_select_row (49);
-                break;
-                case 2:
-                quick_select_row (33);
-                break;
-            }
+            load_settings ();
             main_list.show_all ();
         }
 
@@ -117,6 +118,20 @@ namespace Ensembles.Shell {
             _selected_index = index;
             change_voice (voice_rows[index].voice, channel);
             scroll_to_selected_row ();
+        }
+
+        public void load_settings () {
+            switch (channel) {
+                case 0:
+                quick_select_row (EnsemblesApp.settings.get_int ("voice-r1-index"));
+                break;
+                case 1:
+                quick_select_row (EnsemblesApp.settings.get_int ("voice-r2-index"));
+                break;
+                case 2:
+                quick_select_row (EnsemblesApp.settings.get_int ("voice-l-index"));
+                break;
+            }
         }
     }
 }

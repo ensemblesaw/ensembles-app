@@ -169,7 +169,7 @@ namespace Ensembles.Shell {
                 styles[i] = accomp_styles.nth_data (i);
             }
             style_menu.populate_style_menu (styles);
-            home_screen.set_style_name (styles[0].name);
+            style_menu.load_settings ();
         }
 
         public void update_voice_list (Ensembles.Core.Voice[] voices) {
@@ -215,6 +215,13 @@ namespace Ensembles.Shell {
         public void open_tempo_screen () {
             main_display_leaflet.set_visible_child (main_stack);
             main_stack.set_visible_child (tempo_screen);
+        }
+
+        public void load_settings (int tempo) {
+            voice_menu_r1.load_settings ();
+            voice_menu_r2.load_settings ();
+            voice_menu_l.load_settings ();
+            style_menu.load_settings (tempo);
         }
     }
 }
