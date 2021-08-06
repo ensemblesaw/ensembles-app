@@ -31,8 +31,24 @@ namespace Ensembles.Core {
         }
 
         public void add_style_file (string style_file, int tempo) {
-            debug ("loading style %s\n", style_file);
-            style_player_add_style_file (style_file, tempo);
+            
+            if (Core.CentralBus.get_style_looping_on ()) {
+                debug ("loading style %s\n", style_file);
+                sync_stop ();
+                Timeout.add (10, () => {
+                    if (!Core.CentralBus.get_style_looping_on ()) {
+                        int previous_tempo = Core.CentralBus.get_tempo ();
+                        style_player_add_style_file (style_file, previous_tempo);
+                        Idle.add (() => {
+                            play_style ();
+                            return false;
+                        });
+                    }
+                    return Core.CentralBus.get_style_looping_on ();
+                });
+            } else {
+                style_player_add_style_file (style_file, tempo);
+            }
         }
 
         public void reload_style () {

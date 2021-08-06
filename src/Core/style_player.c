@@ -354,48 +354,32 @@ style_player_sync_start () {
 GThreadFunc
 queue_style_file_change (int custom_tempo) {
     printf("changing...to %s\n", style_player_style_path);
-    if (get_central_style_looping ()) {
-        style_player_sync_stop ();
-        fluid_player_join (player);
-        changing_style = 1;
-        printf ("a:\n");
-    } else {
-        printf ("e:\n");
-    }
     if (player) {
-        printf ("b:\n");
+        printf ("c:\n");
         fluid_player_stop (player);
         fluid_player_join(player);
         delete_fluid_player(player);
         player = NULL;
-        printf ("c:\n");
+        printf ("d:\n");
     }
     player = new_fluid_player(synth);
     fluid_player_set_playback_callback(player, parse_midi_events, synth);
     fluid_player_set_tick_callback (player, parse_ticks, synth);
-    printf ("f:\n");
+    printf ("e:\n");
     if (fluid_is_midifile(style_player_style_path)) {
         fluid_player_add(player, style_player_style_path);
     }
-    printf ("g:\n");
+    printf ("f:\n");
     if (custom_tempo >= 40) {
         fluid_player_set_tempo (player, FLUID_PLAYER_TEMPO_EXTERNAL_BPM, (double)custom_tempo);
         set_central_loaded_tempo (custom_tempo);
         printf("%d >>>>\n", custom_tempo);
     }
-    printf ("h:\n");
-    if (changing_style) {
-        changing_style = 0;
-        loop_start_tick = get_loaded_style_time_stamps_by_index(start_s);
-        loop_end_tick = get_loaded_style_time_stamps_by_index(end_s);
-        fluid_player_seek (player, loop_start_tick);
-        printf ("Restart player with new style\n");
-        fluid_player_play(player);
-        set_central_style_looping (1) ;
-        set_central_clock (0);
-        sync_stop = 0;
-        printf ("d:\n");
-    }
+    printf ("g:\n");
+    loop_start_tick = get_loaded_style_time_stamps_by_index(start_s);
+    loop_end_tick = get_loaded_style_time_stamps_by_index(end_s);
+    set_central_clock (0);
+    style_player_halt_continuous_notes ();
     style_swap_thread_id = 0;
     g_thread_yield ();
 }
@@ -411,7 +395,8 @@ style_player_add_style_file (const gchar* mid_file, int custom_tempo) {
        style_player_style_path = (char *)malloc(sizeof (char) * 200);
        strcpy (style_player_style_path, mid_file);
        style_analyser_analyze (style_player_style_path);
-       g_thread_new ("Style Swapper", queue_style_file_change, c_tempo);
+       GThread* thread_id = g_thread_new ("Style Swapper", queue_style_file_change, c_tempo);
+       g_thread_join (thread_id);
     }
 }
 
