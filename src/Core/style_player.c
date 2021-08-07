@@ -61,21 +61,7 @@ int changing_style = 0;
 int32_t style_swap_thread_id = 0;
 
 // Per channel chord change flags
-int chord_change_0 = 0;
-int chord_change_1 = 0;
-int chord_change_2 = 0;
-int chord_change_3 = 0;
-int chord_change_4 = 0;
-int chord_change_5 = 0;
-int chord_change_6 = 0;
-int chord_change_7 = 0;
-int chord_change_8 = 0;
-int chord_change_10 = 0;
-int chord_change_11 = 0;
-int chord_change_12 = 0;
-int chord_change_13 = 0;
-int chord_change_14 = 0;
-int chord_change_15 = 0;
+int chord_change_queued = 0;
 
 // Per channel note-on tracking flags
 int channel_note_on_0 = -1;
@@ -87,7 +73,6 @@ int channel_note_on_5 = -1;
 int channel_note_on_6 = -1;
 int channel_note_on_7 = -1;
 int channel_note_on_8 = -1;
-int channel_note_on_10 = -1;
 int channel_note_on_11 = -1;
 int channel_note_on_12 = -1;
 int channel_note_on_13 = -1;
@@ -106,7 +91,7 @@ style_player_change_chord (int cd_main, int cd_type) {
     if (cd_main != -6) {
         chord_main = cd_main;
         chord_type = cd_type;
-        chord_change_0 = 1;
+        chord_change_queued = 1;
     }
     measure_length = get_loaded_style_time_stamps_by_index (1);
     if (get_central_style_sync_start () == 1) {
@@ -172,7 +157,9 @@ parse_midi_events (void *data, fluid_midi_event_t *event) {
 
     int type = fluid_midi_event_get_type (new_event);
     int channel = fluid_midi_event_get_channel (new_event);
+    int control = fluid_midi_event_get_control (new_event);
     int key = fluid_midi_event_get_key (event);
+    int value = fluid_midi_event_get_value (new_event);
     switch (channel) {
         case 0:
         if (type == 144) channel_note_on_0 = key | (fluid_midi_event_get_velocity (event) << 16); else if (type == 128) channel_note_on_0 = -1;
@@ -201,9 +188,6 @@ parse_midi_events (void *data, fluid_midi_event_t *event) {
         case 8:
         if (type == 144) channel_note_on_8 = key | (fluid_midi_event_get_velocity (event) << 16); else if (type == 128) channel_note_on_8 = -1;
         break;
-        case 10:
-        if (type == 144) channel_note_on_10 = key | (fluid_midi_event_get_velocity (event) << 16); else if (type == 128) channel_note_on_10 = -1;
-        break;
         case 11:
         if (type == 144) channel_note_on_11 = key | (fluid_midi_event_get_velocity (event) << 16); else if (type == 128) channel_note_on_11 = -1;
         break;
@@ -221,7 +205,7 @@ parse_midi_events (void *data, fluid_midi_event_t *event) {
         break;
     }
 
-    if (channel != 9 && (type == 144 || type == 128)) {
+    if (channel != 9 && channel != 10 && (type == 144 || type == 128)) {
         fluid_midi_event_set_key (new_event, get_chord_modified_key (key));
         
     } else {
@@ -246,10 +230,29 @@ resend_key (int value, int channel) {
     handle_events_for_styles (new_event);
 }
 
+void
+style_player_halt_continuous_notes () {
+    channel_note_on_0 = -1;
+    channel_note_on_1 = -1;
+    channel_note_on_2 = -1;
+    channel_note_on_3 = -1;
+    channel_note_on_4 = -1;
+    channel_note_on_5 = -1;
+    channel_note_on_6 = -1;
+    channel_note_on_7 = -1;
+    channel_note_on_8 = -1;
+    channel_note_on_11 = -1;
+    channel_note_on_12 = -1;
+    channel_note_on_13 = -1;
+    channel_note_on_14 = -1;
+    channel_note_on_15 = -1;
+    synthesizer_halt_notes ();
+}
+
 int
 parse_ticks (void* data, int ticks) {
-    if (chord_change_0 == 1) {
-        chord_change_0 = 0;
+    if (chord_change_queued == 1) {
+        chord_change_queued = 0;
         printf ("chord -> %d\n", chord_main);
         synthesizer_halt_notes ();
         if (channel_note_on_0 >= 0) resend_key (channel_note_on_0, 0);
@@ -261,7 +264,6 @@ parse_ticks (void* data, int ticks) {
         if (channel_note_on_6 >= 0) resend_key (channel_note_on_6, 6);
         if (channel_note_on_7 >= 0) resend_key (channel_note_on_7, 7);
         if (channel_note_on_8 >= 0) resend_key (channel_note_on_8, 8);
-        if (channel_note_on_10 >= 0) resend_key (channel_note_on_10, 10);
         if (channel_note_on_11 >= 0) resend_key (channel_note_on_11, 11);
         if (channel_note_on_12 >= 0) resend_key (channel_note_on_12, 12);
         if (channel_note_on_13 >= 0) resend_key (channel_note_on_13, 13);
@@ -274,7 +276,7 @@ parse_ticks (void* data, int ticks) {
         int loop_end_temp = measure_length + loop_end_tick;
         int loop_start_temp = loop_end_tick + ((ticks - loop_start_tick) % measure_length);
         if (loop_start_temp < loop_end_temp) {
-            return fluid_player_seek (player, loop_start_temp);
+            return fluid_player_seek (player, loop_start_temp - 2);
         }
     }
     //printf (">>> %d\n", (ticks - loop_start_tick) % measure_length);
@@ -286,8 +288,8 @@ parse_ticks (void* data, int ticks) {
         if (loop_start_tick != get_loaded_style_time_stamps_by_index (start_s)) {
             loop_start_tick = get_loaded_style_time_stamps_by_index (start_s);
             loop_end_tick = get_loaded_style_time_stamps_by_index (end_s);
-            synthesizer_halt_notes ();
-            return fluid_player_seek (player, loop_start_tick);
+            style_player_halt_continuous_notes ();
+            return fluid_player_seek (player, loop_start_tick - 2);
         }
         if (get_central_style_looping () == 1) {
             if (ticks >= loop_end_tick && fill_in == 0) {
@@ -298,9 +300,9 @@ parse_ticks (void* data, int ticks) {
                     intro_playing = 0;
                     loop_start_tick = get_loaded_style_time_stamps_by_index(start_s);
                     loop_end_tick = get_loaded_style_time_stamps_by_index(end_s);
-                    synthesizer_halt_notes ();
+                    style_player_halt_continuous_notes ();
                     set_central_style_section (start_s);
-                    return fluid_player_seek (player, loop_start_tick);
+                    return fluid_player_seek (player, loop_start_tick - 2);
                 } else if (sync_stop) {
                     fluid_player_stop (player);
                     set_central_halt (1);
@@ -313,11 +315,11 @@ parse_ticks (void* data, int ticks) {
                     sync_stop = 0;
                     set_central_style_section (0);
                     set_central_measure (0);
-                    synthesizer_halt_notes ();
+                    style_player_halt_continuous_notes ();
                 }
                 breaking = 0;
-                synthesizer_halt_notes ();
-                return fluid_player_seek (player, loop_start_tick + 1);
+                style_player_halt_continuous_notes ();
+                return fluid_player_seek (player, loop_start_tick - 2);
             }
         }
     }
@@ -333,7 +335,8 @@ style_player_init () {
     fluid_settings_setstr(settings, "audio.driver", "pulseaudio");
     fluid_settings_setint(settings, "audio.periods", 2);
     fluid_settings_setint(settings, "audio.period-size", 64);
-    fluid_settings_setint(settings, "audio.realtime-prio", 90);
+    fluid_settings_setint(settings, "audio.realtime-prio", 80);
+    fluid_settings_setint(settings, "audio.pulseaudio.adjust-latency", 0);
     synth = new_fluid_synth(settings);
     adriver = new_fluid_audio_driver(settings, synth);
 }
@@ -348,94 +351,89 @@ style_player_sync_start () {
     set_central_style_sync_start (1);
 }
 
-GThreadFunc
-queue_style_file_change (int use_previous_tempo) {
+void
+queue_style_file_change (int custom_tempo) {
     printf("changing...to %s\n", style_player_style_path);
-    int previous_tempo = -1;
-    if (get_central_style_looping ()) {
-        previous_tempo = fluid_player_get_bpm (player);
-        style_player_sync_stop ();
-        fluid_player_join (player);
-        changing_style = 1;
-        printf ("a:\n");
-    } else {
-        printf ("e:\n");
-    }
-    if (use_previous_tempo) {
-        previous_tempo = fluid_player_get_bpm (player);
-    }
     if (player) {
-        printf ("b:\n");
+        printf ("c:\n");
         fluid_player_stop (player);
         fluid_player_join(player);
         delete_fluid_player(player);
         player = NULL;
-        printf ("c:\n");
+        printf ("d:\n");
     }
     player = new_fluid_player(synth);
     fluid_player_set_playback_callback(player, parse_midi_events, synth);
     fluid_player_set_tick_callback (player, parse_ticks, synth);
-    printf ("f:\n");
+    printf ("e:\n");
     if (fluid_is_midifile(style_player_style_path)) {
         fluid_player_add(player, style_player_style_path);
     }
-    if (previous_tempo != -1 || use_previous_tempo) {
-        fluid_player_set_tempo (player, FLUID_PLAYER_TEMPO_EXTERNAL_BPM, (double)previous_tempo);
-        set_central_loaded_tempo (previous_tempo);
-        printf("%d >>>>\n", previous_tempo);
+    printf ("f:\n");
+    if (custom_tempo >= 40) {
+        fluid_player_set_tempo (player, FLUID_PLAYER_TEMPO_EXTERNAL_BPM, (double)custom_tempo);
+        set_central_loaded_tempo (custom_tempo);
+        printf("%d >>>>\n", custom_tempo);
     }
-    if (changing_style) {
-        changing_style = 0;
-        loop_start_tick = get_loaded_style_time_stamps_by_index(start_s);
-        loop_end_tick = get_loaded_style_time_stamps_by_index(end_s);
-        fluid_player_seek (player, loop_start_tick);
-        printf ("Restart player with new style\n");
-        fluid_player_play(player);
-        set_central_style_looping (1) ;
-        set_central_clock (0);
-        sync_stop = 0;
-        printf ("d:\n");
-    }
-    style_swap_thread_id = 0;
-    g_thread_yield ();
+    printf ("g:\n");
+    loop_start_tick = get_loaded_style_time_stamps_by_index(start_s);
+    loop_end_tick = get_loaded_style_time_stamps_by_index(end_s);
+    set_central_clock (0);
+    style_player_halt_continuous_notes ();
+    printf ("h\n");
 }
 
 void
-style_player_add_style_file (const gchar* mid_file, int reload) {
+style_player_add_style_file (const gchar* mid_file, int custom_tempo) {
     printf("chan...to %s\n", mid_file);
-    if (style_swap_thread_id == 0) {
-       style_swap_thread_id = 1;
-       style_player_style_path = (char *)malloc(sizeof (char) * strlen (mid_file));
-       strcpy (style_player_style_path, mid_file);
-       style_analyser_analyze (style_player_style_path);
-       g_thread_new ("Style Swapper", queue_style_file_change, reload);
-    }
+    int c_tempo = (get_central_style_looping () > 0) ?
+                    fluid_player_get_bpm (player):
+                    custom_tempo;
+    style_player_style_path = (char *)malloc(sizeof (char) * 200);
+    strcpy (style_player_style_path, mid_file);
+    style_analyser_analyze (style_player_style_path);
+    queue_style_file_change (c_tempo);
 }
 
 void
 style_player_set_tempo (int tempo_bpm) {
-    fluid_player_set_tempo (player, FLUID_PLAYER_TEMPO_EXTERNAL_BPM, (double)tempo_bpm);
+    if (player) {
+        fluid_player_set_tempo (player, FLUID_PLAYER_TEMPO_EXTERNAL_BPM, (double)tempo_bpm);
+    }
     set_central_loaded_tempo (tempo_bpm);
 }
 
 void
 style_player_reload_style () {
-    style_player_add_style_file (style_player_style_path, 1);
+    int previous_tempo = fluid_player_get_bpm (player);
+    set_central_loaded_tempo (previous_tempo);
+    style_player_add_style_file (style_player_style_path, previous_tempo);
+    set_central_loaded_tempo (previous_tempo);
 }
 
 void
 style_player_destruct () {
     /* cleanup */
-    if (player) {
+    fluid_synth_all_sounds_off (synth, -1);
+    if (player != NULL) {
         /* wait for playback termination */
         fluid_player_stop (player);
         fluid_player_join(player);
         delete_fluid_player(player);
         player = NULL;
     }
-    delete_fluid_synth(synth);
-    delete_fluid_settings(settings);
-    delete_fluid_audio_driver(adriver);
+    if (adriver) {
+        delete_fluid_audio_driver(adriver);
+        adriver = NULL;
+    }
+    if (synth) {
+        delete_fluid_synth(synth);
+        synth = NULL;
+    }
+    if (settings) {
+        delete_fluid_settings(settings);
+        settings = NULL;
+    }
 }
 
 void
@@ -492,7 +490,7 @@ style_player_play () {
             fill_queue = 0;
             set_central_style_section (0);
             set_central_measure (0);
-            synthesizer_halt_notes ();
+            style_player_halt_continuous_notes ();
         }
     }
     set_central_clock (0);

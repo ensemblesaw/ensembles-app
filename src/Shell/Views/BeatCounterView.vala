@@ -29,11 +29,14 @@ namespace Ensembles.Shell {
         Gtk.Image beat_counter_active_2;
         Gtk.Image beat_counter_active_3;
 
-        Gtk.Button tap_button;
+        Gtk.Button tempo_button;
 
         int tempo = 10;
+        int beats_per_bar = 4;
 
         bool halt_ack = false;
+
+        public signal void open_tempo_editor ();
 
 
         public BeatCounterView () {
@@ -50,14 +53,17 @@ namespace Ensembles.Shell {
 
 
 
-            tap_button = new Gtk.Button.with_label ("Tempo");
-            tap_button.margin = 4;
-            tap_button.margin_start = 8;
+            tempo_button = new Gtk.Button.with_label ("Tempo");
+            tempo_button.margin = 4;
+            tempo_button.margin_start = 8;
+            tempo_button.clicked.connect (() => {
+                open_tempo_editor ();
+            });
             main_grid.attach (beat_counter_0, 0, 0, 1, 1);
             main_grid.attach (beat_counter_1, 1, 0, 1, 1);
             main_grid.attach (beat_counter_2, 2, 0, 1, 1);
             main_grid.attach (beat_counter_3, 3, 0, 1, 1);
-            main_grid.attach (tap_button, 4, 0, 1, 1);
+            main_grid.attach (tempo_button, 4, 0, 1, 1);
 
 
 
@@ -95,27 +101,222 @@ namespace Ensembles.Shell {
             }
         }
 
+        public void change_beats_per_bar (int beats) {
+            if (beats > 0) {
+                this.beats_per_bar = beats;
+            }
+        }
+
         public void sync () {
-            pulse_0 ();
-            if (halt_ack) {
-                halt_ack = false;
-            } else {
-                Timeout.add ((uint)(60000 / tempo), () => {
-                    if (halt_ack) {
-                        halt_ack = false;
-                    } else {
-                        pulse_1 ();
-                        Timeout.add ((uint)(60000 / tempo), () => {
-                            pulse_2 ();
+            switch (beats_per_bar) {
+                case 1:
+                pulse_0 ();
+                break;
+                case 2:
+                pulse_0 ();
+                if (halt_ack) {
+                    halt_ack = false;
+                } else {
+                    Timeout.add ((uint)(60000 / tempo), () => {
+                        if (halt_ack) {
+                            halt_ack = false;
+                        } else {
+                            pulse_1 ();
+                        }
+                        return false;
+                    });
+                }
+                break;
+                case 3:
+                pulse_0 ();
+                if (halt_ack) {
+                    halt_ack = false;
+                } else {
+                    Timeout.add ((uint)(60000 / tempo), () => {
+                        if (halt_ack) {
+                            halt_ack = false;
+                        } else {
+                            pulse_1 ();
                             Timeout.add ((uint)(60000 / tempo), () => {
-                                pulse_3 ();
+                                pulse_2 ();
                                 return false;
                             });
-                            return false;
-                        });
-                    }
-                    return false;
-                });
+                        }
+                        return false;
+                    });
+                }
+                break;
+                case 4:
+                pulse_0 ();
+                if (halt_ack) {
+                    halt_ack = false;
+                } else {
+                    Timeout.add ((uint)(60000 / tempo), () => {
+                        if (halt_ack) {
+                            halt_ack = false;
+                        } else {
+                            pulse_1 ();
+                            Timeout.add ((uint)(60000 / tempo), () => {
+                                pulse_2 ();
+                                Timeout.add ((uint)(60000 / tempo), () => {
+                                    pulse_3 ();
+                                    return false;
+                                });
+                                return false;
+                            });
+                        }
+                        return false;
+                    });
+                }
+                break;
+                case 5:
+                pulse_0 ();
+                if (halt_ack) {
+                    halt_ack = false;
+                } else {
+                    Timeout.add ((uint)(60000 / tempo), () => {
+                        if (halt_ack) {
+                            halt_ack = false;
+                        } else {
+                            pulse_1 ();
+                            Timeout.add ((uint)(60000 / tempo), () => {
+                                pulse_2 ();
+                                Timeout.add ((uint)(60000 / tempo), () => {
+                                    pulse_3 ();
+                                    Timeout.add ((uint)(60000 / tempo), () => {
+                                        pulse_2 ();
+                                        return false;
+                                    });
+                                    return false;
+                                });
+                                return false;
+                            });
+                        }
+                        return false;
+                    });
+                }
+                break;
+                case 6:
+                pulse_0 ();
+                if (halt_ack) {
+                    halt_ack = false;
+                } else {
+                    Timeout.add ((uint)(60000 / tempo), () => {
+                        if (halt_ack) {
+                            halt_ack = false;
+                        } else {
+                            pulse_1 ();
+                            Timeout.add ((uint)(60000 / tempo), () => {
+                                pulse_2 ();
+                                Timeout.add ((uint)(60000 / tempo), () => {
+                                    pulse_3 ();
+                                    Timeout.add ((uint)(60000 / tempo), () => {
+                                        pulse_2 ();
+                                        Timeout.add ((uint)(60000 / tempo), () => {
+                                            pulse_3 ();
+                                            return false;
+                                        });
+                                        return false;
+                                    });
+                                    return false;
+                                });
+                                return false;
+                            });
+                        }
+                        return false;
+                    });
+                }
+                break;
+                case 7:
+                pulse_0 ();
+                if (halt_ack) {
+                    halt_ack = false;
+                } else {
+                    Timeout.add ((uint)(60000 / tempo), () => {
+                        if (halt_ack) {
+                            halt_ack = false;
+                        } else {
+                            pulse_1 ();
+                            Timeout.add ((uint)(60000 / tempo), () => {
+                                pulse_2 ();
+                                Timeout.add ((uint)(60000 / tempo), () => {
+                                    pulse_3 ();
+                                    Timeout.add ((uint)(60000 / tempo), () => {
+                                        pulse_1 ();
+                                        Timeout.add ((uint)(60000 / tempo), () => {
+                                            pulse_2 ();
+                                            Timeout.add ((uint)(60000 / tempo), () => {
+                                                pulse_3 ();
+                                                return false;
+                                            });
+                                            return false;
+                                        });
+                                        return false;
+                                    });
+                                    return false;
+                                });
+                                return false;
+                            });
+                        }
+                        return false;
+                    });
+                }
+                break;
+                case 12:
+                pulse_0 ();
+                if (halt_ack) {
+                    halt_ack = false;
+                } else {
+                    Timeout.add ((uint)(60000 / tempo), () => {
+                        if (halt_ack) {
+                            halt_ack = false;
+                        } else {
+                            pulse_1 ();
+                            Timeout.add ((uint)(60000 / tempo), () => {
+                                pulse_2 ();
+                                Timeout.add ((uint)(60000 / tempo), () => {
+                                    pulse_1 ();
+                                    Timeout.add ((uint)(60000 / tempo), () => {
+                                        pulse_2 ();
+                                        Timeout.add ((uint)(60000 / tempo), () => {
+                                            pulse_3 ();
+                                            Timeout.add ((uint)(60000 / tempo), () => {
+                                                pulse_1 ();
+                                                Timeout.add ((uint)(60000 / tempo), () => {
+                                                    pulse_2 ();
+                                                    Timeout.add ((uint)(60000 / tempo), () => {
+                                                        pulse_3 ();
+                                                        Timeout.add ((uint)(60000 / tempo), () => {
+                                                            pulse_1 ();
+                                                            Timeout.add ((uint)(60000 / tempo), () => {
+                                                                pulse_2 ();
+                                                                Timeout.add ((uint)(60000 / tempo), () => {
+                                                                    pulse_3 ();
+                                                                    return false;
+                                                                });
+                                                                return false;
+                                                            });
+                                                            return false;
+                                                        });
+                                                        return false;
+                                                    });
+                                                    return false;
+                                                });
+                                                return false;
+                                            });
+                                            return false;
+                                        });
+                                        return false;
+                                    });
+                                    return false;
+                                });
+                                return false;
+                            });
+                        }
+                        return false;
+                    });
+                }
+                break;
             }
         }
 

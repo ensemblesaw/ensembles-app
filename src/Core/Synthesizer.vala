@@ -24,7 +24,7 @@ namespace Ensembles.Core {
         }
 
         ~Synthesizer () {
-            synthesizer_destruct ();
+           synthesizer_destruct ();
         }
 
         public signal void detected_chord (int chord_main, int type);
@@ -115,6 +115,10 @@ namespace Ensembles.Core {
                 synthesizer_octave_shifted = 0;
             }
         }
+
+        public static float get_fluidsynth_version () {
+            return synthesizer_get_version ();
+        }
     }
 }
 
@@ -138,6 +142,8 @@ extern void set_gain_value (int channel, int value);
 extern int get_mod_buffer_value (int modulator, int channel);
 extern void set_mod_buffer_value (int modulator, int channel, int value);
 extern int synthesizer_get_velocity_levels (int synth_index, int channel);
+
+extern float synthesizer_get_version ();
 
 extern int synthesizer_transpose;
 extern int synthesizer_transpose_enable;

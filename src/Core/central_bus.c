@@ -116,6 +116,13 @@ int get_central_loaded_tempo () {
 void set_central_loaded_tempo (int value) {
     central_loaded_tempo = value;
 }
+int central_beats_per_bar;
+int get_central_beats_per_bar () {
+    return central_beats_per_bar;
+}
+void set_central_beats_per_bar (int value) {
+    central_beats_per_bar = value;
+}
 
 
 // Style parameters

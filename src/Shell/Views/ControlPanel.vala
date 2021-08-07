@@ -58,21 +58,26 @@ namespace Ensembles.Shell {
             width_request = 340;
 
             accomp_toggle = new ToggleSwitch ("Accompaniment");
+            accomp_toggle.sensitive = false;
             layer_toggle = new ToggleSwitch ("Layer");
+            layer_toggle.sensitive = false;
             split_toggle = new ToggleSwitch ("Split");
+            split_toggle.sensitive = false;
             metronome_toggle = new ToggleSwitch ("Metronome");
+            metronome_toggle.sensitive = false;
 
             transpose_toggle = new ToggleSwitch ("Transpose");
+            transpose_toggle.sensitive = false;
             octave_toggle = new ToggleSwitch ("Octave");
+            octave_toggle.sensitive = false;
             arpeggiator_toggle = new ToggleSwitch ("Arpeggiator");
+            arpeggiator_toggle.sensitive = false;
             harmonizer_toggle = new ToggleSwitch ("Harmonizer");
+            harmonizer_toggle.sensitive = false;
             reverb_toggle = new ToggleSwitch ("Reverb");
-            reverb_toggle.set_active (true);
+            reverb_toggle.sensitive = false;
             chorus_toggle = new ToggleSwitch ("Chorus");
-            chorus_toggle.set_active (true);
-
-
-
+            chorus_toggle.sensitive = false;
 
             transpose_spin_button = new Gtk.SpinButton.with_range (-12, 12, 1);
             transpose_spin_button.set_value (0);
@@ -84,14 +89,8 @@ namespace Ensembles.Shell {
             harmonizer_spin_button.set_value (1);
             reverb_spin_button = new Gtk.SpinButton.with_range (0, 10, 1);
             reverb_spin_button.set_value (5);
-            reverb_spin_button.value_changed.connect (() => {
-                reverb_change ((int)(reverb_spin_button.get_value ()));
-            });
             chorus_spin_button = new Gtk.SpinButton.with_range (0, 10, 1);
             chorus_spin_button.set_value (1);
-            chorus_spin_button.value_changed.connect (() => {
-                chorus_change ((int)(chorus_spin_button.get_value ()));
-            });
 
             main_dial = new Dial ();
             attach (main_dial, 0, 0, 2, 4);
@@ -123,12 +122,15 @@ namespace Ensembles.Shell {
         public void make_events () {
             accomp_toggle.toggled.connect ((active) => {
                 accomp_change (active);
+                EnsemblesApp.settings.set_boolean ("accomp-on", active);
                 update_split ();
             });
             layer_toggle.toggled.connect ((active) => {
+                EnsemblesApp.settings.set_boolean ("layer-on", active);
                 Ensembles.Core.CentralBus.set_layer_on (active);
             });
             split_toggle.toggled.connect ((active) => {
+                EnsemblesApp.settings.set_boolean ("split-on", active);
                 Ensembles.Core.CentralBus.set_split_on (active);
                 update_split ();
             });
@@ -143,16 +145,137 @@ namespace Ensembles.Shell {
             });
             transpose_toggle.toggled.connect ((active) => {
                 Ensembles.Core.Synthesizer.set_transpose_active (active);
-            });
-            transpose_spin_button.value_changed.connect (() => {
-                Ensembles.Core.Synthesizer.set_transpose ((int)(transpose_spin_button.value));
+                EnsemblesApp.settings.set_boolean ("transpose-on", active);
             });
             octave_toggle.toggled.connect ((active) => {
                 Ensembles.Core.Synthesizer.set_octave_shifted (active);
+                EnsemblesApp.settings.set_boolean ("octave-shift-on", active);
             });
-            octave_spin_button.value_changed.connect (() => {
-                Ensembles.Core.Synthesizer.set_octave ((int)(octave_spin_button.value));
+            reverb_toggle.toggled.connect ((active) => {
+                EnsemblesApp.settings.set_boolean ("reverb-on", active);
             });
+            chorus_toggle.toggled.connect ((active) => {
+                EnsemblesApp.settings.set_boolean ("chorus-on", active);
+            });
+            arpeggiator_toggle.toggled.connect ((active) => {
+                EnsemblesApp.settings.set_boolean ("arpeggiator-on", active);
+            });
+            harmonizer_toggle.toggled.connect ((active) => {
+                EnsemblesApp.settings.set_boolean ("harmonizer-on", active);
+            });
+        }
+
+        private void transpose_spin_handler () {
+            int level = (int)(transpose_spin_button.value);
+            EnsemblesApp.settings.set_int ("transpose-level", level);
+            Ensembles.Core.Synthesizer.set_transpose (level);
+        }
+
+        private void octave_spin_handler () {
+            int level = (int)(octave_spin_button.value);
+            EnsemblesApp.settings.set_int ("octave-shift-level", level);
+            Ensembles.Core.Synthesizer.set_octave (level);
+        }
+
+        private void chorus_spin_handler () {
+            int level = (int)(chorus_spin_button.get_value ());
+            EnsemblesApp.settings.set_int ("chorus-level", level);
+            chorus_change (level);
+        }
+
+        private void reverb_spin_handler () {
+            int level = (int)(reverb_spin_button.get_value ());
+            EnsemblesApp.settings.set_int ("reverb-level", level);
+            reverb_change (level);
+        }
+
+        private void arpeggiator_spin_handler () {
+            int type = (int)(arpeggiator_spin_button.get_value ());
+            EnsemblesApp.settings.set_int ("arpeggiator-type", type);
+        }
+
+        private void harmonizer_spin_handler () {
+            int type = (int)(harmonizer_spin_button.get_value ());
+            EnsemblesApp.settings.set_int ("harmonizer-type", type);
+        }
+
+        private void connect_events () {
+            transpose_spin_button.value_changed.connect (transpose_spin_handler);
+            octave_spin_button.value_changed.connect (octave_spin_handler);
+            reverb_spin_button.value_changed.connect (reverb_spin_handler);
+            chorus_spin_button.value_changed.connect (chorus_spin_handler);
+            arpeggiator_spin_button.value_changed.connect (arpeggiator_spin_handler);
+            harmonizer_spin_button.value_changed.connect (harmonizer_spin_handler);
+        }
+
+        private void disconnect_events () {
+            transpose_spin_button.value_changed.disconnect (transpose_spin_handler);
+            octave_spin_button.value_changed.disconnect (octave_spin_handler);
+            reverb_spin_button.value_changed.disconnect (reverb_spin_handler);
+            chorus_spin_button.value_changed.disconnect (chorus_spin_handler);
+            arpeggiator_spin_button.value_changed.disconnect (arpeggiator_spin_handler);
+            harmonizer_spin_button.value_changed.disconnect (harmonizer_spin_handler);
+        }
+
+        public void load_settings () {
+            disconnect_events ();
+
+            bool active = EnsemblesApp.settings.get_boolean ("accomp-on");
+            accomp_change (active);
+            accomp_toggle.set_active (active);
+            active = EnsemblesApp.settings.get_boolean ("layer-on");
+            Ensembles.Core.CentralBus.set_layer_on (active);
+            layer_toggle.set_active (active);
+            active = EnsemblesApp.settings.get_boolean ("split-on");
+            Ensembles.Core.CentralBus.set_split_on (active);
+            split_toggle.set_active (active);
+            active = EnsemblesApp.settings.get_boolean ("transpose-on");
+            transpose_toggle.set_active (active);
+            Ensembles.Core.Synthesizer.set_transpose_active (active);
+            active = EnsemblesApp.settings.get_boolean ("octave-shift-on");
+            octave_toggle.set_active (active);
+            EnsemblesApp.settings.set_boolean ("octave-shift-on", active);
+            active = EnsemblesApp.settings.get_boolean ("arpeggiator-on");
+            arpeggiator_toggle.set_active (active);
+            active = EnsemblesApp.settings.get_boolean ("harmonizer-on");
+            harmonizer_toggle.set_active (active);
+            active = EnsemblesApp.settings.get_boolean ("reverb-on");
+            reverb_toggle.set_active (active);
+            active = EnsemblesApp.settings.get_boolean ("chorus-on");
+            chorus_toggle.set_active (active);
+
+            int level = EnsemblesApp.settings.get_int ("reverb-level");
+            reverb_change (level);
+            reverb_spin_button.set_value ((double) level);
+            level = EnsemblesApp.settings.get_int ("chorus-level");
+            chorus_change (level);
+            chorus_spin_button.set_value ((double) level);
+            level = EnsemblesApp.settings.get_int ("transpose-level");
+            Ensembles.Core.Synthesizer.set_transpose (level);
+            transpose_spin_button.set_value ((double) level);
+            level = EnsemblesApp.settings.get_int ("octave-shift-level");
+            octave_spin_button.set_value ((double) level);
+            Ensembles.Core.Synthesizer.set_octave (level);
+            level = EnsemblesApp.settings.get_int ("arpeggiator-type");
+            arpeggiator_spin_button.set_value ((double) level);
+            level = EnsemblesApp.settings.get_int ("harmonizer-type");
+            harmonizer_spin_button.set_value ((double) level);
+
+            update_split ();
+
+            connect_events ();
+
+            accomp_toggle.sensitive = true;
+            layer_toggle.sensitive = true;
+            split_toggle.sensitive = true;
+            metronome_toggle.sensitive = true;
+
+            transpose_toggle.sensitive = true;
+            octave_toggle.sensitive = true;
+            arpeggiator_toggle.sensitive = true;
+            harmonizer_toggle.sensitive = true;
+            reverb_toggle.sensitive = true;
+            chorus_toggle.sensitive = true;
         }
     }
 }

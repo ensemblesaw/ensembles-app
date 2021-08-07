@@ -21,14 +21,13 @@ namespace Ensembles.Shell {
     public class StyleMenu : WheelScrollableWidget {
         Gtk.Button close_button;
         Gtk.ListBox main_list;
-        string[] style_path;
-        string[] style_genre;
-        string[] style_name;
-        int[] style_tempo;
-        Gtk.ListBoxRow[] rows;
+
+        StyleItem[] style_rows;
+
+        int _selected_index;
 
         public signal void close_menu ();
-        public signal void change_style (string path, string name, int tempo);
+        public signal void change_style (Ensembles.Core.Style accomp_style);
         public StyleMenu () {
             this.get_style_context ().add_class ("menu-background");
 
@@ -62,45 +61,57 @@ namespace Ensembles.Shell {
             main_list.set_selection_mode (Gtk.SelectionMode.BROWSE);
             main_list.row_activated.connect ((row) => {
                 int index = row.get_index ();
-
-                change_style (style_path[index], style_name [index], style_tempo[index]);
+                _selected_index = index;
+                change_style (style_rows[index].accomp_style);
+                EnsemblesApp.settings.set_int ("style-index", index);
             });
         }
 
-        public void populate_style_menu (string[] paths, string[] names, string[] genre, int[] tempo) {
-            style_path = paths;
-            style_name = names;
-            style_genre = genre;
-            style_tempo = tempo;
-            rows = new Gtk.ListBoxRow [style_path.length];
-
-            string temp_genre = "";
-            for (int i = 0; i < style_path.length; i++) {
-                var style_label = new Gtk.Label (style_name[i]);
-                style_label.get_style_context ().add_class ("menu-item-label");
-                style_label.halign = Gtk.Align.START;
-                style_label.hexpand = true;
-                var tempo_label = new Gtk.Label ("♩ = " + style_tempo[i].to_string ());
-                tempo_label.get_style_context ().add_class ("menu-item-description");
-                tempo_label.halign = Gtk.Align.END;
-                var genre_label = new Gtk.Label ("");
-                var style_grid = new Gtk.Grid ();
-                if (temp_genre != style_genre[i]) {
-                    temp_genre = style_genre[i];
-                    genre_label.set_text (temp_genre);
-                    genre_label.get_style_context ().add_class ("menu-item-annotation");
+        public void populate_style_menu (Ensembles.Core.Style[] accomp_style) {
+            style_rows = new StyleItem [accomp_style.length];
+            string temp_category = "";
+            for (int i = 0; i < accomp_style.length; i++) {
+                bool show_category = false;
+                if (temp_category != accomp_style[i].genre) {
+                    temp_category = accomp_style[i].genre;
+                    show_category = true;
                 }
-                style_grid.attach (style_label, 0, 0, 1, 2);
-                style_grid.attach (genre_label, 1, 0, 1, 1);
-                style_grid.attach (tempo_label, 1, 1, 1, 1);
-                var row = new Gtk.ListBoxRow ();
-                row.add (style_grid);
-                rows[i] = row;
+                var row = new StyleItem (accomp_style[i], show_category);
+                style_rows[i] = row;
                 main_list.insert (row, -1);
             }
-            main_list.select_row (rows[0]);
             main_list.show_all ();
             Ensembles.Core.CentralBus.set_styles_ready (true);
+        }
+
+        public void scroll_to_selected_row () {
+            style_rows[_selected_index].grab_focus ();
+            if (main_list != null) {
+                var adj = main_list.get_adjustment ();
+                if (adj != null) {
+                    int height, _htemp;
+                    style_rows[_selected_index].get_preferred_height (out _htemp, out height);
+                    Timeout.add (200, () => {
+                        adj.set_value (_selected_index * height);
+                        return false;
+                    });
+                }
+            }
+        }
+
+        public void quick_select_row (int index, int tempo) {
+            main_list.select_row (style_rows[index]);
+            _selected_index = index;
+            Core.Style selected_style = style_rows[index].accomp_style;
+            if (tempo > 0) {
+                selected_style.tempo = tempo;
+            }
+            change_style (selected_style);
+            scroll_to_selected_row ();
+        }
+
+        public void load_settings (int? tempo = 0) {
+            quick_select_row (EnsemblesApp.settings.get_int ("style-index"), tempo);
         }
     }
 }

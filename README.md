@@ -39,8 +39,8 @@ TBD
 
 ## Install from source
 You can install Ensembles by compiling it from source, here's a list of required dependencies:
- - `io.elementary.Platform` (flatpak)
- - `io.elementary.Sdk` (flatpak)
+ - `io.elementary.Platform>=6` (flatpak)
+ - `io.elementary.Sdk>=6` (flatpak)
  - `elementary-sdk`
  - `gtk+-3.0>=3.18`
  - `granite>=5.3.0`
@@ -96,4 +96,6 @@ Ensembles supports creation and distribution of external soundfonts (SF2), style
 <br>
 <sup>Certain components like soundfonts and styles have their own Licensing</sup>
 <br>
-<sup>© Copyright 2021-2022 Subhadeep Jasu</sup>
+<sup>SoundFont(R) is a registered trademark of E-mu Systems, Inc.</sup>
+<br>
+<sup>Ensembles © Copyright 2021-2022 Subhadeep Jasu</sup>

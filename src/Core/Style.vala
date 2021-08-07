@@ -17,15 +17,26 @@
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
  */
 
-
-#ifndef STYLE_ANALYSER_H
-#define STYLE_ANALYSER_H
-
-#include <math.h>
-
-/** This function is audit styles and fill the style specification buffers
- * for use with style player and analysis
- */
-int style_analyser_analyze (char* mid_file);
-
-#endif /* STYLE_ANALYSER_H */
+ namespace Ensembles.Core {
+    public class Style : Object {
+        public string path;
+        public string name;
+        public string genre;
+        public int tempo;
+        public int timesignature_n;
+        public int timesignature_d;
+        public Style (string path,
+                      string name,
+                      string genre,
+                      int tempo,
+                      int timesignature_n,
+                      int timesignature_d) {
+            this.path = path;
+            this.name = name;
+            this.genre = genre;
+            this.tempo = tempo;
+            this.timesignature_n = timesignature_n;
+            this.timesignature_d = timesignature_d;
+        }
+    }
+}

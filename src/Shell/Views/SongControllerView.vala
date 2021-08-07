@@ -46,6 +46,10 @@ namespace Ensembles.Shell {
             rewind_button.sensitive = false;
             repeat_button.sensitive = false;
 
+            play_button.opacity = 0;
+            rewind_button.opacity = 0;
+            repeat_button.opacity = 0;
+
             attach (rewind_button, 0, 0, 1, 1);
             attach (play_button, 1, 0, 1, 1);
             attach (repeat_button, 2, 0, 1, 1);
@@ -115,6 +119,10 @@ namespace Ensembles.Shell {
             play_button.sensitive = true;
             rewind_button.sensitive = true;
             repeat_button.sensitive = true;
+
+            play_button.opacity = 1;
+            rewind_button.opacity = 1;
+            repeat_button.opacity = 1;
         }
     }
 }

@@ -31,7 +31,7 @@ namespace Ensembles.Core {
             sample_element.set ("volume", 0.9);
         }
 
-        ~SamplePlayer () {
+        public void delete_file () {
             if (recorded_audio) {
                 try {
                     File.new_for_path (file_path).delete ();

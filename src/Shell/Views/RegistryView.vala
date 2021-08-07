@@ -22,6 +22,11 @@ namespace Ensembles.Shell {
         Gtk.SpinButton bank_select;
         Gtk.Button[] registry_buttons;
         Gtk.Button memory_button;
+
+        Core.Registry[,] registry_memory;
+
+        bool assignable = false;
+        public signal void notify_recall (int tempo);
         public RegistryView () {
             row_homogeneous = true;
             vexpand = true;
@@ -55,6 +60,241 @@ namespace Ensembles.Shell {
 
             this.show_all ();
 
+            load_registry_snapshot ();
+
+            make_events ();
+        }
+
+        ~RegistryView () {
+            save_registry_snapshot ();
+        }
+
+        void make_events () {
+            memory_button.clicked.connect (() => {
+                assignable = !assignable;
+                make_buttons_pulse (assignable);
+            });
+            registry_buttons[0].clicked.connect (() => {
+                if (assignable) {
+                    registry_memorize (bank_select.get_value_as_int () - 1, 0);
+                    assignable = false;
+                } else {
+                    registry_recall (bank_select.get_value_as_int () - 1, 0);
+                }
+            });
+            registry_buttons[1].clicked.connect (() => {
+                if (assignable) {
+                    registry_memorize (bank_select.get_value_as_int () - 1, 1);
+                    assignable = false;
+                } else {
+                    registry_recall (bank_select.get_value_as_int () - 1, 1);
+                }
+            });
+            registry_buttons[2].clicked.connect (() => {
+                if (assignable) {
+                    registry_memorize (bank_select.get_value_as_int () - 1, 2);
+                    assignable = false;
+                } else {
+                    registry_recall (bank_select.get_value_as_int () - 1, 2);
+                }
+            });
+            registry_buttons[3].clicked.connect (() => {
+                if (assignable) {
+                    registry_memorize (bank_select.get_value_as_int () - 1, 3);
+                    assignable = false;
+                } else {
+                    registry_recall (bank_select.get_value_as_int () - 1, 3);
+                }
+            });
+            registry_buttons[4].clicked.connect (() => {
+                if (assignable) {
+                    registry_memorize (bank_select.get_value_as_int () - 1, 4);
+                    assignable = false;
+                } else {
+                    registry_recall (bank_select.get_value_as_int () - 1, 4);
+                }
+            });
+            registry_buttons[5].clicked.connect (() => {
+                if (assignable) {
+                    registry_memorize (bank_select.get_value_as_int () - 1, 5);
+                    assignable = false;
+                } else {
+                    registry_recall (bank_select.get_value_as_int () - 1, 5);
+                }
+            });
+            registry_buttons[6].clicked.connect (() => {
+                if (assignable) {
+                    registry_memorize (bank_select.get_value_as_int () - 1, 6);
+                    assignable = false;
+                } else {
+                    registry_recall (bank_select.get_value_as_int () - 1, 6);
+                }
+            });
+            registry_buttons[7].clicked.connect (() => {
+                if (assignable) {
+                    registry_memorize (bank_select.get_value_as_int () - 1, 7);
+                    assignable = false;
+                } else {
+                    registry_recall (bank_select.get_value_as_int () - 1, 7);
+                }
+            });
+            registry_buttons[8].clicked.connect (() => {
+                if (assignable) {
+                    registry_memorize (bank_select.get_value_as_int () - 1, 8);
+                    assignable = false;
+                } else {
+                    registry_recall (bank_select.get_value_as_int () - 1, 8);
+                }
+            });
+            registry_buttons[9].clicked.connect (() => {
+                if (assignable) {
+                    registry_memorize (bank_select.get_value_as_int () - 1, 9);
+                    assignable = false;
+                } else {
+                    registry_recall (bank_select.get_value_as_int () - 1, 9);
+                }
+            });
+        }
+
+        void make_buttons_pulse (bool pulse) {
+            for (int i = 0; i < 10; i++) {
+                if (pulse) {
+                    registry_buttons[i].get_style_context ().add_class ("sampler-pad-assignable");
+                } else {
+                    registry_buttons[i].get_style_context ().remove_class ("sampler-pad-assignable");
+                }
+            }
+        }
+
+        void registry_memorize (int bank, int index) {
+            if (registry_memory == null) {
+                registry_memory = new Core.Registry [16, 10];
+            }
+            registry_memory[bank, index] = new Core.Registry (
+                EnsemblesApp.settings.get_int ("voice-r1-index"),
+                EnsemblesApp.settings.get_int ("voice-r2-index"),
+                EnsemblesApp.settings.get_int ("voice-l-index"),
+                EnsemblesApp.settings.get_int ("style-index"),
+                Core.CentralBus.get_tempo (),
+                EnsemblesApp.settings.get_int ("transpose-level"),
+                EnsemblesApp.settings.get_boolean ("transpose-on"),
+                EnsemblesApp.settings.get_int ("octave-shift-level"),
+                EnsemblesApp.settings.get_boolean ("octave-shift-on"),
+                EnsemblesApp.settings.get_int ("reverb-level"),
+                EnsemblesApp.settings.get_boolean ("reverb-on"),
+                EnsemblesApp.settings.get_int ("chorus-level"),
+                EnsemblesApp.settings.get_boolean ("chorus-on"),
+                EnsemblesApp.settings.get_boolean ("accomp-on"),
+                EnsemblesApp.settings.get_boolean ("layer-on"),
+                EnsemblesApp.settings.get_boolean ("split-on"),
+                EnsemblesApp.settings.get_int ("harmonizer-type"),
+                EnsemblesApp.settings.get_boolean ("harmonizer-on"),
+                EnsemblesApp.settings.get_int ("arpeggiator-type"),
+                EnsemblesApp.settings.get_boolean ("arpeggiator-on")
+            );
+            make_buttons_pulse (false);
+        }
+
+        void registry_recall (int bank, int index) {
+            if (registry_memory != null && registry_memory[bank, index] != null) {
+                EnsemblesApp.settings.set_int ("voice-r1-index", registry_memory[bank, index].voice_r1);
+                EnsemblesApp.settings.set_int ("voice-r2-index", registry_memory[bank, index].voice_r2);
+                EnsemblesApp.settings.set_int ("voice-l-index", registry_memory[bank, index].voice_l);
+                EnsemblesApp.settings.set_int ("style-index", registry_memory[bank, index].style);
+                EnsemblesApp.settings.set_int ("transpose-level", registry_memory[bank, index].transpose);
+                EnsemblesApp.settings.set_boolean ("transpose-on", registry_memory[bank, index].transpose_on);
+                EnsemblesApp.settings.set_int ("octave-shift-level", registry_memory[bank, index].octave);
+                EnsemblesApp.settings.set_boolean ("octave-shift-on", registry_memory[bank, index].octave_shift_on);
+                EnsemblesApp.settings.set_int ("reverb-level", registry_memory[bank, index].reverb_level);
+                EnsemblesApp.settings.set_boolean ("reverb-on", registry_memory[bank, index].reverb_on);
+                EnsemblesApp.settings.set_int ("chorus-level", registry_memory[bank, index].chorus_level);
+                EnsemblesApp.settings.set_boolean ("chorus-on", registry_memory[bank, index].chorus_on);
+                EnsemblesApp.settings.set_boolean ("accomp-on", registry_memory[bank, index].accomp_on);
+                EnsemblesApp.settings.set_boolean ("layer-on", registry_memory[bank, index].layer_on);
+                EnsemblesApp.settings.set_boolean ("split-on", registry_memory[bank, index].split_on);
+                EnsemblesApp.settings.set_int ("harmonizer-type", registry_memory[bank, index].harmonizer_type);
+                EnsemblesApp.settings.set_boolean ("harmonizer-on", registry_memory[bank, index].harmonizer_on);
+                EnsemblesApp.settings.set_int ("arpeggiator-type", registry_memory[bank, index].arpeggiator_type);
+                EnsemblesApp.settings.set_boolean ("arpeggiator-on", registry_memory[bank, index].arpeggiator_on);
+
+                notify_recall (registry_memory[bank, index].tempo);
+            }
+            make_buttons_pulse (false);
+        }
+
+        private void save_registry_snapshot () {
+            if (registry_memory != null) {
+                string registry_csv = "";
+                for (int i = 0; i < 16; i++) {
+                    for (int j = 0; j < 10; j++) {
+                        string delimited_str = "";
+                        if (registry_memory[i, j] != null) {
+                            delimited_str = registry_memory[i, j].voice_r1.to_string () + "_";
+                            delimited_str += registry_memory[i, j].voice_r2.to_string () + "_";
+                            delimited_str += registry_memory[i, j].voice_l.to_string () + "_";
+                            delimited_str += registry_memory[i, j].style.to_string () + "_";
+                            delimited_str += registry_memory[i, j].tempo.to_string () + "_";
+                            delimited_str += registry_memory[i, j].transpose.to_string () + "_";
+                            delimited_str += (registry_memory[i, j].transpose_on ? "1" : "0") + "_";
+                            delimited_str += registry_memory[i, j].octave.to_string () + "_";
+                            delimited_str += (registry_memory[i, j].octave_shift_on ? "1" : "0") + "_";
+                            delimited_str += registry_memory[i, j].reverb_level.to_string () + "_";
+                            delimited_str += (registry_memory[i, j].reverb_on ? "1" : "0") + "_";
+                            delimited_str += registry_memory[i, j].chorus_level.to_string () + "_";
+                            delimited_str += (registry_memory[i, j].chorus_on ? "1" : "0") + "_";
+                            delimited_str += (registry_memory[i, j].accomp_on ? "1" : "0") + "_";
+                            delimited_str += (registry_memory[i, j].layer_on ? "1" : "0") + "_";
+                            delimited_str += (registry_memory[i, j].split_on ? "1" : "0") + "_";
+                            delimited_str += registry_memory[i, j].harmonizer_type.to_string () + "_";
+                            delimited_str += (registry_memory[i, j].harmonizer_on ? "1" : "0") + "_";
+                            delimited_str += registry_memory[i, j].arpeggiator_type.to_string () + "_";
+                            delimited_str += (registry_memory[i, j].arpeggiator_on ? "1" : "0") + "_";
+                        }
+
+                        registry_csv += delimited_str + ",";
+                    }
+                    registry_csv += ";";
+                }
+                EnsemblesApp.settings.set_string ("registry-snapshot", registry_csv);
+            }
+        }
+
+        private void load_registry_snapshot () {
+            if (registry_memory == null) {
+                registry_memory = new Core.Registry [16, 10];
+            }
+            string csv = EnsemblesApp.settings.get_string ("registry-snapshot");
+            string[] banks = csv.split (";");
+            for (int i = 0; i < banks.length - 1; i++) {
+                string[] registries = banks[i].split (",");
+                for (int j = 0; j < registries.length - 1; j++) {
+                    if (registries[j] != "") {
+                        string[] settings = registries[j].split ("_");
+                        registry_memory[i, j] = new Core.Registry (
+                            int.parse (settings[0]),
+                            int.parse (settings[1]),
+                            int.parse (settings[2]),
+                            int.parse (settings[3]),
+                            int.parse (settings[4]),
+                            int.parse (settings[5]),
+                            settings[6] == "1",
+                            int.parse (settings[7]),
+                            settings[8] == "1",
+                            int.parse (settings[9]),
+                            settings[10] == "1",
+                            int.parse (settings[11]),
+                            settings[12] == "1",
+                            settings[13] == "1",
+                            settings[14] == "1",
+                            settings[15] == "1",
+                            int.parse (settings[16]),
+                            settings[17] == "1",
+                            int.parse (settings[18]),
+                            settings[19] == "1"
+                        );
+                    }
+                }
+            }
         }
     }
 }

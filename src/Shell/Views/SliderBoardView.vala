@@ -771,6 +771,9 @@ namespace Ensembles.Shell {
                     }
                     float value = Ensembles.Core.CentralBus.get_lfo ();
                     Idle.add (() => {
+                        if (!monitoring_lfo) {
+                            return false;
+                        }
                         value = value * 0.8f + 0.1f;
                         master_knob.set_value (value);
                         if (master_knob_assigns != null) {

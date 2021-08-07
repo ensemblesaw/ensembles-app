@@ -26,6 +26,9 @@
 int time_stamps[14];
 int time_stamp_index;
 
+int time_signature_n;
+int time_signature_d;
+
 // long from_seq(char *in)
 // {
 // 	long r = 0;
@@ -102,6 +105,14 @@ style_analyser (char* style) {
                 free(string);
                 //string = NULL;
             }
+            if (*(buffer + i + 1) == 0x58) {
+                if (*(buffer + i + 2) == 0x04) {
+                    time_signature_n = *(buffer + i + 3);
+                    set_central_beats_per_bar (time_signature_n);
+                    time_signature_d = pow (2, *(buffer + i + 4));
+                    printf ("Time Signature = %d/%d\n", time_signature_n, time_signature_d);
+                }
+            }
             // if (*(buffer + i + 1) == 0x51) {
             //     if (*(buffer + i + 2) == 0x03) {
             //         char tempo_bytes[3];
@@ -120,5 +131,7 @@ style_analyser (char* style) {
 int
 style_analyser_analyze (char* mid_file) {
     time_stamp_index = 0;
+    time_signature_n = 4;
+    time_signature_n = 4;
     return style_analyser (mid_file);
 }

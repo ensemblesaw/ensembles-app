@@ -27,12 +27,34 @@ namespace Ensembles.Core {
             }
         }
         ~StylePlayer () {
-            style_player_destruct ();
+           style_player_destruct ();
         }
 
-        public void add_style_file (string style_file) {
+        string file_path;
+        int tempo;
+
+        public void add_style_file (string style_file, int tempo) {
             debug ("loading style %s\n", style_file);
-            style_player_add_style_file (style_file, 0);
+            if (file_path != style_file || tempo != this.tempo) {
+                file_path = style_file;
+                this.tempo = tempo;
+                if (Core.CentralBus.get_style_looping_on ()) {
+                    sync_stop ();
+                    Timeout.add (10, () => {
+                        if (!Core.CentralBus.get_style_looping_on ()) {
+                            int previous_tempo = Core.CentralBus.get_tempo ();
+                            style_player_add_style_file (style_file, previous_tempo);
+                            Idle.add (() => {
+                                play_style ();
+                                return false;
+                            });
+                        }
+                        return Core.CentralBus.get_style_looping_on ();
+                    });
+                } else {
+                    style_player_add_style_file (style_file, tempo);
+                }
+            }
         }
 
         public void reload_style () {
@@ -97,7 +119,7 @@ namespace Ensembles.Core {
 }
 
 extern void style_player_init ();
-extern void style_player_add_style_file (string mid_file, int reload);
+extern void style_player_add_style_file (string mid_file, int custom_tempo);
 extern void style_player_reload_style ();
 extern void style_player_destruct ();
 extern void style_player_play ();

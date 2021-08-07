@@ -26,6 +26,7 @@ namespace Ensembles.Shell {
         Hdy.Leaflet main_display_leaflet;
 
         HomeScreen home_screen;
+        TempoScreen tempo_screen;
         StyleMenu style_menu;
         VoiceMenu voice_menu_l;
         VoiceMenu voice_menu_r1;
@@ -35,11 +36,13 @@ namespace Ensembles.Shell {
 
         public ChannelModulatorScreen channel_mod_screen;
 
-        public signal void change_style (string path, string name, int tempo);
+        public signal void change_style (Ensembles.Core.Style accomp_style);
         public signal void change_voice (Ensembles.Core.Voice voice, int channel);
+        public signal void change_tempo (int tempo);
 
         public MainDisplayCasing () {
             home_screen = new HomeScreen ();
+            tempo_screen = new TempoScreen ();
             style_menu = new StyleMenu ();
             voice_menu_l = new VoiceMenu (2);
             voice_menu_r1 = new VoiceMenu (0);
@@ -48,6 +51,7 @@ namespace Ensembles.Shell {
             lfo_editor = new LFOEditScreen ();
 
             main_stack = new Gtk.Stack ();
+            main_stack.add_named (tempo_screen, "Tempo Screen");
             main_stack.add_named (style_menu, "Styles Menu");
             main_stack.add_named (voice_menu_l, "Voice L Menu");
             main_stack.add_named (voice_menu_r1, "Voice R1 Menu");
@@ -132,9 +136,9 @@ namespace Ensembles.Shell {
             channel_mod_screen.close_screen.connect (() => {
                 main_display_leaflet.set_visible_child (home_screen);
             });
-            style_menu.change_style.connect ((style_path, style_name, style_tempo) => {
-                home_screen.set_style_name (style_name);
-                this.change_style (style_path, style_name, style_tempo);
+            style_menu.change_style.connect ((accomp_style) => {
+                home_screen.set_style_name (accomp_style.name);
+                this.change_style (accomp_style);
             });
             voice_menu_l.change_voice.connect ((voice, channel) => {
                 home_screen.set_voice_l_name (voice.name);
@@ -151,27 +155,21 @@ namespace Ensembles.Shell {
             lfo_editor.close_screen.connect (() => {
                 main_display_leaflet.set_visible_child (home_screen);
             });
+            tempo_screen.close_screen.connect (() => {
+                main_display_leaflet.set_visible_child (home_screen);
+            });
+            tempo_screen.changed.connect ((tempo) => {
+                change_tempo (tempo);
+            });
         }
 
-        public void update_style_list (List<string> paths, List<string> names, List<string> genre, List<int> tempo) {
-            string[] path_arr = new string [paths.length ()];
-            string[] name_arr = new string [names.length ()];
-            string[] genre_arr = new string [genre.length ()];
-            int[] tempo_arr = new int [tempo.length ()];
-            for (int i = 0; i < paths.length (); i++) {
-                path_arr[i] = paths.nth_data (i);
+        public void update_style_list (List<Ensembles.Core.Style> accomp_styles) {
+            Ensembles.Core.Style[] styles = new Ensembles.Core.Style[accomp_styles.length ()];
+            for (int i = 0; i < accomp_styles.length (); i++) {
+                styles[i] = accomp_styles.nth_data (i);
             }
-            for (int i = 0; i < names.length (); i++) {
-                name_arr[i] = names.nth_data (i);
-            }
-            for (int i = 0; i < genre.length (); i++) {
-                genre_arr[i] = genre.nth_data (i);
-            }
-            for (int i = 0; i < tempo.length (); i++) {
-                tempo_arr[i] = tempo.nth_data (i);
-            }
-            style_menu.populate_style_menu (path_arr, name_arr, genre_arr, tempo_arr);
-            home_screen.set_style_name (name_arr[0]);
+            style_menu.populate_style_menu (styles);
+            style_menu.load_settings ();
         }
 
         public void update_voice_list (Ensembles.Core.Voice[] voices) {
@@ -188,6 +186,11 @@ namespace Ensembles.Shell {
 
         public void set_tempo_display (int tempo) {
             home_screen.set_tempo (tempo);
+            tempo_screen.set_tempo (tempo);
+        }
+
+        public void set_tempo (int tempo) {
+            tempo_screen.set_tempo (tempo);
         }
 
         public void set_measure_display (int measure) {
@@ -207,6 +210,18 @@ namespace Ensembles.Shell {
         public void open_lfo_screen () {
             main_display_leaflet.set_visible_child (main_stack);
             main_stack.set_visible_child (lfo_editor);
+        }
+
+        public void open_tempo_screen () {
+            main_display_leaflet.set_visible_child (main_stack);
+            main_stack.set_visible_child (tempo_screen);
+        }
+
+        public void load_settings (int tempo) {
+            voice_menu_r1.load_settings ();
+            voice_menu_r2.load_settings ();
+            voice_menu_l.load_settings ();
+            style_menu.load_settings (tempo);
         }
     }
 }

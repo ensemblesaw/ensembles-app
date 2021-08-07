@@ -40,21 +40,25 @@ namespace Ensembles.Shell {
             }
             header_logo = header_logo.scale_simple (256, 59, Gdk.InterpType.BILINEAR);
 
-            var subheader = new Gtk.Label ("v1.0.0");
-            subheader.margin = 8;
-            subheader.margin_top = 2;
-            subheader.get_style_context ().add_class ("h3");
+            var fluid_version = Core.Synthesizer.get_fluidsynth_version ();
+            var subheader = new Gtk.Label (("Powered by FluidSynth v%1.1f").printf (fluid_version));
+            subheader.get_style_context ().add_class ("h4");
+            subheader.halign = Gtk.Align.START;
             var header_separator = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
 
+            var header_logo_image = new Gtk.Image.from_pixbuf (header_logo);
+            header_logo_image.margin_start = 4;
+            header_logo_image.margin_top = 4;
+            header_logo_image.halign = Gtk.Align.START;
+
             var menu_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-            menu_box.pack_start (new Gtk.Image.from_pixbuf (header_logo));
+            menu_box.pack_start (header_logo_image);
             menu_box.pack_start (subheader);
             menu_box.pack_start (header_separator);
 
             var audio_input_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
             var audio_input_label = new Gtk.Label (_("Sampler Source"));
             audio_input_label.halign = Gtk.Align.START;
-            audio_input_label.margin_start = 8;
             audio_input_label.get_style_context ().add_class ("h4");
             var audio_input_buttons = new Granite.Widgets.ModeButton ();
             audio_input_buttons.append_text (_("Mic"));
@@ -95,7 +99,6 @@ namespace Ensembles.Shell {
             var device_input_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
             var device_list_header = new Gtk.Label (_("Midi Input"));
             device_list_header.halign = Gtk.Align.START;
-            device_list_header.margin_start = 8;
             device_list_header.get_style_context ().add_class ("h4");
             var device_monitor_toggle = new Gtk.Switch ();
             device_monitor_toggle.halign = Gtk.Align.END;

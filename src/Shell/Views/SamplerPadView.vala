@@ -161,7 +161,7 @@ namespace Ensembles.Shell {
                 debug ("CLEANUP: Removing temporary sample recordings\n");
                 for (int i = 0; i < 12; i++) {
                     if (sample_players[i] != null) {
-                        sample_players[i].unref ();
+                        sample_players[i].delete_file ();
                     }
                 }
             });

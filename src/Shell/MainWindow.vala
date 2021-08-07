@@ -141,13 +141,8 @@ namespace Ensembles.Shell {
             debug ("STARTUP: Discovering Styles");
             style_discovery = new Ensembles.Core.StyleDiscovery ();
             style_discovery.analysis_complete.connect (() => {
-                style_player.add_style_file (style_discovery.style_files.nth_data (0));
-                main_display_unit.update_style_list (
-                    style_discovery.style_files,
-                    style_discovery.style_names,
-                    style_discovery.style_genre,
-                    style_discovery.style_tempo
-                );
+                //  style_player.add_style_file (style_discovery.styles.nth_data (0).path);
+                main_display_unit.update_style_list (style_discovery.styles);
             });
 
             debug ("STARTUP: Loading Metronome and LFO Engine");
@@ -163,7 +158,7 @@ namespace Ensembles.Shell {
                 style_controller_view.sync ();
                 main_display_unit.set_measure_display (Ensembles.Core.CentralBus.get_measure ());
                 if (metronome_player.looping) metronome_player.stop_loop ();
-                metronome_player.play_measure (4, 4);
+                metronome_player.play_measure (Core.CentralBus.get_beats_per_bar (), 4);
             });
             bus.system_halt.connect (() => {
                 style_player.reload_style ();
@@ -171,8 +166,12 @@ namespace Ensembles.Shell {
                 metronome_player.stop_loop ();
             });
             bus.system_ready.connect (() => {
-                main_display_unit.queue_remove_splash ();
-                style_controller_view.ready ();
+                Timeout.add (1000, () => {
+                    main_display_unit.queue_remove_splash ();
+                    style_controller_view.ready ();
+                    ctrl_panel.load_settings ();
+                    return false;
+                });
                 Timeout.add (2000, () => {
                     if (song_player != null) {
                         song_player.play ();
@@ -188,6 +187,11 @@ namespace Ensembles.Shell {
                 main_display_unit.set_tempo_display (tempo);
                 if (metronome_player != null)
                     metronome_player.set_tempo (tempo);
+            });
+            bus.loaded_time_signature_change.connect ((n, d) => {
+                if (beat_counter_panel != null) {
+                    beat_counter_panel.change_beats_per_bar (n);
+                }
             });
             bus.split_key_change.connect (() => {
                 main_keyboard.update_split ();
@@ -208,12 +212,16 @@ namespace Ensembles.Shell {
                 //  debug("%d %s\n", device.id, device.name);
                 controller_connection.connect_device (device.id);
             });
-            main_display_unit.change_style.connect ((path, name, tempo) => {
-                style_player.add_style_file (path);
+            main_display_unit.change_style.connect ((accomp_style) => {
+                style_player.add_style_file (accomp_style.path, accomp_style.tempo);
             });
             main_display_unit.change_voice.connect ((voice, channel) => {
                 synthesizer.change_voice (voice, channel);
             });
+            main_display_unit.change_tempo.connect ((tempo) => {
+                style_player.change_tempo (tempo);
+            });
+            beat_counter_panel.open_tempo_editor.connect (main_display_unit.open_tempo_screen);
             ctrl_panel.accomp_change.connect ((active) => {
                 synthesizer.set_accompaniment_on (active);
             });
@@ -229,11 +237,15 @@ namespace Ensembles.Shell {
             ctrl_panel.start_metronome.connect ((active) => {
                 if (active) {
                     Ensembles.Core.CentralBus.set_metronome_on (true);
-                    metronome_player.play_loop (4, 4);
+                    metronome_player.play_loop (Core.CentralBus.get_beats_per_bar (), 4);
                 } else {
                     metronome_player.stop_loop ();
                     Ensembles.Core.CentralBus.set_metronome_on (false);
                 }
+            });
+            registry_panel.notify_recall.connect ((tempo) => {
+                ctrl_panel.load_settings ();
+                main_display_unit.load_settings (tempo);
             });
             controller_connection.receive_note_event.connect ((key, on, velocity)=>{
                 //  debug ("%d %d %d\n", key, on, velocity);
@@ -347,7 +359,17 @@ namespace Ensembles.Shell {
                 return false;
             });
             this.destroy.connect (() => {
-                slider_board.stop_monitoring ();
+                print ("App Exit\n");
+                debug ("CLEANUP: Unloading Registry Memory");
+                registry_panel.unref ();
+                debug ("CLEANUP: Unloading Slider Board");
+                slider_board.unref ();
+                debug ("CLEANUP: Unloading Mixer Board");
+                mixer_board_view.unref ();
+                debug ("CLEANUP: Unloading On-screen Keyboard");
+                main_keyboard.unref ();
+                debug ("CLEANUP: Unloading Beat Counter");
+                beat_counter_panel.unref ();
 
                 debug ("CLEANUP: Unloading MIDI Input Monitor");
                 controller_connection.unref ();
@@ -355,15 +377,17 @@ namespace Ensembles.Shell {
                 metronome_player.unref ();
                 debug ("CLEANUP: Unloading Style Engine");
                 style_player.unref ();
+                debug ("Done!");
                 if (song_player != null) {
                     debug ("CLEANUP: Unloading Song Player");
                     song_player.songplayer_destroy ();
                     song_player = null;
                 }
-                debug ("CLEANUP: Unloading Synthesizer");
-                synthesizer.unref ();
                 debug ("CLEANUP: Unloading Central Bus");
                 bus.unref ();
+                debug ("CLEANUP: Unloading Synthesizer");
+                synthesizer.unref ();
+                debug ("Done!");
             });
             debug ("Initialized\n");
         }

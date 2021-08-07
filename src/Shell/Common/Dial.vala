@@ -103,7 +103,8 @@ namespace Ensembles.Shell {
             activate_button.halign = Gtk.Align.START;
             activate_button.valign = Gtk.Align.CENTER;
             activate_button.margin_start = 118;
-            activate_button.margin_bottom = 6;
+            activate_button.margin_bottom = 4;
+            activate_button.margin_top = 4;
             activate_button.width_request = 30;
             activate_button.height_request = 30;
             activate_button.get_style_context ().add_class ("rounded");
