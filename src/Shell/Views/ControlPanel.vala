@@ -219,7 +219,7 @@ namespace Ensembles.Shell {
 
         public void load_settings () {
             disconnect_events ();
-            
+
             bool active = EnsemblesApp.settings.get_boolean ("accomp-on");
             accomp_change (active);
             accomp_toggle.set_active (active);
