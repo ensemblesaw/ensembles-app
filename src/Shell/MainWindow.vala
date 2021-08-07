@@ -166,9 +166,12 @@ namespace Ensembles.Shell {
                 metronome_player.stop_loop ();
             });
             bus.system_ready.connect (() => {
-                main_display_unit.queue_remove_splash ();
-                style_controller_view.ready ();
-                ctrl_panel.load_settings ();
+                Timeout.add (1000, () => {
+                    main_display_unit.queue_remove_splash ();
+                    style_controller_view.ready ();
+                    ctrl_panel.load_settings ();
+                    return false;
+                });
                 Timeout.add (2000, () => {
                     if (song_player != null) {
                         song_player.play ();
@@ -357,6 +360,8 @@ namespace Ensembles.Shell {
             });
             this.destroy.connect (() => {
                 print ("App Exit\n");
+                debug ("CLEANUP: Unloading Registry Memory");
+                registry_panel.unref ();
                 debug ("CLEANUP: Unloading Slider Board");
                 slider_board.unref ();
                 debug ("CLEANUP: Unloading Mixer Board");

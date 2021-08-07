@@ -138,5 +138,10 @@
 		<summary>Arpeggiator Enabled</summary>
 		<description>Arpeggiator Enabled</description>
 	</key>
+	<key name="registry-snapshot" type="s">
+		<default>""</default>
+		<summary>Snapshot of registry memory</summary>
+		<description>Registry memory in the form of delimited string array</description>
+	</key>
   </schema>
 </schemalist>

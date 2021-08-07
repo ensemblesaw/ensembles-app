@@ -379,7 +379,7 @@
 }
 
 .knob-socket-graphic {
-    background-color:#666;
+    background-color:alpha(#888, 0.5);
     border-radius: 5px;
     margin-left: -2px;
     margin-top: -2px;
