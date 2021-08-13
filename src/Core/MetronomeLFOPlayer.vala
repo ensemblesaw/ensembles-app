@@ -41,8 +41,7 @@ namespace Ensembles.Core {
                 _time_signature_n = time_signature_n;
                 _time_signature_d = time_signature_d;
                 _lfo_file_location = _lfo_directory_location + "/" +
-                                     time_signature_n.to_string () + "_" +
-                                     time_signature_d.to_string () + ".mtlfo";
+                                     time_signature_n.to_string () + ".mtlfo";
                 metronome_lfo_player_change_base (_lfo_file_location, _tempo, 1920);
             } else {
                 metronome_lfo_player_play ();
