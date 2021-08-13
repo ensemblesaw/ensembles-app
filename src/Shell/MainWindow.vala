@@ -39,6 +39,7 @@ namespace Ensembles.Shell {
         Ensembles.Core.CentralBus bus;
         Ensembles.Core.Controller controller_connection;
         Ensembles.Core.SongPlayer song_player;
+        Ensembles.Core.Arpeggiator arpeggiator;
 
         string sf_loc = Constants.SF2DATADIR + "/EnsemblesGM.sf2";
         string sf_schema_loc = Constants.SF2DATADIR + "/EnsemblesGMSchema.csv";
@@ -148,6 +149,8 @@ namespace Ensembles.Shell {
             debug ("STARTUP: Loading Metronome and LFO Engine");
             metronome_player = new Ensembles.Core.MetronomeLFOPlayer (metronome_lfo_directory);
 
+            arpeggiator = new Core.Arpeggiator ();
+
             make_ui_events ();
 
             load_voices ();
@@ -187,6 +190,8 @@ namespace Ensembles.Shell {
                 main_display_unit.set_tempo_display (tempo);
                 if (metronome_player != null)
                     metronome_player.set_tempo (tempo);
+                if (arpeggiator != null)
+                    arpeggiator.change_tempo (tempo);
             });
             bus.loaded_time_signature_change.connect ((n, d) => {
                 if (beat_counter_panel != null) {
@@ -249,9 +254,26 @@ namespace Ensembles.Shell {
             });
             controller_connection.receive_note_event.connect ((key, on, velocity)=>{
                 //  debug ("%d %d %d\n", key, on, velocity);
-                synthesizer.send_notes_realtime (key, on, velocity);
+                if (EnsemblesApp.settings.get_boolean ("arpeggiator-on")) {
+                    if (EnsemblesApp.settings.get_boolean ("accomp-on")) {
+                        if (key > Core.CentralBus.get_split_key ()) {
+                            arpeggiator.send_notes (key, on, velocity);
+                        } else {
+                            synthesizer.send_notes_realtime (key, on, velocity);
+                        }
+                    } else {
+                        arpeggiator.send_notes (key, on, velocity);
+                    }
+                } else {
+                    synthesizer.send_notes_realtime (key, on, velocity);
+                }
                 main_keyboard.set_note_on (key, (on == 144));
             });
+            arpeggiator.generate_notes.connect ((key, on, velocity) => {
+                synthesizer.send_notes_realtime (key, on, velocity);
+                //main_keyboard.set_note_on (key, (on == 144));
+            });
+            arpeggiator.halt_notes.connect (synthesizer.halt_realtime);
             style_controller_view.start_stop.connect (() => {
                 style_player.play_style ();
             });

@@ -395,6 +395,15 @@ synthesizer_halt_notes () {
     }
 }
 
+void
+synthesizer_halt_realtime () {
+    if (realtime_synth) {
+        fluid_synth_all_notes_off (realtime_synth, 0);
+        fluid_synth_all_notes_off (realtime_synth, 1);
+        fluid_synth_all_notes_off (realtime_synth, 2);
+    }
+}
+
 
 void
 synthesizer_set_accomp_enable (int on) {

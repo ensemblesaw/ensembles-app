@@ -38,6 +38,10 @@ namespace Ensembles.Core {
             }
         }
 
+        public void halt_realtime () {
+            synthesizer_halt_realtime ();
+        }
+
         public void set_accompaniment_on (bool active) {
             synthesizer_set_accomp_enable (active ? 1 : 0);
             if (!active) synthesizer_halt_notes ();
@@ -126,6 +130,7 @@ extern void synthesizer_init (string loc);
 extern void synthesizer_destruct ();
 extern int synthesizer_send_notes (int key, int on, int velocity, out int type);
 extern void synthesizer_halt_notes ();
+extern void synthesizer_halt_realtime ();
 
 extern void synthesizer_set_accomp_enable (int on);
 
