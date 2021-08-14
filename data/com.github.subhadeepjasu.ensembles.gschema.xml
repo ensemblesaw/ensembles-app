@@ -119,7 +119,7 @@
 		<description>Keyboard Split Enabled</description>
 	</key>
     <key name="harmonizer-type" type="i">
-		<default>0</default>
+		<default>1</default>
 		<summary>Harmonizer Type</summary>
 		<description>Harmonizer Type</description>
 	</key>
@@ -129,7 +129,7 @@
 		<description>Harmonizer Enabled</description>
 	</key>
     <key name="arpeggiator-type" type="i">
-		<default>0</default>
+		<default>1</default>
 		<summary>Arpeggiator Type</summary>
 		<description>Arpeggiator Type</description>
 	</key>

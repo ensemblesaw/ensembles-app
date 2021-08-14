@@ -83,7 +83,7 @@ namespace Ensembles.Shell {
             transpose_spin_button.set_value (0);
             octave_spin_button = new Gtk.SpinButton.with_range (-2, 2, 1);
             octave_spin_button.set_value (0);
-            arpeggiator_spin_button = new Gtk.SpinButton.with_range (1, 16, 1);
+            arpeggiator_spin_button = new Gtk.SpinButton.with_range (1, 12, 1);
             arpeggiator_spin_button.set_value (1);
             harmonizer_spin_button = new Gtk.SpinButton.with_range (1, 16, 1);
             harmonizer_spin_button.set_value (1);
@@ -234,7 +234,7 @@ namespace Ensembles.Shell {
             Ensembles.Core.Synthesizer.set_transpose_active (active);
             active = EnsemblesApp.settings.get_boolean ("octave-shift-on");
             octave_toggle.set_active (active);
-            EnsemblesApp.settings.set_boolean ("octave-shift-on", active);
+            Ensembles.Core.Synthesizer.set_octave_shifted (active);
             active = EnsemblesApp.settings.get_boolean ("arpeggiator-on");
             arpeggiator_toggle.set_active (active);
             active = EnsemblesApp.settings.get_boolean ("harmonizer-on");

@@ -39,6 +39,24 @@ namespace Ensembles.Core {
                         case 6:
                         arpeggio (4, false);
                         break;
+                        case 7:
+                        arpeggio_sine (2);
+                        break;
+                        case 8:
+                        arpeggio_sine (3);
+                        break;
+                        case 9:
+                        arpeggio_sine (4);
+                        break;
+                        case 10:
+                        arpeggio_random (2);
+                        break;
+                        case 11:
+                        arpeggio_random (3);
+                        break;
+                        case 12:
+                        arpeggio_random (4);
+                        break;
                     }
                 }
             } else {
@@ -71,6 +89,57 @@ namespace Ensembles.Core {
                     i++;
                 else
                     i--;
+                return arpeggio_playing;
+            });
+        }
+        public void arpeggio_sine (int subdivision) {
+            arpeggio_playing = true;
+            active_keys = find_keys ();
+            int n = active_keys.length;
+            int i = 0;
+            halt_notes ();
+            generate_notes (active_keys[0] + 36, 144, keys[active_keys[0]]);
+            bool direction = true;
+            if (direction)
+                i++;
+            else
+                i--;
+            Timeout.add ((uint)((60000 / subdivision) / tempo), () => {
+                active_keys = find_keys ();
+                n = active_keys.length;
+                if (!arpeggio_playing) {
+                    return false;
+                }
+                halt_notes ();
+                generate_notes (active_keys[i % n] + 36, 144, keys[active_keys[i % n]]);
+                if (direction)
+                    i++;
+                else
+                    i--;
+
+                if (i == 0 || i == n - 1) {
+                    direction = !direction;
+                }
+                return arpeggio_playing;
+            });
+        }
+
+        public void arpeggio_random (int subdivision) {
+            arpeggio_playing = true;
+            active_keys = find_keys ();
+            int n = active_keys.length;
+            int i = 0;
+            halt_notes ();
+            generate_notes (active_keys[0] + 36, 144, keys[active_keys[0]]);
+            Timeout.add ((uint)((60000 / subdivision) / tempo), () => {
+                active_keys = find_keys ();
+                n = active_keys.length;
+                if (!arpeggio_playing) {
+                    return false;
+                }
+                halt_notes ();
+                i = Random.int_range (0, n);
+                generate_notes (active_keys[i % n] + 36, 144, keys[active_keys[i % n]]);
                 return arpeggio_playing;
             });
         }
