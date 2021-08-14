@@ -34,7 +34,7 @@ namespace Ensembles.Core {
         public void change_tempo (int tempo) {
             this.tempo = tempo;
         }
-        
+
         public void send_notes (int key, int on, int velocity) {
             if (on == 144) {
                 keys[key - 36] = velocity;

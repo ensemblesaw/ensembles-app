@@ -289,8 +289,19 @@ namespace Ensembles.Shell {
                 main_keyboard.set_note_on (key, (on == 144));
             });
             arpeggiator.generate_notes.connect ((key, on, velocity) => {
-                synthesizer.send_notes_realtime (key, on, velocity);
-                //main_keyboard.set_note_on (key, (on == 144));
+                if (EnsemblesApp.settings.get_boolean ("harmonizer-on")) {
+                    if (EnsemblesApp.settings.get_boolean ("accomp-on")) {
+                        if (key > Core.CentralBus.get_split_key ()) {
+                            harmonizer.send_notes (key, on, velocity);
+                        } else {
+                            synthesizer.send_notes_realtime (key, on, velocity);
+                        }
+                    } else {
+                        synthesizer.send_notes_realtime (key, on, velocity);
+                    }
+                } else {
+                    synthesizer.send_notes_realtime (key, on, velocity);
+                }
             });
             arpeggiator.halt_notes.connect (synthesizer.halt_realtime);
             harmonizer.generate_notes.connect ((key, on, velocity) => {

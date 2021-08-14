@@ -25,6 +25,8 @@ namespace Ensembles.Shell {
         Gtk.Switch zoom_switch;
         JoyStick joy_stick;
         Ensembles.Core.Synthesizer _synth;
+        Gtk.Button sustain_button;
+        Gtk.Button stop_button;
         public KeyboardView () {
             get_style_context ().add_class ("keyboard-background");
             valign = Gtk.Align.END;
@@ -55,14 +57,19 @@ namespace Ensembles.Shell {
             hold_switch.margin_start = 8;
             hold_switch.margin_end = 14;
 
+            sustain_button = new Gtk.Button.with_label ("SUST");
+            stop_button = new Gtk.Button.with_label ("STOP");
+
             var switch_bar = new Gtk.Grid ();
             switch_bar.halign = Gtk.Align.END;
             switch_bar.hexpand = true;
             switch_bar.margin_top = 1;
-            switch_bar.attach (new Gtk.Label ("H O L D"), 0, 0, 1, 1);
-            switch_bar.attach (hold_switch, 1, 0, 1, 1);
-            switch_bar.attach (new Gtk.Label ("Z O O M"), 2, 0, 1, 1);
-            switch_bar.attach (zoom_switch, 3, 0, 1, 1);
+            switch_bar.attach (new Gtk.Label ("H O L D"), 0, 0);
+            switch_bar.attach (hold_switch, 1, 0);
+            switch_bar.attach (new Gtk.Label ("Z O O M"), 2, 0);
+            switch_bar.attach (zoom_switch, 3, 0);
+            switch_bar.attach (sustain_button, 4, 0);
+            switch_bar.attach (stop_button, 5, 0);
 
             var keyboard_top_bar = new Gtk.Grid ();
             keyboard_top_bar.valign = Gtk.Align.START;

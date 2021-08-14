@@ -111,7 +111,7 @@ namespace Ensembles.Core {
             }
         }
 
-        private void harmonize_fifth(int key, int on, int velocity) {
+        private void harmonize_fifth (int key, int on, int velocity) {
             if (key >= 48) {
                 generate_notes (key - 5, on, (int) (velocity * 0.8));
             } else {
