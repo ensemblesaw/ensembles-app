@@ -55,6 +55,14 @@ namespace Ensembles.Core {
             synthesizer_edit_master_chorus (level);
         }
 
+        public void set_master_reverb_active (bool active) {
+            synthesizer_set_master_reverb_active (active ? 1 : 0);
+        }
+
+        public void set_master_chorus_active (bool active) {
+            synthesizer_set_master_chorus_active (active ? 1 : 0);
+        }
+
         public void change_voice (Voice voice, int channel) {
             synthesizer_change_voice (voice.bank, voice.preset, channel);
         }
@@ -137,6 +145,8 @@ extern void synthesizer_set_accomp_enable (int on);
 
 extern void synthesizer_edit_master_reverb (int level);
 extern void synthesizer_edit_master_chorus (int level);
+extern void synthesizer_set_master_reverb_active (int active);
+extern void synthesizer_set_master_chorus_active (int active);
 
 extern void synthesizer_change_voice (int bank, int preset, int channel);
 

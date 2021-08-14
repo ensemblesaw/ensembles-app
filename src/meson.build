@@ -46,6 +46,7 @@ ensembles_sources_vala = files (
     'Shell/Display/LFOEditScreen.vala',
     'Shell/Display/TempoScreen.vala',
     'Core/Arpeggiator.vala',
+    'Core/Harmonizer.vala',
     'Core/Synthesizer.vala',
     'Core/Controller.vala',
     'Core/StyleDiscovery.vala',

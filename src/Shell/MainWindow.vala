@@ -40,6 +40,7 @@ namespace Ensembles.Shell {
         Ensembles.Core.Controller controller_connection;
         Ensembles.Core.SongPlayer song_player;
         Ensembles.Core.Arpeggiator arpeggiator;
+        Ensembles.Core.Harmonizer harmonizer;
 
         string sf_loc = Constants.SF2DATADIR + "/EnsemblesGM.sf2";
         string sf_schema_loc = Constants.SF2DATADIR + "/EnsemblesGMSchema.csv";
@@ -150,6 +151,7 @@ namespace Ensembles.Shell {
             metronome_player = new Ensembles.Core.MetronomeLFOPlayer (metronome_lfo_directory);
 
             arpeggiator = new Core.Arpeggiator ();
+            harmonizer = new Core.Harmonizer ();
 
             make_ui_events ();
 
@@ -233,8 +235,14 @@ namespace Ensembles.Shell {
             ctrl_panel.reverb_change.connect ((level) => {
                 synthesizer.set_master_reverb_level (level);
             });
+            ctrl_panel.reverb_active_change.connect ((active) => {
+                synthesizer.set_master_reverb_active (active);
+            });
             ctrl_panel.chorus_change.connect ((level) => {
                 synthesizer.set_master_chorus_level (level);
+            });
+            ctrl_panel.chorus_active_change.connect ((active) => {
+                synthesizer.set_master_chorus_active (active);
             });
             ctrl_panel.update_split.connect (() => {
                 main_keyboard.update_split ();
@@ -267,6 +275,17 @@ namespace Ensembles.Shell {
                 } else {
                     synthesizer.send_notes_realtime (key, on, velocity);
                 }
+                if (EnsemblesApp.settings.get_boolean ("harmonizer-on")) {
+                    if (EnsemblesApp.settings.get_boolean ("accomp-on")) {
+                        if (key > Core.CentralBus.get_split_key ()) {
+                            harmonizer.send_notes (key, on, velocity);
+                        } else {
+                            synthesizer.send_notes_realtime (key, on, velocity);
+                        }
+                    } else {
+                        synthesizer.send_notes_realtime (key, on, velocity);
+                    }
+                }
                 main_keyboard.set_note_on (key, (on == 144));
             });
             arpeggiator.generate_notes.connect ((key, on, velocity) => {
@@ -274,6 +293,13 @@ namespace Ensembles.Shell {
                 //main_keyboard.set_note_on (key, (on == 144));
             });
             arpeggiator.halt_notes.connect (synthesizer.halt_realtime);
+            harmonizer.generate_notes.connect ((key, on, velocity) => {
+                if (key > Core.CentralBus.get_split_key ()) {
+                    synthesizer.send_notes_realtime (key, on, velocity);
+                }
+            });
+            harmonizer.halt_notes.connect (synthesizer.halt_realtime);
+
             style_controller_view.start_stop.connect (() => {
                 style_player.play_style ();
             });
@@ -324,6 +350,7 @@ namespace Ensembles.Shell {
             synthesizer.detected_chord.connect ((chord, type) => {
                 style_player.change_chords (chord, type);
                 main_display_unit.set_chord_display (chord, type);
+                harmonizer.set_chord (chord, type);
             });
             voice_category_panel.voice_quick_select.connect ((index) => {
                 main_display_unit.quick_select_voice (detected_voice_indices[index]);

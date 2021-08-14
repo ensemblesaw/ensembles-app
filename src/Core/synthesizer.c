@@ -58,14 +58,12 @@ int synthesizer_octave_shifted = 0;
 void
 synthesizer_edit_master_reverb (int level) {
     if (realtime_synth) {
-        fluid_synth_reverb_on (realtime_synth, -1, TRUE);
         fluid_synth_set_reverb_group_roomsize (realtime_synth, -1, get_reverb_room_size(level));
         fluid_synth_set_reverb_group_damp (realtime_synth, -1, 0.1);
         fluid_synth_set_reverb_group_width (realtime_synth, -1, get_reverb_width(level));
         fluid_synth_set_reverb_group_level (realtime_synth, -1, get_reverb_level(level));
     }
     if (style_synth) {
-        fluid_synth_reverb_on (style_synth, -1, TRUE);
         fluid_synth_set_reverb_group_roomsize (style_synth, -1, get_reverb_room_size(level));
         fluid_synth_set_reverb_group_damp (style_synth, -1, 0.1);
         fluid_synth_set_reverb_group_width (style_synth, -1, get_reverb_width(level));
@@ -74,19 +72,33 @@ synthesizer_edit_master_reverb (int level) {
 }
 
 void
+synthesizer_set_master_reverb_active (int active) {
+    if (realtime_synth)
+        fluid_synth_reverb_on (realtime_synth, -1, active);
+    if (style_synth)
+        fluid_synth_reverb_on (style_synth, -1, active);
+}
+
+void
 synthesizer_edit_master_chorus (int level) {
     if (realtime_synth) {
-        fluid_synth_chorus_on (realtime_synth, -1, TRUE);
         fluid_synth_set_chorus_group_depth (realtime_synth, -1, get_chorus_depth(level));
         fluid_synth_set_chorus_group_level (realtime_synth, -1, get_chorus_level(level));
         fluid_synth_set_chorus_group_nr (realtime_synth, -1, get_chorus_nr(level));
     }
     if (style_synth) {
-        fluid_synth_chorus_on (style_synth, -1, TRUE);
         fluid_synth_set_chorus_group_depth (style_synth, -1, get_chorus_depth(level));
         fluid_synth_set_chorus_group_level (style_synth, -1, get_chorus_level(level));
         fluid_synth_set_chorus_group_nr (style_synth, -1, get_chorus_nr(level));
     }
+}
+
+void
+synthesizer_set_master_chorus_active (int active) {
+    if (realtime_synth)
+        fluid_synth_chorus_on (realtime_synth, -1, active);
+    if (style_synth)
+        fluid_synth_chorus_on (style_synth, -1, active);
 }
 
 void
