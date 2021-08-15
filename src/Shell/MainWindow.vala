@@ -256,6 +256,8 @@ namespace Ensembles.Shell {
                     Ensembles.Core.CentralBus.set_metronome_on (false);
                 }
             });
+            ctrl_panel.dial_rotate.connect (main_display_unit.wheel_scroll);
+            ctrl_panel.dial_activate.connect (main_display_unit.wheel_activate);
             registry_panel.notify_recall.connect ((tempo) => {
                 ctrl_panel.load_settings ();
                 main_display_unit.load_settings (tempo);

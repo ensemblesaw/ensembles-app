@@ -18,7 +18,7 @@
  */
 
 namespace Ensembles.Shell {
-    public class HomeScreen : WheelScrollableWidget {
+    public class HomeScreen : Gtk.Grid {
         int tempo = 33;
         Gtk.Button style_button;
         Gtk.Button voice_l_button;
