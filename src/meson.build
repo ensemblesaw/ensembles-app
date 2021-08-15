@@ -25,6 +25,8 @@ ensembles_sources_vala = files (
     'Shell/Common/Key.vala',
     'Shell/Common/OctaveKeyboard.vala',
     'Shell/Common/EqualizerBar.vala',
+    'Shell/Common/KeyboardConstants.vala',
+    'Shell/Common/PcKeyboardHandler.vala',
     'Shell/Views/AppMenuView.vala',
     'Shell/Views/StyleControllerView.vala',
     'Shell/Views/BeatCounterView.vala',

@@ -53,6 +53,8 @@ namespace Ensembles.Shell {
 
         string song_name;
 
+        PcKeyboardHandler keyboard_input_handler;
+
         public signal void song_player_state_changed (string song_name, Core.SongPlayer.PlayerStatus status);
         public MainWindow () {
             Gtk.Settings settings = Gtk.Settings.get_default ();
@@ -60,6 +62,8 @@ namespace Ensembles.Shell {
             debug ("STARTUP: Loading Central Bus");
             bus = new Ensembles.Core.CentralBus ();
             make_bus_events ();
+
+            keyboard_input_handler = new PcKeyboardHandler ();
 
             beat_counter_panel = new BeatCounterView ();
             headerbar = new Gtk.HeaderBar ();
@@ -205,6 +209,14 @@ namespace Ensembles.Shell {
             });
         }
         void make_ui_events () {
+            this.key_press_event.connect ((event) => {
+                keyboard_input_handler.handle_keypress_event (event.keyval);
+                return false;
+            });
+            this.key_release_event.connect ((event) => {
+                keyboard_input_handler.handle_keyrelease_event (event.keyval);
+                return false;
+            });
             this.window_state_event.connect ((event) => {
                 if ((int)(event.changed_mask) == 4) {
                     main_keyboard.visible = false;
@@ -286,6 +298,33 @@ namespace Ensembles.Shell {
                         }
                     } else {
                         synthesizer.send_notes_realtime (key, on, velocity);
+                    }
+                }
+                main_keyboard.set_note_on (key, (on == 144));
+            });
+            keyboard_input_handler.note_activate.connect ((key, on) => {
+                if (EnsemblesApp.settings.get_boolean ("arpeggiator-on")) {
+                    if (EnsemblesApp.settings.get_boolean ("accomp-on")) {
+                        if (key > Core.CentralBus.get_split_key ()) {
+                            arpeggiator.send_notes (key, on, 100);
+                        } else {
+                            synthesizer.send_notes_realtime (key, on, 100);
+                        }
+                    } else {
+                        arpeggiator.send_notes (key, on, 100);
+                    }
+                } else {
+                    synthesizer.send_notes_realtime (key, on, 100);
+                }
+                if (EnsemblesApp.settings.get_boolean ("harmonizer-on")) {
+                    if (EnsemblesApp.settings.get_boolean ("accomp-on")) {
+                        if (key > Core.CentralBus.get_split_key ()) {
+                            harmonizer.send_notes (key, on, 100);
+                        } else {
+                            synthesizer.send_notes_realtime (key, on, 100);
+                        }
+                    } else {
+                        synthesizer.send_notes_realtime (key, on, 100);
                     }
                 }
                 main_keyboard.set_note_on (key, (on == 144));
