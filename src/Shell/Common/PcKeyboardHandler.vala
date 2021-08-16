@@ -669,6 +669,7 @@ namespace Ensembles.Shell {
                 registration_bank_change (false);
                 break;
                 case KeyboardConstants.KeyMap.PLUS_KEYPAD:
+                case KeyboardConstants.KeyMap.EQUAL_TO:
                 registration_bank_change (true);
                 break;
             }

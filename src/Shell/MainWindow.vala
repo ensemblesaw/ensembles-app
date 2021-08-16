@@ -378,6 +378,11 @@ namespace Ensembles.Shell {
             keyboard_input_handler.style_ending_b.connect (style_player.queue_ending_b);
             keyboard_input_handler.style_break.connect (style_player.break_play);
 
+            keyboard_input_handler.registration_recall.connect ((value) => {
+                registry_panel.registry_recall (value - 1);
+            });
+            keyboard_input_handler.registration_bank_change.connect (registry_panel.change_bank);
+
             synthesizer.detected_chord.connect ((chord, type) => {
                 style_player.change_chords (chord, type);
                 main_display_unit.set_chord_display (chord, type);
