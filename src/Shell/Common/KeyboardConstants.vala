@@ -149,9 +149,13 @@
 
             CTRL         = 65507
         }
-        public static bool key_is_number (uint key) {
-            if (((key >= KeyMap.NUMPAD_0) && (key <= KeyMap.NUMPAD_9))
-             || ((key >= KeyMap.KEYPAD_0) && (key <= KeyMap.KEYPAD_9)))
+        public static bool key_is_number_numpad (uint key) {
+            if ((key >= KeyMap.NUMPAD_0) && (key <= KeyMap.NUMPAD_9))
+                return true;
+            return false;
+        }
+        public static bool key_is_number_keypad (uint key) {
+            if ((key >= KeyMap.KEYPAD_0) && (key <= KeyMap.KEYPAD_9))
                 return true;
             return false;
         }

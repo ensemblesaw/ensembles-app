@@ -2,255 +2,272 @@ namespace Ensembles.Shell {
     public class PcKeyboardHandler : Object {
         bool[] key_activated;
         public signal void note_activate (int key, int on);
+
+        public signal void style_start_stop ();
+        public signal void style_var_a ();
+        public signal void style_var_b ();
+        public signal void style_var_c ();
+        public signal void style_var_d ();
+        public signal void style_break ();
+        public signal void style_intro_a ();
+        public signal void style_intro_b ();
+        public signal void style_ending_a ();
+        public signal void style_ending_b ();
+
+        public signal void registration_recall (uint index);
+        public signal void registration_bank_change (bool up);
+
+        public signal void numpad_entry (uint number);
+
         public PcKeyboardHandler () {
             key_activated = new bool [40];
         }
-        public void handle_keypress_event (uint keyval) {
+        public bool handle_keypress_event (uint keyval) {
             switch (keyval) {
                 case KeyboardConstants.KeyMap.A_LOWER:
                 if (!key_activated[0]) {
                     note_activate (60, 144);
                     key_activated[0] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.W_LOWER:
                 if (!key_activated[1]) {
                     note_activate (61, 144);
                     key_activated[1] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.S_LOWER:
                 if (!key_activated[2]) {
                     note_activate (62, 144);
                     key_activated[2] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.E_LOWER:
                 if (!key_activated[3]) {
                     note_activate (63, 144);
                     key_activated[3] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.D_LOWER:
                 if (!key_activated[4]) {
                     note_activate (64, 144);
                     key_activated[4] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.F_LOWER:
                 if (!key_activated[5]) {
                     note_activate (65, 144);
                     key_activated[5] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.T_LOWER:
                 if (!key_activated[6]) {
                     note_activate (66, 144);
                     key_activated[6] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.G_LOWER:
                 if (!key_activated[7]) {
                     note_activate (67, 144);
                     key_activated[7] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.Y_LOWER:
                 if (!key_activated[8]) {
                     note_activate (68, 144);
                     key_activated[8] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.H_LOWER:
                 if (!key_activated[9]) {
                     note_activate (69, 144);
                     key_activated[9] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.U_LOWER:
                 if (!key_activated[10]) {
                     note_activate (70, 144);
                     key_activated[10] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.J_LOWER:
                 if (!key_activated[11]) {
                     note_activate (71, 144);
                     key_activated[11] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.K_LOWER:
                 case KeyboardConstants.KeyMap.A_UPPER:
                 if (!key_activated[12]) {
                     note_activate (72, 144);
                     key_activated[12] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.O_LOWER:
                 case KeyboardConstants.KeyMap.W_UPPER:
                 if (!key_activated[13]) {
                     note_activate (73, 144);
                     key_activated[13] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.L_LOWER:
                 case KeyboardConstants.KeyMap.S_UPPER:
                 if (!key_activated[14]) {
                     note_activate (74, 144);
                     key_activated[14] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.P_LOWER:
                 case KeyboardConstants.KeyMap.E_UPPER:
                 if (!key_activated[15]) {
                     note_activate (75, 144);
                     key_activated[15] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.D_UPPER:
                 if (!key_activated[16]) {
                     note_activate (76, 144);
                     key_activated[16] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.F_UPPER:
                 if (!key_activated[17]) {
                     note_activate (77, 144);
                     key_activated[17] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.T_UPPER:
                 if (!key_activated[18]) {
                     note_activate (78, 144);
                     key_activated[18] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.G_UPPER:
                 if (!key_activated[19]) {
                     note_activate (79, 144);
                     key_activated[19] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.Y_UPPER:
                 if (!key_activated[20]) {
                     note_activate (80, 144);
                     key_activated[20] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.H_UPPER:
                 if (!key_activated[21]) {
                     note_activate (81, 144);
                     key_activated[21] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.U_UPPER:
                 if (!key_activated[22]) {
                     note_activate (82, 144);
                     key_activated[22] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.J_UPPER:
                 if (!key_activated[23]) {
                     note_activate (83, 144);
                     key_activated[23] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.K_UPPER:
                 if (!key_activated[24]) {
                     note_activate (84, 144);
                     key_activated[24] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.O_UPPER:
                 if (!key_activated[25]) {
                     note_activate (85, 144);
                     key_activated[25] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.L_UPPER:
                 if (!key_activated[26]) {
                     note_activate (86, 144);
                     key_activated[26] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.P_UPPER:
                 if (!key_activated[27]) {
                     note_activate (87, 144);
                     key_activated[27] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.Z_LOWER:
                 if (!key_activated[28]) {
                     note_activate (36, 144);
                     key_activated[28] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.X_LOWER:
                 if (!key_activated[29]) {
                     note_activate (37, 144);
                     key_activated[29] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.C_LOWER:
                 if (!key_activated[30]) {
                     note_activate (38, 144);
                     key_activated[30] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.V_LOWER:
                 if (!key_activated[31]) {
                     note_activate (39, 144);
                     key_activated[31] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.B_LOWER:
                 if (!key_activated[32]) {
                     note_activate (40, 144);
                     key_activated[32] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.N_LOWER:
                 if (!key_activated[33]) {
                     note_activate (41, 144);
                     key_activated[33] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.M_LOWER:
                 if (!key_activated[34]) {
                     note_activate (42, 144);
                     key_activated[34] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.KEYPAD_RADIX:
                 if (!key_activated[35]) {
                     note_activate (44, 144);
                     key_activated[35] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.KEYPAD_COMMA:
                 if (!key_activated[36]) {
                     note_activate (43, 144);
                     key_activated[36] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.SLASH_KEYPAD:
                 if (!key_activated[37]) {
                     note_activate (45, 144);
                     key_activated[37] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.SQ_BRACKETS_L:
                 if (!key_activated[38]) {
                     note_activate (46, 144);
                     key_activated[38] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.SQ_BRACKETS_R:
                 if (!key_activated[39]) {
                     note_activate (47, 144);
                     key_activated[39] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.Z_UPPER:
                 if (!key_activated[28]) {
                     note_activate (36, 144);
@@ -260,7 +277,7 @@ namespace Ensembles.Shell {
                     note_activate (39, 144);
                     key_activated[31] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.X_UPPER:
                 if (!key_activated[29]) {
                     note_activate (37, 144);
@@ -270,7 +287,7 @@ namespace Ensembles.Shell {
                     note_activate (40, 144);
                     key_activated[32] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.C_UPPER:
                 if (!key_activated[30]) {
                     note_activate (38, 144);
@@ -280,7 +297,7 @@ namespace Ensembles.Shell {
                     note_activate (41, 144);
                     key_activated[33] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.V_UPPER:
                 if (!key_activated[31]) {
                     note_activate (39, 144);
@@ -290,7 +307,7 @@ namespace Ensembles.Shell {
                     note_activate (42, 144);
                     key_activated[34] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.B_UPPER:
                 if (!key_activated[32]) {
                     note_activate (40, 144);
@@ -300,7 +317,7 @@ namespace Ensembles.Shell {
                     note_activate (43, 144);
                     key_activated[35] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.N_UPPER:
                 if (!key_activated[33]) {
                     note_activate (41, 144);
@@ -310,7 +327,7 @@ namespace Ensembles.Shell {
                     note_activate (44, 144);
                     key_activated[36] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.M_UPPER:
                 if (!key_activated[34]) {
                     note_activate (41, 144);
@@ -320,7 +337,7 @@ namespace Ensembles.Shell {
                     note_activate (44, 144);
                     key_activated[37] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.LT:
                 if (!key_activated[35]) {
                     note_activate (42, 144);
@@ -330,7 +347,7 @@ namespace Ensembles.Shell {
                     note_activate (45, 144);
                     key_activated[38] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.GT:
                 if (!key_activated[36]) {
                     note_activate (43, 144);
@@ -340,7 +357,7 @@ namespace Ensembles.Shell {
                     note_activate (46, 144);
                     key_activated[39] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.FL_BRACKETS_L:
                 if (!key_activated[38]) {
                     note_activate (45, 144);
@@ -350,7 +367,7 @@ namespace Ensembles.Shell {
                     note_activate (48, 144);
                     key_activated[41] = true;
                 }
-                break;
+                return false;
                 case KeyboardConstants.KeyMap.FL_BRACKETS_R:
                 if (!key_activated[39]) {
                     note_activate (46, 144);
@@ -360,8 +377,26 @@ namespace Ensembles.Shell {
                     note_activate (49, 144);
                     key_activated[42] = true;
                 }
-                break;
+                return false;
+                // Style controls
+                case KeyboardConstants.KeyMap.RETURN_NUMPAD:
+                case KeyboardConstants.KeyMap.NUMPAD_HOME:
+                case KeyboardConstants.KeyMap.NUMPAD_END:
+                case KeyboardConstants.KeyMap.PAGE_UP:
+                case KeyboardConstants.KeyMap.PAGE_DOWN:
+                case KeyboardConstants.KeyMap.NUMPAD_RADIX:
+                case KeyboardConstants.KeyMap.SLASH_NUMPAD:
+                case KeyboardConstants.KeyMap.STAR_NUMPAD:
+                case KeyboardConstants.KeyMap.MINUS_NUMPAD:
+                case KeyboardConstants.KeyMap.PLUS_NUMPAD:
+                return true;
+                
+                // Registration Memory
+                case KeyboardConstants.KeyMap.MINUS_KEYPAD:
+                case KeyboardConstants.KeyMap.PLUS_KEYPAD:
+                return false;
             }
+            return false;
         }
 
         public void handle_keyrelease_event (uint keyval) {
@@ -596,6 +631,54 @@ namespace Ensembles.Shell {
                 note_activate (49, 128);
                 key_activated[42] = false;
                 break;
+
+                // Style controls
+                case KeyboardConstants.KeyMap.RETURN_NUMPAD:
+                style_start_stop ();
+                break;
+                case KeyboardConstants.KeyMap.NUMPAD_HOME:
+                style_intro_b ();
+                break;
+                case KeyboardConstants.KeyMap.NUMPAD_END:
+                style_ending_b ();
+                break;
+                case KeyboardConstants.KeyMap.PAGE_UP:
+                style_intro_a ();
+                break;
+                case KeyboardConstants.KeyMap.PAGE_DOWN:
+                style_ending_a ();
+                break;
+                case KeyboardConstants.KeyMap.NUMPAD_RADIX:
+                style_break ();
+                break;
+                case KeyboardConstants.KeyMap.SLASH_NUMPAD:
+                style_var_a ();
+                break;
+                case KeyboardConstants.KeyMap.STAR_NUMPAD:
+                style_var_b ();
+                break;
+                case KeyboardConstants.KeyMap.MINUS_NUMPAD:
+                style_var_c ();
+                break;
+                case KeyboardConstants.KeyMap.PLUS_NUMPAD:
+                style_var_d ();
+                break;
+                
+                // Registration Memory
+                case KeyboardConstants.KeyMap.MINUS_KEYPAD:
+                registration_bank_change (false);
+                break;
+                case KeyboardConstants.KeyMap.PLUS_KEYPAD:
+                registration_bank_change (true);
+                break;
+            }
+
+            if (KeyboardConstants.key_is_number_numpad (keyval)) {
+                numpad_entry (keyval - KeyboardConstants.KeyMap.NUMPAD_0);
+            }
+
+            if (KeyboardConstants.key_is_number_keypad (keyval)) {
+                registration_recall (keyval - KeyboardConstants.KeyMap.KEYPAD_0);
             }
         }
     }

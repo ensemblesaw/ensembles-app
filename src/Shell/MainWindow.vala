@@ -213,8 +213,7 @@ namespace Ensembles.Shell {
         }
         void make_ui_events () {
             this.key_press_event.connect ((event) => {
-                keyboard_input_handler.handle_keypress_event (event.keyval);
-                return false;
+                return keyboard_input_handler.handle_keypress_event (event.keyval);
             });
             this.key_release_event.connect ((event) => {
                 keyboard_input_handler.handle_keyrelease_event (event.keyval);
@@ -355,53 +354,30 @@ namespace Ensembles.Shell {
             });
             harmonizer.halt_notes.connect (synthesizer.halt_realtime);
 
-            style_controller_view.start_stop.connect (() => {
-                style_player.play_style ();
-            });
+            style_controller_view.start_stop.connect (style_player.play_style);
+            style_controller_view.switch_var_a.connect (style_player.switch_var_a);
+            style_controller_view.switch_var_b.connect (style_player.switch_var_b);
+            style_controller_view.switch_var_c.connect (style_player.switch_var_c);
+            style_controller_view.switch_var_d.connect (style_player.switch_var_d);
+            style_controller_view.queue_intro_a.connect (style_player.queue_intro_a);
+            style_controller_view.queue_intro_b.connect (style_player.queue_intro_b);
+            style_controller_view.queue_ending_a.connect (style_player.queue_ending_a);
+            style_controller_view.queue_ending_b.connect (style_player.queue_ending_b);
+            style_controller_view.break_play.connect (style_player.break_play);
+            style_controller_view.sync_start.connect (style_player.sync_start);
+            style_controller_view.sync_stop.connect (style_player.sync_stop);
 
-            style_controller_view.switch_var_a.connect (() => {
-                style_player.switch_var_a ();
-            });
+            keyboard_input_handler.style_start_stop.connect (style_player.play_style);
+            keyboard_input_handler.style_var_a.connect (style_player.switch_var_a);
+            keyboard_input_handler.style_var_b.connect (style_player.switch_var_b);
+            keyboard_input_handler.style_var_c.connect (style_player.switch_var_c);
+            keyboard_input_handler.style_var_d.connect (style_player.switch_var_d);
+            keyboard_input_handler.style_intro_a.connect (style_player.queue_intro_a);
+            keyboard_input_handler.style_intro_b.connect (style_player.queue_intro_b);
+            keyboard_input_handler.style_ending_a.connect (style_player.queue_ending_a);
+            keyboard_input_handler.style_ending_b.connect (style_player.queue_ending_b);
+            keyboard_input_handler.style_break.connect (style_player.break_play);
 
-            style_controller_view.switch_var_b.connect (() => {
-                style_player.switch_var_b ();
-            });
-
-            style_controller_view.switch_var_c.connect (() => {
-                style_player.switch_var_c ();
-            });
-
-            style_controller_view.switch_var_d.connect (() => {
-                style_player.switch_var_d ();
-            });
-
-            style_controller_view.queue_intro_a.connect (() => {
-                style_player.queue_intro_a ();
-            });
-
-            style_controller_view.queue_intro_b.connect (() => {
-                style_player.queue_intro_b ();
-            });
-
-            style_controller_view.queue_ending_a.connect (() => {
-                style_player.queue_ending_a ();
-            });
-
-            style_controller_view.queue_ending_b.connect (() => {
-                style_player.queue_ending_b ();
-            });
-
-            style_controller_view.break_play.connect (() => {
-                style_player.break_play ();
-            });
-
-            style_controller_view.sync_start.connect (() => {
-                style_player.sync_start ();
-            });
-
-            style_controller_view.sync_stop.connect (() => {
-                style_player.sync_stop ();
-            });
             synthesizer.detected_chord.connect ((chord, type) => {
                 style_player.change_chords (chord, type);
                 main_display_unit.set_chord_display (chord, type);
