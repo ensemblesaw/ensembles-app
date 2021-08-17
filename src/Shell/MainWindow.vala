@@ -378,9 +378,7 @@ namespace Ensembles.Shell {
             keyboard_input_handler.style_ending_b.connect (style_player.queue_ending_b);
             keyboard_input_handler.style_break.connect (style_player.break_play);
 
-            keyboard_input_handler.registration_recall.connect ((value) => {
-                registry_panel.registry_recall (value - 1);
-            });
+            keyboard_input_handler.registration_recall.connect (registry_panel.registry_recall);
             keyboard_input_handler.registration_bank_change.connect (registry_panel.change_bank);
 
             synthesizer.detected_chord.connect ((chord, type) => {
@@ -391,15 +389,11 @@ namespace Ensembles.Shell {
             voice_category_panel.voice_quick_select.connect ((index) => {
                 main_display_unit.quick_select_voice (detected_voice_indices[index]);
             });
-            mixer_board_view.set_sampler_gain.connect ((gain) => {
-                sampler_panel.set_sampler_volume (gain);
-            });
+            mixer_board_view.set_sampler_gain.connect (sampler_panel.set_sampler_volume);
             main_display_unit.channel_mod_screen.broadcast_assignment.connect (slider_board.send_modulator);
             slider_board.send_assignable_mode.connect (main_display_unit.channel_mod_screen.set_assignable);
             slider_board.open_LFO_editor.connect (main_display_unit.open_lfo_screen);
-            metronome_player.beat_sync.connect (() => {
-                beat_counter_panel.sync ();
-            });
+            metronome_player.beat_sync.connect (beat_counter_panel.sync);
             song_control_panel.change_song.connect ((path) => {
                 queue_song (path);
                 song_player.play ();
@@ -462,7 +456,6 @@ namespace Ensembles.Shell {
                 metronome_player.unref ();
                 debug ("CLEANUP: Unloading Style Engine");
                 style_player.unref ();
-                debug ("Done!");
                 if (song_player != null) {
                     debug ("CLEANUP: Unloading Song Player");
                     song_player.songplayer_destroy ();
@@ -472,7 +465,6 @@ namespace Ensembles.Shell {
                 bus.unref ();
                 debug ("CLEANUP: Unloading Synthesizer");
                 synthesizer.unref ();
-                debug ("Done!");
             });
             debug ("Initialized\n");
         }
