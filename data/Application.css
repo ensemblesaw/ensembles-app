@@ -719,3 +719,13 @@
         background: alpha(#7a0000, 0);
     }
 }
+
+
+.touch-feedback {
+    background-image: radial-gradient(alpha(#fff, 0.0),alpha(#fff, 0) 70%);
+    transition: all 0.5s;
+}
+
+.touch-feedback-active {
+    background-image: radial-gradient(alpha(#fff, 0.5),alpha(#fff, 0) 70%);
+}

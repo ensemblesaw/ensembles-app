@@ -23,7 +23,7 @@ namespace Ensembles.Shell {
         Gtk.Box key_grid;
         Gtk.Switch hold_switch;
         Gtk.Switch zoom_switch;
-        JoyStick joy_stick;
+        public JoyStick joy_stick;
         Ensembles.Core.Synthesizer _synth;
         Gtk.Button sustain_button;
         Gtk.Button stop_button;

@@ -100,7 +100,9 @@ namespace Ensembles.Shell {
 
             ctrl_panel = new ControlPanel ();
 
-            slider_board = new SliderBoardView ();
+            main_keyboard = new KeyboardView ();
+
+            slider_board = new SliderBoardView (main_keyboard.joy_stick);
 
             voice_category_panel = new VoiceCategoryView ();
 
@@ -112,7 +114,6 @@ namespace Ensembles.Shell {
 
             style_controller_view = new StyleControllerView ();
 
-            main_keyboard = new KeyboardView ();
 
             var style_registry_grid = new Gtk.Grid ();
             style_registry_grid.attach (style_controller_view, 0, 0, 1, 1);
