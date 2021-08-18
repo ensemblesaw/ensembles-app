@@ -272,7 +272,7 @@ handle_events_for_styles (fluid_midi_event_t *event) {
     // printf ("Value: %d\n", value);
     
     if (type == 176) {
-        if (cont == 85 && (value == 1 || value == 8 || value == 126)) {
+        if (cont == 85 && (value == 1 || value == 8 || value == 16 || value == 126)) {
             int sf_id, program_id, bank_id;
             fluid_synth_get_program (style_synth, chan, &sf_id, &bank_id, &program_id);
             fluid_synth_program_select (style_synth, chan, realtime_synth_sf_id, value, program_id);
