@@ -409,7 +409,6 @@ namespace Ensembles.Shell {
                 case KeyboardConstants.KeyMap.MINUS_NUMPAD:
                 case KeyboardConstants.KeyMap.PLUS_NUMPAD:
                 return true;
-                
                 // Registration Memory
                 case KeyboardConstants.KeyMap.MINUS_KEYPAD:
                 case KeyboardConstants.KeyMap.PLUS_KEYPAD:
@@ -682,7 +681,6 @@ namespace Ensembles.Shell {
                 case KeyboardConstants.KeyMap.PLUS_NUMPAD:
                 style_var_d ();
                 break;
-                
                 // Registration Memory
                 case KeyboardConstants.KeyMap.MINUS_KEYPAD:
                 registration_bank_change (false);
