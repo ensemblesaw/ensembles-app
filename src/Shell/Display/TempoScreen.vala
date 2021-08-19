@@ -69,7 +69,7 @@ namespace Ensembles.Shell {
         private void tempo_changed () {
             changed (tempo_spin_button.get_value_as_int ());
         }
-        
+
         public void scroll_wheel_activate () {
             close_screen ();
         }

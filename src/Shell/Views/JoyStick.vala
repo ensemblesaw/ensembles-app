@@ -33,7 +33,7 @@ namespace Ensembles.Shell {
 
         private double x_value;
         private double y_value;
-        
+
         public signal void drag_x (double value);
         public signal void drag_y (double value);
         public signal void assignable_clicked_x (bool assignable);
