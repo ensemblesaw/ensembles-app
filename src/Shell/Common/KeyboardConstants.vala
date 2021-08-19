@@ -16,6 +16,7 @@
  *
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
  */
+// vala-lint=skip-file
 
  namespace Ensembles.Shell {
     public class KeyboardConstants {
