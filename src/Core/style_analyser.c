@@ -77,6 +77,7 @@ style_analyser (char* style) {
                     time_signature_n = *(buffer + i + 3);
                     set_central_beats_per_bar (time_signature_n);
                     time_signature_d = pow (2, *(buffer + i + 4));
+                    set_central_quarter_notes_per_bar (time_signature_d);
                     printf ("Time Signature = %d/%d\n", time_signature_n, time_signature_d);
                 }
             }
@@ -145,6 +146,6 @@ int
 style_analyser_analyze (char* mid_file) {
     time_stamp_index = 0;
     time_signature_n = 4;
-    time_signature_n = 4;
+    time_signature_d = 4;
     return style_analyser (mid_file);
 }

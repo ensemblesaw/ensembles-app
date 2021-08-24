@@ -168,7 +168,7 @@ namespace Ensembles.Shell {
                 style_controller_view.sync ();
                 main_display_unit.set_measure_display (Ensembles.Core.CentralBus.get_measure ());
                 if (metronome_player.looping) metronome_player.stop_loop ();
-                metronome_player.play_measure (Core.CentralBus.get_beats_per_bar (), 4);
+                metronome_player.play_measure (Core.CentralBus.get_beats_per_bar (), Core.CentralBus.get_quarter_notes_per_bar ());
             });
             bus.system_halt.connect (() => {
                 style_player.reload_style ();
@@ -206,6 +206,8 @@ namespace Ensembles.Shell {
             bus.loaded_time_signature_change.connect ((n, d) => {
                 if (beat_counter_panel != null) {
                     beat_counter_panel.change_beats_per_bar (n);
+                    beat_counter_panel.change_qnotes_per_bar (d);
+                    print ("ts: %d\n", d);
                 }
             });
             bus.split_key_change.connect (() => {
@@ -265,7 +267,7 @@ namespace Ensembles.Shell {
             ctrl_panel.start_metronome.connect ((active) => {
                 if (active) {
                     Ensembles.Core.CentralBus.set_metronome_on (true);
-                    metronome_player.play_loop (Core.CentralBus.get_beats_per_bar (), 4);
+                    metronome_player.play_loop (Core.CentralBus.get_beats_per_bar (), Core.CentralBus.get_quarter_notes_per_bar ());
                 } else {
                     metronome_player.stop_loop ();
                     Ensembles.Core.CentralBus.set_metronome_on (false);
