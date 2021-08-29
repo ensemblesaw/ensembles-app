@@ -56,7 +56,6 @@ namespace Ensembles.Core {
         public void play_loop (int time_signature_n, int time_signature_d) {
             _time_signature_n = time_signature_n;
             _time_signature_d = time_signature_d;
-            print ("tsssss:%d\n", _time_signature_d);
             if (!CentralBus.get_style_looping_on () && !looping) {
                 looping = true;
                 new Thread<int> ("metronome_loop", loop);
@@ -70,7 +69,7 @@ namespace Ensembles.Core {
                     beat_sync ();
                     return false;
                 });
-                Thread.usleep ((ulong)(960000 / (_tempo * _time_signature_d)) * 1000);
+                Thread.usleep ((ulong)(240000 * _time_signature_n / (_tempo * _time_signature_d)) * 1000);
                 metronome_lfo_player_play ();
                 Thread.yield ();
             }

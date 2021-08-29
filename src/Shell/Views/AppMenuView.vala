@@ -96,22 +96,15 @@ namespace Ensembles.Shell {
             var header_separator_b = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
             menu_box.pack_start (header_separator_b);
 
-            var device_input_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
-            var device_list_header = new Gtk.Label (_("Midi Input"));
-            device_list_header.halign = Gtk.Align.START;
-            device_list_header.get_style_context ().add_class ("h4");
-            var device_monitor_toggle = new Gtk.Switch ();
-            device_monitor_toggle.halign = Gtk.Align.END;
-            device_monitor_toggle.margin = 8;
-            device_input_box.pack_start (device_list_header);
-            device_input_box.pack_end (device_monitor_toggle);
+            var device_input_item = new Granite.SwitchModelButton (_("Midi Input"));
+            device_input_item.get_style_context ().add_class ("h4");
 
             var revealer = new Gtk.Revealer ();
             revealer.transition_type = Gtk.RevealerTransitionType.SLIDE_DOWN;
 
-            device_monitor_toggle.notify["active"].connect (() => {
-                revealer.reveal_child = device_monitor_toggle.active;
-                change_enable_midi_input (device_monitor_toggle.active);
+            device_input_item.notify["active"].connect (() => {
+                revealer.reveal_child = device_input_item.active;
+                change_enable_midi_input (device_input_item.active);
             });
 
             device_list_box = new Gtk.ListBox ();
@@ -126,9 +119,24 @@ namespace Ensembles.Shell {
 
             revealer.add (device_list_box);
 
-            menu_box.pack_start (device_input_box);
+            menu_box.pack_start (device_input_item);
             menu_box.pack_start (revealer);
 
+            var manual_button = new Gtk.ModelButton ();
+            manual_button.text = (_("Open Manual"));
+            manual_button.get_style_context ().add_class ("h4");
+            manual_button.clicked.connect (() => {
+                var file = File.new_for_path (Constants.PKGDATADIR + "/docs/ensembles_manual.pdf");
+                if (file.query_exists ()) {
+                    try {
+                        AppInfo.launch_default_for_uri (file.get_uri (), null);
+                    } catch (Error e) {
+                        warning ("Unable to open manual");
+                    }
+                }
+            });
+            menu_box.pack_start (new Gtk.Separator (Gtk.Orientation.HORIZONTAL));
+            menu_box.pack_start (manual_button);
             menu_box.show_all ();
             this.add (menu_box);
         }
