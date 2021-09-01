@@ -2,7 +2,7 @@
 project (
     'com.github.subhadeepjasu.ensembles',
     'c', 'vala',
-    version: '0.0.1',
+    version: '0.0.12',
 )
 
 # GNOME module
