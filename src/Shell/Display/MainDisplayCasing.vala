@@ -223,5 +223,48 @@ namespace Ensembles.Shell {
             voice_menu_l.load_settings ();
             style_menu.load_settings (tempo);
         }
+
+        public void wheel_scroll (bool direction, int amount) {
+            if (main_display_leaflet.get_visible_child () == main_stack) {
+                switch (main_stack.get_visible_child_name ()) {
+                    case "Tempo Screen":
+                    tempo_screen.scroll_wheel_scroll (direction, amount);
+                    break;
+                    case "Voice R1 Menu":
+                    voice_menu_r1.scroll_wheel_scroll (direction, amount);
+                    break;
+                    case "Voice R2 Menu":
+                    voice_menu_r2.scroll_wheel_scroll (direction, amount);
+                    break;
+                    case "Voice L Menu":
+                    voice_menu_l.scroll_wheel_scroll (direction, amount);
+                    break;
+                    case "Styles Menu":
+                    style_menu.scroll_wheel_scroll (direction, amount);
+                    break;
+                }
+            }
+        }
+        public void wheel_activate () {
+            if (main_display_leaflet.get_visible_child () == main_stack) {
+                switch (main_stack.get_visible_child_name ()) {
+                    case "Tempo Screen":
+                    tempo_screen.scroll_wheel_activate ();
+                    break;
+                    case "Voice R1 Menu":
+                    voice_menu_r1.scroll_wheel_activate ();
+                    break;
+                    case "Voice R2 Menu":
+                    voice_menu_r2.scroll_wheel_activate ();
+                    break;
+                    case "Voice L Menu":
+                    voice_menu_l.scroll_wheel_activate ();
+                    break;
+                    case "Styles Menu":
+                    style_menu.scroll_wheel_activate ();
+                    break;
+                }
+            }
+        }
     }
 }

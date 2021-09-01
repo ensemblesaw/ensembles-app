@@ -216,7 +216,8 @@ parse_midi_events (void *data, fluid_midi_event_t *event) {
     
 
     // Send data to synth
-    handle_events_for_styles (new_event);
+    if (breaking == 0)
+        handle_events_for_styles (new_event);
     return 0;
 }
 
@@ -251,7 +252,7 @@ style_player_halt_continuous_notes () {
 
 int
 parse_ticks (void* data, int ticks) {
-    if (chord_change_queued == 1) {
+    if (chord_change_queued == 1 && breaking == 0) {
         chord_change_queued = 0;
         printf ("chord -> %d\n", chord_main);
         synthesizer_halt_notes ();
@@ -282,6 +283,7 @@ parse_ticks (void* data, int ticks) {
     //printf (">>> %d\n", (ticks - loop_start_tick) % measure_length);
     if (get_central_clock () == 0 && ((ticks - loop_start_tick) % measure_length) <= 1) {
         set_central_clock (1);
+        breaking = 0;
         fill_queue = 0;
         fill_in = 0;
         set_central_style_section (start_s);
@@ -317,7 +319,6 @@ parse_ticks (void* data, int ticks) {
                     set_central_measure (0);
                     style_player_halt_continuous_notes ();
                 }
-                breaking = 0;
                 style_player_halt_continuous_notes ();
                 return fluid_player_seek (player, loop_start_tick - 2);
             }
@@ -524,4 +525,5 @@ style_player_queue_ending (int start, int end) {
 void
 style_player_break () {
     breaking = 1;
+    synthesizer_halt_notes ();
 }

@@ -110,13 +110,25 @@ int get_central_loaded_tempo ();
  * value; either from previous style in a continuation or from the user
  */
 void set_central_loaded_tempo (int value);
+
+
 /** This function returns the number of beats per bar of style
  */
 int get_central_beats_per_bar ();
-/** THis function is used by analyser to set beats per bar value
+/** This function is used by analyser to set beats per bar value
  * of style
  */
 void set_central_beats_per_bar (int value);
+
+
+/** This function returns the number of quarter notes in a bar of style
+ */
+int get_central_quarter_notes_per_bar ();
+/** This function sets the number of quarter notes in a bar of style
+ */
+void set_central_quarter_notes_per_bar (int value);
+
+
 /** This function returns 1 if the style is playing else it returns 0
  */
 int get_central_style_looping ();

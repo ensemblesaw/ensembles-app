@@ -337,10 +337,10 @@ namespace Ensembles.Shell {
             });
             pitch_button.button_release_event.connect ((event) => {
                 if (event.button == 3 && _synth_index == 1) {
-                    Ensembles.Core.Synthesizer.lock_modulator (66, _channel);
+                    Ensembles.Core.Synthesizer.lock_modulator (3, _channel);
                     pitch_button.get_style_context ().remove_class ("channel-modulator-lock");
                 } else if (event.button == 1 && assignable) {
-                    broadcast_assignment (_synth_index, _channel, 66);
+                    broadcast_assignment (_synth_index, _channel, 3);
                 }
                 return false;
             });

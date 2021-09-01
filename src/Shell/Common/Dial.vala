@@ -129,7 +129,11 @@ namespace Ensembles.Shell {
         public void rotate_dial (double value) {
             double px = RADIUS * GLib.Math.cos (value / (Math.PI));
             double py = RADIUS * GLib.Math.sin (value / (Math.PI));
-            fixed.move (knob_socket_graphic, (int)(px + 50), (int)(py + 50));
+            Idle.add (() => {
+                fixed.move (knob_socket_graphic, (int)(px + 50), (int)(py + 50));
+                fixed.queue_draw ();
+                return false;
+            });
         }
 
         public void animate_rotate_dial (bool direction) {

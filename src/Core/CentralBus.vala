@@ -25,7 +25,8 @@ namespace Ensembles.Core {
         // Bus access for shell
         int style_section = 0;
         int loaded_tempo = 10;
-        int loaded_time_sig = 4;
+        int loaded_time_sig_n = 4;
+        int loaded_time_sig_d = 4;
 
 
         // System Ready Messages
@@ -58,9 +59,10 @@ namespace Ensembles.Core {
                     loaded_tempo_change (central_loaded_tempo);
                     loaded_tempo = central_loaded_tempo;
                 }
-                if (loaded_time_sig != central_beats_per_bar) {
-                    loaded_time_signature_change (central_beats_per_bar, 4);
-                    loaded_time_sig = central_beats_per_bar;
+                if (loaded_time_sig_n != central_beats_per_bar || loaded_time_sig_d != central_quarter_notes_per_bar) {
+                    loaded_time_signature_change (central_beats_per_bar, central_quarter_notes_per_bar);
+                    loaded_time_sig_n = central_beats_per_bar;
+                    loaded_time_sig_d = central_quarter_notes_per_bar;
                 }
                 if (styles_loaded_ready != styles_ready) {
                     styles_loaded_ready = styles_ready;
@@ -116,6 +118,10 @@ namespace Ensembles.Core {
 
         public static int get_beats_per_bar () {
             return central_beats_per_bar;
+        }
+
+        public static int get_quarter_notes_per_bar () {
+            return central_quarter_notes_per_bar;
         }
 
         public static int get_split_key () {
@@ -178,6 +184,7 @@ extern int central_measure;
 extern int central_style_section;
 extern int central_loaded_tempo;
 extern int central_beats_per_bar;
+extern int central_quarter_notes_per_bar;
 extern int central_split_key;
 extern int central_split_on;
 extern int central_layer_on;

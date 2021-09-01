@@ -76,82 +76,82 @@ namespace Ensembles.Shell {
             });
             registry_buttons[0].clicked.connect (() => {
                 if (assignable) {
-                    registry_memorize (bank_select.get_value_as_int () - 1, 0);
+                    registry_memorize (0);
                     assignable = false;
                 } else {
-                    registry_recall (bank_select.get_value_as_int () - 1, 0);
+                    registry_recall (0);
                 }
             });
             registry_buttons[1].clicked.connect (() => {
                 if (assignable) {
-                    registry_memorize (bank_select.get_value_as_int () - 1, 1);
+                    registry_memorize (1);
                     assignable = false;
                 } else {
-                    registry_recall (bank_select.get_value_as_int () - 1, 1);
+                    registry_recall (1);
                 }
             });
             registry_buttons[2].clicked.connect (() => {
                 if (assignable) {
-                    registry_memorize (bank_select.get_value_as_int () - 1, 2);
+                    registry_memorize (2);
                     assignable = false;
                 } else {
-                    registry_recall (bank_select.get_value_as_int () - 1, 2);
+                    registry_recall (2);
                 }
             });
             registry_buttons[3].clicked.connect (() => {
                 if (assignable) {
-                    registry_memorize (bank_select.get_value_as_int () - 1, 3);
+                    registry_memorize (3);
                     assignable = false;
                 } else {
-                    registry_recall (bank_select.get_value_as_int () - 1, 3);
+                    registry_recall (3);
                 }
             });
             registry_buttons[4].clicked.connect (() => {
                 if (assignable) {
-                    registry_memorize (bank_select.get_value_as_int () - 1, 4);
+                    registry_memorize (4);
                     assignable = false;
                 } else {
-                    registry_recall (bank_select.get_value_as_int () - 1, 4);
+                    registry_recall (4);
                 }
             });
             registry_buttons[5].clicked.connect (() => {
                 if (assignable) {
-                    registry_memorize (bank_select.get_value_as_int () - 1, 5);
+                    registry_memorize (5);
                     assignable = false;
                 } else {
-                    registry_recall (bank_select.get_value_as_int () - 1, 5);
+                    registry_recall (5);
                 }
             });
             registry_buttons[6].clicked.connect (() => {
                 if (assignable) {
-                    registry_memorize (bank_select.get_value_as_int () - 1, 6);
+                    registry_memorize (6);
                     assignable = false;
                 } else {
-                    registry_recall (bank_select.get_value_as_int () - 1, 6);
+                    registry_recall (6);
                 }
             });
             registry_buttons[7].clicked.connect (() => {
                 if (assignable) {
-                    registry_memorize (bank_select.get_value_as_int () - 1, 7);
+                    registry_memorize (7);
                     assignable = false;
                 } else {
-                    registry_recall (bank_select.get_value_as_int () - 1, 7);
+                    registry_recall (7);
                 }
             });
             registry_buttons[8].clicked.connect (() => {
                 if (assignable) {
-                    registry_memorize (bank_select.get_value_as_int () - 1, 8);
+                    registry_memorize (8);
                     assignable = false;
                 } else {
-                    registry_recall (bank_select.get_value_as_int () - 1, 8);
+                    registry_recall (8);
                 }
             });
             registry_buttons[9].clicked.connect (() => {
                 if (assignable) {
-                    registry_memorize (bank_select.get_value_as_int () - 1, 9);
+                    registry_memorize (9);
                     assignable = false;
                 } else {
-                    registry_recall (bank_select.get_value_as_int () - 1, 9);
+                    registry_recall (9);
                 }
             });
         }
@@ -166,11 +166,24 @@ namespace Ensembles.Shell {
             }
         }
 
-        void registry_memorize (int bank, int index) {
+        public void change_bank (bool up) {
+            warning ("hello");
+            if (up) {
+                if (bank_select.get_value_as_int () < 9) {
+                    bank_select.set_value (bank_select.get_value () + 1);
+                }
+            } else {
+                if (bank_select.get_value_as_int () > 1) {
+                    bank_select.set_value (bank_select.get_value () - 1);
+                }
+            }
+        }
+
+        void registry_memorize (uint index) {
             if (registry_memory == null) {
                 registry_memory = new Core.Registry [16, 10];
             }
-            registry_memory[bank, index] = new Core.Registry (
+            registry_memory[bank_select.get_value_as_int () - 1, index] = new Core.Registry (
                 EnsemblesApp.settings.get_int ("voice-r1-index"),
                 EnsemblesApp.settings.get_int ("voice-r2-index"),
                 EnsemblesApp.settings.get_int ("voice-l-index"),
@@ -195,7 +208,8 @@ namespace Ensembles.Shell {
             make_buttons_pulse (false);
         }
 
-        void registry_recall (int bank, int index) {
+        public void registry_recall (uint index) {
+            uint bank = bank_select.get_value_as_int () - 1;
             if (registry_memory != null && registry_memory[bank, index] != null) {
                 EnsemblesApp.settings.set_int ("voice-r1-index", registry_memory[bank, index].voice_r1);
                 EnsemblesApp.settings.set_int ("voice-r2-index", registry_memory[bank, index].voice_r2);

@@ -638,6 +638,14 @@
     min-width: 16px;
 }
 
+.keyboard-top-bar > grid > button {
+    font-size: 10px;
+    padding: 0;
+    padding-left: 8px;
+    padding-right: 8px;
+    margin-right: 4px;
+}
+
 .keyboard-background {
     background-image:linear-gradient(#505050 0%, #383838 23px, #000 24px, #333);
 	border-top: 1px solid #222;
@@ -710,4 +718,14 @@
     100% {
         background: alpha(#7a0000, 0);
     }
+}
+
+
+.touch-feedback {
+    background-image: radial-gradient(alpha(#fff, 0.0),alpha(#fff, 0) 70%);
+    transition: all 0.5s;
+}
+
+.touch-feedback-active {
+    background-image: radial-gradient(alpha(#fff, 0.5),alpha(#fff, 0) 70%);
 }

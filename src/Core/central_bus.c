@@ -124,6 +124,13 @@ void set_central_beats_per_bar (int value) {
     central_beats_per_bar = value;
 }
 
+int central_quarter_notes_per_bar;
+int get_central_quarter_notes_per_bar () {
+    return central_quarter_notes_per_bar;
+}
+void set_central_quarter_notes_per_bar (int value) {
+    central_quarter_notes_per_bar = value;
+}
 
 // Style parameters
 int central_style_looping;

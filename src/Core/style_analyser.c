@@ -56,9 +56,31 @@ style_analyser (char* style) {
         printf ("Error: Invalid style\n");
     }
     fclose(fp);
+    int ticks_per_beat = 0;
 
     for (long i = 0; i < filelen; i++) {
-        if (*(buffer + i) == 0xffffffff) {
+        if (*(buffer + i) == 0x4D) {
+            if (*(buffer + i + 1) == 0x54) {
+                if (*(buffer + i + 2) == 0x68) {
+                    if (*(buffer + i + 3) == 0x64) {
+                        int a = *(buffer + i + 12);
+                        int b = *(buffer + i + 13);
+                        ticks_per_beat = (a << 8) | (b & 0x000000ff);
+                        printf ("Ticks: ///////// %d //////\n", ticks_per_beat);
+                    }
+                }
+            }
+        }
+        if (*(buffer + i) == 0xffffffff && ticks_per_beat > 0) {
+            if (*(buffer + i + 1) == 0x58) {
+                if (*(buffer + i + 2) == 0x04) {
+                    time_signature_n = *(buffer + i + 3);
+                    set_central_beats_per_bar (time_signature_n);
+                    time_signature_d = pow (2, *(buffer + i + 4));
+                    set_central_quarter_notes_per_bar (time_signature_d);
+                    printf ("Time Signature = %d/%d\n", time_signature_n, time_signature_d);
+                }
+            }
             if (*(buffer + i + 1) == 0x06) {
                 int length = (*(buffer + i + 2));
                 char* string = (char *) malloc (sizeof(char) * length);
@@ -67,13 +89,13 @@ style_analyser (char* style) {
                 }
                 char *e;
                 e = strchr(string, ':');
-                int index_ticks = (int)(e - string);
-                int ticks = 0;
-                if (index_ticks < length && index_ticks > 0) {
-                    char subbuff[length - index_ticks + 1];
-                    memcpy (subbuff, &string[index_ticks + 1], length - index_ticks );
-                    subbuff[length - index_ticks] = '\0';
-                    ticks = atoi (subbuff);
+                int index_measure = (int)(e - string);
+                int measure = 0;
+                if (index_measure < length && index_measure > 0) {
+                    char subbuff[length - index_measure + 1];
+                    memcpy (subbuff, &string[index_measure + 1], length - index_measure );
+                    subbuff[length - index_measure] = '\0';
+                    measure = atoi (subbuff);
                 }
                 int tempo = 0;
                 char* f;
@@ -100,18 +122,10 @@ style_analyser (char* style) {
                     chord_type = atoi (subbuff);
                     set_central_style_original_chord_type (chord_type);
                 }
-                time_stamps[time_stamp_index++] = (int)(ticks/2);
-                //printf ("%s %d %d\n", string, ticks, central_loaded_tempo);
+                time_stamps[time_stamp_index++] = (int)(((measure - 1) * 4 * time_signature_n  * ticks_per_beat) / time_signature_d);
+                printf ("Style: /// %s %d\n", string, time_stamps[time_stamp_index-1]);
                 free(string);
                 //string = NULL;
-            }
-            if (*(buffer + i + 1) == 0x58) {
-                if (*(buffer + i + 2) == 0x04) {
-                    time_signature_n = *(buffer + i + 3);
-                    set_central_beats_per_bar (time_signature_n);
-                    time_signature_d = pow (2, *(buffer + i + 4));
-                    printf ("Time Signature = %d/%d\n", time_signature_n, time_signature_d);
-                }
             }
             // if (*(buffer + i + 1) == 0x51) {
             //     if (*(buffer + i + 2) == 0x03) {
@@ -132,6 +146,6 @@ int
 style_analyser_analyze (char* mid_file) {
     time_stamp_index = 0;
     time_signature_n = 4;
-    time_signature_n = 4;
+    time_signature_d = 4;
     return style_analyser (mid_file);
 }

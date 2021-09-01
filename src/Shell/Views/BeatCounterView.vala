@@ -33,6 +33,7 @@ namespace Ensembles.Shell {
 
         int tempo = 10;
         int beats_per_bar = 4;
+        int quarter_notes_per_bar = 4;
 
         bool halt_ack = false;
 
@@ -107,6 +108,12 @@ namespace Ensembles.Shell {
             }
         }
 
+        public void change_qnotes_per_bar (int qnotes) {
+            if (qnotes > 0) {
+                this.quarter_notes_per_bar = qnotes;
+            }
+        }
+
         public void sync () {
             switch (beats_per_bar) {
                 case 1:
@@ -117,7 +124,7 @@ namespace Ensembles.Shell {
                 if (halt_ack) {
                     halt_ack = false;
                 } else {
-                    Timeout.add ((uint)(60000 / tempo), () => {
+                    Timeout.add ((uint)(240000 / (tempo * quarter_notes_per_bar)), () => {
                         if (halt_ack) {
                             halt_ack = false;
                         } else {
@@ -132,12 +139,12 @@ namespace Ensembles.Shell {
                 if (halt_ack) {
                     halt_ack = false;
                 } else {
-                    Timeout.add ((uint)(60000 / tempo), () => {
+                    Timeout.add ((uint)(240000 / (tempo * quarter_notes_per_bar)), () => {
                         if (halt_ack) {
                             halt_ack = false;
                         } else {
                             pulse_1 ();
-                            Timeout.add ((uint)(60000 / tempo), () => {
+                            Timeout.add ((uint)(240000 / (tempo * quarter_notes_per_bar)), () => {
                                 pulse_2 ();
                                 return false;
                             });
@@ -151,14 +158,14 @@ namespace Ensembles.Shell {
                 if (halt_ack) {
                     halt_ack = false;
                 } else {
-                    Timeout.add ((uint)(60000 / tempo), () => {
+                    Timeout.add ((uint)(240000 / (tempo * quarter_notes_per_bar)), () => {
                         if (halt_ack) {
                             halt_ack = false;
                         } else {
                             pulse_1 ();
-                            Timeout.add ((uint)(60000 / tempo), () => {
+                            Timeout.add ((uint)(240000 / (tempo * quarter_notes_per_bar)), () => {
                                 pulse_2 ();
-                                Timeout.add ((uint)(60000 / tempo), () => {
+                                Timeout.add ((uint)(240000 / (tempo * quarter_notes_per_bar)), () => {
                                     pulse_3 ();
                                     return false;
                                 });
@@ -174,16 +181,16 @@ namespace Ensembles.Shell {
                 if (halt_ack) {
                     halt_ack = false;
                 } else {
-                    Timeout.add ((uint)(60000 / tempo), () => {
+                    Timeout.add ((uint)(240000 / (tempo * quarter_notes_per_bar)), () => {
                         if (halt_ack) {
                             halt_ack = false;
                         } else {
                             pulse_1 ();
-                            Timeout.add ((uint)(60000 / tempo), () => {
+                            Timeout.add ((uint)(240000 / (tempo * quarter_notes_per_bar)), () => {
                                 pulse_2 ();
-                                Timeout.add ((uint)(60000 / tempo), () => {
+                                Timeout.add ((uint)(240000 / (tempo * quarter_notes_per_bar)), () => {
                                     pulse_3 ();
-                                    Timeout.add ((uint)(60000 / tempo), () => {
+                                    Timeout.add ((uint)(240000 / (tempo * quarter_notes_per_bar)), () => {
                                         pulse_2 ();
                                         return false;
                                     });
@@ -201,18 +208,18 @@ namespace Ensembles.Shell {
                 if (halt_ack) {
                     halt_ack = false;
                 } else {
-                    Timeout.add ((uint)(60000 / tempo), () => {
+                    Timeout.add ((uint)(240000 / (tempo * quarter_notes_per_bar)), () => {
                         if (halt_ack) {
                             halt_ack = false;
                         } else {
                             pulse_1 ();
-                            Timeout.add ((uint)(60000 / tempo), () => {
+                            Timeout.add ((uint)(240000 / (tempo * quarter_notes_per_bar)), () => {
                                 pulse_2 ();
-                                Timeout.add ((uint)(60000 / tempo), () => {
+                                Timeout.add ((uint)(240000 / (tempo * quarter_notes_per_bar)), () => {
                                     pulse_3 ();
-                                    Timeout.add ((uint)(60000 / tempo), () => {
+                                    Timeout.add ((uint)(240000 / (tempo * quarter_notes_per_bar)), () => {
                                         pulse_2 ();
-                                        Timeout.add ((uint)(60000 / tempo), () => {
+                                        Timeout.add ((uint)(240000 / (tempo * quarter_notes_per_bar)), () => {
                                             pulse_3 ();
                                             return false;
                                         });
@@ -232,20 +239,20 @@ namespace Ensembles.Shell {
                 if (halt_ack) {
                     halt_ack = false;
                 } else {
-                    Timeout.add ((uint)(60000 / tempo), () => {
+                    Timeout.add ((uint)(240000 / (tempo * quarter_notes_per_bar)), () => {
                         if (halt_ack) {
                             halt_ack = false;
                         } else {
                             pulse_1 ();
-                            Timeout.add ((uint)(60000 / tempo), () => {
+                            Timeout.add ((uint)(240000 / (tempo * quarter_notes_per_bar)), () => {
                                 pulse_2 ();
-                                Timeout.add ((uint)(60000 / tempo), () => {
+                                Timeout.add ((uint)(240000 / (tempo * quarter_notes_per_bar)), () => {
                                     pulse_3 ();
-                                    Timeout.add ((uint)(60000 / tempo), () => {
+                                    Timeout.add ((uint)(240000 / (tempo * quarter_notes_per_bar)), () => {
                                         pulse_1 ();
-                                        Timeout.add ((uint)(60000 / tempo), () => {
+                                        Timeout.add ((uint)(240000 / (tempo * quarter_notes_per_bar)), () => {
                                             pulse_2 ();
-                                            Timeout.add ((uint)(60000 / tempo), () => {
+                                            Timeout.add ((uint)(240000 / (tempo * quarter_notes_per_bar)), () => {
                                                 pulse_3 ();
                                                 return false;
                                             });
@@ -267,30 +274,30 @@ namespace Ensembles.Shell {
                 if (halt_ack) {
                     halt_ack = false;
                 } else {
-                    Timeout.add ((uint)(60000 / tempo), () => {
+                    Timeout.add ((uint)(240000 / (tempo * quarter_notes_per_bar)), () => {
                         if (halt_ack) {
                             halt_ack = false;
                         } else {
                             pulse_1 ();
-                            Timeout.add ((uint)(60000 / tempo), () => {
+                            Timeout.add ((uint)(240000 / (tempo * quarter_notes_per_bar)), () => {
                                 pulse_2 ();
-                                Timeout.add ((uint)(60000 / tempo), () => {
+                                Timeout.add ((uint)(240000 / (tempo * quarter_notes_per_bar)), () => {
                                     pulse_1 ();
-                                    Timeout.add ((uint)(60000 / tempo), () => {
+                                    Timeout.add ((uint)(240000 / (tempo * quarter_notes_per_bar)), () => {
                                         pulse_2 ();
-                                        Timeout.add ((uint)(60000 / tempo), () => {
+                                        Timeout.add ((uint)(240000 / (tempo * quarter_notes_per_bar)), () => {
                                             pulse_3 ();
-                                            Timeout.add ((uint)(60000 / tempo), () => {
+                                            Timeout.add ((uint)(240000 / (tempo * quarter_notes_per_bar)), () => {
                                                 pulse_1 ();
-                                                Timeout.add ((uint)(60000 / tempo), () => {
+                                                Timeout.add ((uint)(240000 / (tempo * quarter_notes_per_bar)), () => {
                                                     pulse_2 ();
-                                                    Timeout.add ((uint)(60000 / tempo), () => {
+                                                    Timeout.add ((uint)(240000 / (tempo * quarter_notes_per_bar)), () => {
                                                         pulse_3 ();
-                                                        Timeout.add ((uint)(60000 / tempo), () => {
+                                                        Timeout.add ((uint)(240000 / (tempo * quarter_notes_per_bar)), () => {
                                                             pulse_1 ();
-                                                            Timeout.add ((uint)(60000 / tempo), () => {
+                                                            Timeout.add ((uint)(240000 / (tempo * quarter_notes_per_bar)), () => {
                                                                 pulse_2 ();
-                                                                Timeout.add ((uint)(60000 / tempo), () => {
+                                                                Timeout.add ((uint)(240000 / (tempo * quarter_notes_per_bar)), () => {
                                                                     pulse_3 ();
                                                                     return false;
                                                                 });
@@ -322,7 +329,7 @@ namespace Ensembles.Shell {
 
         public void halt () {
             halt_ack = true;
-            Timeout.add (60000 / (tempo * 2), () => {
+            Timeout.add (120000 / (tempo * quarter_notes_per_bar), () => {
                 halt_ack = false;
                 return false;
             });
@@ -330,28 +337,28 @@ namespace Ensembles.Shell {
 
         void pulse_0 () {
             beat_counter_active_0.set_opacity (1);
-            Timeout.add (60000 / (tempo * 2), () => {
+            Timeout.add (120000 / (tempo * quarter_notes_per_bar), () => {
                 beat_counter_active_0.set_opacity (0);
                 return false;
             });
         }
         void pulse_1 () {
             beat_counter_active_1.set_opacity (1);
-            Timeout.add (60000 / (tempo * 2), () => {
+            Timeout.add (120000 / (tempo * quarter_notes_per_bar), () => {
                 beat_counter_active_1.set_opacity (0);
                 return false;
             });
         }
         void pulse_2 () {
             beat_counter_active_2.set_opacity (1);
-            Timeout.add (60000 / (tempo * 2), () => {
+            Timeout.add (120000 / (tempo * quarter_notes_per_bar), () => {
                 beat_counter_active_2.set_opacity (0);
                 return false;
             });
         }
         void pulse_3 () {
             beat_counter_active_3.set_opacity (1);
-            Timeout.add (60000 / (tempo * 2), () => {
+            Timeout.add (120000 / (tempo * quarter_notes_per_bar), () => {
                 beat_counter_active_3.set_opacity (0);
                 return false;
             });

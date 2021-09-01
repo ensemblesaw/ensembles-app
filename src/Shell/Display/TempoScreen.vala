@@ -6,6 +6,8 @@ namespace Ensembles.Shell {
         public signal void close_screen ();
         public signal void changed (int tempo);
         public TempoScreen () {
+            min_value = 40;
+            max_value = 200;
             row_spacing = 8;
             get_style_context ().add_class ("channel-modulator-screen");
 
@@ -48,16 +50,28 @@ namespace Ensembles.Shell {
             show_all ();
 
             tempo_spin_button.changed.connect (tempo_changed);
+
+            wheel_scrolled_absolute.connect ((value) => {
+                Idle.add (() => {
+                    tempo_spin_button.set_value (value);
+                    return false;
+                });
+            });
         }
 
         public void set_tempo (int tempo) {
             tempo_spin_button.changed.disconnect (tempo_changed);
             tempo_spin_button.set_value ((double) tempo);
+            scroll_wheel_location = tempo;
             tempo_spin_button.changed.connect (tempo_changed);
         }
 
         private void tempo_changed () {
             changed (tempo_spin_button.get_value_as_int ());
+        }
+
+        public void scroll_wheel_activate () {
+            close_screen ();
         }
     }
 }

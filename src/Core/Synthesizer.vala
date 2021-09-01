@@ -38,6 +38,10 @@ namespace Ensembles.Core {
             }
         }
 
+        public void halt_realtime () {
+            synthesizer_halt_realtime ();
+        }
+
         public void set_accompaniment_on (bool active) {
             synthesizer_set_accomp_enable (active ? 1 : 0);
             if (!active) synthesizer_halt_notes ();
@@ -49,6 +53,14 @@ namespace Ensembles.Core {
 
         public void set_master_chorus_level (int level) {
             synthesizer_edit_master_chorus (level);
+        }
+
+        public void set_master_reverb_active (bool active) {
+            synthesizer_set_master_reverb_active (active ? 1 : 0);
+        }
+
+        public void set_master_chorus_active (bool active) {
+            synthesizer_set_master_chorus_active (active ? 1 : 0);
         }
 
         public void change_voice (Voice voice, int channel) {
@@ -126,12 +138,15 @@ extern void synthesizer_init (string loc);
 extern void synthesizer_destruct ();
 extern int synthesizer_send_notes (int key, int on, int velocity, out int type);
 extern void synthesizer_halt_notes ();
+extern void synthesizer_halt_realtime ();
 
 extern void synthesizer_set_accomp_enable (int on);
 
 
 extern void synthesizer_edit_master_reverb (int level);
 extern void synthesizer_edit_master_chorus (int level);
+extern void synthesizer_set_master_reverb_active (int active);
+extern void synthesizer_set_master_chorus_active (int active);
 
 extern void synthesizer_change_voice (int bank, int preset, int channel);
 

@@ -39,6 +39,8 @@ namespace Ensembles.Shell {
         Gtk.Scale slider_8;
         Gtk.Scale slider_9;
 
+        JoyStick joystick;
+
         public signal void change_modulator (int id, double value);
         public signal void send_assignable_mode (bool assignable);
         public signal void open_LFO_editor ();
@@ -64,12 +66,16 @@ namespace Ensembles.Shell {
         int[] knob_c_variables;
         int[] knob_d_variables;
 
+        int[] joystick_x_variables;
+        int[] joystick_y_variables;
+
         bool[] master_knob_assigns;
         bool master_assign_mode;
 
         bool monitoring_lfo = false;
 
-        public SliderBoardView () {
+        public SliderBoardView (JoyStick joystick_instance) {
+            joystick = joystick_instance;
             row_spacing = 4;
             valign = Gtk.Align.START;
             margin = 4;
@@ -172,6 +178,14 @@ namespace Ensembles.Shell {
 
             show_all ();
 
+            joystick.assignable_clicked_x.connect ((assignable) => {
+                send_assignable_mode (assignable);
+            });
+
+            joystick.assignable_clicked_y.connect ((assignable) => {
+                send_assignable_mode (assignable);
+            });
+
             slider_assign_button.clicked.connect (() => {
                 slider_assign_mode = !slider_assign_mode;
                 send_assignable_mode (slider_assign_mode);
@@ -273,6 +287,24 @@ namespace Ensembles.Shell {
                 slider_assign_button.sensitive = !master_assign_mode;
                 knob_assign_button.sensitive = !master_assign_mode;
                 master_knob.set_color (false, 0);
+            });
+
+            joystick.drag_x.connect ((value) => {
+                if (joystick_x_variables != null) {
+                    Ensembles.Core.Synthesizer.set_modulator_value (joystick_x_variables[0],
+                                                                    joystick_x_variables[1],
+                                                                    joystick_x_variables[2],
+                                                                    (int)(value));
+                }
+            });
+
+            joystick.drag_y.connect ((value) => {
+                if (joystick_y_variables != null) {
+                    Ensembles.Core.Synthesizer.set_modulator_value (joystick_y_variables[0],
+                                                                    joystick_y_variables[1],
+                                                                    joystick_y_variables[2],
+                                                                    (int)(value));
+                }
             });
 
             slider_0.change_value.connect ((scroll, value) => {
@@ -757,6 +789,19 @@ namespace Ensembles.Shell {
                 modulator_knob_b.get_style_context ().remove_class ("knob-assignable");
                 modulator_knob_c.get_style_context ().remove_class ("knob-assignable");
                 modulator_knob_d.get_style_context ().remove_class ("knob-assignable");
+            } else if (joystick.assignable) {
+                switch (joystick.assignable_axis) {
+                    case 0:
+                    joystick_x_variables = { synth_index, channel, modulator };
+                    break;
+                    case 1:
+                    joystick_y_variables = { synth_index, channel, modulator };
+                    break;
+                }
+                joystick.assignable = false;
+                joystick.assignable_axis = -1;
+                joystick.make_all_sensitive ();
+                send_assignable_mode (false);
             }
             slider_assign_button.sensitive = true;
             knob_assign_button.sensitive = true;

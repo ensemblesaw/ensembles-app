@@ -62,8 +62,16 @@ namespace Ensembles.Shell {
             main_list.row_activated.connect ((row) => {
                 int index = row.get_index ();
                 _selected_index = index;
+                scroll_wheel_location = index;
                 change_style (style_rows[index].accomp_style);
                 EnsemblesApp.settings.set_int ("style-index", index);
+            });
+
+            wheel_scrolled_absolute.connect ((value) => {
+                Idle.add (() => {
+                    quick_select_row (value, 0);
+                    return false;
+                });
             });
         }
 
@@ -80,6 +88,8 @@ namespace Ensembles.Shell {
                 style_rows[i] = row;
                 main_list.insert (row, -1);
             }
+            min_value = 0;
+            max_value = style_rows.length - 1;
             main_list.show_all ();
             Ensembles.Core.CentralBus.set_styles_ready (true);
         }
@@ -100,18 +110,26 @@ namespace Ensembles.Shell {
         }
 
         public void quick_select_row (int index, int tempo) {
-            main_list.select_row (style_rows[index]);
-            _selected_index = index;
-            Core.Style selected_style = style_rows[index].accomp_style;
-            if (tempo > 0) {
-                selected_style.tempo = tempo;
-            }
-            change_style (selected_style);
-            scroll_to_selected_row ();
+            Idle.add (() => {
+                main_list.select_row (style_rows[index]);
+                _selected_index = index;
+                scroll_wheel_location = index;
+                Core.Style selected_style = style_rows[index].accomp_style;
+                if (tempo > 0) {
+                    selected_style.tempo = tempo;
+                }
+                change_style (selected_style);
+                scroll_to_selected_row ();
+                return false;
+            });
         }
 
         public void load_settings (int? tempo = 0) {
             quick_select_row (EnsemblesApp.settings.get_int ("style-index"), tempo);
+        }
+
+        public void scroll_wheel_activate () {
+            close_menu ();
         }
     }
 }

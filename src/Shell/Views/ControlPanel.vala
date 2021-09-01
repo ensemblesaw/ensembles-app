@@ -43,7 +43,9 @@ namespace Ensembles.Shell {
 
         public signal void accomp_change (bool enable);
         public signal void reverb_change (int level);
+        public signal void reverb_active_change (bool active);
         public signal void chorus_change (int level);
+        public signal void chorus_active_change (bool active);
         public signal void dial_rotate (bool direction, int amount);
         public signal void start_metronome (bool active);
         public signal void dial_activate ();
@@ -83,9 +85,9 @@ namespace Ensembles.Shell {
             transpose_spin_button.set_value (0);
             octave_spin_button = new Gtk.SpinButton.with_range (-2, 2, 1);
             octave_spin_button.set_value (0);
-            arpeggiator_spin_button = new Gtk.SpinButton.with_range (1, 16, 1);
+            arpeggiator_spin_button = new Gtk.SpinButton.with_range (1, 12, 1);
             arpeggiator_spin_button.set_value (1);
-            harmonizer_spin_button = new Gtk.SpinButton.with_range (1, 16, 1);
+            harmonizer_spin_button = new Gtk.SpinButton.with_range (1, 6, 1);
             harmonizer_spin_button.set_value (1);
             reverb_spin_button = new Gtk.SpinButton.with_range (0, 10, 1);
             reverb_spin_button.set_value (5);
@@ -152,9 +154,11 @@ namespace Ensembles.Shell {
                 EnsemblesApp.settings.set_boolean ("octave-shift-on", active);
             });
             reverb_toggle.toggled.connect ((active) => {
+                reverb_active_change (active);
                 EnsemblesApp.settings.set_boolean ("reverb-on", active);
             });
             chorus_toggle.toggled.connect ((active) => {
+                chorus_active_change (active);
                 EnsemblesApp.settings.set_boolean ("chorus-on", active);
             });
             arpeggiator_toggle.toggled.connect ((active) => {
@@ -234,15 +238,17 @@ namespace Ensembles.Shell {
             Ensembles.Core.Synthesizer.set_transpose_active (active);
             active = EnsemblesApp.settings.get_boolean ("octave-shift-on");
             octave_toggle.set_active (active);
-            EnsemblesApp.settings.set_boolean ("octave-shift-on", active);
+            Ensembles.Core.Synthesizer.set_octave_shifted (active);
             active = EnsemblesApp.settings.get_boolean ("arpeggiator-on");
             arpeggiator_toggle.set_active (active);
             active = EnsemblesApp.settings.get_boolean ("harmonizer-on");
             harmonizer_toggle.set_active (active);
             active = EnsemblesApp.settings.get_boolean ("reverb-on");
             reverb_toggle.set_active (active);
+            reverb_active_change (active);
             active = EnsemblesApp.settings.get_boolean ("chorus-on");
             chorus_toggle.set_active (active);
+            chorus_active_change (active);
 
             int level = EnsemblesApp.settings.get_int ("reverb-level");
             reverb_change (level);

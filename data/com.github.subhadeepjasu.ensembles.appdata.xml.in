@@ -8,7 +8,7 @@
   <summary>Play and arrange music live as a one-person band</summary>
   <description>
     <p>Ensembles is a realtime musical performance arranger app. Its built using Vala and Gtk, powered by Fluidsynth.</p>
-    <p>Please note that Ensembles is currently in Beta. While it should work well for most users, there are still bugs and missing features that need to be addressed.</p>
+    <p>Please note that Ensembles is currently in Alpha. While it should work well for most users, there are still bugs and missing features that need to be addressed.</p>
     <p>Features:</p>
     <ul>
         <li>Play any instrument from a selection of more than 200 in-built voices</li>
@@ -17,15 +17,13 @@
         <li>DSP (Digital Signal Processing) effects like filters, reverb and chorus</li>
         <li>Assign knobs and sliders to multiple DSP effects along with a Master Knob which can be used to control multiple knobs and sliders</li>
         <li>Touch based on-screen assignable joystick</li>
-        <li>Play a one-person band along with a Auto Accompaniment Style from over 100 built-in styles based on various genres of music</li>
+        <li>Play a one-person band along with Auto Accompaniment Styles based on various genres of music</li>
         <li>Automate your band with Registration Memory and 12 assignable Multipad Variables</li>
-        <li>Record your playback using Sequencer with 8-Track recording</li>
-        <li>Record your playback into MP3 audio</li>
         <li>Connect to external MIDI keyboard/controller with General MIDI Standard compatibility</li>
     </ul>
   </description>
   <custom>
-    <value key="x-appcenter-color-primary">#D25017</value>
+    <value key="x-appcenter-color-primary">#CD5F20</value>
     <value key="x-appcenter-color-primary-text">#FFFFFF</value>
     <value key="x-appcenter-suggested-price">0</value>
   </custom>
@@ -71,9 +69,37 @@
     <content_attribute id="money-gambling">none</content_attribute>
   </content_rating>
   <releases>
+    <release version="0.0.12" date="2021-09-01">
+      <description>
+        <p>First AppCenter Release</p>
+        <p>New:</p>
+        <ul>
+          <li>Add ability to change tempo</li>
+          <li>Implement scroll wheel and menu buttons</li>
+          <li>Expand Style specification</li>
+          <li>Arpeggiator and Harmonizer</li>
+          <li>Implement state saving and registry memory</li>
+          <li>More styles and instruments</li>
+        </ul>
+      </description>
+    </release>
+    <release version="0.0.11" date="2021-07-22">
+      <description>
+        <p>New:</p>
+        <ul>
+          <li>Sampling Pads</li>
+          <li>Song Player</li>
+        </ul>
+        <p>Improved:</p>
+        <ul>
+          <li>Better memory management</li>
+          <li>Proper style engine and LFO sync</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.0.1" date="2021-07-14">
       <description>
-        <p>Initial release of Ensembles 🚀</p>
+        <p>Say Hi to Ensembles first alpha 🚀</p>
       </description>
     </release>
   </releases>
