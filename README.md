@@ -6,7 +6,7 @@
   <div align="center">
     <b>Musical Performance Arranger Workstation</b>
     <br>
-    <img src="screenshots/Screenshot1.png" width="500">
+    <img src="screenshots/Screenshot.png" width="500">
   </div>
   <br>
 </div>
