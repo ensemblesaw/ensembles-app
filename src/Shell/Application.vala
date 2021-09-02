@@ -61,6 +61,8 @@ namespace Ensembles.Shell {
                 this.add_window (main_window);
                 var sound_indicator_listener = Interfaces.SoundIndicator.listen (main_window);
                 main_window.song_player_state_changed.connect_after (sound_indicator_listener.change_song_state);
+
+                init_theme ();
             }
             if (css_provider == null) {
                 css_provider = new Gtk.CssProvider ();
@@ -116,6 +118,15 @@ namespace Ensembles.Shell {
         public static bool get_is_running_from_flatpak () {
             var flatpak_info = File.new_for_path ("/.flatpak-info");
             return flatpak_info.query_exists ();
+        }
+
+        private void init_theme () {
+            GLib.Value value = GLib.Value (GLib.Type.STRING);
+            Gtk.Settings.get_default ().get_property ("gtk-theme-name", ref value);
+            if (!value.get_string ().has_prefix ("io.elementary.")) {
+                Gtk.Settings.get_default ().set_property ("gtk-icon-theme-name", "elementary");
+                Gtk.Settings.get_default ().set_property ("gtk-theme-name", "io.elementary.stylesheet.blueberry");
+            }
         }
     }
 }
