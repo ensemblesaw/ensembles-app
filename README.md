@@ -71,7 +71,7 @@ com.github.subhadeepjasu.ensembles
 ```
 
 ## Realtime Audio Performance
-The software does require quiet a lot of CPU power. If you notice bad delay or stuttering audio, launch the app from terminal; check to see if there is any error messages stating that fluidsynth was unable to set realtime priority. In that case, edit the file- `/etc/security/limits.conf` and add the following lines:
+The software does require quite a lot of CPU power. If you notice bad delay or stuttering audio, launch the app from terminal; check to see if there is any error messages stating that fluidsynth was unable to set realtime priority. In that case, edit the file- `/etc/security/limits.conf` and add the following lines:
 ```
 @audio   -  rtprio      90
 @audio   -  memlock     unlimited
