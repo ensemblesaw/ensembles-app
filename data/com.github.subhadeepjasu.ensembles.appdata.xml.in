@@ -7,8 +7,8 @@
   <name>Ensembles</name>
   <summary>Play and arrange music live as a one-person band</summary>
   <description>
-    <p>Ensembles is a realtime musical performance arranger app. Its built using Vala and Gtk, powered by Fluidsynth.</p>
-    <p>Please note that Ensembles is currently in Alpha. While it should work well for most users, there are still bugs and missing features that need to be addressed.</p>
+    <p>It is an arranger workstation app where you can play music, arrange a performance or improvise based on styles</p>
+    <p>Please note that it is currently in Alpha. While it should work well for most users, there are still bugs and missing features that need to be addressed.</p>
     <p>Features:</p>
     <ul>
         <li>Play any instrument from a selection of more than 200 in-built voices</li>
