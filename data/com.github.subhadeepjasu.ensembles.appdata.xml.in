@@ -69,6 +69,16 @@
     <content_attribute id="money-gambling">none</content_attribute>
   </content_rating>
   <releases>
+    <release version="0.0.13" date="2021-09-03">
+      <description>
+        <p>Theming fix for when its run on other distros</p>
+        <p>Fixed:</p>
+        <ul>
+          <li>Force the use of elementary stylesheet on other distros</li>
+          <li>Rewrite appdata</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.0.12" date="2021-09-01">
       <description>
         <p>First AppCenter Release</p>

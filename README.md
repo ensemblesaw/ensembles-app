@@ -34,8 +34,7 @@ Ensembles is a realtime musical performance arranger app. Its built using Vala a
 
 However, feel free to test it early
 ## Get it on elementary OS Appcenter
-TBD
-<!-- [![Get it on AppCenter](https://appcenter.elementary.io/badge.svg)](https://appcenter.elementary.io/) -->
+[![Get it on AppCenter](https://appcenter.elementary.io/badge.svg)](https://appcenter.elementary.io/com.github.subhadeepjasu.ensembles/)
 
 ## Install from source
 You can install Ensembles by compiling it from source, here's a list of required dependencies:
