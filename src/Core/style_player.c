@@ -337,7 +337,6 @@ style_player_init () {
     fluid_settings_setint(settings, "audio.periods", 2);
     fluid_settings_setint(settings, "audio.period-size", 64);
     fluid_settings_setint(settings, "audio.realtime-prio", 80);
-    fluid_settings_setint(settings, "audio.pulseaudio.adjust-latency", 0);
     synth = new_fluid_synth(settings);
     adriver = new_fluid_audio_driver(settings, synth);
 }

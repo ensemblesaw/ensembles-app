@@ -15,6 +15,8 @@ finish-args:
   # Required for media keys and MPRIS access
   - '--own-name=org.mpris.MediaPlayer2.com.github.subhadeepjasu.ensembles'
   - '--talk-name=org.gnome.SettingsDaemon.MediaKeys'
+  # For PipeWire
+  - '--filesystem=xdg-run/pipewire-0'
 modules:
   - name: fluidsynth
     buildsystem: cmake-ninja
