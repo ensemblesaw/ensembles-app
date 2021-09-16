@@ -21,7 +21,8 @@
 namespace Ensembles.Core {
     public class StylePlayer : Object {
         public StylePlayer (string? style_file = null) {
-            style_player_init ();
+            bool pipewire_available = Shell.EnsemblesApp.get_is_pipewire_pulse_available ();
+            style_player_init (pipewire_available ? 1 : 0);
             if (style_file != null) {
                 style_player_add_style_file (style_file, 0);
             }
@@ -118,7 +119,7 @@ namespace Ensembles.Core {
     }
 }
 
-extern void style_player_init ();
+extern void style_player_init (int pipewire_mode);
 extern void style_player_add_style_file (string mid_file, int custom_tempo);
 extern void style_player_reload_style ();
 extern void style_player_destruct ();

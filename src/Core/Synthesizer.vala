@@ -20,7 +20,7 @@
 namespace Ensembles.Core {
     public class Synthesizer : Object {
         public Synthesizer (string soundfont) {
-            synthesizer_init (soundfont);
+            synthesizer_init (Shell.EnsemblesApp.pipewire_found ? 1 : 0, soundfont);
         }
 
         ~Synthesizer () {
@@ -134,7 +134,7 @@ namespace Ensembles.Core {
     }
 }
 
-extern void synthesizer_init (string loc);
+extern void synthesizer_init (int pipewire_mode, string loc);
 extern void synthesizer_destruct ();
 extern int synthesizer_send_notes (int key, int on, int velocity, out int type);
 extern void synthesizer_halt_notes ();
