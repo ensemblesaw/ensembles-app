@@ -334,7 +334,7 @@ style_player_init (int pipewire_mode) {
     set_central_style_looping (0);
     settings = new_fluid_settings();
     if (pipewire_mode > 0) {
-        fluid_settings_setstr(settings, "audio.driver", "pulseaudio");
+        fluid_settings_setstr(settings, "audio.driver", "alsa");
         fluid_settings_setint(settings, "audio.periods", 8);
         fluid_settings_setint(settings, "audio.period-size", 128);
     } else {
