@@ -21,8 +21,7 @@
 namespace Ensembles.Core {
     public class StylePlayer : Object {
         public StylePlayer (string? style_file = null) {
-            bool pipewire_available = Shell.EnsemblesApp.get_is_pipewire_pulse_available ();
-            style_player_init (pipewire_available ? 1 : 0);
+            style_player_init (Shell.EnsemblesApp.pipewire_found ? 1 : 0);
             if (style_file != null) {
                 style_player_add_style_file (style_file, 0);
             }
