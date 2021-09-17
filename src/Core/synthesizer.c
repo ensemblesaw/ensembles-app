@@ -139,12 +139,14 @@ void
 synthesizer_init (int pipewire_mode, const gchar* loc) {
     style_synth_settings = new_fluid_settings();
     if (pipewire_mode > 0) {
-        fluid_settings_setstr(style_synth_settings, "audio.driver", "pulseaudio");
-        fluid_settings_setint(style_synth_settings, "audio.periods", 8);
-        fluid_settings_setint(style_synth_settings, "audio.period-size", 1024);
+        fluid_settings_setstr(style_synth_settings, "audio.driver", "pipewire");
+        fluid_settings_setint(style_synth_settings, "audio.period-size", 64);
         fluid_settings_setnum(style_synth_settings, "synth.gain", 2);
         fluid_settings_setnum(style_synth_settings, "synth.overflow.percussion", 5000.0);
         fluid_settings_setstr(style_synth_settings, "synth.midi-bank-select", "gs");
+        fluid_settings_setint(style_synth_settings, "audio.realtime-prio", 1);
+        fluid_settings_setstr(style_synth_settings, "audio.pipewire.media-role", "Production");
+        fluid_settings_setstr(style_synth_settings, "audio.pipewire.media-type", "Audio");
     } else {
         fluid_settings_setstr(style_synth_settings, "audio.driver", "pulseaudio");
         fluid_settings_setint(style_synth_settings, "audio.periods", 8);
@@ -157,12 +159,12 @@ synthesizer_init (int pipewire_mode, const gchar* loc) {
 
     realtime_synth_settings = new_fluid_settings();
     if (pipewire_mode > 0) {
-        fluid_settings_setstr(realtime_synth_settings, "audio.driver", "pulseaudio");
-        fluid_settings_setint(realtime_synth_settings, "audio.periods", 2);
-        fluid_settings_setint(realtime_synth_settings, "audio.period-size", 1024);
+        fluid_settings_setstr(realtime_synth_settings, "audio.driver", "pipewire");
+        fluid_settings_setint(realtime_synth_settings, "audio.period-size", 64);
         fluid_settings_setnum(realtime_synth_settings, "synth.gain", 2);
         fluid_settings_setstr(realtime_synth_settings, "synth.midi-bank-select", "gs");
-        fluid_settings_setint(realtime_synth_settings, "audio.pulseaudio.adjust-latency", 0);
+        fluid_settings_setstr(realtime_synth_settings, "audio.pipewire.media-role", "Production");
+        fluid_settings_setstr(realtime_synth_settings, "audio.pipewire.media-type", "Audio");
     } else {
         fluid_settings_setstr(realtime_synth_settings, "audio.driver", "pulseaudio");
         fluid_settings_setint(realtime_synth_settings, "audio.periods", 2);

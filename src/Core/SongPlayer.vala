@@ -13,7 +13,7 @@ namespace Ensembles.Core {
 
         public SongPlayer (string sf_loc, string midi_file_path) {
             this.sf_loc = sf_loc;
-            music_player_init (sf_loc);
+            music_player_init (Shell.EnsemblesApp.pipewire_found ? 1 : 0, sf_loc);
             current_file_tempo = music_player_load_file (midi_file_path);
             player_status_changed (0.0f, current_file_tempo, get_status ());
             start_monitoring ();
@@ -89,7 +89,7 @@ namespace Ensembles.Core {
     }
 }
 
-extern void music_player_init (string sf_loc);
+extern void music_player_init (int pipewire_mode, string sf_loc);
 extern void music_player_destruct ();
 extern int music_player_load_file (string path);
 extern void music_player_play ();
