@@ -199,6 +199,10 @@
     font-weight: bold;
     color: #bbb;
 }
+
+.font-bold {
+    font-weight: bold;
+}
     
 .display-bottom-panel-label {
     font-size: 14px;
@@ -728,4 +732,9 @@
 
 .touch-feedback-active {
     background-image: radial-gradient(alpha(#fff, 0.5),alpha(#fff, 0) 70%);
+}
+
+
+.preferences-view {
+    background-color: shade (@bg_color, 1.1);
 }

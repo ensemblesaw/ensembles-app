@@ -25,6 +25,7 @@ namespace Ensembles.Shell {
 
         public signal void change_enable_midi_input (bool enable);
         public signal void change_active_input_device (Ensembles.Core.ControllerDevice device);
+        public signal void open_preferences_dialog ();
 
         public AppMenuView (Gtk.Widget? relative_to) {
             this.relative_to = relative_to;
@@ -135,7 +136,15 @@ namespace Ensembles.Shell {
                     }
                 }
             });
+
+            var preferences_button = new Gtk.ModelButton ();
+            preferences_button.text = (_("Settings"));
+            preferences_button.get_style_context ().add_class ("h4");
+            preferences_button.clicked.connect (() => {
+                open_preferences_dialog ();
+            });
             menu_box.pack_start (new Gtk.Separator (Gtk.Orientation.HORIZONTAL));
+            menu_box.pack_start (preferences_button);
             menu_box.pack_start (manual_button);
             menu_box.show_all ();
             this.add (menu_box);

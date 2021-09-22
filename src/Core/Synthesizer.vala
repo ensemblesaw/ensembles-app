@@ -20,7 +20,7 @@
 namespace Ensembles.Core {
     public class Synthesizer : Object {
         public Synthesizer (string soundfont) {
-            synthesizer_init (Shell.EnsemblesApp.pipewire_found ? 1 : 0, soundfont);
+            synthesizer_init (Core.DriverSettingsProvider.pipewire_pulse_found ? 1 : 0, soundfont);
         }
 
         ~Synthesizer () {

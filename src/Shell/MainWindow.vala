@@ -139,6 +139,7 @@ namespace Ensembles.Shell {
                     app_menu.update_devices (devices_found);
                 }
             });
+            app_menu.open_preferences_dialog.connect (open_preferences);
             debug ("STARTUP: Loading Synthesizer");
             synthesizer = new Ensembles.Core.Synthesizer (sf_loc);
             main_keyboard.connect_synthesizer (synthesizer);
@@ -553,6 +554,12 @@ namespace Ensembles.Shell {
             if (song_player != null) {
                 song_player.rewind ();
             }
+        }
+
+        private void open_preferences () {
+            var dialog = new Dialogs.Preferences.Preferences ();
+            dialog.destroy.connect (Gtk.main_quit);
+            dialog.show_all ();
         }
     }
 }
