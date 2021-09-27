@@ -214,9 +214,18 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             var top_box = new Shell.Dialogs.Preferences.TopBox ("audio-card", _("Audio"));
     
             var driver_list = new List<string> ();
-            driver_list.append ("Alsa");
-            driver_list.append ("PulseAudio");
-            driver_list.append ("PipeWire");
+            if (alsa_driver_found > 0) {
+                driver_list.append ("Alsa");
+            }
+            if (pulseaudio_driver_found > 0) {
+                driver_list.append ("PulseAudio");
+            }
+            if (pipewire_driver_found > 0) {
+                driver_list.append ("PipeWire");
+            }
+            if (pipewire_pulse_driver_found > 0) {
+                driver_list.append ("PipeWire Pulse");
+            }
     
             var driver_select = new Dialogs.Preferences.ItemSelect (
                 _("Driver"),
@@ -226,12 +235,14 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             );
             driver_select.margin_top = 12;
 
+            string buffer_length_text = _("Buffer length [%d frames]");
+
             var buffer_length = new Dialogs.Preferences.ItemScale (
-                _("Buffer length [%d frames]"),
-                1024,
-                64,
-                4096,
-                64,
+                buffer_length_text,
+                0,
+                0,
+                1,
+                0.01,
                 true
             );
 
@@ -259,6 +270,10 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             box.hexpand = true;
             box.add (driver_select);
             box.add (buffer_length);
+
+            buffer_length.changed.connect ((value) => {
+                buffer_length.title = buffer_length_text.printf (Core.DriverSettingsProvider.change_period_size (value));
+            });
     
             var box_scrolled = new Gtk.ScrolledWindow (null, null);
             box_scrolled.hscrollbar_policy = Gtk.PolicyType.NEVER;

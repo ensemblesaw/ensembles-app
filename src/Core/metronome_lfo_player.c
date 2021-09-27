@@ -25,6 +25,7 @@
 #include "style_analyser.h"
 #include "central_bus.h"
 #include "synthesizer.h"
+#include "driver_settings_provider.h"
 
 // None of this will be used for actual rendering /////////
 fluid_settings_t* lfo_settings;
@@ -75,15 +76,10 @@ lfo_parse_ticks (void* data, int ticks) {
 
 
 void
-metronome_lfo_player_init (int pipewire_mode) {
-    lfo_settings = new_fluid_settings();
-    if (pipewire_mode > 0) {
-        fluid_settings_setstr(lfo_settings, "audio.driver", "pipewire");
-        fluid_settings_setint(lfo_settings, "audio.period-size", 64);
-    } else {
-        fluid_settings_setint(lfo_settings, "audio.periods", 2);
-        fluid_settings_setint(lfo_settings, "audio.period-size", 64);
-    }
+metronome_lfo_player_init () {
+    lfo_settings = get_settings(METRONOME_PLAYER);
+    // fluid_settings_setint(lfo_settings, "audio.periods", 2);
+    // fluid_settings_setint(lfo_settings, "audio.period-size", 64);
     lfo_synth = new_fluid_synth(lfo_settings);
     lfo_adriver = new_fluid_audio_driver(lfo_settings, lfo_synth);
 }

@@ -26,8 +26,22 @@ public class Ensembles.Shell.Dialogs.Preferences.ItemScale : Gtk.EventBox {
 
     public signal void changed (double value);
 
+    string _title;
+
+    public string title {
+        get {
+            return _title;
+        }
+        set {
+            _title = value;
+            title_label.set_text (_title);
+        }
+    }
+
+    Gtk.Label title_label;
+
     public ItemScale (string title, double value, double lower_limit, double upper_limit, double step, bool visible_separator=true) {
-        var title_label = new Gtk.Label (title.printf ((int)value));
+        title_label = new Gtk.Label (title);
         title_label.get_style_context ().add_class ("font-weight-600");
 
         scale = new Gtk.Scale.with_range (Gtk.Orientation.HORIZONTAL, lower_limit, upper_limit, step);
@@ -57,8 +71,9 @@ public class Ensembles.Shell.Dialogs.Preferences.ItemScale : Gtk.EventBox {
         }
 
         scale.change_value.connect ((scroll, value) => {
-            changed (value);
-            title_label.set_text (title.printf ((int)value));
+            if (value >= lower_limit && value <= upper_limit) {
+                changed (value);
+            }
             return false;
         });
 

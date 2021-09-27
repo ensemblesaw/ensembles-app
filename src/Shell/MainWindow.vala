@@ -59,6 +59,9 @@ namespace Ensembles.Shell {
         public MainWindow () {
             Gtk.Settings settings = Gtk.Settings.get_default ();
             settings.gtk_application_prefer_dark_theme = true;
+
+            debug ("STARTUP: Initializing Settings");
+            Core.DriverSettingsProvider.initialize_drivers ("alsa", 64);
             debug ("STARTUP: Loading Central Bus");
             bus = new Ensembles.Core.CentralBus ();
             make_bus_events ();
