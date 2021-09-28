@@ -61,7 +61,16 @@ namespace Ensembles.Shell {
             settings.gtk_application_prefer_dark_theme = true;
 
             debug ("STARTUP: Initializing Settings");
-            Core.DriverSettingsProvider.initialize_drivers ("alsa", 64);
+
+            string driver_string = get_available_driver (EnsemblesApp.settings.get_string ("driver"));
+            if (driver_string == "") {
+                error ("FATAL: No compatible audio drivers found!");
+            }
+            
+            Core.DriverSettingsProvider.initialize_drivers (
+                driver_string,
+                EnsemblesApp.settings.get_double ("buffer-length")
+            );
             debug ("STARTUP: Loading Central Bus");
             bus = new Ensembles.Core.CentralBus ();
             make_bus_events ();
@@ -563,6 +572,47 @@ namespace Ensembles.Shell {
             var dialog = new Dialogs.Preferences.Preferences ();
             dialog.destroy.connect (Gtk.main_quit);
             dialog.show_all ();
+        }
+
+        private string get_available_driver (string driver_from_settings) {
+            string driver_string = "";
+            switch (EnsemblesApp.settings.get_string ("driver")) {
+                case "alsa":
+                if (alsa_driver_found > 0) {
+                    driver_string = "alsa";
+                }
+                break;
+                case "pulseaudio":
+                if (pulseaudio_driver_found > 0) {
+                    driver_string = "pulseaudio";
+                }
+                break;
+                case "pipewire":
+                if (pipewire_driver_found > 0) {
+                    driver_string = "pipewire";
+                }
+                break;
+                case "pipewire-pulse":
+                if (pipewire_pulse_driver_found > 0) {
+                    driver_string = "pipewire-pulse";
+                }
+                break;
+            }
+            if (driver_string == "") {
+                if (alsa_driver_found > 0) {
+                    return "alsa";
+                }
+                if (pulseaudio_driver_found > 0) {
+                    return "pulseaudio";
+                }
+                if (pipewire_driver_found > 0) {
+                    return "pulseaudio";
+                }
+                if (pipewire_pulse_driver_found > 0) {
+                    return "pipewire-pulse";
+                }
+            }
+            return driver_string;
         }
     }
 }

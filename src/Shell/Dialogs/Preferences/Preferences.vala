@@ -58,6 +58,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             // Add the views to stack
             stack.add_named (get_home_widget (), "home");
             stack.add_named (get_audio_widget (), "audio");
+            stack.add_named (get_about_widget (), "about");
 
             // Show the intended view
             Timeout.add (125, () => {
@@ -226,20 +227,77 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             if (pipewire_pulse_driver_found > 0) {
                 driver_list.append ("PipeWire Pulse");
             }
+
+            int saved_driver = 0;
+
+            switch (EnsemblesApp.settings.get_string ("driver")) {
+                case "alsa":
+                for (int i = 0; i < driver_list.length (); i++) {
+                    if (driver_list.nth_data (i) == "Alsa") {
+                        saved_driver = i;
+                        break;
+                    }
+                }
+                break;
+                case "pulseaudio":
+                for (int i = 0; i < driver_list.length (); i++) {
+                    if (driver_list.nth_data (i) == "PulseAudio") {
+                        saved_driver = i;
+                        break;
+                    }
+                }
+                break;
+                case "pipewire":
+                for (int i = 0; i < driver_list.length (); i++) {
+                    if (driver_list.nth_data (i) == "PipeWire") {
+                        saved_driver = i;
+                        break;
+                    }
+                }
+                break;
+                case "pipewire-pulse":
+                for (int i = 0; i < driver_list.length (); i++) {
+                    if (driver_list.nth_data (i) == "PipeWire Pulse") {
+                        saved_driver = i;
+                        break;
+                    }
+                }
+                break;
+            }
+
     
             var driver_select = new Dialogs.Preferences.ItemSelect (
                 _("Driver"),
-                0,
+                saved_driver,
                 driver_list,
                 false
             );
             driver_select.margin_top = 12;
+            driver_select.activated.connect ((index) => {
+                string driver_string = "";
+                string selected_driver = driver_list.nth_data (index);
+                switch (selected_driver) {
+                    case "Alsa":
+                    driver_string = "alsa";
+                    break;
+                    case "PulseAudio":
+                    driver_string = "pulseaudio";
+                    break;
+                    case "PipeWire":
+                    driver_string = "pipewire";
+                    break;
+                    case "PipeWire Pulse":
+                    driver_string = "pipewire-pulse";
+                    break;
+                }
+                EnsemblesApp.settings.set_string ("driver", driver_string);
+            });
 
             string buffer_length_text = _("Buffer length [%d frames]");
 
             var buffer_length = new Dialogs.Preferences.ItemScale (
                 buffer_length_text,
-                0,
+                EnsemblesApp.settings.get_double ("buffer-length"),
                 0,
                 1,
                 0.01,
@@ -272,6 +330,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             box.add (buffer_length);
 
             buffer_length.changed.connect ((value) => {
+                EnsemblesApp.settings.set_double ("buffer-length", value);
                 buffer_length.title = buffer_length_text.printf (Core.DriverSettingsProvider.change_period_size (value));
             });
     
@@ -293,6 +352,109 @@ namespace Ensembles.Shell.Dialogs.Preferences {
     
             top_box.done_activated.connect (() => {
                 hide_destroy ();
+            });
+    
+            return main_box;
+        }
+
+        private Gtk.Widget get_about_widget () {
+            var top_box = new Dialogs.Preferences.TopBox ("help-about", _("About"));
+    
+            Gdk.Pixbuf header_logo = new Gdk.Pixbuf (Gdk.Colorspace.RGB, true, 8, 2, 2);
+            try {
+                header_logo = new Gdk.Pixbuf.from_resource ("/com/github/subhadeepjasu/ensembles/images/ensembles_logo.svg");
+            } catch (Error e) {
+                warning (e.message);
+            }
+            header_logo = header_logo.scale_simple (256, 59, Gdk.InterpType.BILINEAR);
+            var header_logo_image = new Gtk.Image.from_pixbuf (header_logo);
+            header_logo_image.margin_start = 4;
+            header_logo_image.margin_top = 4;
+    
+            var fluid_version = Core.Synthesizer.get_fluidsynth_version ();
+            var fluidsynth_version = new Gtk.Label (("Powered by FluidSynth v%1.1f").printf (fluid_version));
+            fluidsynth_version.get_style_context ().add_class ("h3");
+            fluidsynth_version.margin_top = 6;
+    
+            var version_label = new Gtk.Label ("AW - 100");
+            version_label.get_style_context ().add_class ("dim-label");
+    
+            var web_item = new Dialogs.Preferences.Item ("web-browser", _("Website"));
+            var github_item = new Dialogs.Preferences.Item ("github", _("Github"));
+            var twitter_item = new Dialogs.Preferences.Item ("online-account-twitter", _("Follow"));
+            var issue_item = new Dialogs.Preferences.Item ("bug", _("Report a Problem"));
+            var translation_item = new Dialogs.Preferences.Item ("config-language", _("Suggest Translations"), true);
+    
+            var grid = new Gtk.Grid ();
+            grid.margin_top = 24;
+            grid.valign = Gtk.Align.START;
+            grid.get_style_context ().add_class ("preferences-view");
+            grid.orientation = Gtk.Orientation.VERTICAL;
+            grid.add (new Gtk.Separator (Gtk.Orientation.HORIZONTAL));
+            grid.add (web_item);
+            grid.add (github_item);
+            grid.add (twitter_item);
+            grid.add (issue_item);
+            grid.add (translation_item);
+            grid.add (new Gtk.Separator (Gtk.Orientation.HORIZONTAL));
+    
+            var main_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+            main_box.expand = true;
+    
+            main_box.pack_start (top_box, false, false, 0);
+            main_box.pack_start (header_logo_image, false, true, 0);
+            main_box.pack_start (version_label, false, true, 0);
+            main_box.pack_start (fluidsynth_version, false, true, 0);
+            main_box.pack_start (grid, false, false, 0);
+    
+            top_box.back_activated.connect (() => {
+                stack.visible_child_name = "home";
+            });
+    
+            top_box.done_activated.connect (() => {
+                hide_destroy ();
+            });
+    
+            web_item.activated.connect (() => {
+                try {
+                    AppInfo.launch_default_for_uri ("https://subhadeepjasu.github.io/#/project/ensembles", null);
+                } catch (Error e) {
+                    warning ("%s\n", e.message);
+                }
+            });
+    
+            github_item.activated.connect (() => {
+                try {
+                    AppInfo.launch_default_for_uri ("https://github.com/SubhadeepJasu/Ensembles", null);
+                } catch (Error e) {
+                    warning ("%s\n", e.message);
+                }
+            });
+    
+            twitter_item.activated.connect (() => {
+                try {
+                    AppInfo.launch_default_for_uri ("https://twitter.com/subhajasu", null);
+                } catch (Error e) {
+                    warning ("%s\n", e.message);
+                }
+            });
+    
+            issue_item.activated.connect (() => {
+                try {
+                    AppInfo.launch_default_for_uri ("https://github.com/SubhadeepJasu/Ensembles/issues", null);
+                } catch (Error e) {
+                    warning ("%s\n", e.message);
+                }
+            });
+    
+            translation_item.activated.connect (() => {
+                try {
+                    AppInfo.launch_default_for_uri (
+                        "https://github.com/SubhadeepJasu/Ensembles/tree/master/po", null
+                    );
+                } catch (Error e) {
+                    warning ("%s\n", e.message);
+                }
             });
     
             return main_box;

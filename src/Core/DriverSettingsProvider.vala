@@ -61,6 +61,9 @@ namespace Ensembles.Core {
                 if (info.contains ("Server Name: PulseAudio (on PipeWire")) {
                     print ("PipeWire Pulse detected!\n");
                     pipewire_pulse_driver_found = 1;
+                    if (pulseaudio_driver_found == 1) {
+                        pulseaudio_driver_found = 0;
+                    }
                     return true;
                 } else {
                     pipewire_pulse_driver_found = 0;

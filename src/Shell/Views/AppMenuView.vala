@@ -33,29 +33,7 @@ namespace Ensembles.Shell {
         }
 
         void make_ui () {
-            Gdk.Pixbuf header_logo = new Gdk.Pixbuf (Gdk.Colorspace.RGB, true, 8, 2, 2);
-            try {
-                header_logo = new Gdk.Pixbuf.from_resource ("/com/github/subhadeepjasu/ensembles/images/ensembles_logo.svg");
-            } catch (Error e) {
-                warning (e.message);
-            }
-            header_logo = header_logo.scale_simple (256, 59, Gdk.InterpType.BILINEAR);
-
-            var fluid_version = Core.Synthesizer.get_fluidsynth_version ();
-            var subheader = new Gtk.Label (("Powered by FluidSynth v%1.1f").printf (fluid_version));
-            subheader.get_style_context ().add_class ("h4");
-            subheader.halign = Gtk.Align.START;
-            var header_separator = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
-
-            var header_logo_image = new Gtk.Image.from_pixbuf (header_logo);
-            header_logo_image.margin_start = 4;
-            header_logo_image.margin_top = 4;
-            header_logo_image.halign = Gtk.Align.START;
-
             var menu_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-            menu_box.pack_start (header_logo_image);
-            menu_box.pack_start (subheader);
-            menu_box.pack_start (header_separator);
 
             var audio_input_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
             var audio_input_label = new Gtk.Label (_("Sampler Source"));

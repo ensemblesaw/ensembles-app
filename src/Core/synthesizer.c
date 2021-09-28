@@ -436,6 +436,6 @@ synthesizer_get_version () {
     int major_version = 0;
     int minor_version = 0;
     int macro_version = 0;
-    fluid_version (&major_version, &minor_version, &major_version);
+    fluid_version (&major_version, &minor_version, &macro_version);
     return (float)major_version + (0.1f * minor_version);
 }

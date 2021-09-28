@@ -143,5 +143,15 @@
 		<summary>Snapshot of registry memory</summary>
 		<description>Registry memory in the form of delimited string array</description>
 	</key>
+
+	<!-- Driver Settings -->
+	<key name="driver" type="s">
+		<default>"alsa"</default>
+		<summary>Audio interface driver</summary>
+	</key>
+	<key name="buffer-length" type="d">
+		<default>0.0</default>
+		<summary>Size of buffer to be processed by the driver</summary>
+	</key>
   </schema>
 </schemalist>

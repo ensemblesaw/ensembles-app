@@ -35,6 +35,7 @@ char* currently_selected_driver;
 void
 driver_settings_provider_init (char* driver, double period_size) {
     printf(driver);
+    printf("\n%lf\n", period_size);
     printf("\n");
     if (style_engine_settings == NULL) {
         if (strcmp (driver, "alsa") == 0) {
@@ -95,7 +96,7 @@ driver_settings_change_period_size (double period_size) {
             fluid_settings_setint(style_engine_settings, "audio.period-size", (int)(86.0 + (period_size * 938.0)));
             fluid_settings_setint(style_synth_settings, "audio.period-size", (int)(86.0 + (period_size * 938.0)));
             fluid_settings_setint(realtime_synth_settings, "audio.period-size", (int)(86.0 + (period_size * 938.0)));
-            fluid_settings_setint(metronome_player_settings, "audio.period-size", 128 + (period_size * 1024));
+            fluid_settings_setint(metronome_player_settings, "audio.period-size", (int)(128.0 + (period_size * 1024.0)));
             printf ("%lf\n", period_size);
             return (int)(86.0 + (period_size * 938.0));
         }
