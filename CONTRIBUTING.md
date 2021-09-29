@@ -89,14 +89,14 @@ At this point, you're ready to make your changes! Feel free to ask for help; eve
         sudo ninja -C _build install
         ```
     
-    4. Clone the SoundFont repository and change direction
+    4. Clone the SoundFont repository and change directory
         ```
         cd ..
         git clone https://gitlab.com/SubhadeepJasu/ensemblesgmsoundfont.git
         cd ensemblesgmsoundfont
         ```
 
-    5. Building:
+    5. Installing SoundFont:
         ```
         meson _build --prefix=/usr
         sudo ninja -C _build install
