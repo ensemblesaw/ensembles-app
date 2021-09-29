@@ -113,6 +113,47 @@ namespace Ensembles.Core {
         public static int change_period_size (double period_size) {
             return driver_settings_change_period_size (period_size);
         }
+
+        public static string get_available_driver (string driver_from_settings) {
+            string driver_string = "";
+            switch (driver_from_settings) {
+                case "alsa":
+                if (alsa_driver_found > 0) {
+                    driver_string = "alsa";
+                }
+                break;
+                case "pulseaudio":
+                if (pulseaudio_driver_found > 0) {
+                    driver_string = "pulseaudio";
+                }
+                break;
+                case "pipewire":
+                if (pipewire_driver_found > 0) {
+                    driver_string = "pipewire";
+                }
+                break;
+                case "pipewire-pulse":
+                if (pipewire_pulse_driver_found > 0) {
+                    driver_string = "pipewire-pulse";
+                }
+                break;
+            }
+            if (driver_string == "") {
+                if (alsa_driver_found > 0) {
+                    return "alsa";
+                }
+                if (pulseaudio_driver_found > 0) {
+                    return "pulseaudio";
+                }
+                if (pipewire_driver_found > 0) {
+                    return "pulseaudio";
+                }
+                if (pipewire_pulse_driver_found > 0) {
+                    return "pipewire-pulse";
+                }
+            }
+            return driver_string;
+        }
     }
 }
 
