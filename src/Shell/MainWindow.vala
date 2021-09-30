@@ -76,7 +76,7 @@ namespace Ensembles.Shell {
             if (driver_string == "") {
                 error ("FATAL: No compatible audio drivers found!");
             }
-            
+
             // Initialize settings object with the given driver and buffer length
             Core.DriverSettingsProvider.initialize_drivers (
                 driver_string,

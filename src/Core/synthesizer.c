@@ -11,7 +11,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
@@ -125,7 +125,7 @@ synthesizer_set_defaults () {
     fluid_synth_cc (realtime_synth, 0, 7, 100);
     fluid_synth_cc (realtime_synth, 1, 7, 90);
     fluid_synth_cc (realtime_synth, 2, 7, 80);
-    
+
 
     // Default pitch of all synths
     for (int i = 0; i < 8; i++) {
@@ -169,7 +169,7 @@ synthesizer_init (const gchar* loc) {
     if (fluid_is_soundfont(loc)) {
         fluid_synth_sfload(style_synth, loc, 1);
         realtime_synth_sf_id = fluid_synth_sfload(realtime_synth, loc, 1);
-        
+
         // Initialize voices
         fluid_synth_program_select (realtime_synth, 0, realtime_synth_sf_id, 0, 0);
         fluid_synth_program_select (realtime_synth, 1, realtime_synth_sf_id, 0, 49);
@@ -279,7 +279,7 @@ handle_events_for_styles (fluid_midi_event_t *event) {
     // printf ("Channel: %d, ", chan);
     // printf ("Control: %d, ", cont);
     // printf ("Value: %d\n", value);
-    
+
     if (type == 176) {
         if (cont == 85 && (value == 1 || value == 8 || value == 16 || value == 126)) {
             int sf_id, program_id, bank_id;
@@ -307,7 +307,7 @@ handle_events_for_styles (fluid_midi_event_t *event) {
     }
     if (chan != 9 && get_central_accompaniment_mode () == 0 && type == 144) {
         return 0;
-    } 
+    }
     if (type == 144) {
         style_velocity_buffer[chan] = value;
     } else if (type == 128) {
@@ -361,7 +361,7 @@ synthesizer_send_notes (int key, int on, int velocity, int* type) {
                     return chrd_main;
                 }
             }
-            
+
         } else if (get_central_split_on () > 0) {
             if (key <= get_central_split_key ()) {
                 if (on == 144) {
