@@ -11,7 +11,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
@@ -114,7 +114,9 @@ namespace Ensembles.Shell {
         }
 
         public void set_note_on (int key, bool on) {
-            octaves[(int)(key / 12) - 3].set_note_on (key % 12, on);
+            if (key > 35 && key < 96) {
+                octaves[(int)(key / 12) - 3].set_note_on (key % 12, on);
+            }
         }
 
         public void update_split () {
