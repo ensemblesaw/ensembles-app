@@ -38,53 +38,130 @@ driver_settings_provider_init (char* driver, double period_size) {
     printf("\n%lf\n", period_size);
     printf("\n");
     if (fs_style_engine_settings == NULL) {
+        fs_style_engine_settings = new_fluid_settings ();
         if (strcmp (driver, "alsa") == 0) {
             currently_selected_driver = "alsa";
-            fs_style_engine_settings = new_fluid_settings ();
             fluid_settings_setstr(fs_style_engine_settings, "audio.driver", "alsa");
             fluid_settings_setint(fs_style_engine_settings, "audio.periods",16);
             fluid_settings_setint(fs_style_engine_settings, "audio.period-size", (int)(86.0 + (period_size * 938.0)));
             fluid_settings_setint(fs_style_engine_settings, "audio.realtime-prio", 70);
         }
+        if (strcmp (driver, "pulseaudio") == 0) {
+            currently_selected_driver = "pulseaudio";
+            fluid_settings_setstr(fs_style_engine_settings, "audio.driver", "pulseaudio");
+            fluid_settings_setint(fs_style_engine_settings, "audio.periods",2);
+            fluid_settings_setint(fs_style_engine_settings, "audio.period-size", (int)(64.0 + (period_size * 448.0)));
+            fluid_settings_setint(fs_style_engine_settings, "audio.realtime-prio", 80);
+            fluid_settings_setint(fs_style_engine_settings, "audio.pulseaudio.adjust-latency", 0);
+        }
+        if (strcmp (driver, "pipewire-pulse") == 0) {
+            currently_selected_driver = "pipewire-pulse";
+            fluid_settings_setstr(fs_style_engine_settings, "audio.driver", "pulseaudio");
+            fluid_settings_setint(fs_style_engine_settings, "audio.periods",2);
+            fluid_settings_setint(fs_style_engine_settings, "audio.period-size", (int)(128.0 + (period_size * 896.0)));
+        }
+        if (strcmp (driver, "pipewire") == 0) {
+            currently_selected_driver = "pipewire";
+            fluid_settings_setstr(fs_style_engine_settings, "audio.driver", "pipewire");
+            fluid_settings_setint(fs_style_engine_settings, "audio.period-size", 64);
+        }
     }
     if (fs_style_synth_settings == NULL) {
+        fs_style_synth_settings = new_fluid_settings ();
         if (strcmp (driver, "alsa") == 0) {
-            fs_style_synth_settings = new_fluid_settings ();
             fluid_settings_setstr(fs_style_synth_settings, "audio.driver", "alsa");
             fluid_settings_setint(fs_style_synth_settings, "audio.periods",16);
             fluid_settings_setint(fs_style_synth_settings, "audio.period-size", (int)(86.0 + (period_size * 938.0)));
             fluid_settings_setint(fs_style_synth_settings, "audio.realtime-prio", 70);
+        }
+        if (strcmp (driver, "pulseaudio") == 0) {
+            fluid_settings_setstr(fs_style_synth_settings, "audio.driver", "pulseaudio");
+            fluid_settings_setint(fs_style_synth_settings, "audio.periods", 8);
+            fluid_settings_setint(fs_style_synth_settings, "audio.period-size", (int)(1024.0 + (period_size * 3072.0)));
+            fluid_settings_setint(fs_style_synth_settings, "audio.realtime-prio", 70);
+        }
+        if (strcmp (driver, "pipewire-pulse") == 0) {
+            fluid_settings_setstr(fs_style_synth_settings, "audio.driver", "pulseaudio");
+            fluid_settings_setint(fs_style_synth_settings, "audio.periods", 8);
+            fluid_settings_setint(fs_style_synth_settings, "audio.period-size", (int)(1024.0 + (period_size * 3072.0)));
+        }
+        if (strcmp (driver, "pipewire") == 0) {
+            fluid_settings_setstr(fs_style_synth_settings, "audio.driver", "pipewire");
+            fluid_settings_setint(fs_style_synth_settings, "audio.period-size", 64);
+            fluid_settings_setint(fs_style_synth_settings, "audio.realtime-prio", 1);
+            fluid_settings_setstr(fs_style_synth_settings, "audio.pipewire.media-role", "Production");
+            fluid_settings_setstr(fs_style_synth_settings, "audio.pipewire.media-type", "Audio");
         }
         fluid_settings_setnum(fs_style_synth_settings, "synth.gain", 2);
         fluid_settings_setnum(fs_style_synth_settings, "synth.overflow.percussion", 5000.0);
         fluid_settings_setstr(fs_style_synth_settings, "synth.midi-bank-select", "gs");
     }
     if (fs_realtime_synth_settings == NULL) {
+        fs_realtime_synth_settings = new_fluid_settings ();
         if (strcmp (driver, "alsa") == 0) {
-            fs_realtime_synth_settings = new_fluid_settings ();
             fluid_settings_setstr(fs_realtime_synth_settings, "audio.driver", "alsa");
             fluid_settings_setint(fs_realtime_synth_settings, "audio.periods",8);
             fluid_settings_setint(fs_realtime_synth_settings, "audio.period-size", (int)(86.0 + (period_size * 938.0)));
             fluid_settings_setint(fs_realtime_synth_settings, "audio.realtime-prio", 80);
+        }
+        if (strcmp (driver, "pulseaudio") == 0) {
+            fluid_settings_setstr(fs_realtime_synth_settings, "audio.driver", "pulseaudio");
+            fluid_settings_setint(fs_realtime_synth_settings, "audio.periods",2);
+            fluid_settings_setint(fs_realtime_synth_settings, "audio.period-size", (int)(1024.0 + (period_size * 3072.0)));
+            fluid_settings_setint(fs_realtime_synth_settings, "audio.realtime-prio", 90);
+            fluid_settings_setint(fs_realtime_synth_settings, "audio.pulseaudio.adjust-latency", 0);
+        }
+        if (strcmp (driver, "pipewire-pulse") == 0) {
+            fluid_settings_setstr(fs_realtime_synth_settings, "audio.driver", "pulseaudio");
+            fluid_settings_setint(fs_realtime_synth_settings, "audio.periods",2);
+            fluid_settings_setint(fs_realtime_synth_settings, "audio.period-size", (int)(1024.0 + (period_size * 3072.0)));
+            fluid_settings_setint(fs_realtime_synth_settings, "audio.pulseaudio.adjust-latency", 0);
+        }
+        if (strcmp (driver, "pipewire") == 0) {
+            fluid_settings_setstr(fs_realtime_synth_settings, "audio.driver", "pipewire");
+            fluid_settings_setint(fs_realtime_synth_settings, "audio.period-size", 64);
+            fluid_settings_setint(fs_realtime_synth_settings, "audio.pulseaudio.adjust-latency", 0);
+            fluid_settings_setstr(fs_realtime_synth_settings, "audio.pipewire.media-role", "Production");
+            fluid_settings_setstr(fs_realtime_synth_settings, "audio.pipewire.media-type", "Audio");
         }
         fluid_settings_setnum(fs_realtime_synth_settings, "synth.gain", 2);
         fluid_settings_setnum(fs_realtime_synth_settings, "synth.overflow.percussion", 5000.0);
         fluid_settings_setstr(fs_realtime_synth_settings, "synth.midi-bank-select", "gs");
     }
     if (fs_metronome_player_settings == NULL) {
+        fs_metronome_player_settings = new_fluid_settings ();
         if (strcmp (driver, "alsa") == 0) {
-            fs_metronome_player_settings = new_fluid_settings ();
             fluid_settings_setstr(fs_metronome_player_settings, "audio.driver", "alsa");
-            fluid_settings_setint(fs_metronome_player_settings, "audio.periods",2);
+            fluid_settings_setint(fs_metronome_player_settings, "audio.periods",4);
             fluid_settings_setint(fs_metronome_player_settings, "audio.period-size", (int)(128.0 + (period_size * 1024.0)));
+        }
+        if (strcmp (driver, "pulseaudio") == 0 || strcmp (driver, "pipewire-pulse") == 0) {
+            fluid_settings_setstr(fs_metronome_player_settings, "audio.driver", "pulseaudio");
+            fluid_settings_setint(fs_metronome_player_settings, "audio.periods",2);
+            fluid_settings_setint(fs_metronome_player_settings, "audio.period-size", (int)(1024.0 + (period_size * 1024.0)));
+        }
+        if (strcmp (driver, "pipewire") == 0) {
+            fluid_settings_setstr(fs_metronome_player_settings, "audio.driver", "pipewire");
+            fluid_settings_setint(fs_metronome_player_settings, "audio.period-size", 64);
         }
     }
     if (fs_song_player_settings == NULL) {
+        fs_song_player_settings = new_fluid_settings ();
         if (strcmp (driver, "alsa") == 0) {
-            fs_song_player_settings = new_fluid_settings ();
             fluid_settings_setstr(fs_song_player_settings, "audio.driver", "alsa");
             fluid_settings_setint(fs_song_player_settings, "audio.periods",16);
             fluid_settings_setint(fs_song_player_settings, "audio.period-size", 1024);
+        }
+        if (strcmp (driver, "pulseaudio") == 0 || strcmp (driver, "pipewire-pulse") == 0) {
+            fluid_settings_setstr(fs_song_player_settings, "audio.driver", "pulseaudio");
+            fluid_settings_setint(fs_song_player_settings, "audio.periods",16);
+            fluid_settings_setint(fs_song_player_settings, "audio.period-size", 4096);
+        }
+        if (strcmp (driver, "pipewire") == 0) {
+            fluid_settings_setstr(fs_song_player_settings, "audio.driver", "pipewire");
+            fluid_settings_setint(fs_song_player_settings, "audio.period-size", 128);
+            fluid_settings_setstr(fs_song_player_settings, "audio.pipewire.media-role", "Music");
+            fluid_settings_setstr(fs_song_player_settings, "audio.pipewire.media-type", "Audio");
         }
     }
 }
@@ -97,8 +174,28 @@ driver_settings_change_period_size (double period_size) {
             fluid_settings_setint(fs_style_synth_settings, "audio.period-size", (int)(86.0 + (period_size * 938.0)));
             fluid_settings_setint(fs_realtime_synth_settings, "audio.period-size", (int)(86.0 + (period_size * 938.0)));
             fluid_settings_setint(fs_metronome_player_settings, "audio.period-size", (int)(128.0 + (period_size * 1024.0)));
-            printf ("%lf\n", period_size);
             return (int)(86.0 + (period_size * 938.0));
+        }
+        if (strcmp (currently_selected_driver, "pulseaudio") == 0) {
+            fluid_settings_setint(fs_style_engine_settings, "audio.period-size", (int)(86.0 + (period_size * 938.0)));
+            fluid_settings_setint(fs_style_synth_settings, "audio.period-size", (int)(1024.0 + (period_size * 3072.0)));
+            fluid_settings_setint(fs_realtime_synth_settings, "audio.period-size", (int)(1024.0 + (period_size * 3072.0)));
+            fluid_settings_setint(fs_metronome_player_settings, "audio.period-size", (int)(1024.0 + (period_size * 1024.0)));
+            return (int)(1024.0 + (period_size * 3072.0));
+        }
+        if (strcmp (currently_selected_driver, "pipewire-pulse") == 0) {
+            fluid_settings_setint(fs_style_engine_settings, "audio.period-size", (int)(128.0 + (period_size * 896.0)));
+            fluid_settings_setint(fs_style_synth_settings, "audio.period-size", (int)(1024.0 + (period_size * 3072.0)));
+            fluid_settings_setint(fs_realtime_synth_settings, "audio.period-size", (int)(1024.0 + (period_size * 3072.0)));
+            fluid_settings_setint(fs_metronome_player_settings, "audio.period-size", (int)(1024.0 + (period_size * 1024.0)));
+            return (int)(1024.0 + (period_size * 3072.0));
+        }
+        if (strcmp (currently_selected_driver, "pipewire") == 0) {
+            fluid_settings_setint(fs_style_engine_settings, "audio.period-size", 64);
+            fluid_settings_setint(fs_style_synth_settings, "audio.period-size", 64);
+            fluid_settings_setint(fs_realtime_synth_settings, "audio.period-size", 64);
+            fluid_settings_setint(fs_metronome_player_settings, "audio.period-size", 64);
+            return (int)(64.0 + (period_size * 128.0));
         }
     }
     return 0;

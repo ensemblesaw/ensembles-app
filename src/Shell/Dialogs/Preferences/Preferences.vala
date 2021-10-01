@@ -26,6 +26,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
         public string view { get; construct; }
         private Gtk.Stack stack;
         //private uint timeout_id = 0;
+        private Gtk.InfoBar infobar;
 
         private const Gtk.TargetEntry[] TARGET_ENTRIES_LABELS = {
             {"LABELROW", Gtk.TargetFlags.SAME_APP, 0}
@@ -72,10 +73,35 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             stack_scrolled.expand = true;
             stack_scrolled.add (stack);
 
+            var info_label = new Gtk.Label (_("The app needs to be restarted to apply changes"));
+            info_label.show ();
+
+            infobar = new Gtk.InfoBar ();
+            infobar.message_type = Gtk.MessageType.WARNING;
+            infobar.no_show_all = true;
+            infobar.get_content_area ().add (info_label);
+
+            var restart_button = infobar.add_button (_("Restart Now"), 0);
+
+            infobar.response.connect ((response) => {
+                if (response == 0) {
+                    try {
+                        EnsemblesApp.instance.get_active_window ().close ();
+                    } catch (GLib.Error e) {
+                        if (!(e is IOError.CANCELLED)) {
+                            info_label.label = _("Requesting a restart failed. Restart manually to apply changes");
+                            infobar.message_type = Gtk.MessageType.ERROR;
+                            restart_button.visible = false;
+                        }
+                    }
+                }
+            });
+
             var main_grid = new Gtk.Grid ();
             main_grid.expand = true;
             main_grid.orientation = Gtk.Orientation.VERTICAL;
             // main_grid.add (header);
+            main_grid.add (infobar);
             main_grid.add (stack_scrolled);
 
             add (main_grid);
@@ -290,6 +316,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
                     driver_string = "pipewire-pulse";
                     break;
                 }
+                infobar.set_visible (true);
                 EnsemblesApp.settings.set_string ("driver", driver_string);
             });
 
