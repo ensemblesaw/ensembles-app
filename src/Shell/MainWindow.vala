@@ -18,6 +18,7 @@
  */
 namespace Ensembles.Shell {
     public class MainWindow : Gtk.Window {
+        // View components
         StyleControllerView style_controller_view;
         BeatCounterView beat_counter_panel;
         MainDisplayCasing main_display_unit;
@@ -30,6 +31,8 @@ namespace Ensembles.Shell {
         AppMenuView app_menu;
         SongControllerView song_control_panel;
         KeyboardView main_keyboard;
+
+        //Core components
         Ensembles.Core.Voice[] detected_voices;
         int[] detected_voice_indices;
         Ensembles.Core.Synthesizer synthesizer;
@@ -51,20 +54,46 @@ namespace Ensembles.Shell {
         Gtk.Label custom_title_text;
         Gtk.Grid custom_title_grid;
 
+        // For song player
         string song_name;
 
+        // Computer Keyboard input handling
         PcKeyboardHandler keyboard_input_handler;
 
+        // Signals
         public signal void song_player_state_changed (string song_name, Core.SongPlayer.PlayerStatus status);
+
+
         public MainWindow () {
             Gtk.Settings settings = Gtk.Settings.get_default ();
+
+            // Force dark theme
             settings.gtk_application_prefer_dark_theme = true;
+
+            // Find out which driver was selected in user settings
+            debug ("STARTUP: Initializing Settings");
+            string driver_string = Core.DriverSettingsProvider.get_available_driver (EnsemblesApp.settings.get_string ("driver"));
+            if (driver_string == "") {
+                error ("FATAL: No compatible audio drivers found!");
+            }
+
+            // Initialize settings object with the given driver and buffer length
+            Core.DriverSettingsProvider.initialize_drivers (
+                driver_string,
+                EnsemblesApp.settings.get_double ("buffer-length")
+            );
+
+            // Load Central Bus
+            // Central Bus is a set of variables (memory slots) that track the state of the synthesizer
+            // It is accessible from various modules
             debug ("STARTUP: Loading Central Bus");
             bus = new Ensembles.Core.CentralBus ();
             make_bus_events ();
 
+            // This module looks for computer keyboard input and fires off signals that can be connected to
             keyboard_input_handler = new PcKeyboardHandler ();
 
+            // Make headerbar
             beat_counter_panel = new BeatCounterView ();
             headerbar = new Gtk.HeaderBar ();
             headerbar.has_subtitle = false;
@@ -96,22 +125,31 @@ namespace Ensembles.Shell {
             custom_title_grid.attach (seek_bar, 0, 2, 1, 1);
             custom_title_grid.show_all ();
 
+            // Make the display unit imitation that we see in the center of the app UI
             main_display_unit = new MainDisplayCasing ();
 
+            // Make the control panel that appears to the right
             ctrl_panel = new ControlPanel ();
 
+            // Make the onscreen keyboard that appears at the bottom
             main_keyboard = new KeyboardView ();
 
+            // Make the Slider/Knob section that appears to the left
             slider_board = new SliderBoardView (main_keyboard.joy_stick);
 
+            // Make the Voice Jump list panel that appears below the Slider/Knob panel
             voice_category_panel = new VoiceCategoryView ();
 
+            // Make the main style/voice mixer that appears right below the display unit
             mixer_board_view = new MixerBoardView ();
 
+            // Make the sampling pad panel that appears below the control panel
             sampler_panel = new SamplerPadView (this);
 
+            // Make the registry panel which consists of the registry buttons
             registry_panel = new RegistryView ();
 
+            // Make the style controller panel
             style_controller_view = new StyleControllerView ();
 
 
@@ -131,30 +169,44 @@ namespace Ensembles.Shell {
             this.add (grid);
             this.show_all ();
 
+            // Start monitoring MIDI input streamfor devices
             debug ("STARTUP: Loading MIDI Input Monitor");
             controller_connection = new Ensembles.Core.Controller ();
+
+            // Show list of detected devices when the user enables MIDI Input
             app_menu.change_enable_midi_input.connect ((enable) => {
                 if (enable) {
                     var devices_found = controller_connection.get_device_list ();
                     app_menu.update_devices (devices_found);
                 }
             });
+
+            // Load the main audio synthesizer
             debug ("STARTUP: Loading Synthesizer");
             synthesizer = new Ensembles.Core.Synthesizer (sf_loc);
+
+            // Connect the onscreen keyboard with the synthesizer
             main_keyboard.connect_synthesizer (synthesizer);
+
+            // Load the style engine
             debug ("STARTUP: Loading Style Engine");
             style_player = new Ensembles.Core.StylePlayer ();
 
+            // Start looking for styles in the app data folder and user styles folder
             debug ("STARTUP: Discovering Styles");
             style_discovery = new Ensembles.Core.StyleDiscovery ();
+
+            // Add all detected styles to the Style menu
             style_discovery.analysis_complete.connect (() => {
                 //  style_player.add_style_file (style_discovery.styles.nth_data (0).path);
                 main_display_unit.update_style_list (style_discovery.styles);
             });
 
+            // Load Metronome and LFO engine. Yes, Metronome and LFO are handled together!
             debug ("STARTUP: Loading Metronome and LFO Engine");
             metronome_player = new Ensembles.Core.MetronomeLFOPlayer (metronome_lfo_directory);
 
+            // Load arpeggio and auto harmony modules
             arpeggiator = new Core.Arpeggiator ();
             harmonizer = new Core.Harmonizer ();
 
@@ -162,6 +214,8 @@ namespace Ensembles.Shell {
 
             load_voices ();
         }
+
+        // Connect Central Bus events
         void make_bus_events () {
             bus.clock_tick.connect (() => {
                 beat_counter_panel.sync ();
@@ -214,6 +268,8 @@ namespace Ensembles.Shell {
                 main_keyboard.update_split ();
             });
         }
+
+        // Connect UI events
         void make_ui_events () {
             this.key_press_event.connect ((event) => {
                 return keyboard_input_handler.handle_keypress_event (event.keyval);
@@ -236,6 +292,7 @@ namespace Ensembles.Shell {
                 //  debug("%d %s\n", device.id, device.name);
                 controller_connection.connect_device (device.id);
             });
+            app_menu.open_preferences_dialog.connect (open_preferences);
             main_display_unit.change_style.connect ((accomp_style) => {
                 style_player.add_style_file (accomp_style.path, accomp_style.tempo);
             });
@@ -440,7 +497,14 @@ namespace Ensembles.Shell {
                 }
                 return false;
             });
-            this.destroy.connect (() => {
+
+            // Perform garbage collection when the app exits
+            this.destroy.connect (() => app_exit ());
+            debug ("Initialized\n");
+        }
+
+        public void app_exit (bool? force_close = false) {
+            Idle.add (() => {
                 print ("App Exit\n");
                 debug ("CLEANUP: Unloading Registry Memory");
                 registry_panel.unref ();
@@ -455,6 +519,8 @@ namespace Ensembles.Shell {
 
                 debug ("CLEANUP: Unloading MIDI Input Monitor");
                 controller_connection.unref ();
+
+                Thread.usleep (1000000);
                 debug ("CLEANUP: Unloading Metronome and LFO Engine");
                 metronome_player.unref ();
                 debug ("CLEANUP: Unloading Style Engine");
@@ -467,9 +533,13 @@ namespace Ensembles.Shell {
                 debug ("CLEANUP: Unloading Central Bus");
                 bus.unref ();
                 debug ("CLEANUP: Unloading Synthesizer");
-                synthesizer.unref ();
+                synthesizer.synthesizer_deinit ();
+                if (force_close) {
+                    EnsemblesApp.main_window.close ();
+                }
+                print ("Exiting!\n");
+                return false;
             });
-            debug ("Initialized\n");
         }
 
         void load_voices () {
@@ -527,6 +597,7 @@ namespace Ensembles.Shell {
             song_control_panel.set_player_active ();
         }
 
+        // Used by MPRIS
         public void media_toggle_play () {
             if (song_player != null) {
                 if (song_player.get_status () == Core.SongPlayer.PlayerStatus.PLAYING) {
@@ -553,6 +624,12 @@ namespace Ensembles.Shell {
             if (song_player != null) {
                 song_player.rewind ();
             }
+        }
+
+        private void open_preferences () {
+            var dialog = new Dialogs.Preferences.Preferences ();
+            dialog.destroy.connect (Gtk.main_quit);
+            dialog.show_all ();
         }
     }
 }

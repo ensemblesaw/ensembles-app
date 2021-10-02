@@ -11,7 +11,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
  * Authored by: Subhadeep Jasu
@@ -33,7 +33,7 @@ namespace Ensembles.Shell {
 
         public static Settings settings;
 
-        public Ensembles.Shell.MainWindow main_window;
+        public static Ensembles.Shell.MainWindow main_window;
 
         Gtk.CssProvider css_provider;
 
@@ -52,8 +52,8 @@ namespace Ensembles.Shell {
         }
 
         protected override void activate () {
-            get_is_pipewire_pulse_available ();
             if (this.main_window == null) {
+                Core.DriverSettingsProvider.check_drivers ();
                 this.main_window = new Ensembles.Shell.MainWindow ();
                 var media_key_listener = Interfaces.MediaKeyListener.listen ();
                 media_key_listener.media_key_pressed_play.connect (main_window.media_toggle_play);
@@ -119,21 +119,6 @@ namespace Ensembles.Shell {
         public static bool get_is_running_from_flatpak () {
             var flatpak_info = File.new_for_path ("/.flatpak-info");
             return flatpak_info.query_exists ();
-        }
-        public static bool pipewire_found = false;
-        public static bool get_is_pipewire_pulse_available () {
-            string info = "";
-            try {
-                Process.spawn_command_line_sync ("env LANG=C pactl info", out info);
-                if (info.contains ("PulseAudio (on PipeWire")) {
-                    print ("PipeWire detected!\n");
-                    pipewire_found = true;
-                    return true;
-                }
-            } catch (Error e) {
-                warning (e.message);
-            }
-            return false;
         }
 
         private void init_theme () {

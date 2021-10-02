@@ -11,7 +11,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
@@ -20,10 +20,10 @@
 namespace Ensembles.Core {
     public class Synthesizer : Object {
         public Synthesizer (string soundfont) {
-            synthesizer_init (Shell.EnsemblesApp.pipewire_found ? 1 : 0, soundfont);
+            synthesizer_init (soundfont);
         }
 
-        ~Synthesizer () {
+        public void synthesizer_deinit () {
            synthesizer_destruct ();
         }
 
@@ -134,7 +134,7 @@ namespace Ensembles.Core {
     }
 }
 
-extern void synthesizer_init (int pipewire_mode, string loc);
+extern void synthesizer_init (string loc);
 extern void synthesizer_destruct ();
 extern int synthesizer_send_notes (int key, int on, int velocity, out int type);
 extern void synthesizer_halt_notes ();

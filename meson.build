@@ -18,6 +18,14 @@ add_project_arguments (
     language: 'c'
 )
 
+# Set Driver Compatibilities
+add_project_arguments (
+    '-D', 'ALSA_DRIVER',
+    '-D', 'PULSEAUDIO_DRIVER',
+    # '-D', 'PIPEWIRE_CORE_DRIVER',  # Uncomment to enable pipewire core support provided fluidsynth supports it
+    language: 'vala'
+)
+
 # Compiling resources
 asresources = gnome.compile_resources (
     'as-resources',

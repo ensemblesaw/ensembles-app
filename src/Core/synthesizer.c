@@ -11,7 +11,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
@@ -21,6 +21,7 @@
 #include <gtk/gtk.h>
 #include "central_bus.h"
 #include "synthesizer_settings.h"
+#include "driver_settings_provider.h"
 #include "chord_finder.h"
 
 fluid_synth_t* style_synth;
@@ -124,7 +125,7 @@ synthesizer_set_defaults () {
     fluid_synth_cc (realtime_synth, 0, 7, 100);
     fluid_synth_cc (realtime_synth, 1, 7, 90);
     fluid_synth_cc (realtime_synth, 2, 7, 80);
-    
+
 
     // Default pitch of all synths
     for (int i = 0; i < 8; i++) {
@@ -136,51 +137,17 @@ synthesizer_set_defaults () {
 }
 
 void
-synthesizer_init (int pipewire_mode, const gchar* loc) {
-    style_synth_settings = new_fluid_settings();
-    if (pipewire_mode > 0) {
-        fluid_settings_setstr(style_synth_settings, "audio.driver", "pipewire");
-        fluid_settings_setint(style_synth_settings, "audio.period-size", 64);
-        fluid_settings_setnum(style_synth_settings, "synth.gain", 2);
-        fluid_settings_setnum(style_synth_settings, "synth.overflow.percussion", 5000.0);
-        fluid_settings_setstr(style_synth_settings, "synth.midi-bank-select", "gs");
-        fluid_settings_setint(style_synth_settings, "audio.realtime-prio", 1);
-        fluid_settings_setstr(style_synth_settings, "audio.pipewire.media-role", "Production");
-        fluid_settings_setstr(style_synth_settings, "audio.pipewire.media-type", "Audio");
-    } else {
-        fluid_settings_setstr(style_synth_settings, "audio.driver", "pulseaudio");
-        fluid_settings_setint(style_synth_settings, "audio.periods", 8);
-        fluid_settings_setint(style_synth_settings, "audio.period-size", 1024);
-        fluid_settings_setint(style_synth_settings, "audio.realtime-prio", 70);
-        fluid_settings_setnum(style_synth_settings, "synth.gain", 2);
-        fluid_settings_setnum(style_synth_settings, "synth.overflow.percussion", 5000.0);
-        fluid_settings_setstr(style_synth_settings, "synth.midi-bank-select", "gs");
-    }
+synthesizer_init (const gchar* loc) {
+    style_synth_settings = get_settings(STYLE_SYNTH);
 
-    realtime_synth_settings = new_fluid_settings();
-    if (pipewire_mode > 0) {
-        fluid_settings_setstr(realtime_synth_settings, "audio.driver", "pipewire");
-        fluid_settings_setint(realtime_synth_settings, "audio.period-size", 64);
-        fluid_settings_setnum(realtime_synth_settings, "synth.gain", 2);
-        fluid_settings_setstr(realtime_synth_settings, "synth.midi-bank-select", "gs");
-        fluid_settings_setstr(realtime_synth_settings, "audio.pipewire.media-role", "Production");
-        fluid_settings_setstr(realtime_synth_settings, "audio.pipewire.media-type", "Audio");
-    } else {
-        fluid_settings_setstr(realtime_synth_settings, "audio.driver", "pulseaudio");
-        fluid_settings_setint(realtime_synth_settings, "audio.periods", 2);
-        fluid_settings_setint(realtime_synth_settings, "audio.period-size", 1024);
-        fluid_settings_setint(realtime_synth_settings, "audio.realtime-prio", 90);
-        fluid_settings_setnum(realtime_synth_settings, "synth.gain", 2);
-        fluid_settings_setstr(realtime_synth_settings, "synth.midi-bank-select", "gs");
-        fluid_settings_setint(realtime_synth_settings, "audio.pulseaudio.adjust-latency", 0);
-    }
+    realtime_synth_settings = get_settings(REALTIME_SYNTH);
 
     style_synth = new_fluid_synth(style_synth_settings);
     realtime_synth = new_fluid_synth(realtime_synth_settings);
     if (fluid_is_soundfont(loc)) {
         fluid_synth_sfload(style_synth, loc, 1);
         realtime_synth_sf_id = fluid_synth_sfload(realtime_synth, loc, 1);
-        
+
         // Initialize voices
         fluid_synth_program_select (realtime_synth, 0, realtime_synth_sf_id, 0, 0);
         fluid_synth_program_select (realtime_synth, 1, realtime_synth_sf_id, 0, 49);
@@ -251,8 +218,10 @@ synthesizer_get_velocity_levels (int synth_index, int channel) {
 
 void
 synthesizer_destruct () {
+    printf ("Stopping Synthesizers\n");
     fluid_synth_all_sounds_off (style_synth, -1);
     fluid_synth_all_sounds_off (realtime_synth, -1);
+    printf ("Unloading drivers\n");
     if(style_adriver)
     {
         delete_fluid_audio_driver(style_adriver);
@@ -261,6 +230,8 @@ synthesizer_destruct () {
     {
         delete_fluid_audio_driver(realtime_adriver);
     }
+    sleep (1);
+    printf ("Unloading synthesizers\n");
     if(style_synth)
     {
         delete_fluid_synth(style_synth);
@@ -269,6 +240,7 @@ synthesizer_destruct () {
     {
         delete_fluid_synth(realtime_synth);
     }
+    printf ("Unloading Settings\n");
     if(style_synth_settings)
     {
         delete_fluid_settings(style_synth_settings);
@@ -290,7 +262,7 @@ handle_events_for_styles (fluid_midi_event_t *event) {
     // printf ("Channel: %d, ", chan);
     // printf ("Control: %d, ", cont);
     // printf ("Value: %d\n", value);
-    
+
     if (type == 176) {
         if (cont == 85 && (value == 1 || value == 8 || value == 16 || value == 126)) {
             int sf_id, program_id, bank_id;
@@ -318,7 +290,7 @@ handle_events_for_styles (fluid_midi_event_t *event) {
     }
     if (chan != 9 && get_central_accompaniment_mode () == 0 && type == 144) {
         return 0;
-    } 
+    }
     if (type == 144) {
         style_velocity_buffer[chan] = value;
     } else if (type == 128) {
@@ -372,7 +344,7 @@ synthesizer_send_notes (int key, int on, int velocity, int* type) {
                     return chrd_main;
                 }
             }
-            
+
         } else if (get_central_split_on () > 0) {
             if (key <= get_central_split_key ()) {
                 if (on == 144) {
@@ -447,6 +419,6 @@ synthesizer_get_version () {
     int major_version = 0;
     int minor_version = 0;
     int macro_version = 0;
-    fluid_version (&major_version, &minor_version, &major_version);
+    fluid_version (&major_version, &minor_version, &macro_version);
     return (float)major_version + (0.1f * minor_version);
 }

@@ -22,6 +22,8 @@
 #include <glib.h>
 #include <string.h>
 
+#include "driver_settings_provider.h"
+
 // These are actually used to render audio
 fluid_settings_t* mp_settings;
 fluid_synth_t* mp_synth;
@@ -64,21 +66,13 @@ mp_parse_ticks (void* data, int ticks) {
 }
 
 void
-music_player_init (int pipewire_mode, const gchar* sf_loc) {
-    mp_settings = new_fluid_settings();
-    if (pipewire_mode > 0) {
-        fluid_settings_setstr(mp_settings, "audio.driver", "pipewire");
-        fluid_settings_setint(mp_settings, "audio.period-size", 128);
-        fluid_settings_setstr(mp_settings, "synth.midi-bank-select", "gs");
-        fluid_settings_setstr(mp_settings, "audio.pipewire.media-role", "Music");
-        fluid_settings_setstr(mp_settings, "audio.pipewire.media-type", "Audio");
-    } else {
-        fluid_settings_setstr(mp_settings, "audio.driver", "pulseaudio");
-        fluid_settings_setint(mp_settings, "audio.periods", 16);
-        fluid_settings_setint(mp_settings, "audio.period-size", 4096);
-        fluid_settings_setint(mp_settings, "audio.realtime-prio", 40);
-        fluid_settings_setnum(mp_settings, "synth.gain", 1.0);
-    }
+music_player_init (const gchar* sf_loc) {
+    mp_settings = get_settings(MIDI_SONG_PLAYER);
+    // fluid_settings_setstr(mp_settings, "audio.driver", "pulseaudio");
+    // fluid_settings_setint(mp_settings, "audio.periods", 16);
+    // fluid_settings_setint(mp_settings, "audio.period-size", 4096);
+    // fluid_settings_setint(mp_settings, "audio.realtime-prio", 40);
+    // fluid_settings_setnum(mp_settings, "synth.gain", 1.0);
     mp_synth = new_fluid_synth(mp_settings);
     mp_adriver = new_fluid_audio_driver(mp_settings, mp_synth);  
 

@@ -11,7 +11,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
@@ -35,14 +35,6 @@ int
 voice_analyser_init (const gchar* sf_path) {
     sf_settings = new_fluid_settings();
     sf_synth = new_fluid_synth(sf_settings);
-    // sf_loader = new_fluid_defsfloader (sf_settings);
-    // fluid_sfloader_set_callbacks(sf_loader,
-    //                             my_open,
-    //                             my_read,
-    //                             my_seek,
-    //                             my_tell,
-    //                             my_close);
-    // fluid_synth_add_sfloader(sf_synth, sf_loader);
 
     if (fluid_is_soundfont(sf_path)) {
         int id = fluid_synth_sfload(sf_synth, sf_path, 1);
@@ -63,7 +55,6 @@ voice_analyser_next () {
     sf_preset_name = fluid_preset_get_name (_soundfont_preset);
     sf_preset_bank_num = fluid_preset_get_banknum (_soundfont_preset);
     sf_preset_num = fluid_preset_get_num (_soundfont_preset);
-    //printf ("%d-%d -> %s\n", sf_preset_bank_num, sf_preset_num, sf_preset_name);
     return 1;
 }
 
