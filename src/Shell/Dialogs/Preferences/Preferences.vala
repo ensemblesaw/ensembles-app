@@ -35,7 +35,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
         public Preferences (string view="home") {
             Object (
                 view: view,
-                transient_for: Shell.EnsemblesApp.instance.main_window,
+                transient_for: Shell.EnsemblesApp.main_window,
                 deletable: true,
                 resizable: true,
                 destroy_with_parent: true,
@@ -303,7 +303,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             string buffer_length_text = _("Buffer length [%d frames]");
 
             var buffer_length = new Dialogs.Preferences.ItemScale (
-                buffer_length_text,
+                buffer_length_text.printf (EnsemblesApp.settings.get_int ("previous-buffer-length")),
                 EnsemblesApp.settings.get_double ("buffer-length"),
                 0,
                 1,
@@ -360,7 +360,9 @@ namespace Ensembles.Shell.Dialogs.Preferences {
 
             buffer_length.changed.connect ((value) => {
                 EnsemblesApp.settings.set_double ("buffer-length", value);
-                buffer_length.title = buffer_length_text.printf (Core.DriverSettingsProvider.change_period_size (value));
+                var display_value = Core.DriverSettingsProvider.change_period_size (value);
+                buffer_length.title = buffer_length_text.printf (display_value);
+                EnsemblesApp.settings.set_int ("previous-buffer-length", display_value);
             });
 
             var box_scrolled = new Gtk.ScrolledWindow (null, null);

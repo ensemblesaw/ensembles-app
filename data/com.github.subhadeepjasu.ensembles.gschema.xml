@@ -153,5 +153,9 @@
 		<default>0.0</default>
 		<summary>Size of buffer to be processed by the driver</summary>
 	</key>
+	<key name="previous-buffer-length" type="i">
+		<default>64</default>
+		<summary>Size of buffer to be processed by the driver</summary>
+	</key>
   </schema>
 </schemalist>
