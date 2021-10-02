@@ -537,7 +537,7 @@ namespace Ensembles.Shell {
                 if (force_close) {
                     EnsemblesApp.main_window.close ();
                 }
-                print ("Exiting...\n");
+                print ("Exiting!\n");
                 return false;
             });
         }
