@@ -139,30 +139,8 @@ synthesizer_set_defaults () {
 void
 synthesizer_init (const gchar* loc) {
     style_synth_settings = get_settings(STYLE_SYNTH);
-    // fluid_settings_setstr(style_synth_settings, "audio.driver", "pulseaudio");
-    // fluid_settings_setint(style_synth_settings, "audio.periods", 8);
-    // fluid_settings_setint(style_synth_settings, "audio.period-size", 1024);
-    // fluid_settings_setint(style_synth_settings, "audio.realtime-prio", 70);
-    // fluid_settings_setnum(style_synth_settings, "synth.gain", 2);
-    // fluid_settings_setnum(style_synth_settings, "synth.overflow.percussion", 5000.0);
-    // fluid_settings_setstr(style_synth_settings, "synth.midi-bank-select", "gs");
 
     realtime_synth_settings = get_settings(REALTIME_SYNTH);
-    // if (pipewire_mode > 0) {
-    //     fluid_settings_setstr(realtime_synth_settings, "audio.driver", "pipewire");
-    //     fluid_settings_setint(realtime_synth_settings, "audio.period-size", 64);
-    //     fluid_settings_setnum(realtime_synth_settings, "synth.gain", 2);
-    //     fluid_settings_setstr(realtime_synth_settings, "synth.midi-bank-select", "gs");
-    //     fluid_settings_setstr(realtime_synth_settings, "audio.pipewire.media-role", "Production");
-    //     fluid_settings_setstr(realtime_synth_settings, "audio.pipewire.media-type", "Audio");
-    // } else {
-    // fluid_settings_setstr(realtime_synth_settings, "audio.driver", "pulseaudio");
-    // fluid_settings_setint(realtime_synth_settings, "audio.periods", 2);
-    // fluid_settings_setint(realtime_synth_settings, "audio.period-size", 1024);
-    // fluid_settings_setint(realtime_synth_settings, "audio.realtime-prio", 90);
-    // fluid_settings_setnum(realtime_synth_settings, "synth.gain", 2);
-    // fluid_settings_setstr(realtime_synth_settings, "synth.midi-bank-select", "gs");
-    // fluid_settings_setint(realtime_synth_settings, "audio.pulseaudio.adjust-latency", 0);
 
     style_synth = new_fluid_synth(style_synth_settings);
     realtime_synth = new_fluid_synth(realtime_synth_settings);
@@ -240,8 +218,10 @@ synthesizer_get_velocity_levels (int synth_index, int channel) {
 
 void
 synthesizer_destruct () {
+    printf ("Stopping Synthesizers\n");
     fluid_synth_all_sounds_off (style_synth, -1);
     fluid_synth_all_sounds_off (realtime_synth, -1);
+    printf ("Unloading drivers\n");
     if(style_adriver)
     {
         delete_fluid_audio_driver(style_adriver);
@@ -250,6 +230,8 @@ synthesizer_destruct () {
     {
         delete_fluid_audio_driver(realtime_adriver);
     }
+    sleep (1);
+    printf ("Unloading synthesizers\n");
     if(style_synth)
     {
         delete_fluid_synth(style_synth);
@@ -258,6 +240,7 @@ synthesizer_destruct () {
     {
         delete_fluid_synth(realtime_synth);
     }
+    printf ("Unloading Settings\n");
     if(style_synth_settings)
     {
         delete_fluid_settings(style_synth_settings);

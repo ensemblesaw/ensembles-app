@@ -73,7 +73,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             stack_scrolled.expand = true;
             stack_scrolled.add (stack);
 
-            var info_label = new Gtk.Label (_("The app needs to be restarted to apply changes"));
+            var info_label = new Gtk.Label (_("Restart to apply changes"));
             info_label.show ();
 
             infobar = new Gtk.InfoBar ();
@@ -81,12 +81,12 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             infobar.no_show_all = true;
             infobar.get_content_area ().add (info_label);
 
-            var restart_button = infobar.add_button (_("Restart Now"), 0);
+            var restart_button = infobar.add_button (_("Restart"), 0);
 
             infobar.response.connect ((response) => {
                 if (response == 0) {
                     try {
-                        EnsemblesApp.instance.get_active_window ().close ();
+                        EnsemblesApp.main_window.app_exit (true);
                     } catch (GLib.Error e) {
                         if (!(e is IOError.CANCELLED)) {
                             info_label.label = _("Requesting a restart failed. Restart manually to apply changes");
@@ -299,6 +299,18 @@ namespace Ensembles.Shell.Dialogs.Preferences {
                 false
             );
             driver_select.margin_top = 12;
+
+            string buffer_length_text = _("Buffer length [%d frames]");
+
+            var buffer_length = new Dialogs.Preferences.ItemScale (
+                buffer_length_text,
+                EnsemblesApp.settings.get_double ("buffer-length"),
+                0,
+                1,
+                0.01,
+                true
+            );
+
             driver_select.activated.connect ((index) => {
                 string driver_string = "";
                 string selected_driver = driver_list.nth_data (index);
@@ -317,19 +329,9 @@ namespace Ensembles.Shell.Dialogs.Preferences {
                     break;
                 }
                 infobar.set_visible (true);
+                buffer_length.set_sensitive (false);
                 EnsemblesApp.settings.set_string ("driver", driver_string);
             });
-
-            string buffer_length_text = _("Buffer length [%d frames]");
-
-            var buffer_length = new Dialogs.Preferences.ItemScale (
-                buffer_length_text,
-                EnsemblesApp.settings.get_double ("buffer-length"),
-                0,
-                1,
-                0.01,
-                true
-            );
 
             var pavuctrl_button = new Gtk.Button.with_label (_("System Mixer"));
             pavuctrl_button.margin = 4;

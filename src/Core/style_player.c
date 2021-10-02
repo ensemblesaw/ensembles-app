@@ -11,7 +11,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
@@ -208,13 +208,10 @@ parse_midi_events (void *data, fluid_midi_event_t *event) {
 
     if (channel != 9 && channel != 10 && (type == 144 || type == 128)) {
         fluid_midi_event_set_key (new_event, get_chord_modified_key (key));
-        
+
     } else {
         fluid_midi_event_set_key (new_event, key);
     }
-    
-    
-    
 
     // Send data to synth
     if (breaking == 0)
@@ -334,11 +331,6 @@ void
 style_player_init (int pipewire_mode) {
     set_central_style_looping (0);
     settings = get_settings(STYLE_ENGINE);
-    // fluid_settings_setstr(settings, "audio.driver", "pulseaudio");
-    // fluid_settings_setint(settings, "audio.periods", 2);
-    // fluid_settings_setint(settings, "audio.period-size", 64);
-    // fluid_settings_setint(settings, "audio.realtime-prio", 80);
-    // fluid_settings_setint(settings, "audio.pulseaudio.adjust-latency", 0);
     synth = new_fluid_synth(settings);
     adriver = new_fluid_audio_driver(settings, synth);
 }

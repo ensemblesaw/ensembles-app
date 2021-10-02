@@ -499,7 +499,12 @@ namespace Ensembles.Shell {
             });
 
             // Perform garbage collection when the app exits
-            this.destroy.connect (() => {
+            this.destroy.connect (() => app_exit ());
+            debug ("Initialized\n");
+        }
+
+        public void app_exit (bool? force_close = false) {
+            Idle.add (() => {
                 print ("App Exit\n");
                 debug ("CLEANUP: Unloading Registry Memory");
                 registry_panel.unref ();
@@ -514,6 +519,8 @@ namespace Ensembles.Shell {
 
                 debug ("CLEANUP: Unloading MIDI Input Monitor");
                 controller_connection.unref ();
+
+                Thread.usleep (1000000);
                 debug ("CLEANUP: Unloading Metronome and LFO Engine");
                 metronome_player.unref ();
                 debug ("CLEANUP: Unloading Style Engine");
@@ -526,9 +533,13 @@ namespace Ensembles.Shell {
                 debug ("CLEANUP: Unloading Central Bus");
                 bus.unref ();
                 debug ("CLEANUP: Unloading Synthesizer");
-                synthesizer.unref ();
+                synthesizer.synthesizer_deinit ();
+                if (force_close) {
+                    EnsemblesApp.main_window.close ();
+                }
+                print ("Exiting...\n");
+                return false;
             });
-            debug ("Initialized\n");
         }
 
         void load_voices () {
