@@ -2,7 +2,7 @@
 project (
     'com.github.subhadeepjasu.ensembles',
     'c', 'vala',
-    version: '0.0.13',
+    version: '0.0.14',
 )
 
 # GNOME module
@@ -16,6 +16,14 @@ add_project_arguments (
     '-DGETTEXT_PACKAGE="@0@"'.format (meson.project_name ()),
     '-DHANDY_USE_UNSTABLE_API',
     language: 'c'
+)
+
+# Set Driver Compatibilities
+add_project_arguments (
+    '-D', 'ALSA_DRIVER',
+    '-D', 'PULSEAUDIO_DRIVER',
+    # '-D', 'PIPEWIRE_CORE_DRIVER',  # Uncomment to enable pipewire core support provided fluidsynth supports it
+    language: 'vala'
 )
 
 # Compiling resources

@@ -37,7 +37,7 @@ namespace Ensembles.Core {
 
         bool stream_connected = false;
 
-        public signal void receive_note_event (int key, int on, int velocity);
+        public signal void receive_note_event (int key, int on, int velocity, int channel);
 
         public Ensembles.Core.ControllerDevice[] get_device_list () {
             int n = controller_query_input_device_count ();
@@ -58,20 +58,22 @@ namespace Ensembles.Core {
                 if (controller_poll_device () > 0) {
                     int message = controller_read_device_stream ();
                     int key = (((0x00FF00 & message) - 9216) / 256) + 36;
-                    int type = message & 0x0000FF;
+                    int type = (message & 0x0000F0);
+                    int channel = (message & 0x00000F);
                     double velocity = ((127.0 - 0.0) / (8323072.0 - 65536.0)) *
                                       (double)((0xFF0000 & message) - 65536);
-                    print ("Velocity: %d, Key: %d, Type:%d, Raw: %x\n",
+                    print ("Velocity: %d, Key: %d, Type:%d, Channel:%d, Raw: %x\n",
                           (int)velocity,
                           key,
-                          message & 0x0000FF,
+                          type,
+                          channel,
                           message);
                     if (velocity < 0) {
                         velocity = 1;
                         type = 128;
                     }
                     Idle.add (() => {
-                        receive_note_event (key, type, (int)velocity);
+                        receive_note_event (key, type, (int)velocity, channel);
                         return false;
                     });
                 }

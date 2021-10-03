@@ -11,7 +11,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
@@ -25,6 +25,7 @@
 #include "style_analyser.h"
 #include "central_bus.h"
 #include "synthesizer.h"
+#include "driver_settings_provider.h"
 
 // None of this will be used for actual rendering /////////
 fluid_settings_t* lfo_settings;
@@ -76,11 +77,7 @@ lfo_parse_ticks (void* data, int ticks) {
 
 void
 metronome_lfo_player_init () {
-    lfo_settings = new_fluid_settings();
-    fluid_settings_setstr(lfo_settings, "audio.driver", "pulseaudio");
-    fluid_settings_setint(lfo_settings, "audio.periods", 2);
-    fluid_settings_setint(lfo_settings, "audio.period-size", 64);
-    fluid_settings_setint(lfo_settings, "audio.realtime-prio", 90);
+    lfo_settings = get_settings(METRONOME_PLAYER);
     lfo_synth = new_fluid_synth(lfo_settings);
     lfo_adriver = new_fluid_audio_driver(lfo_settings, lfo_synth);
 }

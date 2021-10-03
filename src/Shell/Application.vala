@@ -11,7 +11,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
  * Authored by: Subhadeep Jasu
@@ -33,7 +33,7 @@ namespace Ensembles.Shell {
 
         public static Settings settings;
 
-        public Ensembles.Shell.MainWindow main_window;
+        public static Ensembles.Shell.MainWindow main_window;
 
         Gtk.CssProvider css_provider;
 
@@ -53,6 +53,7 @@ namespace Ensembles.Shell {
 
         protected override void activate () {
             if (this.main_window == null) {
+                Core.DriverSettingsProvider.check_drivers ();
                 this.main_window = new Ensembles.Shell.MainWindow ();
                 var media_key_listener = Interfaces.MediaKeyListener.listen ();
                 media_key_listener.media_key_pressed_play.connect (main_window.media_toggle_play);

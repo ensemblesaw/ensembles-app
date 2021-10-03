@@ -69,6 +69,11 @@
     <content_attribute id="money-gambling">none</content_attribute>
   </content_rating>
   <releases>
+    <release version="0.0.14" date="2021-09-07">
+      <description>
+        <p>Provide pipewire exclusive settings for fluidsynth</p>
+      </description>
+    </release>
     <release version="0.0.13" date="2021-09-03">
       <description>
         <p>Theming fix for when its run on other distros</p>
