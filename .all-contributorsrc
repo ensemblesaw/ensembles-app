@@ -34,6 +34,15 @@
         "code",
         "doc"
       ]
+    },
+    {
+      "login": "micahilbery",
+      "name": "Micah Ilbery",
+      "avatar_url": "https://avatars.githubusercontent.com/u/10608836?v=4",
+      "profile": "https://micahilbery.com/",
+      "contributions": [
+        "design"
+      ]
     }
   ],
   "contributorsPerLine": 7,
