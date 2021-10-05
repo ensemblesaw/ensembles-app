@@ -93,17 +93,8 @@ Ensembles will have support for sampled voice, voice synthesis and DSP plug-ins.
 ## External Files
 Ensembles supports creation and distribution of external soundfonts (SF2), style files and MIDI recordings. External content can be placed in special folders in user's document folder. Style files from other formats like *STY*,  *AC7*, etc. are not compatible with Ensembles. Ensembles has its own style format *ENSTL*, check out styles Readme file in your documents folder for style specifications (Check: https://github.com/SubhadeepJasu/Ensembles/blob/master/data/Styles/README.md). External MIDI recordings may have reserved copyrights.
 
-<br>
-<sup><b>License</b>: GNU GPLv3</sup>
-<br>
-<sup>Certain components like soundfonts and styles have their own Licensing</sup>
-<br>
-<sup>SoundFont(R) is a registered trademark of E-mu Systems, Inc.</sup>
-<br>
-<sup>Ensembles © Copyright 2021-2022 Subhadeep Jasu</sup>
 
-## Contributors ✨
-
+## Contributors
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
@@ -124,3 +115,13 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+<br>
+<hr>
+<br>
+<sup><b>License</b>: GNU GPLv3</sup>
+<br>
+<sup>Certain components like soundfonts and styles have their own Licensing</sup>
+<br>
+<sup>SoundFont(R) is a registered trademark of E-mu Systems, Inc.</sup>
+<br>
+<sup>Ensembles © Copyright 2021-2022 Subhadeep Jasu</sup>
