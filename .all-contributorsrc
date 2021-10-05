@@ -52,6 +52,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "Hedronmx",
+      "name": "Hedron Digital",
+      "avatar_url": "https://avatars.githubusercontent.com/u/26935602?v=4",
+      "profile": "https://digital.hedronmx.com/",
+      "contributions": [
+        "userTesting"
+      ]
     }
   ],
   "contributorsPerLine": 7,
