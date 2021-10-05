@@ -14,7 +14,7 @@ Ensembles is a realtime musical performance arranger app. Its built using Vala a
 
 ![elementary flatpak build status](https://github.com/SubhadeepJasu/Ensembles/actions/workflows/ci.yml/badge.svg)
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 <br>
@@ -106,6 +106,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://ryonakano.github.io"><img src="https://avatars.githubusercontent.com/u/26003928?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ryo Nakano</b></sub></a><br /><a href="https://github.com/SubhadeepJasu/Ensembles/commits?author=ryonakano" title="Code">💻</a></td>
     <td align="center"><a href="https://proseandconst.xyz/"><img src="https://avatars.githubusercontent.com/u/8205055?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Darshak Parikh</b></sub></a><br /><a href="https://github.com/SubhadeepJasu/Ensembles/commits?author=dar5hak" title="Code">💻</a> <a href="https://github.com/SubhadeepJasu/Ensembles/commits?author=dar5hak" title="Documentation">📖</a></td>
     <td align="center"><a href="https://micahilbery.com/"><img src="https://avatars.githubusercontent.com/u/10608836?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Micah Ilbery</b></sub></a><br /><a href="#design-micahilbery" title="Design">🎨</a></td>
+    <td align="center"><a href="https://github.com/Newbytee"><img src="https://avatars.githubusercontent.com/u/4428753?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Newbyte</b></sub></a><br /><a href="https://github.com/SubhadeepJasu/Ensembles/commits?author=Newbytee" title="Documentation">📖</a></td>
   </tr>
 </table>
 
