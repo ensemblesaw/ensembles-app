@@ -15,6 +15,15 @@
         "code",
         "doc"
       ]
+    },
+    {
+      "login": "ryonakano",
+      "name": "Ryo Nakano",
+      "avatar_url": "https://avatars.githubusercontent.com/u/26003928?v=4",
+      "profile": "https://ryonakano.github.io",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
