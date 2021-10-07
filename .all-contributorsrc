@@ -61,6 +61,15 @@
       "contributions": [
         "userTesting"
       ]
+    },
+    {
+      "login": "benpocalypse",
+      "name": "benpocalypse",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6274196?v=4",
+      "profile": "https://github.com/benpocalypse",
+      "contributions": [
+        "userTesting"
+      ]
     }
   ],
   "contributorsPerLine": 7,
