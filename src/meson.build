@@ -70,6 +70,7 @@ ensembles_sources_vala = files (
     'Core/SamplePlayer.vala',
     'Core/SampleRecorder.vala',
     'Core/SongPlayer.vala',
+    'Core/PlugIn/lv2/Lv2Host.vala',
     'Interfaces/MediaKeyListener.vala',
     'Interfaces/SoundIndicator.vala'
 )
@@ -85,7 +86,16 @@ ensembles_sources_c = files (
     'Core/style_analyser.c',
     'Core/chord_finder.c',
     'Core/voice_analyser.c',
-    'Core/music_player.c'
+    'Core/music_player.c',
+    # Plugins ////////////////////////////////////////////////////////////
+    # LV2                                                               //
+    # ////////////////////////////////////////////////////////////////////
+    # 'Core/PlugIn/lv2/zix/ring.c',
+    # 'Core/PlugIn/lv2/state.c',
+    # 'Core/PlugIn/lv2/log.c',
+    # 'Core/PlugIn/lv2/symap.c',
+    # 'Core/PlugIn/lv2/lv2_evbuf.c',
+    # 'Core/PlugIn/lv2/lv2_host.c'
 )
 
 ensembles_sources = [
