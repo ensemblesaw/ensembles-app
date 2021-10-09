@@ -78,8 +78,8 @@ namespace Ensembles.Core {
         public static bool get_is_alsa_available () {
             string info = "";
             try {
-                Process.spawn_command_line_sync ("env LANG=C aplay --version", out info);
-                if (info.contains ("aplay: version ")) {
+                Process.spawn_command_line_sync ("cat /proc/asound/version", out info);
+                if (info.contains ("Advanced Linux Sound Architecture Driver Version")) {
                     print ("Alsa detected!\n");
                     alsa_driver_found = 1;
                     return true;

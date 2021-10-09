@@ -45,10 +45,17 @@ dependencies = [
     dependency ('libhandy-1', version: '>=0.83.0'),
     dependency ('gstreamer-1.0'),
     meson.get_compiler ('vala').find_library ('posix'),
-    meson.get_compiler ('c').find_library ('m', required : false),
+    meson.get_compiler ('c').find_library ('m', required : true),
     meson.get_compiler ('c').find_library ('fluidsynth', required : true),
     meson.get_compiler ('c').find_library ('portmidi', required : true),
-    meson.get_compiler ('c').find_library ('X11', required : false),
+    meson.get_compiler ('c').find_library ('X11', required : true),
+    # LV2 Support
+    # meson.get_compiler ('c').find_library ('lv2', required : false),
+    # meson.get_compiler ('c').find_library ('lilv-0', required : true),
+    # meson.get_compiler ('c').find_library ('serd-0', required : true),
+    # meson.get_compiler ('c').find_library ('sord-0', required : true),
+    # meson.get_compiler ('c').find_library ('sratom-0', required : true),
+    # meson.get_compiler ('c').find_library ('suil-0', required : true),
 ]
 config_h_dir = include_directories('.')
 subdir ('data')
