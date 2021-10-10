@@ -21,6 +21,10 @@ namespace Ensembles.Core {
     public class Synthesizer : Object {
         public Synthesizer (string soundfont) {
             synthesizer_init (soundfont);
+            set_fx_callback ((buffer) => {
+                handle_effect (buffer);
+                return 0;
+            });
         }
 
         public void synthesizer_deinit () {
@@ -28,6 +32,11 @@ namespace Ensembles.Core {
         }
 
         public signal void detected_chord (int chord_main, int type);
+
+        public static int handle_effect (float[] buffer) {
+            print ("callback %d\n", buffer.length);
+            return 0;
+        }
 
         public void send_notes_realtime (int key, int on, int velocity) {
             int chord_type = 0;
@@ -159,6 +168,12 @@ extern void set_mod_buffer_value (int modulator, int channel, int value);
 extern int synthesizer_get_velocity_levels (int synth_index, int channel);
 
 extern float synthesizer_get_version ();
+
+
+[CCode (cname = "synthesizer_fx_callback", has_target = false)]
+extern delegate int synthesizer_fx_callback (float[] output);
+[CCode (has_target = false)]
+extern void set_fx_callback (synthesizer_fx_callback function);
 
 extern int synthesizer_transpose;
 extern int synthesizer_transpose_enable;
