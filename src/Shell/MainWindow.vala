@@ -54,6 +54,8 @@ namespace Ensembles.Shell {
         Gtk.Label custom_title_text;
         Gtk.Grid custom_title_grid;
 
+        PlugIns.PlugInManager plugin_manager;
+
         // For song player
         string song_name;
 
@@ -66,6 +68,9 @@ namespace Ensembles.Shell {
 
         public MainWindow () {
             Gtk.Settings settings = Gtk.Settings.get_default ();
+
+            // Initialise plugins
+            plugin_manager = new PlugIns.PlugInManager ();
 
             // Force dark theme
             settings.gtk_application_prefer_dark_theme = true;

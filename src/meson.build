@@ -71,7 +71,12 @@ ensembles_sources_vala = files (
     'Core/SampleRecorder.vala',
     'Core/SongPlayer.vala',
     'Interfaces/MediaKeyListener.vala',
-    'Interfaces/SoundIndicator.vala'
+    'Interfaces/SoundIndicator.vala',
+    # Plugins ############################################################
+    'PlugIns/PlugIn.vala',
+    'PlugIns/PlugInManager.vala',
+    # LADSPA VERSION 2
+    'PlugIns/LV2/LV2Manager.vala'
 )
 
 ensembles_sources_c = files (
@@ -85,10 +90,7 @@ ensembles_sources_c = files (
     'Core/style_analyser.c',
     'Core/chord_finder.c',
     'Core/voice_analyser.c',
-    'Core/music_player.c',
-    # Plugins ////////////////////////////////////////////////////////////
-    # LV2                                                               //
-    # ////////////////////////////////////////////////////////////////////
+    'Core/music_player.c'
 )
 
 ensembles_sources = [

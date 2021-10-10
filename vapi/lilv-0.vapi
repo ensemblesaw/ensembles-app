@@ -33,7 +33,7 @@ namespace Lilv {
         public const string RDFS;
         public const string XSD;
     }
-    
+
     [CCode (cprefix = "LILV")]
     namespace URI {
         public const string AUDIO_PORT;
@@ -44,15 +44,15 @@ namespace Lilv {
         public const string OUTPUT_PORT;
         public const string PORT;
     }
-    
+
     [CCode (cprefix = "LILV")]
     namespace OPTION {
         public const string FILTER_LANG;
         public const string DYN_MANIFEST;
     }
-    
+
     public static unowned string uri_to_path(string uri);
-    
+
     [Compact]
     [Immutable]
     [CCode (free_function = "")]
@@ -80,11 +80,11 @@ namespace Lilv {
         public Node? get_author_email();
         public Node? get_author_homepage();
         public bool is_replaced();
-        
+
         public Instance? instantiate(double sample_rate,
             [CCode (array_length = false, array_null_terminated = true)] LV2.Feature*[] features);
         public UIs get_uis();
-        
+
         // port methods
         [CCode (cname = "lilv_port_get_value")]
         public Nodes port_get_value(Port port, Node predicate);
@@ -107,22 +107,26 @@ namespace Lilv {
         [CCode (cname = "lilv_port_get_scale_points")]
         public ScalePoints port_get_scale_points(Port port);
     }
-    
+
     [Compact]
     [CCode (free_function = "")]
     public class PluginClass {
+        [CCode (cname = "lilv_plugin_class_get_parent_uri")]
         public unowned Node get_parent_uri();
+        [CCode (cname = "lilv_plugin_class_get_uri")]
         public unowned Node get_uri();
+        [CCode (cname = "lilv_plugin_class_get_label")]
         public unowned Node get_label();
+        [CCode (cname = "lilv_plugin_class_get_children")]
         public PluginClasses get_children();
     }
-    
+
     [Compact]
     [Immutable]
     [CCode (free_function = "")]
     public class Port {
     }
-    
+
     [Compact]
     [Immutable]
     [CCode (free_function = "")]
@@ -130,7 +134,7 @@ namespace Lilv {
         public unowned Node get_label();
         public unowned Node get_value();
     }
-    
+
     [Compact]
     [Immutable]
     [CCode (free_function = "")]
@@ -142,7 +146,7 @@ namespace Lilv {
         public unowned Node get_bundle_uri();
         public unowned Node get_binary_uri();
     }
-    
+
     [Compact]
     [CCode (free_function = "lilv_node_free")]
     public class Node {
@@ -156,11 +160,11 @@ namespace Lilv {
         public Node.float(World world, float val);
         [CCode(cname="lilv_new_bool")]
         public Node.bool(World world, bool val);
-        
+
         public Node duplicate();
         public bool equals(Node other);
         public string get_turtle_token();
-        
+
         public bool is_uri();
         public unowned string as_uri();
         public bool is_blank();
@@ -175,7 +179,7 @@ namespace Lilv {
         public bool is_bool();
         public bool as_bool();
     }
-    
+
     [Compact]
     [CCode (free_function = "lilv_world_free")]
     public class World {
@@ -188,7 +192,7 @@ namespace Lilv {
         public unowned Plugins get_all_plugins();
         public Nodes find_nodes(Node subject, Node predicate, Node object);
     }
-    
+
     [Compact]
     [CCode (free_function = "lilv_instance_free")]
     public class Instance {
@@ -201,15 +205,15 @@ namespace Lilv {
         public unowned LV2.Descriptor get_descriptor();
         public unowned LV2.Handle get_handle();
     }
-    
+
     // Collections
-    
+
     [Compact]
     [Immutable]
     [CCode (free_function = "")]
     public class Iter {
     }
-    
+
     [Compact]
     [CCode (free_function = "lilv_plugin_classes_free")]
     public class PluginClasses {
@@ -220,7 +224,7 @@ namespace Lilv {
         public bool is_end(Iter i);
         public unowned PluginClass? get_by_uri(Node uri);
     }
-    
+
     [Compact]
     [Immutable]
     [CCode (free_function = "")]
@@ -232,7 +236,7 @@ namespace Lilv {
         public bool is_end(Iter i);
         public unowned Plugin? get_by_uri(Node uri);
     }
-    
+
     [Compact]
     [CCode (free_function = "lilv_scale_points_free")]
     public class ScalePoints {
@@ -242,7 +246,7 @@ namespace Lilv {
         public Iter next(Iter i);
         public bool is_end(Iter i);
     }
-    
+
     [Compact]
     [CCode (free_function = "lilv_uis_free")]
     public class UIs {
@@ -253,7 +257,7 @@ namespace Lilv {
         public bool is_end(Iter i);
         public unowned UI? get_by_uri(Node uri);
     }
-    
+
     [Compact]
     [CCode (free_function = "lilv_nodes_free")]
     public class Nodes {
