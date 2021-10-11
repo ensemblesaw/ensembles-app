@@ -21,9 +21,8 @@ namespace Ensembles.Core {
     public class Synthesizer : Object {
         public Synthesizer (string soundfont) {
             synthesizer_init (soundfont);
-            set_fx_callback ((buffer) => {
-                handle_effect (buffer);
-                return 0;
+            set_fx_callback ((buffer_in, out buffer_out) => {
+                handle_effect (buffer_in, out buffer_out);
             });
         }
 
@@ -33,9 +32,9 @@ namespace Ensembles.Core {
 
         public signal void detected_chord (int chord_main, int type);
 
-        public static int handle_effect (float[] buffer) {
-            print ("callback %d\n", buffer.length);
-            return 0;
+        public static void handle_effect (float[] buffer_in, out float[] buffer_out) {
+            print ("callback %d\n", buffer_in.length);
+            buffer_out = buffer_in;
         }
 
         public void send_notes_realtime (int key, int on, int velocity) {
@@ -171,7 +170,7 @@ extern float synthesizer_get_version ();
 
 
 [CCode (cname = "synthesizer_fx_callback", has_target = false)]
-extern delegate int synthesizer_fx_callback (float[] output);
+extern delegate void synthesizer_fx_callback (float[] input, out float[] output);
 [CCode (has_target = false)]
 extern void set_fx_callback (synthesizer_fx_callback function);
 

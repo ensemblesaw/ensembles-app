@@ -137,8 +137,8 @@ synthesizer_set_defaults () {
 }
 
 // Effect Rack callback
-typedef gint
-(*synthesizer_fx_callback)(gfloat* output, gint output_length1);
+typedef void
+(*synthesizer_fx_callback)(gfloat* input, gint input_length1, gfloat** output, gint* output_length1);
 
 synthesizer_fx_callback fx_callback;
 
@@ -182,8 +182,9 @@ fx_function_realtime(void *synth_data, int len,
         //     out_i[k] *= fx_data->gain;
         // }
         // Apply effects here
+        int size;
         if (fx_callback != NULL) {
-            fx_callback (out_i, len);
+            fx_callback (out_i, len, &out_i, &size);
         }
     }
 
