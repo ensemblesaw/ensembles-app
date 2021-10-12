@@ -81,14 +81,17 @@
                         name = name,
                         uri = uri,
                         type = "lv2",
-                        lv2_plugin = plugin
+                        lv2_plugin = plugin,
+                        class = plug_class
                     };
 
                     detected_plugins.append (detected_plug);
                 }
                 iter = plugins.next (iter);
             }
+            print ("helloooooo\n");
             if (detected_plugins.length () > 0) {
+                print ("helloooooo000\n");
                 lv2_plugins_found (detected_plugins);
             }
             return 0;

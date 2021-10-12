@@ -23,16 +23,18 @@ namespace Ensembles.PlugIns {
         public PlugIns.PlugIn[] plugins;
         public PlugInManager () {
             lv2_manager = new PlugIns.LADSPAV2.LV2Manager ();
-            lv2_manager.discover ();
-
             lv2_manager.lv2_plugins_found.connect ((plugs) => {
                 plugins = new PlugIns.PlugIn [plugs.length ()];
                 for (uint i = 0; i < plugs.length (); i++) {
                     plugins[i] = plugs.nth_data (i);
+                    if (plugins[i].class == "Instrument Plugin") {
+                    } else {
+                        Core.EffectRack.populate_rack (plugins[i]);
+                    }
                 }
-
-
+                Core.EffectRack.create_plugins ();
             });
+            lv2_manager.discover ();
         }
     }
 }

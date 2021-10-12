@@ -82,7 +82,7 @@ namespace Lilv {
         public bool is_replaced();
 
         public Instance? instantiate(double sample_rate,
-            [CCode (array_length = false, array_null_terminated = true)] LV2.Feature*[] features);
+            [CCode (array_length = false, array_null_terminated = true)] LV2.Feature*[]? features = null);
         public UIs get_uis();
 
         // port methods

@@ -68,7 +68,6 @@ namespace Ensembles.Shell {
 
         public MainWindow () {
             Gtk.Settings settings = Gtk.Settings.get_default ();
-
             // Initialise plugins
             plugin_manager = new PlugIns.PlugInManager ();
 

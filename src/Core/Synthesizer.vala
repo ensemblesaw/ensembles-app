@@ -33,8 +33,13 @@ namespace Ensembles.Core {
         public signal void detected_chord (int chord_main, int type);
 
         public static void handle_effect (float[] buffer_in, out float[] buffer_out) {
-            print ("callback %d\n", buffer_in.length);
+            //print ("callback %d\n", buffer_in.length);
             buffer_out = buffer_in;
+            buffer_out = EffectRack.process_audio (buffer_in);
+            print ("Rannn\n");
+            //  for (int i = 0; i < buffer_in.length; i++) {
+            //      buffer_out[i] *= 0.2f;
+            //  } // Testing a simple gain change
         }
 
         public void send_notes_realtime (int key, int on, int velocity) {

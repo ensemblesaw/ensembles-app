@@ -23,6 +23,9 @@ namespace Ensembles.PlugIns {
         public string uri;
         public string name;
         public bool has_ui;
+        public string class;
+
+        // LV2
         public Lilv.Plugin lv2_plugin;
         public List<string> features;
         public List<Lilv.Port> ports;

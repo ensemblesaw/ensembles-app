@@ -177,15 +177,16 @@ fx_function_realtime(void *synth_data, int len,
     for(int i = 0; i < nout; i++)
     {
         float *out_i = out[i];
-        // for(k = 0; k < len; k++)
-        // {
-        //     out_i[k] *= fx_data->gain;
-        // }
         // Apply effects here
+        float *out_o = malloc (len * sizeof (float));
         int size;
         if (fx_callback != NULL) {
-            fx_callback (out_i, len, &out_i, &size);
+            fx_callback (out_i, len, &out_o, &size);
+            for (int k = 0; k < len; k++) {
+                out_i[k] = out_o[k];
+            }
         }
+        fluid_free (out_o);
     }
 
     return FLUID_OK;
