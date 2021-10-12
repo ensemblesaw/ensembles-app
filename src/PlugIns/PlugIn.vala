@@ -18,16 +18,122 @@
  */
 
 namespace Ensembles.PlugIns {
-    public class PlugIn : Object {
-        public string type;
-        public string uri;
-        public string name;
-        public bool has_ui;
+    public class PlugIn : Gtk.Grid {
+        public string plug_type;
+        public string plug_uri;
+        public string plug_name;
+        public bool plug_has_ui;
+        public uint32 source_l_port_index;
+        public uint32 sink_l_port_index;
+        public uint32 source_r_port_index;
+        public uint32 sink_r_port_index;
+        public bool stereo_source;
+        public bool stereo_sink;
         public string class;
 
         // LV2
         public Lilv.Plugin lv2_plugin;
-        public List<string> features;
-        public List<Lilv.Port> ports;
+        public List<weak Lilv.Port> lv2_ports;
+        private Lilv.Instance? lv2_instance_l_realtime;
+        private Lilv.Instance? lv2_instance_r_realtime;
+        private Lilv.Instance? lv2_instance_style;
+
+        private Gtk.Widget[] widgets;
+
+        private float gain = -10;
+
+        construct {
+            widgets = new Gtk.Widget [0];
+        }
+
+        public void instantiate_plug (bool realtime) {
+            if (realtime) {
+                if (plug_type == "lv2") {
+                    lv2_instance_l_realtime = lv2_plugin.instantiate (44100, null);
+                    lv2_instance_l_realtime.connect_port (0, &gain);
+                    if (!stereo_source) {
+                        lv2_instance_r_realtime = lv2_plugin.instantiate (44100, null);
+                        lv2_instance_r_realtime.connect_port (0, &gain);
+                    }
+                }
+            } else {
+                if (plug_type == "lv2") {
+                    lv2_instance_style = lv2_plugin.instantiate (44100, null);
+                }
+            }
+        }
+
+        public void activate_plug (bool realtime) {
+            if (realtime) {
+                if (plug_type == "lv2") {
+                    if (lv2_instance_l_realtime != null) {
+                        lv2_instance_l_realtime.activate ();
+                    }
+                    if (lv2_instance_r_realtime != null) {
+                        lv2_instance_r_realtime.activate ();
+                    }
+                }
+            }
+        }
+
+        public void deactivate_plug (bool realtime) {
+            if (realtime) {
+                if (plug_type == "lv2") {
+                    if (lv2_instance_l_realtime != null) {
+                        lv2_instance_l_realtime.deactivate ();
+                    }
+                    if (lv2_instance_r_realtime != null) {
+                        lv2_instance_r_realtime.deactivate ();
+                    }
+                }
+            }
+        }
+
+        public void process (uint32 sample_count) {
+            if (plug_type == "lv2") {
+                if (stereo_source) {
+                    if (lv2_instance_l_realtime != null) {
+                        lv2_instance_l_realtime.run (sample_count);
+                    }
+                } else {
+                    if (lv2_instance_l_realtime != null && lv2_instance_r_realtime != null) {
+                        lv2_instance_l_realtime.run (sample_count);
+                        lv2_instance_r_realtime.run (sample_count);
+                    }
+                }
+            }
+        }
+
+        public void connect_source_buffer (void* buffer_l, void* buffer_r) {
+            if (plug_type == "lv2") {
+                if (stereo_source) {
+                    if (lv2_instance_l_realtime != null) {
+                        lv2_instance_l_realtime.connect_port (source_l_port_index, buffer_l);
+                        lv2_instance_l_realtime.connect_port (source_r_port_index, buffer_r);
+                    }
+                } else {
+                    if (lv2_instance_l_realtime != null) {
+                        lv2_instance_l_realtime.connect_port (source_l_port_index, buffer_l);
+                        lv2_instance_r_realtime.connect_port (source_l_port_index, buffer_r);
+                    }
+                }
+            }
+        }
+
+        public void connect_sink_buffer (void* buffer_l, void* buffer_r) {
+            if (plug_type == "lv2") {
+                if (stereo_source) {
+                    if (lv2_instance_l_realtime != null) {
+                        lv2_instance_l_realtime.connect_port (sink_l_port_index, buffer_l);
+                        lv2_instance_l_realtime.connect_port (sink_r_port_index, buffer_r);
+                    }
+                } else {
+                    if (lv2_instance_l_realtime != null) {
+                        lv2_instance_l_realtime.connect_port (sink_l_port_index, buffer_l);
+                        lv2_instance_r_realtime.connect_port (sink_l_port_index, buffer_r);
+                    }
+                }
+            }
+        }
     }
 }

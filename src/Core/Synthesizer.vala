@@ -19,10 +19,45 @@
 
 namespace Ensembles.Core {
     public class Synthesizer : Object {
+        public static float[] aud_buf_dry_l;
+        public static float[] aud_buf_dry_r;
+        public static float[] aud_buf_mix_l;
+        public static float[] aud_buf_mix_r;
         public Synthesizer (string soundfont) {
             synthesizer_init (soundfont);
-            set_fx_callback ((buffer_in, out buffer_out) => {
-                handle_effect (buffer_in, out buffer_out);
+            set_fx_callback ((buffer_l_in, buffer_r_in, out buffer_out_l, out buffer_out_r) => {
+                // Initialize out buffer
+                buffer_out_l = buffer_l_in;
+                buffer_out_r = buffer_r_in;
+
+                // If the main buffers aren't initialised
+                if (Synthesizer.aud_buf_dry_l == null || Synthesizer.aud_buf_dry_r == null ||
+                    Synthesizer.aud_buf_mix_l == null || Synthesizer.aud_buf_mix_r == null) {
+                    // Initialise main buffers
+                    aud_buf_dry_l = new float [buffer_l_in.length];
+                    aud_buf_dry_r = new float [buffer_r_in.length];
+                    aud_buf_mix_l = new float [buffer_l_in.length];
+                    aud_buf_mix_r = new float [buffer_r_in.length];
+                    // Connect buffers to the effect rack
+                    EffectRack.connect_audio_ports (
+                        aud_buf_dry_l,
+                        aud_buf_dry_r,
+                        aud_buf_mix_l,
+                        aud_buf_mix_r
+                    );
+                }
+                // Fill main dry buffers with audio data
+                for (int i = 0; i < buffer_l_in.length; i++) {
+                    aud_buf_dry_l[i] = buffer_l_in[i];
+                    aud_buf_dry_r[i] = buffer_r_in[i];
+                }
+                // Process audio using effect rack
+                EffectRack.process_audio (buffer_l_in.length);
+                // Fill out buffers using the wet mix;
+                for (int i = 0; i < buffer_l_in.length; i++) {
+                    buffer_out_l[i] = aud_buf_mix_l[i];
+                    buffer_out_r[i] = aud_buf_mix_r[i];
+                }
             });
         }
 
@@ -31,16 +66,6 @@ namespace Ensembles.Core {
         }
 
         public signal void detected_chord (int chord_main, int type);
-
-        public static void handle_effect (float[] buffer_in, out float[] buffer_out) {
-            //print ("callback %d\n", buffer_in.length);
-            buffer_out = buffer_in;
-            buffer_out = EffectRack.process_audio (buffer_in);
-            print ("Rannn\n");
-            //  for (int i = 0; i < buffer_in.length; i++) {
-            //      buffer_out[i] *= 0.2f;
-            //  } // Testing a simple gain change
-        }
 
         public void send_notes_realtime (int key, int on, int velocity) {
             int chord_type = 0;
@@ -175,7 +200,7 @@ extern float synthesizer_get_version ();
 
 
 [CCode (cname = "synthesizer_fx_callback", has_target = false)]
-extern delegate void synthesizer_fx_callback (float[] input, out float[] output);
+extern delegate void synthesizer_fx_callback (float[] input_l, float[] input_r, out float[] output_l, out float[] output_r);
 [CCode (has_target = false)]
 extern void set_fx_callback (synthesizer_fx_callback function);
 

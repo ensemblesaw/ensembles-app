@@ -69,6 +69,7 @@ namespace Ensembles.Shell {
         public MainWindow () {
             Gtk.Settings settings = Gtk.Settings.get_default ();
             // Initialise plugins
+            debug ("STARTUP: Loading plugins");
             plugin_manager = new PlugIns.PlugInManager ();
 
             // Force dark theme

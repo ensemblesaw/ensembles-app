@@ -138,7 +138,14 @@ synthesizer_set_defaults () {
 
 // Effect Rack callback
 typedef void
-(*synthesizer_fx_callback)(gfloat* input, gint input_length1, gfloat** output, gint* output_length1);
+(*synthesizer_fx_callback)(gfloat* input_l,
+                        gint input_l_length1,
+                        gfloat* input_r,
+                        gint input_r_length1,
+                        gfloat** output_l,
+                        gint* output_l_length1,
+                        gfloat** output_r,
+                        gint* output_r_length1);
 
 synthesizer_fx_callback fx_callback;
 
@@ -174,20 +181,23 @@ fx_function_realtime(void *synth_data, int len,
             return FLUID_FAILED;
         }
     }
-    for(int i = 0; i < nout; i++)
-    {
-        float *out_i = out[i];
-        // Apply effects here
-        float *out_o = malloc (len * sizeof (float));
-        int size;
-        if (fx_callback != NULL) {
-            fx_callback (out_i, len, &out_o, &size);
-            for (int k = 0; k < len; k++) {
-                out_i[k] = out_o[k];
-            }
+
+    // All processing is stereo // Repeat processing if the plugin is mono
+    float *out_l_i = out[0];
+    float *out_r_i = out[1];
+    // Apply effects here
+    float *out_l_o = malloc (len * sizeof (float));
+    float *out_r_o = malloc (len * sizeof (float));
+    int size_l, size_r;
+    if (fx_callback != NULL) {
+        fx_callback (out_l_i, len, out_r_i, len, &out_l_o, &size_l, &out_r_o, &size_r);
+        for (int k = 0; k < len; k++) {
+            out_l_i[k] = out_l_o[k];
+            out_r_i[k] = out_r_o[k];
         }
-        fluid_free (out_o);
     }
+    fluid_free (out_l_o);
+    fluid_free (out_r_o);
 
     return FLUID_OK;
 }

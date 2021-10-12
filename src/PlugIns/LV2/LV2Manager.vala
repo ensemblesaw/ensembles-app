@@ -56,8 +56,18 @@
                     }
 
                     var n_ports = plugin.get_num_ports ();
+                    List<Lilv.Port> all_ports = new List<Lilv.Port> ();
+                    uint32 source_l_port_index = -1;
+                    uint32 sink_l_port_index = -1;
+                    uint32 source_r_port_index = -1;
+                    uint32 sink_r_port_index = -1;
+                    uint32 source_audio_port_count = 0;
+                    uint32 sink_audio_port_count = 0;
+                    bool stereo_source = false;
+                    bool stereo_sink = false;
                     for (uint i = 0; i < n_ports; i++) {
                         var port = plugin.get_port_by_index (i);
+                        all_ports.append (port);
                         print (" Port >>%s | %s\n", plugin.port_get_name (port).as_string (), plugin.port_get_symbol (port).as_string ());
                         print (" Properties:\n");
                         var properties = plugin.port_get_properties (port);
@@ -70,28 +80,64 @@
                         print (" Classes:\n");
                         unowned Lilv.Nodes classes = plugin.port_get_classes (port);
                         var class_iter = classes.begin ();
+                        bool audio_port = false;
+                        bool input_port = false;
+                        bool output_port = false;
                         while (!classes.is_end (class_iter)) {
                             var clas = classes.get (class_iter).as_string ();
                             print ("  %s\n", clas);
+                            if (clas == "http://lv2plug.in/ns/lv2core#AudioPort") {
+                                audio_port = true;
+                            }
+                            if (clas == "http://lv2plug.in/ns/lv2core#InputPort") {
+                                input_port = true;
+                            }
+                            if (clas == "http://lv2plug.in/ns/lv2core#OutputPort") {
+                                output_port = true;
+                            }
                             class_iter = classes.next (class_iter);
+                        }
+
+                        if (audio_port) {
+                            if (input_port) {
+                                if (source_audio_port_count > 0) {
+                                    source_r_port_index = i;
+                                    stereo_source = true;
+                                } else {
+                                    source_l_port_index = i;
+                                }
+                                source_audio_port_count++;
+                            } else if (output_port) {
+                                if (sink_audio_port_count > 0) {
+                                    sink_r_port_index = i;
+                                    stereo_sink = true;
+                                } else {
+                                    sink_l_port_index = i;
+                                }
+                                sink_audio_port_count++;
+                            }
                         }
                     }
 
                     var detected_plug = new PlugIns.PlugIn () {
-                        name = name,
-                        uri = uri,
-                        type = "lv2",
+                        plug_name = name,
+                        plug_uri = uri,
+                        plug_type = "lv2",
                         lv2_plugin = plugin,
-                        class = plug_class
+                        class = plug_class,
+                        source_l_port_index = source_l_port_index,
+                        sink_l_port_index = sink_l_port_index,
+                        source_r_port_index = source_r_port_index,
+                        sink_r_port_index = sink_r_port_index,
+                        stereo_source = stereo_source
                     };
+                    detected_plug.lv2_ports = all_ports.copy ();
 
                     detected_plugins.append (detected_plug);
                 }
                 iter = plugins.next (iter);
             }
-            print ("helloooooo\n");
             if (detected_plugins.length () > 0) {
-                print ("helloooooo000\n");
                 lv2_plugins_found (detected_plugins);
             }
             return 0;
