@@ -12,6 +12,9 @@ namespace Ensembles.Core {
 
             }
             plugin_references.nth_data (0).instantiate_plug (true);
+            var window = plugin_references.nth_data (0).get_ui ();
+            window.present ();
+            window.show_all ();
         }
 
         public static void connect_audio_ports (

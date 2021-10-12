@@ -18,7 +18,7 @@
  */
 
 namespace Ensembles.PlugIns {
-    public class PlugIn : Gtk.Grid {
+    public class PlugIn : Object {
         public string plug_type;
         public string plug_uri;
         public string plug_name;
@@ -38,12 +38,57 @@ namespace Ensembles.PlugIns {
         private Lilv.Instance? lv2_instance_r_realtime;
         private Lilv.Instance? lv2_instance_style;
 
-        private Gtk.Widget[] widgets;
+
+        // UI
+        Hdy.Window plugin_window;
+        Gtk.HeaderBar headerbar;
+        Shell.Knob main_mixing_knob;
+        Gtk.Grid main_grid;
 
         private float gain = -10;
 
-        construct {
-            widgets = new Gtk.Widget [0];
+        void make_ui () {
+            plugin_window = new Hdy.Window ();
+            headerbar = new Gtk.HeaderBar ();
+            headerbar.has_subtitle = false;
+            headerbar.set_show_close_button (true);
+            Gtk.Image plug_icon_2 = new Gtk.Image.from_icon_name (
+                "com.github.subhadeepjasu.ensembles",
+                Gtk.IconSize.DND);
+            main_mixing_knob = new Shell.Knob ();
+            headerbar.pack_start (plug_icon_2);
+            var knob_grid = new Gtk.Grid ();
+            knob_grid.attach (new Gtk.Image.from_icon_name ("media-eq", Gtk.IconSize.BUTTON), 0, 0);
+            knob_grid.attach (main_mixing_knob, 1, 0);
+            knob_grid.height_request = 50;
+            knob_grid.button_press_event.connect (() => {
+                return true;
+            });
+            headerbar.pack_end (knob_grid);
+            print (plug_name);
+            var header = new Hdy.WindowHandle ();
+            header.expand = true;
+            header.add(new Gtk.Label ("𝑓𝑥 " + plug_name + " (" + plug_type + ")"));
+            headerbar.set_custom_title (header);
+            headerbar.decoration_layout = "close:";
+            headerbar.valign = Gtk.Align.START;
+
+            main_grid = new Gtk.Grid ();
+
+            var scrollable = new Gtk.ScrolledWindow (null, null);
+            scrollable.set_size_request (640, 480);
+            scrollable.add (main_grid);
+
+            var main_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+            main_box.pack_start (headerbar);
+            main_box.pack_end (scrollable);
+
+
+            plugin_window.add (main_box);
+        }
+
+        public Gtk.Window get_ui () {
+            return this.plugin_window;
         }
 
         public void instantiate_plug (bool realtime) {
@@ -61,6 +106,7 @@ namespace Ensembles.PlugIns {
                     lv2_instance_style = lv2_plugin.instantiate (44100, null);
                 }
             }
+            make_ui ();
         }
 
         public void activate_plug (bool realtime) {

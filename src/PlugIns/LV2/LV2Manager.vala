@@ -33,7 +33,7 @@
         }
 
         int get_lv2_plugins () {
-            print ("get plugs\n");
+            // print ("get plugs\n");
             var detected_plugins = new List<PlugIns.PlugIn> ();
             world.load_all ();
             var plugins = world.get_all_plugins ();
@@ -42,16 +42,16 @@
                 var plugin = plugins.get (iter);
                 if (plugin != null) {
                     string uri = plugin.get_uri ().as_uri ();
-                    string name = plugin.get_name ().as_string ();
+                    var plug_name = plugin.get_name ().as_string ();
                     var plug_class = plugin.get_class ().get_label ().as_string ();
                     var features = plugin.get_supported_features ();
                     print ("--------------------------------------------------------\n");
-                    print ("%s\n %s, %s\n", uri, name, plug_class);
+                    print ("%s\n %s, %s\n", uri, plug_name, plug_class);
 
                     var feature_iter = features.begin ();
                     while (!features.is_end (feature_iter)) {
                         var feature = features.get (feature_iter).as_string ();
-                        print (" Feature >>%s\n", feature);
+                        // print (" Feature >>%s\n", feature);
                         feature_iter = features.next (feature_iter);
                     }
 
@@ -68,16 +68,16 @@
                     for (uint i = 0; i < n_ports; i++) {
                         var port = plugin.get_port_by_index (i);
                         all_ports.append (port);
-                        print (" Port >>%s | %s\n", plugin.port_get_name (port).as_string (), plugin.port_get_symbol (port).as_string ());
-                        print (" Properties:\n");
+                        // print (" Port >>%s | %s\n", plugin.port_get_name (port).as_string (), plugin.port_get_symbol (port).as_string ());
+                        // print (" Properties:\n");
                         var properties = plugin.port_get_properties (port);
                         var prop_iter = properties.begin ();
                         while (!properties.is_end (prop_iter)) {
                             var prop = properties.get (prop_iter).as_string ();
-                            print ("  %s\n", prop);
+                            // print ("  %s\n", prop);
                             prop_iter = properties.next (prop_iter);
                         }
-                        print (" Classes:\n");
+                        // print (" Classes:\n");
                         unowned Lilv.Nodes classes = plugin.port_get_classes (port);
                         var class_iter = classes.begin ();
                         bool audio_port = false;
@@ -85,7 +85,7 @@
                         bool output_port = false;
                         while (!classes.is_end (class_iter)) {
                             var clas = classes.get (class_iter).as_string ();
-                            print ("  %s\n", clas);
+                            // print ("  %s\n", clas);
                             if (clas == "http://lv2plug.in/ns/lv2core#AudioPort") {
                                 audio_port = true;
                             }
@@ -120,7 +120,7 @@
                     }
 
                     var detected_plug = new PlugIns.PlugIn () {
-                        plug_name = name,
+                        plug_name = plug_name,
                         plug_uri = uri,
                         plug_type = "lv2",
                         lv2_plugin = plugin,
