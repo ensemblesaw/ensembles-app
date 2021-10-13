@@ -11,7 +11,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
@@ -31,6 +31,7 @@ namespace Ensembles.Shell {
         VoiceMenu voice_menu_l;
         VoiceMenu voice_menu_r1;
         VoiceMenu voice_menu_r2;
+        EffectRackScreen fx_rack_menu;
 
         LFOEditScreen lfo_editor;
 
@@ -47,6 +48,7 @@ namespace Ensembles.Shell {
             voice_menu_l = new VoiceMenu (2);
             voice_menu_r1 = new VoiceMenu (0);
             voice_menu_r2 = new VoiceMenu (1);
+            fx_rack_menu = new EffectRackScreen ();
             channel_mod_screen = new ChannelModulatorScreen (0, 0);
             lfo_editor = new LFOEditScreen ();
 
@@ -58,6 +60,7 @@ namespace Ensembles.Shell {
             main_stack.add_named (voice_menu_r2, "Voice R2 Menu");
             main_stack.add_named (channel_mod_screen, "Channel Modulator Screen");
             main_stack.add_named (lfo_editor, "LFO Editor");
+            main_stack.add_named (fx_rack_menu, "Fx Rack");
 
             splash_screen = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/display_unit/ensembles_splash.svg");
 
@@ -120,6 +123,10 @@ namespace Ensembles.Shell {
                 main_stack.set_visible_child (voice_menu_r2);
                 voice_menu_r2.scroll_to_selected_row ();
             });
+            home_screen.open_fx_menu .connect (() => {
+                main_display_leaflet.set_visible_child (main_stack);
+                main_stack.set_visible_child (fx_rack_menu);
+            });
             home_screen.edit_channel.connect (edit_channel);
             style_menu.close_menu.connect (() => {
                 main_display_leaflet.set_visible_child (home_screen);
@@ -161,6 +168,9 @@ namespace Ensembles.Shell {
             tempo_screen.changed.connect ((tempo) => {
                 change_tempo (tempo);
             });
+            fx_rack_menu.close_menu.connect (() => {
+                main_display_leaflet.set_visible_child (home_screen);
+            });
         }
 
         public void update_style_list (List<Ensembles.Core.Style> accomp_styles) {
@@ -170,6 +180,10 @@ namespace Ensembles.Shell {
             }
             style_menu.populate_style_menu (styles);
             style_menu.load_settings ();
+        }
+
+        public void update_effect_list () {
+            fx_rack_menu.populate_effect_menu ();
         }
 
         public void update_voice_list (Ensembles.Core.Voice[] voices) {

@@ -19,6 +19,7 @@
 
 namespace Ensembles.PlugIns {
     public class PlugIn : Object {
+        public bool active = true;
         public string plug_type;
         public string plug_uri;
         public string plug_name;
@@ -45,7 +46,7 @@ namespace Ensembles.PlugIns {
         Shell.Knob main_mixing_knob;
         Gtk.Grid main_grid;
 
-        private float mixing_amount = 1;
+        private float* mixing_amount;
 
         Gtk.Widget[] widgets;
 
@@ -53,6 +54,7 @@ namespace Ensembles.PlugIns {
 
         void make_ui () {
             plugin_window = new Hdy.Window ();
+            plugin_window.delete_event.connect (plugin_window.hide_on_delete);
             headerbar = new Gtk.HeaderBar ();
             headerbar.has_subtitle = false;
             headerbar.set_show_close_button (true);
@@ -60,6 +62,12 @@ namespace Ensembles.PlugIns {
                 "com.github.subhadeepjasu.ensembles",
                 Gtk.IconSize.DND);
             main_mixing_knob = new Shell.Knob ();
+            main_mixing_knob.set_value (1);
+            main_mixing_knob.change_value.connect ((_value) => {
+                if (mixing_amount != null) {
+                    *mixing_amount = _value;
+                }
+            });
             headerbar.pack_start (app_icon);
             headerbar.pack_end (main_mixing_knob);
             var ui_mode_button = new Granite.Widgets.ModeButton ();
@@ -117,7 +125,8 @@ namespace Ensembles.PlugIns {
             return this.plugin_window;
         }
 
-        public void instantiate_plug (bool realtime) {
+        public void instantiate_plug (bool realtime, float* mixer_value) {
+            mixing_amount = mixer_value;
             if (plug_type == "lv2") {
                 if (features_are_supported ()) {
                     if (realtime) {
@@ -169,6 +178,7 @@ namespace Ensembles.PlugIns {
                     }
                 }
             }
+            active = true;
         }
 
         public void deactivate_plug (bool realtime) {
@@ -182,6 +192,7 @@ namespace Ensembles.PlugIns {
                     }
                 }
             }
+            active = false;
         }
 
         public void process (uint32 sample_count) {

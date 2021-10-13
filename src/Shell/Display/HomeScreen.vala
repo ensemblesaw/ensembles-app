@@ -11,7 +11,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
@@ -24,6 +24,8 @@ namespace Ensembles.Shell {
         Gtk.Button voice_l_button;
         Gtk.Button voice_r1_button;
         Gtk.Button voice_r2_button;
+
+        Gtk.Button fx_rack_button;
 
         Gtk.Label selected_style_label;
         Gtk.Label selected_voice_l_label;
@@ -46,6 +48,7 @@ namespace Ensembles.Shell {
         public signal void open_voice_l_menu ();
         public signal void open_voice_r1_menu ();
         public signal void open_voice_r2_menu ();
+        public signal void open_fx_menu ();
         public signal void edit_channel (int synth_index, int channel);
 
         public HomeScreen () {
@@ -263,7 +266,6 @@ namespace Ensembles.Shell {
             var bottom_panel = new Gtk.Grid ();
             bottom_panel.get_style_context ().add_class ("home-screen-panel-bottom");
             bottom_panel.height_request = 111;
-            bottom_panel.margin_top = 78;
             bottom_panel.attach (tempo_box, 0, 0, 1, 1);
             bottom_panel.attach (measure_box, 1, 0, 1, 1);
             bottom_panel.attach (beat_box, 2, 0, 1, 1);
@@ -275,8 +277,20 @@ namespace Ensembles.Shell {
             bottom_panel.attach (channel_button_grid, 0, 4, 6, 1);
             bottom_panel.set_column_homogeneous (true);
 
+
+            fx_rack_button = new Gtk.Button.with_label ("𝑓𝑥");
+            fx_rack_button.margin = 4;
+            fx_rack_button.clicked.connect (() => {
+                open_fx_menu ();
+            });
+
+            var mid_panel = new Gtk.Grid ();
+            mid_panel.valign = Gtk.Align.END;
+            mid_panel.height_request = 78;
+            mid_panel.attach (fx_rack_button, 0, 0);
             this.attach (top_panel, 0, 0, 1, 1);
-            this.attach (bottom_panel, 0, 1, 1, 1);
+            this.attach (mid_panel, 0, 1, 1, 1);
+            this.attach (bottom_panel, 0, 2, 1, 1);
 
             update_equalizer.begin ();
         }

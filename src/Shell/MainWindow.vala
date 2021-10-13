@@ -503,6 +503,8 @@ namespace Ensembles.Shell {
                 return false;
             });
 
+            plugin_manager.all_plugins_loaded.connect (main_display_unit.update_effect_list);
+
             // Perform garbage collection when the app exits
             this.destroy.connect (() => app_exit ());
             debug ("Initialized\n");
