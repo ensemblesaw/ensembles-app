@@ -51,12 +51,13 @@
                     var feature_iter = features.begin ();
                     while (!features.is_end (feature_iter)) {
                         var feature = features.get (feature_iter).as_string ();
-                        // print (" Feature >>%s\n", feature);
+                        print (" Feature >>%s\n", feature);
                         feature_iter = features.next (feature_iter);
                     }
 
                     var n_ports = plugin.get_num_ports ();
                     List<Lilv.Port> all_ports = new List<Lilv.Port> ();
+                    var control_ports = new ControlPort [0];
                     uint32 source_l_port_index = -1;
                     uint32 sink_l_port_index = -1;
                     uint32 source_r_port_index = -1;
@@ -68,24 +69,31 @@
                     for (uint i = 0; i < n_ports; i++) {
                         var port = plugin.get_port_by_index (i);
                         all_ports.append (port);
-                        // print (" Port >>%s | %s\n", plugin.port_get_name (port).as_string (), plugin.port_get_symbol (port).as_string ());
-                        // print (" Properties:\n");
+                        print (" Port >>%s | %s\n", plugin.port_get_name (port).as_string (), plugin.port_get_symbol (port).as_string ());
+                        print (" Properties:\n");
                         var properties = plugin.port_get_properties (port);
                         var prop_iter = properties.begin ();
+                        string prop_string = "";
                         while (!properties.is_end (prop_iter)) {
                             var prop = properties.get (prop_iter).as_string ();
-                            // print ("  %s\n", prop);
+                            print ("  %s\n", prop);
+                            prop_string += prop + ",";
                             prop_iter = properties.next (prop_iter);
                         }
-                        // print (" Classes:\n");
+                        Lilv.Node default_value;
+                        Lilv.Node min_value;
+                        Lilv.Node max_value;
+                        plugin.port_get_range (port, out default_value, out min_value, out max_value);
+                        print (" Classes:\n");
                         unowned Lilv.Nodes classes = plugin.port_get_classes (port);
                         var class_iter = classes.begin ();
                         bool audio_port = false;
                         bool input_port = false;
                         bool output_port = false;
+                        bool control_port = false;
                         while (!classes.is_end (class_iter)) {
                             var clas = classes.get (class_iter).as_string ();
-                            // print ("  %s\n", clas);
+                            print ("  %s\n", clas);
                             if (clas == "http://lv2plug.in/ns/lv2core#AudioPort") {
                                 audio_port = true;
                             }
@@ -94,6 +102,9 @@
                             }
                             if (clas == "http://lv2plug.in/ns/lv2core#OutputPort") {
                                 output_port = true;
+                            }
+                            if (clas == "http://lv2plug.in/ns/lv2core#ControlPort") {
+                                control_port = true;
                             }
                             class_iter = classes.next (class_iter);
                         }
@@ -117,6 +128,17 @@
                                 sink_audio_port_count++;
                             }
                         }
+                        if (control_port && input_port) {
+                            control_ports.resize (control_ports.length + 1);
+                            control_ports[control_ports.length - 1] = new ControlPort () {
+                                name = plugin.port_get_name (port).as_string (),
+                                port_index = i,
+                                properties = prop_string,
+                                default_value = default_value.as_float (),
+                                min_value = min_value.as_float (),
+                                max_value = max_value.as_float ()
+                            };
+                        }
                     }
 
                     var detected_plug = new PlugIns.PlugIn () {
@@ -129,9 +151,9 @@
                         sink_l_port_index = sink_l_port_index,
                         source_r_port_index = source_r_port_index,
                         sink_r_port_index = sink_r_port_index,
-                        stereo_source = stereo_source
+                        stereo_source = stereo_source,
+                        control_ports = control_ports
                     };
-                    detected_plug.lv2_ports = all_ports.copy ();
 
                     detected_plugins.append (detected_plug);
                 }

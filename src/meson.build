@@ -75,7 +75,9 @@ ensembles_sources_vala = files (
     'Interfaces/SoundIndicator.vala',
     # Plugins ############################################################
     'PlugIns/PlugIn.vala',
+    'PlugIns/ControlPort.vala',
     'PlugIns/PlugInManager.vala',
+    'PlugIns/PlugInControl.vala',
     # LADSPA VERSION 2
     'PlugIns/LV2/LV2Manager.vala'
 )
