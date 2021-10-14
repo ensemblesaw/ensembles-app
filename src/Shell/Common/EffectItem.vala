@@ -37,6 +37,10 @@ namespace Ensembles.Shell {
             effect_grid.attach (category_label, 2, 0, 1, 1);
             effect_grid.attach (type_label, 2, 1, 1, 1);
             this.add (effect_grid);
+
+            if (!plugin_reference.valid) {
+                this.sensitive = false;
+            }
         }
     }
 }

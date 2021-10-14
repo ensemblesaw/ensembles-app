@@ -20,6 +20,7 @@
 namespace Ensembles.PlugIns {
     public class PlugIn : Object {
         public bool active = true;
+        public bool valid;
         public string plug_type;
         public string plug_uri;
         public string plug_name;
@@ -38,7 +39,7 @@ namespace Ensembles.PlugIns {
         private Lilv.Instance? lv2_instance_l_realtime;
         private Lilv.Instance? lv2_instance_r_realtime;
         private Lilv.Instance? lv2_instance_style;
-        private LV2.Feature*[] features;
+        public unowned LV2.Feature*[] features;
 
         // UI
         Hdy.Window plugin_window;
@@ -48,9 +49,10 @@ namespace Ensembles.PlugIns {
 
         private float* mixing_amount;
 
-        Gtk.Widget[] widgets;
+        Gtk.Widget[] control_widgets;
 
         private float[] control_variables;
+        private bool[] atom_variables;
 
         void make_ui () {
             plugin_window = new Hdy.Window ();
@@ -75,6 +77,7 @@ namespace Ensembles.PlugIns {
             ui_mode_button.margin_bottom = 12;
             ui_mode_button.append_icon ("preferences-other", Gtk.IconSize.BUTTON);
             ui_mode_button.append_icon ("media-eq", Gtk.IconSize.BUTTON);
+            ui_mode_button.set_active (0);
             headerbar.pack_end (ui_mode_button);
             var header = new Hdy.WindowHandle ();
             header.expand = true;
@@ -90,9 +93,41 @@ namespace Ensembles.PlugIns {
             main_grid.valign = Gtk.Align.CENTER;
             main_grid.halign = Gtk.Align.CENTER;
 
+            var plug_uis = lv2_plugin.get_uis ();
+
+            var plug_ui_grid = new Gtk.Grid ();
+
+            var ui_iter = plug_uis.begin ();
+            while (!plug_uis.is_end (ui_iter)) {
+                var plug_ui = plug_uis.get (ui_iter);
+
+                /* @Todo:
+                 * Add some way to show plugIn UI in here
+                 */
+                ui_iter = plug_uis.next (ui_iter);
+            }
+
+            var main_stack = new Gtk.Stack ();
+
+            main_stack.add_named (main_grid, "backend_ui");
+            main_stack.add_named (plug_ui_grid, "frontend_ui");
+            main_stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT_RIGHT;
+
+            ui_mode_button.mode_changed.connect (() => {
+                switch (ui_mode_button.selected) {
+                    case 0:
+                    main_stack.set_visible_child (main_grid);
+                    break;
+                    case 1:
+                    main_stack.set_visible_child (plug_ui_grid);
+                    break;
+                }
+            });
+
+
             var scrollable = new Gtk.ScrolledWindow (null, null);
             scrollable.set_size_request (640, 240);
-            scrollable.add (main_grid);
+            scrollable.add (main_stack);
 
             var main_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
             main_box.pack_start (headerbar);
@@ -102,23 +137,27 @@ namespace Ensembles.PlugIns {
             plugin_window.add (main_box);
 
             // Make rest of the plugin UI
-            var controls_frame = new Gtk.Frame (_("Controls"));
-            var controls_grid = new Gtk.Grid ();
-            controls_grid.row_spacing = 4;
-            controls_grid.margin = 14;
-            controls_frame.add (controls_grid);
             uint len = control_ports.length;
             control_variables = new float [len];
-            widgets = new Gtk.Widget [len];
+            control_widgets = new Gtk.Widget [len];
 
-            // Set controls
-            for (int i = 0; i < len; i++) {
-                var control_ui = new PlugInControl (control_ports[i], &control_variables[i]);
-                connect_control_port (&control_variables[i], control_ports[i].port_index, true);
-                widgets[i] = control_ui;
-                controls_grid.attach (widgets[i], 0, i);
+
+            if (len > 0) {
+                // Set controls
+                var controls_frame = new Gtk.Frame (_("Controls"));
+                controls_frame.get_style_context ().add_class (Granite.STYLE_CLASS_CARD);
+                var controls_grid = new Gtk.Grid ();
+                controls_grid.row_spacing = 4;
+                controls_grid.margin = 14;
+                controls_frame.add (controls_grid);
+                for (int i = 0; i < len; i++) {
+                    var control_ui = new PlugInControl (control_ports[i], &control_variables[i]);
+                    connect_control_port (&control_variables[i], control_ports[i].port_index, true);
+                    control_widgets[i] = control_ui;
+                    controls_grid.attach (control_widgets[i], 0, i);
+                }
+                main_grid.attach (controls_frame, 0, 0);
             }
-            main_grid.attach (controls_frame, 0, 0);
         }
 
         public Gtk.Window get_ui () {
@@ -128,17 +167,16 @@ namespace Ensembles.PlugIns {
         public void instantiate_plug (bool realtime, float* mixer_value) {
             mixing_amount = mixer_value;
             if (plug_type == "lv2") {
-                if (features_are_supported ()) {
-                    if (realtime) {
-                        lv2_instance_l_realtime = lv2_plugin.instantiate (44100, features);
-                        if (!stereo_source) {
-                            lv2_instance_r_realtime = lv2_plugin.instantiate (44100, features);
-                        }
-                    } else {
-                        lv2_instance_style = lv2_plugin.instantiate (44100, features);
+                if (realtime) {
+                    lv2_instance_l_realtime = lv2_plugin.instantiate (44100, features);
+                    if (!stereo_source) {
+                        lv2_instance_r_realtime = lv2_plugin.instantiate (44100, features);
                     }
-                    make_ui ();
+                } else {
+                    lv2_instance_style = lv2_plugin.instantiate (44100, features);
                 }
+                deactivate_plug (realtime);
+                make_ui ();
             }
         }
 
@@ -151,20 +189,6 @@ namespace Ensembles.PlugIns {
                     }
                 }
             }
-        }
-
-        private bool features_are_supported () {
-            var lilv_features = lv2_plugin.get_required_features ();
-            var feat_iter = lilv_features.begin ();
-            while (!lilv_features.is_end (feat_iter)) {
-                string feat = lilv_features.get (feat_iter).as_uri ();
-                if (feat == "http://lv2plug.in/ns/lv2core#isLive" ||
-                    feat == "http://lv2plug.in/ns/lv2core#inPlaceBroken") {
-                        return false;
-                    }
-                feat_iter = lilv_features.next (feat_iter);
-            }
-            return true;
         }
 
         public void activate_plug (bool realtime) {

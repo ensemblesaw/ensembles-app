@@ -20,10 +20,48 @@
  namespace Ensembles.PlugIns.LADSPAV2 {
     public class LV2Manager : Object {
         Lilv.World world;
+        LV2.Feature*[] supported_features;
 
         public signal void lv2_plugins_found (List<PlugIns.PlugIn> plugins);
+
+        private static SyMap symap;
+
+        public static uint32 map_uri (LV2Manager handle, string uri) {
+            return symap.map (uri);
+        }
+
+        public static string unmap_uri (LV2Manager handle, uint32 urid) {
+            return symap.unmap (urid);
+        }
+
+        public delegate uint32 MapHandler (LV2Manager handle, string uri);
+
+        public struct LV2_URID_Map {
+            LV2Manager handle;
+            MapHandler map;
+        }
+
+        LV2.Feature map_feat;
+
+        public static LV2_URID_Map urid_map;
+
         public LV2Manager () {
             world = new Lilv.World ();
+            symap = new SyMap ();
+
+            urid_map = LV2_URID_Map () {
+                handle = this,
+                map = map_uri
+            };
+
+
+            supported_features = new LV2.Feature* [1];
+            map_feat = LV2.Feature () {
+                URI = "http://lv2plug.in/ns/ext/urid#map",
+                data = &urid_map
+            };
+
+            supported_features[0] = &map_feat;
         }
 
         public void discover () {
@@ -44,16 +82,10 @@
                     string uri = plugin.get_uri ().as_uri ();
                     var plug_name = plugin.get_name ().as_string ();
                     var plug_class = plugin.get_class ().get_label ().as_string ();
-                    var features = plugin.get_supported_features ();
+                    var features = plugin.get_required_features ();
                     print ("--------------------------------------------------------\n");
                     print ("%s\n %s, %s\n", uri, plug_name, plug_class);
-
-                    var feature_iter = features.begin ();
-                    while (!features.is_end (feature_iter)) {
-                        var feature = features.get (feature_iter).as_string ();
-                        print (" Feature >>%s\n", feature);
-                        feature_iter = features.next (feature_iter);
-                    }
+                    var valid = features_are_supported (plugin);
 
                     var n_ports = plugin.get_num_ports ();
                     List<Lilv.Port> all_ports = new List<Lilv.Port> ();
@@ -91,6 +123,7 @@
                         bool input_port = false;
                         bool output_port = false;
                         bool control_port = false;
+                        bool atom_port = false;
                         while (!classes.is_end (class_iter)) {
                             var clas = classes.get (class_iter).as_string ();
                             print ("  %s\n", clas);
@@ -105,6 +138,9 @@
                             }
                             if (clas == "http://lv2plug.in/ns/lv2core#ControlPort") {
                                 control_port = true;
+                            }
+                            if (clas == "http://lv2plug.in/ns/ext/atom#AtomPort") {
+                                atom_port = true;
                             }
                             class_iter = classes.next (class_iter);
                         }
@@ -142,6 +178,7 @@
                     }
 
                     var detected_plug = new PlugIns.PlugIn () {
+                        valid = valid,
                         plug_name = plug_name,
                         plug_uri = uri,
                         plug_type = "lv2",
@@ -152,7 +189,8 @@
                         source_r_port_index = source_r_port_index,
                         sink_r_port_index = sink_r_port_index,
                         stereo_source = stereo_source,
-                        control_ports = control_ports
+                        control_ports = control_ports,
+                        features = supported_features
                     };
 
                     detected_plugins.append (detected_plug);
@@ -163,6 +201,20 @@
                 lv2_plugins_found (detected_plugins);
             }
             return 0;
+        }
+
+        private bool features_are_supported (Lilv.Plugin? plugin) {
+            var lilv_features = plugin.get_required_features ();
+            var feat_iter = lilv_features.begin ();
+            while (!lilv_features.is_end (feat_iter)) {
+                string feat = lilv_features.get (feat_iter).as_uri ();
+                print (">>>>%s\n", feat);
+                if (feat == "http://lv2plug.in/ns/ext/urid#map") {
+                        return false;
+                    }
+                feat_iter = lilv_features.next (feat_iter);
+            }
+            return true;
         }
     }
  }

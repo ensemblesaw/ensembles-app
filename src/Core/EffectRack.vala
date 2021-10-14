@@ -86,19 +86,14 @@ namespace Ensembles.Core {
 
         public static void process_audio (uint32 sample_count) {
             for (uint i = 0; i < plugin_references.length (); i++) {
-                if (plugin_references.nth_data (i).active) {
+                if (plugin_references.nth_data (i).active && plugin_references.nth_data (i).valid) {
                     // Plugin process audio
                     plugin_references.nth_data (i).process (sample_count);
 
                     // Copy wet audio to dry buffer in amounts specified in mixer_values
                     for (uint32 j = 0; j < sample_count; j++) {
-                        if (mixer_values[i] > 0.9f) {
-                            aud_buf_dry_l[j] = aud_buf_mix_l[j];
-                            aud_buf_dry_r[j] = aud_buf_mix_r[j];
-                        } else if (mixer_values[i] > 0.1f) {
-                            aud_buf_dry_l[j] = lerp (0.1f, aud_buf_dry_l[j], 0.9f, aud_buf_mix_l[j], mixer_values[i]);
-                            aud_buf_dry_r[j] = lerp (0.1f, aud_buf_dry_r[j], 0.9f, aud_buf_mix_r[j], mixer_values[i]);
-                        }
+                        aud_buf_dry_l[j] = lerp (0.0f, aud_buf_dry_l[j], 1.0f, aud_buf_mix_l[j], mixer_values[i]);
+                        aud_buf_dry_r[j] = lerp (0.0f, aud_buf_dry_r[j], 1.0f, aud_buf_mix_r[j], mixer_values[i]);
                     }
 
                     // Next plugin is ready to run
@@ -109,7 +104,7 @@ namespace Ensembles.Core {
 
         // Linear Interpolation function
         private static float lerp (float x0, float y0, float x1, float y1, float xp) {
-            return (y0 + ((y1-y0)/(x1-x0)) * (xp - x0));
+            return (y0 + ((y1 - y0) / (x1 - x0)) * (xp - x0));
         }
 
         public static void show_plugin_ui (uint index) {
