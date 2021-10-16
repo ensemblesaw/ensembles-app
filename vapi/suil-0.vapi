@@ -18,6 +18,13 @@
 [CCode(cheader_filename="suil/suil.h", cprefix="Suil", lower_case_cprefix="suil_")]
 namespace Suil {
 
+    [CCode (cname = "SuilArg", cprefix = "SUIL_ARG_", has_type_id = false)]
+    public enum SuilArgs {
+        NONE
+    }
+
+    public static void init (int* argc, string*[] argv, SuilArgs key, ...);
+
     public static uint ui_supported(string host_type_uri, string ui_type_uri);
 
     [CCode (cname = "SuilPortWriteFunc", has_target = false)]
@@ -26,10 +33,10 @@ namespace Suil {
         uint32  buffer_size,
         uint32  protocol,
         void*   buffer);
-    
+
     [CCode (cname = "SuilPortIndexFunc", has_target = false)]
     public delegate uint32 PortIndexFunc(Controller controller, string port_symbol);
-    
+
     [CCode (cname = "SuilPortSubscribeFunc", has_target = false)]
     public delegate uint32 PortSubscribeFunc(Controller controller,
         uint32 port_index,
@@ -46,7 +53,7 @@ namespace Suil {
     [CCode (cname="void")]
     public class Widget {
     }
-    
+
     [Compact]
     [CCode (cname="void")]
     public class Controller {
@@ -56,11 +63,11 @@ namespace Suil {
     [CCode (free_function = "suil_host_free")]
     public class Host {
         public Host(PortWriteFunc write_func,
-            PortIndexFunc       index_func,
+            PortIndexFunc         index_func,
             PortSubscribeFunc   subscribe_func,
             PortUnsubscribeFunc unsubscribe_func);
     }
-    
+
     [Compact]
     [CCode (free_function = "suil_instance_free")]
     public class Instance {
@@ -73,7 +80,7 @@ namespace Suil {
             string ui_bundle_path,
             string ui_binary_path,
             LV2.Feature** features);
-        
+
         public Widget get_widget();
         public void port_event(uint32 port_index,
             uint32 buffer_size,

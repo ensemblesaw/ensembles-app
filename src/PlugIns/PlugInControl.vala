@@ -21,6 +21,7 @@ namespace Ensembles.PlugIns {
             this.show_all ();
             this.width_request = 400;
             this.row_spacing = 4;
+            this.get_style_context ().add_class (Granite.STYLE_CLASS_CARD);
         }
 
         private bool value_change_handler (Gtk.ScrollType scroll, double value) {

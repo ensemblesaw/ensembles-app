@@ -160,6 +160,8 @@ namespace Lilv {
         public Node.float(World world, float val);
         [CCode(cname="lilv_new_bool")]
         public Node.bool(World world, bool val);
+        [CCode(cname="lilv_file_uri_parse")]
+        public static string file_uri_parse (string uri, [CCode (array_length = false, array_null_terminated = true)] string[]? hostname = null);
 
         public Node duplicate();
         public bool equals(Node other);

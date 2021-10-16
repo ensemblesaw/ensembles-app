@@ -28,6 +28,8 @@
 public static int main (string[] args) {
     X.init_threads ();
     Gst.init (ref args);
+    int argc = args.length;
+    Suil.init (&argc, args, Suil.SuilArgs.NONE);
     var app = new Ensembles.Shell.EnsemblesApp ();
     var ret = app.run (args);
     return ret;

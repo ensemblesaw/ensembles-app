@@ -26,33 +26,25 @@
 
         private static SyMap symap;
 
-        public static uint32 map_uri (LV2Manager handle, string uri) {
+        public static LV2.URID.Urid map_uri (void* handle, string uri) {
             return symap.map (uri);
         }
 
-        public static string unmap_uri (LV2Manager handle, uint32 urid) {
-            return symap.unmap (urid);
-        }
-
-        public delegate uint32 MapHandler (LV2Manager handle, string uri);
-
-        public struct LV2_URID_Map {
-            LV2Manager handle;
-            MapHandler map;
+        public static string unmap_uri (void* handle, LV2.URID.Urid urid) {
+            return symap.unmap ((uint32)urid);
         }
 
         LV2.Feature map_feat;
 
-        public static LV2_URID_Map urid_map;
+        LV2.URID.UridMap urid_map;
 
         public LV2Manager () {
             world = new Lilv.World ();
             symap = new SyMap ();
 
-            urid_map = LV2_URID_Map () {
-                handle = this,
-                map = map_uri
-            };
+            urid_map = LV2.URID.UridMap ();
+            urid_map.handle = this;
+            urid_map.map = map_uri;
 
 
             supported_features = new LV2.Feature* [1];
@@ -82,7 +74,7 @@
                     string uri = plugin.get_uri ().as_uri ();
                     var plug_name = plugin.get_name ().as_string ();
                     var plug_class = plugin.get_class ().get_label ().as_string ();
-                    var features = plugin.get_required_features ();
+                    //var features = plugin.get_required_features ();
                     print ("--------------------------------------------------------\n");
                     print ("%s\n %s, %s\n", uri, plug_name, plug_class);
                     var valid = features_are_supported (plugin);
@@ -90,6 +82,7 @@
                     var n_ports = plugin.get_num_ports ();
                     List<Lilv.Port> all_ports = new List<Lilv.Port> ();
                     var control_ports = new ControlPort [0];
+                    var atom_ports = new AtomPort [0];
                     uint32 source_l_port_index = -1;
                     uint32 sink_l_port_index = -1;
                     uint32 source_r_port_index = -1;
@@ -98,11 +91,13 @@
                     uint32 sink_audio_port_count = 0;
                     bool stereo_source = false;
                     bool stereo_sink = false;
+                    string[] port_symbols = new string[n_ports];
                     for (uint i = 0; i < n_ports; i++) {
                         var port = plugin.get_port_by_index (i);
                         all_ports.append (port);
                         print (" Port >>%s | %s\n", plugin.port_get_name (port).as_string (), plugin.port_get_symbol (port).as_string ());
                         print (" Properties:\n");
+                        port_symbols[i] = plugin.port_get_symbol (port).as_string ();
                         var properties = plugin.port_get_properties (port);
                         var prop_iter = properties.begin ();
                         string prop_string = "";
@@ -175,9 +170,18 @@
                                 max_value = max_value.as_float ()
                             };
                         }
+                        if (atom_port && input_port) {
+                            atom_ports.resize (atom_ports.length + 1);
+                            atom_ports[atom_ports.length - 1] = new AtomPort () {
+                                name = plugin.port_get_name (port).as_string (),
+                                port_index = i,
+                                properties = prop_string
+                            };
+                        }
                     }
 
                     var detected_plug = new PlugIns.PlugIn () {
+                        world = world,
                         valid = valid,
                         plug_name = plug_name,
                         plug_uri = uri,
@@ -190,6 +194,8 @@
                         sink_r_port_index = sink_r_port_index,
                         stereo_source = stereo_source,
                         control_ports = control_ports,
+                        atom_ports = atom_ports,
+                        port_symbols = port_symbols,
                         features = supported_features
                     };
 
@@ -209,7 +215,7 @@
             while (!lilv_features.is_end (feat_iter)) {
                 string feat = lilv_features.get (feat_iter).as_uri ();
                 print (">>>>%s\n", feat);
-                if (feat == "http://lv2plug.in/ns/ext/urid#map") {
+                if (feat == "") {
                         return false;
                     }
                 feat_iter = lilv_features.next (feat_iter);

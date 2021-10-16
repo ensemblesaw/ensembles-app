@@ -29,7 +29,12 @@ namespace Ensembles.PlugIns {
                 for (uint i = 0; i < plugs.length (); i++) {
                     plugins[i] = plugs.nth_data (i);
                     if (plugins[i].class == "Instrument Plugin") {
-                    } else {
+                        /*
+                         * @Todo:
+                         * Make instrument plugin support
+                         */
+                    } else if (plugins[i].class == "Reverb Plugin" ||
+                            plugins[i].class == "Amplifier Plugin") {
                         Core.EffectRack.populate_rack (plugins[i]);
                     }
                 }
