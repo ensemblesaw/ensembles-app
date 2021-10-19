@@ -132,7 +132,7 @@ namespace Ensembles.PlugIns {
                     ui_type.as_uri (),
                     bundle_path,
                     binary_path,
-                    null
+                    features
                 );
 
                 if (ui_instance != null) {

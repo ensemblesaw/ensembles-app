@@ -11,7 +11,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
@@ -70,6 +70,7 @@ namespace Ensembles.Shell {
             if (_black_key) {
                 hexpand = true;
                 height_request = 84;
+                vexpand = true;
                 get_style_context ().add_class ("black-key-normal");
                 if ((_index <= Ensembles.Core.CentralBus.get_split_key ()) &&
                    (Ensembles.Core.CentralBus.get_accomp_on () || Ensembles.Core.CentralBus.get_split_on ()))
@@ -77,6 +78,7 @@ namespace Ensembles.Shell {
             } else {
                 height_request = 146;
                 hexpand = true;
+                vexpand = true;
                 get_style_context ().add_class ("white-key-normal");
                 if ((_index <= Ensembles.Core.CentralBus.get_split_key ()) &&
                    (Ensembles.Core.CentralBus.get_accomp_on () || Ensembles.Core.CentralBus.get_split_on ()))

@@ -11,7 +11,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
@@ -55,11 +55,12 @@ namespace Ensembles.Shell {
             keys[6].margin_end = 10;
             keys[8].margin_end = 10;
             keys[10].margin_end = 18;
-            black_grid.valign = Gtk.Align.START;
+            black_grid.margin_bottom = 114;
 
             var octave_overlay = new Gtk.Overlay ();
             octave_overlay.height_request = 168;
             octave_overlay.hexpand = true;
+            octave_overlay.vexpand = true;
             octave_overlay.add_overlay (white_grid);
             octave_overlay.add_overlay (black_grid);
             octave_overlay.set_overlay_pass_through (black_grid, true);
@@ -74,12 +75,34 @@ namespace Ensembles.Shell {
                 note_activate (0, false);
                 return false;
             });
+            keys[0].touch_event.connect ((event) => {
+                if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
+                    note_activate (0, true);
+                    set_note_on (0, true);
+                }
+                if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
+                    note_activate (0, false);
+                    set_note_on (0, false);
+                }
+                return false;
+            });
             keys[1].button_press_event.connect ((event) => {
                 note_activate (1, true);
                 return false;
             });
             keys[1].button_release_event.connect ((event) => {
                 note_activate (1, false);
+                return false;
+            });
+            keys[1].touch_event.connect ((event) => {
+                if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
+                    note_activate (1, true);
+                    set_note_on (1, true);
+                }
+                if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
+                    note_activate (1, false);
+                    set_note_on (1, false);
+                }
                 return false;
             });
             keys[2].button_press_event.connect ((event) => {
@@ -90,12 +113,34 @@ namespace Ensembles.Shell {
                 note_activate (2, false);
                 return false;
             });
+            keys[2].touch_event.connect ((event) => {
+                if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
+                    note_activate (2, true);
+                    set_note_on (2, true);
+                }
+                if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
+                    note_activate (2, false);
+                    set_note_on (2, false);
+                }
+                return false;
+            });
             keys[3].button_press_event.connect ((event) => {
                 note_activate (3, true);
                 return false;
             });
             keys[3].button_release_event.connect ((event) => {
                 note_activate (3, false);
+                return false;
+            });
+            keys[3].touch_event.connect ((event) => {
+                if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
+                    note_activate (3, true);
+                    set_note_on (3, true);
+                }
+                if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
+                    note_activate (3, false);
+                    set_note_on (3, false);
+                }
                 return false;
             });
             keys[4].button_press_event.connect ((event) => {
@@ -106,12 +151,34 @@ namespace Ensembles.Shell {
                 note_activate (4, false);
                 return false;
             });
+            keys[4].touch_event.connect ((event) => {
+                if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
+                    note_activate (4, true);
+                    set_note_on (4, true);
+                }
+                if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
+                    note_activate (4, false);
+                    set_note_on (4, false);
+                }
+                return false;
+            });
             keys[5].button_press_event.connect ((event) => {
                 note_activate (5, true);
                 return false;
             });
             keys[5].button_release_event.connect ((event) => {
                 note_activate (5, false);
+                return false;
+            });
+            keys[5].touch_event.connect ((event) => {
+                if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
+                    note_activate (5, true);
+                    set_note_on (5, true);
+                }
+                if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
+                    note_activate (5, false);
+                    set_note_on (5, false);
+                }
                 return false;
             });
             keys[6].button_press_event.connect ((event) => {
@@ -122,12 +189,34 @@ namespace Ensembles.Shell {
                 note_activate (6, false);
                 return false;
             });
+            keys[6].touch_event.connect ((event) => {
+                if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
+                    note_activate (6, true);
+                    set_note_on (6, true);
+                }
+                if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
+                    note_activate (6, false);
+                    set_note_on (6, false);
+                }
+                return false;
+            });
             keys[7].button_press_event.connect ((event) => {
                 note_activate (7, true);
                 return false;
             });
             keys[7].button_release_event.connect ((event) => {
                 note_activate (7, false);
+                return false;
+            });
+            keys[7].touch_event.connect ((event) => {
+                if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
+                    note_activate (7, true);
+                    set_note_on (7, true);
+                }
+                if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
+                    note_activate (7, false);
+                    set_note_on (7, false);
+                }
                 return false;
             });
             keys[8].button_press_event.connect ((event) => {
@@ -138,12 +227,34 @@ namespace Ensembles.Shell {
                 note_activate (8, false);
                 return false;
             });
+            keys[8].touch_event.connect ((event) => {
+                if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
+                    note_activate (8, true);
+                    set_note_on (8, true);
+                }
+                if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
+                    note_activate (8, false);
+                    set_note_on (8, false);
+                }
+                return false;
+            });
             keys[9].button_press_event.connect ((event) => {
                 note_activate (9, true);
                 return false;
             });
             keys[9].button_release_event.connect ((event) => {
                 note_activate (9, false);
+                return false;
+            });
+            keys[9].touch_event.connect ((event) => {
+                if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
+                    note_activate (9, true);
+                    set_note_on (9, true);
+                }
+                if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
+                    note_activate (9, false);
+                    set_note_on (9, false);
+                }
                 return false;
             });
             keys[10].button_press_event.connect ((event) => {
@@ -154,12 +265,34 @@ namespace Ensembles.Shell {
                 note_activate (10, false);
                 return false;
             });
+            keys[10].touch_event.connect ((event) => {
+                if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
+                    note_activate (10, true);
+                    set_note_on (10, true);
+                }
+                if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
+                    note_activate (10, false);
+                    set_note_on (10, false);
+                }
+                return false;
+            });
             keys[11].button_press_event.connect ((event) => {
                 note_activate (11, true);
                 return false;
             });
             keys[11].button_release_event.connect ((event) => {
                 note_activate (11, false);
+                return false;
+            });
+            keys[11].touch_event.connect ((event) => {
+                if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
+                    note_activate (11, true);
+                    set_note_on (11, true);
+                }
+                if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
+                    note_activate (11, false);
+                    set_note_on (11, false);
+                }
                 return false;
             });
         }
