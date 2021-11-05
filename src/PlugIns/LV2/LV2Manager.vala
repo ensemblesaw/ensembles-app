@@ -35,8 +35,10 @@
         }
 
         LV2.Feature map_feat;
+        LV2.Feature unmap_feat;
 
         LV2.URID.UridMap urid_map;
+        LV2.URID.UridUnmap urid_unmap;
 
         public LV2Manager () {
             world = new Lilv.World ();
@@ -45,15 +47,22 @@
             urid_map = LV2.URID.UridMap ();
             urid_map.handle = this;
             urid_map.map = map_uri;
+            urid_unmap = LV2.URID.UridUnmap ();
+            urid_unmap.handle = this;
+            urid_unmap.unmap = unmap_uri;
 
-
-            supported_features = new LV2.Feature* [1];
+            supported_features = new LV2.Feature* [2];
             map_feat = LV2.Feature () {
                 URI = "http://lv2plug.in/ns/ext/urid#map",
                 data = &urid_map
             };
+            unmap_feat = LV2.Feature () {
+                URI = "http://lv2plug.in/ns/ext/urid#unmap",
+                data = &urid_unmap
+            };
 
             supported_features[0] = &map_feat;
+            supported_features[1] = &unmap_feat;
         }
 
         public void discover () {
@@ -119,6 +128,8 @@
                         bool output_port = false;
                         bool control_port = false;
                         bool atom_port = false;
+                        string token = plugin.port_get_symbol (port).get_turtle_token ();
+                        print ("%s..\n", token);
                         while (!classes.is_end (class_iter)) {
                             var clas = classes.get (class_iter).as_string ();
                             print ("  %s\n", clas);
@@ -170,7 +181,7 @@
                                 max_value = max_value.as_float ()
                             };
                         }
-                        if (atom_port && input_port) {
+                        if (atom_port) {
                             atom_ports.resize (atom_ports.length + 1);
                             atom_ports[atom_ports.length - 1] = new AtomPort () {
                                 name = plugin.port_get_name (port).as_string (),

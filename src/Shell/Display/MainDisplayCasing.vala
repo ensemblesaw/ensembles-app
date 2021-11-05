@@ -184,6 +184,10 @@ namespace Ensembles.Shell {
 
         public void update_effect_list () {
             fx_rack_menu.populate_effect_menu ();
+            Idle.add (() => {
+                voice_menu_r1.populate_plugins ();
+                return false;
+            });
         }
 
         public void update_voice_list (Ensembles.Core.Voice[] voices) {

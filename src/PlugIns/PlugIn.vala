@@ -236,6 +236,9 @@ namespace Ensembles.PlugIns {
 
         private static void ui_write (Suil.Controller handle, uint32 port_index, uint32 buffer_size, uint32 protocol, void* buffer) {
             /* Not Implemented */
+            if (protocol != 0) {
+                return;
+            }
         }
 
         private static uint32 port_index_by_symbol (Suil.Controller handle, string symbol) {

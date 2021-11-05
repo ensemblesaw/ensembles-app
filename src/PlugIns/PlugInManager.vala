@@ -33,6 +33,7 @@ namespace Ensembles.PlugIns {
                          * @Todo:
                          * Make instrument plugin support
                          */
+                         Core.InstrumentRack.populate_rack (plugins[i]);
                     } else if (plugins[i].class == "Reverb Plugin" ||
                             plugins[i].class == "Amplifier Plugin") {
                         Core.EffectRack.populate_rack (plugins[i]);

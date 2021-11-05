@@ -68,9 +68,6 @@ namespace Ensembles.Shell {
 
         public MainWindow () {
             Gtk.Settings settings = Gtk.Settings.get_default ();
-            // Initialise plugins
-            debug ("STARTUP: Loading plugins");
-            plugin_manager = new PlugIns.PlugInManager ();
 
             // Force dark theme
             settings.gtk_application_prefer_dark_theme = true;
@@ -185,6 +182,9 @@ namespace Ensembles.Shell {
                     app_menu.update_devices (devices_found);
                 }
             });
+            // Initialise plugins
+            debug ("STARTUP: Loading plugins");
+            plugin_manager = new PlugIns.PlugInManager ();
 
             // Load the main audio synthesizer
             debug ("STARTUP: Loading Synthesizer");
