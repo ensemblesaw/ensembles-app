@@ -54,6 +54,8 @@ namespace Ensembles.Shell {
         Gtk.Label custom_title_text;
         Gtk.Grid custom_title_grid;
 
+        PlugIns.PlugInManager plugin_manager;
+
         // For song player
         string song_name;
 
@@ -180,6 +182,9 @@ namespace Ensembles.Shell {
                     app_menu.update_devices (devices_found);
                 }
             });
+            // Initialise plugins
+            debug ("STARTUP: Loading plugins");
+            plugin_manager = new PlugIns.PlugInManager ();
 
             // Load the main audio synthesizer
             debug ("STARTUP: Loading Synthesizer");
@@ -497,6 +502,8 @@ namespace Ensembles.Shell {
                 }
                 return false;
             });
+
+            plugin_manager.all_plugins_loaded.connect (main_display_unit.update_effect_list);
 
             // Perform garbage collection when the app exits
             this.destroy.connect (() => app_exit ());

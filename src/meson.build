@@ -18,6 +18,7 @@ ensembles_sources_vala = files (
     'Shell/Common/DeviceItem.vala',
     'Shell/Common/VoiceItem.vala',
     'Shell/Common/StyleItem.vala',
+    'Shell/Common/EffectItem.vala',
     'Shell/Common/ToggleSwitch.vala',
     'Shell/Common/Dial.vala',
     'Shell/Common/Knob.vala',
@@ -47,6 +48,7 @@ ensembles_sources_vala = files (
     'Shell/Display/ChannelModulatorScreen.vala',
     'Shell/Display/LFOEditScreen.vala',
     'Shell/Display/TempoScreen.vala',
+    'Shell/Display/EffectRackScreen.vala',
     'Shell/Dialogs/ErrorDialog.vala',
     'Shell/Dialogs/Preferences/Item.vala',
     'Shell/Dialogs/Preferences/ItemSelect.vala',
@@ -70,9 +72,20 @@ ensembles_sources_vala = files (
     'Core/SamplePlayer.vala',
     'Core/SampleRecorder.vala',
     'Core/SongPlayer.vala',
-    'Core/PlugIn/lv2/Lv2Host.vala',
+    'Core/EffectRack.vala',
+    'Core/InstrumentRack.vala',
     'Interfaces/MediaKeyListener.vala',
-    'Interfaces/SoundIndicator.vala'
+    'Interfaces/SoundIndicator.vala',
+    # Plugins ############################################################
+    'PlugIns/PlugIn.vala',
+    'PlugIns/AtomPort.vala',
+    'PlugIns/ControlPort.vala',
+    'PlugIns/PlugInManager.vala',
+    'PlugIns/PlugInAtom.vala',
+    'PlugIns/PlugInControl.vala',
+    # LADSPA VERSION 2
+    'PlugIns/LV2/LV2Manager.vala',
+    'PlugIns/LV2/SyMap.vala'
 )
 
 ensembles_sources_c = files (
@@ -86,16 +99,7 @@ ensembles_sources_c = files (
     'Core/style_analyser.c',
     'Core/chord_finder.c',
     'Core/voice_analyser.c',
-    'Core/music_player.c',
-    # Plugins ////////////////////////////////////////////////////////////
-    # LV2                                                               //
-    # ////////////////////////////////////////////////////////////////////
-    # 'Core/PlugIn/lv2/zix/ring.c',
-    # 'Core/PlugIn/lv2/state.c',
-    # 'Core/PlugIn/lv2/log.c',
-    # 'Core/PlugIn/lv2/symap.c',
-    # 'Core/PlugIn/lv2/lv2_evbuf.c',
-    # 'Core/PlugIn/lv2/lv2_host.c'
+    'Core/music_player.c'
 )
 
 ensembles_sources = [

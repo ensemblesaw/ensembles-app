@@ -21,6 +21,9 @@ namespace Ensembles.Core {
     public class Synthesizer : Object {
         public Synthesizer (string soundfont) {
             synthesizer_init (soundfont);
+            set_fx_callback ((buffer_l_in, buffer_r_in, out buffer_out_l, out buffer_out_r) => {
+                EffectRack.set_synth_callback (buffer_l_in, buffer_r_in, out buffer_out_l, out buffer_out_r);
+            });
         }
 
         public void synthesizer_deinit () {
@@ -159,6 +162,12 @@ extern void set_mod_buffer_value (int modulator, int channel, int value);
 extern int synthesizer_get_velocity_levels (int synth_index, int channel);
 
 extern float synthesizer_get_version ();
+
+
+[CCode (cname = "synthesizer_fx_callback", has_target = false)]
+extern delegate void synthesizer_fx_callback (float[] input_l, float[] input_r, out float[] output_l, out float[] output_r);
+[CCode (has_target = false)]
+extern void set_fx_callback (synthesizer_fx_callback function);
 
 extern int synthesizer_transpose;
 extern int synthesizer_transpose_enable;

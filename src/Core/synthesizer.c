@@ -136,6 +136,72 @@ synthesizer_set_defaults () {
     }
 }
 
+// Effect Rack callback
+typedef void
+(*synthesizer_fx_callback)(gfloat* input_l,
+                        gint input_l_length1,
+                        gfloat* input_r,
+                        gint input_r_length1,
+                        gfloat** output_l,
+                        gint* output_l_length1,
+                        gfloat** output_r,
+                        gint* output_r_length1);
+
+synthesizer_fx_callback fx_callback;
+
+void
+set_fx_callback (synthesizer_fx_callback callback) {
+    fx_callback = callback;
+}
+
+int
+fx_function_realtime(void *synth_data, int len,
+                int nfx, float **fx,
+                int nout, float **out) {
+    if(fx == 0)
+    {
+        /* Note that some audio drivers may not provide buffers for effects like
+         * reverb and chorus. In this case it's your decision what to do. If you
+         * had called fluid_synth_process() like in the else branch below, no
+         * effects would have been rendered. Instead, you may mix the effects
+         * directly into the out buffers. */
+        if(fluid_synth_process(synth_data, len, nout, out, nout, out) != FLUID_OK)
+        {
+            /* Some error occurred. Very unlikely to happen, though. */
+            return FLUID_FAILED;
+        }
+    }
+    else
+    {
+        /* Call the synthesizer to fill the output buffers with its
+         * audio output. */
+        if(fluid_synth_process(synth_data, len, nfx, fx, nout, out) != FLUID_OK)
+        {
+            /* Some error occurred. Very unlikely to happen, though. */
+            return FLUID_FAILED;
+        }
+    }
+
+    // All processing is stereo // Repeat processing if the plugin is mono
+    float *out_l_i = out[0];
+    float *out_r_i = out[1];
+    // Apply effects here
+    float *out_l_o = malloc (len * sizeof (float));
+    float *out_r_o = malloc (len * sizeof (float));
+    int size_l, size_r;
+    if (fx_callback != NULL) {
+        fx_callback (out_l_i, len, out_r_i, len, &out_l_o, &size_l, &out_r_o, &size_r);
+        for (int k = 0; k < len; k++) {
+            out_l_i[k] = out_l_o[k];
+            out_r_i[k] = out_r_o[k];
+        }
+    }
+    fluid_free (out_l_o);
+    fluid_free (out_r_o);
+
+    return FLUID_OK;
+}
+
 void
 synthesizer_init (const gchar* loc) {
     style_synth_settings = get_settings(STYLE_SYNTH);
@@ -162,7 +228,7 @@ synthesizer_init (const gchar* loc) {
         fluid_synth_program_select (realtime_synth, 9, realtime_synth_sf_id, 128, 0);
     }
     style_adriver = new_fluid_audio_driver(style_synth_settings, style_synth);
-    realtime_adriver = new_fluid_audio_driver(realtime_synth_settings, realtime_synth);
+    realtime_adriver = new_fluid_audio_driver2(realtime_synth_settings, fx_function_realtime, realtime_synth);
 
     synthesizer_set_defaults ();
 }

@@ -55,6 +55,7 @@ namespace Ensembles.Shell {
             if (this.main_window == null) {
                 Core.DriverSettingsProvider.check_drivers ();
                 this.main_window = new Ensembles.Shell.MainWindow ();
+                Hdy.init ();
                 var media_key_listener = Interfaces.MediaKeyListener.listen ();
                 media_key_listener.media_key_pressed_play.connect (main_window.media_toggle_play);
                 media_key_listener.media_key_pressed_pause.connect (main_window.media_pause);
