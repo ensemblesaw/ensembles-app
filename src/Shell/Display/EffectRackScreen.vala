@@ -49,7 +49,7 @@ namespace Ensembles.Shell {
 
         public void populate_effect_menu () {
             PlugIns.PlugIn[] plugins = Core.EffectRack.get_plugins ();
-            print("Populating %d\n", plugins.length);
+            print ("Populating %d\n", plugins.length);
             effect_rows = new EffectItem [plugins.length];
             string temp_category = "";
             for (int i = 0; i < plugins.length; i++) {
