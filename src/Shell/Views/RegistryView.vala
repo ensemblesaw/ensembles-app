@@ -44,12 +44,12 @@ namespace Ensembles.Shell {
             button_box.set_layout (Gtk.ButtonBoxStyle.EXPAND);
             button_box.hexpand = true;
             attach (button_box, 1, 0, 1, 1);
-            memory_button = new Gtk.Button.with_label ("Memorize");
+            memory_button = new Gtk.Button.with_label (_("Memorize"));
             attach (memory_button, 2, 0, 1, 1);
 
-            var bank_label = new Gtk.Label ("BANK");
+            var bank_label = new Gtk.Label (_("BANK"));
             bank_label.set_opacity (0.4);
-            var registry_label = new Gtk.Label ("REGISTRY MEMORY");
+            var registry_label = new Gtk.Label (_("REGISTRY MEMORY"));
             registry_label.set_opacity (0.4);
 
             attach (bank_label, 0, 1, 1, 1);

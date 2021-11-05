@@ -50,14 +50,14 @@ namespace Ensembles.Shell {
             touch_feedback.height_request = 60;
             touch_feedback_region.put (touch_feedback, 40, 40);
 
-            x_assign_button = new Gtk.Button.with_label ("X-Assign");
+            x_assign_button = new Gtk.Button.with_label (_("X-Assign"));
             x_assign_button.clicked.connect (() => {
                 assignable = !assignable;
                 y_assign_button.sensitive = !assignable;
                 assignable_axis = 0;
                 assignable_clicked_x (assignable);
             });
-            y_assign_button = new Gtk.Button.with_label ("Y-Assign");
+            y_assign_button = new Gtk.Button.with_label (_("Y-Assign"));
             y_assign_button.clicked.connect (() => {
                 assignable = !assignable;
                 x_assign_button.sensitive = !assignable;

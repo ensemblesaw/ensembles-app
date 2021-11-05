@@ -58,10 +58,10 @@ namespace Ensembles.Shell {
 
             var style_button_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
             style_button_box.height_request = 46;
-            var style_label = new Gtk.Label ("Style");
+            var style_label = new Gtk.Label (_("Style"));
             style_label.halign = Gtk.Align.CENTER;
             style_label.get_style_context ().add_class ("display-top-panel-header");
-            selected_style_label = new Gtk.Label ("Dance Pop");
+            selected_style_label = new Gtk.Label (_("Dance Pop"));
             selected_style_label.ellipsize = Pango.EllipsizeMode.MIDDLE;
             selected_style_label.halign = Gtk.Align.CENTER;
             selected_style_label.get_style_context ().add_class ("display-top-panel-subheader");
@@ -79,10 +79,10 @@ namespace Ensembles.Shell {
             var voice_l_button_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
             voice_l_button_box.height_request = 46;
             voice_l_button_box.get_style_context ().add_class ("display-top-panel-button");
-            var voice_l_label = new Gtk.Label ("Voice L");
+            var voice_l_label = new Gtk.Label (_("Voice L"));
             voice_l_label.halign = Gtk.Align.CENTER;
             voice_l_label.get_style_context ().add_class ("display-top-panel-header");
-            selected_voice_l_label = new Gtk.Label ("Finger Bass");
+            selected_voice_l_label = new Gtk.Label (_("Finger Bass"));
             selected_voice_l_label.ellipsize = Pango.EllipsizeMode.MIDDLE;
             selected_voice_l_label.halign = Gtk.Align.CENTER;
             selected_voice_l_label.get_style_context ().add_class ("display-top-panel-subheader");
@@ -100,10 +100,10 @@ namespace Ensembles.Shell {
             var voice_r1_button_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
             voice_r1_button_box.height_request = 46;
             voice_r1_button_box.get_style_context ().add_class ("display-top-panel-button");
-            var voice_r1_label = new Gtk.Label ("Voice R1");
+            var voice_r1_label = new Gtk.Label (_("Voice R1"));
             voice_r1_label.halign = Gtk.Align.CENTER;
             voice_r1_label.get_style_context ().add_class ("display-top-panel-header");
-            selected_voice_r1_label = new Gtk.Label ("Grand Piano");
+            selected_voice_r1_label = new Gtk.Label (_("Grand Piano"));
             selected_voice_r1_label.ellipsize = Pango.EllipsizeMode.MIDDLE;
             selected_voice_r1_label.halign = Gtk.Align.CENTER;
             selected_voice_r1_label.get_style_context ().add_class ("display-top-panel-subheader");
@@ -121,10 +121,10 @@ namespace Ensembles.Shell {
             var voice_r2_button_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
             voice_r2_button_box.height_request = 46;
             voice_r2_button_box.get_style_context ().add_class ("display-top-panel-button");
-            var voice_r2_label = new Gtk.Label ("Voice R2");
+            var voice_r2_label = new Gtk.Label (_("Voice R2"));
             voice_r2_label.halign = Gtk.Align.CENTER;
             voice_r2_label.get_style_context ().add_class ("display-top-panel-header");
-            selected_voice_r2_label = new Gtk.Label ("Slow Strings");
+            selected_voice_r2_label = new Gtk.Label (_("Slow Strings"));
             selected_voice_r2_label.ellipsize = Pango.EllipsizeMode.MIDDLE;
             selected_voice_r2_label.halign = Gtk.Align.CENTER;
             selected_voice_r2_label.get_style_context ().add_class ("display-top-panel-subheader");
@@ -151,17 +151,17 @@ namespace Ensembles.Shell {
 
 
             // Bottom part
-            var tempo_header = new Gtk.Label ("Tempo");
+            var tempo_header = new Gtk.Label (_("Tempo"));
             tempo_header.get_style_context ().add_class ("display-bottom-panel-header");
-            var measure_header = new Gtk.Label ("Measure");
+            var measure_header = new Gtk.Label (_("Measure"));
             measure_header.get_style_context ().add_class ("display-bottom-panel-header");
-            var time_sig_header = new Gtk.Label ("Beat");
+            var time_sig_header = new Gtk.Label (_("Beat"));
             time_sig_header.get_style_context ().add_class ("display-bottom-panel-header");
-            var transpose_header = new Gtk.Label ("Transpose");
+            var transpose_header = new Gtk.Label (_("Transpose"));
             transpose_header.get_style_context ().add_class ("display-bottom-panel-header");
-            var octave_shift_header = new Gtk.Label ("Octave");
+            var octave_shift_header = new Gtk.Label (_("Octave"));
             octave_shift_header.get_style_context ().add_class ("display-bottom-panel-header");
-            var chord_header = new Gtk.Label ("Chord");
+            var chord_header = new Gtk.Label (_("Chord"));
             chord_header.get_style_context ().add_class ("display-bottom-panel-header");
             chord_header.hexpand = true;
 

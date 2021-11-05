@@ -58,7 +58,7 @@ dependencies = [
     # meson.get_compiler ('c').find_library ('suil-0', required : true),
 ]
 config_h_dir = include_directories('.')
-subdir ('data')
+
 subdir ('src')
 
 # Define executable
@@ -72,6 +72,7 @@ executable (
     install : true
 )
 
-# subdir ('po')
+subdir ('data')
+subdir ('po')
 
 meson.add_install_script ('meson/post_install.py')

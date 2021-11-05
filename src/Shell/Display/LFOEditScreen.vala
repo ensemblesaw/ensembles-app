@@ -7,22 +7,22 @@ namespace Ensembles.Shell {
 
         Gtk.Image lfo_graph;
         string[] lfo_names = {
-            "Disabled",
-            "Sqr 2x (Inverse Phase)",
-            "Square 4x",
-            "Sqr 8x (Inverse Phase)",
-            "Sine (Inverse Phase)",
-            "Sin 2x (Inverse Phase)",
-            "Sine 4x",
-            "Sin 4x (Inverse Phase)",
-            "Saw 2x",
-            "Saw 4x",
-            "Saw 4x (Inverse Phase)",
-            "Triangular",
-            "Triangular 2x",
-            "Dance 1",
-            "Dance 2",
-            "Sine 4x (Damping)"
+            _("Disabled"),
+            _("Sqr 2x (Inverse Phase)"),
+            _("Square 4x"),
+            _("Sqr 8x (Inverse Phase)"),
+            _("Sine (Inverse Phase)"),
+            _("Sin 2x (Inverse Phase)"),
+            _("Sine 4x"),
+            _("Sin 4x (Inverse Phase)"),
+            _("Saw 2x"),
+            _("Saw 4x"),
+            _("Saw 4x (Inverse Phase)"),
+            _("Triangular"),
+            _("Triangular 2x"),
+            _("Dance 1"),
+            _("Dance 2"),
+            _("Sine 4x (Damping)")
         };
         public LFOEditScreen () {
             set_size_request (424, 236);
@@ -36,7 +36,7 @@ namespace Ensembles.Shell {
             });
             attach (close_button, 0, 0, 1, 1);
 
-            header = new Gtk.Label ("Select Master Knob LFO");
+            header = new Gtk.Label (_("Select Master Knob LFO"));
             header.get_style_context ().add_class ("channel-modulator-header");
             header.halign = Gtk.Align.START;
             header.hexpand = true;
@@ -47,7 +47,7 @@ namespace Ensembles.Shell {
             mod_grid.column_spacing = 6;
             mod_grid.get_style_context ().add_class ("channel-modulator-grid");
 
-            lfo_type = new Gtk.Label ("Disabled");
+            lfo_type = new Gtk.Label (_("Disabled"));
             lfo_spin_button = new Gtk.SpinButton.with_range (0, 15, 1);
             lfo_type.vexpand = true;
             lfo_spin_button.vexpand = true;

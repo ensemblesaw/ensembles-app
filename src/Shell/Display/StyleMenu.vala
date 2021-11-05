@@ -37,8 +37,8 @@ namespace Ensembles.Shell {
 
 
             var headerbar = new Hdy.HeaderBar ();
-            headerbar.set_title ("Style");
-            headerbar.set_subtitle ("Pick a Rhythm to accompany you");
+            headerbar.set_title (_("Style"));
+            headerbar.set_subtitle (_("Pick a Rhythm to accompany you"));
             headerbar.get_style_context ().add_class ("menu-header");
             headerbar.pack_start (close_button);
             main_list = new Gtk.ListBox ();

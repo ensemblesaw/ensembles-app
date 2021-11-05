@@ -91,14 +91,14 @@ namespace Ensembles.Shell {
             master_knob = new MasterKnob ();
 
 
-            knob_assign_button = new Gtk.Button.with_label ("Knob Assign");
-            master_assign_button = new Gtk.Button.with_label ("Master Knob Assign");
+            knob_assign_button = new Gtk.Button.with_label (_("Knob Assign"));
+            master_assign_button = new Gtk.Button.with_label (_("Master Knob Assign"));
             var knob_assign_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL);
             knob_assign_box.add (knob_assign_button);
             knob_assign_box.add (master_assign_button);
             knob_assign_box.set_layout (Gtk.ButtonBoxStyle.EXPAND);
 
-            slider_assign_button = new Gtk.Button.with_label ("Slider Assign");
+            slider_assign_button = new Gtk.Button.with_label (_("Slider Assign"));
 
             slider_0 = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1);
             slider_0.height_request = 85;
