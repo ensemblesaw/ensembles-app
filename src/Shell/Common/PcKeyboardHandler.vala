@@ -11,7 +11,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
@@ -349,51 +349,61 @@ namespace Ensembles.Shell {
                 return false;
                 case KeyboardConstants.KeyMap.M_UPPER:
                 if (!key_activated[34]) {
-                    note_activate (41, 144);
+                    note_activate (42, 144);
                     key_activated[34] = true;
                 }
                 if (!key_activated[37]) {
-                    note_activate (44, 144);
+                    note_activate (45, 144);
                     key_activated[37] = true;
                 }
                 return false;
                 case KeyboardConstants.KeyMap.LT:
                 if (!key_activated[35]) {
-                    note_activate (42, 144);
+                    note_activate (43, 144);
                     key_activated[35] = true;
                 }
                 if (!key_activated[38]) {
-                    note_activate (45, 144);
+                    note_activate (46, 144);
                     key_activated[38] = true;
                 }
                 return false;
                 case KeyboardConstants.KeyMap.GT:
                 if (!key_activated[36]) {
-                    note_activate (43, 144);
+                    note_activate (44, 144);
                     key_activated[36] = true;
                 }
                 if (!key_activated[39]) {
-                    note_activate (46, 144);
+                    note_activate (47, 144);
                     key_activated[39] = true;
+                }
+                return false;
+                case KeyboardConstants.KeyMap.QUESTION:
+                if (!key_activated[37]) {
+                    note_activate (45, 144);
+                    key_activated[38] = true;
+                }
+                if (!key_activated[40]) {
+                    note_activate (48, 144);
+                    key_activated[41] = true;
                 }
                 return false;
                 case KeyboardConstants.KeyMap.FL_BRACKETS_L:
                 if (!key_activated[38]) {
-                    note_activate (45, 144);
+                    note_activate (46, 144);
                     key_activated[38] = true;
                 }
                 if (!key_activated[41]) {
-                    note_activate (48, 144);
+                    note_activate (49, 144);
                     key_activated[41] = true;
                 }
                 return false;
                 case KeyboardConstants.KeyMap.FL_BRACKETS_R:
                 if (!key_activated[39]) {
-                    note_activate (46, 144);
+                    note_activate (47, 144);
                     key_activated[39] = true;
                 }
                 if (!key_activated[42]) {
-                    note_activate (49, 144);
+                    note_activate (50, 144);
                     key_activated[42] = true;
                 }
                 return false;
@@ -418,6 +428,7 @@ namespace Ensembles.Shell {
         }
 
         public void handle_keyrelease_event (uint keyval) {
+            print ("%u\n", keyval);
             switch (keyval) {
                 case KeyboardConstants.KeyMap.A_LOWER:
                 note_activate (60, 128);
@@ -620,33 +631,39 @@ namespace Ensembles.Shell {
                 key_activated[36] = false;
                 break;
                 case KeyboardConstants.KeyMap.M_UPPER:
-                note_activate (41, 128);
+                note_activate (42, 128);
                 key_activated[34] = false;
-                note_activate (44, 128);
+                note_activate (45, 128);
                 key_activated[37] = false;
                 break;
                 case KeyboardConstants.KeyMap.LT:
-                note_activate (42, 128);
+                note_activate (43, 128);
                 key_activated[35] = false;
-                note_activate (45, 128);
+                note_activate (46, 128);
                 key_activated[38] = false;
                 break;
                 case KeyboardConstants.KeyMap.GT:
-                note_activate (43, 128);
+                note_activate (44, 128);
                 key_activated[36] = false;
-                note_activate (46, 128);
+                note_activate (47, 128);
                 key_activated[39] = false;
                 break;
-                case KeyboardConstants.KeyMap.FL_BRACKETS_L:
+                case KeyboardConstants.KeyMap.QUESTION:
                 note_activate (45, 128);
                 key_activated[38] = false;
                 note_activate (48, 128);
                 key_activated[41] = false;
                 break;
-                case KeyboardConstants.KeyMap.FL_BRACKETS_R:
+                case KeyboardConstants.KeyMap.FL_BRACKETS_L:
                 note_activate (46, 128);
-                key_activated[39] = false;
+                key_activated[38] = false;
                 note_activate (49, 128);
+                key_activated[41] = false;
+                break;
+                case KeyboardConstants.KeyMap.FL_BRACKETS_R:
+                note_activate (47, 128);
+                key_activated[39] = false;
+                note_activate (50, 128);
                 key_activated[42] = false;
                 break;
 
