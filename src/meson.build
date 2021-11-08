@@ -74,6 +74,7 @@ ensembles_sources_vala = files (
     'Core/SongPlayer.vala',
     'Core/EffectRack.vala',
     'Core/InstrumentRack.vala',
+    'Core/MidiRecorder.vala',
     'Interfaces/MediaKeyListener.vala',
     'Interfaces/SoundIndicator.vala',
     # Plugins ############################################################
