@@ -11,7 +11,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
@@ -40,7 +40,7 @@
     font-size: 12px;
     margin-top: 4px;
 }
-    
+
 .display-top-panel-subheader {
     font-size: 10px;
     margin-bottom: 6px;
@@ -53,7 +53,7 @@
     box-shadow: none;
     outline: none;
 }
-    
+
 .display-top-panel-button:hover {
     background-color: alpha(#fff, 0.1);
 }
@@ -66,7 +66,7 @@
 .home-screen-eq-labels {
     margin-top: -5px;
 }
-    
+
 .home-screen-eq-labels > * {
     font-size: 8px;
     color: #CAE974;
@@ -127,7 +127,7 @@
     background-color: rgba (50, 80, 50, 1);
     background-image: -gtk-icontheme('insert-link-symbolic');
     background-repeat: no-repeat;
-    background-position: 120% 90%; 
+    background-position: 120% 90%;
     background-size: 14px;
     box-shadow: inset 0 0 4px rgba (0, 204, 102, 1);
 }
@@ -142,7 +142,7 @@
     background-image: -gtk-icontheme('changes-allow-symbolic');
     background-repeat: no-repeat;
     background-size: 14px;
-    background-position: 97% 90%; 
+    background-position: 97% 90%;
     color: #000;
 }
 
@@ -203,7 +203,7 @@
 .font-bold {
     font-weight: bold;
 }
-    
+
 .display-bottom-panel-label {
     font-size: 14px;
     color: #A4FFFA;
@@ -215,7 +215,7 @@
     margin-top: -2px;
     margin-bottom: -2px;
 }
-    
+
 
 .menu-background {
     background-color: #f3f3f3;
@@ -229,11 +229,11 @@
     color: #222;
     text-shadow: 0 1px #fff;
 }
-    
+
 .menu-header .title {
         text-shadow: 0 1px #fff;
 }
-    
+
 .menu-header > * {
         color: #333;
         text-shadow: 0 1px #fff;
@@ -255,7 +255,7 @@
     box-shadow: inset 0 1px 0 0 #ffa154,
                 inset 0 -2px 0 0 alpha(#fff, 0.1),
                 inset 0 -1px 0 0 #a62100;
-                
+
     background-image: linear-gradient(#f06819, #d94b0a);
     color: #fff;
 }
@@ -286,7 +286,7 @@
 
 @keyframes pulse {
     0% {
-        background-color: #333; 
+        background-color: #333;
         border-color: #222;
         box-shadow: 0 0 0 1px alpha(#000, 0.1);
     }
@@ -296,7 +296,7 @@
         box-shadow: 0 0 8px @accent_color;
     }
     25% {
-        background-color: #333; 
+        background-color: #333;
         border-color: #222;
         box-shadow: 0 0 0 1px alpha(#000, 0.1);
 	}
@@ -306,7 +306,7 @@
         box-shadow: 0 0 8px @accent_color;
     }
     50% {
-        background-color: #333; 
+        background-color: #333;
         border-color: #222;
         box-shadow: 0 0 0 1px alpha(#000, 0.1);
     }
@@ -316,7 +316,7 @@
         box-shadow: 0 0 8px @accent_color;
     }
     75% {
-        background-color: #333; 
+        background-color: #333;
         border-color: #222;
         box-shadow: 0 0 0 1px alpha(#000, 0.1);
     }
@@ -326,7 +326,7 @@
         box-shadow: 0 0 8px @accent_color;
     }
     100% {
-        background-color: #333; 
+        background-color: #333;
         border-color: #222;
         box-shadow: 0 0 0 1px alpha(#000, 0.1);
     }
@@ -504,48 +504,48 @@
     }
 }
 
-.super-knob-connected-0 { 
-    background-image:radial-gradient(@accent_color 40%, #333); 
+.super-knob-connected-0 {
+    background-image:radial-gradient(@accent_color 40%, #333);
 }
 
-.super-knob-connected-1 { 
-    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.1) 40%, #333); 
+.super-knob-connected-1 {
+    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.1) 40%, #333);
 }
 
-.super-knob-connected-2 { 
-    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.2) 40%, #333); 
+.super-knob-connected-2 {
+    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.2) 40%, #333);
 }
 
-.super-knob-connected-3 { 
-    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.3) 40%, #333); 
+.super-knob-connected-3 {
+    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.3) 40%, #333);
 }
 
-.super-knob-connected-4 { 
-    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.4) 40%, #333); 
+.super-knob-connected-4 {
+    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.4) 40%, #333);
 }
 
-.super-knob-connected-5 { 
-    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.5) 40%, #333); 
+.super-knob-connected-5 {
+    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.5) 40%, #333);
 }
 
-.super-knob-connected-6 { 
-    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.6) 40%, #333); 
+.super-knob-connected-6 {
+    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.6) 40%, #333);
 }
 
-.super-knob-connected-7 { 
-    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.7) 40%, #333); 
+.super-knob-connected-7 {
+    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.7) 40%, #333);
 }
 
-.super-knob-connected-8 { 
-    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.8) 40%, #333); 
+.super-knob-connected-8 {
+    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.8) 40%, #333);
 }
 
-.super-knob-connected-9 { 
-    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.9) 40%, #333); 
+.super-knob-connected-9 {
+    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.9) 40%, #333);
 }
 
-.super-knob-connected-10 { 
-    background-image:radial-gradient(shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2) 40%, #333); 
+.super-knob-connected-10 {
+    background-image:radial-gradient(shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2) 40%, #333);
 }
 
 
@@ -661,7 +661,7 @@
     border-radius: 4px;
     box-shadow: inset 0 1px 0 alpha(#fff, 0.2), inset 0 -1px 0 alpha(#fff, 0.1);
 }
-    
+
 .joystick-background {
     background-color: #333;
     border-right: 1px solid #222;
@@ -706,11 +706,11 @@
     background-color: #c6262e;
     outline: 0;
 }
-    
+
 .sampler-record-button-active {
     animation: sample_recording 1s infinite;
 }
-    
+
 @keyframes sample_recording {
     0% {
         background: alpha(#7a0000, 0);
@@ -737,4 +737,21 @@
 
 .preferences-view {
     background-color: shade (@bg_color, 1.1);
+}
+
+
+
+.welcome {
+	background: #f3f3f3;
+}
+.welcome > .vertical > .h1 {
+	color: #333;
+	font-size: 2em;
+}
+.welcome > .vertical > .h2 {
+	color: #333;
+	font-size: 1.5em;
+}
+.welcome > .vertical > .vertical > * {
+	color: #333;
 }

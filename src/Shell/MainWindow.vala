@@ -35,7 +35,7 @@ namespace Ensembles.Shell {
         //Core components
         Ensembles.Core.Voice[] detected_voices;
         int[] detected_voice_indices;
-        Ensembles.Core.Synthesizer synthesizer;
+        public static Ensembles.Core.Synthesizer synthesizer;
         Ensembles.Core.StyleDiscovery style_discovery;
         Ensembles.Core.StylePlayer style_player;
         Ensembles.Core.MetronomeLFOPlayer metronome_player;

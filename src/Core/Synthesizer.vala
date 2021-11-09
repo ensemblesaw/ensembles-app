@@ -39,6 +39,18 @@ namespace Ensembles.Core {
                 //debug("chord: %d %d\n", chord_feedback, chord_type);
                 detected_chord (chord_feedback, chord_type);
             }
+
+            // Send to Sequencer for recording
+            if (Shell.RecorderScreen.sequencer != null && Shell.RecorderScreen.sequencer.current_state != MidiRecorder.RecorderState.PLAYING) {
+                var event = new MidiEvent ();
+                event.channel = 0;
+                event.event_type = MidiEvent.EventType.NOTE;
+                event.value1 = key;
+                event.value2 = on;
+                event.velocity = velocity;
+
+                Shell.RecorderScreen.sequencer.record_event (event);
+            }
         }
 
         public void halt_realtime () {

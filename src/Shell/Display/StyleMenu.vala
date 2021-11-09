@@ -11,7 +11,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
@@ -41,6 +41,7 @@ namespace Ensembles.Shell {
             headerbar.set_subtitle ("Pick a Rhythm to accompany you");
             headerbar.get_style_context ().add_class ("menu-header");
             headerbar.pack_start (close_button);
+
             main_list = new Gtk.ListBox ();
             main_list.get_style_context ().add_class ("menu-box");
 

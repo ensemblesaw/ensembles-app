@@ -49,6 +49,7 @@ ensembles_sources_vala = files (
     'Shell/Display/LFOEditScreen.vala',
     'Shell/Display/TempoScreen.vala',
     'Shell/Display/EffectRackScreen.vala',
+    'Shell/Display/RecorderScreen.vala',
     'Shell/Dialogs/ErrorDialog.vala',
     'Shell/Dialogs/Preferences/Item.vala',
     'Shell/Dialogs/Preferences/ItemSelect.vala',

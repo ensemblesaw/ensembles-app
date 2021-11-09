@@ -26,6 +26,7 @@ namespace Ensembles.Shell {
         Gtk.Button voice_r2_button;
 
         Gtk.Button fx_rack_button;
+        Gtk.Button recorder_button;
 
         Gtk.Label selected_style_label;
         Gtk.Label selected_voice_l_label;
@@ -49,6 +50,7 @@ namespace Ensembles.Shell {
         public signal void open_voice_r1_menu ();
         public signal void open_voice_r2_menu ();
         public signal void open_fx_menu ();
+        public signal void open_recorder_screen ();
         public signal void edit_channel (int synth_index, int channel);
 
         public HomeScreen () {
@@ -278,16 +280,25 @@ namespace Ensembles.Shell {
             bottom_panel.set_column_homogeneous (true);
 
 
-            fx_rack_button = new Gtk.Button.with_label ("𝑓𝑥");
+            fx_rack_button = new Gtk.Button.with_label ("𝑓𝑥 Effects Rack");
             fx_rack_button.margin = 4;
             fx_rack_button.clicked.connect (() => {
                 open_fx_menu ();
+            });
+
+            recorder_button = new Gtk.Button.with_label ("Recorder");
+            recorder_button.margin = 4;
+            recorder_button.clicked.connect (() => {
+                open_recorder_screen ();
             });
 
             var mid_panel = new Gtk.Grid ();
             mid_panel.valign = Gtk.Align.END;
             mid_panel.height_request = 78;
             mid_panel.attach (fx_rack_button, 0, 0);
+            mid_panel.attach (recorder_button, 1, 0);
+            mid_panel.hexpand = true;
+            mid_panel.column_homogeneous = true;
             this.attach (top_panel, 0, 0, 1, 1);
             this.attach (mid_panel, 0, 1, 1, 1);
             this.attach (bottom_panel, 0, 2, 1, 1);

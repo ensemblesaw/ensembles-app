@@ -32,6 +32,7 @@ namespace Ensembles.Shell {
         VoiceMenu voice_menu_r1;
         VoiceMenu voice_menu_r2;
         EffectRackScreen fx_rack_menu;
+        RecorderScreen recorder_screen;
 
         LFOEditScreen lfo_editor;
 
@@ -51,6 +52,7 @@ namespace Ensembles.Shell {
             fx_rack_menu = new EffectRackScreen ();
             channel_mod_screen = new ChannelModulatorScreen (0, 0);
             lfo_editor = new LFOEditScreen ();
+            recorder_screen = new RecorderScreen ();
 
             main_stack = new Gtk.Stack ();
             main_stack.add_named (tempo_screen, "Tempo Screen");
@@ -61,6 +63,7 @@ namespace Ensembles.Shell {
             main_stack.add_named (channel_mod_screen, "Channel Modulator Screen");
             main_stack.add_named (lfo_editor, "LFO Editor");
             main_stack.add_named (fx_rack_menu, "Fx Rack");
+            main_stack.add_named (recorder_screen, "Sequencer");
 
             splash_screen = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/display_unit/ensembles_splash.svg");
 
@@ -127,6 +130,10 @@ namespace Ensembles.Shell {
                 main_display_leaflet.set_visible_child (main_stack);
                 main_stack.set_visible_child (fx_rack_menu);
             });
+            home_screen.open_recorder_screen.connect (() => {
+                main_display_leaflet.set_visible_child (main_stack);
+                main_stack.set_visible_child (recorder_screen);
+            });
             home_screen.edit_channel.connect (edit_channel);
             style_menu.close_menu.connect (() => {
                 main_display_leaflet.set_visible_child (home_screen);
@@ -169,6 +176,9 @@ namespace Ensembles.Shell {
                 change_tempo (tempo);
             });
             fx_rack_menu.close_menu.connect (() => {
+                main_display_leaflet.set_visible_child (home_screen);
+            });
+            recorder_screen.close_menu.connect (() => {
                 main_display_leaflet.set_visible_child (home_screen);
             });
         }
