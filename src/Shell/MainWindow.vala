@@ -19,9 +19,9 @@
 namespace Ensembles.Shell {
     public class MainWindow : Gtk.Window {
         // View components
-        StyleControllerView style_controller_view;
+        public static StyleControllerView style_controller_view;
         BeatCounterView beat_counter_panel;
-        MainDisplayCasing main_display_unit;
+        public static MainDisplayCasing main_display_unit;
         ControlPanel ctrl_panel;
         SliderBoardView slider_board;
         VoiceCategoryView voice_category_panel;

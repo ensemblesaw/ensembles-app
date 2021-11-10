@@ -19,6 +19,7 @@ ensembles_sources_vala = files (
     'Shell/Common/VoiceItem.vala',
     'Shell/Common/StyleItem.vala',
     'Shell/Common/EffectItem.vala',
+    'Shell/Common/RecorderTrackItem.vala',
     'Shell/Common/ToggleSwitch.vala',
     'Shell/Common/Dial.vala',
     'Shell/Common/Knob.vala',

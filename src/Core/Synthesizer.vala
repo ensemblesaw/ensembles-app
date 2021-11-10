@@ -32,16 +32,16 @@ namespace Ensembles.Core {
 
         public signal void detected_chord (int chord_main, int type);
 
-        public void send_notes_realtime (int key, int on, int velocity) {
+        public void send_notes_realtime (int key, int on, int velocity, int? channel = -1, bool? record = true) {
             int chord_type = 0;
-            int chord_feedback = synthesizer_send_notes (key, on, velocity, out chord_type);
+            int chord_feedback = synthesizer_send_notes (key, on, velocity, channel, out chord_type);
             if (chord_feedback > -6) {
                 //debug("chord: %d %d\n", chord_feedback, chord_type);
                 detected_chord (chord_feedback, chord_type);
             }
 
             // Send to Sequencer for recording
-            if (Shell.RecorderScreen.sequencer != null && Shell.RecorderScreen.sequencer.current_state != MidiRecorder.RecorderState.PLAYING) {
+            if (record == true && Shell.RecorderScreen.sequencer != null && Shell.RecorderScreen.sequencer.current_state != MidiRecorder.RecorderState.PLAYING) {
                 var event = new MidiEvent ();
                 event.channel = 0;
                 event.event_type = MidiEvent.EventType.NOTE;
@@ -78,8 +78,30 @@ namespace Ensembles.Core {
             synthesizer_set_master_chorus_active (active ? 1 : 0);
         }
 
-        public void change_voice (Voice voice, int channel) {
+        public void change_voice (Voice voice, int channel, bool? record = true) {
             synthesizer_change_voice (voice.bank, voice.preset, channel);
+
+            if (channel != 1 && channel != 2) {
+                Shell.EnsemblesApp.settings.set_int ("voice-r1-bank", voice.bank);
+                Shell.EnsemblesApp.settings.set_int ("voice-r1-preset", voice.preset);
+            } else if (channel == 1) {
+                Shell.EnsemblesApp.settings.set_int ("voice-r2-bank", voice.bank);
+                Shell.EnsemblesApp.settings.set_int ("voice-r2-preset", voice.preset);
+            } else {
+                Shell.EnsemblesApp.settings.set_int ("voice-l-bank", voice.bank);
+                Shell.EnsemblesApp.settings.set_int ("voice-l-preset", voice.preset);
+            }
+
+            // Send to Sequencer for recording
+            if (record == true && Shell.RecorderScreen.sequencer != null && Shell.RecorderScreen.sequencer.current_state == MidiRecorder.RecorderState.PLAYING) {
+                var event = new MidiEvent ();
+                event.channel = channel;
+                event.event_type = MidiEvent.EventType.VOICECHANGE;
+                event.value1 = voice.bank;
+                event.value2 = voice.index;
+
+                Shell.RecorderScreen.sequencer.record_event (event);
+            }
         }
 
         public static void set_modulator_value (int synth_index, int channel, int modulator, int value) {
@@ -151,7 +173,7 @@ namespace Ensembles.Core {
 
 extern void synthesizer_init (string loc);
 extern void synthesizer_destruct ();
-extern int synthesizer_send_notes (int key, int on, int velocity, out int type);
+extern int synthesizer_send_notes (int key, int on, int velocity, int channel, out int type);
 extern void synthesizer_halt_notes ();
 extern void synthesizer_halt_realtime ();
 

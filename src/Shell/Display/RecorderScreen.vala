@@ -3,6 +3,9 @@ namespace Ensembles.Shell {
         Gtk.Button close_button;
         public signal void close_menu ();
 
+        Gtk.Button new_button;
+        Gtk.Button open_button;
+
         Gtk.Stack main_stack;
         Gtk.Button play_button;
         Gtk.Button rec_button;
@@ -18,12 +21,17 @@ namespace Ensembles.Shell {
             close_button.margin_end = 4;
             close_button.halign = Gtk.Align.END;
 
+            new_button = new Gtk.Button.from_icon_name ("document-new-symbolic", Gtk.IconSize.BUTTON);
+            open_button = new Gtk.Button.from_icon_name ("document-open-symbolic", Gtk.IconSize.BUTTON);
+
 
             var headerbar = new Hdy.HeaderBar ();
             headerbar.set_title ("Recorder");
             headerbar.set_subtitle ("Multi-Track MIDI Sequencer");
             headerbar.get_style_context ().add_class ("menu-header");
             headerbar.pack_start (close_button);
+            headerbar.pack_start (new_button);
+            headerbar.pack_start (open_button);
 
             btn_stack = new Gtk.Stack ();
             btn_stack.transition_type = Gtk.StackTransitionType.SLIDE_RIGHT;
@@ -43,9 +51,6 @@ namespace Ensembles.Shell {
             headerbar.pack_end (btn_stack);
 
             close_button.clicked.connect (() => {
-                //  if (sequencer != null) {
-                //      sequencer = null;
-                //  }
                 close_menu ();
             });
 
@@ -76,11 +81,43 @@ namespace Ensembles.Shell {
                 sequencer = new Core.MidiRecorder (name_entry.get_text ());
                 var visual = sequencer.get_sequencer_visual ();
                 sequencer_grid.add (visual);
+                visual.show_all ();
                 main_stack.set_visible_child_name ("SqnGrid");
 
-                sequencer.note_event.connect ((key, on, velocity) => {
+                sequencer.note_event.connect ((channel, key, on, velocity) => {
                     if (MainWindow.synthesizer != null) {
-                        MainWindow.synthesizer.send_notes_realtime (key, on, velocity);
+                        MainWindow.synthesizer.send_notes_realtime (key, on, velocity, channel, false);
+                    }
+                });
+
+                sequencer.voice_change.connect ((channel, bank, index) => {
+                    if (MainWindow.synthesizer != null) {
+                        var voice = new Core.Voice (index, bank, index, "", "");
+                        if (sequencer.current_state == Core.MidiRecorder.RecorderState.RECORDING) {
+                            if (channel > 0) {
+                                MainWindow.synthesizer.change_voice (voice, channel, false);
+                            }
+                        } else {
+                            MainWindow.synthesizer.change_voice (voice, channel, false);
+                        }
+                    }
+                });
+
+                sequencer.style_change.connect ((index) => {
+                    if (MainWindow.main_display_unit != null && MainWindow.main_display_unit.style_menu != null) {
+                        MainWindow.main_display_unit.style_menu.quick_select_row (index, -0);
+                    }
+                });
+
+                sequencer.style_part_change.connect ((section) => {
+                    if (MainWindow.style_controller_view != null) {
+                        MainWindow.style_controller_view.set_style_section_by_index (section);
+                    }
+                });
+
+                sequencer.style_start_stop.connect (() => {
+                    if (MainWindow.style_controller_view != null) {
+                        MainWindow.style_controller_view.start_stop ();
                     }
                 });
 

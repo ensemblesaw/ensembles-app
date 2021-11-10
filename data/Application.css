@@ -755,3 +755,56 @@
 .welcome > .vertical > .vertical > * {
 	color: #333;
 }
+
+/* MultiTrack Recorder */
+.recorder-background {
+	background: #333;
+	border-radius: 6px;
+}
+
+.recorder-track {
+	background: linear-gradient(#666, #444);
+	border: 1px solid alpha (#fff, 0.4);
+	border-radius: 4px;
+	margin: 2px;
+}
+
+.recorder-track > * > * {
+    color: #fff;
+}
+
+.recorder-track:hover {
+	background: linear-gradient(#888, #555);
+	border: 1px solid alpha (#fff, 0.8);
+}
+
+.track-0 {
+	box-shadow: inset -2px 4px 18px #a56de2;
+}
+.track-1 {
+	box-shadow: inset -2px 4px 18px #485a6c;
+}
+.track-2 {
+	box-shadow: inset -2px 4px 18px #3689e6;
+}
+.track-3 {
+	box-shadow: inset -2px 4px 18px #f9c440;
+}
+.track-4{
+	box-shadow: inset -2px 4px 18px #715344;
+}
+.track-5 {
+	box-shadow: inset -2px 4px 18px #de3e80;
+}
+.track-6 {
+	box-shadow: inset -2px 4px 18px #68b723;
+}
+.track-7 {
+	box-shadow: inset -2px 4px 18px #c6262e;
+}
+.track-8 {
+	box-shadow: inset -2px 4px 18px #f37329;
+}
+.track-9 {
+	box-shadow: inset -2px 4px 18px #28bca3;
+}

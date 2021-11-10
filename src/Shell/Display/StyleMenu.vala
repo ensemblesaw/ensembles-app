@@ -66,6 +66,14 @@ namespace Ensembles.Shell {
                 scroll_wheel_location = index;
                 change_style (style_rows[index].accomp_style);
                 EnsemblesApp.settings.set_int ("style-index", index);
+
+                if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
+                    var event = new Core.MidiEvent ();
+                    event.event_type = Core.MidiEvent.EventType.STYLECHANGE;
+                    event.value1 = index;
+
+                    Shell.RecorderScreen.sequencer.record_event (event);
+                }
             });
 
             wheel_scrolled_absolute.connect ((value) => {
@@ -121,6 +129,13 @@ namespace Ensembles.Shell {
                 }
                 change_style (selected_style);
                 scroll_to_selected_row ();
+                if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
+                    var event = new Core.MidiEvent ();
+                    event.event_type = Core.MidiEvent.EventType.STYLECHANGE;
+                    event.value1 = index;
+
+                    Shell.RecorderScreen.sequencer.record_event (event);
+                }
                 return false;
             });
         }

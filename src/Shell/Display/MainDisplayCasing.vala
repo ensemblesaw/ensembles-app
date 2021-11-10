@@ -27,7 +27,7 @@ namespace Ensembles.Shell {
 
         HomeScreen home_screen;
         TempoScreen tempo_screen;
-        StyleMenu style_menu;
+        public StyleMenu style_menu;
         VoiceMenu voice_menu_l;
         VoiceMenu voice_menu_r1;
         VoiceMenu voice_menu_r2;
