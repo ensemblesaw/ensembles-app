@@ -128,7 +128,7 @@ synthesizer_set_defaults () {
 
 
     // Default pitch of all synths
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 16; i++) {
         fluid_synth_cc (realtime_synth, i, 3, 64);
     }
     for (int i = 0; i < 16; i++) {
