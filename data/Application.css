@@ -808,3 +808,9 @@
 .track-9 {
 	box-shadow: inset -2px 4px 18px #28bca3;
 }
+
+
+.recorder-progress-line {
+    box-shadow: inset -6px 0 4px alpha (#0f0, 0.4);
+    border-right: 1px solid alpha (#0f0, 0.8);
+}

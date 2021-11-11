@@ -19,6 +19,7 @@ namespace Ensembles.Shell {
             track_grid.attach (track_label, 0, 0);
 
             recording_icon = new Gtk.Image.from_icon_name ("media-record", Gtk.IconSize.BUTTON);
+            recording_icon.margin_end = 8;
             track_grid.attach (recording_icon, 1, 0);
 
             var separator = new Gtk.Separator (Gtk.Orientation.VERTICAL);
@@ -46,8 +47,6 @@ namespace Ensembles.Shell {
             area.queue_draw ();
         }
         bool on_draw (Gtk.Widget widget, Cairo.Context context) {
-            context.set_source_rgba (1, 1, 1, 0.5);
-
             if (cardinality != 0) {
                 double max_point = highest_point ();
                 double min_point = lowest_point ();
@@ -66,7 +65,8 @@ namespace Ensembles.Shell {
                                 2,
                                 (int)(((_events.nth_data (i).value1 - 48)/max_height) * get_allocated_height ()),
                                 (int)(total_width),
-                                baseline);
+                                baseline,
+                                ((double)_events.nth_data (i).velocity / 130.0));
                         } else if (_events.nth_data (i).value2 == 128) {
                             draw_note_off_event (context,
                                 2,
@@ -82,7 +82,8 @@ namespace Ensembles.Shell {
             return true;
         }
 
-        private void draw_note_on_event (Cairo.Context ctx, int width, int height, int x_offset, int y_offset) {
+        private void draw_note_on_event (Cairo.Context ctx, int width, int height, int x_offset, int y_offset, double alpha) {
+            ctx.set_source_rgba (1, 1, 1, alpha);
             ctx.set_line_width (width);
             ctx.stroke ();
             ctx.move_to (x_offset, 2 + get_allocated_height () - (height + y_offset));

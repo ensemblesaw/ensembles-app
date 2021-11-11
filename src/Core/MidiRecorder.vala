@@ -9,6 +9,10 @@ namespace Ensembles.Core {
         private string _name;
         private int _track;
         private Gtk.ListBox _sequencer_visual;
+        private Gtk.Overlay _sequencer_progress_overlay;
+        private Gtk.Box _sequencer_progress;
+
+
 
         private List<MidiEvent>[] midi_event_sequence;
         private PlayBackObject[] playback_objects;
@@ -18,6 +22,7 @@ namespace Ensembles.Core {
         private Thread<void> rcrd_thread;
 
         private Timer recording_timer;
+        private Timer progress_timer;
 
         public RecorderState current_state;
         bool sync_start;
@@ -82,7 +87,22 @@ namespace Ensembles.Core {
             _sequencer_visual.width_request = 10;
             _sequencer_visual.get_style_context ().add_class ("recorder-background");
 
-            return _sequencer_visual;
+            _sequencer_progress_overlay = new Gtk.Overlay ();
+            _sequencer_progress_overlay.add (_sequencer_visual);
+
+            _sequencer_progress = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
+            _sequencer_progress.vexpand = true;
+            _sequencer_progress.opacity = 0;
+            _sequencer_progress.get_style_context ().add_class ("recorder-progress-line");
+
+            var overlay_grid = new Gtk.Grid ();
+            var place_holder_label = new Gtk.Label ("`");
+            place_holder_label.width_request = 100;
+            overlay_grid.attach (place_holder_label, 0, 0);
+            overlay_grid.attach (_sequencer_progress, 1, 0);
+            _sequencer_progress_overlay.add_overlay (overlay_grid);
+
+            return _sequencer_progress_overlay;
         }
 
         public void make_initial_events (MidiEvent event) {
@@ -201,6 +221,7 @@ namespace Ensembles.Core {
                 }
             }
             current_state = RecorderState.RECORDING;
+            new Thread<void> ("progress_thread", progress_visual_thread);
         }
 
         private void playback_thread () {
@@ -213,6 +234,30 @@ namespace Ensembles.Core {
             for (uint i = 0; i < midi_event_sequence.length; i++) {
                 playback_objects[i] = new PlayBackObject (midi_event_sequence[i], i, this);
             }
+            new Thread<void> ("progress_thread", progress_visual_thread);
+        }
+
+        private void progress_visual_thread () {
+            progress_timer = new Timer ();
+            progress_timer.start ();
+            Idle.add (() => {
+                _sequencer_progress.opacity = 1;
+                return false;
+            });
+            while (current_state != RecorderState.STOPPED) {
+                Idle.add (() => {
+                    progress_timer.stop ();
+                    _sequencer_progress.width_request = (int)((double)progress_timer.elapsed (null) * 10.0);
+                    progress_timer.continue ();
+                    return false;
+                });
+                Thread.yield ();
+                Thread.usleep (800);
+            }
+            Idle.add (() => {
+                _sequencer_progress.opacity = 0;
+                return false;
+            });
         }
     }
 
