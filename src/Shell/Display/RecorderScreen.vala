@@ -86,17 +86,19 @@ namespace Ensembles.Shell {
 
                 sequencer.note_event.connect ((channel, key, on, velocity) => {
                     if (MainWindow.synthesizer != null) {
-                        MainWindow.synthesizer.send_notes_realtime (key, on, velocity, channel, false);
+                        if (channel == 0) {
+                            MainWindow.synthesizer.send_notes_realtime (key, on, velocity, 6, false);
+                        } else {
+                            MainWindow.synthesizer.send_notes_realtime (key, on, velocity, channel, false);
+                        }
                     }
                 });
 
                 sequencer.voice_change.connect ((channel, bank, index) => {
                     if (MainWindow.synthesizer != null) {
                         var voice = new Core.Voice (index, bank, index, "", "");
-                        if (sequencer.current_state == Core.MidiRecorder.RecorderState.RECORDING) {
-                            if (channel > 0) {
-                                MainWindow.synthesizer.change_voice (voice, channel, false);
-                            }
+                        if (channel == 0) {
+                                MainWindow.synthesizer.change_voice (voice, 6, false);
                         } else {
                             MainWindow.synthesizer.change_voice (voice, channel, false);
                         }
