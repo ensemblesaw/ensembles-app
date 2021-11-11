@@ -2,7 +2,7 @@
 project (
     'com.github.subhadeepjasu.ensembles',
     'c', 'vala',
-    version: '0.0.14',
+    version: '0.0.15',
 )
 
 # GNOME module
@@ -18,8 +18,9 @@ add_project_arguments (
     language: 'c'
 )
 
-# Set Driver Compatibilities
 add_project_arguments (
+    ['--vapidir', join_paths(meson.current_source_dir(), 'vapi')],
+    # Set Driver Compatibilities
     '-D', 'ALSA_DRIVER',
     '-D', 'PULSEAUDIO_DRIVER',
     # '-D', 'PIPEWIRE_CORE_DRIVER',  # Uncomment to enable pipewire core support provided fluidsynth supports it
@@ -44,18 +45,14 @@ dependencies = [
     dependency ('json-glib-1.0'),
     dependency ('libhandy-1', version: '>=0.83.0'),
     dependency ('gstreamer-1.0'),
+    dependency ('lv2'),
+    dependency ('lilv-0'),
+    dependency ('suil-0'),
     meson.get_compiler ('vala').find_library ('posix'),
     meson.get_compiler ('c').find_library ('m', required : true),
     meson.get_compiler ('c').find_library ('fluidsynth', required : true),
     meson.get_compiler ('c').find_library ('portmidi', required : true),
     meson.get_compiler ('c').find_library ('X11', required : true),
-    # LV2 Support
-    # meson.get_compiler ('c').find_library ('lv2', required : false),
-    # meson.get_compiler ('c').find_library ('lilv-0', required : true),
-    # meson.get_compiler ('c').find_library ('serd-0', required : true),
-    # meson.get_compiler ('c').find_library ('sord-0', required : true),
-    # meson.get_compiler ('c').find_library ('sratom-0', required : true),
-    # meson.get_compiler ('c').find_library ('suil-0', required : true),
 ]
 config_h_dir = include_directories('.')
 

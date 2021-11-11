@@ -11,7 +11,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
@@ -64,7 +64,7 @@
             PAGE_DOWN    = 65366,
             NUMPAD_HOME  = 65360,
             NUMPAD_END   = 65367,
-            
+
             A_LOWER      = 97,
             B_LOWER      = 98,
             C_LOWER      = 99,
@@ -137,6 +137,7 @@
             EXCLAMATION  = 33,
             LT           = 60,
             GT           = 62,
+            QUESTION     = 63,
 
             NAV_LEFT     = 65361,
             NAV_RIGHT    = 65363,
@@ -148,7 +149,8 @@
             ESCAPE       = 65307,
             SPACE_BAR    = 32,
 
-            CTRL         = 65507
+            CTRL         = 65507,
+            SHIFT        = 65505
         }
         public static bool key_is_number_numpad (uint key) {
             if ((key >= KeyMap.NUMPAD_0) && (key <= KeyMap.NUMPAD_9))

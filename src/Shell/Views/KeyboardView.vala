@@ -29,7 +29,6 @@ namespace Ensembles.Shell {
         Gtk.Button stop_button;
         public KeyboardView () {
             get_style_context ().add_class ("keyboard-background");
-            valign = Gtk.Align.END;
             key_grid = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
             //  key_grid.margin_start = 150;
 
@@ -107,7 +106,7 @@ namespace Ensembles.Shell {
 
         public void toggle_zoom (bool active) {
             if (active) {
-                key_grid.width_request = 1800;
+                key_grid.width_request = 2400;
             } else {
                 key_grid.width_request = -1;
             }

@@ -11,7 +11,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
@@ -24,6 +24,8 @@ namespace Ensembles.Shell {
         Gtk.ListBox main_list;
         VoiceItem[] voice_rows;
         int _selected_index;
+        int i = 0;
+        int last_voice_index;
 
         public signal void close_menu ();
         public signal void change_voice (Ensembles.Core.Voice voice, int channel);
@@ -88,11 +90,10 @@ namespace Ensembles.Shell {
                 });
             });
         }
-
         public void populate_voice_menu (Ensembles.Core.Voice[] voices) {
             voice_rows = new VoiceItem [voices.length];
             string temp_category = "";
-            for (int i = 0; i < voices.length; i++) {
+            for (; i < voices.length; i++) {
                 bool show_category = false;
                 if (temp_category != voices[i].category) {
                     temp_category = voices[i].category;
@@ -106,6 +107,26 @@ namespace Ensembles.Shell {
             min_value = 0;
             max_value = voice_rows.length - 1;
             main_list.show_all ();
+        }
+
+        public void populate_plugins () {
+            if (Core.InstrumentRack.plugin_voice_reference != null) {
+                bool show_category = true;
+                last_voice_index = voice_rows.length;
+                for (; i < Core.InstrumentRack.plugin_voice_reference.length + last_voice_index; i++) {
+                    if (show_category) {
+                        show_category = true;
+                    }
+                    if (Core.InstrumentRack.plugin_voice_reference[i - last_voice_index] != null) {
+                        print ("name: %s\n", Core.InstrumentRack.plugin_voice_reference[i - last_voice_index].name);
+                        var row = new VoiceItem (Core.InstrumentRack.plugin_voice_reference[i - last_voice_index], show_category);
+                        voice_rows[i] = row;
+                        main_list.insert (row, -1);
+                    }
+                }
+                max_value = voice_rows.length - 1;
+                main_list.show_all ();
+            }
         }
 
         public void scroll_to_selected_row () {
@@ -132,7 +153,9 @@ namespace Ensembles.Shell {
                 scroll_to_selected_row ();
                 switch (channel) {
                     case 0:
-                    EnsemblesApp.settings.set_int ("voice-r1-index", index);
+                    if (index <= last_voice_index) {
+                        EnsemblesApp.settings.set_int ("voice-r1-index", index);
+                    }
                     break;
                     case 1:
                     EnsemblesApp.settings.set_int ("voice-r2-index", index);
