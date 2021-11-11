@@ -8,13 +8,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: com.github.subhadeepjasu.ensembles\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-05 16:32+0100\n"
+"POT-Creation-Date: 2021-11-11 16:10+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: src/Shell/Dialogs/Preferences/Preferences.vala:44
@@ -174,60 +174,60 @@ msgstr ""
 msgid "Style Channel %s Modulators"
 msgstr ""
 
-#: src/Shell/Display/HomeScreen.vala:61 src/Shell/Display/StyleMenu.vala:40
+#: src/Shell/Display/HomeScreen.vala:64 src/Shell/Display/StyleMenu.vala:40
 msgid "Style"
 msgstr ""
 
-#: src/Shell/Display/HomeScreen.vala:64
+#: src/Shell/Display/HomeScreen.vala:67
 msgid "Dance Pop"
 msgstr ""
 
-#: src/Shell/Display/HomeScreen.vala:82
+#: src/Shell/Display/HomeScreen.vala:85
 msgid "Voice L"
 msgstr ""
 
-#: src/Shell/Display/HomeScreen.vala:85
+#: src/Shell/Display/HomeScreen.vala:88
 msgid "Finger Bass"
 msgstr ""
 
-#: src/Shell/Display/HomeScreen.vala:103
+#: src/Shell/Display/HomeScreen.vala:106
 msgid "Voice R1"
 msgstr ""
 
-#: src/Shell/Display/HomeScreen.vala:106
+#: src/Shell/Display/HomeScreen.vala:109
 msgid "Grand Piano"
 msgstr ""
 
-#: src/Shell/Display/HomeScreen.vala:124
+#: src/Shell/Display/HomeScreen.vala:127
 msgid "Voice R2"
 msgstr ""
 
-#: src/Shell/Display/HomeScreen.vala:127
+#: src/Shell/Display/HomeScreen.vala:130
 msgid "Slow Strings"
 msgstr ""
 
-#: src/Shell/Display/HomeScreen.vala:154 src/Shell/Display/TempoScreen.vala:21
+#: src/Shell/Display/HomeScreen.vala:157 src/Shell/Display/TempoScreen.vala:21
 #: src/Shell/Views/BeatCounterView.vala:57
 msgid "Tempo"
 msgstr ""
 
-#: src/Shell/Display/HomeScreen.vala:156
+#: src/Shell/Display/HomeScreen.vala:159
 msgid "Measure"
 msgstr ""
 
-#: src/Shell/Display/HomeScreen.vala:158
+#: src/Shell/Display/HomeScreen.vala:161
 msgid "Beat"
 msgstr ""
 
-#: src/Shell/Display/HomeScreen.vala:160 src/Shell/Views/ControlPanel.vala:71
+#: src/Shell/Display/HomeScreen.vala:163 src/Shell/Views/ControlPanel.vala:71
 msgid "Transpose"
 msgstr ""
 
-#: src/Shell/Display/HomeScreen.vala:162 src/Shell/Views/ControlPanel.vala:73
+#: src/Shell/Display/HomeScreen.vala:165 src/Shell/Views/ControlPanel.vala:73
 msgid "Octave"
 msgstr ""
 
-#: src/Shell/Display/HomeScreen.vala:164
+#: src/Shell/Display/HomeScreen.vala:167
 msgid "Chord"
 msgstr ""
 
@@ -312,33 +312,33 @@ msgstr ""
 msgid "Tap"
 msgstr ""
 
-#: src/Shell/Display/VoiceMenu.vala:40
+#: src/Shell/Display/VoiceMenu.vala:42
 #, c-format
 msgid "Voice - %s"
 msgstr ""
 
-#: src/Shell/Display/VoiceMenu.vala:40
+#: src/Shell/Display/VoiceMenu.vala:42
 msgid "Right 1 (Main)"
 msgstr ""
 
-#: src/Shell/Display/VoiceMenu.vala:41
+#: src/Shell/Display/VoiceMenu.vala:43
 msgid "Right 2 (Layered)"
 msgstr ""
 
-#: src/Shell/Display/VoiceMenu.vala:42
+#: src/Shell/Display/VoiceMenu.vala:44
 msgid "Left (Split)"
 msgstr ""
 
-#: src/Shell/Display/VoiceMenu.vala:43
+#: src/Shell/Display/VoiceMenu.vala:45
 #, c-format
 msgid "Pick a Voice to play %s"
 msgstr ""
 
-#: src/Shell/Display/VoiceMenu.vala:44
+#: src/Shell/Display/VoiceMenu.vala:46
 msgid " on another layer"
 msgstr ""
 
-#: src/Shell/Display/VoiceMenu.vala:45
+#: src/Shell/Display/VoiceMenu.vala:47
 msgid " on left hand side of split"
 msgstr ""
 
@@ -398,19 +398,19 @@ msgstr ""
 msgid "Y-Assign"
 msgstr ""
 
-#: src/Shell/Views/KeyboardView.vala:60
+#: src/Shell/Views/KeyboardView.vala:59
 msgid "SUST"
 msgstr ""
 
-#: src/Shell/Views/KeyboardView.vala:61
+#: src/Shell/Views/KeyboardView.vala:60
 msgid "STOP"
 msgstr ""
 
-#: src/Shell/Views/KeyboardView.vala:67
+#: src/Shell/Views/KeyboardView.vala:66
 msgid "H O L D"
 msgstr ""
 
-#: src/Shell/Views/KeyboardView.vala:69
+#: src/Shell/Views/KeyboardView.vala:68
 msgid "Z O O M"
 msgstr ""
 

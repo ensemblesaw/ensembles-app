@@ -19,7 +19,7 @@ add_project_arguments (
 )
 
 add_project_arguments (
-    ['--vapidir', join_paths(meson.current_source_dir(), 'vapi')],
+    ['--vapidir', join_paths (meson.current_source_dir (), 'vapi')],
     # Set Driver Compatibilities
     '-D', 'ALSA_DRIVER',
     '-D', 'PULSEAUDIO_DRIVER',
@@ -54,6 +54,7 @@ dependencies = [
     meson.get_compiler ('c').find_library ('portmidi', required : true),
     meson.get_compiler ('c').find_library ('X11', required : true),
 ]
+
 config_h_dir = include_directories('.')
 
 subdir ('src')
