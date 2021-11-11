@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: com.github.subhadeepjasu.ensembles\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-11 16:10+0100\n"
+"POT-Creation-Date: 2021-11-11 16:18+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -90,23 +90,29 @@ msgstr ""
 msgid "Cannot find PulseAudio Volume Control"
 msgstr ""
 
-#: src/Shell/Dialogs/Preferences/Preferences.vala:413
-msgid "Website"
+#. TRANSLATORS: %1.1f is a version number
+#: src/Shell/Dialogs/Preferences/Preferences.vala:407
+#, c-format
+msgid "Powered by FluidSynth v%1.1f"
 msgstr ""
 
 #: src/Shell/Dialogs/Preferences/Preferences.vala:414
-msgid "Github"
+msgid "Website"
 msgstr ""
 
 #: src/Shell/Dialogs/Preferences/Preferences.vala:415
-msgid "Follow"
+msgid "Github"
 msgstr ""
 
 #: src/Shell/Dialogs/Preferences/Preferences.vala:416
-msgid "Report a Problem"
+msgid "Follow"
 msgstr ""
 
 #: src/Shell/Dialogs/Preferences/Preferences.vala:417
+msgid "Report a Problem"
+msgstr ""
+
+#: src/Shell/Dialogs/Preferences/Preferences.vala:418
 msgid "Suggest Translations"
 msgstr ""
 
