@@ -44,6 +44,11 @@ namespace Ensembles.Shell {
         public void set_track_events (List<Core.MidiEvent> events) {
             _events = events;
             cardinality = _events.length ();
+            double total_width = 0;
+            for (int i = 0; i < cardinality; i++) {
+                total_width += (double)_events.nth_data (i).time_stamp / 100000;
+            }
+            area.width_request = (int)total_width;
             area.queue_draw ();
         }
         bool on_draw (Gtk.Widget widget, Cairo.Context context) {
@@ -57,8 +62,8 @@ namespace Ensembles.Shell {
                 double total_width = 0;
                 // Draw bars as per data points
                 for (int i = 0; i < cardinality; i++) {
+                    total_width += (double)_events.nth_data (i).time_stamp / 100000;
                     if (_events.nth_data (i).event_type == Core.MidiEvent.EventType.NOTE) {
-                        total_width += (double)_events.nth_data (i).time_stamp / 100000;
 
                         if (_events.nth_data (i).value2 == 144) {
                             draw_note_on_event (context,

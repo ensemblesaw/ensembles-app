@@ -239,6 +239,11 @@
         text-shadow: 0 1px #fff;
 }
 
+.menu-header > * > * > * {
+    color: #333;
+    text-shadow: 0 1px #fff;
+}
+
 .menu-box {
     background-color: #d4d4d4;
     color: #f3f3f3;
@@ -760,6 +765,15 @@
 .recorder-background {
 	background: #333;
 	border-radius: 6px;
+}
+
+.recorder-background > .activatable > * > image {
+	opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.recorder-background > .activatable:selected > * > image {
+	opacity: 1;
 }
 
 .recorder-track {

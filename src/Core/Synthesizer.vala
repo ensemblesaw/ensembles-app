@@ -93,7 +93,7 @@ namespace Ensembles.Core {
             }
 
             // Send to Sequencer for recording
-            if (record == true && Shell.RecorderScreen.sequencer != null && Shell.RecorderScreen.sequencer.current_state == MidiRecorder.RecorderState.PLAYING) {
+            if (record == true && Shell.RecorderScreen.sequencer != null && Shell.RecorderScreen.sequencer.current_state != MidiRecorder.RecorderState.PLAYING) {
                 var event = new MidiEvent ();
                 event.channel = channel;
                 event.event_type = MidiEvent.EventType.VOICECHANGE;

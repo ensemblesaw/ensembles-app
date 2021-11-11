@@ -97,6 +97,7 @@ namespace Ensembles.Shell {
                 sequencer.voice_change.connect ((channel, bank, index) => {
                     if (MainWindow.synthesizer != null) {
                         var voice = new Core.Voice (index, bank, index, "", "");
+                        print ("Channel %d\n", channel);
                         if (channel == 0) {
                                 MainWindow.synthesizer.change_voice (voice, 6, false);
                         } else {

@@ -481,6 +481,10 @@ synthesizer_halt_realtime () {
         fluid_synth_all_notes_off (realtime_synth, 0);
         fluid_synth_all_notes_off (realtime_synth, 1);
         fluid_synth_all_notes_off (realtime_synth, 2);
+
+        for (int i = 6; i < 16; i++) {
+            fluid_synth_all_notes_off (realtime_synth, i);
+        }
     }
 }
 

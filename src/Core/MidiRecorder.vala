@@ -28,7 +28,7 @@ namespace Ensembles.Core {
         bool sync_start;
 
         // Initial Settings;
-        public int initial_settings_style_part_index;
+        public int initial_settings_style_part_index = 2;
 
 
         // Midi Event Connectors
@@ -101,6 +101,7 @@ namespace Ensembles.Core {
             overlay_grid.attach (place_holder_label, 0, 0);
             overlay_grid.attach (_sequencer_progress, 1, 0);
             _sequencer_progress_overlay.add_overlay (overlay_grid);
+            _sequencer_progress_overlay.set_overlay_pass_through (overlay_grid, true);
 
             return _sequencer_progress_overlay;
         }
@@ -148,37 +149,39 @@ namespace Ensembles.Core {
                     make_initial_events (initial_style_part);
                 }
             }
-            recording_timer.stop ();
-            ulong microseconds = (ulong)(recording_timer.elapsed () * 1000000);
-            var new_event = event;
-            if (_track > 0) {
-                new_event.channel = _track + 6;
-            }
-            new_event.time_stamp = microseconds;
+            if (recording_timer != null) {
+                recording_timer.stop ();
+                ulong microseconds = (ulong)(recording_timer.elapsed () * 1000000);
+                var new_event = event;
+                if (_track > 0) {
+                    new_event.channel = _track + 6;
+                }
+                new_event.time_stamp = microseconds;
 
-            if (current_state == RecorderState.RECORDING) {
-                if (_track != 0) {
-                    if (event.event_type == MidiEvent.EventType.NOTE) {
+                if (current_state == RecorderState.RECORDING) {
+                    if (_track != 0) {
+                        if (event.event_type == MidiEvent.EventType.NOTE || event.event_type == MidiEvent.EventType.VOICECHANGE) {
+                            midi_event_sequence[_track].append (new_event);
+                            track_visuals[_track].set_track_events (midi_event_sequence[_track]);
+                        }
+                    } else {
                         midi_event_sequence[_track].append (new_event);
                         track_visuals[_track].set_track_events (midi_event_sequence[_track]);
                     }
-                } else {
-                    midi_event_sequence[_track].append (new_event);
-                    track_visuals[_track].set_track_events (midi_event_sequence[_track]);
                 }
-            }
-            recording_timer.start ();
+                recording_timer.start ();
 
-            print ("////////////////////////////////////////////\n");
-            for (int i = 0; i < midi_event_sequence[_track].length (); i++) {
-                print ("Event %d %d %d %s %u\n",
-                midi_event_sequence[_track].nth_data (i).value1,
-                midi_event_sequence[_track].nth_data (i).value2,
-                midi_event_sequence[_track].nth_data (i).velocity,
-                midi_event_sequence[_track].nth_data (i).time_stamp.to_string (),
-                midi_event_sequence[_track].length ());
+                print ("////////////////////////////////////////////\n");
+                for (int i = 0; i < midi_event_sequence[_track].length (); i++) {
+                    print ("Event %d %d %d %s %u\n",
+                    midi_event_sequence[_track].nth_data (i).value1,
+                    midi_event_sequence[_track].nth_data (i).value2,
+                    midi_event_sequence[_track].nth_data (i).velocity,
+                    midi_event_sequence[_track].nth_data (i).time_stamp.to_string (),
+                    midi_event_sequence[_track].length ());
+                }
+                print ("////////////////////////////////////////////\n");
             }
-            print ("////////////////////////////////////////////\n");
         }
 
         public void toggle_sync_start () {
@@ -221,6 +224,11 @@ namespace Ensembles.Core {
                 }
             }
             current_state = RecorderState.RECORDING;
+            Idle.add (() => {
+                _sequencer_progress.opacity = 1;
+                Shell.MainWindow.synthesizer.halt_realtime ();
+                return false;
+            });
             new Thread<void> ("progress_thread", progress_visual_thread);
         }
 
@@ -234,16 +242,13 @@ namespace Ensembles.Core {
             for (uint i = 0; i < midi_event_sequence.length; i++) {
                 playback_objects[i] = new PlayBackObject (midi_event_sequence[i], i, this);
             }
+            _sequencer_progress.opacity = 1;
             new Thread<void> ("progress_thread", progress_visual_thread);
         }
 
         private void progress_visual_thread () {
             progress_timer = new Timer ();
             progress_timer.start ();
-            Idle.add (() => {
-                _sequencer_progress.opacity = 1;
-                return false;
-            });
             while (current_state != RecorderState.STOPPED) {
                 Idle.add (() => {
                     progress_timer.stop ();
@@ -256,8 +261,12 @@ namespace Ensembles.Core {
             }
             Idle.add (() => {
                 _sequencer_progress.opacity = 0;
+                for (int i = 0; i < 10; i++) {
+                    track_visuals[i].set_track_events (midi_event_sequence[i]);
+                }
                 return false;
             });
+            Shell.MainWindow.synthesizer.halt_realtime ();
         }
     }
 
