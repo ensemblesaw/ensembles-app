@@ -130,10 +130,6 @@ namespace Ensembles.Shell {
                 main_display_leaflet.set_visible_child (main_stack);
                 main_stack.set_visible_child (fx_rack_menu);
             });
-            home_screen.open_recorder_screen.connect (() => {
-                main_display_leaflet.set_visible_child (main_stack);
-                main_stack.set_visible_child (recorder_screen);
-            });
             home_screen.edit_channel.connect (edit_channel);
             style_menu.close_menu.connect (() => {
                 main_display_leaflet.set_visible_child (home_screen);
@@ -243,6 +239,11 @@ namespace Ensembles.Shell {
         public void open_tempo_screen () {
             main_display_leaflet.set_visible_child (main_stack);
             main_stack.set_visible_child (tempo_screen);
+        }
+
+        public void open_recorder_screen () {
+            main_display_leaflet.set_visible_child (main_stack);
+            main_stack.set_visible_child (recorder_screen);
         }
 
         public void load_settings (int tempo) {

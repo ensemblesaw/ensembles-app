@@ -19,6 +19,7 @@
 
 namespace Ensembles.Core {
     public class Synthesizer : Object {
+        private bool input_enabled = true;
         public Synthesizer (string soundfont) {
             synthesizer_init (soundfont);
             set_fx_callback ((buffer_l_in, buffer_r_in, out buffer_out_l, out buffer_out_r) => {
@@ -32,24 +33,33 @@ namespace Ensembles.Core {
 
         public signal void detected_chord (int chord_main, int type);
 
-        public void send_notes_realtime (int key, int on, int velocity, int? channel = -1, bool? record = true) {
-            int chord_type = 0;
-            int chord_feedback = synthesizer_send_notes (key, on, velocity, channel, out chord_type);
-            if (chord_feedback > -6) {
-                //debug("chord: %d %d\n", chord_feedback, chord_type);
-                detected_chord (chord_feedback, chord_type);
+        public void disable_input (bool disable) {
+            input_enabled = !disable;
+            if (disable) {
+                halt_realtime ();
             }
+        }
 
-            // Send to Sequencer for recording
-            if (record == true && Shell.RecorderScreen.sequencer != null && Shell.RecorderScreen.sequencer.current_state != MidiRecorder.RecorderState.PLAYING) {
-                var event = new MidiEvent ();
-                event.channel = 0;
-                event.event_type = MidiEvent.EventType.NOTE;
-                event.value1 = key;
-                event.value2 = on;
-                event.velocity = velocity;
+        public void send_notes_realtime (int key, int on, int velocity, int? channel = -1, bool? record = true) {
+            if (input_enabled) {
+                int chord_type = 0;
+                int chord_feedback = synthesizer_send_notes (key, on, velocity, channel, out chord_type);
+                if (chord_feedback > -6) {
+                    //debug("chord: %d %d\n", chord_feedback, chord_type);
+                    detected_chord (chord_feedback, chord_type);
+                }
 
-                Shell.RecorderScreen.sequencer.record_event (event);
+                // Send to Sequencer for recording
+                if (record == true && Shell.RecorderScreen.sequencer != null && Shell.RecorderScreen.sequencer.current_state != MidiRecorder.RecorderState.PLAYING) {
+                    var event = new MidiEvent ();
+                    event.channel = 0;
+                    event.event_type = MidiEvent.EventType.NOTE;
+                    event.value1 = key;
+                    event.value2 = on;
+                    event.velocity = velocity;
+
+                    Shell.RecorderScreen.sequencer.record_event (event);
+                }
             }
         }
 

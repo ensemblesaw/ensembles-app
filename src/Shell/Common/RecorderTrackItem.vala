@@ -9,11 +9,12 @@ namespace Ensembles.Shell {
         private Gtk.Label track_label;
         public RecorderTrackItem (List<Core.MidiEvent> events, int track) {
             this.track = track;
+            this.tooltip_text = _("Click to select track %d for recording").printf (track + 1);
             this.halign = Gtk.Align.START;
             track_grid = new Gtk.Grid ();
 
 
-            track_label = new Gtk.Label (_("Track " + (track + 1).to_string ()));
+            track_label = new Gtk.Label (_("Track ") + (track + 1).to_string ());
             track_label.ellipsize = Pango.EllipsizeMode.MIDDLE;
             track_label.width_request = 72;
             track_grid.attach (track_label, 0, 0);

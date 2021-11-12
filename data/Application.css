@@ -554,6 +554,13 @@
 }
 
 
+.ctrl-panel-recorder-button {
+    border-radius: 6px 4px 4px 24px;
+    padding-left: 10px;
+    font-size: 10px;
+    outline: 0;
+}
+
 .common-key > * {
     opacity: 0;
 }

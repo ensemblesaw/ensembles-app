@@ -11,7 +11,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
@@ -63,6 +63,10 @@ namespace Ensembles.Core {
 
         public void play_style () {
             style_player_play ();
+        }
+
+        public void stop_style () {
+            style_player_stop ();
         }
 
         public void switch_var_a () {
@@ -123,6 +127,7 @@ extern void style_player_add_style_file (string mid_file, int custom_tempo);
 extern void style_player_reload_style ();
 extern void style_player_destruct ();
 extern void style_player_play ();
+extern void style_player_stop ();
 extern void style_player_play_loop (int start, int end);
 extern void style_player_queue_intro (int start, int end);
 extern void style_player_queue_ending (int start, int end);

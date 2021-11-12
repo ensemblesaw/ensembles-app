@@ -492,6 +492,24 @@ style_player_play () {
 }
 
 void
+style_player_stop () {
+    if (fluid_player_get_status (player) == FLUID_PLAYER_PLAYING) {
+        printf ("Stop central_style_looping\n");
+        fluid_player_stop (player);
+        set_central_halt (1);
+        set_central_style_looping (0);
+        intro_playing = 0;
+        fill_in = 0;
+        fill_queue = 0;
+        set_central_style_section (0);
+        set_central_measure (0);
+        style_player_halt_continuous_notes ();
+        set_central_clock (0);
+        sync_stop = 0;
+    }
+}
+
+void
 style_player_queue_intro (int start, int end) {
     printf("Intro>>>\n");
     if (start_s == 0) {

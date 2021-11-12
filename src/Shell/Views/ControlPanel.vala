@@ -11,7 +11,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
@@ -50,6 +50,7 @@ namespace Ensembles.Shell {
         public signal void start_metronome (bool active);
         public signal void dial_activate ();
         public signal void update_split ();
+        public signal void open_recorder ();
         public ControlPanel () {
             row_spacing = 4;
             column_spacing = 4;
@@ -144,6 +145,9 @@ namespace Ensembles.Shell {
             });
             main_dial.rotate.connect ((direction, amount) => {
                 dial_rotate (direction, amount);
+            });
+            main_dial.open_recorder_screen.connect (() => {
+                open_recorder ();
             });
             transpose_toggle.toggled.connect ((active) => {
                 Ensembles.Core.Synthesizer.set_transpose_active (active);

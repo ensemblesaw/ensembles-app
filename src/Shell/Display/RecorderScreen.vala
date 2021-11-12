@@ -26,8 +26,8 @@ namespace Ensembles.Shell {
 
 
             var headerbar = new Hdy.HeaderBar ();
-            headerbar.set_title ("Recorder");
-            headerbar.set_subtitle ("Multi-Track MIDI Sequencer");
+            headerbar.set_title (_("Recorder"));
+            headerbar.set_subtitle (_("Record playback in multiple tracks"));
             headerbar.get_style_context ().add_class ("menu-header");
             headerbar.pack_start (close_button);
             headerbar.pack_start (new_button);
@@ -38,7 +38,9 @@ namespace Ensembles.Shell {
             btn_stack.transition_duration = 500;
 
             play_button = new Gtk.Button.from_icon_name ("media-playback-start-symbolic", Gtk.IconSize.BUTTON);
+            play_button.visible = false;
             rec_button = new Gtk.Button.from_icon_name ("media-record-symbolic", Gtk.IconSize.BUTTON);
+            rec_button.visible = false;
             stop_button = new Gtk.Button.from_icon_name ("media-playback-stop-symbolic", Gtk.IconSize.BUTTON);
 
             var btn_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
@@ -52,6 +54,7 @@ namespace Ensembles.Shell {
 
             close_button.clicked.connect (() => {
                 close_menu ();
+                MainWindow.synthesizer.disable_input (false);
             });
 
             var scrollable = new Gtk.ScrolledWindow (null, null);
@@ -67,7 +70,7 @@ namespace Ensembles.Shell {
             main_stack.add_named (get_welcome_widget (), "Welcome");
 
             var name_grid = new Gtk.Grid ();
-            name_grid.attach (new Gtk.Label ("Sequence Name"), 0, 0);
+            name_grid.attach (new Gtk.Label (_("Sequence Name")), 0, 0);
             var name_entry = new Gtk.Entry ();
             name_grid.attach (name_entry, 0, 1);
             name_grid.halign = Gtk.Align.CENTER;
@@ -77,8 +80,18 @@ namespace Ensembles.Shell {
             var sequencer_grid = new Gtk.Grid ();
             main_stack.add_named (sequencer_grid, "SqnGrid");
 
+            sequencer_grid.size_allocate.connect (() => {
+                var adj = scrollable.get_hadjustment ();
+                adj.set_value (adj.get_upper () - adj.get_page_size ());
+                sequencer_grid.queue_draw ();
+            });
+
             name_entry.activate.connect (() => {
+                MainWindow.synthesizer.disable_input (false);
+                play_button.visible = true;
+                rec_button.visible = true;
                 sequencer = new Core.MidiRecorder (name_entry.get_text ());
+                headerbar.set_title (_("Recorder") + " - " + name_entry.get_text ());
                 var visual = sequencer.get_sequencer_visual ();
                 sequencer_grid.add (visual);
                 visual.show_all ();
@@ -97,7 +110,6 @@ namespace Ensembles.Shell {
                 sequencer.voice_change.connect ((channel, bank, index) => {
                     if (MainWindow.synthesizer != null) {
                         var voice = new Core.Voice (index, bank, index, "", "");
-                        print ("Channel %d\n", channel);
                         if (channel == 0) {
                                 MainWindow.synthesizer.change_voice (voice, 6, false);
                         } else {
@@ -146,25 +158,35 @@ namespace Ensembles.Shell {
             });
 
             rec_button.clicked.connect (() => {
-                sequencer.toggle_sync_start ();
+                if (sequencer != null) {
+                    play_button.sensitive = !play_button.sensitive;
+                    play_button.opacity = play_button.sensitive ? 1.0 : 0.5;
+                    sequencer.toggle_sync_start ();
+                }
             });
 
             stop_button.clicked.connect(() => {
                 if (sequencer != null) {
                     sequencer.stop ();
+                    play_button.sensitive = true;
+                    play_button.opacity = 1;
+                    MainWindow.style_player.stop_style ();
                 }
             });
         }
 
         Granite.Widgets.Welcome get_welcome_widget () {
-            var welcome = new Granite.Widgets.Welcome ("No Sequence Open", "Create a new sequence to start recording");
-            welcome.append ("document-new", "New Sequence", "Creates a new empty sequence file");
-            welcome.append ("document-open", "Open Sequence", "Open a pre-recorded sequence file");
+            var welcome = new Granite.Widgets.Welcome (_("No Project Open"), _("Create a new project to start recording"));
+            welcome.append ("document-new", _("New Project"), _("Creates a new project from scratch"));
+            welcome.append ("document-open", _("Open Project"), _("Opens a pre-recorded project file"));
 
             welcome.activated.connect ((index) => {
                 switch (index) {
                     case 0:
                         main_stack.set_visible_child_name ("EnterName");
+                        MainWindow.synthesizer.disable_input (true);
+                        play_button.visible = false;
+                        rec_button.visible = false;
                         break;
                     case 1:
                         //

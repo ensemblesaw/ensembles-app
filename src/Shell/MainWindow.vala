@@ -37,7 +37,7 @@ namespace Ensembles.Shell {
         int[] detected_voice_indices;
         public static Ensembles.Core.Synthesizer synthesizer;
         Ensembles.Core.StyleDiscovery style_discovery;
-        Ensembles.Core.StylePlayer style_player;
+        public static Ensembles.Core.StylePlayer style_player;
         Ensembles.Core.MetronomeLFOPlayer metronome_player;
         Ensembles.Core.CentralBus bus;
         Ensembles.Core.Controller controller_connection;
@@ -337,6 +337,7 @@ namespace Ensembles.Shell {
             });
             ctrl_panel.dial_rotate.connect (main_display_unit.wheel_scroll);
             ctrl_panel.dial_activate.connect (main_display_unit.wheel_activate);
+            ctrl_panel.open_recorder.connect (main_display_unit.open_recorder_screen);
             registry_panel.notify_recall.connect ((tempo) => {
                 ctrl_panel.load_settings ();
                 main_display_unit.load_settings (tempo);

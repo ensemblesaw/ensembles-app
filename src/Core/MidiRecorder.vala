@@ -171,16 +171,16 @@ namespace Ensembles.Core {
                 }
                 recording_timer.start ();
 
-                print ("////////////////////////////////////////////\n");
-                for (int i = 0; i < midi_event_sequence[_track].length (); i++) {
-                    print ("Event %d %d %d %s %u\n",
-                    midi_event_sequence[_track].nth_data (i).value1,
-                    midi_event_sequence[_track].nth_data (i).value2,
-                    midi_event_sequence[_track].nth_data (i).velocity,
-                    midi_event_sequence[_track].nth_data (i).time_stamp.to_string (),
-                    midi_event_sequence[_track].length ());
-                }
-                print ("////////////////////////////////////////////\n");
+                //  print ("////////////////////////////////////////////\n");
+                //  for (int i = 0; i < midi_event_sequence[_track].length (); i++) {
+                //      print ("Event %d %d %d %s %u\n",
+                //      midi_event_sequence[_track].nth_data (i).value1,
+                //      midi_event_sequence[_track].nth_data (i).value2,
+                //      midi_event_sequence[_track].nth_data (i).velocity,
+                //      midi_event_sequence[_track].nth_data (i).time_stamp.to_string (),
+                //      midi_event_sequence[_track].length ());
+                //  }
+                //  print ("////////////////////////////////////////////\n");
             }
         }
 
@@ -226,7 +226,6 @@ namespace Ensembles.Core {
             current_state = RecorderState.RECORDING;
             Idle.add (() => {
                 _sequencer_progress.opacity = 1;
-                Shell.MainWindow.synthesizer.halt_realtime ();
                 return false;
             });
             new Thread<void> ("progress_thread", progress_visual_thread);
