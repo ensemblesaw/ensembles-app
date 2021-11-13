@@ -81,9 +81,11 @@ namespace Ensembles.Shell {
             main_stack.add_named (sequencer_grid, "SqnGrid");
 
             sequencer_grid.size_allocate.connect (() => {
-                var adj = scrollable.get_hadjustment ();
-                adj.set_value (adj.get_upper () - adj.get_page_size ());
-                sequencer_grid.queue_draw ();
+                if (sequencer.current_state == Core.MidiRecorder.RecorderState.RECORDING) {
+                    var adj = scrollable.get_hadjustment ();
+                    adj.set_value (adj.get_upper () - adj.get_page_size ());
+                    sequencer_grid.queue_draw ();
+                }
             });
 
             name_entry.activate.connect (() => {
@@ -130,20 +132,30 @@ namespace Ensembles.Shell {
                     }
                 });
 
-                sequencer.style_start_stop.connect (() => {
+                sequencer.style_start_stop.connect ((value) => {
                     if (MainWindow.style_controller_view != null) {
-                        MainWindow.style_controller_view.start_stop ();
+                        if (value) {
+                            MainWindow.style_player.stop_style ();
+                        } else {
+                            MainWindow.style_player.play_style ();
+                        }
                     }
                 });
 
                 sequencer.recorder_state_change.connect ((state) => {
                     switch (state) {
                         case Core.MidiRecorder.RecorderState.PLAYING:
+                        btn_stack.set_visible_child_name ("Stop");
+                        break;
                         case Core.MidiRecorder.RecorderState.RECORDING:
+                        play_button.sensitive = !play_button.sensitive;
+                        play_button.opacity = play_button.sensitive ? 1.0 : 0.5;
                         btn_stack.set_visible_child_name ("Stop");
                         break;
                         case Core.MidiRecorder.RecorderState.STOPPED:
                         btn_stack.set_visible_child_name ("Start");
+                        play_button.sensitive = true;
+                        play_button.opacity = 1;
                         break;
                     }
                 });
@@ -159,8 +171,6 @@ namespace Ensembles.Shell {
 
             rec_button.clicked.connect (() => {
                 if (sequencer != null) {
-                    play_button.sensitive = !play_button.sensitive;
-                    play_button.opacity = play_button.sensitive ? 1.0 : 0.5;
                     sequencer.toggle_sync_start ();
                 }
             });
@@ -168,8 +178,6 @@ namespace Ensembles.Shell {
             stop_button.clicked.connect(() => {
                 if (sequencer != null) {
                     sequencer.stop ();
-                    play_button.sensitive = true;
-                    play_button.opacity = 1;
                     MainWindow.style_player.stop_style ();
                 }
             });

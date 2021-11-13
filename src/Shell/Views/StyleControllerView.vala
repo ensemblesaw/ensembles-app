@@ -243,12 +243,6 @@ namespace Ensembles.Shell {
             start_button.width_request = 64;
             start_button.set_sensitive (false);
             start_button.clicked.connect (() => {
-                if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
-                    var event = new Core.MidiEvent ();
-                    event.event_type = Core.MidiEvent.EventType.STYLESTARTSTOP;
-
-                    Shell.RecorderScreen.sequencer.record_event (event);
-                }
                 start_stop ();
             });
 
@@ -309,9 +303,6 @@ namespace Ensembles.Shell {
                 intro_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
                 ending_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
                 ending_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                if (RecorderScreen.sequencer != null) {
-                    RecorderScreen.sequencer.stop ();
-                }
                 break;
                 case 1:
                 var_fill_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);

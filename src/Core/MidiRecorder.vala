@@ -37,7 +37,7 @@ namespace Ensembles.Core {
         public signal void voice_change (int channel, int bank, int index);
         public signal void style_change (int index);
         public signal void style_part_change (int part_index);
-        public signal void style_start_stop ();
+        public signal void style_start_stop (bool stop);
 
         public void multiplex_events (MidiEvent event) {
             switch (event.event_type) {
@@ -54,7 +54,7 @@ namespace Ensembles.Core {
                 style_part_change (event.value1);
                 break;
                 case MidiEvent.EventType.STYLESTARTSTOP:
-                style_start_stop ();
+                style_start_stop (event.value1 == 1 ? true : false);
                 break;
             }
         }
@@ -171,16 +171,17 @@ namespace Ensembles.Core {
                 }
                 recording_timer.start ();
 
-                //  print ("////////////////////////////////////////////\n");
-                //  for (int i = 0; i < midi_event_sequence[_track].length (); i++) {
-                //      print ("Event %d %d %d %s %u\n",
-                //      midi_event_sequence[_track].nth_data (i).value1,
-                //      midi_event_sequence[_track].nth_data (i).value2,
-                //      midi_event_sequence[_track].nth_data (i).velocity,
-                //      midi_event_sequence[_track].nth_data (i).time_stamp.to_string (),
-                //      midi_event_sequence[_track].length ());
-                //  }
-                //  print ("////////////////////////////////////////////\n");
+                print ("////////////////////////////////////////////\n");
+                for (int i = 0; i < midi_event_sequence[_track].length (); i++) {
+                    print ("Event Type: %u -> %d %d %d %s %u\n",
+                    midi_event_sequence[_track].nth_data (i).event_type,
+                    midi_event_sequence[_track].nth_data (i).value1,
+                    midi_event_sequence[_track].nth_data (i).value2,
+                    midi_event_sequence[_track].nth_data (i).velocity,
+                    midi_event_sequence[_track].nth_data (i).time_stamp.to_string (),
+                    midi_event_sequence[_track].length ());
+                }
+                print ("////////////////////////////////////////////\n");
             }
         }
 

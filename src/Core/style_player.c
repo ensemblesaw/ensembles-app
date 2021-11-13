@@ -86,6 +86,16 @@ int chord_type = 0; // Major
 
 int style_original_chord_main = 0;
 
+// Style start/stop callback
+typedef void
+(*style_player_change_state_callback)(gint state);
+
+style_player_change_state_callback state_change_callback;
+
+void
+set_style_change_callback (style_player_change_state_callback callback) {
+    state_change_callback = callback;
+}
 
 void
 style_player_change_chord (int cd_main, int cd_type) {
@@ -110,6 +120,9 @@ style_player_change_chord (int cd_main, int cd_type) {
             printf ("Start central_style_looping\n");
             fluid_player_play(player);
             set_central_style_looping (1);
+            if (state_change_callback != NULL) {
+                state_change_callback (0);
+            }
         }
         set_central_clock (0);
         sync_stop = 0;
@@ -316,6 +329,9 @@ parse_ticks (void* data, int ticks) {
                     set_central_style_section (0);
                     set_central_measure (0);
                     style_player_halt_continuous_notes ();
+                    if (state_change_callback != NULL) {
+                        state_change_callback (1);
+                    }
                 }
                 style_player_halt_continuous_notes ();
                 return fluid_player_seek (player, loop_start_tick - 2);
@@ -458,6 +474,46 @@ style_player_play_loop (int start, int end) {
 }
 
 void
+style_player_toggle_play () {
+    measure_length = get_loaded_style_time_stamps_by_index(1);
+    if (get_central_style_looping () == 0) {
+        if (start_s == 0) {
+            start_s = 3;
+            end_s = 4;
+            start_temp = start_s;
+            end_temp = end_s;
+        }
+        loop_start_tick = get_loaded_style_time_stamps_by_index(start_s);
+        loop_end_tick = get_loaded_style_time_stamps_by_index(end_s);
+        fluid_player_seek (player, loop_start_tick);
+        printf ("Start central_style_looping\n");
+        fluid_player_play(player);
+        set_central_style_looping (1);
+        if (state_change_callback != NULL) {
+            state_change_callback (0);
+        }
+    } else {
+        if (fluid_player_get_status (player) == FLUID_PLAYER_PLAYING) {
+            printf ("Stop central_style_looping\n");
+            fluid_player_stop (player);
+            set_central_halt (1);
+            set_central_style_looping (0);
+            intro_playing = 0;
+            fill_in = 0;
+            fill_queue = 0;
+            set_central_style_section (0);
+            set_central_measure (0);
+            style_player_halt_continuous_notes ();
+            if (state_change_callback != NULL) {
+                state_change_callback (1);
+            }
+        }
+    }
+    set_central_clock (0);
+    sync_stop = 0;
+}
+
+void
 style_player_play () {
     measure_length = get_loaded_style_time_stamps_by_index(1);
     if (get_central_style_looping () == 0) {
@@ -473,22 +529,12 @@ style_player_play () {
         printf ("Start central_style_looping\n");
         fluid_player_play(player);
         set_central_style_looping (1);
-    } else {
-        if (fluid_player_get_status (player) == FLUID_PLAYER_PLAYING) {
-            printf ("Stop central_style_looping\n");
-            fluid_player_stop (player);
-            set_central_halt (1);
-            set_central_style_looping (0);
-            intro_playing = 0;
-            fill_in = 0;
-            fill_queue = 0;
-            set_central_style_section (0);
-            set_central_measure (0);
-            style_player_halt_continuous_notes ();
-        }
     }
     set_central_clock (0);
     sync_stop = 0;
+    if (state_change_callback != NULL) {
+        state_change_callback (0);
+    }
 }
 
 void
@@ -506,6 +552,9 @@ style_player_stop () {
         style_player_halt_continuous_notes ();
         set_central_clock (0);
         sync_stop = 0;
+    }
+    if (state_change_callback != NULL) {
+        state_change_callback (1);
     }
 }
 
