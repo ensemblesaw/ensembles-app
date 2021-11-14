@@ -11,13 +11,13 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
  */
 
-namespace Ensembles.Shell {
+ namespace Ensembles.Shell {
     public class ChannelModulatorScreen : Gtk.Grid {
         int _synth_index;
         int _channel;
@@ -87,7 +87,7 @@ namespace Ensembles.Shell {
 
             mod_grid.get_style_context ().add_class ("channel-modulator-grid");
 
-            pan_button = new Gtk.Button.with_label ("Pan");
+            pan_button = new Gtk.Button.with_label (_("Pan"));
             pan_button.get_style_context ().add_class ("channel-modulator-button");
             pan_spin_button = new Gtk.SpinButton.with_range (-64, 63, 1);
             pan_button.vexpand = true;
@@ -95,7 +95,7 @@ namespace Ensembles.Shell {
             mod_grid.attach (pan_button, 0, 0, 2, 1);
             mod_grid.attach (pan_spin_button, 0, 1, 2, 1);
 
-            reverb_button = new Gtk.Button.with_label ("Reverb");
+            reverb_button = new Gtk.Button.with_label (_("Reverb"));
             reverb_button.get_style_context ().add_class ("channel-modulator-button");
             reverb_spin_button = new Gtk.SpinButton.with_range (0, 127, 1);
             reverb_button.vexpand = true;
@@ -103,7 +103,7 @@ namespace Ensembles.Shell {
             mod_grid.attach (reverb_button, 2, 0, 2, 1);
             mod_grid.attach (reverb_spin_button, 2, 1, 2, 1);
 
-            chorus_button = new Gtk.Button.with_label ("Chorus");
+            chorus_button = new Gtk.Button.with_label (_("Chorus"));
             chorus_button.get_style_context ().add_class ("channel-modulator-button");
             chorus_spin_button = new Gtk.SpinButton.with_range (0, 127, 1);
             chorus_button.vexpand = true;
@@ -111,7 +111,7 @@ namespace Ensembles.Shell {
             mod_grid.attach (chorus_button, 4, 0, 2, 1);
             mod_grid.attach (chorus_spin_button, 4, 1, 2, 1);
 
-            pitch_button = new Gtk.Button.with_label ("Pitch");
+            pitch_button = new Gtk.Button.with_label (_("Pitch"));
             pitch_button.get_style_context ().add_class ("channel-modulator-button");
             pitch_spin_button = new Gtk.SpinButton.with_range (-64, 63, 1);
             pitch_spin_button.vexpand = true;
@@ -119,7 +119,7 @@ namespace Ensembles.Shell {
             mod_grid.attach (pitch_button, 6, 0, 2, 1);
             mod_grid.attach (pitch_spin_button, 6, 1, 2, 1);
 
-            expression_button = new Gtk.Button.with_label ("Expression");
+            expression_button = new Gtk.Button.with_label (_("Expression"));
             expression_button.get_style_context ().add_class ("channel-modulator-button");
             expression_spin_button = new Gtk.SpinButton.with_range (0, 127, 1);
             expression_button.vexpand = true;
@@ -127,7 +127,7 @@ namespace Ensembles.Shell {
             mod_grid.attach (expression_button, 0, 2, 2, 1);
             mod_grid.attach (expression_spin_button, 0, 3, 2, 1);
 
-            modulation_button = new Gtk.Button.with_label ("Modulation");
+            modulation_button = new Gtk.Button.with_label (_("Modulation"));
             modulation_button.get_style_context ().add_class ("channel-modulator-button");
             modulation_spin_button = new Gtk.SpinButton.with_range (0, 127, 1);
             modulation_button.vexpand = true;
@@ -135,7 +135,7 @@ namespace Ensembles.Shell {
             mod_grid.attach (modulation_button, 2, 2, 2, 1);
             mod_grid.attach (modulation_spin_button, 2, 3, 2, 1);
 
-            cut_off_button = new Gtk.Button.with_label ("Cut Off");
+            cut_off_button = new Gtk.Button.with_label (_("Cut Off"));
             cut_off_button.get_style_context ().add_class ("channel-modulator-button");
             cut_off_spin_button = new Gtk.SpinButton.with_range (0, 127, 1);
             cut_off_button.vexpand = true;
@@ -143,7 +143,7 @@ namespace Ensembles.Shell {
             mod_grid.attach (cut_off_button, 4, 2, 2, 1);
             mod_grid.attach (cut_off_spin_button, 4, 3, 2, 1);
 
-            resonance_button = new Gtk.Button.with_label ("Resonance");
+            resonance_button = new Gtk.Button.with_label (_("Resonance"));
             resonance_button.get_style_context ().add_class ("channel-modulator-button");
             resonance_spin_button = new Gtk.SpinButton.with_range (0, 127, 1);
             resonance_button.vexpand = true;
@@ -163,17 +163,17 @@ namespace Ensembles.Shell {
             if (synth_index == 0) {
                 switch (channel) {
                     case 0:
-                    header.set_text ("Voice Right 1 Modulators");
+                    header.set_text (_("Voice Right 1 Modulators"));
                     break;
                     case 1:
-                    header.set_text ("Voice Right 2 Modulators");
+                    header.set_text (_("Voice Right 2 Modulators"));
                     break;
                     case 2:
-                    header.set_text ("Voice Left Modulators");
+                    header.set_text (_("Voice Left Modulators"));
                     break;
                 }
             } else {
-                header.set_text ("Style Channel " + (channel + 1).to_string () + " Modulators");
+                header.set_text (_("Style Channel %s Modulators").printf ((channel + 1).to_string ()));
             }
             modulation_button.get_style_context ().remove_class ("channel-modulator-lock");
             pan_button.get_style_context ().remove_class ("channel-modulator-lock");

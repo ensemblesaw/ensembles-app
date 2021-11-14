@@ -18,7 +18,7 @@ namespace Ensembles.Shell {
             });
             attach (close_button, 0, 0, 1, 1);
 
-            var header = new Gtk.Label ("Tempo");
+            var header = new Gtk.Label (_("Tempo"));
             header.get_style_context ().add_class ("channel-modulator-header");
             header.halign = Gtk.Align.START;
             header.hexpand = true;
@@ -30,12 +30,12 @@ namespace Ensembles.Shell {
             tempo_grid.column_spacing = 4;
             tempo_grid.get_style_context ().add_class ("channel-modulator-grid");
 
-            var tempo_label = new Gtk.Label ("Beats Per Minute");
+            var tempo_label = new Gtk.Label (_("Beats Per Minute"));
             tempo_spin_button = new Gtk.SpinButton.with_range (40, 200, 1);
             tempo_grid.attach (tempo_label, 0, 0, 1, 1);
             tempo_grid.attach (tempo_spin_button, 1, 0, 1, 1);
 
-            tap_button = new Gtk.Button.with_label ("Tap");
+            tap_button = new Gtk.Button.with_label (_("Tap"));
             tap_button.get_style_context ().add_class ("channel-modulator-button");
             tempo_grid.attach (tap_button, 0, 1, 2, 1);
 

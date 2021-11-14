@@ -31,29 +31,27 @@ i18n.merge_file (
     install_dir: join_paths (get_option ('datadir'), 'metainfo')
 )
 
-
-install_subdir(
-    join_paths('Styles', 'StyleFiles'),
-    install_dir: join_paths(get_option('datadir'), meson.project_name())
+install_data (
+    meson.project_name() + '.gschema.xml',
+    install_dir: join_paths (get_option ('datadir'), 'glib-2.0', 'schemas')
 )
 
-install_subdir(
-    join_paths('MetronomesAndLFO'),
-    install_dir: join_paths(get_option('datadir'), meson.project_name())
-)
-
-install_subdir(
-    join_paths('Images/', 'Instruments'),
-    install_dir: join_paths(get_option('datadir'), meson.project_name())
-)
-
-install_data(
-    'com.github.subhadeepjasu.ensembles.gschema.xml',
-    rename: meson.project_name() + '.gschema.xml',
-    install_dir: get_option('datadir') / 'glib-2.0' / 'schemas'
-)
-
-install_subdir(
+install_subdir (
     'docs',
-    install_dir: join_paths(get_option('datadir'), meson.project_name())
+    install_dir: join_paths (get_option ('datadir'), meson.project_name ())
+)
+
+install_subdir(
+    join_paths('Images', 'Instruments'),
+    install_dir: join_paths (get_option ('datadir'), meson.project_name ())
+)
+
+install_subdir (
+    join_paths ('MetronomesAndLFO'),
+    install_dir: join_paths (get_option ('datadir'), meson.project_name ())
+)
+
+install_subdir (
+    join_paths ('Styles', 'StyleFiles'),
+    install_dir: join_paths (get_option ('datadir'), meson.project_name ())
 )

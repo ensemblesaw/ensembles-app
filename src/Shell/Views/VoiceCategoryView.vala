@@ -35,20 +35,20 @@ namespace Ensembles.Shell {
         public signal void voice_quick_select (int index);
         public VoiceCategoryView () {
             row_homogeneous = true;
-            piano_button = new Gtk.Button.with_label ("Piano");
-            chromatic_perc = new Gtk.Button.with_label ("Crm Perc");
-            organ_button = new Gtk.Button.with_label ("Organ");
-            guitar_button = new Gtk.Button.with_label ("Guitar");
-            bass_button = new Gtk.Button.with_label ("Bass");
-            strings_button = new Gtk.Button.with_label ("Strings");
-            brass_button = new Gtk.Button.with_label ("Brass");
-            reed_pipe_button = new Gtk.Button.with_label ("Reed/Pipe");
-            synth_lead_button = new Gtk.Button.with_label ("Synth Lead");
-            synth_pad_button = new Gtk.Button.with_label ("Synth Pad");
-            drums_set_button = new Gtk.Button.with_label ("Drum Kit");
-            extras_button = new Gtk.Button.with_label ("Extra");
+            piano_button = new Gtk.Button.with_label (_("Piano"));
+            chromatic_perc = new Gtk.Button.with_label (_("Crm Perc"));
+            organ_button = new Gtk.Button.with_label (_("Organ"));
+            guitar_button = new Gtk.Button.with_label (_("Guitar"));
+            bass_button = new Gtk.Button.with_label (_("Bass"));
+            strings_button = new Gtk.Button.with_label (_("Strings"));
+            brass_button = new Gtk.Button.with_label (_("Brass"));
+            reed_pipe_button = new Gtk.Button.with_label (_("Reed/Pipe"));
+            synth_lead_button = new Gtk.Button.with_label (_("Synth Lead"));
+            synth_pad_button = new Gtk.Button.with_label (_("Synth Pad"));
+            drums_set_button = new Gtk.Button.with_label (_("Drum Kit"));
+            extras_button = new Gtk.Button.with_label (_("Extra"));
 
-            var header = new Gtk.Label (" VOICE TYPES");
+            var header = new Gtk.Label (" " + _("VOICE TYPES"));
             header.set_opacity (0.4);
             header.valign = Gtk.Align.CENTER;
             header.halign = Gtk.Align.START;

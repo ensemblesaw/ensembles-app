@@ -72,7 +72,7 @@ namespace Ensembles.Shell {
 
             var file_filter_midi = new Gtk.FileFilter ();
             file_filter_midi.add_mime_type ("audio/midi");
-            file_filter_midi.set_filter_name ("MIDI Sequence");
+            file_filter_midi.set_filter_name (_("MIDI Sequence"));
             file_chooser.add_filter (file_filter_midi);
 
             open_file_button.clicked.connect (() => {

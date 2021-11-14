@@ -332,9 +332,9 @@ parse_ticks (void* data, int ticks) {
                     if (state_change_callback != NULL) {
                         state_change_callback (1);
                     }
+                    printf ("Sync Stopped\n");
                 }
                 style_player_halt_continuous_notes ();
-                printf ("Sync Stopped\n");
                 return fluid_player_seek (player, loop_start_tick - 2);
             }
         }

@@ -403,7 +403,8 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             header_logo_image.margin_top = 4;
 
             var fluid_version = Core.Synthesizer.get_fluidsynth_version ();
-            var fluidsynth_version = new Gtk.Label (("Powered by FluidSynth v%1.1f").printf (fluid_version));
+            // TRANSLATORS: %1.1f is a version number
+            var fluidsynth_version = new Gtk.Label ((_("Powered by FluidSynth v%1.1f")).printf (fluid_version));
             fluidsynth_version.get_style_context ().add_class ("h3");
             fluidsynth_version.margin_top = 6;
 

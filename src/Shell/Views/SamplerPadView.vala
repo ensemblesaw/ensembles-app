@@ -33,7 +33,7 @@ namespace Ensembles.Shell {
         Core.SampleRecorder sample_recorder;
         public SamplerPadView (Gtk.Window mainwindow) {
             this.mainwindow = mainwindow;
-            var header = new Gtk.Label ("SAMPLING  PADS");
+            var header = new Gtk.Label (_("SAMPLING  PADS"));
             header.valign = Gtk.Align.CENTER;
             header.halign = Gtk.Align.START;
             header.set_opacity (0.4);
@@ -73,7 +73,7 @@ namespace Ensembles.Shell {
             assign_file_button.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
             assign_file_button.get_style_context ().remove_class ("image-button");
             attach (assign_file_button, 7, 2, 1, 1);
-            stop_button = new Gtk.Button.with_label ("Stop");
+            stop_button = new Gtk.Button.with_label (_("Stop"));
             stop_button.width_request = 51;
             attach (stop_button, 8, 1, 1, 2);
             margin = 4;
@@ -95,10 +95,10 @@ namespace Ensembles.Shell {
 
             var file_filter_wav = new Gtk.FileFilter ();
             file_filter_wav.add_mime_type ("audio/wav");
-            file_filter_wav.set_filter_name ("Waveform Audio");
+            file_filter_wav.set_filter_name (_("Waveform Audio"));
             var file_filter_mp3 = new Gtk.FileFilter ();
             file_filter_mp3.add_mime_type ("audio/mp3");
-            file_filter_mp3.set_filter_name ("MPEG Audio Layer III");
+            file_filter_mp3.set_filter_name (_("MPEG Audio Layer III"));
             file_chooser.add_filter (file_filter_wav);
             file_chooser.add_filter (file_filter_mp3);
 
@@ -121,7 +121,7 @@ namespace Ensembles.Shell {
                 debug ("%s\n", current_file_path);
                 assign_mode = true;
                 recorded_audio = true;
-                stop_button.set_label ("Cancel");
+                stop_button.set_label (_("Cancel"));
                 for (int i = 0; i < 12; i++) {
                     pads[i].get_style_context ().add_class ("sampler-pad-assignable");
                 }
@@ -136,7 +136,7 @@ namespace Ensembles.Shell {
                     debug ("%d\n", response_id);
                     assign_mode = true;
                     recorded_audio = false;
-                    stop_button.set_label ("Cancel");
+                    stop_button.set_label (_("Cancel"));
                     for (int i = 0; i < 12; i++) {
                         pads[i].get_style_context ().add_class ("sampler-pad-assignable");
                     }
@@ -151,7 +151,7 @@ namespace Ensembles.Shell {
                 }
                 assign_mode = false;
                 sample_recorder.cancel_recording ();
-                stop_button.set_label ("Stop");
+                stop_button.set_label (_("Stop"));
                 for (int i = 0; i < 12; i++) {
                     pads[i].get_style_context ().remove_class ("sampler-pad-assignable");
                 }
@@ -174,7 +174,7 @@ namespace Ensembles.Shell {
                     sample_players[0] = new Core.SamplePlayer (current_file_path, recorded_audio);
                     debug ("Assigned\n");
                     assign_mode = false;
-                    stop_button.set_label ("Stop");
+                    stop_button.set_label (_("Stop"));
                     for (int i = 0; i < 12; i++) {
                         pads[i].get_style_context ().remove_class ("sampler-pad-assignable");
                     }

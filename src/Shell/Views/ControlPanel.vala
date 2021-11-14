@@ -60,26 +60,26 @@ namespace Ensembles.Shell {
             margin = 4;
             width_request = 340;
 
-            accomp_toggle = new ToggleSwitch ("Accompaniment");
+            accomp_toggle = new ToggleSwitch (_("Accompaniment"));
             accomp_toggle.sensitive = false;
-            layer_toggle = new ToggleSwitch ("Layer");
+            layer_toggle = new ToggleSwitch (_("Layer"));
             layer_toggle.sensitive = false;
-            split_toggle = new ToggleSwitch ("Split");
+            split_toggle = new ToggleSwitch (_("Split"));
             split_toggle.sensitive = false;
-            metronome_toggle = new ToggleSwitch ("Metronome");
+            metronome_toggle = new ToggleSwitch (_("Metronome"));
             metronome_toggle.sensitive = false;
 
-            transpose_toggle = new ToggleSwitch ("Transpose");
+            transpose_toggle = new ToggleSwitch (_("Transpose"));
             transpose_toggle.sensitive = false;
-            octave_toggle = new ToggleSwitch ("Octave");
+            octave_toggle = new ToggleSwitch (_("Octave"));
             octave_toggle.sensitive = false;
-            arpeggiator_toggle = new ToggleSwitch ("Arpeggiator");
+            arpeggiator_toggle = new ToggleSwitch (_("Arpeggiator"));
             arpeggiator_toggle.sensitive = false;
-            harmonizer_toggle = new ToggleSwitch ("Harmonizer");
+            harmonizer_toggle = new ToggleSwitch (_("Harmonizer"));
             harmonizer_toggle.sensitive = false;
-            reverb_toggle = new ToggleSwitch ("Reverb");
+            reverb_toggle = new ToggleSwitch (_("Reverb"));
             reverb_toggle.sensitive = false;
-            chorus_toggle = new ToggleSwitch ("Chorus");
+            chorus_toggle = new ToggleSwitch (_("Chorus"));
             chorus_toggle.sensitive = false;
 
             transpose_spin_button = new Gtk.SpinButton.with_range (-12, 12, 1);

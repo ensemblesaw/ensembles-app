@@ -1,0 +1,567 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the com.github.subhadeepjasu.ensembles package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: com.github.subhadeepjasu.ensembles\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-11-11 16:18+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/Shell/Dialogs/Preferences/Preferences.vala:44
+msgid "Preferences"
+msgstr ""
+
+#: src/Shell/Dialogs/Preferences/Preferences.vala:76
+msgid "Restart to apply changes"
+msgstr ""
+
+#: src/Shell/Dialogs/Preferences/Preferences.vala:84
+msgid "Restart"
+msgstr ""
+
+#: src/Shell/Dialogs/Preferences/Preferences.vala:92
+msgid "Requesting a restart failed. Restart manually to apply changes"
+msgstr ""
+
+#: src/Shell/Dialogs/Preferences/Preferences.vala:129
+#: src/Shell/Views/AppMenuView.vala:119
+msgid "Settings"
+msgstr ""
+
+#: src/Shell/Dialogs/Preferences/Preferences.vala:132
+#: src/Shell/Dialogs/Preferences/TopBox.vala:57
+msgid "Done"
+msgstr ""
+
+#: src/Shell/Dialogs/Preferences/Preferences.vala:145
+#: src/Shell/Dialogs/Preferences/Preferences.vala:241
+msgid "Audio"
+msgstr ""
+
+#: src/Shell/Dialogs/Preferences/Preferences.vala:148
+msgid "Files"
+msgstr ""
+
+#: src/Shell/Dialogs/Preferences/Preferences.vala:151
+msgid "Appearance"
+msgstr ""
+
+#: src/Shell/Dialogs/Preferences/Preferences.vala:154
+msgid "Plugins"
+msgstr ""
+
+#: src/Shell/Dialogs/Preferences/Preferences.vala:157
+msgid "Input"
+msgstr ""
+
+#: src/Shell/Dialogs/Preferences/Preferences.vala:174
+#: src/Shell/Dialogs/Preferences/Preferences.vala:392
+msgid "About"
+msgstr ""
+
+#: src/Shell/Dialogs/Preferences/Preferences.vala:296
+msgid "Driver"
+msgstr ""
+
+#: src/Shell/Dialogs/Preferences/Preferences.vala:303
+#, c-format
+msgid "Buffer length [%d frames]"
+msgstr ""
+
+#: src/Shell/Dialogs/Preferences/Preferences.vala:336
+msgid "System Mixer"
+msgstr ""
+
+#: src/Shell/Dialogs/Preferences/Preferences.vala:344
+msgid "System Mixer not found"
+msgstr ""
+
+#: src/Shell/Dialogs/Preferences/Preferences.vala:345
+msgid "Cannot find PulseAudio Volume Control"
+msgstr ""
+
+#. TRANSLATORS: %1.1f is a version number
+#: src/Shell/Dialogs/Preferences/Preferences.vala:407
+#, c-format
+msgid "Powered by FluidSynth v%1.1f"
+msgstr ""
+
+#: src/Shell/Dialogs/Preferences/Preferences.vala:414
+msgid "Website"
+msgstr ""
+
+#: src/Shell/Dialogs/Preferences/Preferences.vala:415
+msgid "Github"
+msgstr ""
+
+#: src/Shell/Dialogs/Preferences/Preferences.vala:416
+msgid "Follow"
+msgstr ""
+
+#: src/Shell/Dialogs/Preferences/Preferences.vala:417
+msgid "Report a Problem"
+msgstr ""
+
+#: src/Shell/Dialogs/Preferences/Preferences.vala:418
+msgid "Suggest Translations"
+msgstr ""
+
+#: src/Shell/Dialogs/Preferences/TopBox.vala:34
+#: src/Shell/Dialogs/Preferences/TopBox.vala:37
+msgid "Back"
+msgstr ""
+
+#: src/Shell/Dialogs/ErrorDialog.vala:40
+msgid "Close Ensembles"
+msgstr ""
+
+#: src/Shell/Dialogs/ErrorDialog.vala:41 src/Shell/Dialogs/ErrorDialog.vala:43
+msgid "Ignore"
+msgstr ""
+
+#: src/Shell/Display/ChannelModulatorScreen.vala:90
+msgid "Pan"
+msgstr ""
+
+#: src/Shell/Display/ChannelModulatorScreen.vala:98
+#: src/Shell/Views/ControlPanel.vala:79
+msgid "Reverb"
+msgstr ""
+
+#: src/Shell/Display/ChannelModulatorScreen.vala:106
+#: src/Shell/Views/ControlPanel.vala:81
+msgid "Chorus"
+msgstr ""
+
+#: src/Shell/Display/ChannelModulatorScreen.vala:114
+msgid "Pitch"
+msgstr ""
+
+#: src/Shell/Display/ChannelModulatorScreen.vala:122
+msgid "Expression"
+msgstr ""
+
+#: src/Shell/Display/ChannelModulatorScreen.vala:130
+msgid "Modulation"
+msgstr ""
+
+#: src/Shell/Display/ChannelModulatorScreen.vala:138
+msgid "Cut Off"
+msgstr ""
+
+#: src/Shell/Display/ChannelModulatorScreen.vala:146
+msgid "Resonance"
+msgstr ""
+
+#: src/Shell/Display/ChannelModulatorScreen.vala:166
+msgid "Voice Right 1 Modulators"
+msgstr ""
+
+#: src/Shell/Display/ChannelModulatorScreen.vala:169
+msgid "Voice Right 2 Modulators"
+msgstr ""
+
+#: src/Shell/Display/ChannelModulatorScreen.vala:172
+msgid "Voice Left Modulators"
+msgstr ""
+
+#: src/Shell/Display/ChannelModulatorScreen.vala:176
+#, c-format
+msgid "Style Channel %s Modulators"
+msgstr ""
+
+#: src/Shell/Display/HomeScreen.vala:64 src/Shell/Display/StyleMenu.vala:40
+msgid "Style"
+msgstr ""
+
+#: src/Shell/Display/HomeScreen.vala:67
+msgid "Dance Pop"
+msgstr ""
+
+#: src/Shell/Display/HomeScreen.vala:85
+msgid "Voice L"
+msgstr ""
+
+#: src/Shell/Display/HomeScreen.vala:88
+msgid "Finger Bass"
+msgstr ""
+
+#: src/Shell/Display/HomeScreen.vala:106
+msgid "Voice R1"
+msgstr ""
+
+#: src/Shell/Display/HomeScreen.vala:109
+msgid "Grand Piano"
+msgstr ""
+
+#: src/Shell/Display/HomeScreen.vala:127
+msgid "Voice R2"
+msgstr ""
+
+#: src/Shell/Display/HomeScreen.vala:130
+msgid "Slow Strings"
+msgstr ""
+
+#: src/Shell/Display/HomeScreen.vala:157 src/Shell/Display/TempoScreen.vala:21
+#: src/Shell/Views/BeatCounterView.vala:57
+msgid "Tempo"
+msgstr ""
+
+#: src/Shell/Display/HomeScreen.vala:159
+msgid "Measure"
+msgstr ""
+
+#: src/Shell/Display/HomeScreen.vala:161
+msgid "Beat"
+msgstr ""
+
+#: src/Shell/Display/HomeScreen.vala:163 src/Shell/Views/ControlPanel.vala:71
+msgid "Transpose"
+msgstr ""
+
+#: src/Shell/Display/HomeScreen.vala:165 src/Shell/Views/ControlPanel.vala:73
+msgid "Octave"
+msgstr ""
+
+#: src/Shell/Display/HomeScreen.vala:167
+msgid "Chord"
+msgstr ""
+
+#: src/Shell/Display/LFOEditScreen.vala:10
+#: src/Shell/Display/LFOEditScreen.vala:50
+msgid "Disabled"
+msgstr ""
+
+#: src/Shell/Display/LFOEditScreen.vala:11
+msgid "Sqr 2x (Inverse Phase)"
+msgstr ""
+
+#: src/Shell/Display/LFOEditScreen.vala:12
+msgid "Square 4x"
+msgstr ""
+
+#: src/Shell/Display/LFOEditScreen.vala:13
+msgid "Sqr 8x (Inverse Phase)"
+msgstr ""
+
+#: src/Shell/Display/LFOEditScreen.vala:14
+msgid "Sine (Inverse Phase)"
+msgstr ""
+
+#: src/Shell/Display/LFOEditScreen.vala:15
+msgid "Sin 2x (Inverse Phase)"
+msgstr ""
+
+#: src/Shell/Display/LFOEditScreen.vala:16
+msgid "Sine 4x"
+msgstr ""
+
+#: src/Shell/Display/LFOEditScreen.vala:17
+msgid "Sin 4x (Inverse Phase)"
+msgstr ""
+
+#: src/Shell/Display/LFOEditScreen.vala:18
+msgid "Saw 2x"
+msgstr ""
+
+#: src/Shell/Display/LFOEditScreen.vala:19
+msgid "Saw 4x"
+msgstr ""
+
+#: src/Shell/Display/LFOEditScreen.vala:20
+msgid "Saw 4x (Inverse Phase)"
+msgstr ""
+
+#: src/Shell/Display/LFOEditScreen.vala:21
+msgid "Triangular"
+msgstr ""
+
+#: src/Shell/Display/LFOEditScreen.vala:22
+msgid "Triangular 2x"
+msgstr ""
+
+#: src/Shell/Display/LFOEditScreen.vala:23
+msgid "Dance 1"
+msgstr ""
+
+#: src/Shell/Display/LFOEditScreen.vala:24
+msgid "Dance 2"
+msgstr ""
+
+#: src/Shell/Display/LFOEditScreen.vala:25
+msgid "Sine 4x (Damping)"
+msgstr ""
+
+#: src/Shell/Display/LFOEditScreen.vala:39
+msgid "Select Master Knob LFO"
+msgstr ""
+
+#: src/Shell/Display/StyleMenu.vala:41
+msgid "Pick a Rhythm to accompany you"
+msgstr ""
+
+#: src/Shell/Display/TempoScreen.vala:33
+msgid "Beats Per Minute"
+msgstr ""
+
+#: src/Shell/Display/TempoScreen.vala:38
+msgid "Tap"
+msgstr ""
+
+#: src/Shell/Display/VoiceMenu.vala:42
+#, c-format
+msgid "Voice - %s"
+msgstr ""
+
+#: src/Shell/Display/VoiceMenu.vala:42
+msgid "Right 1 (Main)"
+msgstr ""
+
+#: src/Shell/Display/VoiceMenu.vala:43
+msgid "Right 2 (Layered)"
+msgstr ""
+
+#: src/Shell/Display/VoiceMenu.vala:44
+msgid "Left (Split)"
+msgstr ""
+
+#: src/Shell/Display/VoiceMenu.vala:45
+#, c-format
+msgid "Pick a Voice to play %s"
+msgstr ""
+
+#: src/Shell/Display/VoiceMenu.vala:46
+msgid " on another layer"
+msgstr ""
+
+#: src/Shell/Display/VoiceMenu.vala:47
+msgid " on left hand side of split"
+msgstr ""
+
+#: src/Shell/Views/AppMenuView.vala:39
+msgid "Sampler Source"
+msgstr ""
+
+#: src/Shell/Views/AppMenuView.vala:43
+msgid "Mic"
+msgstr ""
+
+#: src/Shell/Views/AppMenuView.vala:44
+msgid "System"
+msgstr ""
+
+#: src/Shell/Views/AppMenuView.vala:45
+msgid "Both"
+msgstr ""
+
+#: src/Shell/Views/AppMenuView.vala:78
+msgid "Midi Input"
+msgstr ""
+
+#: src/Shell/Views/AppMenuView.vala:105
+msgid "Open Manual"
+msgstr ""
+
+#: src/Shell/Views/ControlPanel.vala:62
+msgid "Accompaniment"
+msgstr ""
+
+#: src/Shell/Views/ControlPanel.vala:64
+msgid "Layer"
+msgstr ""
+
+#: src/Shell/Views/ControlPanel.vala:66
+msgid "Split"
+msgstr ""
+
+#: src/Shell/Views/ControlPanel.vala:68
+msgid "Metronome"
+msgstr ""
+
+#: src/Shell/Views/ControlPanel.vala:75
+msgid "Arpeggiator"
+msgstr ""
+
+#: src/Shell/Views/ControlPanel.vala:77
+msgid "Harmonizer"
+msgstr ""
+
+#: src/Shell/Views/JoyStick.vala:53
+msgid "X-Assign"
+msgstr ""
+
+#: src/Shell/Views/JoyStick.vala:60
+msgid "Y-Assign"
+msgstr ""
+
+#: src/Shell/Views/KeyboardView.vala:59
+msgid "SUST"
+msgstr ""
+
+#: src/Shell/Views/KeyboardView.vala:60
+msgid "STOP"
+msgstr ""
+
+#: src/Shell/Views/KeyboardView.vala:66
+msgid "H O L D"
+msgstr ""
+
+#: src/Shell/Views/KeyboardView.vala:68
+msgid "Z O O M"
+msgstr ""
+
+#: src/Shell/Views/RegistryView.vala:47
+msgid "Memorize"
+msgstr ""
+
+#: src/Shell/Views/RegistryView.vala:50
+msgid "BANK"
+msgstr ""
+
+#: src/Shell/Views/RegistryView.vala:52
+msgid "REGISTRY MEMORY"
+msgstr ""
+
+#: src/Shell/Views/SamplerPadView.vala:36
+msgid "SAMPLING  PADS"
+msgstr ""
+
+#: src/Shell/Views/SamplerPadView.vala:66
+msgid "Click and hold to sample"
+msgstr ""
+
+#: src/Shell/Views/SamplerPadView.vala:76
+#: src/Shell/Views/SamplerPadView.vala:154
+#: src/Shell/Views/SamplerPadView.vala:177
+msgid "Stop"
+msgstr ""
+
+#: src/Shell/Views/SamplerPadView.vala:85
+msgid "Open Sound Sample"
+msgstr ""
+
+#: src/Shell/Views/SamplerPadView.vala:88
+#: src/Shell/Views/SamplerPadView.vala:124
+#: src/Shell/Views/SamplerPadView.vala:139
+#: src/Shell/Views/SongControllerView.vala:65
+msgid "Cancel"
+msgstr ""
+
+#: src/Shell/Views/SamplerPadView.vala:90
+#: src/Shell/Views/SongControllerView.vala:67
+msgid "Open"
+msgstr ""
+
+#: src/Shell/Views/SamplerPadView.vala:98
+msgid "Waveform Audio"
+msgstr ""
+
+#: src/Shell/Views/SamplerPadView.vala:101
+msgid "MPEG Audio Layer III"
+msgstr ""
+
+#: src/Shell/Views/SliderBoardView.vala:94
+msgid "Knob Assign"
+msgstr ""
+
+#: src/Shell/Views/SliderBoardView.vala:95
+msgid "Master Knob Assign"
+msgstr ""
+
+#: src/Shell/Views/SliderBoardView.vala:101
+msgid "Slider Assign"
+msgstr ""
+
+#: src/Shell/Views/SongControllerView.vala:62
+msgid "Open MIDI Song"
+msgstr ""
+
+#: src/Shell/Views/SongControllerView.vala:75
+msgid "MIDI Sequence"
+msgstr ""
+
+#: src/Shell/Views/StyleControllerView.vala:126
+msgid "Break"
+msgstr ""
+
+#: src/Shell/Views/StyleControllerView.vala:158
+msgid "Sync Start"
+msgstr ""
+
+#: src/Shell/Views/StyleControllerView.vala:159
+msgid "Sync Stop"
+msgstr ""
+
+#: src/Shell/Views/StyleControllerView.vala:184
+msgid "INTRO"
+msgstr ""
+
+#: src/Shell/Views/StyleControllerView.vala:186
+msgid "VARIATION / FILL-IN"
+msgstr ""
+
+#: src/Shell/Views/StyleControllerView.vala:188
+msgid "ENDING"
+msgstr ""
+
+#: src/Shell/Views/VoiceCategoryView.vala:38
+msgid "Piano"
+msgstr ""
+
+#: src/Shell/Views/VoiceCategoryView.vala:39
+msgid "Crm Perc"
+msgstr ""
+
+#: src/Shell/Views/VoiceCategoryView.vala:40
+msgid "Organ"
+msgstr ""
+
+#: src/Shell/Views/VoiceCategoryView.vala:41
+msgid "Guitar"
+msgstr ""
+
+#: src/Shell/Views/VoiceCategoryView.vala:42
+msgid "Bass"
+msgstr ""
+
+#: src/Shell/Views/VoiceCategoryView.vala:43
+msgid "Strings"
+msgstr ""
+
+#: src/Shell/Views/VoiceCategoryView.vala:44
+msgid "Brass"
+msgstr ""
+
+#: src/Shell/Views/VoiceCategoryView.vala:45
+msgid "Reed/Pipe"
+msgstr ""
+
+#: src/Shell/Views/VoiceCategoryView.vala:46
+msgid "Synth Lead"
+msgstr ""
+
+#: src/Shell/Views/VoiceCategoryView.vala:47
+msgid "Synth Pad"
+msgstr ""
+
+#: src/Shell/Views/VoiceCategoryView.vala:48
+msgid "Drum Kit"
+msgstr ""
+
+#: src/Shell/Views/VoiceCategoryView.vala:49
+msgid "Extra"
+msgstr ""
+
+#: src/Shell/Views/VoiceCategoryView.vala:51
+msgid "VOICE TYPES"
+msgstr ""
