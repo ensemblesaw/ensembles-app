@@ -230,9 +230,12 @@ namespace Ensembles.Shell {
                 metronome_player.play_measure (Core.CentralBus.get_beats_per_bar (), Core.CentralBus.get_quarter_notes_per_bar ());
             });
             bus.system_halt.connect (() => {
-                style_player.reload_style ();
-                beat_counter_panel.halt ();
-                metronome_player.stop_loop ();
+                Idle.add (() => {
+                    //style_player.reload_style ();
+                    beat_counter_panel.halt ();
+                    metronome_player.stop_loop ();
+                    return false;
+                });
             });
             bus.system_ready.connect (() => {
                 Timeout.add (2000, () => {

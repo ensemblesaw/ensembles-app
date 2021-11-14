@@ -32,6 +32,7 @@ namespace Ensembles.Core {
 
 
         // Midi Event Connectors
+        public signal void progress_change (double progress);
         public signal void recorder_state_change (RecorderState state);
         public signal void note_event (int channel, int note, int on, int velocity);
         public signal void voice_change (int channel, int bank, int index);
@@ -252,12 +253,14 @@ namespace Ensembles.Core {
             while (current_state != RecorderState.STOPPED) {
                 Idle.add (() => {
                     progress_timer.stop ();
-                    _sequencer_progress.width_request = (int)((double)progress_timer.elapsed (null) * 10.0);
+                    double value = (double)progress_timer.elapsed (null) * 10.0;
+                    _sequencer_progress.width_request = (int)value;
+                    progress_change (value);
                     progress_timer.continue ();
                     return false;
                 });
                 Thread.yield ();
-                Thread.usleep (800);
+                Thread.usleep (500);
             }
             Idle.add (() => {
                 _sequencer_progress.opacity = 0;
@@ -320,17 +323,15 @@ namespace Ensembles.Core {
                 MidiEvent event = midi_event_sequence.nth_data (i);
                 ulong time_stamp = event.time_stamp;
                 Thread.usleep (time_stamp);
-                //print ("Fire\n");
+                // Check if playback has been stopped before firing event
+                if (!playing) {
+                    break;
+                }
                 // Fire event
                 Idle.add (() => {
                     recorder.multiplex_events (event);
                     return false;
                 });
-
-                // Check if playback has been stopped
-                if (!playing) {
-                    break;
-                }
             }
             playing = false;
         }

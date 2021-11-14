@@ -131,6 +131,10 @@ synthesizer_set_defaults () {
     for (int i = 0; i < 16; i++) {
         fluid_synth_cc (realtime_synth, i, 3, 64);
     }
+    for (int i = 6; i < 16; i++) {
+        fluid_synth_cc (realtime_synth, i, 74, 40);
+        fluid_synth_cc (realtime_synth, i, 71, 10);
+    }
     for (int i = 0; i < 16; i++) {
         fluid_synth_cc (style_synth, i, 3, 64);
     }
@@ -386,7 +390,7 @@ synthesizer_send_notes_metronome (int key, int on) {
 int
 synthesizer_send_notes (int key, int on, int velocity, int channel, int* type) {
     if (realtime_synth) {
-        if (channel <= 0) {
+        if (channel <= 0 || channel == 6) {
             if (get_central_accompaniment_mode () > 0) {
                 if (accompaniment_mode == 0) {
                     if (key <= get_central_split_key ()) {

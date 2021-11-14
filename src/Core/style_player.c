@@ -334,6 +334,7 @@ parse_ticks (void* data, int ticks) {
                     }
                 }
                 style_player_halt_continuous_notes ();
+                printf ("Sync Stopped\n");
                 return fluid_player_seek (player, loop_start_tick - 2);
             }
         }
@@ -344,7 +345,7 @@ parse_ticks (void* data, int ticks) {
 
 
 void
-style_player_init (int pipewire_mode) {
+style_player_init () {
     set_central_style_looping (0);
     settings = get_settings(STYLE_ENGINE);
     synth = new_fluid_synth(settings);

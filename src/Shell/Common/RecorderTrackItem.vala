@@ -69,14 +69,14 @@ namespace Ensembles.Shell {
                         if (_events.nth_data (i).value2 == 144) {
                             draw_note_on_event (context,
                                 2,
-                                (int)(((_events.nth_data (i).value1 - 48)/max_height) * get_allocated_height ()),
+                                (int)(((_events.nth_data (i).value1 - 76)/max_height) * get_allocated_height ()),
                                 (int)(total_width),
                                 baseline,
                                 ((double)_events.nth_data (i).velocity / 130.0));
                         } else if (_events.nth_data (i).value2 == 128) {
                             draw_note_off_event (context,
                                 2,
-                                (int)(((_events.nth_data (i).value1 - 48)/max_height) * get_allocated_height ()),
+                                (int)(((_events.nth_data (i).value1 - 76)/max_height) * get_allocated_height ()),
                                 (int)(total_width),
                                 baseline);
                         }
@@ -103,8 +103,8 @@ namespace Ensembles.Shell {
         private double lowest_point () {
             double x = 0;
             for (int i = 0; i < _events.length (); i++) {
-                if (_events.nth_data (i).value1 - 48 < x) {
-                    x = _events.nth_data (i).value1 - 48;
+                if (_events.nth_data (i).value1 - 76 < x) {
+                    x = _events.nth_data (i).value1 - 76;
                 }
             }
             return x;

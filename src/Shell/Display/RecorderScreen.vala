@@ -80,13 +80,13 @@ namespace Ensembles.Shell {
             var sequencer_grid = new Gtk.Grid ();
             main_stack.add_named (sequencer_grid, "SqnGrid");
 
-            sequencer_grid.size_allocate.connect (() => {
-                if (sequencer.current_state == Core.MidiRecorder.RecorderState.RECORDING) {
-                    var adj = scrollable.get_hadjustment ();
-                    adj.set_value (adj.get_upper () - adj.get_page_size ());
-                    sequencer_grid.queue_draw ();
-                }
-            });
+            //  sequencer_grid.size_allocate.connect (() => {
+            //      if (sequencer.current_state == Core.MidiRecorder.RecorderState.RECORDING) {
+            //          var adj = scrollable.get_hadjustment ();
+            //          adj.set_value (adj.get_upper () - adj.get_page_size ());
+            //          sequencer_grid.queue_draw ();
+            //      }
+            //  });
 
             name_entry.activate.connect (() => {
                 MainWindow.synthesizer.disable_input (false);
@@ -98,6 +98,11 @@ namespace Ensembles.Shell {
                 sequencer_grid.add (visual);
                 visual.show_all ();
                 main_stack.set_visible_child_name ("SqnGrid");
+
+                sequencer.progress_change.connect ((value) => {
+                    var adj = scrollable.get_hadjustment ();
+                    adj.set_value (value);
+                });
 
                 sequencer.note_event.connect ((channel, key, on, velocity) => {
                     if (MainWindow.synthesizer != null) {
