@@ -1,0 +1,177 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the extra package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: extra\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-11-11 16:10+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: data/com.github.subhadeepjasu.ensembles.appdata.xml.in:7
+msgid "Ensembles"
+msgstr ""
+
+#: data/com.github.subhadeepjasu.ensembles.appdata.xml.in:8
+msgid "Play and arrange music live as a one-person band"
+msgstr ""
+
+#: data/com.github.subhadeepjasu.ensembles.appdata.xml.in:10
+msgid ""
+"It is an arranger workstation app where you can play music, arrange a "
+"performance or improvise based on styles"
+msgstr ""
+
+#: data/com.github.subhadeepjasu.ensembles.appdata.xml.in:11
+msgid ""
+"Please note that it is currently in Alpha. While it should work well for "
+"most users, there are still bugs and missing features that need to be "
+"addressed."
+msgstr ""
+
+#: data/com.github.subhadeepjasu.ensembles.appdata.xml.in:12
+msgid "Features:"
+msgstr ""
+
+#: data/com.github.subhadeepjasu.ensembles.appdata.xml.in:14
+msgid "Play any instrument from a selection of more than 200 in-built voices"
+msgstr ""
+
+#: data/com.github.subhadeepjasu.ensembles.appdata.xml.in:15
+msgid "60-Key on-screen keyboard with mouse and touch support"
+msgstr ""
+
+#: data/com.github.subhadeepjasu.ensembles.appdata.xml.in:16
+msgid "Split Keyboard or Layer two voices for multiple voice playback"
+msgstr ""
+
+#: data/com.github.subhadeepjasu.ensembles.appdata.xml.in:17
+msgid "DSP (Digital Signal Processing) effects like filters, reverb and chorus"
+msgstr ""
+
+#: data/com.github.subhadeepjasu.ensembles.appdata.xml.in:18
+msgid ""
+"Assign knobs and sliders to multiple DSP effects along with a Master Knob "
+"which can be used to control multiple knobs and sliders"
+msgstr ""
+
+#: data/com.github.subhadeepjasu.ensembles.appdata.xml.in:19
+msgid "Touch based on-screen assignable joystick"
+msgstr ""
+
+#: data/com.github.subhadeepjasu.ensembles.appdata.xml.in:20
+msgid ""
+"Play a one-person band along with Auto Accompaniment Styles based on various "
+"genres of music"
+msgstr ""
+
+#: data/com.github.subhadeepjasu.ensembles.appdata.xml.in:21
+msgid ""
+"Automate your band with Registration Memory and 12 assignable Multipad "
+"Variables"
+msgstr ""
+
+#: data/com.github.subhadeepjasu.ensembles.appdata.xml.in:22
+msgid ""
+"Connect to external MIDI keyboard/controller with General MIDI Standard "
+"compatibility"
+msgstr ""
+
+#: data/com.github.subhadeepjasu.ensembles.appdata.xml.in:31
+msgid "Subhadeep Jasu"
+msgstr ""
+
+#: data/com.github.subhadeepjasu.ensembles.appdata.xml.in:74
+#: data/com.github.subhadeepjasu.ensembles.appdata.xml.in:99
+#: data/com.github.subhadeepjasu.ensembles.appdata.xml.in:112
+msgid "New:"
+msgstr ""
+
+#: data/com.github.subhadeepjasu.ensembles.appdata.xml.in:76
+msgid "Make settings UI"
+msgstr ""
+
+#: data/com.github.subhadeepjasu.ensembles.appdata.xml.in:77
+msgid "Add Rudimentary LV2 Plugin Support"
+msgstr ""
+
+#: data/com.github.subhadeepjasu.ensembles.appdata.xml.in:83
+msgid "Provide pipewire exclusive settings for fluidsynth"
+msgstr ""
+
+#: data/com.github.subhadeepjasu.ensembles.appdata.xml.in:88
+msgid "Theming fix for when its run on other distros"
+msgstr ""
+
+#: data/com.github.subhadeepjasu.ensembles.appdata.xml.in:89
+msgid "Fixed:"
+msgstr ""
+
+#: data/com.github.subhadeepjasu.ensembles.appdata.xml.in:91
+msgid "Force the use of elementary stylesheet on other distros"
+msgstr ""
+
+#: data/com.github.subhadeepjasu.ensembles.appdata.xml.in:92
+msgid "Rewrite appdata"
+msgstr ""
+
+#: data/com.github.subhadeepjasu.ensembles.appdata.xml.in:98
+msgid "First AppCenter Release"
+msgstr ""
+
+#: data/com.github.subhadeepjasu.ensembles.appdata.xml.in:101
+msgid "Add ability to change tempo"
+msgstr ""
+
+#: data/com.github.subhadeepjasu.ensembles.appdata.xml.in:102
+msgid "Implement scroll wheel and menu buttons"
+msgstr ""
+
+#: data/com.github.subhadeepjasu.ensembles.appdata.xml.in:103
+msgid "Expand Style specification"
+msgstr ""
+
+#: data/com.github.subhadeepjasu.ensembles.appdata.xml.in:104
+msgid "Arpeggiator and Harmonizer"
+msgstr ""
+
+#: data/com.github.subhadeepjasu.ensembles.appdata.xml.in:105
+msgid "Implement state saving and registry memory"
+msgstr ""
+
+#: data/com.github.subhadeepjasu.ensembles.appdata.xml.in:106
+msgid "More styles and instruments"
+msgstr ""
+
+#: data/com.github.subhadeepjasu.ensembles.appdata.xml.in:114
+msgid "Sampling Pads"
+msgstr ""
+
+#: data/com.github.subhadeepjasu.ensembles.appdata.xml.in:115
+msgid "Song Player"
+msgstr ""
+
+#: data/com.github.subhadeepjasu.ensembles.appdata.xml.in:117
+msgid "Improved:"
+msgstr ""
+
+#: data/com.github.subhadeepjasu.ensembles.appdata.xml.in:119
+msgid "Better memory management"
+msgstr ""
+
+#: data/com.github.subhadeepjasu.ensembles.appdata.xml.in:120
+msgid "Proper style engine and LFO sync"
+msgstr ""
+
+#: data/com.github.subhadeepjasu.ensembles.appdata.xml.in:126
+msgid "Say Hi to Ensembles first alpha 🚀"
+msgstr ""

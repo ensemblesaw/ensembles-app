@@ -123,7 +123,7 @@ namespace Ensembles.Shell {
                 var_fill_button_d.get_style_context ().add_class ("queue-measure");
             });
 
-            break_button = new Gtk.Button.with_label ("Break");
+            break_button = new Gtk.Button.with_label (_("Break"));
             break_button.set_sensitive (false);
             break_button.clicked.connect (() => {
                 break_play ();
@@ -155,8 +155,8 @@ namespace Ensembles.Shell {
 
             var sync_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL);
             sync_box.hexpand = true;
-            sync_start_button = new Gtk.Button.with_label ("Sync Start");
-            sync_stop_button = new Gtk.Button.with_label ("Sync Stop");
+            sync_start_button = new Gtk.Button.with_label (_("Sync Start"));
+            sync_stop_button = new Gtk.Button.with_label (_("Sync Stop"));
             sync_start_button.set_sensitive (false);
             sync_stop_button.set_sensitive (false);
             sync_box.add (sync_start_button);
@@ -181,11 +181,11 @@ namespace Ensembles.Shell {
                 start_stop ();
             });
 
-            var intro_label = new Gtk.Label ("       INTRO       ");
+            var intro_label = new Gtk.Label ("       " + _("INTRO") + "       ");
             intro_label.set_opacity (0.4);
-            var var_label = new Gtk.Label ("       VARIATION / FILL-IN       ");
+            var var_label = new Gtk.Label ("       " + _("VARIATION / FILL-IN") + "       ");
             var_label.set_opacity (0.4);
-            var ending_label = new Gtk.Label ("     ENDING     ");
+            var ending_label = new Gtk.Label ("     " + _("ENDING") + "     ");
             ending_label.set_opacity (0.4);
 
             this.attach (intro_box, 0, 0, 1, 1);

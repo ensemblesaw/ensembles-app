@@ -54,7 +54,7 @@ namespace Ensembles.Shell {
 
 
 
-            tempo_button = new Gtk.Button.with_label ("Tempo");
+            tempo_button = new Gtk.Button.with_label (_("Tempo"));
             tempo_button.margin = 4;
             tempo_button.margin_start = 8;
             tempo_button.clicked.connect (() => {
