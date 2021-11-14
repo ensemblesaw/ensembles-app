@@ -116,7 +116,7 @@ namespace Ensembles.Core {
 
         public void queue_intro_b () {
             style_player_queue_intro (2, 3);
-            style_part  = 1;
+            style_part = 1;
         }
 
         public void queue_ending_a () {

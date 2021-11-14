@@ -172,7 +172,7 @@ namespace Ensembles.Shell {
                 }
             });
 
-            stop_button.clicked.connect(() => {
+            stop_button.clicked.connect (() => {
                 if (sequencer != null) {
                     sequencer.stop ();
                     MainWindow.style_player.stop_style ();
