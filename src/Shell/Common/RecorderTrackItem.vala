@@ -7,6 +7,7 @@ namespace Ensembles.Shell {
         private Gtk.Grid track_grid;
         private Gtk.Image recording_icon;
         private Gtk.Label track_label;
+
         public RecorderTrackItem (List<Core.MidiEvent> events, int track) {
             this.track = track;
             this.tooltip_text = _("Click to select track %d for recording").printf (track + 1);

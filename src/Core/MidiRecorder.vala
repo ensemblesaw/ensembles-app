@@ -23,6 +23,7 @@ namespace Ensembles.Core {
 
         private Timer recording_timer;
         private Timer progress_timer;
+        private double total_width;
 
         public RecorderState current_state;
         bool sync_start;
@@ -250,17 +251,19 @@ namespace Ensembles.Core {
         private void progress_visual_thread () {
             progress_timer = new Timer ();
             progress_timer.start ();
+            total_width = 0;
             while (current_state != RecorderState.STOPPED) {
+                progress_timer.stop ();
+                double value = progress_timer.elapsed () * 10.0;
+                total_width += value;
                 Idle.add (() => {
-                    progress_timer.stop ();
-                    double value = (double)progress_timer.elapsed (null) * 10.0;
-                    _sequencer_progress.width_request = (int)value;
-                    progress_change (value);
-                    progress_timer.continue ();
+                    _sequencer_progress.width_request = (int)total_width;
+                    progress_change (total_width);
                     return false;
                 });
+                progress_timer.start ();
                 Thread.yield ();
-                Thread.usleep (500);
+                Thread.usleep (10000);
             }
             Idle.add (() => {
                 _sequencer_progress.opacity = 0;

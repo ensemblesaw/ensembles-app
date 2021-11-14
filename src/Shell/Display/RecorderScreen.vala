@@ -80,14 +80,6 @@ namespace Ensembles.Shell {
             var sequencer_grid = new Gtk.Grid ();
             main_stack.add_named (sequencer_grid, "SqnGrid");
 
-            //  sequencer_grid.size_allocate.connect (() => {
-            //      if (sequencer.current_state == Core.MidiRecorder.RecorderState.RECORDING) {
-            //          var adj = scrollable.get_hadjustment ();
-            //          adj.set_value (adj.get_upper () - adj.get_page_size ());
-            //          sequencer_grid.queue_draw ();
-            //      }
-            //  });
-
             name_entry.activate.connect (() => {
                 MainWindow.synthesizer.disable_input (false);
                 play_button.visible = true;
