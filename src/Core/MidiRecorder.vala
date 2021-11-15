@@ -7,6 +7,7 @@ namespace Ensembles.Core {
         }
 
         private string _name;
+        private string _file_path;
         private int _track;
         private Gtk.ListBox _sequencer_visual;
         private Gtk.Overlay _sequencer_progress_overlay;
@@ -30,6 +31,7 @@ namespace Ensembles.Core {
 
         // Initial Settings;
         public int initial_settings_style_part_index = 2;
+        public int initial_settings_tempo = 120;
 
 
         // Midi Event Connectors
@@ -40,6 +42,7 @@ namespace Ensembles.Core {
         public signal void style_change (int index);
         public signal void style_part_change (int part_index);
         public signal void style_start_stop (bool stop);
+        public signal void tempo_change (int tempo);
 
         public void multiplex_events (MidiEvent event) {
             switch (event.event_type) {
@@ -58,13 +61,18 @@ namespace Ensembles.Core {
                 case MidiEvent.EventType.STYLESTARTSTOP:
                 style_start_stop (event.value1 == 1 ? true : false);
                 break;
+                case MidiEvent.EventType.TEMPO:
+                tempo_change (event.value1);
+                break;
             }
         }
 
-        public MidiRecorder (string name) {
+        public MidiRecorder (string name, string file_path) {
             _name = name;
+            _file_path = file_path;
             _track = 0;
             sync_start = false;
+            initial_settings_tempo = CentralBus.loaded_tempo;
             current_state = RecorderState.STOPPED;
             midi_event_sequence = new List<MidiEvent> [10];
         }
@@ -145,6 +153,11 @@ namespace Ensembles.Core {
                     initial_style_selection.value1 = Shell.EnsemblesApp.settings.get_int ("style-index");
                     make_initial_events (initial_style_selection);
 
+                    var initial_tempo = new MidiEvent ();
+                    initial_tempo.event_type = MidiEvent.EventType.TEMPO;
+                    initial_tempo.value1 = initial_settings_tempo;
+                    make_initial_events (initial_tempo);
+
                     var initial_style_part = new MidiEvent ();
                     initial_style_part.event_type = MidiEvent.EventType.STYLECONTROL;
                     initial_style_part.value1 = initial_settings_style_part_index;
@@ -158,6 +171,7 @@ namespace Ensembles.Core {
                 if (_track > 0) {
                     new_event.channel = _track + 6;
                 }
+                new_event.track = _track;
                 new_event.time_stamp = microseconds;
 
                 if (current_state == RecorderState.RECORDING) {
@@ -201,15 +215,20 @@ namespace Ensembles.Core {
         }
 
         public void stop () {
+            print ("Stopping...\n");
             recording_timer.stop ();
             for (int i = 0; i < playback_objects.length; i++) {
                 if (playback_objects[i] != null) playback_objects[i].stop ();
+            }
+            if (current_state == RecorderState.RECORDING) {
+                save_sequence_to_file ();
             }
             Idle.add (() => {
                 current_state = RecorderState.STOPPED;
                 recorder_state_change (RecorderState.STOPPED);
                 return false;
             });
+
         }
 
 
@@ -273,6 +292,53 @@ namespace Ensembles.Core {
                 return false;
             });
             Shell.MainWindow.synthesizer.halt_realtime ();
+        }
+
+        public void save_sequence_to_file () {
+            var gen = new Json.Generator ();
+            var root = new Json.Node (Json.NodeType.OBJECT);
+
+            var project_object = new Json.Object ();
+            project_object.set_string_member ("name", _name);
+
+            var track_array = new Json.Array ();
+
+            for (uint i = 0; i < 10; i++) {
+                var event_sequence_array = new Json.Array ();
+
+                for (uint j = 0; j < midi_event_sequence[i].length (); j++) {
+                    var event_object = new Json.Object ();
+                    event_object.set_int_member ("trck", midi_event_sequence[i].nth_data (j).track);
+                    event_object.set_int_member ("v1", midi_event_sequence[i].nth_data (j).value1);
+                    event_object.set_int_member ("v2", midi_event_sequence[i].nth_data (j).value2);
+                    event_object.set_int_member ("c", midi_event_sequence[i].nth_data (j).channel);
+                    event_object.set_int_member ("v", midi_event_sequence[i].nth_data (j).velocity);
+                    event_object.set_int_member ("t", midi_event_sequence[i].nth_data (j).time_stamp);
+
+                    event_sequence_array.add_object_element (event_object);
+                }
+
+                track_array.add_array_element (event_sequence_array);
+            }
+            project_object.set_array_member ("event_sequence", track_array);
+
+            root.set_object (project_object);
+            gen.set_root (root);
+            size_t length;
+            string json = gen.to_data (out length);
+
+            try {
+                var file = File.new_for_path (_file_path);
+                if (file.query_exists ()) {
+                    file.delete ();
+                }
+                var fs = file.create (GLib.FileCreateFlags.NONE);
+
+                var ds = new DataOutputStream (fs);
+                ds.put_string (json);
+            } catch (Error e) {
+                warning (e.message);
+            }
         }
     }
 

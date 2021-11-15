@@ -11,7 +11,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
@@ -24,7 +24,7 @@ namespace Ensembles.Core {
 
         // Bus access for shell
         int style_section = 0;
-        int loaded_tempo = 10;
+        public static int loaded_tempo = 10;
         int loaded_time_sig_n = 4;
         int loaded_time_sig_d = 4;
 

@@ -313,11 +313,11 @@ synthesizer_destruct () {
     printf ("Unloading Settings\n");
     if(style_synth_settings)
     {
-        delete_fluid_settings(style_synth_settings);
+        delete_settings(STYLE_SYNTH);
     }
     if(realtime_synth_settings)
     {
-        delete_fluid_settings(realtime_synth_settings);
+        delete_settings(REALTIME_SYNTH);
     }
 }
 

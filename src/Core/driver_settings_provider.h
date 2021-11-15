@@ -38,4 +38,6 @@ fluid_settings_t* get_settings (enum SynthLocation synth_location);
 
 void settings_changed_callback (void (*cc)(enum SynthLocation, fluid_settings_t*), enum SynthLocation synth_location, fluid_settings_t* settings);
 
+void delete_settings (enum SynthLocation synth_location);
+
 #endif /* DRIVER_SETTINGS_PROVIDER_H */

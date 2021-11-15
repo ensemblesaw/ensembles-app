@@ -11,7 +11,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
@@ -363,13 +363,15 @@ namespace Ensembles.Shell {
         int synth_gain_watch () {
             while (watch) {
                 Thread.usleep (200000);
-                for (int i = 0; i < 3; i++) {
-                    set_gain_value (0, i, Ensembles.Core.Synthesizer.get_modulator_value (0, i, 7));
-                    Thread.usleep (100000);
-                }
-                for (int i = 0; i < 16; i++) {
-                    set_gain_value (1, i, Ensembles.Core.Synthesizer.get_modulator_value (1, i, 7));
-                    Thread.usleep (100000);
+                if (watch) {
+                    for (int i = 0; i < 3; i++) {
+                        set_gain_value (0, i, Ensembles.Core.Synthesizer.get_modulator_value (0, i, 7));
+                        Thread.usleep (100000);
+                    }
+                    for (int i = 0; i < 16; i++) {
+                        set_gain_value (1, i, Ensembles.Core.Synthesizer.get_modulator_value (1, i, 7));
+                        Thread.usleep (100000);
+                    }
                 }
             }
             return 0;

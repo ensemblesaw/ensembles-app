@@ -41,9 +41,6 @@ namespace Ensembles.Core {
                     print ("Style: %d\n", state);
                     Shell.RecorderScreen.sequencer.record_event (event);
                 }
-                if (state == 1) {
-                    Shell.RecorderScreen.sequencer.stop ();
-                }
             });
         }
         ~StylePlayer () {

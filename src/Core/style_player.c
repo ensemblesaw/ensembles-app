@@ -431,19 +431,15 @@ style_player_destruct () {
         fluid_player_stop (player);
         fluid_player_join(player);
         delete_fluid_player(player);
-        player = NULL;
     }
     if (adriver) {
         delete_fluid_audio_driver(adriver);
-        adriver = NULL;
     }
     if (synth) {
         delete_fluid_synth(synth);
-        synth = NULL;
     }
     if (settings) {
-        delete_fluid_settings(settings);
-        settings = NULL;
+        delete_settings(STYLE_ENGINE);
     }
 }
 
