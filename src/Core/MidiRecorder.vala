@@ -37,12 +37,16 @@ namespace Ensembles.Core {
         // Midi Event Connectors
         public signal void progress_change (double progress);
         public signal void recorder_state_change (RecorderState state);
+        public signal void set_ui_sensitive (bool sensitive);
         public signal void note_event (int channel, int note, int on, int velocity);
         public signal void voice_change (int channel, int bank, int index);
         public signal void style_change (int index);
         public signal void style_part_change (int part_index);
         public signal void style_start_stop (bool stop);
         public signal void tempo_change (int tempo);
+        public signal void accomp_change (bool on);
+        public signal void split_change (bool on);
+        public signal void layer_change (bool on);
 
         public void multiplex_events (MidiEvent event) {
             switch (event.event_type) {
@@ -64,6 +68,15 @@ namespace Ensembles.Core {
                 case MidiEvent.EventType.TEMPO:
                 tempo_change (event.value1);
                 break;
+                case MidiEvent.EventType.ACCOMP:
+                accomp_change (event.value1 == 1);
+                break;
+                case MidiEvent.EventType.SPLIT:
+                split_change (event.value1 == 1);
+                break;
+                case MidiEvent.EventType.LAYER:
+                layer_change (event.value1 == 1);
+                break;
             }
         }
 
@@ -72,7 +85,7 @@ namespace Ensembles.Core {
             _file_path = file_path;
             _track = 0;
             sync_start = false;
-            initial_settings_tempo = CentralBus.loaded_tempo;
+            initial_settings_tempo = CentralBus.get_tempo ();
             current_state = RecorderState.STOPPED;
             midi_event_sequence = new List<MidiEvent> [10];
         }
@@ -128,11 +141,11 @@ namespace Ensembles.Core {
             if (sync_start && (event.event_type == MidiEvent.EventType.NOTE || event.event_type == MidiEvent.EventType.STYLESTARTSTOP)) {
                 sync_start = false;
                 play (true);
-                    var initial_event_voice_r1 = new MidiEvent ();
-                    initial_event_voice_r1.event_type = MidiEvent.EventType.VOICECHANGE;
-                    initial_event_voice_r1.value1 = Shell.EnsemblesApp.settings.get_int ("voice-r1-bank");
-                    initial_event_voice_r1.value2 = Shell.EnsemblesApp.settings.get_int ("voice-r1-preset");
-                    make_initial_events (initial_event_voice_r1);
+                var initial_event_voice_r1 = new MidiEvent ();
+                initial_event_voice_r1.event_type = MidiEvent.EventType.VOICECHANGE;
+                initial_event_voice_r1.value1 = Shell.EnsemblesApp.settings.get_int ("voice-r1-bank");
+                initial_event_voice_r1.value2 = Shell.EnsemblesApp.settings.get_int ("voice-r1-preset");
+                make_initial_events (initial_event_voice_r1);
                 if (_track == 0) {
                     var initial_event_voice_r2 = new MidiEvent ();
                     initial_event_voice_r2.event_type = MidiEvent.EventType.VOICECHANGE;
@@ -147,6 +160,21 @@ namespace Ensembles.Core {
                     initial_event_voice_l.value2 = Shell.EnsemblesApp.settings.get_int ("voice-l-preset");
                     initial_event_voice_l.channel = 2;
                     make_initial_events (initial_event_voice_l);
+
+                    var initial_layer_event = new MidiEvent ();
+                    initial_layer_event.event_type = MidiEvent.EventType.LAYER;
+                    initial_layer_event.value1 = Shell.EnsemblesApp.settings.get_boolean ("layer-on") ? 1 : 0;
+                    make_initial_events (initial_layer_event);
+
+                    var initial_split_event = new MidiEvent ();
+                    initial_split_event.event_type = MidiEvent.EventType.SPLIT;
+                    initial_split_event.value1 = Shell.EnsemblesApp.settings.get_boolean ("split-on") ? 1 : 0;
+                    make_initial_events (initial_split_event);
+
+                    var initial_accomp_event = new MidiEvent ();
+                    initial_accomp_event.event_type = MidiEvent.EventType.ACCOMP;
+                    initial_accomp_event.value1 = Shell.EnsemblesApp.settings.get_boolean ("accomp-on") ? 1 : 0;
+                    make_initial_events (initial_accomp_event);
 
                     var initial_style_selection = new MidiEvent ();
                     initial_style_selection.event_type = MidiEvent.EventType.STYLECHANGE;
@@ -226,6 +254,7 @@ namespace Ensembles.Core {
             Idle.add (() => {
                 current_state = RecorderState.STOPPED;
                 recorder_state_change (RecorderState.STOPPED);
+                set_ui_sensitive (true);
                 return false;
             });
 
@@ -248,6 +277,9 @@ namespace Ensembles.Core {
             current_state = RecorderState.RECORDING;
             Idle.add (() => {
                 _sequencer_progress.opacity = 1;
+                if (_track > 0) {
+                    set_ui_sensitive (false);
+                }
                 return false;
             });
             new Thread<void> ("progress_thread", progress_visual_thread);
@@ -263,7 +295,11 @@ namespace Ensembles.Core {
             for (uint i = 0; i < midi_event_sequence.length; i++) {
                 playback_objects[i] = new PlayBackObject (midi_event_sequence[i], i, this);
             }
-            _sequencer_progress.opacity = 1;
+            Idle.add (() => {
+                _sequencer_progress.opacity = 1;
+                set_ui_sensitive (false);
+                return false;
+            });
             new Thread<void> ("progress_thread", progress_visual_thread);
         }
 
@@ -308,6 +344,7 @@ namespace Ensembles.Core {
 
                 for (uint j = 0; j < midi_event_sequence[i].length (); j++) {
                     var event_object = new Json.Object ();
+                    event_object.set_int_member ("e", (uint)midi_event_sequence[i].nth_data (j).event_type);
                     event_object.set_int_member ("trck", midi_event_sequence[i].nth_data (j).track);
                     event_object.set_int_member ("v1", midi_event_sequence[i].nth_data (j).value1);
                     event_object.set_int_member ("v2", midi_event_sequence[i].nth_data (j).value2);
@@ -358,8 +395,11 @@ namespace Ensembles.Core {
             ACCOMP,
             STYLECHANGE,
             STYLECONTROL,
+            STYLECONTROLACTUAL,
             STYLESTARTSTOP,
-            TEMPO
+            TEMPO,
+            SPLIT,
+            LAYER
         }
 
         public EventType event_type;

@@ -82,6 +82,9 @@ namespace Ensembles.Shell {
                                 baseline);
                         }
                     }
+                    if (_events.nth_data (i).event_type == Core.MidiEvent.EventType.STYLECONTROLACTUAL) {
+                        draw_style_section (context, _events.nth_data (i).value1, (int)(total_width));
+                    }
                 }
                 widget.width_request = (int)total_width;
             }
@@ -99,6 +102,45 @@ namespace Ensembles.Shell {
         private void draw_note_off_event (Cairo.Context ctx, int width, int height, int x_offset, int y_offset) {
             ctx.line_to (x_offset + 2, 2 + get_allocated_height () - (height + y_offset));
             ctx.stroke ();
+        }
+
+        private void draw_style_section (Cairo.Context ctx, int section, int x_offset) {
+            if (section > 0) {
+                ctx.move_to (x_offset, 0);
+                ctx.line_to (x_offset, 32);
+                ctx.set_source_rgba (0, 0, 0, 0.3);
+                ctx.stroke ();
+                ctx.move_to (x_offset + 6, 16);
+                ctx.set_font_size (10);
+                ctx.set_source_rgba (1, 0.8, 0.3, 1);
+                switch (section) {
+                    case 1:
+                    ctx.show_text ("INTRO 1");
+                    break;
+                    case 2:
+                    ctx.show_text ("INTRO 2");
+                    break;
+                    case 3:
+                    ctx.show_text ("VAR A");
+                    break;
+                    case 5:
+                    ctx.show_text ("VAR B");
+                    break;
+                    case 7:
+                    ctx.show_text ("VAR C");
+                    break;
+                    case 9:
+                    ctx.show_text ("VAR D");
+                    break;
+                    case 11:
+                    ctx.show_text ("END A");
+                    break;
+                    case 13:
+                    ctx.show_text ("END B");
+                    break;
+                }
+                ctx.set_source_rgba (0,0,0,0);
+            }
         }
 
         private double lowest_point () {

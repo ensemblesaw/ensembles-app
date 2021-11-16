@@ -150,6 +150,15 @@ namespace Ensembles.Shell {
                 adj.set_value (value);
             });
 
+            sequencer.set_ui_sensitive.connect ((sensitive) => {
+                if (MainWindow.ctrl_panel != null) {
+                    MainWindow.ctrl_panel.set_panel_sensitive (sensitive);
+                }
+                if (MainWindow.style_controller_view != null) {
+                    MainWindow.style_controller_view.ready (sensitive);
+                }
+            });
+
             sequencer.note_event.connect ((channel, key, on, velocity) => {
                 if (MainWindow.synthesizer != null) {
                     if (channel == 0) {
@@ -168,6 +177,20 @@ namespace Ensembles.Shell {
                     } else {
                         MainWindow.synthesizer.change_voice (voice, channel, false);
                     }
+                }
+            });
+
+            sequencer.layer_change.connect ((active) => {
+                Ensembles.Core.CentralBus.set_layer_on (active);
+            });
+
+            sequencer.split_change.connect ((active) => {
+                Ensembles.Core.CentralBus.set_split_on (active);
+            });
+
+            sequencer.accomp_change.connect ((active) => {
+                if (MainWindow.synthesizer != null) {
+                    MainWindow.synthesizer.set_accompaniment_on (active);
                 }
             });
 
@@ -211,6 +234,9 @@ namespace Ensembles.Shell {
                     btn_stack.set_visible_child_name ("Start");
                     play_button.sensitive = true;
                     play_button.opacity = 1;
+                    if (MainWindow.ctrl_panel != null) {
+                        MainWindow.ctrl_panel.load_settings ();
+                    }
                     break;
                 }
             });

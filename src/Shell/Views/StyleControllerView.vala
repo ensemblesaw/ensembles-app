@@ -265,19 +265,19 @@ namespace Ensembles.Shell {
             this.column_spacing = 4;
             this.margin = 4;
         }
-        public void ready () {
-            intro_button_a.set_sensitive (true);
-            intro_button_b.set_sensitive (true);
-            var_fill_button_a.set_sensitive (true);
-            var_fill_button_b.set_sensitive (true);
-            var_fill_button_c.set_sensitive (true);
-            var_fill_button_d.set_sensitive (true);
-            ending_button_a.set_sensitive (true);
-            ending_button_b.set_sensitive (true);
-            sync_start_button.set_sensitive (true);
-            sync_stop_button.set_sensitive (true);
-            start_button.set_sensitive (true);
-            break_button.set_sensitive (true);
+        public void ready (bool? ready = true) {
+            intro_button_a.set_sensitive (ready);
+            intro_button_b.set_sensitive (ready);
+            var_fill_button_a.set_sensitive (ready);
+            var_fill_button_b.set_sensitive (ready);
+            var_fill_button_c.set_sensitive (ready);
+            var_fill_button_d.set_sensitive (ready);
+            ending_button_a.set_sensitive (ready);
+            ending_button_b.set_sensitive (ready);
+            sync_start_button.set_sensitive (ready);
+            sync_stop_button.set_sensitive (ready);
+            start_button.set_sensitive (ready);
+            break_button.set_sensitive (ready);
         }
         public void sync () {
             intro_button_a.get_style_context ().remove_class ("queue-measure");

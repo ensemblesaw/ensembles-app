@@ -22,7 +22,7 @@ namespace Ensembles.Shell {
         public static StyleControllerView style_controller_view;
         BeatCounterView beat_counter_panel;
         public static MainDisplayCasing main_display_unit;
-        ControlPanel ctrl_panel;
+        public static ControlPanel ctrl_panel;
         SliderBoardView slider_board;
         VoiceCategoryView voice_category_panel;
         MixerBoardView mixer_board_view;
@@ -259,6 +259,13 @@ namespace Ensembles.Shell {
             });
             bus.style_section_change.connect ((section) => {
                 style_controller_view.set_style_section (section);
+                if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state == Core.MidiRecorder.RecorderState.RECORDING) {
+                    var style_part_actual_event = new Core.MidiEvent ();
+                    style_part_actual_event.event_type = Core.MidiEvent.EventType.STYLECONTROLACTUAL;
+                    style_part_actual_event.value1 = section;
+
+                    RecorderScreen.sequencer.record_event (style_part_actual_event);
+                }
             });
             bus.loaded_tempo_change.connect ((tempo) => {
                 beat_counter_panel.change_tempo (tempo);
