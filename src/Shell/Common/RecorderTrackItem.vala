@@ -8,7 +8,10 @@ namespace Ensembles.Shell {
         private Gtk.Image recording_icon;
         private Gtk.Label track_label;
 
+        private double[] active_keys;
+
         public RecorderTrackItem (List<Core.MidiEvent> events, int track) {
+            active_keys = new double[60];
             this.track = track;
             this.tooltip_text = _("Click to select track %d for recording").printf (track + 1);
             this.halign = Gtk.Align.START;
@@ -68,18 +71,18 @@ namespace Ensembles.Shell {
                     if (_events.nth_data (i).event_type == Core.MidiEvent.EventType.NOTE) {
 
                         if (_events.nth_data (i).value2 == 144) {
-                            draw_note_on_event (context,
-                                2,
-                                (int)(((_events.nth_data (i).value1 - 76) / max_height) * get_allocated_height ()),
-                                (int)(total_width),
-                                baseline,
-                                ((double)_events.nth_data (i).velocity / 130.0));
+                            double alpha;
+                            set_note_on (_events.nth_data (i).value1, true, _events.nth_data (i).velocity, (int)total_width, out alpha);
                         } else if (_events.nth_data (i).value2 == 128) {
-                            draw_note_off_event (context,
-                                2,
-                                (int)(((_events.nth_data (i).value1 - 76) / max_height) * get_allocated_height ()),
-                                (int)(total_width),
-                                baseline);
+                            double alpha;
+                            int prev_time = set_note_on (_events.nth_data (i).value1, false, _events.nth_data (i).velocity, (int)total_width, out alpha);
+                            draw_note_event (context,
+                                            1,
+                                            (int)(((_events.nth_data (i).value1 - 76) / max_height) * get_allocated_height ()),
+                                            prev_time,
+                                            (int)total_width,
+                                            baseline,
+                                            alpha);
                         }
                     }
                     if (_events.nth_data (i).event_type == Core.MidiEvent.EventType.STYLECONTROLACTUAL) {
@@ -90,6 +93,27 @@ namespace Ensembles.Shell {
             }
 
             return true;
+        }
+
+        private int set_note_on (int note, bool on, int velocity, int time, out double alpha) {
+            int time_out = 0;
+            alpha = 0;
+            if (!on) {
+                time_out = (int)active_keys[note - 36];
+                alpha = active_keys[note - 36] - (double)time_out;
+            }
+            active_keys[note - 36] = on ? (double)time + ((double)velocity / 130.0) : 0;
+            return time_out;
+        }
+
+        private void draw_note_event (Cairo.Context ctx, int width, int height, int x_offset1, int x_offset2, int y_offset, double alpha) {
+            if (alpha > 0) {
+                ctx.set_source_rgba (1, 1, 1, alpha);
+                ctx.set_line_width (width);
+                ctx.move_to (x_offset1, 2 + get_allocated_height () - (height + y_offset));
+                ctx.line_to (x_offset2, 2 + get_allocated_height () - (height + y_offset));
+                ctx.stroke ();
+            }
         }
 
         private void draw_note_on_event (Cairo.Context ctx, int width, int height, int x_offset, int y_offset, double alpha) {
