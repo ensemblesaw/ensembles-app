@@ -318,6 +318,7 @@ namespace Ensembles.Core {
             recording_timer = new Timer ();
             playback_objects = new PlayBackObject [10];
             midi_event_sequence[_track] = new List<MidiEvent> ();
+            _sequencer_visual.sensitive = false;
             Idle.add (() => {
                 recorder_state_change (RecorderState.RECORDING);
                 return false;
@@ -329,7 +330,9 @@ namespace Ensembles.Core {
             }
             current_state = RecorderState.RECORDING;
             Idle.add (() => {
-                _sequencer_progress.opacity = 1;
+                while (_sequencer_progress.opacity != 1) {
+                    _sequencer_progress.opacity = 1;
+                }
                 if (_track > 0) {
                     set_ui_sensitive (false);
                 }
@@ -349,7 +352,9 @@ namespace Ensembles.Core {
                 playback_objects[i] = new PlayBackObject (midi_event_sequence[i], i, this);
             }
             Idle.add (() => {
-                _sequencer_progress.opacity = 1;
+                while (_sequencer_progress.opacity != 1) {
+                    _sequencer_progress.opacity = 1;
+                }
                 set_ui_sensitive (false);
                 return false;
             });
@@ -378,6 +383,7 @@ namespace Ensembles.Core {
                 for (int i = 0; i < 10; i++) {
                     track_visuals[i].set_track_events (midi_event_sequence[i]);
                 }
+                _sequencer_visual.sensitive = true;
                 return false;
             });
             Shell.MainWindow.synthesizer.halt_realtime ();

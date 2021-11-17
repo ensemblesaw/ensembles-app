@@ -1,6 +1,6 @@
 namespace Ensembles.Shell {
     public class RecorderScreen : WheelScrollableWidget {
-        Hdy.HeaderBar headerbar;
+        Gtk.HeaderBar headerbar;
         Gtk.Grid sequencer_grid;
         Gtk.ScrolledWindow scrollable;
         Gtk.Button close_button;
@@ -8,12 +8,15 @@ namespace Ensembles.Shell {
 
         Gtk.Button new_button;
         Gtk.Button open_button;
+        Gtk.Entry name_entry;
 
         Gtk.Stack main_stack;
         Gtk.Button play_button;
         Gtk.Button rec_button;
         Gtk.Button stop_button;
         Gtk.Stack btn_stack;
+
+        Gtk.FileChooserDialog project_folder_chooser;
 
         string save_location = "";
         string project_file_name = "";
@@ -33,7 +36,7 @@ namespace Ensembles.Shell {
             open_button = new Gtk.Button.from_icon_name ("document-open-symbolic", Gtk.IconSize.BUTTON);
 
 
-            headerbar = new Hdy.HeaderBar ();
+            headerbar = new Gtk.HeaderBar ();
             headerbar.set_title (_("Recorder"));
             headerbar.set_subtitle (_("Record playback in multiple tracks"));
             headerbar.get_style_context ().add_class ("menu-header");
@@ -46,9 +49,9 @@ namespace Ensembles.Shell {
             btn_stack.transition_duration = 500;
 
             play_button = new Gtk.Button.from_icon_name ("media-playback-start-symbolic", Gtk.IconSize.BUTTON);
-            play_button.visible = false;
+            play_button.sensitive = false;
             rec_button = new Gtk.Button.from_icon_name ("media-record-symbolic", Gtk.IconSize.BUTTON);
-            rec_button.visible = false;
+            rec_button.sensitive = false;
             stop_button = new Gtk.Button.from_icon_name ("media-playback-stop-symbolic", Gtk.IconSize.BUTTON);
 
             var btn_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
@@ -78,9 +81,11 @@ namespace Ensembles.Shell {
             main_stack.add_named (get_welcome_widget (), "Welcome");
 
             var name_grid = new Gtk.Grid ();
-            name_grid.attach (new Gtk.Label (_("Sequence Name")), 0, 0);
-            var name_entry = new Gtk.Entry ();
-            name_grid.attach (name_entry, 0, 1);
+            var header_label = new Gtk.Label (_("Sequence Name"));
+            header_label.get_style_context ().add_class (Granite.STYLE_CLASS_H4_LABEL);
+            name_grid.attach (header_label, 0, 0, 2, 1);
+            name_entry = new Gtk.Entry ();
+            name_grid.attach (name_entry, 0, 1, 2, 1);
             name_grid.halign = Gtk.Align.CENTER;
             name_grid.valign = Gtk.Align.CENTER;
 
@@ -94,7 +99,44 @@ namespace Ensembles.Shell {
             }
 
             var location_label = new Gtk.Label (save_location);
-            name_grid.attach (location_label, 0, 2);
+            location_label.get_style_context ().add_class (Granite.STYLE_CLASS_TERMINAL);
+            location_label.ellipsize = Pango.EllipsizeMode.MIDDLE;
+            name_grid.attach (location_label, 0, 2, 2, 1);
+
+            project_folder_chooser = new Gtk.FileChooserDialog (_("Select Project Folder"),
+                                                      EnsemblesApp.main_window,
+                                                      Gtk.FileChooserAction.SELECT_FOLDER,
+                                                      _("Cancel"),
+                                                      Gtk.ResponseType.CANCEL,
+                                                      _("Select"),
+                                                      Gtk.ResponseType.ACCEPT
+                                                     );
+            project_folder_chooser.local_only = false;
+            project_folder_chooser.modal = true;
+
+            var location_change_button = new Gtk.Button.with_label (_("Change Project Location"));
+            location_change_button.clicked.connect (() => {
+                project_folder_chooser.run ();
+                project_folder_chooser.hide ();
+            });
+            project_folder_chooser.response.connect ((response_id) => {
+                if (response_id == -3) {
+                    save_location = project_folder_chooser.get_file ().get_path ();
+                }
+                location_label.set_text (save_location);
+            });
+            name_grid.attach (location_change_button, 0, 3, 1, 1);
+
+            var create_project_button = new Gtk.Button.with_label (_("Create Project"));
+            create_project_button.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+            create_project_button.clicked.connect (() => {
+                project_name = name_entry.get_text ();
+                create_project ();
+            });
+            name_grid.attach (create_project_button, 1, 3, 1, 1);
+            name_grid.row_spacing = 4;
+            name_grid.column_spacing = 4;
+            name_grid.row_homogeneous = true;
 
             main_stack.add_named (name_grid, "EnterName");
 
@@ -126,12 +168,28 @@ namespace Ensembles.Shell {
                     MainWindow.style_player.stop_style ();
                 }
             });
+
+            new_button.clicked.connect (() => {
+                if (sequencer != null) {
+                    sequencer.stop ();
+                    MainWindow.style_player.stop_style ();
+                }
+                main_stack.set_visible_child_name ("EnterName");
+                MainWindow.synthesizer.disable_input (true);
+                play_button.sensitive = false;
+                rec_button.sensitive = false;
+                sequencer_grid.foreach ((widget) => {
+                    sequencer_grid.remove (widget);
+                    widget.unref ();
+                });
+                name_entry.set_text ("");
+            });
         }
 
         void create_project () {
             MainWindow.synthesizer.disable_input (false);
-            play_button.visible = true;
-            rec_button.visible = true;
+            play_button.sensitive = true;
+            rec_button.sensitive = true;
             project_file_name = project_name.replace (" ", "_");
             project_file_name = project_file_name.replace ("/", "_");
             project_file_name = project_file_name.replace ("\\", "_");
@@ -141,6 +199,7 @@ namespace Ensembles.Shell {
             sequencer = new Core.MidiRecorder (project_name, Path.build_filename (save_location, project_file_name));
             headerbar.set_title (_("Recorder") + " - " + project_name);
             var visual = sequencer.get_sequencer_visual ();
+
             sequencer_grid.add (visual);
             visual.show_all ();
             main_stack.set_visible_child_name ("SqnGrid");
@@ -256,8 +315,8 @@ namespace Ensembles.Shell {
                     case 0:
                         main_stack.set_visible_child_name ("EnterName");
                         MainWindow.synthesizer.disable_input (true);
-                        play_button.visible = false;
-                        rec_button.visible = false;
+                        play_button.sensitive = false;
+                        rec_button.sensitive = false;
                         break;
                     case 1:
                         //

@@ -121,7 +121,7 @@ namespace Ensembles.Shell {
                             int prev_time = set_note_on (_events.nth_data (i).value1, false, _events.nth_data (i).velocity, (int)total_width, out alpha);
                             draw_note_event (context,
                                             1,
-                                            (int)(((_events.nth_data (i).value1 - 76) / max_height) * get_allocated_height ()),
+                                            (int)(((_events.nth_data (i).value1 - 37) / max_height) * get_allocated_height ()),
                                             prev_time,
                                             (int)total_width,
                                             baseline,
@@ -180,39 +180,39 @@ namespace Ensembles.Shell {
                 ctx.set_source_rgba (1, 0.8, 0.3, 1);
                 switch (section) {
                     case 1:
-                    ctx.show_text ("INTRO 1");
+                    ctx.show_text (_("INTRO 1"));
                     break;
                     case 2:
-                    ctx.show_text ("INTRO 2");
+                    ctx.show_text (_("INTRO 2"));
                     break;
                     case 3:
-                    ctx.show_text ("VAR A");
+                    ctx.show_text (_("VAR A"));
                     break;
                     case 5:
-                    ctx.show_text ("VAR B");
+                    ctx.show_text (_("VAR B"));
                     break;
                     case 7:
-                    ctx.show_text ("VAR C");
+                    ctx.show_text (_("VAR C"));
                     break;
                     case 9:
-                    ctx.show_text ("VAR D");
+                    ctx.show_text (_("VAR D"));
                     break;
                     case 11:
-                    ctx.show_text ("END A");
+                    ctx.show_text (_("ENDING A"));
                     break;
                     case 13:
-                    ctx.show_text ("END B");
+                    ctx.show_text (_("ENDING B"));
                     break;
                 }
-                ctx.set_source_rgba (0,0,0,0);
+                ctx.set_source_rgba (0, 0, 0, 0);
             }
         }
 
         private double lowest_point () {
             double x = 0;
             for (int i = 0; i < _events.length (); i++) {
-                if (_events.nth_data (i).value1 - 76 < x) {
-                    x = _events.nth_data (i).value1 - 76;
+                if (_events.nth_data (i).value1 - 37 < x) {
+                    x = _events.nth_data (i).value1 - 37;
                 }
             }
             return x;
