@@ -134,11 +134,51 @@ namespace Ensembles.Core {
         void track_options_handler (int track, uint option) {
             switch (option) {
                 case 0:
+                mute_array[track] = !mute_array[track];
+                track_visuals[track].set_mute (mute_array[track]);
                 if (Shell.MainWindow.synthesizer != null) {
                     Shell.MainWindow.synthesizer.halt_realtime ();
                 }
-                mute_array[track] = !mute_array[track];
-                track_visuals[track].set_mute (mute_array[track]);
+                if (track == 0 && Shell.MainWindow.style_player != null) {
+                    Shell.MainWindow.style_player.stop_style ();
+                }
+                break;
+                case 1:
+                for (int i = 0; i < 10; i++) {
+                    if (i == track) {
+                        mute_array[i] = false;
+                        track_visuals[i].set_mute (false);
+                    } else {
+                        mute_array[i] = true;
+                        track_visuals[i].set_mute (true);
+                    }
+                }
+                if (Shell.MainWindow.synthesizer != null) {
+                    Shell.MainWindow.synthesizer.halt_realtime ();
+                }
+                if (mute_array[0] && Shell.MainWindow.style_player != null) {
+                    Shell.MainWindow.style_player.stop_style ();
+                }
+                break;
+                case 2:
+                if (current_state == RecorderState.STOPPED) {
+                    track_visuals[track].activate ();
+                } else {
+                    Gdk.Display.get_default ().beep ();
+                }
+                break;
+                case 3:
+                if (current_state == RecorderState.STOPPED) {
+                    midi_event_sequence[track] = new List<MidiEvent> ();
+                    track_visuals[track].set_track_events (midi_event_sequence[track]);
+                    mute_array[track] = false;
+                    track_visuals[track].set_mute (false);
+                    if (Shell.MainWindow.synthesizer != null) {
+                        Shell.MainWindow.synthesizer.halt_realtime ();
+                    }
+                } else {
+                    Gdk.Display.get_default ().beep ();
+                }
                 break;
             }
         }
