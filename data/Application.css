@@ -799,6 +799,13 @@
 	border: 1px solid alpha (#fff, 0.8);
 }
 
+.recorder-track-mute {
+    box-shadow: 0 0 4px #333;
+    background: #666;
+    background-image: -gtk-icontheme('window-close-symbolic');
+    opacity: 0.5;
+    }
+
 .track-0 {
 	box-shadow: inset -2px 4px 18px #a56de2;
 }

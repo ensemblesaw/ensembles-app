@@ -18,6 +18,7 @@ namespace Ensembles.Core {
         private List<MidiEvent>[] midi_event_sequence;
         private PlayBackObject[] playback_objects;
         private Shell.RecorderTrackItem[] track_visuals;
+        public bool[] mute_array;
 
         private Thread<void> play_thread;
         private Thread<void> rcrd_thread;
@@ -88,6 +89,7 @@ namespace Ensembles.Core {
             initial_settings_tempo = CentralBus.get_tempo ();
             current_state = RecorderState.STOPPED;
             midi_event_sequence = new List<MidiEvent> [10];
+            mute_array = new bool [10];
         }
 
         public Gtk.Widget get_sequencer_visual () {
@@ -98,7 +100,7 @@ namespace Ensembles.Core {
 
             track_visuals = new Shell.RecorderTrackItem [10];
             for (int i = 0; i < 10; i++) {
-                track_visuals[i] = new Shell.RecorderTrackItem (midi_event_sequence[i], i);
+                track_visuals[i] = new Shell.RecorderTrackItem (midi_event_sequence[i], i, track_options_handler);
                 _sequencer_visual.insert (track_visuals[i], -1);
             }
 
@@ -127,6 +129,18 @@ namespace Ensembles.Core {
             _sequencer_progress_overlay.set_overlay_pass_through (overlay_grid, true);
 
             return _sequencer_progress_overlay;
+        }
+
+        void track_options_handler (int track, uint option) {
+            switch (option) {
+                case 0:
+                if (Shell.MainWindow.synthesizer != null) {
+                    Shell.MainWindow.synthesizer.halt_realtime ();
+                }
+                mute_array[track] = !mute_array[track];
+                track_visuals[track].set_mute (mute_array[track]);
+                break;
+            }
         }
 
         public void make_initial_events (MidiEvent event) {
@@ -243,7 +257,6 @@ namespace Ensembles.Core {
         }
 
         public void stop () {
-            print ("Stopping...\n");
             recording_timer.stop ();
             for (int i = 0; i < playback_objects.length; i++) {
                 if (playback_objects[i] != null) playback_objects[i].stop ();
@@ -416,6 +429,7 @@ namespace Ensembles.Core {
         List<weak MidiEvent> midi_event_sequence;
         MidiRecorder recorder;
         bool playing;
+        uint _track;
 
         public signal void fire_event (MidiEvent event);
 
@@ -423,6 +437,7 @@ namespace Ensembles.Core {
             this.recorder = recorder;
             this.midi_event_sequence = midi_event_sequence.copy ();
             playing = true;
+            _track = track;
             //print ("Start" + track.to_string () + "\n");
             thread = new Thread<void> ("_play_thread_" + track.to_string (), track_thread);
         }
@@ -437,11 +452,13 @@ namespace Ensembles.Core {
                     break;
                 }
                 // Fire event
-                Idle.add (() => {
-                    recorder.multiplex_events (event);
-                    return false;
-                });
-            }
+                if (!recorder.mute_array[_track]) {
+                    Idle.add (() => {
+                        recorder.multiplex_events (event);
+                        return false;
+                    });
+                }
+                }
             playing = false;
         }
 

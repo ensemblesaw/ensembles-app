@@ -7,10 +7,20 @@ namespace Ensembles.Shell {
         private Gtk.Grid track_grid;
         private Gtk.Image recording_icon;
         private Gtk.Label track_label;
+        private Gtk.MenuButton options_button;
+        private Gtk.MenuItem mute_button;
+        private Gtk.MenuItem solo_button;
+        private Gtk.MenuItem record_button;
+        private Gtk.MenuItem delete_button;
 
         private double[] active_keys;
 
-        public RecorderTrackItem (List<Core.MidiEvent> events, int track) {
+        public delegate void OptionsHandler (int track, uint option);
+
+        unowned OptionsHandler options_handle;
+
+        public RecorderTrackItem (List<Core.MidiEvent> events, int track, OptionsHandler options_handle) {
+            this.options_handle = options_handle;
             active_keys = new double[60];
             this.track = track;
             this.tooltip_text = _("Click to select track %d for recording").printf (track + 1);
@@ -27,14 +37,33 @@ namespace Ensembles.Shell {
             recording_icon.margin_end = 8;
             track_grid.attach (recording_icon, 1, 0);
 
-            var separator = new Gtk.Separator (Gtk.Orientation.VERTICAL);
-            track_grid.attach (separator, 2, 0);
+            var separator_a = new Gtk.Separator (Gtk.Orientation.VERTICAL);
+            track_grid.attach (separator_a, 2, 0);
 
             area = new Gtk.DrawingArea ();
             area.height_request = 32;
             area.width_request = 0;
             area.draw.connect (on_draw);
             track_grid.attach (area, 3, 0);
+
+            var separator_b = new Gtk.Separator (Gtk.Orientation.VERTICAL);
+            track_grid.attach (separator_b, 4, 0);
+
+            var context_menu = new Gtk.Menu ();
+            mute_button = new Gtk.MenuItem.with_label (_("Mute"));
+            solo_button = new Gtk.MenuItem.with_label (_("Solo"));
+            record_button = new Gtk.MenuItem.with_label (_("Record"));
+            delete_button = new Gtk.MenuItem.with_label (_("Delete"));
+
+            context_menu.append (mute_button);
+            context_menu.append (solo_button);
+            context_menu.append (record_button);
+            context_menu.append (delete_button);
+
+            options_button = new Gtk.MenuButton ();
+            options_button.image = new Gtk.Image.from_icon_name ("view-more-symbolic", Gtk.IconSize.BUTTON);
+            options_button.popup = context_menu;
+            track_grid.attach (options_button, 5, 0);
 
             this.get_style_context ().add_class ("recorder-track");
             this.get_style_context ().add_class ("track-" + track.to_string ());
@@ -45,6 +74,20 @@ namespace Ensembles.Shell {
             width_request = 10;
             cardinality = _events.length ();
             area.queue_draw ();
+            context_menu.show_all ();
+
+            mute_button.activate.connect (() => {
+                this.options_handle (track, 0);
+            });
+            solo_button.activate.connect (() => {
+                this.options_handle (track, 1);
+            });
+            record_button.activate.connect (() => {
+                this.options_handle (track, 2);
+            });
+            delete_button.activate.connect (() => {
+                this.options_handle (track, 3);
+            });
         }
         public void set_track_events (List<Core.MidiEvent> events) {
             _events = events;
@@ -116,16 +159,14 @@ namespace Ensembles.Shell {
             }
         }
 
-        private void draw_note_on_event (Cairo.Context ctx, int width, int height, int x_offset, int y_offset, double alpha) {
-            ctx.set_source_rgba (1, 1, 1, alpha);
-            ctx.set_line_width (width);
-            ctx.stroke ();
-            ctx.move_to (x_offset, 2 + get_allocated_height () - (height + y_offset));
-        }
-
-        private void draw_note_off_event (Cairo.Context ctx, int width, int height, int x_offset, int y_offset) {
-            ctx.line_to (x_offset + 2, 2 + get_allocated_height () - (height + y_offset));
-            ctx.stroke ();
+        public void set_mute (bool mute) {
+            if (mute) {
+                this.get_style_context ().add_class ("recorder-track-mute");
+                mute_button.label = _("Unmute");
+            } else {
+                this.get_style_context ().remove_class ("recorder-track-mute");
+                mute_button.label = _("Mute");
+            }
         }
 
         private void draw_style_section (Cairo.Context ctx, int section, int x_offset) {
