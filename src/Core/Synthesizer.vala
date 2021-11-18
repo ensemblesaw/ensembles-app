@@ -90,16 +90,18 @@ namespace Ensembles.Core {
 
         public void change_voice (Voice voice, int channel, bool? record = true) {
             synthesizer_change_voice (voice.bank, voice.preset, channel);
-
-            if (channel != 1 && channel != 2) {
-                Shell.EnsemblesApp.settings.set_int ("voice-r1-bank", voice.bank);
-                Shell.EnsemblesApp.settings.set_int ("voice-r1-preset", voice.preset);
-            } else if (channel == 1) {
-                Shell.EnsemblesApp.settings.set_int ("voice-r2-bank", voice.bank);
-                Shell.EnsemblesApp.settings.set_int ("voice-r2-preset", voice.preset);
-            } else {
-                Shell.EnsemblesApp.settings.set_int ("voice-l-bank", voice.bank);
-                Shell.EnsemblesApp.settings.set_int ("voice-l-preset", voice.preset);
+            if (record == true) {
+                print ("Settings voice %d, for channel %d in settings\n", voice.preset, channel);
+                if (channel == 1) {
+                    Shell.EnsemblesApp.settings.set_int ("voice-r2-bank", voice.bank);
+                    Shell.EnsemblesApp.settings.set_int ("voice-r2-preset", voice.preset);
+                } else if (channel == 2) {
+                    Shell.EnsemblesApp.settings.set_int ("voice-l-bank", voice.bank);
+                    Shell.EnsemblesApp.settings.set_int ("voice-l-preset", voice.preset);
+                } else {
+                    Shell.EnsemblesApp.settings.set_int ("voice-r1-bank", voice.bank);
+                    Shell.EnsemblesApp.settings.set_int ("voice-r1-preset", voice.preset);
+                }
             }
 
             // Send to Sequencer for recording

@@ -17,6 +17,7 @@ namespace Ensembles.Shell {
         Gtk.Stack btn_stack;
 
         Gtk.FileChooserDialog project_folder_chooser;
+        Gtk.FileChooserDialog project_file_chooser;
 
         string save_location = "";
         string project_file_name = "";
@@ -104,13 +105,13 @@ namespace Ensembles.Shell {
             name_grid.attach (location_label, 0, 2, 2, 1);
 
             project_folder_chooser = new Gtk.FileChooserDialog (_("Select Project Folder"),
-                                                      EnsemblesApp.main_window,
-                                                      Gtk.FileChooserAction.SELECT_FOLDER,
-                                                      _("Cancel"),
-                                                      Gtk.ResponseType.CANCEL,
-                                                      _("Select"),
-                                                      Gtk.ResponseType.ACCEPT
-                                                     );
+                                                                EnsemblesApp.main_window,
+                                                                Gtk.FileChooserAction.SELECT_FOLDER,
+                                                                _("Cancel"),
+                                                                Gtk.ResponseType.CANCEL,
+                                                                _("Select"),
+                                                                Gtk.ResponseType.ACCEPT
+                                                                );
             project_folder_chooser.local_only = false;
             project_folder_chooser.modal = true;
 
@@ -126,6 +127,24 @@ namespace Ensembles.Shell {
                 location_label.set_text (save_location);
             });
             name_grid.attach (location_change_button, 0, 3, 1, 1);
+
+            project_file_chooser = new Gtk.FileChooserDialog (_("Open Project File"),
+                                                                EnsemblesApp.main_window,
+                                                                Gtk.FileChooserAction.OPEN,
+                                                                _("Cancel"),
+                                                                Gtk.ResponseType.CANCEL,
+                                                                _("Open"),
+                                                                Gtk.ResponseType.ACCEPT
+                                                                );
+            var file_filter_enproj = new Gtk.FileFilter ();
+            file_filter_enproj.add_pattern ("*.enproj");
+            file_filter_enproj.set_filter_name (_("Ensembles Recorder Project"));
+            project_file_chooser.set_filter (file_filter_enproj);
+            project_file_chooser.response.connect ((response_id) => {
+                if (response_id == -3) {
+                    create_project (project_file_chooser.get_file ().get_path ());
+                }
+            });
 
             var create_project_button = new Gtk.Button.with_label (_("Create Project"));
             create_project_button.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
@@ -186,7 +205,7 @@ namespace Ensembles.Shell {
             });
         }
 
-        void create_project () {
+        void create_project (string? existing_file_path = null) {
             MainWindow.synthesizer.disable_input (false);
             play_button.sensitive = true;
             rec_button.sensitive = true;
@@ -196,13 +215,19 @@ namespace Ensembles.Shell {
             project_file_name = project_file_name.replace ("\"", "'");
             project_file_name = project_file_name.down ();
             project_file_name += suffix;
-            sequencer = new Core.MidiRecorder (project_name, Path.build_filename (save_location, project_file_name));
+            sequencer = new Core.MidiRecorder (project_name,
+                                               existing_file_path == null ? Path.build_filename (save_location, project_file_name) : existing_file_path,
+                                               existing_file_path == null);
             headerbar.set_title (_("Recorder") + " - " + project_name);
             var visual = sequencer.get_sequencer_visual ();
 
             sequencer_grid.add (visual);
             visual.show_all ();
             main_stack.set_visible_child_name ("SqnGrid");
+
+            sequencer.project_name_change.connect ((value) => {
+                headerbar.set_title (_("Recorder") + " - " + value);
+            });
 
             sequencer.progress_change.connect ((value) => {
                 var adj = scrollable.get_hadjustment ();
@@ -319,7 +344,8 @@ namespace Ensembles.Shell {
                         rec_button.sensitive = false;
                         break;
                     case 1:
-                        //
+                        project_file_chooser.run ();
+                        project_file_chooser.hide ();
                         break;
                 }
             });

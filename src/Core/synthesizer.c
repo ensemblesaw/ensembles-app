@@ -239,6 +239,7 @@ synthesizer_init (const gchar* loc) {
 
 void
 synthesizer_change_voice (int bank, int preset, int channel) {
+    printf ("Voice: %d, Channe: %d\n", preset, channel);
     if (realtime_synth) {
         fluid_synth_program_select (realtime_synth, channel, realtime_synth_sf_id, bank, preset);
     }
@@ -429,10 +430,10 @@ synthesizer_send_notes (int key, int on, int velocity, int channel, int* type) {
                 }
             }
             if (on == 144) {
-                fluid_synth_noteon (realtime_synth, 0, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0), velocity);
+                fluid_synth_noteon (realtime_synth, channel < 0 ? 0 : channel, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0), velocity);
                 voice_velocity_buffer[0] = velocity;
             } else if (on == 128) {
-                fluid_synth_noteoff (realtime_synth, 0, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0));
+                fluid_synth_noteoff (realtime_synth, channel < 0 ? 0 : channel, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0));
                 voice_velocity_buffer[0] = 0;
             }
             if (get_central_layer_on () > 0) {
