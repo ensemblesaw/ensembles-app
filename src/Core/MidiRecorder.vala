@@ -455,7 +455,6 @@ namespace Ensembles.Core {
                 var root_node = parser.get_root ().get_object ();
 
                 _name = root_node.get_string_member ("name");
-                print ("%s\n", _name);
                 Timeout.add (1000, () => {
                     project_name_change (_name);
                     return false;
@@ -464,10 +463,8 @@ namespace Ensembles.Core {
                 var track_array = root_node.get_array_member ("event_sequence");
                 for (uint i = 0; i < 10; i++) {
                     var event_sequence_array = track_array.get_array_element (i);
-                    print ("%u------\n", i);
                     if (event_sequence_array != null) {
                         for (uint j = 0; j < event_sequence_array.get_length (); j++) {
-                            print ("%u....\n", j);
                             var event_object = event_sequence_array.get_object_element (j);
                             var midi_event = new MidiEvent ();
 
@@ -540,7 +537,6 @@ namespace Ensembles.Core {
 
                             midi_event_sequence[i].append (midi_event);
                         }
-                        print ("settings\n");
                     }
                 }
             }
