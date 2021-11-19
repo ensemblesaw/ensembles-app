@@ -10,6 +10,7 @@ config_header = configure_file (
 
 # Listing files to compile
 ensembles_sources_vala = files (
+    'Core/DriverSettingsProvider.vala',
     'Core/Arpeggiator.vala',
     'Core/CentralBus.vala',
     'Core/Controller.vala',
@@ -23,6 +24,9 @@ ensembles_sources_vala = files (
     'Core/SamplePlayer.vala',
     'Core/SampleRecorder.vala',
     'Core/SongPlayer.vala',
+    'Core/EffectRack.vala',
+    'Core/InstrumentRack.vala',
+    'Core/MidiRecorder.vala',
     'Core/Style.vala',
     'Core/StyleAnalyser.vala',
     'Core/StyleDiscovery.vala',
@@ -34,6 +38,7 @@ ensembles_sources_vala = files (
     'Interfaces/MediaKeyListener.vala',
     'Interfaces/SoundIndicator.vala',
 
+    # PlugIns
     'PlugIns/PlugIn.vala',
     'PlugIns/AtomPort.vala',
     'PlugIns/ControlPort.vala',
@@ -56,6 +61,7 @@ ensembles_sources_vala = files (
     'Shell/Common/OctaveKeyboard.vala',
     'Shell/Common/PcKeyboardHandler.vala',
     'Shell/Common/StyleItem.vala',
+    'Shell/Common/RecorderTrackItem.vala',
     'Shell/Common/ToggleSwitch.vala',
     'Shell/Common/VoiceItem.vala',
 
@@ -74,6 +80,7 @@ ensembles_sources_vala = files (
     'Shell/Display/MainDisplayCasing.vala',
     'Shell/Display/StyleMenu.vala',
     'Shell/Display/TempoScreen.vala',
+    'Shell/Display/RecorderScreen.vala',
     'Shell/Display/VoiceMenu.vala',
     'Shell/Display/WheelScrollableWidget.vala',
 

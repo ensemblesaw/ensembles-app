@@ -19,10 +19,10 @@
 namespace Ensembles.Shell {
     public class MainWindow : Gtk.Window {
         // View components
-        StyleControllerView style_controller_view;
+        public static StyleControllerView style_controller_view;
         BeatCounterView beat_counter_panel;
-        MainDisplayCasing main_display_unit;
-        ControlPanel ctrl_panel;
+        public static MainDisplayCasing main_display_unit;
+        public static ControlPanel ctrl_panel;
         SliderBoardView slider_board;
         VoiceCategoryView voice_category_panel;
         MixerBoardView mixer_board_view;
@@ -35,9 +35,9 @@ namespace Ensembles.Shell {
         //Core components
         Ensembles.Core.Voice[] detected_voices;
         int[] detected_voice_indices;
-        Ensembles.Core.Synthesizer synthesizer;
+        public static Ensembles.Core.Synthesizer synthesizer;
         Ensembles.Core.StyleDiscovery style_discovery;
-        Ensembles.Core.StylePlayer style_player;
+        public static Ensembles.Core.StylePlayer style_player;
         Ensembles.Core.MetronomeLFOPlayer metronome_player;
         Ensembles.Core.CentralBus bus;
         Ensembles.Core.Controller controller_connection;
@@ -223,16 +223,22 @@ namespace Ensembles.Shell {
         // Connect Central Bus events
         void make_bus_events () {
             bus.clock_tick.connect (() => {
-                beat_counter_panel.sync ();
-                style_controller_view.sync ();
-                main_display_unit.set_measure_display (Ensembles.Core.CentralBus.get_measure ());
+                Idle.add (() => {
+                    beat_counter_panel.sync ();
+                    style_controller_view.sync ();
+                    main_display_unit.set_measure_display (Ensembles.Core.CentralBus.get_measure ());
+                    return false;
+                });
                 if (metronome_player.looping) metronome_player.stop_loop ();
                 metronome_player.play_measure (Core.CentralBus.get_beats_per_bar (), Core.CentralBus.get_quarter_notes_per_bar ());
             });
             bus.system_halt.connect (() => {
-                style_player.reload_style ();
-                beat_counter_panel.halt ();
-                metronome_player.stop_loop ();
+                Idle.add (() => {
+                    //style_player.reload_style ();
+                    beat_counter_panel.halt ();
+                    metronome_player.stop_loop ();
+                    return false;
+                });
             });
             bus.system_ready.connect (() => {
                 Timeout.add (2000, () => {
@@ -253,6 +259,13 @@ namespace Ensembles.Shell {
             });
             bus.style_section_change.connect ((section) => {
                 style_controller_view.set_style_section (section);
+                if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state == Core.MidiRecorder.RecorderState.RECORDING) {
+                    var style_part_actual_event = new Core.MidiEvent ();
+                    style_part_actual_event.event_type = Core.MidiEvent.EventType.STYLECONTROLACTUAL;
+                    style_part_actual_event.value1 = section;
+
+                    RecorderScreen.sequencer.record_event (style_part_actual_event);
+                }
             });
             bus.loaded_tempo_change.connect ((tempo) => {
                 beat_counter_panel.change_tempo (tempo);
@@ -261,6 +274,9 @@ namespace Ensembles.Shell {
                     metronome_player.set_tempo (tempo);
                 if (arpeggiator != null)
                     arpeggiator.change_tempo (tempo);
+                if (RecorderScreen.sequencer != null) {
+                    RecorderScreen.sequencer.initial_settings_tempo = tempo;
+                }
             });
             bus.loaded_time_signature_change.connect ((n, d) => {
                 if (beat_counter_panel != null) {
@@ -306,6 +322,9 @@ namespace Ensembles.Shell {
             });
             main_display_unit.change_tempo.connect ((tempo) => {
                 style_player.change_tempo (tempo);
+                if (RecorderScreen.sequencer != null) {
+                    RecorderScreen.sequencer.initial_settings_tempo = tempo;
+                }
             });
             beat_counter_panel.open_tempo_editor.connect (main_display_unit.open_tempo_screen);
             ctrl_panel.accomp_change.connect ((active) => {
@@ -337,6 +356,7 @@ namespace Ensembles.Shell {
             });
             ctrl_panel.dial_rotate.connect (main_display_unit.wheel_scroll);
             ctrl_panel.dial_activate.connect (main_display_unit.wheel_activate);
+            ctrl_panel.open_recorder.connect (main_display_unit.open_recorder_screen);
             registry_panel.notify_recall.connect ((tempo) => {
                 ctrl_panel.load_settings ();
                 main_display_unit.load_settings (tempo);
@@ -590,6 +610,9 @@ namespace Ensembles.Shell {
             song_player.player_status_changed.connect (update_header_bar);
             style_player.change_tempo (song_tempo);
             main_display_unit.set_tempo_display (song_tempo);
+            if (RecorderScreen.sequencer != null) {
+                RecorderScreen.sequencer.initial_settings_tempo = song_tempo;
+            }
             try {
                 Regex regex = new Regex ("[ \\w-]+?(?=\\.)");
                 MatchInfo match_info;

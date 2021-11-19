@@ -11,7 +11,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
@@ -35,6 +35,7 @@ namespace Ensembles.Shell {
 
         public signal void rotate (bool direction, int amount);
         public signal void activate_clicked ();
+        public signal void open_recorder_screen ();
         private const double RADIUS = 20;
 
         public Dial () {
@@ -113,6 +114,14 @@ namespace Ensembles.Shell {
                 activate_clicked ();
             });
 
+            var recorder_button = new Gtk.Button.with_label (_("Recorder"));
+            recorder_button.halign = Gtk.Align.END;
+            recorder_button.valign = Gtk.Align.START;
+            recorder_button.get_style_context ().add_class ("ctrl-panel-recorder-button");
+            recorder_button.clicked.connect (() => {
+                open_recorder_screen ();
+            });
+
 
             add_overlay (dial_light_graphics);
             add_overlay (dial_cover);
@@ -121,6 +130,7 @@ namespace Ensembles.Shell {
             add_overlay (plus_one_button);
             add_overlay (minus_one_button);
             add_overlay (activate_button);
+            add_overlay (recorder_button);
 
             this.hexpand = false;
             this.vexpand = true;

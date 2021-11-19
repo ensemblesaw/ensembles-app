@@ -38,14 +38,15 @@ namespace Ensembles.Shell {
             close_button.halign = Gtk.Align.END;
 
 
-            var headerbar = new Hdy.HeaderBar ();
-            headerbar.set_title (_("Voice - %s").printf(((channel == 0) ? _("Right 1 (Main)") : (channel == 1)
+            var headerbar = new Gtk.HeaderBar ();
+            headerbar.set_title (_("Voice - %s").printf (((channel == 0) ? _("Right 1 (Main)") : (channel == 1)
             ? _("Right 2 (Layered)")
             : _("Left (Split)"))));
-            headerbar.set_subtitle (_("Pick a Voice to play %s").printf(((channel == 0) ? "" : (channel == 1)
+            headerbar.set_subtitle (_("Pick a Voice to play %s").printf (((channel == 0) ? "" : (channel == 1)
             ? _(" on another layer")
             : _(" on left hand side of split"))));
             headerbar.get_style_context ().add_class ("menu-header");
+            headerbar.height_request = 42;
             headerbar.pack_start (close_button);
             main_list = new Gtk.ListBox ();
             main_list.get_style_context ().add_class ("menu-box");

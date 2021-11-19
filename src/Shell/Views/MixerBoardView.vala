@@ -11,7 +11,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
@@ -337,24 +337,30 @@ namespace Ensembles.Shell {
 
         public void set_gain_value (int synth_index, int channel, int value) {
             Idle.add (() => {
-                if (synth_index == 0) {
-                    switch (channel) {
-                        case 0:
-                        if (voice_r1_gain_slider.get_adjustment () != null)
-                            voice_r1_gain_slider.set_value ((double)value / 127);
-                        break;
-                        case 1:
-                        if (voice_r2_gain_slider.get_adjustment () != null)
-                            voice_r2_gain_slider.set_value ((double)value / 127);
-                        break;
-                        case 2:
-                        if (voice_l_gain_slider.get_adjustment () != null)
-                            voice_l_gain_slider.set_value ((double)value / 127);
-                        break;
+                if (watch) {
+                    if (synth_index == 0) {
+                        switch (channel) {
+                            case 0:
+                            if (voice_r1_gain_slider != null && voice_r1_gain_slider.adjustment != null) {
+                                voice_r1_gain_slider.set_value ((double)value / 127);
+                            }
+                            break;
+                            case 1:
+                            if (voice_r2_gain_slider != null && voice_r2_gain_slider.adjustment != null) {
+                                voice_r2_gain_slider.set_value ((double)value / 127);
+                            }
+                            break;
+                            case 2:
+                            if (voice_l_gain_slider != null && voice_l_gain_slider.adjustment != null) {
+                                voice_l_gain_slider.set_value ((double)value / 127);
+                            }
+                            break;
+                        }
+                    } else {
+                        if (style_gain_sliders[channel] != null && style_gain_sliders[channel].adjustment != null) {
+                            style_gain_sliders[channel].set_value ((double)value / 127);
+                        }
                     }
-                } else {
-                    if (style_gain_sliders[channel].get_adjustment () != null)
-                        style_gain_sliders[channel].set_value ((double)value / 127);
                 }
                 return false;
             });
@@ -363,13 +369,15 @@ namespace Ensembles.Shell {
         int synth_gain_watch () {
             while (watch) {
                 Thread.usleep (200000);
-                for (int i = 0; i < 3; i++) {
-                    set_gain_value (0, i, Ensembles.Core.Synthesizer.get_modulator_value (0, i, 7));
-                    Thread.usleep (100000);
-                }
-                for (int i = 0; i < 16; i++) {
-                    set_gain_value (1, i, Ensembles.Core.Synthesizer.get_modulator_value (1, i, 7));
-                    Thread.usleep (100000);
+                if (watch) {
+                    for (int i = 0; i < 3; i++) {
+                        set_gain_value (0, i, Ensembles.Core.Synthesizer.get_modulator_value (0, i, 7));
+                        Thread.usleep (100000);
+                    }
+                    for (int i = 0; i < 16; i++) {
+                        set_gain_value (1, i, Ensembles.Core.Synthesizer.get_modulator_value (1, i, 7));
+                        Thread.usleep (100000);
+                    }
                 }
             }
             return 0;

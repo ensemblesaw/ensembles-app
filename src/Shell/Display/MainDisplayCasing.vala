@@ -27,11 +27,12 @@ namespace Ensembles.Shell {
 
         HomeScreen home_screen;
         TempoScreen tempo_screen;
-        StyleMenu style_menu;
+        public StyleMenu style_menu;
         VoiceMenu voice_menu_l;
         VoiceMenu voice_menu_r1;
         VoiceMenu voice_menu_r2;
         EffectRackScreen fx_rack_menu;
+        RecorderScreen recorder_screen;
 
         LFOEditScreen lfo_editor;
 
@@ -51,6 +52,7 @@ namespace Ensembles.Shell {
             fx_rack_menu = new EffectRackScreen ();
             channel_mod_screen = new ChannelModulatorScreen (0, 0);
             lfo_editor = new LFOEditScreen ();
+            recorder_screen = new RecorderScreen ();
 
             main_stack = new Gtk.Stack ();
             main_stack.add_named (tempo_screen, "Tempo Screen");
@@ -61,6 +63,7 @@ namespace Ensembles.Shell {
             main_stack.add_named (channel_mod_screen, "Channel Modulator Screen");
             main_stack.add_named (lfo_editor, "LFO Editor");
             main_stack.add_named (fx_rack_menu, "Fx Rack");
+            main_stack.add_named (recorder_screen, "Sequencer");
 
             splash_screen = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/display_unit/ensembles_splash.svg");
 
@@ -75,9 +78,10 @@ namespace Ensembles.Shell {
             main_display_deck.add (main_display_leaflet);
 
             main_overlay = new Gtk.Overlay ();
-            main_overlay.height_request = 236;
+            main_overlay.height_request = 274;
             main_overlay.width_request = 460;
             main_overlay.margin = 2;
+            main_overlay.valign = Gtk.Align.CENTER;
 
             // This helps maintain fixed size for all children
             var fixed_size_container = new Gtk.Overlay ();
@@ -88,8 +92,6 @@ namespace Ensembles.Shell {
             this.get_style_context ().add_class ("display-background");
 
             this.add (main_overlay);
-            this.halign = Gtk.Align.CENTER;
-            this.valign = Gtk.Align.START;
             this.vexpand = false;
             this.margin = 4;
 
@@ -171,6 +173,10 @@ namespace Ensembles.Shell {
             fx_rack_menu.close_menu.connect (() => {
                 main_display_leaflet.set_visible_child (home_screen);
             });
+            recorder_screen.close_menu.connect (() => {
+                main_display_leaflet.set_visible_child (home_screen);
+                main_display_leaflet.queue_draw ();
+            });
         }
 
         public void update_style_list (List<Ensembles.Core.Style> accomp_styles) {
@@ -233,6 +239,11 @@ namespace Ensembles.Shell {
         public void open_tempo_screen () {
             main_display_leaflet.set_visible_child (main_stack);
             main_stack.set_visible_child (tempo_screen);
+        }
+
+        public void open_recorder_screen () {
+            main_display_leaflet.set_visible_child (main_stack);
+            main_stack.set_visible_child (recorder_screen);
         }
 
         public void load_settings (int tempo) {

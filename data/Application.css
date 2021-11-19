@@ -11,7 +11,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
@@ -28,7 +28,8 @@
 
 .home-screen-background {
 	background-image: url("resource://com/github/subhadeepjasu/ensembles/images/display_unit/catalin-sandru-7SxSkCvVM1U-unsplash.jpg");
-	background-size: 460px 236px;
+	background-size: auto 100%;
+	background-position: 50%;
 }
 
 .home-screen-panel-top {
@@ -37,12 +38,12 @@
 }
 
 .display-top-panel-header {
-    font-size: 12px;
+    font-size: 1.11em;
     margin-top: 4px;
 }
-    
+
 .display-top-panel-subheader {
-    font-size: 10px;
+    font-size: 0.8em;
     margin-bottom: 6px;
 }
 
@@ -53,7 +54,7 @@
     box-shadow: none;
     outline: none;
 }
-    
+
 .display-top-panel-button:hover {
     background-color: alpha(#fff, 0.1);
 }
@@ -66,9 +67,9 @@
 .home-screen-eq-labels {
     margin-top: -5px;
 }
-    
+
 .home-screen-eq-labels > * {
-    font-size: 8px;
+    font-size: 0.7em;
     color: #CAE974;
     border-top: 1px solid #6C9104;
 }
@@ -76,10 +77,8 @@
 
 .channel-modulator-screen {
     background-image: linear-gradient(alpha(#273445, 0.6), alpha(#273445, 0.6)), url("resource://com/github/subhadeepjasu/ensembles/images/display_unit/catalin-sandru-7SxSkCvVM1U-unsplash-blurred.jpg");
-    background-size: 460px 236px;
-}
-
-.channel-modulator-screen {
+    background-size: auto 100%;
+    background-position: 50%;
     padding: 8px;
 }
 .channel-modulator-close-button {
@@ -91,7 +90,7 @@
     background-color: #02A594;
 }
 .channel-modulator-header {
-    font-size: 22px;
+    font-size: 1.8em;
     margin-left: 4px;
     background-image:linear-gradient(90deg, #007367, alpha(#007367, 0));
     padding: 4px;
@@ -127,7 +126,7 @@
     background-color: rgba (50, 80, 50, 1);
     background-image: -gtk-icontheme('insert-link-symbolic');
     background-repeat: no-repeat;
-    background-position: 120% 90%; 
+    background-position: 120% 90%;
     background-size: 14px;
     box-shadow: inset 0 0 4px rgba (0, 204, 102, 1);
 }
@@ -142,7 +141,7 @@
     background-image: -gtk-icontheme('changes-allow-symbolic');
     background-repeat: no-repeat;
     background-size: 14px;
-    background-position: 97% 90%; 
+    background-position: 97% 90%;
     color: #000;
 }
 
@@ -195,7 +194,7 @@
 }
 
 .display-bottom-panel-header {
-    font-size: 10px;
+    font-size: 0.8em;
     font-weight: bold;
     color: #bbb;
 }
@@ -203,19 +202,19 @@
 .font-bold {
     font-weight: bold;
 }
-    
+
 .display-bottom-panel-label {
-    font-size: 14px;
+    font-size: 0.9em;
     color: #A4FFFA;
 }
 
 .display-bottom-panel-label-small {
-	font-size: 9px;
+	font-size: 0.75em;
     color: #A4FFFA;
     margin-top: -2px;
     margin-bottom: -2px;
 }
-    
+
 
 .menu-background {
     background-color: #f3f3f3;
@@ -229,14 +228,19 @@
     color: #222;
     text-shadow: 0 1px #fff;
 }
-    
+
 .menu-header .title {
         text-shadow: 0 1px #fff;
 }
-    
+
 .menu-header > * {
         color: #333;
         text-shadow: 0 1px #fff;
+}
+
+.menu-header > * > * > * {
+    color: #333;
+    text-shadow: 0 1px #fff;
 }
 
 .menu-box {
@@ -255,18 +259,18 @@
     box-shadow: inset 0 1px 0 0 #ffa154,
                 inset 0 -2px 0 0 alpha(#fff, 0.1),
                 inset 0 -1px 0 0 #a62100;
-                
+
     background-image: linear-gradient(#f06819, #d94b0a);
     color: #fff;
 }
 .menu-item-label {
-    font-size: 14px;
+    font-size: 1.2em;
 }
 .menu-box > .activatable:selected .menu-item-label {
     text-shadow: 0 1px #a62100;
 }
 .menu-item-description {
-    font-size: 10px;
+    font-size: 0.8em;
     margin-top: 8px;
 }
 
@@ -286,7 +290,7 @@
 
 @keyframes pulse {
     0% {
-        background-color: #333; 
+        background-color: #333;
         border-color: #222;
         box-shadow: 0 0 0 1px alpha(#000, 0.1);
     }
@@ -296,7 +300,7 @@
         box-shadow: 0 0 8px @accent_color;
     }
     25% {
-        background-color: #333; 
+        background-color: #333;
         border-color: #222;
         box-shadow: 0 0 0 1px alpha(#000, 0.1);
 	}
@@ -306,7 +310,7 @@
         box-shadow: 0 0 8px @accent_color;
     }
     50% {
-        background-color: #333; 
+        background-color: #333;
         border-color: #222;
         box-shadow: 0 0 0 1px alpha(#000, 0.1);
     }
@@ -316,7 +320,7 @@
         box-shadow: 0 0 8px @accent_color;
     }
     75% {
-        background-color: #333; 
+        background-color: #333;
         border-color: #222;
         box-shadow: 0 0 0 1px alpha(#000, 0.1);
     }
@@ -326,14 +330,14 @@
         box-shadow: 0 0 8px @accent_color;
     }
     100% {
-        background-color: #333; 
+        background-color: #333;
         border-color: #222;
         box-shadow: 0 0 0 1px alpha(#000, 0.1);
     }
 }
 
 .toggle-switch {
-	font-size: 10px;
+	font-size: 0.8em;
 }
 
 .toggle-indicator {
@@ -504,50 +508,57 @@
     }
 }
 
-.super-knob-connected-0 { 
-    background-image:radial-gradient(@accent_color 40%, #333); 
+.super-knob-connected-0 {
+    background-image:radial-gradient(@accent_color 40%, #333);
 }
 
-.super-knob-connected-1 { 
-    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.1) 40%, #333); 
+.super-knob-connected-1 {
+    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.1) 40%, #333);
 }
 
-.super-knob-connected-2 { 
-    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.2) 40%, #333); 
+.super-knob-connected-2 {
+    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.2) 40%, #333);
 }
 
-.super-knob-connected-3 { 
-    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.3) 40%, #333); 
+.super-knob-connected-3 {
+    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.3) 40%, #333);
 }
 
-.super-knob-connected-4 { 
-    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.4) 40%, #333); 
+.super-knob-connected-4 {
+    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.4) 40%, #333);
 }
 
-.super-knob-connected-5 { 
-    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.5) 40%, #333); 
+.super-knob-connected-5 {
+    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.5) 40%, #333);
 }
 
-.super-knob-connected-6 { 
-    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.6) 40%, #333); 
+.super-knob-connected-6 {
+    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.6) 40%, #333);
 }
 
-.super-knob-connected-7 { 
-    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.7) 40%, #333); 
+.super-knob-connected-7 {
+    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.7) 40%, #333);
 }
 
-.super-knob-connected-8 { 
-    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.8) 40%, #333); 
+.super-knob-connected-8 {
+    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.8) 40%, #333);
 }
 
-.super-knob-connected-9 { 
-    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.9) 40%, #333); 
+.super-knob-connected-9 {
+    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.9) 40%, #333);
 }
 
-.super-knob-connected-10 { 
-    background-image:radial-gradient(shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2) 40%, #333); 
+.super-knob-connected-10 {
+    background-image:radial-gradient(shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2) 40%, #333);
 }
 
+
+.ctrl-panel-recorder-button {
+    border-radius: 6px 4px 4px 24px;
+    padding-left: 10px;
+    font-size: 0.96em;;
+    outline: 0;
+}
 
 .common-key > * {
     opacity: 0;
@@ -661,7 +672,7 @@
     border-radius: 4px;
     box-shadow: inset 0 1px 0 alpha(#fff, 0.2), inset 0 -1px 0 alpha(#fff, 0.1);
 }
-    
+
 .joystick-background {
     background-color: #333;
     border-right: 1px solid #222;
@@ -706,11 +717,11 @@
     background-color: #c6262e;
     outline: 0;
 }
-    
+
 .sampler-record-button-active {
     animation: sample_recording 1s infinite;
 }
-    
+
 @keyframes sample_recording {
     0% {
         background: alpha(#7a0000, 0);
@@ -737,4 +748,96 @@
 
 .preferences-view {
     background-color: shade (@bg_color, 1.1);
+}
+
+
+
+.welcome {
+	background: #f3f3f3;
+}
+.welcome > .vertical > .h1 {
+	color: #333;
+	font-size: 2em;
+}
+.welcome > .vertical > .h2 {
+	color: #333;
+	font-size: 1.5em;
+}
+.welcome > .vertical > .vertical > * {
+	color: #333;
+}
+
+/* MultiTrack Recorder */
+.recorder-background {
+	background: #333;
+	border-radius: 6px;
+}
+
+.recorder-background > .activatable > * > image {
+	opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.recorder-background > .activatable:selected > * > image {
+	opacity: 1;
+}
+
+.recorder-track {
+	background: linear-gradient(#666, #444);
+	border: 1px solid alpha (#fff, 0.4);
+	border-radius: 4px;
+	margin: 2px;
+}
+
+.recorder-track > * > * {
+    color: #fff;
+}
+
+.recorder-track:hover {
+	background: linear-gradient(#888, #555);
+	border: 1px solid alpha (#fff, 0.8);
+}
+
+.recorder-track-mute {
+    box-shadow: 0 0 4px #333;
+    background: #666;
+    background-image: -gtk-icontheme('window-close-symbolic');
+    opacity: 0.5;
+    }
+
+.track-0 {
+	box-shadow: inset -2px 4px 18px #a56de2;
+}
+.track-1 {
+	box-shadow: inset -2px 4px 18px #485a6c;
+}
+.track-2 {
+	box-shadow: inset -2px 4px 18px #3689e6;
+}
+.track-3 {
+	box-shadow: inset -2px 4px 18px #f9c440;
+}
+.track-4{
+	box-shadow: inset -2px 4px 18px #715344;
+}
+.track-5 {
+	box-shadow: inset -2px 4px 18px #de3e80;
+}
+.track-6 {
+	box-shadow: inset -2px 4px 18px #68b723;
+}
+.track-7 {
+	box-shadow: inset -2px 4px 18px #c6262e;
+}
+.track-8 {
+	box-shadow: inset -2px 4px 18px #f37329;
+}
+.track-9 {
+	box-shadow: inset -2px 4px 18px #28bca3;
+}
+
+
+.recorder-progress-line {
+    box-shadow: inset -6px 0 4px alpha (#0f0, 0.4);
+    border-right: 1px solid alpha (#0f0, 0.8);
 }

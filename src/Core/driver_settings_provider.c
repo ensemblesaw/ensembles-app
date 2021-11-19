@@ -217,3 +217,25 @@ get_settings (enum SynthLocation synth_location) {
     }
     return NULL;
 }
+
+
+void
+delete_settings (enum SynthLocation synth_location) {
+    switch (synth_location) {
+        case STYLE_SYNTH:
+        delete_fluid_settings (fs_style_synth_settings);
+        break;
+        case STYLE_ENGINE:
+        delete_fluid_settings (fs_style_engine_settings);
+        break;
+        case REALTIME_SYNTH:
+        delete_fluid_settings (fs_realtime_synth_settings);
+        break;
+        case METRONOME_PLAYER:
+        delete_fluid_settings (fs_metronome_player_settings);
+        break;
+        case MIDI_SONG_PLAYER:
+        delete_fluid_settings (fs_song_player_settings);
+        break;
+    }
+}

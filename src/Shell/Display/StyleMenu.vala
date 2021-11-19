@@ -11,7 +11,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
@@ -36,11 +36,13 @@ namespace Ensembles.Shell {
             close_button.halign = Gtk.Align.END;
 
 
-            var headerbar = new Hdy.HeaderBar ();
+            var headerbar = new Gtk.HeaderBar ();
             headerbar.set_title (_("Style"));
             headerbar.set_subtitle (_("Pick a Rhythm to accompany you"));
             headerbar.get_style_context ().add_class ("menu-header");
+            headerbar.height_request = 42;
             headerbar.pack_start (close_button);
+
             main_list = new Gtk.ListBox ();
             main_list.get_style_context ().add_class ("menu-box");
 
@@ -65,6 +67,14 @@ namespace Ensembles.Shell {
                 scroll_wheel_location = index;
                 change_style (style_rows[index].accomp_style);
                 EnsemblesApp.settings.set_int ("style-index", index);
+
+                if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
+                    var event = new Core.MidiEvent ();
+                    event.event_type = Core.MidiEvent.EventType.STYLECHANGE;
+                    event.value1 = index;
+
+                    Shell.RecorderScreen.sequencer.record_event (event);
+                }
             });
 
             wheel_scrolled_absolute.connect ((value) => {
@@ -120,6 +130,13 @@ namespace Ensembles.Shell {
                 }
                 change_style (selected_style);
                 scroll_to_selected_row ();
+                if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
+                    var event = new Core.MidiEvent ();
+                    event.event_type = Core.MidiEvent.EventType.STYLECHANGE;
+                    event.value1 = index;
+
+                    Shell.RecorderScreen.sequencer.record_event (event);
+                }
                 return false;
             });
         }

@@ -11,7 +11,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
@@ -50,6 +50,7 @@ namespace Ensembles.Shell {
         public signal void start_metronome (bool active);
         public signal void dial_activate ();
         public signal void update_split ();
+        public signal void open_recorder ();
         public ControlPanel () {
             row_spacing = 4;
             column_spacing = 4;
@@ -126,15 +127,42 @@ namespace Ensembles.Shell {
                 accomp_change (active);
                 EnsemblesApp.settings.set_boolean ("accomp-on", active);
                 update_split ();
+
+                // Send to Sequencer for recording
+                if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state == Core.MidiRecorder.RecorderState.RECORDING) {
+                    var event = new Core.MidiEvent ();
+                    event.event_type = Core.MidiEvent.EventType.ACCOMP;
+                    event.value1 = active ? 1 : 0;
+
+                    Shell.RecorderScreen.sequencer.record_event (event);
+                }
             });
             layer_toggle.toggled.connect ((active) => {
                 EnsemblesApp.settings.set_boolean ("layer-on", active);
                 Ensembles.Core.CentralBus.set_layer_on (active);
+
+                // Send to Sequencer for recording
+                if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state == Core.MidiRecorder.RecorderState.RECORDING) {
+                    var event = new Core.MidiEvent ();
+                    event.event_type = Core.MidiEvent.EventType.LAYER;
+                    event.value1 = active ? 1 : 0;
+
+                    Shell.RecorderScreen.sequencer.record_event (event);
+                }
             });
             split_toggle.toggled.connect ((active) => {
                 EnsemblesApp.settings.set_boolean ("split-on", active);
                 Ensembles.Core.CentralBus.set_split_on (active);
                 update_split ();
+
+                // Send to Sequencer for recording
+                if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state == Core.MidiRecorder.RecorderState.RECORDING) {
+                    var event = new Core.MidiEvent ();
+                    event.event_type = Core.MidiEvent.EventType.SPLIT;
+                    event.value1 = active ? 1 : 0;
+
+                    Shell.RecorderScreen.sequencer.record_event (event);
+                }
             });
             metronome_toggle.toggled.connect ((active) => {
                 start_metronome (active);
@@ -144,6 +172,9 @@ namespace Ensembles.Shell {
             });
             main_dial.rotate.connect ((direction, amount) => {
                 dial_rotate (direction, amount);
+            });
+            main_dial.open_recorder_screen.connect (() => {
+                open_recorder ();
             });
             transpose_toggle.toggled.connect ((active) => {
                 Ensembles.Core.Synthesizer.set_transpose_active (active);
@@ -271,17 +302,21 @@ namespace Ensembles.Shell {
 
             connect_events ();
 
-            accomp_toggle.sensitive = true;
-            layer_toggle.sensitive = true;
-            split_toggle.sensitive = true;
-            metronome_toggle.sensitive = true;
+            set_panel_sensitive (true);
+        }
 
-            transpose_toggle.sensitive = true;
-            octave_toggle.sensitive = true;
-            arpeggiator_toggle.sensitive = true;
-            harmonizer_toggle.sensitive = true;
-            reverb_toggle.sensitive = true;
-            chorus_toggle.sensitive = true;
+        public void set_panel_sensitive (bool sensitive) {
+            accomp_toggle.sensitive = sensitive;
+            layer_toggle.sensitive = sensitive;
+            split_toggle.sensitive = sensitive;
+            metronome_toggle.sensitive = sensitive;
+
+            transpose_toggle.sensitive = sensitive;
+            octave_toggle.sensitive = sensitive;
+            arpeggiator_toggle.sensitive = sensitive;
+            harmonizer_toggle.sensitive = sensitive;
+            reverb_toggle.sensitive = sensitive;
+            chorus_toggle.sensitive = sensitive;
         }
     }
 }

@@ -11,7 +11,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
@@ -62,18 +62,28 @@ namespace Ensembles.Shell {
             intro_button_a.set_sensitive (false);
             intro_button_b.set_sensitive (false);
             intro_button_a.clicked.connect (() => {
-                queue_intro_a ();
-                intro_button_a.get_style_context ().add_class ("queue-measure");
-                intro_button_b.get_style_context ().remove_class ("queue-measure");
-                ending_button_a.get_style_context ().remove_class ("queue-measure");
-                ending_button_b.get_style_context ().remove_class ("queue-measure");
+                if (RecorderScreen.sequencer != null) {
+                    RecorderScreen.sequencer.initial_settings_style_part_index = 0;
+                }
+                if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
+                    var event = new Core.MidiEvent ();
+                    event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
+                    event.value1 = 0;
+                    Shell.RecorderScreen.sequencer.record_event (event);
+                }
+                set_style_section_by_index (0);
             });
             intro_button_b.clicked.connect (() => {
-                queue_intro_b ();
-                intro_button_a.get_style_context ().remove_class ("queue-measure");
-                intro_button_b.get_style_context ().add_class ("queue-measure");
-                ending_button_a.get_style_context ().remove_class ("queue-measure");
-                ending_button_b.get_style_context ().remove_class ("queue-measure");
+                if (RecorderScreen.sequencer != null) {
+                    RecorderScreen.sequencer.initial_settings_style_part_index = 1;
+                }
+                if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
+                    var event = new Core.MidiEvent ();
+                    event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
+                    event.value1 = 1;
+                    Shell.RecorderScreen.sequencer.record_event (event);
+                }
+                set_style_section_by_index (1);
             });
 
             var var_fill_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL);
@@ -92,41 +102,70 @@ namespace Ensembles.Shell {
             var_fill_button_c.set_sensitive (false);
             var_fill_button_d.set_sensitive (false);
             var_fill_button_a.clicked.connect (() => {
-                switch_var_a ();
-                var_fill_button_a.get_style_context ().add_class ("queue-measure");
-                var_fill_button_b.get_style_context ().remove_class ("queue-measure");
-                var_fill_button_c.get_style_context ().remove_class ("queue-measure");
-                var_fill_button_d.get_style_context ().remove_class ("queue-measure");
+                if (RecorderScreen.sequencer != null) {
+                    RecorderScreen.sequencer.initial_settings_style_part_index = 2;
+                }
+                if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
+                    var event = new Core.MidiEvent ();
+                    event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
+                    event.value1 = 2;
+                    Shell.RecorderScreen.sequencer.record_event (event);
+                }
+                set_style_section_by_index (2);
             });
 
             var_fill_button_b.clicked.connect (() => {
-                switch_var_b ();
-                var_fill_button_a.get_style_context ().remove_class ("queue-measure");
-                var_fill_button_b.get_style_context ().add_class ("queue-measure");
-                var_fill_button_c.get_style_context ().remove_class ("queue-measure");
-                var_fill_button_d.get_style_context ().remove_class ("queue-measure");
+                if (RecorderScreen.sequencer != null) {
+                    RecorderScreen.sequencer.initial_settings_style_part_index = 3;
+                }
+                if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
+                    var event = new Core.MidiEvent ();
+                    event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
+                    event.value1 = 3;
+                    Shell.RecorderScreen.sequencer.record_event (event);
+                }
+                set_style_section_by_index (3);
             });
 
             var_fill_button_c.clicked.connect (() => {
-                switch_var_c ();
-                var_fill_button_a.get_style_context ().remove_class ("queue-measure");
-                var_fill_button_b.get_style_context ().remove_class ("queue-measure");
-                var_fill_button_c.get_style_context ().add_class ("queue-measure");
-                var_fill_button_d.get_style_context ().remove_class ("queue-measure");
+                if (RecorderScreen.sequencer != null) {
+                    RecorderScreen.sequencer.initial_settings_style_part_index = 4;
+                }
+                if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
+                    var event = new Core.MidiEvent ();
+                    event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
+                    event.value1 = 4;
+                    Shell.RecorderScreen.sequencer.record_event (event);
+                }
+                set_style_section_by_index (4);
             });
 
             var_fill_button_d.clicked.connect (() => {
-                switch_var_d ();
-                var_fill_button_a.get_style_context ().remove_class ("queue-measure");
-                var_fill_button_b.get_style_context ().remove_class ("queue-measure");
-                var_fill_button_c.get_style_context ().remove_class ("queue-measure");
-                var_fill_button_d.get_style_context ().add_class ("queue-measure");
+                if (RecorderScreen.sequencer != null) {
+                    RecorderScreen.sequencer.initial_settings_style_part_index = 5;
+                }
+                if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
+                    var event = new Core.MidiEvent ();
+                    event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
+                    event.value1 = 5;
+                    Shell.RecorderScreen.sequencer.record_event (event);
+                }
+                set_style_section_by_index (5);
             });
 
             break_button = new Gtk.Button.with_label (_("Break"));
             break_button.set_sensitive (false);
             break_button.clicked.connect (() => {
-                break_play ();
+                if (RecorderScreen.sequencer != null) {
+                    RecorderScreen.sequencer.initial_settings_style_part_index = 6;
+                }
+                if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
+                    var event = new Core.MidiEvent ();
+                    event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
+                    event.value1 = 6;
+                    Shell.RecorderScreen.sequencer.record_event (event);
+                }
+                set_style_section_by_index (6);
             });
 
             var ending_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL);
@@ -139,18 +178,28 @@ namespace Ensembles.Shell {
             ending_box.add (ending_button_b);
             ending_box.set_layout (Gtk.ButtonBoxStyle.EXPAND);
             ending_button_a.clicked.connect (() => {
-                queue_ending_a ();
-                ending_button_a.get_style_context ().add_class ("queue-measure");
-                ending_button_b.get_style_context ().remove_class ("queue-measure");
-                intro_button_a.get_style_context ().remove_class ("queue-measure");
-                intro_button_b.get_style_context ().remove_class ("queue-measure");
+                if (RecorderScreen.sequencer != null) {
+                    RecorderScreen.sequencer.initial_settings_style_part_index = 7;
+                }
+                if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
+                    var event = new Core.MidiEvent ();
+                    event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
+                    event.value1 = 7;
+                    Shell.RecorderScreen.sequencer.record_event (event);
+                }
+                set_style_section_by_index (7);
             });
             ending_button_b.clicked.connect (() => {
-                queue_ending_b ();
-                ending_button_a.get_style_context ().remove_class ("queue-measure");
-                ending_button_b.get_style_context ().add_class ("queue-measure");
-                intro_button_a.get_style_context ().remove_class ("queue-measure");
-                intro_button_b.get_style_context ().remove_class ("queue-measure");
+                if (RecorderScreen.sequencer != null) {
+                    RecorderScreen.sequencer.initial_settings_style_part_index = 8;
+                }
+                if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
+                    var event = new Core.MidiEvent ();
+                    event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
+                    event.value1 = 8;
+                    Shell.RecorderScreen.sequencer.record_event (event);
+                }
+                set_style_section_by_index (8);
             });
 
             var sync_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL);
@@ -163,12 +212,28 @@ namespace Ensembles.Shell {
             sync_box.add (sync_stop_button);
             sync_box.set_layout (Gtk.ButtonBoxStyle.EXPAND);
             sync_start_button.clicked.connect (() => {
-                sync_start_button.get_style_context ().add_class ("queue-measure");
-                sync_start ();
+                if (RecorderScreen.sequencer != null) {
+                    RecorderScreen.sequencer.initial_settings_style_part_index = 9;
+                }
+                if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
+                    var event = new Core.MidiEvent ();
+                    event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
+                    event.value1 = 9;
+                    Shell.RecorderScreen.sequencer.record_event (event);
+                }
+                set_style_section_by_index (9);
             });
             sync_stop_button.clicked.connect (() => {
-                sync_stop_button.get_style_context ().add_class ("queue-measure");
-                sync_stop ();
+                if (RecorderScreen.sequencer != null) {
+                    RecorderScreen.sequencer.initial_settings_style_part_index = 10;
+                }
+                if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
+                    var event = new Core.MidiEvent ();
+                    event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
+                    event.value1 = 10;
+                    Shell.RecorderScreen.sequencer.record_event (event);
+                }
+                set_style_section_by_index (10);
             });
 
             start_button = new Gtk.Button.from_icon_name ("media-playback-start-symbolic");
@@ -200,19 +265,19 @@ namespace Ensembles.Shell {
             this.column_spacing = 4;
             this.margin = 4;
         }
-        public void ready () {
-            intro_button_a.set_sensitive (true);
-            intro_button_b.set_sensitive (true);
-            var_fill_button_a.set_sensitive (true);
-            var_fill_button_b.set_sensitive (true);
-            var_fill_button_c.set_sensitive (true);
-            var_fill_button_d.set_sensitive (true);
-            ending_button_a.set_sensitive (true);
-            ending_button_b.set_sensitive (true);
-            sync_start_button.set_sensitive (true);
-            sync_stop_button.set_sensitive (true);
-            start_button.set_sensitive (true);
-            break_button.set_sensitive (true);
+        public void ready (bool? ready = true) {
+            intro_button_a.set_sensitive (ready);
+            intro_button_b.set_sensitive (ready);
+            var_fill_button_a.set_sensitive (ready);
+            var_fill_button_b.set_sensitive (ready);
+            var_fill_button_c.set_sensitive (ready);
+            var_fill_button_d.set_sensitive (ready);
+            ending_button_a.set_sensitive (ready);
+            ending_button_b.set_sensitive (ready);
+            sync_start_button.set_sensitive (ready);
+            sync_stop_button.set_sensitive (ready);
+            start_button.set_sensitive (ready);
+            break_button.set_sensitive (ready);
         }
         public void sync () {
             intro_button_a.get_style_context ().remove_class ("queue-measure");
@@ -318,6 +383,79 @@ namespace Ensembles.Shell {
                 intro_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
                 ending_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
                 ending_button_b.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                break;
+            }
+        }
+
+        public void set_style_section_by_index (int index) {
+            switch (index) {
+                case 0:
+                queue_intro_a ();
+                intro_button_a.get_style_context ().add_class ("queue-measure");
+                intro_button_b.get_style_context ().remove_class ("queue-measure");
+                ending_button_a.get_style_context ().remove_class ("queue-measure");
+                ending_button_b.get_style_context ().remove_class ("queue-measure");
+
+                break;
+                case 1:
+                queue_intro_b ();
+                intro_button_a.get_style_context ().remove_class ("queue-measure");
+                intro_button_b.get_style_context ().add_class ("queue-measure");
+                ending_button_a.get_style_context ().remove_class ("queue-measure");
+                ending_button_b.get_style_context ().remove_class ("queue-measure");
+                break;
+                case 2:
+                switch_var_a ();
+                var_fill_button_a.get_style_context ().add_class ("queue-measure");
+                var_fill_button_b.get_style_context ().remove_class ("queue-measure");
+                var_fill_button_c.get_style_context ().remove_class ("queue-measure");
+                var_fill_button_d.get_style_context ().remove_class ("queue-measure");
+                break;
+                case 3:
+                switch_var_b ();
+                var_fill_button_a.get_style_context ().remove_class ("queue-measure");
+                var_fill_button_b.get_style_context ().add_class ("queue-measure");
+                var_fill_button_c.get_style_context ().remove_class ("queue-measure");
+                var_fill_button_d.get_style_context ().remove_class ("queue-measure");
+                break;
+                case 4:
+                switch_var_c ();
+                var_fill_button_a.get_style_context ().remove_class ("queue-measure");
+                var_fill_button_b.get_style_context ().remove_class ("queue-measure");
+                var_fill_button_c.get_style_context ().add_class ("queue-measure");
+                var_fill_button_d.get_style_context ().remove_class ("queue-measure");
+                break;
+                case 5:
+                switch_var_d ();
+                var_fill_button_a.get_style_context ().remove_class ("queue-measure");
+                var_fill_button_b.get_style_context ().remove_class ("queue-measure");
+                var_fill_button_c.get_style_context ().remove_class ("queue-measure");
+                var_fill_button_d.get_style_context ().add_class ("queue-measure");
+                break;
+                case 6:
+                break_play ();
+                break;
+                case 7:
+                queue_ending_a ();
+                ending_button_a.get_style_context ().add_class ("queue-measure");
+                ending_button_b.get_style_context ().remove_class ("queue-measure");
+                intro_button_a.get_style_context ().remove_class ("queue-measure");
+                intro_button_b.get_style_context ().remove_class ("queue-measure");
+                break;
+                case 8:
+                queue_ending_b ();
+                ending_button_a.get_style_context ().remove_class ("queue-measure");
+                ending_button_b.get_style_context ().add_class ("queue-measure");
+                intro_button_a.get_style_context ().remove_class ("queue-measure");
+                intro_button_b.get_style_context ().remove_class ("queue-measure");
+                break;
+                case 9:
+                sync_start_button.get_style_context ().add_class ("queue-measure");
+                sync_start ();
+                break;
+                case 10:
+                sync_stop_button.get_style_context ().add_class ("queue-measure");
+                sync_stop ();
                 break;
             }
         }

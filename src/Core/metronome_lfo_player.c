@@ -120,8 +120,7 @@ metronome_lfo_player_destruct () {
         lfo_synth = NULL;
     }
     if (lfo_settings) {
-        delete_fluid_settings(lfo_settings);
-        lfo_settings = NULL;
+        delete_settings(METRONOME_PLAYER);
     }
 }
 

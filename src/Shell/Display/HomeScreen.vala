@@ -235,7 +235,7 @@ namespace Ensembles.Shell {
             equalizer_grid.column_spacing = 4;
             equalizer_grid.column_homogeneous = true;
             equalizer_grid.margin_start = 6;
-            equalizer_grid.margin_end = 7;
+            equalizer_grid.margin_end = 6;
             equalizer_grid.margin_top = 4;
 
             var equalizer_label_grid = new Gtk.Grid ();
@@ -254,6 +254,8 @@ namespace Ensembles.Shell {
 
             var channel_button_grid = new Gtk.Grid ();
             channel_button_grid.margin_start = 2;
+            channel_button_grid.margin_end = 2;
+            channel_button_grid.column_homogeneous = true;
             channel_configure_buttons = new Gtk.Button [19];
             for (int i = 0; i < 19; i++) {
                 channel_configure_buttons[i] = new Gtk.Button.from_icon_name ("preferences-system-symbolic",
@@ -278,16 +280,16 @@ namespace Ensembles.Shell {
             bottom_panel.set_column_homogeneous (true);
 
 
-            fx_rack_button = new Gtk.Button.with_label ("𝑓𝑥");
+            fx_rack_button = new Gtk.Button.with_label ("𝑓𝑥 Effects Rack");
             fx_rack_button.margin = 4;
             fx_rack_button.clicked.connect (() => {
                 open_fx_menu ();
             });
 
             var mid_panel = new Gtk.Grid ();
-            mid_panel.valign = Gtk.Align.END;
-            mid_panel.height_request = 78;
-            mid_panel.attach (fx_rack_button, 0, 0);
+            mid_panel.hexpand = true;
+            mid_panel.vexpand = true;
+            mid_panel.column_homogeneous = true;
             this.attach (top_panel, 0, 0, 1, 1);
             this.attach (mid_panel, 0, 1, 1, 1);
             this.attach (bottom_panel, 0, 2, 1, 1);

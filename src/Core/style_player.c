@@ -86,6 +86,16 @@ int chord_type = 0; // Major
 
 int style_original_chord_main = 0;
 
+// Style start/stop callback
+typedef void
+(*style_player_change_state_callback)(gint state);
+
+style_player_change_state_callback state_change_callback;
+
+void
+set_style_change_callback (style_player_change_state_callback callback) {
+    state_change_callback = callback;
+}
 
 void
 style_player_change_chord (int cd_main, int cd_type) {
@@ -110,6 +120,9 @@ style_player_change_chord (int cd_main, int cd_type) {
             printf ("Start central_style_looping\n");
             fluid_player_play(player);
             set_central_style_looping (1);
+            if (state_change_callback != NULL) {
+                state_change_callback (0);
+            }
         }
         set_central_clock (0);
         sync_stop = 0;
@@ -306,8 +319,13 @@ parse_ticks (void* data, int ticks) {
                 } else if (sync_stop) {
                     fluid_player_stop (player);
                     set_central_halt (1);
-                    start_s = start_temp;
-                    end_s = end_temp;
+                    if (start_temp == 11 || start_temp == 13) {
+                        start_s = 3;
+                        end_s = 4;
+                    } else {
+                        start_s = start_temp;
+                        end_s = end_temp;
+                    }
                     set_central_style_looping (0);
                     intro_playing = 0;
                     fill_in = 0;
@@ -316,6 +334,10 @@ parse_ticks (void* data, int ticks) {
                     set_central_style_section (0);
                     set_central_measure (0);
                     style_player_halt_continuous_notes ();
+                    if (state_change_callback != NULL) {
+                        state_change_callback (1);
+                    }
+                    printf ("Sync Stopped\n");
                 }
                 style_player_halt_continuous_notes ();
                 return fluid_player_seek (player, loop_start_tick - 2);
@@ -328,7 +350,7 @@ parse_ticks (void* data, int ticks) {
 
 
 void
-style_player_init (int pipewire_mode) {
+style_player_init () {
     set_central_style_looping (0);
     settings = get_settings(STYLE_ENGINE);
     synth = new_fluid_synth(settings);
@@ -414,19 +436,15 @@ style_player_destruct () {
         fluid_player_stop (player);
         fluid_player_join(player);
         delete_fluid_player(player);
-        player = NULL;
     }
     if (adriver) {
         delete_fluid_audio_driver(adriver);
-        adriver = NULL;
     }
     if (synth) {
         delete_fluid_synth(synth);
-        synth = NULL;
     }
     if (settings) {
-        delete_fluid_settings(settings);
-        settings = NULL;
+        delete_settings(STYLE_ENGINE);
     }
 }
 
@@ -458,6 +476,53 @@ style_player_play_loop (int start, int end) {
 }
 
 void
+style_player_toggle_play () {
+    measure_length = get_loaded_style_time_stamps_by_index(1);
+    if (get_central_style_looping () == 0) {
+        if (start_s == 0) {
+            start_s = 3;
+            end_s = 4;
+            start_temp = start_s;
+            end_temp = end_s;
+        }
+        loop_start_tick = get_loaded_style_time_stamps_by_index(start_s);
+        loop_end_tick = get_loaded_style_time_stamps_by_index(end_s);
+        fluid_player_seek (player, loop_start_tick);
+        printf ("Start central_style_looping\n");
+        fluid_player_play(player);
+        set_central_style_looping (1);
+        if (state_change_callback != NULL) {
+            state_change_callback (0);
+        }
+        if (start_s == 11 || start_s == 13) {
+            sync_stop = 1;
+            start_temp = 3;
+            end_temp = 4;
+        } else {
+            sync_stop = 0;
+        }
+    } else {
+        if (fluid_player_get_status (player) == FLUID_PLAYER_PLAYING) {
+            printf ("Stop central_style_looping\n");
+            fluid_player_stop (player);
+            set_central_halt (1);
+            set_central_style_looping (0);
+            intro_playing = 0;
+            fill_in = 0;
+            fill_queue = 0;
+            set_central_style_section (0);
+            set_central_measure (0);
+            style_player_halt_continuous_notes ();
+            if (state_change_callback != NULL) {
+                state_change_callback (1);
+            }
+        }
+        sync_stop = 0;
+    }
+    set_central_clock (0);
+}
+
+void
 style_player_play () {
     measure_length = get_loaded_style_time_stamps_by_index(1);
     if (get_central_style_looping () == 0) {
@@ -473,28 +538,45 @@ style_player_play () {
         printf ("Start central_style_looping\n");
         fluid_player_play(player);
         set_central_style_looping (1);
-    } else {
-        if (fluid_player_get_status (player) == FLUID_PLAYER_PLAYING) {
-            printf ("Stop central_style_looping\n");
-            fluid_player_stop (player);
-            set_central_halt (1);
-            set_central_style_looping (0);
-            intro_playing = 0;
-            fill_in = 0;
-            fill_queue = 0;
-            set_central_style_section (0);
-            set_central_measure (0);
-            style_player_halt_continuous_notes ();
-        }
     }
     set_central_clock (0);
-    sync_stop = 0;
+    if (start_s == 11 || start_s == 13) {
+        sync_stop = 1;
+        start_temp = 3;
+        end_temp = 4;
+    } else {
+        sync_stop = 0;
+    }
+    if (state_change_callback != NULL) {
+        state_change_callback (0);
+    }
+}
+
+void
+style_player_stop () {
+    if (fluid_player_get_status (player) == FLUID_PLAYER_PLAYING) {
+        printf ("Stop central_style_looping\n");
+        fluid_player_stop (player);
+        set_central_halt (1);
+        set_central_style_looping (0);
+        intro_playing = 0;
+        fill_in = 0;
+        fill_queue = 0;
+        set_central_style_section (0);
+        set_central_measure (0);
+        style_player_halt_continuous_notes ();
+        set_central_clock (0);
+        sync_stop = 0;
+    }
+    if (state_change_callback != NULL) {
+        state_change_callback (1);
+    }
 }
 
 void
 style_player_queue_intro (int start, int end) {
     printf("Intro>>>\n");
-    if (start_s == 0) {
+    if (start_s == 0 || start_s == 1 || start_s == 2) {
         start_s = 3;
         end_s = 4;
     }
