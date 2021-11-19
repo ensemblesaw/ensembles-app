@@ -78,9 +78,10 @@ namespace Ensembles.Shell {
             main_display_deck.add (main_display_leaflet);
 
             main_overlay = new Gtk.Overlay ();
-            main_overlay.height_request = 236;
+            main_overlay.height_request = 274;
             main_overlay.width_request = 460;
             main_overlay.margin = 2;
+            main_overlay.valign = Gtk.Align.CENTER;
 
             // This helps maintain fixed size for all children
             var fixed_size_container = new Gtk.Overlay ();
@@ -91,8 +92,6 @@ namespace Ensembles.Shell {
             this.get_style_context ().add_class ("display-background");
 
             this.add (main_overlay);
-            this.halign = Gtk.Align.CENTER;
-            this.valign = Gtk.Align.START;
             this.vexpand = false;
             this.margin = 4;
 
@@ -176,6 +175,7 @@ namespace Ensembles.Shell {
             });
             recorder_screen.close_menu.connect (() => {
                 main_display_leaflet.set_visible_child (home_screen);
+                main_display_leaflet.queue_draw ();
             });
         }
 

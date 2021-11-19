@@ -319,8 +319,13 @@ parse_ticks (void* data, int ticks) {
                 } else if (sync_stop) {
                     fluid_player_stop (player);
                     set_central_halt (1);
-                    start_s = start_temp;
-                    end_s = end_temp;
+                    if (start_temp == 11 || start_temp == 13) {
+                        start_s = 3;
+                        end_s = 4;
+                    } else {
+                        start_s = start_temp;
+                        end_s = end_temp;
+                    }
                     set_central_style_looping (0);
                     intro_playing = 0;
                     fill_in = 0;
@@ -489,6 +494,13 @@ style_player_toggle_play () {
         if (state_change_callback != NULL) {
             state_change_callback (0);
         }
+        if (start_s == 11 || start_s == 13) {
+            sync_stop = 1;
+            start_temp = 3;
+            end_temp = 4;
+        } else {
+            sync_stop = 0;
+        }
     } else {
         if (fluid_player_get_status (player) == FLUID_PLAYER_PLAYING) {
             printf ("Stop central_style_looping\n");
@@ -505,9 +517,9 @@ style_player_toggle_play () {
                 state_change_callback (1);
             }
         }
+        sync_stop = 0;
     }
     set_central_clock (0);
-    sync_stop = 0;
 }
 
 void
@@ -528,7 +540,13 @@ style_player_play () {
         set_central_style_looping (1);
     }
     set_central_clock (0);
-    sync_stop = 0;
+    if (start_s == 11 || start_s == 13) {
+        sync_stop = 1;
+        start_temp = 3;
+        end_temp = 4;
+    } else {
+        sync_stop = 0;
+    }
     if (state_change_callback != NULL) {
         state_change_callback (0);
     }
@@ -558,7 +576,7 @@ style_player_stop () {
 void
 style_player_queue_intro (int start, int end) {
     printf("Intro>>>\n");
-    if (start_s == 0) {
+    if (start_s == 0 || start_s == 1 || start_s == 2) {
         start_s = 3;
         end_s = 4;
     }

@@ -28,7 +28,8 @@
 
 .home-screen-background {
 	background-image: url("resource://com/github/subhadeepjasu/ensembles/images/display_unit/catalin-sandru-7SxSkCvVM1U-unsplash.jpg");
-	background-size: 460px 236px;
+	background-size: auto 100%;
+	background-position: 50%;
 }
 
 .home-screen-panel-top {
@@ -37,12 +38,12 @@
 }
 
 .display-top-panel-header {
-    font-size: 12px;
+    font-size: 1.11em;
     margin-top: 4px;
 }
 
 .display-top-panel-subheader {
-    font-size: 10px;
+    font-size: 0.8em;
     margin-bottom: 6px;
 }
 
@@ -68,7 +69,7 @@
 }
 
 .home-screen-eq-labels > * {
-    font-size: 8px;
+    font-size: 0.7em;
     color: #CAE974;
     border-top: 1px solid #6C9104;
 }
@@ -76,10 +77,8 @@
 
 .channel-modulator-screen {
     background-image: linear-gradient(alpha(#273445, 0.6), alpha(#273445, 0.6)), url("resource://com/github/subhadeepjasu/ensembles/images/display_unit/catalin-sandru-7SxSkCvVM1U-unsplash-blurred.jpg");
-    background-size: 460px 236px;
-}
-
-.channel-modulator-screen {
+    background-size: auto 100%;
+    background-position: 50%;
     padding: 8px;
 }
 .channel-modulator-close-button {
@@ -91,7 +90,7 @@
     background-color: #02A594;
 }
 .channel-modulator-header {
-    font-size: 22px;
+    font-size: 1.8em;
     margin-left: 4px;
     background-image:linear-gradient(90deg, #007367, alpha(#007367, 0));
     padding: 4px;
@@ -195,7 +194,7 @@
 }
 
 .display-bottom-panel-header {
-    font-size: 10px;
+    font-size: 0.8em;
     font-weight: bold;
     color: #bbb;
 }
@@ -205,12 +204,12 @@
 }
 
 .display-bottom-panel-label {
-    font-size: 14px;
+    font-size: 0.9em;
     color: #A4FFFA;
 }
 
 .display-bottom-panel-label-small {
-	font-size: 9px;
+	font-size: 0.75em;
     color: #A4FFFA;
     margin-top: -2px;
     margin-bottom: -2px;
@@ -265,13 +264,13 @@
     color: #fff;
 }
 .menu-item-label {
-    font-size: 14px;
+    font-size: 1.2em;
 }
 .menu-box > .activatable:selected .menu-item-label {
     text-shadow: 0 1px #a62100;
 }
 .menu-item-description {
-    font-size: 10px;
+    font-size: 0.8em;
     margin-top: 8px;
 }
 
@@ -338,7 +337,7 @@
 }
 
 .toggle-switch {
-	font-size: 10px;
+	font-size: 0.8em;
 }
 
 .toggle-indicator {
@@ -557,7 +556,7 @@
 .ctrl-panel-recorder-button {
     border-radius: 6px 4px 4px 24px;
     padding-left: 10px;
-    font-size: 10px;
+    font-size: 0.96em;;
     outline: 0;
 }
 

@@ -36,10 +36,11 @@ namespace Ensembles.Shell {
             close_button.halign = Gtk.Align.END;
 
 
-            var headerbar = new Hdy.HeaderBar ();
+            var headerbar = new Gtk.HeaderBar ();
             headerbar.set_title (_("Style"));
             headerbar.set_subtitle (_("Pick a Rhythm to accompany you"));
             headerbar.get_style_context ().add_class ("menu-header");
+            headerbar.height_request = 42;
             headerbar.pack_start (close_button);
 
             main_list = new Gtk.ListBox ();

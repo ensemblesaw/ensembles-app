@@ -11,7 +11,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
@@ -82,18 +82,22 @@ namespace Ensembles.Shell {
             beat_counter_active_2.opacity = 0;
             beat_counter_active_3.opacity = 0;
 
+            var placeholder_label = new Gtk.Label (" ");
+            placeholder_label.margin_bottom = 8;
+
             overlay_grid.attach (beat_counter_active_0, 0, 0, 1, 1);
             overlay_grid.attach (beat_counter_active_1, 1, 0, 1, 1);
             overlay_grid.attach (beat_counter_active_2, 2, 0, 1, 1);
             overlay_grid.attach (beat_counter_active_3, 3, 0, 1, 1);
+            overlay_grid.attach (placeholder_label, 4, 0, 1, 1);
             overlay_grid.margin_top = 7;
 
             this.add_overlay (main_grid);
             this.add_overlay (overlay_grid);
             this.show_all ();
             this.set_overlay_pass_through (overlay_grid, true);
-            this.width_request = 190;
-            this.height_request = 34;
+            this.width_request = 210;
+            this.height_request = 42;
         }
 
         public void change_tempo (int tempo) {

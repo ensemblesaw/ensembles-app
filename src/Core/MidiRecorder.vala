@@ -333,6 +333,7 @@ namespace Ensembles.Core {
                 return false;
             });
             Shell.MainWindow.synthesizer.halt_realtime ();
+            _sequencer_progress.queue_draw ();
         }
 
 

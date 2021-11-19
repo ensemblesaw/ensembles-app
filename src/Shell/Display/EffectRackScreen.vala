@@ -16,10 +16,11 @@ namespace Ensembles.Shell {
             close_button.halign = Gtk.Align.END;
 
 
-            var headerbar = new Hdy.HeaderBar ();
+            var headerbar = new Gtk.HeaderBar ();
             headerbar.set_title (_("Effect Rack"));
             headerbar.set_subtitle (_("Effects that are applied to the audio output"));
             headerbar.get_style_context ().add_class ("menu-header");
+            headerbar.height_request = 42;
             headerbar.pack_start (close_button);
             main_list = new Gtk.ListBox ();
             main_list.get_style_context ().add_class ("menu-box");

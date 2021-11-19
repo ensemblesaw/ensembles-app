@@ -11,7 +11,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
@@ -31,20 +31,21 @@ namespace Ensembles.Shell {
             }
         }
         public EqualizerBar () {
-            set_size_request (19, 40);
+            height_request = 40;
             velocity = 0;
         }
 
         public override bool draw (Cairo.Context cr) {
             cr.move_to (0, 0);
             cr.set_source_rgba (0.6, 0.6, 0.6, 0.2);
+            double width = this.get_allocated_width () - 2;
             for (int i = 0; i < 7; i++) {
-                cr.rectangle (0, i * 5, 19, 4);
+                cr.rectangle (0, i * 5, width, 4);
             }
             cr.fill ();
             cr.set_source_rgba (0.42, 0.56, 0.015, 1);
             for (int i = 6; i >= 0; i--) {
-                cr.rectangle (0, i * 5, 19, 4);
+                cr.rectangle (0, i * 5, width, 4);
                 if (i * 16 < _velocity) {
                     break;
                 }

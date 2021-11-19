@@ -41,6 +41,7 @@ namespace Ensembles.Shell {
             headerbar.set_title (_("Recorder"));
             headerbar.set_subtitle (_("Record playback in multiple tracks"));
             headerbar.get_style_context ().add_class ("menu-header");
+            headerbar.height_request = 42;
             headerbar.pack_start (close_button);
             headerbar.pack_start (new_button);
             headerbar.pack_start (open_button);
@@ -202,6 +203,7 @@ namespace Ensembles.Shell {
                     widget.unref ();
                 });
                 name_entry.set_text ("");
+                name_entry.grab_focus ();
             });
         }
 
@@ -342,6 +344,7 @@ namespace Ensembles.Shell {
                         MainWindow.synthesizer.disable_input (true);
                         play_button.sensitive = false;
                         rec_button.sensitive = false;
+                        name_entry.grab_focus ();
                         break;
                     case 1:
                         project_file_chooser.run ();

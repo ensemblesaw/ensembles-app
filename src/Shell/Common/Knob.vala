@@ -79,6 +79,7 @@ namespace Ensembles.Shell {
             this.hexpand = false;
             this.vexpand = true;
             this.width_request = 58;
+            this.height_request = 52;
         }
 
         public void rotate_dial (double value) {
