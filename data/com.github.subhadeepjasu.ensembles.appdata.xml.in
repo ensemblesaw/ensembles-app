@@ -19,6 +19,7 @@
         <li>Touch based on-screen assignable joystick</li>
         <li>Play a one-person band along with Auto Accompaniment Styles based on various genres of music</li>
         <li>Automate your band with Registration Memory and 12 assignable Multipad Variables</li>
+        <li>Record your playback using a 10-track recorder</li>
         <li>Connect to external MIDI keyboard/controller with General MIDI Standard compatibility</li>
     </ul>
   </description>
@@ -36,7 +37,24 @@
   <launchable type="desktop-id">com.github.subhadeepjasu.ensembles.desktop</launchable>
   <screenshots>
     <screenshot type="default">
+      <caption>Instant Playback</caption>
       <image>https://raw.githubusercontent.com/SubhadeepJasu/Ensembles/master/screenshots/Screenshot.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Style Menu</caption>
+      <image>https://raw.githubusercontent.com/SubhadeepJasu/Ensembles/master/screenshots/ScreenshotStyles.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Per Channel Modulators</caption>
+      <image>https://raw.githubusercontent.com/SubhadeepJasu/Ensembles/master/screenshots/ScreenshotChannelModulators.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Master Knob LFO</caption>
+      <image>https://raw.githubusercontent.com/SubhadeepJasu/Ensembles/master/screenshots/ScreenshotLFO.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Multi-track Recorder</caption>
+      <image>https://raw.githubusercontent.com/SubhadeepJasu/Ensembles/master/screenshots/ScreenshotMultiTrackRecorder.png</image>
     </screenshot>
   </screenshots>
   <content_rating type="oars-1.1">
@@ -69,12 +87,22 @@
     <content_attribute id="money-gambling">none</content_attribute>
   </content_rating>
   <releases>
-    <release version="0.0.15" date="2021-11-05">
+    <release version="0.0.15" date="2021-11-21">
       <description>
         <p>New:</p>
         <ul>
           <li>Make settings UI</li>
-          <li>Add Rudimentary LV2 Plugin Support</li>
+          <li>Ability to choose audio driver</li>
+          <li>Ability to change PC keyboard layout</li>
+          <li>Add multitrack recorder with upto 10 tracks, (along with recording style events in the first track)</li>
+          <li>Multi-touch support for on-screen keyboard</li>
+          <li>Add Rudimentary LV2 Plugin Support (Not yet available in the UI)</li>
+        </ul>
+        <p>Fixed:</p>
+        <ul>
+          <li>Fix grid and font rendering in HiDPI screens</li>
+          <li>Make app translatable</li>
+          <li>More memory bugs swatted</li>
         </ul>
       </description>
     </release>

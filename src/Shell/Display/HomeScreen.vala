@@ -446,6 +446,14 @@ namespace Ensembles.Shell {
             chord_type_label.queue_draw ();
         }
 
+        public void update_transpose (int transpose_level) {
+            transpose_label.set_text (transpose_level.to_string ());
+        }
+
+        public void update_octave (int octave_level) {
+            octave_shift_label.set_text (octave_level.to_string ());
+        }
+
         async void update_equalizer () {
             Timeout.add (60000 / (tempo * 16), () => {
                 if (Core.CentralBus.get_style_looping_on ()) {

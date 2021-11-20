@@ -30,6 +30,7 @@ Ensembles is a realtime musical performance arranger app. Its built using Vala a
 * Play a one-person band along with a Auto Accompaniment Style from over 100 [WIP] built-in styles based on various genres of music
 * Automate your band with Registration Memory
 * Record and play audio files using 12 assignable Sampling Pads
+* Record your playback in a multitrack recorder (10 tracks)
 * Play MIDI files using the inbuilt synthesizer
 * Connect to external MIDI keyboard/controller with General MIDI Standard compatibility
 
