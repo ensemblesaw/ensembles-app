@@ -19,6 +19,9 @@
 // vala-lint=skip-file
 
  namespace Ensembles.Shell {
+    public errordomain EnumError {
+        UNKNOWN_VALUE
+    }
     public class KeyboardConstants {
         public enum KeyMap {
             NUMPAD_0     = 65456,
@@ -44,6 +47,10 @@
             KEYPAD_9     = 57,
             KEYPAD_RADIX = 46,
             KEYPAD_COMMA = 44,
+            SEMICOLON    = 59,
+            SINGLEQUOTE  = 39,
+            COLON        = 58,
+            DOUBLEQUOTE  = 34,
             F1           = 65470,
             F2           = 65471,
             F3           = 65472,
@@ -150,8 +157,21 @@
             SPACE_BAR    = 32,
 
             CTRL         = 65507,
-            SHIFT        = 65505
+            SHIFT        = 65505,
+            SHIFTALT     = 65506,
+
+            NONE         = 0;
+
+            public static KeyMap parse (string value) throws EnumError {
+                EnumValue? a;
+                a = ((EnumClass)typeof (KeyMap).class_ref ()).get_value_by_name (value);
+                if (a == null) {
+                    throw new EnumError.UNKNOWN_VALUE (@"String $(value) is not a valid value for $(typeof(KeyMap).name())");
+                }
+                return (KeyMap)a.value;
+            }
         }
+        public static KeyMap[] key_bindings;
         public static bool key_is_number_numpad (uint key) {
             if ((key >= KeyMap.NUMPAD_0) && (key <= KeyMap.NUMPAD_9))
                 return true;
@@ -161,6 +181,124 @@
             if ((key >= KeyMap.KEYPAD_0) && (key <= KeyMap.KEYPAD_9))
                 return true;
             return false;
+        }
+        public static string keycode_to_string (KeyboardConstants.KeyMap key) {
+            string all_labels = _("abcdefghijklmnopqrstuvwxyz,./[]ABCDEFGHIJKLMNOPQRSTUVWXYZ<>{}");
+            string label = "";
+            uint index = key;
+            if (index > 64 && index < 91) {
+                label = all_labels.get_char (index - 34).to_string ();
+            } else if (index > 96 && index < 123) {
+                label = all_labels.get_char (index - 97).to_string ();
+            } else if (index == 44) {
+                label = _("Comma");
+            } else if (index == 46) {
+                label = _("Radix");
+            } else if (index == 47) {
+                label = "/";
+            } else if (index == 91) {
+                label = "[";
+            } else if (index == 93) {
+                label = "]";
+            } else if (index == 123) {
+                label = "{";
+            } else if (index == 125) {
+                label = "}";
+            } else if (index == 60) {
+                label = "<";
+            } else if (index == 62) {
+                label = ">";
+            } else if (index == 63) {
+                label = "?";
+            } else if (index == 59) {
+                label = ";";
+            } else if (index == 39) {
+                label = "\'";
+            } else if (index == 34) {
+                label ="\"";
+            } else if (index == 58) {
+                label = ":";
+            } else {
+                label = _("Empty");
+            }
+            return label;
+        }
+
+        public static int get_note_from_keycode (uint key) {
+            for (int i = 0; i < 60; i++) {
+                if (key_bindings[i] == key) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        public static void save_mapping (Settings settings, string? path = null) {
+            string csv = "";
+
+            for (int i = 0; i < 60; i++) {
+                csv += key_bindings[i].to_string ();
+                if (i < 59) {
+                    csv += ",";
+                }
+            }
+
+            settings.set_string ("pc-input-bindings", csv);
+
+            if (path != null) {
+                try {
+                    var file = File.new_for_path (path);
+                    if (file.query_exists ()) {
+                        file.delete ();
+                    }
+                    var fs = file.create (GLib.FileCreateFlags.NONE);
+
+                    var ds = new DataOutputStream (fs);
+                    ds.put_string (csv);
+                } catch (Error e) {
+                    warning (e.message);
+                }
+            }
+        }
+
+        public static void load_mapping (Settings settings, string? path = null) {
+            key_bindings = new KeyMap[60];
+            string csv = "";
+            if (path != null) {
+                try {
+                    var file = File.new_for_path (path);
+                    if (!file.query_exists ()) {
+                        error ("Cannot open file");
+                    }
+                    var dis = new DataInputStream (file.read ());
+
+                    csv = dis.read_line (null);
+
+                    settings.set_string ("pc-input-bindings", csv);
+                } catch (Error e) {
+                    warning (e.message);
+                }
+            } else {
+                csv = settings.get_string ("pc-input-bindings");
+            }
+
+            var binds = csv.split (",", 60);
+            if (binds.length == 60) {
+                try {
+                    for (int i = 0; i < 60; i++) {
+                        key_bindings[i] = KeyMap.parse (binds[i]);
+                    }
+                } catch (Error e) {
+                    print ("Failed To get bindings: %s\n", e.message);
+                    for (int i = 0; i < 60; i++){
+                        key_bindings[i] = KeyMap.NONE;
+                    }
+                }
+            } else {
+                for (int i = 0; i < 60; i++){
+                    key_bindings[i] = KeyMap.NONE;
+                }
+            }
         }
     }
 }

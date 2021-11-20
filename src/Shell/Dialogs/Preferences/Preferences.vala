@@ -27,6 +27,9 @@ namespace Ensembles.Shell.Dialogs.Preferences {
         private Gtk.Stack stack;
         //private uint timeout_id = 0;
         private Gtk.InfoBar infobar;
+        private List<ItemInput> input_binding_items;
+        private ItemInput selected_input_item;
+        private string default_binding_preset_path = GLib.Environment.get_home_dir () + "/Documents/Ensembles/InputPresets";
 
         private const Gtk.TargetEntry[] TARGET_ENTRIES_LABELS = {
             {"LABELROW", Gtk.TargetFlags.SAME_APP, 0}
@@ -60,6 +63,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             stack.add_named (get_home_widget (), "home");
             stack.add_named (get_audio_widget (), "audio");
             stack.add_named (get_about_widget (), "about");
+            stack.add_named (get_keyboard_widget (), "input");
 
             // Show the intended view
             Timeout.add (125, () => {
@@ -219,7 +223,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             });
 
             input_item.activated.connect (() => {
-                stack.visible_child_name = "quick-add";
+                stack.visible_child_name = "input";
             });
 
             about_item.activated.connect (() => {
@@ -384,6 +388,197 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             top_box.done_activated.connect (() => {
                 hide_destroy ();
             });
+
+            return main_box;
+        }
+
+        delegate void BindingUpdate ();
+
+        private Gtk.Widget get_keyboard_widget () {
+            var top_box = new Dialogs.Preferences.TopBox ("input-keyboard", _("Input"));
+            top_box.back_activated.connect (() => {
+                stack.visible_child_name = "home";
+            });
+
+            top_box.done_activated.connect (() => {
+                hide_destroy ();
+            });
+
+            if (DirUtils.create_with_parents (Environment.get_home_dir () + "/Documents/Ensembles", 2000) != -1) {
+                if (DirUtils.create_with_parents (
+                    default_binding_preset_path, 2000) != -1) {
+                    debug ("Made input presets folder\n");
+                }
+            }
+
+            Gtk.FileChooserDialog mapping_file_chooser;
+            mapping_file_chooser = new Gtk.FileChooserDialog (_("Export PC Keyboard Input Mapping"),
+                                                                EnsemblesApp.main_window,
+                                                                Gtk.FileChooserAction.SAVE,
+                                                                _("Cancel"),
+                                                                Gtk.ResponseType.CANCEL,
+                                                                _("Export"),
+                                                                Gtk.ResponseType.ACCEPT
+                                                                );
+            mapping_file_chooser.set_current_folder (default_binding_preset_path);
+            mapping_file_chooser.set_current_name ("Untitled.csv");
+            mapping_file_chooser.set_do_overwrite_confirmation (true);
+            var file_filter_csv = new Gtk.FileFilter ();
+            file_filter_csv.add_mime_type ("text/csv");
+            file_filter_csv.set_filter_name (_("Comma Separated Values File"));
+            mapping_file_chooser.set_filter (file_filter_csv);
+
+            mapping_file_chooser.response.connect ((response_id) => {
+                if (response_id == -3) {
+                    KeyboardConstants.save_mapping (EnsemblesApp.settings, mapping_file_chooser.get_file ().get_path ());
+                }
+            });
+
+            Gtk.FileChooserDialog mapping_file_open_chooser;
+            mapping_file_open_chooser = new Gtk.FileChooserDialog (_("Import PC Keyboard Input Mapping"),
+                                                                EnsemblesApp.main_window,
+                                                                Gtk.FileChooserAction.OPEN,
+                                                                _("Cancel"),
+                                                                Gtk.ResponseType.CANCEL,
+                                                                _("Import"),
+                                                                Gtk.ResponseType.ACCEPT
+                                                                );
+
+            mapping_file_open_chooser.set_filter (file_filter_csv);
+            mapping_file_open_chooser.set_current_folder (default_binding_preset_path);
+
+            var input_key_box = new Gtk.ListBox ();
+            input_key_box.selection_mode = Gtk.SelectionMode.SINGLE;
+            input_key_box.get_style_context ().add_class ("input-key-box");
+            input_key_box.set_activate_on_single_click (true);
+            input_binding_items = new List<ItemInput> ();
+
+            KeyboardConstants.load_mapping (EnsemblesApp.settings);
+            int j = 0;
+            for (int i = 3; i < 8; i++) {
+                var c_note_item = new ItemInput (j, "C " + i.to_string() , KeyboardConstants.key_bindings[j++], false);
+                input_binding_items.append (c_note_item);
+                input_key_box.insert (c_note_item, -1);
+                var cs_note_item = new ItemInput (j, "C♯ " + i.to_string() , KeyboardConstants.key_bindings[j++], true);
+                input_binding_items.append (cs_note_item);
+                input_key_box.insert (cs_note_item, -1);
+                var d_note_item = new ItemInput (j, "D " + i.to_string() , KeyboardConstants.key_bindings[j++], false);
+                input_binding_items.append (d_note_item);
+                input_key_box.insert (d_note_item, -1);
+                var ds_note_item = new ItemInput (j, "E♭ " + i.to_string() , KeyboardConstants.key_bindings[j++], true);
+                input_binding_items.append (ds_note_item);
+                input_key_box.insert (ds_note_item, -1);
+                var e_note_item = new ItemInput (j, "E " + i.to_string() , KeyboardConstants.key_bindings[j++], false);
+                input_binding_items.append (e_note_item);
+                input_key_box.insert (e_note_item, -1);
+                var f_note_item = new ItemInput (j, "F " + i.to_string() , KeyboardConstants.key_bindings[j++], false);
+                input_binding_items.append (f_note_item);
+                input_key_box.insert (f_note_item, -1);
+                var fs_note_item = new ItemInput (j, "F♯ " + i.to_string() , KeyboardConstants.key_bindings[j++], true);
+                input_binding_items.append (fs_note_item);
+                input_key_box.insert (fs_note_item, -1);
+                var g_note_item = new ItemInput (j, "G " + i.to_string() , KeyboardConstants.key_bindings[j++], false);
+                input_binding_items.append (g_note_item);
+                input_key_box.insert (g_note_item, -1);
+                var gs_note_item = new ItemInput (j, "G♯ " + i.to_string() , KeyboardConstants.key_bindings[j++], true);
+                input_binding_items.append (gs_note_item);
+                input_key_box.insert (gs_note_item, -1);
+                var a_note_item = new ItemInput (j, "A " + i.to_string() , KeyboardConstants.key_bindings[j++], false);
+                input_binding_items.append (a_note_item);
+                input_key_box.insert (a_note_item, -1);
+                var bf_note_item = new ItemInput (j, "B♭ " + i.to_string() , KeyboardConstants.key_bindings[j++], true);
+                input_binding_items.append (bf_note_item);
+                input_key_box.insert (bf_note_item, -1);
+                var b_note_item = new ItemInput (j, "B " + i.to_string() , KeyboardConstants.key_bindings[j++], false);
+                input_binding_items.append (b_note_item);
+                input_key_box.insert (b_note_item, -1);
+            }
+
+            BindingUpdate update_bindings_ui = (() => {
+                for (int i = 0; i < 60; i++) {
+                    input_binding_items.nth_data (i).update_labels (KeyboardConstants.key_bindings[i]);
+                }
+            });
+
+            update_bindings_ui ();
+
+            mapping_file_open_chooser.response.connect ((response_id) => {
+                if (response_id == -3) {
+                    KeyboardConstants.load_mapping (EnsemblesApp.settings, mapping_file_open_chooser.get_file ().get_path ());
+                    update_bindings_ui ();
+                }
+            });
+
+            input_key_box.row_activated.connect ((row) => {
+                selected_input_item = (ItemInput)row;
+            });
+
+            input_key_box.key_press_event.connect ((event) => {
+                var keyval = event.keyval;
+                if (keyval == KeyboardConstants.KeyMap.ESCAPE) {
+                    input_key_box.unselect_all ();
+                    selected_input_item = null;
+                } else {
+                    if (selected_input_item != null) {
+                        if ((keyval > 64 && keyval < 91) ||
+                            (keyval > 96 && keyval < 123) ||
+                            keyval == 44 ||
+                            keyval == 46 ||
+                            keyval == 47 ||
+                            keyval == 91 ||
+                            keyval == 93 ||
+                            keyval == 123 ||
+                            keyval == 125 ||
+                            keyval == 60 ||
+                            keyval == 62 ||
+                            keyval == 63 ||
+                            keyval == 59 ||
+                            keyval == 39 ||
+                            keyval == 34 ||
+                            keyval == 58) {
+
+                            KeyboardConstants.key_bindings[selected_input_item.note_index] = (KeyboardConstants.KeyMap)keyval;
+                            selected_input_item.update_labels (KeyboardConstants.key_bindings[selected_input_item.note_index]);
+                            KeyboardConstants.save_mapping (EnsemblesApp.settings);
+                            input_key_box.unselect_all ();
+                            selected_input_item = null;
+                        }
+                    }
+                }
+                return false;
+            });
+
+            var scrollable = new Gtk.ScrolledWindow (null, null);
+            scrollable.vexpand = true;
+            scrollable.add (input_key_box);
+
+            var open_pc_input_preset_button = new Gtk.Button.with_label (_("Import PC Keyboard Input Preset"));
+            open_pc_input_preset_button.hexpand = true;
+            open_pc_input_preset_button.clicked.connect (() => {
+                mapping_file_open_chooser.run ();
+                mapping_file_open_chooser.hide ();
+            });
+            var save_pc_input_preset_button = new Gtk.Button.from_icon_name ("document-save-as-symbolic", Gtk.IconSize.BUTTON);
+            save_pc_input_preset_button.get_style_context ().remove_class ("image-button");
+            save_pc_input_preset_button.tooltip_text = _("Export Preset As");
+            save_pc_input_preset_button.clicked.connect (() => {
+                mapping_file_chooser.run ();
+                mapping_file_chooser.hide ();
+            });
+            var btn_grid = new Gtk.Grid ();
+            btn_grid.attach (open_pc_input_preset_button, 0, 0);
+            btn_grid.attach (save_pc_input_preset_button, 1, 0);
+            btn_grid.margin = 4;
+            btn_grid.column_spacing = 4;
+
+            var main_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+            main_box.pack_start (top_box, false, false, 0);
+            var separator_a = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
+            main_box.pack_start (separator_a, false, false, 0);
+            main_box.pack_start (scrollable, false, true, 0);
+            var separator_b = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
+            main_box.pack_start (separator_b, false, false, 0);
+            main_box.pack_end (btn_grid, false, false, 0);
 
             return main_box;
         }

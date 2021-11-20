@@ -337,7 +337,7 @@
 }
 
 .toggle-switch {
-	font-size: 0.8em;
+	font-size: 0.9em;
 }
 
 .toggle-indicator {
@@ -840,4 +840,34 @@
 .recorder-progress-line {
     box-shadow: inset -6px 0 4px alpha (#0f0, 0.4);
     border-right: 1px solid alpha (#0f0, 0.8);
+}
+
+.setings-input-item-key-label {
+	color: #f3f3f3;
+	background: alpha(#000, 0.5);
+	border: 1px solid alpha(#ccc, 0.5);
+	border-radius: 4px;
+	font-size: 0.9em;
+}
+
+.setings-input-item-white {
+    background: #444;
+    box-shadow: inset 0 1px #666, inset 0 -1px #000;
+}
+
+.setings-input-item-black {
+    background: #222;
+    box-shadow: inset 0 1px #444, inset 0 -1px #000;
+}
+
+.input-key-box > .activatable:selected {
+	background-color: alpha(@accent_color, 0.25);
+    background-image: -gtk-icontheme('edit-symbolic');
+    background-repeat: no-repeat;
+    background-position: 10% 50%;
+    background-size: 16px;
+}
+
+.input-key-box > .activatable:selected > .horizontal > .keycap {
+    color: #666;
 }

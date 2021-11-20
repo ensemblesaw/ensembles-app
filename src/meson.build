@@ -66,6 +66,7 @@ ensembles_sources_vala = files (
     'Shell/Common/VoiceItem.vala',
 
     'Shell/Dialogs/Preferences/Item.vala',
+    'Shell/Dialogs/Preferences/ItemInput.vala',
     'Shell/Dialogs/Preferences/ItemScale.vala',
     'Shell/Dialogs/Preferences/ItemSelect.vala',
     'Shell/Dialogs/Preferences/Preferences.vala',
