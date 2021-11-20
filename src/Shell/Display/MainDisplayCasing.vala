@@ -66,6 +66,7 @@ namespace Ensembles.Shell {
             main_stack.add_named (recorder_screen, "Sequencer");
 
             splash_screen = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/display_unit/ensembles_splash.svg");
+            splash_screen.get_style_context ().add_class ("splash-background");
 
             main_display_leaflet = new Hdy.Leaflet ();
             main_display_leaflet.set_mode_transition_duration (400);
@@ -101,6 +102,9 @@ namespace Ensembles.Shell {
         public void queue_remove_splash () {
             Timeout.add (2000, () => {
                 main_overlay.remove (splash_screen);
+                if (splash_screen != null) {
+                    splash_screen.unref ();
+                }
                 return false;
             });
         }
@@ -294,6 +298,14 @@ namespace Ensembles.Shell {
                     break;
                 }
             }
+        }
+
+        public void update_transpose (int transpose) {
+            home_screen.update_transpose (transpose);
+        }
+
+        public void update_octave (int octave) {
+            home_screen.update_octave (octave);
         }
     }
 }

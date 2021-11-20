@@ -11,7 +11,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  *
  * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
@@ -105,6 +105,8 @@ namespace Ensembles.Shell {
             rewind_button.clicked.connect (() => {
                 rewind ();
             });
+
+            row_homogeneous = true;
         }
 
         public void set_playing (bool playing) {

@@ -179,10 +179,22 @@ namespace Ensembles.Shell {
             transpose_toggle.toggled.connect ((active) => {
                 Ensembles.Core.Synthesizer.set_transpose_active (active);
                 EnsemblesApp.settings.set_boolean ("transpose-on", active);
+
+                if (active) {
+                    MainWindow.main_display_unit.update_transpose (Core.Synthesizer.get_transpose ());
+                } else {
+                    MainWindow.main_display_unit.update_transpose (0);
+                }
             });
             octave_toggle.toggled.connect ((active) => {
                 Ensembles.Core.Synthesizer.set_octave_shifted (active);
                 EnsemblesApp.settings.set_boolean ("octave-shift-on", active);
+
+                if (active) {
+                    MainWindow.main_display_unit.update_octave (Core.Synthesizer.get_octave ());
+                } else {
+                    MainWindow.main_display_unit.update_octave (0);
+                }
             });
             reverb_toggle.toggled.connect ((active) => {
                 reverb_active_change (active);
@@ -204,12 +216,24 @@ namespace Ensembles.Shell {
             int level = (int)(transpose_spin_button.value);
             EnsemblesApp.settings.set_int ("transpose-level", level);
             Ensembles.Core.Synthesizer.set_transpose (level);
+
+            if (Core.Synthesizer.get_transpose_active ()) {
+                MainWindow.main_display_unit.update_transpose (level);
+            } else {
+                MainWindow.main_display_unit.update_transpose (0);
+            }
         }
 
         private void octave_spin_handler () {
             int level = (int)(octave_spin_button.value);
             EnsemblesApp.settings.set_int ("octave-shift-level", level);
             Ensembles.Core.Synthesizer.set_octave (level);
+
+            if (Core.Synthesizer.get_octave_shifted ()) {
+                MainWindow.main_display_unit.update_octave (level);
+            } else {
+                MainWindow.main_display_unit.update_octave (0);
+            }
         }
 
         private void chorus_spin_handler () {

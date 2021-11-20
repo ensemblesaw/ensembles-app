@@ -91,7 +91,6 @@ namespace Ensembles.Shell {
         }
 
         public void handle_keyrelease_event (uint keyval) {
-            print ("%u\n", keyval);
             if (keyval == KeyboardConstants.KeyMap.SHIFT || keyval == KeyboardConstants.KeyMap.SHIFTALT) {
                 for (int i = 0; i < 60; i++) {
                     if (key_activated[i]) {

@@ -614,7 +614,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             fluidsynth_version.get_style_context ().add_class ("h3");
             fluidsynth_version.margin_top = 6;
 
-            var version_label = new Gtk.Label ("AW - 100");
+            var version_label = new Gtk.Label ("AW - 200");
             version_label.get_style_context ().add_class ("dim-label");
 
             var web_item = new Dialogs.Preferences.Item ("web-browser", _("Website"));

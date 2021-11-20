@@ -153,8 +153,16 @@ namespace Ensembles.Core {
             return synthesizer_get_velocity_levels (synth_index, channel);
         }
 
+        public static int get_transpose () {
+            return synthesizer_transpose;
+        }
+
         public static void set_transpose (int transpose) {
             synthesizer_transpose = transpose;
+        }
+
+        public static bool get_transpose_active () {
+            return synthesizer_transpose_enable == 1;
         }
 
         public static void set_transpose_active (bool active) {
@@ -165,8 +173,16 @@ namespace Ensembles.Core {
             }
         }
 
+        public static int get_octave () {
+            return synthesizer_octave;
+        }
+
         public static void set_octave (int octave) {
             synthesizer_octave = octave;
+        }
+
+        public static bool get_octave_shifted () {
+            return synthesizer_octave_shifted == 1;
         }
 
         public static void set_octave_shifted (bool active) {

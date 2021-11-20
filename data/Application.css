@@ -22,6 +22,10 @@
 	border-radius: 50%;
 }
 
+.splash-background {
+    background: #202020;
+}
+
 .display-background {
     background-color: #000;
 }
@@ -33,7 +37,9 @@
 }
 
 .home-screen-panel-top {
-    background-color: alpha(#007367, 0.75);
+    background-image: linear-gradient(alpha(#007367, 0.6),alpha(#007367, 0.6)),url("resource://com/github/subhadeepjasu/ensembles/images/display_unit/catalin-sandru-7SxSkCvVM1U-unsplash-blurred.jpg");
+    background-size: auto 600%;
+    background-position: 50% 0;
     border-bottom: 1px solid alpha(#000, 0.5);
 }
 
@@ -60,7 +66,9 @@
 }
 
 .home-screen-panel-bottom {
-	background: alpha(#273445, 0.8);
+	background-image: linear-gradient(alpha(#273445, 0.6),alpha(#273445, 0.6)),url("resource://com/github/subhadeepjasu/ensembles/images/display_unit/catalin-sandru-7SxSkCvVM1U-unsplash-blurred.jpg");
+    background-size: auto 250%;
+    background-position: 50% 100%;
 	border-top: 1px solid alpha(#000, 0.5);
 }
 
