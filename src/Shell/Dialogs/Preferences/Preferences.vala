@@ -408,6 +408,17 @@ namespace Ensembles.Shell.Dialogs.Preferences {
                 if (DirUtils.create_with_parents (
                     default_binding_preset_path, 2000) != -1) {
                     debug ("Made input presets folder\n");
+
+                    var preset_file = File.new_for_path (default_binding_preset_path + "/dell_en_all_keys_generic.csv");
+                    if (!preset_file.query_exists ()) {
+                        try {
+                            var fs = preset_file.create (GLib.FileCreateFlags.NONE);
+                            var ds = new DataOutputStream (fs);
+                            ds.put_string (EnsemblesApp.settings.get_string ("pc-input-bindings"));
+                        } catch (Error e) {
+                            warning ("Cannot create input preset file! " + e.message);
+                        }
+                    }
                 }
             }
 
