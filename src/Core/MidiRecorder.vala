@@ -393,7 +393,7 @@ namespace Ensembles.Core {
                 if (current_state == RecorderState.STOPPED) {
                     break;
                 }
-                Thread.usleep (10000);
+                Thread.usleep (45454);
                 if (current_state == RecorderState.STOPPED) {
                     break;
                 }

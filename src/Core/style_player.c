@@ -90,7 +90,7 @@ int style_original_chord_main = 0;
 typedef void
 (*style_player_change_state_callback)(gint state);
 
-style_player_change_state_callback state_change_callback;
+static style_player_change_state_callback state_change_callback;
 
 void
 set_style_change_callback (style_player_change_state_callback callback) {
