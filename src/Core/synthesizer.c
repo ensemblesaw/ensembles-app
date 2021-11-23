@@ -151,7 +151,7 @@ typedef void
                         gfloat** output_r,
                         gint* output_r_length1);
 
-synthesizer_fx_callback fx_callback;
+static synthesizer_fx_callback fx_callback;
 
 void
 set_fx_callback (synthesizer_fx_callback callback) {
