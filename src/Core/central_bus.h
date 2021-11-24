@@ -1,20 +1,6 @@
-/*-
- * Copyright (c) 2021-2022 Subhadeep Jasu <subhajasu@gmail.com>
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License 
- * along with this program. If not, see <https://www.gnu.org/licenses/>.
- *
- * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
+/*
+ * Copyright 2020-2022 Subhadeep Jasu <subhajasu@gmail.com>
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 #ifndef CENTRAL_BUS_H
@@ -26,7 +12,7 @@
  */
 int get_central_clock ();
 /** This function allows you to set the value manually, but it's not
- * recommended to use this function in your code unless it's for resetting 
+ * recommended to use this function in your code unless it's for resetting
  * purposes (set to 0) only
  */
 void set_central_clock (int value);
@@ -39,13 +25,13 @@ void set_central_clock (int value);
  * Its also used by the UI to stop UI events where necessary
  */
 /** This function gives you the current value of halt signal
- */ 
+ */
 int get_central_halt ();
 /** This is used to rais a halt signal
  */
 void set_central_halt (int value);
 
-/** Ready signals are used to notify the rest of the application that a 
+/** Ready signals are used to notify the rest of the application that a
  * particular module is ready. Useful for controlling certain UI elements
  * show based on whether the underlying system is ready.
  */

@@ -1,20 +1,6 @@
-/*-
- * Copyright (c) 2021-2022 Subhadeep Jasu <subhajasu@gmail.com>
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License 
- * along with this program. If not, see <https://www.gnu.org/licenses/>.
- *
- * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
+/*
+ * Copyright 2020-2022 Subhadeep Jasu <subhajasu@gmail.com>
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 #include <fluidsynth.h>
@@ -74,7 +60,7 @@ music_player_init (const gchar* sf_loc) {
     // fluid_settings_setint(mp_settings, "audio.realtime-prio", 40);
     // fluid_settings_setnum(mp_settings, "synth.gain", 1.0);
     mp_synth = new_fluid_synth(mp_settings);
-    mp_adriver = new_fluid_audio_driver(mp_settings, mp_synth);  
+    mp_adriver = new_fluid_audio_driver(mp_settings, mp_synth);
 
     if (fluid_is_soundfont(sf_loc)) {
         fluid_synth_sfload(mp_synth, sf_loc, 1);

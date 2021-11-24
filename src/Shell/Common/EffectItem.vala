@@ -1,3 +1,8 @@
+/*
+ * Copyright 2020-2022 Subhadeep Jasu <subhajasu@gmail.com>
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
 namespace Ensembles.Shell {
     public class EffectItem : Gtk.ListBoxRow {
         weak PlugIns.PlugIn plugin_reference;
