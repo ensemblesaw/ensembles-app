@@ -36,6 +36,11 @@ install_data (
     install_dir: join_paths (get_option ('datadir'), 'glib-2.0', 'schemas')
 )
 
+install_data (
+    join_paths ('Themes', 'DisplayUnit.css'),
+    install_dir: join_paths (get_option ('datadir'), meson.project_name (), 'themes')
+)
+
 install_subdir (
     'docs',
     install_dir: join_paths (get_option ('datadir'), meson.project_name ())

@@ -36,7 +36,7 @@ namespace Ensembles.Interfaces {
             if (media_keys != null) {
                 media_keys.MediaPlayerKeyPressed.connect (pressed_key);
                 try {
-                    media_keys.GrabMediaPlayerKeys (Shell.EnsemblesApp.instance.application_id, (uint32)0);
+                    media_keys.GrabMediaPlayerKeys (Ensembles.Application.instance.application_id, (uint32)0);
                 }
                 catch (Error err) {
                     warning ("Could not grab media player keys: %s", err.message);
@@ -52,7 +52,7 @@ namespace Ensembles.Interfaces {
         }
 
         private void pressed_key (dynamic Object bus, string application, string key) {
-            if (application == (Shell.EnsemblesApp.instance.application_id)) {
+            if (application == (Ensembles.Application.instance.application_id)) {
                 if (key == "Previous") {
                     media_key_pressed_prev ();
                 }

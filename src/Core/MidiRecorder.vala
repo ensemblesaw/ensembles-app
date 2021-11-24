@@ -205,8 +205,8 @@ namespace Ensembles.Core {
                 play (true);
                 var initial_event_voice_r1 = new MidiEvent ();
                 initial_event_voice_r1.event_type = MidiEvent.EventType.VOICECHANGE;
-                initial_event_voice_r1.value1 = Shell.EnsemblesApp.settings.get_int ("voice-r1-bank");
-                initial_event_voice_r1.value2 = Shell.EnsemblesApp.settings.get_int ("voice-r1-preset");
+                initial_event_voice_r1.value1 = Ensembles.Application.settings.get_int ("voice-r1-bank");
+                initial_event_voice_r1.value2 = Ensembles.Application.settings.get_int ("voice-r1-preset");
                 if (_track == 0) {
                     initial_event_voice_r1.channel = 6;
                 } else {
@@ -217,36 +217,36 @@ namespace Ensembles.Core {
                 if (_track == 0) {
                     var initial_event_voice_r2 = new MidiEvent ();
                     initial_event_voice_r2.event_type = MidiEvent.EventType.VOICECHANGE;
-                    initial_event_voice_r2.value1 = Shell.EnsemblesApp.settings.get_int ("voice-r2-bank");
-                    initial_event_voice_r2.value2 = Shell.EnsemblesApp.settings.get_int ("voice-r2-preset");
+                    initial_event_voice_r2.value1 = Ensembles.Application.settings.get_int ("voice-r2-bank");
+                    initial_event_voice_r2.value2 = Ensembles.Application.settings.get_int ("voice-r2-preset");
                     initial_event_voice_r2.channel = 1;
                     make_initial_events (initial_event_voice_r2);
 
                     var initial_event_voice_l = new MidiEvent ();
                     initial_event_voice_l.event_type = MidiEvent.EventType.VOICECHANGE;
-                    initial_event_voice_l.value1 = Shell.EnsemblesApp.settings.get_int ("voice-l-bank");
-                    initial_event_voice_l.value2 = Shell.EnsemblesApp.settings.get_int ("voice-l-preset");
+                    initial_event_voice_l.value1 = Ensembles.Application.settings.get_int ("voice-l-bank");
+                    initial_event_voice_l.value2 = Ensembles.Application.settings.get_int ("voice-l-preset");
                     initial_event_voice_l.channel = 2;
                     make_initial_events (initial_event_voice_l);
 
                     var initial_layer_event = new MidiEvent ();
                     initial_layer_event.event_type = MidiEvent.EventType.LAYER;
-                    initial_layer_event.value1 = Shell.EnsemblesApp.settings.get_boolean ("layer-on") ? 1 : 0;
+                    initial_layer_event.value1 = Ensembles.Application.settings.get_boolean ("layer-on") ? 1 : 0;
                     make_initial_events (initial_layer_event);
 
                     var initial_split_event = new MidiEvent ();
                     initial_split_event.event_type = MidiEvent.EventType.SPLIT;
-                    initial_split_event.value1 = Shell.EnsemblesApp.settings.get_boolean ("split-on") ? 1 : 0;
+                    initial_split_event.value1 = Ensembles.Application.settings.get_boolean ("split-on") ? 1 : 0;
                     make_initial_events (initial_split_event);
 
                     var initial_accomp_event = new MidiEvent ();
                     initial_accomp_event.event_type = MidiEvent.EventType.ACCOMP;
-                    initial_accomp_event.value1 = Shell.EnsemblesApp.settings.get_boolean ("accomp-on") ? 1 : 0;
+                    initial_accomp_event.value1 = Ensembles.Application.settings.get_boolean ("accomp-on") ? 1 : 0;
                     make_initial_events (initial_accomp_event);
 
                     var initial_style_selection = new MidiEvent ();
                     initial_style_selection.event_type = MidiEvent.EventType.STYLECHANGE;
-                    initial_style_selection.value1 = Shell.EnsemblesApp.settings.get_int ("style-index");
+                    initial_style_selection.value1 = Ensembles.Application.settings.get_int ("style-index");
                     make_initial_events (initial_style_selection);
 
                     var initial_tempo = new MidiEvent ();

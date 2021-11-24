@@ -62,7 +62,7 @@ namespace Ensembles.Shell {
 
             // Find out which driver was selected in user settings
             debug ("STARTUP: Initializing Settings");
-            string driver_string = Core.DriverSettingsProvider.get_available_driver (EnsemblesApp.settings.get_string ("driver"));
+            string driver_string = Core.DriverSettingsProvider.get_available_driver (Ensembles.Application.settings.get_string ("driver"));
             if (driver_string == "") {
                 error ("FATAL: No compatible audio drivers found!");
             }
@@ -70,7 +70,7 @@ namespace Ensembles.Shell {
             // Initialize settings object with the given driver and buffer length
             Core.DriverSettingsProvider.initialize_drivers (
                 driver_string,
-                EnsemblesApp.settings.get_double ("buffer-length")
+                Application.settings.get_double ("buffer-length")
             );
 
             // Load Central Bus
@@ -351,8 +351,8 @@ namespace Ensembles.Shell {
             });
             controller_connection.receive_note_event.connect ((key, on, velocity)=>{
                 //  debug ("%d %d %d\n", key, on, velocity);
-                if (EnsemblesApp.settings.get_boolean ("arpeggiator-on")) {
-                    if (EnsemblesApp.settings.get_boolean ("accomp-on")) {
+                if (Application.settings.get_boolean ("arpeggiator-on")) {
+                    if (Application.settings.get_boolean ("accomp-on")) {
                         if (key > Core.CentralBus.get_split_key ()) {
                             arpeggiator.send_notes (key, on, velocity);
                         } else {
@@ -364,8 +364,8 @@ namespace Ensembles.Shell {
                 } else {
                     synthesizer.send_notes_realtime (key, on, velocity);
                 }
-                if (EnsemblesApp.settings.get_boolean ("harmonizer-on")) {
-                    if (EnsemblesApp.settings.get_boolean ("accomp-on")) {
+                if (Application.settings.get_boolean ("harmonizer-on")) {
+                    if (Application.settings.get_boolean ("accomp-on")) {
                         if (key > Core.CentralBus.get_split_key ()) {
                             harmonizer.send_notes (key, on, velocity);
                         } else {
@@ -378,8 +378,8 @@ namespace Ensembles.Shell {
                 main_keyboard.set_note_on (key, (on == 144));
             });
             keyboard_input_handler.note_activate.connect ((key, on) => {
-                if (EnsemblesApp.settings.get_boolean ("arpeggiator-on")) {
-                    if (EnsemblesApp.settings.get_boolean ("accomp-on")) {
+                if (Application.settings.get_boolean ("arpeggiator-on")) {
+                    if (Application.settings.get_boolean ("accomp-on")) {
                         if (key > Core.CentralBus.get_split_key ()) {
                             arpeggiator.send_notes (key, on, 100);
                         } else {
@@ -391,8 +391,8 @@ namespace Ensembles.Shell {
                 } else {
                     synthesizer.send_notes_realtime (key, on, 100);
                 }
-                if (EnsemblesApp.settings.get_boolean ("harmonizer-on")) {
-                    if (EnsemblesApp.settings.get_boolean ("accomp-on")) {
+                if (Application.settings.get_boolean ("harmonizer-on")) {
+                    if (Application.settings.get_boolean ("accomp-on")) {
                         if (key > Core.CentralBus.get_split_key ()) {
                             harmonizer.send_notes (key, on, 100);
                         } else {
@@ -405,8 +405,8 @@ namespace Ensembles.Shell {
                 main_keyboard.set_note_on (key, (on == 144));
             });
             arpeggiator.generate_notes.connect ((key, on, velocity) => {
-                if (EnsemblesApp.settings.get_boolean ("harmonizer-on")) {
-                    if (EnsemblesApp.settings.get_boolean ("accomp-on")) {
+                if (Application.settings.get_boolean ("harmonizer-on")) {
+                    if (Application.settings.get_boolean ("accomp-on")) {
                         if (key > Core.CentralBus.get_split_key ()) {
                             harmonizer.send_notes (key, on, velocity);
                         } else {
@@ -550,7 +550,7 @@ namespace Ensembles.Shell {
                 debug ("CLEANUP: Unloading Synthesizer");
                 synthesizer.synthesizer_deinit ();
                 if (force_close) {
-                    EnsemblesApp.main_window.close ();
+                    Application.main_window.close ();
                 }
                 print ("Exiting!\n");
                 return false;

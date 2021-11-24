@@ -46,7 +46,7 @@ namespace Ensembles.Shell.Dialogs {
 
             response.connect ((response_id) => {
                 if (response_id == EXIT_RESPONSE_ID) {
-                    Shell.EnsemblesApp.instance.main_window.close ();
+                    Ensembles.Application.instance.main_window.close ();
                 }
                 destroy ();
             });

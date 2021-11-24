@@ -25,7 +25,7 @@ namespace Ensembles.Core {
             if (on == 144) {
                 keys[key - 36] = velocity;
                 if (!arpeggio_playing) {
-                    switch (Shell.EnsemblesApp.settings.get_int ("arpeggiator-type")) {
+                    switch (Ensembles.Application.settings.get_int ("arpeggiator-type")) {
                         case 1:
                         arpeggio (2, true);
                         break;

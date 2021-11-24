@@ -5,6 +5,11 @@ project (
     version: '0.0.16',
 )
 
+# Common Display Version
+display_version = 'AW-200'
+
+message ('Unit Version: ' + display_version)
+
 # GNOME module
 gnome = import ('gnome')
 

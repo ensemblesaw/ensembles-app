@@ -18,9 +18,9 @@ namespace Ensembles.Core {
         }
         public void set_chord (int chord, int type) {
             chord_type = type;
-            int h_type = Shell.EnsemblesApp.settings.get_int ("harmonizer-type");
+            int h_type = Ensembles.Application.settings.get_int ("harmonizer-type");
 
-            if (Shell.EnsemblesApp.settings.get_boolean ("harmonizer-on")) {
+            if (Ensembles.Application.settings.get_boolean ("harmonizer-on")) {
                 if (chord_main != chord) {
                     if (h_type > 4) {
                         halt_notes ();
@@ -46,7 +46,7 @@ namespace Ensembles.Core {
             harmonize (key, on, velocity);
         }
         private void harmonize (int key, int on, int velocity) {
-            switch (Shell.EnsemblesApp.settings.get_int ("harmonizer-type")) {
+            switch (Ensembles.Application.settings.get_int ("harmonizer-type")) {
                 case 1:
                 harmonize_duet_a (key, on, velocity);
                 break;

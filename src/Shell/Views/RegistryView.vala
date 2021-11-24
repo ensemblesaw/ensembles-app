@@ -170,26 +170,26 @@ namespace Ensembles.Shell {
                 registry_memory = new Core.Registry [16, 10];
             }
             registry_memory[bank_select.get_value_as_int () - 1, index] = new Core.Registry (
-                EnsemblesApp.settings.get_int ("voice-r1-index"),
-                EnsemblesApp.settings.get_int ("voice-r2-index"),
-                EnsemblesApp.settings.get_int ("voice-l-index"),
-                EnsemblesApp.settings.get_int ("style-index"),
+                Ensembles.Application.settings.get_int ("voice-r1-index"),
+                Ensembles.Application.settings.get_int ("voice-r2-index"),
+                Ensembles.Application.settings.get_int ("voice-l-index"),
+                Ensembles.Application.settings.get_int ("style-index"),
                 Core.CentralBus.get_tempo (),
-                EnsemblesApp.settings.get_int ("transpose-level"),
-                EnsemblesApp.settings.get_boolean ("transpose-on"),
-                EnsemblesApp.settings.get_int ("octave-shift-level"),
-                EnsemblesApp.settings.get_boolean ("octave-shift-on"),
-                EnsemblesApp.settings.get_int ("reverb-level"),
-                EnsemblesApp.settings.get_boolean ("reverb-on"),
-                EnsemblesApp.settings.get_int ("chorus-level"),
-                EnsemblesApp.settings.get_boolean ("chorus-on"),
-                EnsemblesApp.settings.get_boolean ("accomp-on"),
-                EnsemblesApp.settings.get_boolean ("layer-on"),
-                EnsemblesApp.settings.get_boolean ("split-on"),
-                EnsemblesApp.settings.get_int ("harmonizer-type"),
-                EnsemblesApp.settings.get_boolean ("harmonizer-on"),
-                EnsemblesApp.settings.get_int ("arpeggiator-type"),
-                EnsemblesApp.settings.get_boolean ("arpeggiator-on")
+                Ensembles.Application.settings.get_int ("transpose-level"),
+                Ensembles.Application.settings.get_boolean ("transpose-on"),
+                Ensembles.Application.settings.get_int ("octave-shift-level"),
+                Ensembles.Application.settings.get_boolean ("octave-shift-on"),
+                Ensembles.Application.settings.get_int ("reverb-level"),
+                Ensembles.Application.settings.get_boolean ("reverb-on"),
+                Ensembles.Application.settings.get_int ("chorus-level"),
+                Ensembles.Application.settings.get_boolean ("chorus-on"),
+                Ensembles.Application.settings.get_boolean ("accomp-on"),
+                Ensembles.Application.settings.get_boolean ("layer-on"),
+                Ensembles.Application.settings.get_boolean ("split-on"),
+                Ensembles.Application.settings.get_int ("harmonizer-type"),
+                Ensembles.Application.settings.get_boolean ("harmonizer-on"),
+                Ensembles.Application.settings.get_int ("arpeggiator-type"),
+                Ensembles.Application.settings.get_boolean ("arpeggiator-on")
             );
             make_buttons_pulse (false);
         }
@@ -197,25 +197,25 @@ namespace Ensembles.Shell {
         public void registry_recall (uint index) {
             uint bank = bank_select.get_value_as_int () - 1;
             if (registry_memory != null && registry_memory[bank, index] != null) {
-                EnsemblesApp.settings.set_int ("voice-r1-index", registry_memory[bank, index].voice_r1);
-                EnsemblesApp.settings.set_int ("voice-r2-index", registry_memory[bank, index].voice_r2);
-                EnsemblesApp.settings.set_int ("voice-l-index", registry_memory[bank, index].voice_l);
-                EnsemblesApp.settings.set_int ("style-index", registry_memory[bank, index].style);
-                EnsemblesApp.settings.set_int ("transpose-level", registry_memory[bank, index].transpose);
-                EnsemblesApp.settings.set_boolean ("transpose-on", registry_memory[bank, index].transpose_on);
-                EnsemblesApp.settings.set_int ("octave-shift-level", registry_memory[bank, index].octave);
-                EnsemblesApp.settings.set_boolean ("octave-shift-on", registry_memory[bank, index].octave_shift_on);
-                EnsemblesApp.settings.set_int ("reverb-level", registry_memory[bank, index].reverb_level);
-                EnsemblesApp.settings.set_boolean ("reverb-on", registry_memory[bank, index].reverb_on);
-                EnsemblesApp.settings.set_int ("chorus-level", registry_memory[bank, index].chorus_level);
-                EnsemblesApp.settings.set_boolean ("chorus-on", registry_memory[bank, index].chorus_on);
-                EnsemblesApp.settings.set_boolean ("accomp-on", registry_memory[bank, index].accomp_on);
-                EnsemblesApp.settings.set_boolean ("layer-on", registry_memory[bank, index].layer_on);
-                EnsemblesApp.settings.set_boolean ("split-on", registry_memory[bank, index].split_on);
-                EnsemblesApp.settings.set_int ("harmonizer-type", registry_memory[bank, index].harmonizer_type);
-                EnsemblesApp.settings.set_boolean ("harmonizer-on", registry_memory[bank, index].harmonizer_on);
-                EnsemblesApp.settings.set_int ("arpeggiator-type", registry_memory[bank, index].arpeggiator_type);
-                EnsemblesApp.settings.set_boolean ("arpeggiator-on", registry_memory[bank, index].arpeggiator_on);
+                Ensembles.Application.settings.set_int ("voice-r1-index", registry_memory[bank, index].voice_r1);
+                Ensembles.Application.settings.set_int ("voice-r2-index", registry_memory[bank, index].voice_r2);
+                Ensembles.Application.settings.set_int ("voice-l-index", registry_memory[bank, index].voice_l);
+                Ensembles.Application.settings.set_int ("style-index", registry_memory[bank, index].style);
+                Ensembles.Application.settings.set_int ("transpose-level", registry_memory[bank, index].transpose);
+                Ensembles.Application.settings.set_boolean ("transpose-on", registry_memory[bank, index].transpose_on);
+                Ensembles.Application.settings.set_int ("octave-shift-level", registry_memory[bank, index].octave);
+                Ensembles.Application.settings.set_boolean ("octave-shift-on", registry_memory[bank, index].octave_shift_on);
+                Ensembles.Application.settings.set_int ("reverb-level", registry_memory[bank, index].reverb_level);
+                Ensembles.Application.settings.set_boolean ("reverb-on", registry_memory[bank, index].reverb_on);
+                Ensembles.Application.settings.set_int ("chorus-level", registry_memory[bank, index].chorus_level);
+                Ensembles.Application.settings.set_boolean ("chorus-on", registry_memory[bank, index].chorus_on);
+                Ensembles.Application.settings.set_boolean ("accomp-on", registry_memory[bank, index].accomp_on);
+                Ensembles.Application.settings.set_boolean ("layer-on", registry_memory[bank, index].layer_on);
+                Ensembles.Application.settings.set_boolean ("split-on", registry_memory[bank, index].split_on);
+                Ensembles.Application.settings.set_int ("harmonizer-type", registry_memory[bank, index].harmonizer_type);
+                Ensembles.Application.settings.set_boolean ("harmonizer-on", registry_memory[bank, index].harmonizer_on);
+                Ensembles.Application.settings.set_int ("arpeggiator-type", registry_memory[bank, index].arpeggiator_type);
+                Ensembles.Application.settings.set_boolean ("arpeggiator-on", registry_memory[bank, index].arpeggiator_on);
 
                 notify_recall (registry_memory[bank, index].tempo);
             }
@@ -255,7 +255,7 @@ namespace Ensembles.Shell {
                     }
                     registry_csv += ";";
                 }
-                EnsemblesApp.settings.set_string ("registry-snapshot", registry_csv);
+                Ensembles.Application.settings.set_string ("registry-snapshot", registry_csv);
             }
         }
 
@@ -263,7 +263,7 @@ namespace Ensembles.Shell {
             if (registry_memory == null) {
                 registry_memory = new Core.Registry [16, 10];
             }
-            string csv = EnsemblesApp.settings.get_string ("registry-snapshot");
+            string csv = Ensembles.Application.settings.get_string ("registry-snapshot");
             string[] banks = csv.split (";");
             for (int i = 0; i < banks.length - 1; i++) {
                 string[] registries = banks[i].split (",");

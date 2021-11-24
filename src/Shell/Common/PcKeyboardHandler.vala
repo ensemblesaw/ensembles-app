@@ -26,7 +26,7 @@ namespace Ensembles.Shell {
 
         public PcKeyboardHandler () {
             key_activated = new bool [60];
-            KeyboardConstants.load_mapping (EnsemblesApp.settings);
+            KeyboardConstants.load_mapping (Ensembles.Application.settings);
         }
         public bool handle_keypress_event (uint keyval) {
             if ((keyval > 64 && keyval < 91) ||

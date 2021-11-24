@@ -59,13 +59,13 @@ namespace Ensembles.Shell {
                 change_voice (voice_rows[index].voice, channel);
                 switch (channel) {
                     case 0:
-                    EnsemblesApp.settings.set_int ("voice-r1-index", index);
+                    Ensembles.Application.settings.set_int ("voice-r1-index", index);
                     break;
                     case 1:
-                    EnsemblesApp.settings.set_int ("voice-r2-index", index);
+                    Ensembles.Application.settings.set_int ("voice-r2-index", index);
                     break;
                     case 2:
-                    EnsemblesApp.settings.set_int ("voice-l-index", index);
+                    Ensembles.Application.settings.set_int ("voice-l-index", index);
                     break;
                 }
             });
@@ -141,14 +141,14 @@ namespace Ensembles.Shell {
                 switch (channel) {
                     case 0:
                     if (index <= last_voice_index) {
-                        EnsemblesApp.settings.set_int ("voice-r1-index", index);
+                        Ensembles.Application.settings.set_int ("voice-r1-index", index);
                     }
                     break;
                     case 1:
-                    EnsemblesApp.settings.set_int ("voice-r2-index", index);
+                    Ensembles.Application.settings.set_int ("voice-r2-index", index);
                     break;
                     case 2:
-                    EnsemblesApp.settings.set_int ("voice-l-index", index);
+                    Ensembles.Application.settings.set_int ("voice-l-index", index);
                     break;
                 }
                 return false;
@@ -158,13 +158,13 @@ namespace Ensembles.Shell {
         public void load_settings () {
             switch (channel) {
                 case 0:
-                quick_select_row (EnsemblesApp.settings.get_int ("voice-r1-index"));
+                quick_select_row (Ensembles.Application.settings.get_int ("voice-r1-index"));
                 break;
                 case 1:
-                quick_select_row (EnsemblesApp.settings.get_int ("voice-r2-index"));
+                quick_select_row (Ensembles.Application.settings.get_int ("voice-r2-index"));
                 break;
                 case 2:
-                quick_select_row (EnsemblesApp.settings.get_int ("voice-l-index"));
+                quick_select_row (Ensembles.Application.settings.get_int ("voice-l-index"));
                 break;
             }
         }

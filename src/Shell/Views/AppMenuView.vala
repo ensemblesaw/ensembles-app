@@ -30,7 +30,7 @@ namespace Ensembles.Shell {
             audio_input_buttons.append_text (_("System"));
             audio_input_buttons.append_text (_("Both"));
             audio_input_buttons.margin = 8;
-            switch (EnsemblesApp.settings.get_enum ("device")) {
+            switch (Ensembles.Application.settings.get_enum ("device")) {
                 case Core.SampleRecorder.SourceDevice.MIC:
                 audio_input_buttons.selected = 0;
                 break;
@@ -44,13 +44,13 @@ namespace Ensembles.Shell {
             audio_input_buttons.mode_changed.connect (() => {
                 switch (audio_input_buttons.selected) {
                     case 0:
-                    EnsemblesApp.settings.set_enum ("device", Core.SampleRecorder.SourceDevice.MIC);
+                    Ensembles.Application.settings.set_enum ("device", Core.SampleRecorder.SourceDevice.MIC);
                     break;
                     case 1:
-                    EnsemblesApp.settings.set_enum ("device", Core.SampleRecorder.SourceDevice.SYSTEM);
+                    Ensembles.Application.settings.set_enum ("device", Core.SampleRecorder.SourceDevice.SYSTEM);
                     break;
                     case 2:
-                    EnsemblesApp.settings.set_enum ("device", Core.SampleRecorder.SourceDevice.BOTH);
+                    Ensembles.Application.settings.set_enum ("device", Core.SampleRecorder.SourceDevice.BOTH);
                     break;
                 }
             });

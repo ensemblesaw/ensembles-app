@@ -1,4 +1,6 @@
 conf_data = configuration_data ()
+conf_data.set_quoted('VERSIONSTRING', meson.project_version())
+conf_data.set_quoted('DISPLAYVER', display_version)
 conf_data.set_quoted('PKGDATADIR', join_paths (get_option ('prefix'), get_option ('datadir'), meson.project_name()))
 conf_data.set_quoted('SF2DATADIR', join_paths (get_option ('prefix'), get_option ('datadir'), 'sounds', 'sf2'))
 
@@ -98,8 +100,10 @@ ensembles_sources_vala = files (
     'Shell/Views/StyleControllerView.vala',
     'Shell/Views/VoiceCategoryView.vala',
 
-    'Shell/Application.vala',
     'Shell/MainWindow.vala',
+
+    'Application.vala',
+    'Utils.vala',
 
     'Main.vala'
 )

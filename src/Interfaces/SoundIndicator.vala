@@ -65,10 +65,10 @@
 
     [DBus(name = "org.mpris.MediaPlayer2")]
     public class SoundIndicatorRoot : GLib.Object {
-        Shell.EnsemblesApp app;
+        Ensembles.Application app;
 
         construct {
-            this.app = Shell.EnsemblesApp.instance;
+            this.app = Ensembles.Application.instance;
         }
 
         public string DesktopEntry {
@@ -81,11 +81,11 @@
     [DBus(name = "org.mpris.MediaPlayer2.Player")]
     public class SoundIndicatorPlayer : GLib.Object {
         DBusConnection connection;
-        Shell.EnsemblesApp app;
+        Ensembles.Application app;
         Shell.MainWindow main_window;
 
         public SoundIndicatorPlayer (DBusConnection connection, Shell.MainWindow main_window) {
-            this.app = Shell.EnsemblesApp.instance;
+            this.app = Ensembles.Application.instance;
             this.main_window = main_window;
             this.connection = connection;
         }

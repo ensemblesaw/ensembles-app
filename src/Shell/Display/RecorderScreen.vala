@@ -111,7 +111,7 @@ namespace Ensembles.Shell {
             name_grid.attach (location_label, 0, 2, 2, 1);
 
             project_folder_chooser = new Gtk.FileChooserDialog (_("Select Project Folder"),
-                                                                EnsemblesApp.main_window,
+                                                                Ensembles.Application.main_window,
                                                                 Gtk.FileChooserAction.SELECT_FOLDER,
                                                                 _("Cancel"),
                                                                 Gtk.ResponseType.CANCEL,
@@ -135,7 +135,7 @@ namespace Ensembles.Shell {
             name_grid.attach (location_change_button, 0, 3, 1, 1);
 
             project_file_chooser = new Gtk.FileChooserDialog (_("Open Project File"),
-                                                                EnsemblesApp.main_window,
+                                                                Ensembles.Application.main_window,
                                                                 Gtk.FileChooserAction.OPEN,
                                                                 _("Cancel"),
                                                                 Gtk.ResponseType.CANCEL,

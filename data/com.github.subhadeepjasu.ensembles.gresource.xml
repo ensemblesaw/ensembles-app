@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/com/github/subhadeepjasu/ensembles">
-    <file alias="Application.css">Application.css</file>
+    <file alias="Application.css">Themes/Application.css</file>
   </gresource>
 
   <gresource prefix="/com/github/subhadeepjasu/ensembles/images">

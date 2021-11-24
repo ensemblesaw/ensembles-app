@@ -52,7 +52,7 @@ namespace Ensembles.Shell {
                 _selected_index = index;
                 scroll_wheel_location = index;
                 change_style (style_rows[index].accomp_style);
-                EnsemblesApp.settings.set_int ("style-index", index);
+                Ensembles.Application.settings.set_int ("style-index", index);
 
                 if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
                     var event = new Core.MidiEvent ();
@@ -128,7 +128,7 @@ namespace Ensembles.Shell {
         }
 
         public void load_settings (int? tempo = 0) {
-            quick_select_row (EnsemblesApp.settings.get_int ("style-index"), tempo);
+            quick_select_row (Application.settings.get_int ("style-index"), tempo);
         }
 
         public void scroll_wheel_activate () {

@@ -35,6 +35,10 @@
 		<summary>Window maximized</summary>
 		<description>If window should be maximized</description>
 	</key>
+	<key name="display-theme" type="s">
+		<default>"Default.css"</default>
+		<summary>Display Unit Theme</summary>
+	</key>
 
     <!-- App Operational Settings -->
     <key name="device" enum="devicelist">

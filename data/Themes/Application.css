@@ -507,43 +507,43 @@
 }
 
 .super-knob-connected-1 {
-    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.1) 40%, #333);
+    background-image:radial-gradient(mix(@accent_color, @accent_color_complimentary, 0.1) 40%, #333);
 }
 
 .super-knob-connected-2 {
-    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.2) 40%, #333);
+    background-image:radial-gradient(mix(@accent_color, @accent_color_complimentary, 0.2) 40%, #333);
 }
 
 .super-knob-connected-3 {
-    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.3) 40%, #333);
+    background-image:radial-gradient(mix(@accent_color, @accent_color_complimentary, 0.3) 40%, #333);
 }
 
 .super-knob-connected-4 {
-    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.4) 40%, #333);
+    background-image:radial-gradient(mix(@accent_color, @accent_color_complimentary, 0.4) 40%, #333);
 }
 
 .super-knob-connected-5 {
-    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.5) 40%, #333);
+    background-image:radial-gradient(mix(@accent_color, @accent_color_complimentary, 0.5) 40%, #333);
 }
 
 .super-knob-connected-6 {
-    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.6) 40%, #333);
+    background-image:radial-gradient(mix(@accent_color, @accent_color_complimentary, 0.6) 40%, #333);
 }
 
 .super-knob-connected-7 {
-    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.7) 40%, #333);
+    background-image:radial-gradient(mix(@accent_color, @accent_color_complimentary, 0.7) 40%, #333);
 }
 
 .super-knob-connected-8 {
-    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.8) 40%, #333);
+    background-image:radial-gradient(mix(@accent_color, @accent_color_complimentary, 0.8) 40%, #333);
 }
 
 .super-knob-connected-9 {
-    background-image:radial-gradient(mix(@accent_color, shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), 0.9) 40%, #333);
+    background-image:radial-gradient(mix(@accent_color, @accent_color_complimentary, 0.9) 40%, #333);
 }
 
 .super-knob-connected-10 {
-    background-image:radial-gradient(shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2) 40%, #333);
+    background-image:radial-gradient(@accent_color_complimentary 40%, #333);
 }
 
 
@@ -589,12 +589,12 @@
     border: 2px solid #000;
 }
 .white-key-split:active {
-    background-image:linear-gradient(shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 1.4), shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 1.0));
-    box-shadow: 0 -12px 8px  -8px shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), inset 0 -1px 4px shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2);
+    background-image:linear-gradient(shade(@accent_color_complimentary, 0.7), shade(@accent_color_complimentary, 0.5));
+    box-shadow: 0 -12px 8px  -8px @accent_color_complimentary, inset 0 -1px 4px @accent_color_complimentary;
 }
 .white-key-split-active {
-    background-image:linear-gradient(shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 1.4), shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 1.0));
-    box-shadow: 0 -12px 8px  -8px shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), inset 0 -1px 4px shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2);
+    background-image:linear-gradient(shade(@accent_color_complimentary, 0.7), shade(@accent_color_complimentary, 0.5));
+    box-shadow: 0 -12px 8px  -8px @accent_color_complimentary, inset 0 -1px 4px @accent_color_complimentary;
 }
 .black-key-normal {
     background-image:linear-gradient(#444, #141414);
@@ -620,12 +620,12 @@
     outline: 0;
 }
 .black-key-split:active {
-    background-image:linear-gradient(shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 1.4), shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 1.0));
-    box-shadow: 0 -12px 8px  -8px shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), inset 0 -1px 4px shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2);
+    background-image:linear-gradient(shade(@accent_color_complimentary, 0.7), shade(@accent_color_complimentary, 0.5));
+    box-shadow: 0 -14px 12px -6px @accent_color_complimentary, inset 0 -1px 4px @accent_color_complimentary;
 }
 .black-key-split-active {
-    background-image:linear-gradient(shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 1.4), shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 1.0));
-    box-shadow: 0 -12px 8px  -8px shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2), inset 0 -1px 4px shade(mix(mix(@accent_color, rgb(0, -255, 0), 0.1), rgb(-255, 0, -255), 0.3), 2);
+    background-image:linear-gradient(shade(@accent_color_complimentary, 0.7), shade(@accent_color_complimentary, 0.5));
+    box-shadow: 0 -14px 12px -6px @accent_color_complimentary, inset 0 -1px 4px @accent_color_complimentary;
 }
 
 .common-key-split > *{

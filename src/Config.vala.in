@@ -1,4 +1,6 @@
 namespace Constants {
+    public const string VERSION = @VERSIONSTRING@;
+    public const string DISPLAYVER = @DISPLAYVER@;
     public const string PKGDATADIR = @PKGDATADIR@;
     public const string SF2DATADIR = @SF2DATADIR@;
 }

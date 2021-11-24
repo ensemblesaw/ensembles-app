@@ -21,7 +21,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
         public Preferences (string view="home") {
             Object (
                 view: view,
-                transient_for: Shell.EnsemblesApp.main_window,
+                transient_for: Ensembles.Application.main_window,
                 deletable: true,
                 resizable: true,
                 destroy_with_parent: true,
@@ -73,7 +73,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             infobar.response.connect ((response) => {
                 if (response == 0) {
                     try {
-                        EnsemblesApp.main_window.app_exit (true);
+                        Ensembles.Application.main_window.app_exit (true);
                     } catch (GLib.Error e) {
                         if (!(e is IOError.CANCELLED)) {
                             info_label.label = _("Requesting a restart failed. Restart manually to apply changes");
@@ -243,7 +243,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
 
             int saved_driver = 0;
 
-            switch (EnsemblesApp.settings.get_string ("driver")) {
+            switch (Ensembles.Application.settings.get_string ("driver")) {
                 case "alsa":
                 for (int i = 0; i < driver_list.length (); i++) {
                     if (driver_list.nth_data (i) == "Alsa") {
@@ -290,8 +290,8 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             string buffer_length_text = _("Buffer length [%d frames]");
 
             var buffer_length = new Dialogs.Preferences.ItemScale (
-                buffer_length_text.printf (EnsemblesApp.settings.get_int ("previous-buffer-length")),
-                EnsemblesApp.settings.get_double ("buffer-length"),
+                buffer_length_text.printf (Ensembles.Application.settings.get_int ("previous-buffer-length")),
+                Ensembles.Application.settings.get_double ("buffer-length"),
                 0,
                 1,
                 0.01,
@@ -317,7 +317,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
                 }
                 infobar.set_visible (true);
                 buffer_length.set_sensitive (false);
-                EnsemblesApp.settings.set_string ("driver", driver_string);
+                Ensembles.Application.settings.set_string ("driver", driver_string);
             });
 
             var pavuctrl_button = new Gtk.Button.with_label (_("System Mixer"));
@@ -346,10 +346,10 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             box.add (buffer_length);
 
             buffer_length.changed.connect ((value) => {
-                EnsemblesApp.settings.set_double ("buffer-length", value);
+                Ensembles.Application.settings.set_double ("buffer-length", value);
                 var display_value = Core.DriverSettingsProvider.change_period_size (value);
                 buffer_length.title = buffer_length_text.printf (display_value);
-                EnsemblesApp.settings.set_int ("previous-buffer-length", display_value);
+                Ensembles.Application.settings.set_int ("previous-buffer-length", display_value);
             });
 
             var box_scrolled = new Gtk.ScrolledWindow (null, null);
@@ -397,7 +397,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
                         try {
                             var fs = preset_file.create (GLib.FileCreateFlags.NONE);
                             var ds = new DataOutputStream (fs);
-                            ds.put_string (EnsemblesApp.settings.get_string ("pc-input-bindings"));
+                            ds.put_string (Ensembles.Application.settings.get_string ("pc-input-bindings"));
                         } catch (Error e) {
                             warning ("Cannot create input preset file! " + e.message);
                         }
@@ -407,7 +407,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
 
             Gtk.FileChooserDialog mapping_file_chooser;
             mapping_file_chooser = new Gtk.FileChooserDialog (_("Export PC Keyboard Input Mapping"),
-                                                                EnsemblesApp.main_window,
+                                                                Application.main_window,
                                                                 Gtk.FileChooserAction.SAVE,
                                                                 _("Cancel"),
                                                                 Gtk.ResponseType.CANCEL,
@@ -424,13 +424,13 @@ namespace Ensembles.Shell.Dialogs.Preferences {
 
             mapping_file_chooser.response.connect ((response_id) => {
                 if (response_id == -3) {
-                    KeyboardConstants.save_mapping (EnsemblesApp.settings, mapping_file_chooser.get_file ().get_path ());
+                    KeyboardConstants.save_mapping (Application.settings, mapping_file_chooser.get_file ().get_path ());
                 }
             });
 
             Gtk.FileChooserDialog mapping_file_open_chooser;
             mapping_file_open_chooser = new Gtk.FileChooserDialog (_("Import PC Keyboard Input Mapping"),
-                                                                EnsemblesApp.main_window,
+                                                                Application.main_window,
                                                                 Gtk.FileChooserAction.OPEN,
                                                                 _("Cancel"),
                                                                 Gtk.ResponseType.CANCEL,
@@ -447,7 +447,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             input_key_box.set_activate_on_single_click (true);
             input_binding_items = new List<ItemInput> ();
 
-            KeyboardConstants.load_mapping (EnsemblesApp.settings);
+            KeyboardConstants.load_mapping (Application.settings);
             int j = 0;
             for (int i = 3; i < 8; i++) {
                 var c_note_item = new ItemInput (j, "C " + i.to_string () , KeyboardConstants.key_bindings[j++], false);
@@ -498,7 +498,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
 
             mapping_file_open_chooser.response.connect ((response_id) => {
                 if (response_id == -3) {
-                    KeyboardConstants.load_mapping (EnsemblesApp.settings, mapping_file_open_chooser.get_file ().get_path ());
+                    KeyboardConstants.load_mapping (Application.settings, mapping_file_open_chooser.get_file ().get_path ());
                     update_bindings_ui ();
                 }
             });
@@ -533,7 +533,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
 
                             KeyboardConstants.key_bindings[selected_input_item.note_index] = (KeyboardConstants.KeyMap)keyval;
                             selected_input_item.update_labels (KeyboardConstants.key_bindings[selected_input_item.note_index]);
-                            KeyboardConstants.save_mapping (EnsemblesApp.settings);
+                            KeyboardConstants.save_mapping (Application.settings);
                             input_key_box.unselect_all ();
                             selected_input_item = null;
                         }

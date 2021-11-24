@@ -3,20 +3,16 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-
-/**
- * Main method. Responsible for starting the {@code EnsemblesApp} class.
- *
- * @see Ensembls.Shell.EnsemblesApp
- * @return {@code int}
- * @since 0.0.1
+/*
+ * This file is part of Ensembles
  */
+
 public static int main (string[] args) {
-    X.init_threads ();
-    Gst.init (ref args);
+    X.init_threads ();                              // Required for better multi-threaded process handling
+    Gst.init (ref args);                            // Initialise G-Streamer (Required for Sampling Pads)
     int argc = args.length;
-    Suil.init (&argc, args, Suil.SuilArgs.NONE);
-    var app = new Ensembles.Shell.EnsemblesApp ();
-    var ret = app.run (args);
+    Suil.init (&argc, args, Suil.SuilArgs.NONE);    // Required for LV2 Plug-in UI
+    var app = new Ensembles.Application ();         // Get instance of app
+    var ret = app.run (args);                       // Run the app
     return ret;
 }
