@@ -66,12 +66,16 @@
             while (!plugins.is_end (iter)) {
                 var plugin = plugins.get (iter);
                 if (plugin != null) {
+                    Thread.usleep (10000);
                     string uri = plugin.get_uri ().as_uri ();
                     var plug_name = plugin.get_name ().as_string ();
                     var plug_class = plugin.get_class ().get_label ().as_string ();
                     //var features = plugin.get_required_features ();
-                    print ("--------------------------------------------------------\n");
-                    print ("%s\n %s, %s\n", uri, plug_name, plug_class);
+                    debug ("--------------------------------------------------------\n");
+                    debug ("%s\n %s, %s\n", uri, plug_name, plug_class);
+                    if (Application.main_window != null) {
+                        Application.main_window.main_display_unit.update_splash_text (_("Loading Plugin LV2: ") + plug_name);
+                    }
                     var valid = features_are_supported (plugin);
 
                     var n_ports = plugin.get_num_ports ();
@@ -90,15 +94,15 @@
                     for (uint i = 0; i < n_ports; i++) {
                         var port = plugin.get_port_by_index (i);
                         all_ports.append (port);
-                        print (" Port >>%s | %s\n", plugin.port_get_name (port).as_string (), plugin.port_get_symbol (port).as_string ());
-                        print (" Properties:\n");
+                        debug (" Port >>%s | %s\n", plugin.port_get_name (port).as_string (), plugin.port_get_symbol (port).as_string ());
+                        debug (" Properties:\n");
                         port_symbols[i] = plugin.port_get_symbol (port).as_string ();
                         var properties = plugin.port_get_properties (port);
                         var prop_iter = properties.begin ();
                         string prop_string = "";
                         while (!properties.is_end (prop_iter)) {
                             var prop = properties.get (prop_iter).as_string ();
-                            print ("  %s\n", prop);
+                            debug ("  %s\n", prop);
                             prop_string += prop + ",";
                             prop_iter = properties.next (prop_iter);
                         }
@@ -106,7 +110,7 @@
                         Lilv.Node min_value;
                         Lilv.Node max_value;
                         plugin.port_get_range (port, out default_value, out min_value, out max_value);
-                        print (" Classes:\n");
+                        debug (" Classes:\n");
                         unowned Lilv.Nodes classes = plugin.port_get_classes (port);
                         var class_iter = classes.begin ();
                         bool audio_port = false;
@@ -115,10 +119,10 @@
                         bool control_port = false;
                         bool atom_port = false;
                         string token = plugin.port_get_symbol (port).get_turtle_token ();
-                        print ("%s..\n", token);
+                        debug ("%s..\n", token);
                         while (!classes.is_end (class_iter)) {
                             var clas = classes.get (class_iter).as_string ();
-                            print ("  %s\n", clas);
+                            debug ("  %s\n", clas);
                             if (clas == "http://lv2plug.in/ns/lv2core#AudioPort") {
                                 audio_port = true;
                             }
@@ -211,7 +215,7 @@
             var feat_iter = lilv_features.begin ();
             while (!lilv_features.is_end (feat_iter)) {
                 string feat = lilv_features.get (feat_iter).as_uri ();
-                print (">>>>%s\n", feat);
+                debug (">>>>%s\n", feat);
                 if (feat == "") {
                         return false;
                     }

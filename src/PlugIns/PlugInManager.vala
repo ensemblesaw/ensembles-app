@@ -7,7 +7,6 @@ namespace Ensembles.PlugIns {
     public class PlugInManager : Object {
         private PlugIns.LADSPAV2.LV2Manager lv2_manager;
         public PlugIns.PlugIn[] plugins;
-        public signal void all_plugins_loaded ();
         public PlugInManager () {
             lv2_manager = new PlugIns.LADSPAV2.LV2Manager ();
             lv2_manager.lv2_plugins_found.connect ((plugs) => {
@@ -26,11 +25,10 @@ namespace Ensembles.PlugIns {
                     }
                 }
                 Core.EffectRack.create_plugins ();
-                Idle.add (() => {
-                    all_plugins_loaded ();
-                    return false;
-                });
             });
+        }
+
+        public void discover () {
             lv2_manager.discover ();
         }
     }

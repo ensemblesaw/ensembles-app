@@ -21,7 +21,11 @@ namespace Ensembles {
         }
         public static Settings settings;
 
-        public static Ensembles.Shell.MainWindow main_window;
+        // Ensembles Core
+        public static Core.ArrangerCore arranger_core;
+
+        // Ensembles Shell
+        public static Shell.MainWindow main_window;
 
         static Gtk.CssProvider main_css_provider;
         static Gtk.CssProvider complimentary_css_provider;
@@ -42,26 +46,39 @@ namespace Ensembles {
         protected override void activate () {
             // Make a new Main Window only if none present
             if (main_window == null) {
+                arranger_core = new Core.ArrangerCore ();
                 Hdy.init ();
-                Core.DriverSettingsProvider.check_drivers ();
+                Gtk.Settings settings = Gtk.Settings.get_default ();
+                // Force dark theme
+                settings.gtk_application_prefer_dark_theme = true;
                 main_window = new Ensembles.Shell.MainWindow ();
+                this.add_window (main_window);
+
+                // This enables the use of keyboard media keys to control the style and song player
                 var media_key_listener = Interfaces.MediaKeyListener.listen ();
                 media_key_listener.media_key_pressed_play.connect (main_window.media_toggle_play);
                 media_key_listener.media_key_pressed_pause.connect (main_window.media_pause);
                 media_key_listener.media_key_pressed_prev.connect (main_window.media_prev);
-                this.add_window (main_window);
+
+                // This enables the free-desktop sound indicator integration with style and song player
                 var sound_indicator_listener = Interfaces.SoundIndicator.listen (main_window);
                 main_window.song_player_state_changed.connect_after (sound_indicator_listener.change_song_state);
 
+                // Initialize theme, before the window has been shown
                 init_theme ();
+
+                // Show the shell
+                main_window.show_all ();
+
+                // ..and then load the data
+                new Thread<void> ("load-data", arranger_core.load_data);
             }
-            main_window.show_all ();
         }
 
         public override void open (File[] files, string hint) {
             activate ();
             if (files [0].query_exists ()) {
-                main_window.open_file (files [0]);
+                arranger_core.open_file (files [0]);
             }
         }
 

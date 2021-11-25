@@ -7,7 +7,8 @@ namespace Ensembles.Shell {
     public class MainDisplayCasing : Gtk.Box {
         Gtk.Stack main_stack;
         Gtk.Overlay main_overlay;
-        Gtk.Image splash_screen;
+        Gtk.Grid splash_screen;
+        Gtk.Label splash_update_text;
         Hdy.Deck main_display_deck;
         Hdy.Leaflet main_display_leaflet;
 
@@ -51,7 +52,18 @@ namespace Ensembles.Shell {
             main_stack.add_named (fx_rack_menu, "Fx Rack");
             main_stack.add_named (recorder_screen, "Sequencer");
 
-            splash_screen = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/display_unit/ensembles_splash.svg");
+            var unit_logo = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/display_unit/ensembles_splash.svg") {
+                vexpand = true
+            };
+            splash_update_text = new Gtk.Label (_("Initializing")) {
+                xalign = 0,
+                margin = 8,
+                opacity = 0.5
+            };
+            splash_update_text.get_style_context ().add_class ("splash-text");
+            splash_screen = new Gtk.Grid ();
+            splash_screen.attach (unit_logo, 0, 0);
+            splash_screen.attach (splash_update_text, 0, 1);
             splash_screen.get_style_context ().add_class ("splash-background");
 
             main_display_leaflet = new Hdy.Leaflet ();
@@ -90,6 +102,15 @@ namespace Ensembles.Shell {
                 main_overlay.remove (splash_screen);
                 if (splash_screen != null) {
                     splash_screen.unref ();
+                }
+                return false;
+            });
+        }
+
+        public void update_splash_text (string text) {
+            Idle.add (() => {
+                if (splash_screen != null && splash_update_text != null) {
+                    splash_update_text.set_text (text);
                 }
                 return false;
             });

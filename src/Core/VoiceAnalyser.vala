@@ -31,6 +31,10 @@ namespace Ensembles.Core {
                         }
                     }
                     voices[i] = new Voice (i, sf_preset_bank_num, sf_preset_num, sf_preset_name, category);
+                    Thread.usleep (10000);
+                    if (Application.main_window != null) {
+                        Application.main_window.main_display_unit.update_splash_text (_("Loading Voice: ") + sf_preset_name);
+                    }
                     i++;
                 }
             } else {

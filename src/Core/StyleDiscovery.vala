@@ -15,7 +15,6 @@ namespace Ensembles.Core {
         public List<Style> styles;
         Ensembles.Core.StyleAnalyser analyser;
 
-        public signal void analysis_complete ();
         public StyleDiscovery () {
             in_built_style_path = Constants.PKGDATADIR + "/StyleFiles";
             user_style_path = Environment.get_home_dir () + "/Documents/Ensembles/StyleFiles";
@@ -24,7 +23,9 @@ namespace Ensembles.Core {
             style_genre = new List<string> ();
             style_tempo = new List<int> ();
             styles = new List<Style> ();
+        }
 
+        public void load_styles () {
             if (DirUtils.create_with_parents (Environment.get_home_dir () + "/Documents/Ensembles", 2000) != -1) {
                 if (DirUtils.create_with_parents (
                     Environment.get_home_dir () + "/Documents/Ensembles/StyleFiles", 2000) != -1) {
@@ -36,7 +37,7 @@ namespace Ensembles.Core {
             run_analysis ();
         }
 
-        public void find_styles () {
+        void find_styles () {
             try {
                 Dir dir = Dir.open (in_built_style_path, 0);
                 string? name = null;
@@ -89,14 +90,15 @@ namespace Ensembles.Core {
         public void run_analysis () {
             for (int i = 0; i < styles.length (); i++) {
                 int tempo = analyser.analyze_style (styles.nth_data (i).path);
+                Thread.usleep (10000);
                 styles.nth_data (i).tempo = tempo;
                 styles.nth_data (i).timesignature_n = analyser.time_sig_n;
                 styles.nth_data (i).timesignature_d = analyser.time_sig_d;
+                Thread.usleep (10000);
+                if (Application.main_window != null) {
+                    Application.main_window.main_display_unit.update_splash_text (_("Loading Styles: ") + styles.nth_data (i).name);
+                }
             }
-            Timeout.add (1000, () => {
-                analysis_complete ();
-                return false;
-            });
         }
 
         private CompareFunc<Style> stylecmp = (a, b) => {

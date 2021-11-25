@@ -31,18 +31,6 @@ int get_central_halt ();
  */
 void set_central_halt (int value);
 
-/** Ready signals are used to notify the rest of the application that a
- * particular module is ready. Useful for controlling certain UI elements
- * show based on whether the underlying system is ready.
- */
-/** Returns 1 if styles modules are ready
- * and 0 if still processing
- */
-int get_styles_ready ();
-/** set_style_ready (int value) is used to raise styles ready signal
- */
-void set_styles_ready (int value);
-
 int get_central_metronome_on ();
 
 int get_central_lfo_on ();

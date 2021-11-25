@@ -9,7 +9,17 @@
 }
 
 .splash-background {
-    background: #202020;
+    background-color: #202020;
+    animation: ripple 1s 0.2s;
+}
+
+@keyframes ripple {
+    from {
+        background-image:radial-gradient(#202020 0%, #333 5%, #202020 6%);
+    }
+    to {
+        background-image:radial-gradient(#202020 0%, #202020 90%, #202020 100%);
+    }
 }
 
 .display-background {

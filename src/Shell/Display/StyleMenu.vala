@@ -87,7 +87,6 @@ namespace Ensembles.Shell {
             min_value = 0;
             max_value = style_rows.length - 1;
             main_list.show_all ();
-            Ensembles.Core.CentralBus.set_styles_ready (true);
         }
 
         public void scroll_to_selected_row () {

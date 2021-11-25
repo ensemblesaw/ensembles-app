@@ -147,11 +147,11 @@ namespace Ensembles.Core {
                 case 0:
                 mute_array[track] = !mute_array[track];
                 track_visuals[track].set_mute (mute_array[track]);
-                if (Shell.MainWindow.synthesizer != null) {
-                    Shell.MainWindow.synthesizer.halt_realtime ();
+                if (Application.arranger_core.synthesizer != null) {
+                    Application.arranger_core.synthesizer.halt_realtime ();
                 }
-                if (track == 0 && Shell.MainWindow.style_player != null) {
-                    Shell.MainWindow.style_player.stop_style ();
+                if (track == 0 && Application.arranger_core.style_player != null) {
+                    Application.arranger_core.style_player.stop_style ();
                 }
                 break;
                 case 1:
@@ -164,11 +164,11 @@ namespace Ensembles.Core {
                         track_visuals[i].set_mute (true);
                     }
                 }
-                if (Shell.MainWindow.synthesizer != null) {
-                    Shell.MainWindow.synthesizer.halt_realtime ();
+                if (Application.arranger_core.synthesizer != null) {
+                    Application.arranger_core.synthesizer.halt_realtime ();
                 }
-                if (mute_array[0] && Shell.MainWindow.style_player != null) {
-                    Shell.MainWindow.style_player.stop_style ();
+                if (mute_array[0] && Application.arranger_core.style_player != null) {
+                    Application.arranger_core.style_player.stop_style ();
                 }
                 break;
                 case 2:
@@ -184,8 +184,8 @@ namespace Ensembles.Core {
                     track_visuals[track].set_track_events (midi_event_sequence[track]);
                     mute_array[track] = false;
                     track_visuals[track].set_mute (false);
-                    if (Shell.MainWindow.synthesizer != null) {
-                        Shell.MainWindow.synthesizer.halt_realtime ();
+                    if (Application.arranger_core.synthesizer != null) {
+                        Application.arranger_core.synthesizer.halt_realtime ();
                     }
                 } else {
                     Gdk.Display.get_default ().beep ();
@@ -337,7 +337,7 @@ namespace Ensembles.Core {
                 _sequencer_visual.sensitive = true;
                 return false;
             });
-            Shell.MainWindow.synthesizer.halt_realtime ();
+            Application.arranger_core.synthesizer.halt_realtime ();
             _sequencer_progress.queue_draw ();
         }
 

@@ -72,7 +72,7 @@ namespace Ensembles.Shell {
 
             close_button.clicked.connect (() => {
                 close_menu ();
-                MainWindow.synthesizer.disable_input (false);
+                Application.arranger_core.synthesizer.disable_input (false);
             });
 
             scrollable = new Gtk.ScrolledWindow (null, null);
@@ -190,17 +190,17 @@ namespace Ensembles.Shell {
             stop_button.clicked.connect (() => {
                 if (sequencer != null) {
                     sequencer.stop ();
-                    MainWindow.style_player.stop_style ();
+                    Application.arranger_core.style_player.stop_style ();
                 }
             });
 
             new_button.clicked.connect (() => {
                 if (sequencer != null) {
                     sequencer.stop ();
-                    MainWindow.style_player.stop_style ();
+                    Application.arranger_core.style_player.stop_style ();
                 }
                 main_stack.set_visible_child_name ("EnterName");
-                MainWindow.synthesizer.disable_input (true);
+                Application.arranger_core.synthesizer.disable_input (true);
                 play_button.sensitive = false;
                 rec_button.sensitive = false;
                 sequencer_grid.foreach ((widget) => {
@@ -213,7 +213,7 @@ namespace Ensembles.Shell {
         }
 
         void create_project (string? existing_file_path = null) {
-            MainWindow.synthesizer.disable_input (false);
+            Application.arranger_core.synthesizer.disable_input (false);
             play_button.sensitive = true;
             rec_button.sensitive = true;
             project_file_name = project_name.replace (" ", "_");
@@ -242,31 +242,31 @@ namespace Ensembles.Shell {
             });
 
             sequencer.set_ui_sensitive.connect ((sensitive) => {
-                if (MainWindow.ctrl_panel != null) {
-                    MainWindow.ctrl_panel.set_panel_sensitive (sensitive);
+                if (Application.main_window.ctrl_panel != null) {
+                    Application.main_window.ctrl_panel.set_panel_sensitive (sensitive);
                 }
-                if (MainWindow.style_controller_view != null) {
-                    MainWindow.style_controller_view.ready (sensitive);
+                if (Application.main_window.style_controller_view != null) {
+                    Application.main_window.style_controller_view.ready (sensitive);
                 }
             });
 
             sequencer.note_event.connect ((channel, key, on, velocity) => {
-                if (MainWindow.synthesizer != null) {
+                if (Application.arranger_core.synthesizer != null) {
                     if (channel == 0) {
-                        MainWindow.synthesizer.send_notes_realtime (key, on, velocity, 6, false);
+                        Application.arranger_core.synthesizer.send_notes_realtime (key, on, velocity, 6, false);
                     } else {
-                        MainWindow.synthesizer.send_notes_realtime (key, on, velocity, channel, false);
+                        Application.arranger_core.synthesizer.send_notes_realtime (key, on, velocity, channel, false);
                     }
                 }
             });
 
             sequencer.voice_change.connect ((channel, bank, index) => {
-                if (MainWindow.synthesizer != null) {
+                if (Application.arranger_core.synthesizer != null) {
                     var voice = new Core.Voice (index, bank, index, "", "");
                     if (channel == 0) {
-                            MainWindow.synthesizer.change_voice (voice, 6, false);
+                            Application.arranger_core.synthesizer.change_voice (voice, 6, false);
                     } else {
-                        MainWindow.synthesizer.change_voice (voice, channel, false);
+                        Application.arranger_core.synthesizer.change_voice (voice, channel, false);
                     }
                 }
             });
@@ -280,35 +280,35 @@ namespace Ensembles.Shell {
             });
 
             sequencer.accomp_change.connect ((active) => {
-                if (MainWindow.synthesizer != null) {
-                    MainWindow.synthesizer.set_accompaniment_on (active);
+                if (Application.arranger_core.synthesizer != null) {
+                    Application.arranger_core.synthesizer.set_accompaniment_on (active);
                 }
             });
 
             sequencer.style_change.connect ((index) => {
-                if (MainWindow.main_display_unit != null && MainWindow.main_display_unit.style_menu != null) {
-                    MainWindow.main_display_unit.style_menu.quick_select_row (index, -0);
+                if (Application.main_window.main_display_unit != null && Application.main_window.main_display_unit.style_menu != null) {
+                    Application.main_window.main_display_unit.style_menu.quick_select_row (index, -0);
                 }
             });
 
             sequencer.style_part_change.connect ((section) => {
-                if (MainWindow.style_controller_view != null) {
-                    MainWindow.style_controller_view.set_style_section_by_index (section);
+                if (Application.main_window.style_controller_view != null) {
+                    Application.main_window.style_controller_view.set_style_section_by_index (section);
                 }
             });
 
             sequencer.style_start_stop.connect ((value) => {
-                if (MainWindow.style_controller_view != null) {
+                if (Application.main_window.style_controller_view != null) {
                     if (value) {
-                        MainWindow.style_player.stop_style ();
+                        Application.arranger_core.style_player.stop_style ();
                     } else {
-                        MainWindow.style_player.play_style ();
+                        Application.arranger_core.style_player.play_style ();
                     }
                 }
             });
 
             sequencer.tempo_change.connect ((tempo) => {
-                MainWindow.style_player.change_tempo (tempo);
+                Application.arranger_core.style_player.change_tempo (tempo);
             });
 
             sequencer.recorder_state_change.connect ((state) => {
@@ -325,8 +325,8 @@ namespace Ensembles.Shell {
                     btn_stack.set_visible_child_name ("Start");
                     play_button.sensitive = true;
                     play_button.opacity = 1;
-                    if (MainWindow.ctrl_panel != null) {
-                        MainWindow.ctrl_panel.load_settings ();
+                    if (Application.main_window.ctrl_panel != null) {
+                        Application.main_window.ctrl_panel.load_settings ();
                     }
                     break;
                 }
@@ -346,7 +346,7 @@ namespace Ensembles.Shell {
                 switch (index) {
                     case 0:
                         main_stack.set_visible_child_name ("EnterName");
-                        MainWindow.synthesizer.disable_input (true);
+                        Application.arranger_core.synthesizer.disable_input (true);
                         play_button.sensitive = false;
                         rec_button.sensitive = false;
                         name_entry.grab_focus ();

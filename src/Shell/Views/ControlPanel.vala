@@ -167,9 +167,9 @@ namespace Ensembles.Shell {
                 Ensembles.Application.settings.set_boolean ("transpose-on", active);
 
                 if (active) {
-                    MainWindow.main_display_unit.update_transpose (Core.Synthesizer.get_transpose ());
+                    Application.main_window.main_display_unit.update_transpose (Core.Synthesizer.get_transpose ());
                 } else {
-                    MainWindow.main_display_unit.update_transpose (0);
+                    Application.main_window.main_display_unit.update_transpose (0);
                 }
             });
             octave_toggle.toggled.connect ((active) => {
@@ -177,9 +177,9 @@ namespace Ensembles.Shell {
                 Ensembles.Application.settings.set_boolean ("octave-shift-on", active);
 
                 if (active) {
-                    MainWindow.main_display_unit.update_octave (Core.Synthesizer.get_octave ());
+                    Application.main_window.main_display_unit.update_octave (Core.Synthesizer.get_octave ());
                 } else {
-                    MainWindow.main_display_unit.update_octave (0);
+                    Application.main_window.main_display_unit.update_octave (0);
                 }
             });
             reverb_toggle.toggled.connect ((active) => {
@@ -204,9 +204,9 @@ namespace Ensembles.Shell {
             Ensembles.Core.Synthesizer.set_transpose (level);
 
             if (Core.Synthesizer.get_transpose_active ()) {
-                MainWindow.main_display_unit.update_transpose (level);
+                Application.main_window.main_display_unit.update_transpose (level);
             } else {
-                MainWindow.main_display_unit.update_transpose (0);
+                Application.main_window.main_display_unit.update_transpose (0);
             }
         }
 
@@ -216,9 +216,9 @@ namespace Ensembles.Shell {
             Ensembles.Core.Synthesizer.set_octave (level);
 
             if (Core.Synthesizer.get_octave_shifted ()) {
-                MainWindow.main_display_unit.update_octave (level);
+                Application.main_window.main_display_unit.update_octave (level);
             } else {
-                MainWindow.main_display_unit.update_octave (0);
+                Application.main_window.main_display_unit.update_octave (0);
             }
         }
 

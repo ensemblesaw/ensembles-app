@@ -37,8 +37,6 @@ namespace Ensembles.Core {
         public void clk () {
             debug ("clk\n");
         }
-
-        public signal void system_ready ();
         int bus_watch () {
             while (thread_alive) {
                 if (loaded_tempo != central_loaded_tempo && central_loaded_tempo > 10) {
@@ -49,15 +47,6 @@ namespace Ensembles.Core {
                     loaded_time_signature_change (central_beats_per_bar, central_quarter_notes_per_bar);
                     loaded_time_sig_n = central_beats_per_bar;
                     loaded_time_sig_d = central_quarter_notes_per_bar;
-                }
-                if (styles_loaded_ready != styles_ready) {
-                    styles_loaded_ready = styles_ready;
-                    if (styles_loaded_ready > 0) {
-                        Idle.add (() => {
-                            system_ready ();
-                            return false;
-                        });
-                    }
                 }
                 if (central_halt == 1) {
                     central_halt = 0;
@@ -88,10 +77,6 @@ namespace Ensembles.Core {
                 Thread.usleep (400);
             }
             return 0;
-        }
-
-        public static void set_styles_ready (bool ready) {
-            styles_ready = ready ? 1 : 0;
         }
 
         public static int get_measure () {
@@ -159,9 +144,6 @@ namespace Ensembles.Core {
         }
     }
 }
-
-// System Ready Messages
-extern int styles_ready;
 
 // Style Engine
 extern int central_clock;

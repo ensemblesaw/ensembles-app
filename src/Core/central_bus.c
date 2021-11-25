@@ -22,15 +22,6 @@ void set_central_halt (int value) {
     central_halt = value;
 }
 
-// Ready signals
-int styles_ready;
-int get_styles_ready () {
-    return styles_ready;
-}
-void set_styles_ready (int value) {
-    styles_ready = value;
-}
-
 // Metronome & LFO signals
 int central_metronome_on;
 int get_central_metronome_on () {

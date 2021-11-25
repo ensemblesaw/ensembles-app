@@ -10,7 +10,10 @@ namespace Ensembles.Shell {
             this.voice = voice;
 
             var voice_label = new Gtk.Label (voice.name);
-            voice_label.get_style_context ().add_class ("menu-item-label");
+            Idle.add (() => {
+                voice_label.get_style_context ().add_class ("menu-item-label");
+                return false;
+            });
             voice_label.halign = Gtk.Align.START;
             voice_label.hexpand = true;
 

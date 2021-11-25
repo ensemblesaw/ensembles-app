@@ -37,6 +37,8 @@ ensembles_sources_vala = files (
     'Core/Voice.vala',
     'Core/VoiceAnalyser.vala',
 
+    'Core/ArrangerCore.vala',
+
     'Interfaces/MediaKeyListener.vala',
     'Interfaces/SoundIndicator.vala',
 
