@@ -3,18 +3,20 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+/*
+ * This file is part of Ensembles
+ */
+
 namespace Ensembles.Shell {
+    // The menu that opens when you click the "gear" icon
     public class AppMenuView : Gtk.Popover {
 
         Ensembles.Core.ControllerDevice[] controller_devices;
         Gtk.ListBox device_list_box;
 
-        public signal void change_enable_midi_input (bool enable);
-        public signal void change_active_input_device (Ensembles.Core.ControllerDevice device);
         public signal void open_preferences_dialog ();
 
-        public AppMenuView (Gtk.Widget? relative_to) {
-            this.relative_to = relative_to;
+        construct {
             make_ui ();
         }
 
@@ -22,14 +24,20 @@ namespace Ensembles.Shell {
             var menu_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
 
             var audio_input_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
-            var audio_input_label = new Gtk.Label (_("Sampler Source"));
-            audio_input_label.halign = Gtk.Align.START;
+
+            var audio_input_label = new Gtk.Label (_("Sampler Source")) {
+                halign = Gtk.Align.START
+            };
             audio_input_label.get_style_context ().add_class ("h4");
-            var audio_input_buttons = new Granite.Widgets.ModeButton ();
+
+            var audio_input_buttons = new Granite.Widgets.ModeButton () {
+                margin = 8
+            };
             audio_input_buttons.append_text (_("Mic"));
             audio_input_buttons.append_text (_("System"));
             audio_input_buttons.append_text (_("Both"));
-            audio_input_buttons.margin = 8;
+
+
             switch (Ensembles.Application.settings.get_enum ("device")) {
                 case Core.SampleRecorder.SourceDevice.MIC:
                 audio_input_buttons.selected = 0;
@@ -67,17 +75,13 @@ namespace Ensembles.Shell {
             var revealer = new Gtk.Revealer ();
             revealer.transition_type = Gtk.RevealerTransitionType.SLIDE_DOWN;
 
-            device_input_item.notify["active"].connect (() => {
-                revealer.reveal_child = device_input_item.active;
-                change_enable_midi_input (device_input_item.active);
-            });
-
-            device_list_box = new Gtk.ListBox ();
-            device_list_box.set_activate_on_single_click (false);
-            device_list_box.set_selection_mode (Gtk.SelectionMode.BROWSE);
+            device_list_box = new Gtk.ListBox () {
+                activate_on_single_click = false,
+                selection_mode = Gtk.SelectionMode.BROWSE
+            };
             device_list_box.row_activated.connect ((row) => {
                 DeviceItem device_item = row as DeviceItem;
-                change_active_input_device (device_item.device);
+                Application.arranger_core.controller_connection.connect_device (device_item.device.id);
                 deselect_all_devices ();
                 device_item.radio.set_active (true);
             });
@@ -101,8 +105,9 @@ namespace Ensembles.Shell {
                 }
             });
 
-            var preferences_button = new Gtk.ModelButton ();
-            preferences_button.text = (_("Settings"));
+            var preferences_button = new Gtk.ModelButton () {
+                text = _("Settings")
+            };
             preferences_button.get_style_context ().add_class ("h4");
             preferences_button.clicked.connect (() => {
                 open_preferences_dialog ();
@@ -112,6 +117,17 @@ namespace Ensembles.Shell {
             menu_box.pack_start (manual_button);
             menu_box.show_all ();
             this.add (menu_box);
+
+            // Show list of detected devices when the user enables MIDI Input
+            device_input_item.notify["active"].connect (() => {
+                revealer.reveal_child = device_input_item.active;
+                if (device_input_item.active) {
+                    var devices_found = Application.arranger_core.controller_connection.refresh ();
+                    update_devices (devices_found);
+                } else {
+                    Application.arranger_core.controller_connection.destroy ();
+                }
+            });
         }
 
         void deselect_all_devices () {

@@ -11,12 +11,14 @@ namespace Ensembles.Core {
             STOPPING,
             DONE
         }
+        public string name;
         public int current_file_tempo = 30;
         public signal void player_status_changed (float fraction, int tempo_bpm, PlayerStatus status);
         bool monitoring_player = false;
         string sf_loc;
 
-        public SongPlayer (string sf_loc, string midi_file_path) {
+        public SongPlayer (string sf_loc, string midi_file_path, string name) {
+            this.name = name;
             this.sf_loc = sf_loc;
             music_player_init (sf_loc);
             current_file_tempo = music_player_load_file (midi_file_path);
@@ -31,6 +33,7 @@ namespace Ensembles.Core {
         }
         public void songplayer_destroy () {
             monitoring_player = false;
+            music_player_pause ();
             music_player_destruct ();
         }
 

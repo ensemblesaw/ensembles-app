@@ -4,6 +4,10 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+/*
+ * This file is part of Ensembles
+ */
+
 namespace Ensembles.Core {
     /*
      * This is where all the core functionality of Ensembles resides
@@ -35,6 +39,9 @@ namespace Ensembles.Core {
         public string sf_schema_loc = Constants.SF2DATADIR + "/EnsemblesGMSchema.csv";
         // lfo stands for Low Frequency Oscillator
         public string metronome_lfo_directory = Constants.PKGDATADIR + "/MetronomesAndLFO";
+
+        // Signals
+        public signal void song_player_state_changed (string song_name, Core.SongPlayer.PlayerStatus status);
 
         construct {
             make_core_components ();
@@ -208,10 +215,10 @@ namespace Ensembles.Core {
         }
 
         public void garbage_collect () {
+            debug ("Cleaning up Core");
             debug ("CLEANUP: Unloading MIDI Input Monitor");
-            controller_connection.unref ();
-
-            Thread.usleep (1000000);
+            controller_connection.destroy ();
+            Thread.usleep (5000);
             debug ("CLEANUP: Unloading Metronome and LFO Engine");
             metronome_player.unref ();
             debug ("CLEANUP: Unloading Style Engine");
@@ -221,8 +228,10 @@ namespace Ensembles.Core {
                 song_player.songplayer_destroy ();
                 song_player = null;
             }
+            Thread.usleep (5000);
             debug ("CLEANUP: Unloading Central Bus");
             bus.unref ();
+            Thread.usleep (5000);
             debug ("CLEANUP: Unloading Synthesizer");
             synthesizer.synthesizer_deinit ();
         }
@@ -269,32 +278,34 @@ namespace Ensembles.Core {
         }
 
         public void queue_song (string path) {
+            string song_name = "Unknown";
+            try {
+                Regex regex = new Regex ("[ \\w-]+?(?=\\.)");
+                MatchInfo match_info;
+                if (regex.match (path, 0, out match_info)) {
+                    song_name = match_info.fetch (0);
+                }
+            } catch (RegexError e) {
+                warning (e.message);
+            }
+
             if (song_player != null) {
                 song_player.player_status_changed.disconnect (Application.main_window.update_header_bar);
                 song_player.songplayer_destroy ();
                 song_player = null;
             }
             debug ("Creating new Song Player instance with midi file: %s", path);
-            song_player = new Core.SongPlayer (sf_loc, path);
-            int song_tempo = song_player.current_file_tempo;
+            song_player = new Core.SongPlayer (sf_loc, path, song_name);
             song_player.player_status_changed.connect (Application.main_window.update_header_bar);
+            int song_tempo = song_player.current_file_tempo;
             style_player.change_tempo (song_tempo);
             Application.main_window.main_display_unit.set_tempo_display (song_tempo);
             if (Shell.RecorderScreen.sequencer != null) {
                 Shell.RecorderScreen.sequencer.initial_settings_tempo = song_tempo;
             }
-            try {
-                Regex regex = new Regex ("[ \\w-]+?(?=\\.)");
-                MatchInfo match_info;
-                if (regex.match (path, 0, out match_info)) {
-                    Application.main_window.song_name = match_info.fetch (0);
-                    Application.main_window.custom_title_text.set_text ("Now Playing - " + Application.main_window.song_name);
-                }
-                Application.main_window.song_player_state_changed (Application.main_window.song_name, Core.SongPlayer.PlayerStatus.READY);
-            } catch (RegexError e) {
-                warning (e.message);
-            }
+            Application.main_window.custom_title_text.set_text (_("Now Playing - %s").printf (song_name));
             Application.main_window.song_control_panel.set_player_active ();
+            song_player_state_changed (song_name, Core.SongPlayer.PlayerStatus.READY);
         }
     }
 }

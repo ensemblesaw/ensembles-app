@@ -25,10 +25,6 @@ namespace Ensembles.Shell {
 
         public ChannelModulatorScreen channel_mod_screen;
 
-        public signal void change_style (Ensembles.Core.Style accomp_style);
-        public signal void change_voice (Ensembles.Core.Voice voice, int channel);
-        public signal void change_tempo (int tempo);
-
         public MainDisplayCasing () {
             home_screen = new HomeScreen ();
             tempo_screen = new TempoScreen ();
@@ -158,19 +154,19 @@ namespace Ensembles.Shell {
             });
             style_menu.change_style.connect ((accomp_style) => {
                 home_screen.set_style_name (accomp_style.name);
-                this.change_style (accomp_style);
+                Application.arranger_core.style_player.add_style_file (accomp_style.path, accomp_style.tempo);
             });
             voice_menu_l.change_voice.connect ((voice, channel) => {
                 home_screen.set_voice_l_name (voice.name);
-                this.change_voice (voice, channel);
+                Application.arranger_core.synthesizer.change_voice (voice, channel);
             });
             voice_menu_r1.change_voice.connect ((voice, channel) => {
                 home_screen.set_voice_r1_name (voice.name);
-                this.change_voice (voice, channel);
+                Application.arranger_core.synthesizer.change_voice (voice, channel);
             });
             voice_menu_r2.change_voice.connect ((voice, channel) => {
                 home_screen.set_voice_r2_name (voice.name);
-                this.change_voice (voice, channel);
+                Application.arranger_core.synthesizer.change_voice (voice, channel);
             });
             lfo_editor.close_screen.connect (() => {
                 main_display_leaflet.set_visible_child (home_screen);
@@ -179,7 +175,10 @@ namespace Ensembles.Shell {
                 main_display_leaflet.set_visible_child (home_screen);
             });
             tempo_screen.changed.connect ((tempo) => {
-                change_tempo (tempo);
+                Application.arranger_core.style_player.change_tempo (tempo);
+                if (RecorderScreen.sequencer != null) {
+                    RecorderScreen.sequencer.initial_settings_tempo = tempo;
+                }
             });
             fx_rack_menu.close_menu.connect (() => {
                 main_display_leaflet.set_visible_child (home_screen);

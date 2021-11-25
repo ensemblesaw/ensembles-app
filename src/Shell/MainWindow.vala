@@ -4,6 +4,10 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+/*
+ * This file is part of Ensembles
+ */
+
 namespace Ensembles.Shell {
     public class MainWindow : Gtk.Window {
         // View components
@@ -21,51 +25,51 @@ namespace Ensembles.Shell {
         public KeyboardView main_keyboard;
 
         Gtk.HeaderBar headerbar;
+        Gtk.Button app_menu_button;
         Gtk.Scale seek_bar;
         public Gtk.Label custom_title_text;
         Gtk.Grid custom_title_grid;
 
-        // For song player
-        public string song_name;
-
         // Computer Keyboard input handling
         public PcKeyboardHandler keyboard_input_handler;
-
-        // Signals
-        public signal void song_player_state_changed (string song_name, Core.SongPlayer.PlayerStatus status);
 
 
         construct {
             // This module looks for computer keyboard input and fires off signals that can be connected to
             keyboard_input_handler = new PcKeyboardHandler ();
 
+            make_ui ();
+            make_events ();
+        }
+
+        void make_ui () {
             // Make headerbar
+            headerbar = new Gtk.HeaderBar () {
+                title = "Ensembles",
+                has_subtitle = false,
+                show_close_button = true,
+            };
+            set_titlebar (headerbar);
+
             beat_counter_panel = new BeatCounterView ();
-            headerbar = new Gtk.HeaderBar ();
-            headerbar.has_subtitle = false;
-            headerbar.set_show_close_button (true);
-            headerbar.title = "Ensembles";
             headerbar.pack_start (beat_counter_panel);
 
-            Gtk.Button app_menu_button = new Gtk.Button.from_icon_name ("open-menu",
-                                                                        Gtk.IconSize.LARGE_TOOLBAR);
+            app_menu_button = new Gtk.Button.from_icon_name ("open-menu", Gtk.IconSize.LARGE_TOOLBAR);
             headerbar.pack_end (app_menu_button);
-            this.set_titlebar (headerbar);
 
-            app_menu = new AppMenuView (app_menu_button);
-
-            app_menu_button.clicked.connect (() => {
-                app_menu.popup ();
-            });
+            app_menu = new AppMenuView () {
+                relative_to = app_menu_button
+            };
 
             song_control_panel = new SongControllerView (this);
             headerbar.pack_end (song_control_panel);
 
             custom_title_text = new Gtk.Label ("Ensembles");
             custom_title_text.get_style_context ().add_class ("title");
-            seek_bar = new Gtk.Scale.with_range (Gtk.Orientation.HORIZONTAL, 0, 1, 0.01);
-            seek_bar.set_draw_value (false);
-            seek_bar.width_request = 400;
+            seek_bar = new Gtk.Scale.with_range (Gtk.Orientation.HORIZONTAL, 0, 1, 0.01) {
+                width_request = 400,
+                draw_value = false
+            };
             custom_title_grid = new Gtk.Grid ();
             custom_title_grid.attach (custom_title_text, 0, 1, 1, 1);
             custom_title_grid.attach (seek_bar, 0, 2, 1, 1);
@@ -79,6 +83,8 @@ namespace Ensembles.Shell {
 
             // Make the onscreen keyboard that appears at the bottom
             main_keyboard = new KeyboardView ();
+            // Connect the onscreen keyboard with the synthesizer
+            main_keyboard.connect_synthesizer (Application.arranger_core.synthesizer);
 
             // Make the Slider/Knob section that appears to the left
             slider_board = new SliderBoardView (main_keyboard.joy_stick);
@@ -112,31 +118,22 @@ namespace Ensembles.Shell {
             grid.attach (sampler_panel, 2, 1, 1, 1);
             grid.attach (style_registry_grid, 0, 2, 3, 1);
             grid.attach (main_keyboard, 0, 3, 3, 1);
-            this.add (grid);
-            this.show_all ();
-
-            // Show list of detected devices when the user enables MIDI Input
-            app_menu.change_enable_midi_input.connect ((enable) => {
-                if (enable) {
-                    var devices_found = Application.arranger_core.controller_connection.get_device_list ();
-                    app_menu.update_devices (devices_found);
-                }
-            });
-            // Connect the onscreen keyboard with the synthesizer
-            main_keyboard.connect_synthesizer (Application.arranger_core.synthesizer);
-
-            make_ui_events ();
+            add (grid);
+            show_all ();
         }
         // Connect UI events
-        void make_ui_events () {
-            this.key_press_event.connect ((event) => {
+        void make_events () {
+            app_menu_button.clicked.connect (() => {
+                app_menu.popup ();
+            });
+            key_press_event.connect ((event) => {
                 return keyboard_input_handler.handle_keypress_event (event.keyval);
             });
-            this.key_release_event.connect ((event) => {
+            key_release_event.connect ((event) => {
                 keyboard_input_handler.handle_keyrelease_event (event.keyval);
                 return false;
             });
-            this.window_state_event.connect ((event) => {
+            window_state_event.connect ((event) => {
                 if ((int)(event.changed_mask) == 4) {
                     main_keyboard.visible = false;
                     Timeout.add (100, () => {
@@ -146,23 +143,7 @@ namespace Ensembles.Shell {
                 }
                 return false;
             });
-            app_menu.change_active_input_device.connect ((device) => {
-                //  debug("%d %s\n", device.id, device.name);
-                Application.arranger_core.controller_connection.connect_device (device.id);
-            });
             app_menu.open_preferences_dialog.connect (open_preferences);
-            main_display_unit.change_style.connect ((accomp_style) => {
-                Application.arranger_core.style_player.add_style_file (accomp_style.path, accomp_style.tempo);
-            });
-            main_display_unit.change_voice.connect ((voice, channel) => {
-                Application.arranger_core.synthesizer.change_voice (voice, channel);
-            });
-            main_display_unit.change_tempo.connect ((tempo) => {
-                Application.arranger_core.style_player.change_tempo (tempo);
-                if (RecorderScreen.sequencer != null) {
-                    RecorderScreen.sequencer.initial_settings_tempo = tempo;
-                }
-            });
             beat_counter_panel.open_tempo_editor.connect (main_display_unit.open_tempo_screen);
             ctrl_panel.accomp_change.connect ((active) => {
                 Application.arranger_core.synthesizer.set_accompaniment_on (active);
@@ -268,10 +249,10 @@ namespace Ensembles.Shell {
                 if (Application.arranger_core.song_player != null) {
                     if (Application.arranger_core.song_player.get_status () == Core.SongPlayer.PlayerStatus.PLAYING) {
                         Application.arranger_core.song_player.pause ();
-                        song_player_state_changed (song_name, Core.SongPlayer.PlayerStatus.READY);
+                        Application.arranger_core.song_player_state_changed (Application.arranger_core.song_player.name, Core.SongPlayer.PlayerStatus.READY);
                     } else {
                         Application.arranger_core.song_player.play ();
-                        song_player_state_changed (song_name, Core.SongPlayer.PlayerStatus.PLAYING);
+                        Application.arranger_core.song_player_state_changed (Application.arranger_core.song_player.name, Core.SongPlayer.PlayerStatus.PLAYING);
                     }
                 }
             });
@@ -309,9 +290,11 @@ namespace Ensembles.Shell {
             debug ("Initialized\n");
         }
 
+        // Deallocate memory for some stuff
         public void app_exit (bool? force_close = false) {
             Idle.add (() => {
-                print ("App Exit\n");
+                debug ("App Exit Requested\n");
+                debug ("Cleaning up Shell");
                 debug ("CLEANUP: Unloading Registry Memory");
                 registry_panel.unref ();
                 debug ("CLEANUP: Unloading Slider Board");
@@ -323,10 +306,12 @@ namespace Ensembles.Shell {
                 debug ("CLEANUP: Unloading Beat Counter");
                 beat_counter_panel.unref ();
 
+                // Be sure to also run garbage collection on the core
+                Application.arranger_core.garbage_collect ();
                 if (force_close) {
                     Application.main_window.close ();
                 }
-                print ("Exiting!\n");
+                debug ("Exiting!\n");
                 return false;
             });
         }
@@ -353,10 +338,10 @@ namespace Ensembles.Shell {
             if (Application.arranger_core.song_player != null) {
                 if (Application.arranger_core.song_player.get_status () == Core.SongPlayer.PlayerStatus.PLAYING) {
                     Application.arranger_core.song_player.pause ();
-                    song_player_state_changed (song_name, Core.SongPlayer.PlayerStatus.READY);
+                    Application.arranger_core.song_player_state_changed (Application.arranger_core.song_player.name, Core.SongPlayer.PlayerStatus.READY);
                 } else {
                     Application.arranger_core.song_player.play ();
-                    song_player_state_changed (song_name, Core.SongPlayer.PlayerStatus.PLAYING);
+                    Application.arranger_core.song_player_state_changed (Application.arranger_core.song_player.name, Core.SongPlayer.PlayerStatus.PLAYING);
                 }
             } else {
                 Application.arranger_core.style_player.play_style ();

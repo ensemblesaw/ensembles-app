@@ -62,13 +62,13 @@ namespace Ensembles {
 
                 // This enables the free-desktop sound indicator integration with style and song player
                 var sound_indicator_listener = Interfaces.SoundIndicator.listen (main_window);
-                main_window.song_player_state_changed.connect_after (sound_indicator_listener.change_song_state);
+                arranger_core.song_player_state_changed.connect_after (sound_indicator_listener.change_song_state);
 
                 // Initialize theme, before the window has been shown
                 init_theme ();
 
                 // Show the shell
-                main_window.show_all ();
+                main_window.present ();
 
                 // ..and then load the data
                 new Thread<void> ("load-data", arranger_core.load_data);
@@ -76,7 +76,10 @@ namespace Ensembles {
         }
 
         public override void open (File[] files, string hint) {
+            // Start the app first
             activate ();
+
+            // Open file if it's valid and exists
             if (files [0].query_exists ()) {
                 arranger_core.open_file (files [0]);
             }
@@ -138,6 +141,7 @@ namespace Ensembles {
             }
 
             // Set colors that are complimentary to the accent color for special cases
+            /* Only works with elementary themes */
             if (complimentary_css_provider == null) {
                 complimentary_css_provider = new Gtk.CssProvider ();
                 try {

@@ -39,7 +39,6 @@ controller_query_device_info (int id) {
 
 int
 controller_query_input_device_count () {
-    //printf("%d\n", Pm_CountDevices ());
     return Pm_CountDevices ();
 }
 
@@ -47,7 +46,6 @@ controller_query_input_device_count () {
 int
 controller_connect_device (int id) {
     if (Pm_OpenInput (&controller_input_stream, id, NULL, 256, NULL, NULL) == 0) {
-        printf("Connected\n");
         return 1;
     }
     return 0;

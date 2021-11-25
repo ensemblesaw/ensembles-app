@@ -12,11 +12,7 @@ namespace Ensembles.Core {
     public class Controller : Object {
         ControllerDevice[] controller_device;
 
-        public Controller () {
-            controller_init ();
-        }
-
-        ~Controller () {
+        public void destroy () {
             stream_connected = false;
             controller_destruct ();
         }
@@ -25,7 +21,11 @@ namespace Ensembles.Core {
 
         public signal void receive_note_event (int key, int on, int velocity, int channel);
 
-        public Ensembles.Core.ControllerDevice[] get_device_list () {
+        public Ensembles.Core.ControllerDevice[] refresh () {
+            stream_connected = false;
+            Thread.usleep (200);
+            controller_destruct ();
+            controller_init ();
             int n = controller_query_input_device_count ();
             //debug ("Found %d devices...\n", n);
             controller_device = new ControllerDevice[n];
