@@ -13,7 +13,7 @@ namespace Ensembles.Shell {
         // View components
         public StyleControllerView style_controller_view;
         public BeatCounterView beat_counter_panel;
-        public MainDisplayCasing main_display_unit;
+        public CentralDisplay main_display_unit;
         public ControlPanel ctrl_panel;
         public SliderBoardView slider_board;
         public VoiceCategoryView voice_category_panel;
@@ -76,7 +76,7 @@ namespace Ensembles.Shell {
             custom_title_grid.show_all ();
 
             // Make the display unit imitation that we see in the center of the app UI
-            main_display_unit = new MainDisplayCasing ();
+            main_display_unit = new CentralDisplay ();
 
             // Make the control panel that appears to the right
             ctrl_panel = new ControlPanel ();

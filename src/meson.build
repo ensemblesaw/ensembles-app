@@ -82,7 +82,7 @@ ensembles_sources_vala = files (
     'Shell/Display/EffectRackScreen.vala',
     'Shell/Display/HomeScreen.vala',
     'Shell/Display/LFOEditScreen.vala',
-    'Shell/Display/MainDisplayCasing.vala',
+    'Shell/Display/CentralDisplay.vala',
     'Shell/Display/StyleMenu.vala',
     'Shell/Display/TempoScreen.vala',
     'Shell/Display/RecorderScreen.vala',

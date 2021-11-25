@@ -256,14 +256,16 @@ namespace Ensembles.Core {
             var style_discoverer = new StyleDiscovery ();
             style_discoverer.load_styles ();
             Application.main_window.main_display_unit.update_style_list (style_discoverer.styles);
-
-            print ("Ready\n");
             Idle.add (() => {
                 Application.main_window.main_display_unit.queue_remove_splash ();
                 Application.main_window.style_controller_view.ready ();
                 Application.main_window.ctrl_panel.load_settings ();
                 return false;
             });
+            if (Application.main_window!= null) {
+                Application.main_window.main_display_unit.update_splash_text (_("Initialize…"));
+            }
+            debug ("System Ready\n");
             Timeout.add (3000, () => {
                 if (song_player != null) {
                     song_player.play ();

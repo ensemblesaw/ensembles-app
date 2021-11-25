@@ -3,8 +3,12 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+/*
+ * This file is part of Ensembles
+ */
+
 namespace Ensembles.Shell {
-    public class MainDisplayCasing : Gtk.Box {
+    public class CentralDisplay : Gtk.Box {
         Gtk.Stack main_stack;
         Gtk.Overlay main_overlay;
         Gtk.Grid splash_screen;
@@ -25,7 +29,7 @@ namespace Ensembles.Shell {
 
         public ChannelModulatorScreen channel_mod_screen;
 
-        public MainDisplayCasing () {
+        public CentralDisplay () {
             home_screen = new HomeScreen ();
             tempo_screen = new TempoScreen ();
             style_menu = new StyleMenu ();
@@ -51,7 +55,7 @@ namespace Ensembles.Shell {
             var unit_logo = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/display_unit/ensembles_splash.svg") {
                 vexpand = true
             };
-            splash_update_text = new Gtk.Label (_("Initializing")) {
+            splash_update_text = new Gtk.Label (_("Initializing…")) {
                 xalign = 0,
                 margin = 8,
                 opacity = 0.5
@@ -72,11 +76,12 @@ namespace Ensembles.Shell {
             main_display_deck = new Hdy.Deck ();
             main_display_deck.add (main_display_leaflet);
 
-            main_overlay = new Gtk.Overlay ();
-            main_overlay.height_request = 274;
-            main_overlay.width_request = 460;
-            main_overlay.margin = 2;
-            main_overlay.valign = Gtk.Align.CENTER;
+            main_overlay = new Gtk.Overlay () {
+                height_request = 274,
+                width_request = 460,
+                margin = 2,
+                valign = Gtk.Align.CENTER
+            };
 
             // This helps maintain fixed size for all children
             var fixed_size_container = new Gtk.Overlay ();
@@ -84,11 +89,11 @@ namespace Ensembles.Shell {
 
             main_overlay.add (fixed_size_container);
             main_overlay.add_overlay (splash_screen);
-            this.get_style_context ().add_class ("display-background");
 
-            this.add (main_overlay);
-            this.vexpand = false;
-            this.margin = 4;
+            add (main_overlay);
+            vexpand = false;
+            margin = 4;
+            get_style_context ().add_class ("display-background");
 
             make_events ();
         }
@@ -140,33 +145,33 @@ namespace Ensembles.Shell {
             style_menu.close_menu.connect (() => {
                 main_display_leaflet.set_visible_child (home_screen);
             });
-            voice_menu_l.close_menu.connect (() => {
-                main_display_leaflet.set_visible_child (home_screen);
-            });
-            voice_menu_r1.close_menu.connect (() => {
-                main_display_leaflet.set_visible_child (home_screen);
-            });
-            voice_menu_r2.close_menu.connect (() => {
-                main_display_leaflet.set_visible_child (home_screen);
-            });
-            channel_mod_screen.close_screen.connect (() => {
-                main_display_leaflet.set_visible_child (home_screen);
-            });
             style_menu.change_style.connect ((accomp_style) => {
                 home_screen.set_style_name (accomp_style.name);
                 Application.arranger_core.style_player.add_style_file (accomp_style.path, accomp_style.tempo);
+            });
+            voice_menu_l.close_menu.connect (() => {
+                main_display_leaflet.set_visible_child (home_screen);
             });
             voice_menu_l.change_voice.connect ((voice, channel) => {
                 home_screen.set_voice_l_name (voice.name);
                 Application.arranger_core.synthesizer.change_voice (voice, channel);
             });
+            voice_menu_r1.close_menu.connect (() => {
+                main_display_leaflet.set_visible_child (home_screen);
+            });
             voice_menu_r1.change_voice.connect ((voice, channel) => {
                 home_screen.set_voice_r1_name (voice.name);
                 Application.arranger_core.synthesizer.change_voice (voice, channel);
             });
+            voice_menu_r2.close_menu.connect (() => {
+                main_display_leaflet.set_visible_child (home_screen);
+            });
             voice_menu_r2.change_voice.connect ((voice, channel) => {
                 home_screen.set_voice_r2_name (voice.name);
                 Application.arranger_core.synthesizer.change_voice (voice, channel);
+            });
+            channel_mod_screen.close_screen.connect (() => {
+                main_display_leaflet.set_visible_child (home_screen);
             });
             lfo_editor.close_screen.connect (() => {
                 main_display_leaflet.set_visible_child (home_screen);
@@ -180,9 +185,9 @@ namespace Ensembles.Shell {
                     RecorderScreen.sequencer.initial_settings_tempo = tempo;
                 }
             });
-            fx_rack_menu.close_menu.connect (() => {
-                main_display_leaflet.set_visible_child (home_screen);
-            });
+            //  fx_rack_menu.close_menu.connect (() => {
+            //      main_display_leaflet.set_visible_child (home_screen);
+            //  });
             recorder_screen.close_menu.connect (() => {
                 main_display_leaflet.set_visible_child (home_screen);
                 main_display_leaflet.queue_draw ();
