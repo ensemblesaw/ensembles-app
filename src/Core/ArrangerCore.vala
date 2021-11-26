@@ -283,7 +283,7 @@ namespace Ensembles.Core {
                 Application.main_window.ctrl_panel.load_settings ();
                 return false;
             });
-            if (Application.main_window!= null) {
+            if (Application.main_window != null) {
                 Application.main_window.main_display_unit.update_splash_text (_("Initialize…"));
             }
             debug ("System Ready\n");
