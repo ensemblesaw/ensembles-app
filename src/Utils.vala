@@ -1,6 +1,6 @@
 namespace Ensembles {
     public class Utils {
-        static string DISPLAY_THEME_PATH = Path.build_path ("/", Environment.get_home_dir (), "Documents", "Ensembles", "DisplayThemes");
+        static string display_theme_path = Path.build_path ("/", Environment.get_home_dir (), "Documents", "Ensembles", "DisplayThemes");
         public static string set_display_theme (string name) {
             var display_theme_provider = new Gtk.CssProvider ();
             try {
@@ -12,7 +12,7 @@ namespace Ensembles {
             } catch (Error e) {
                 warning ("Failed to apply display theme: " + e.message);
                 if (DirUtils.create_with_parents (Environment.get_home_dir () + "/Documents/Ensembles", 2000) != -1) {
-                    if (DirUtils.create_with_parents (DISPLAY_THEME_PATH, 2000) != -1) {
+                    if (DirUtils.create_with_parents (display_theme_path, 2000) != -1) {
                         debug ("Made user display theme folder\n");
                     }
                 }
@@ -24,7 +24,7 @@ namespace Ensembles {
         public static string[] get_theme_list () {
             string[] themes = new string [0];
             try {
-                Dir dir = Dir.open (DISPLAY_THEME_PATH);
+                Dir dir = Dir.open (display_theme_path);
                 string? name = null;
                 while ((name = dir.read_name ()) != null) {
                     if (name.contains (".css")) {
