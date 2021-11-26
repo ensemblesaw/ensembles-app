@@ -15,6 +15,8 @@ namespace Ensembles.Core {
         public List<Style> styles;
         Ensembles.Core.StyleAnalyser analyser;
 
+        public signal void analysis_complete ();
+
         public StyleDiscovery () {
             in_built_style_path = Constants.PKGDATADIR + "/StyleFiles";
             user_style_path = Environment.get_home_dir () + "/Documents/Ensembles/StyleFiles";
@@ -99,6 +101,10 @@ namespace Ensembles.Core {
                     Application.main_window.main_display_unit.update_splash_text (_("Loading Styles: ") + styles.nth_data (i).name);
                 }
             }
+            Timeout.add (1000, () => {
+                analysis_complete ();
+                return false;
+            });
         }
 
         private CompareFunc<Style> stylecmp = (a, b) => {

@@ -29,6 +29,11 @@ namespace Ensembles.Core {
         // Plugins System
         public PlugIns.PlugInManager plugin_manager;
 
+
+        // Analysers
+        VoiceAnalyser voice_analyser;
+        StyleDiscovery style_discoverer;
+
         // Path constants
         /*
          * sf stands for SoundFont (Registered Trademark of Emu Systems)
@@ -94,6 +99,10 @@ namespace Ensembles.Core {
             // Load arpeggio and auto harmony modules
             arpeggiator = new Core.Arpeggiator ();
             harmonizer = new Core.Harmonizer ();
+
+            // Create Analysers
+            voice_analyser = new VoiceAnalyser ();
+            style_discoverer = new StyleDiscovery ();
         }
 
         // Connect Central Bus events
@@ -212,6 +221,22 @@ namespace Ensembles.Core {
             metronome_player.beat_sync.connect (() => {
                 Application.main_window.beat_counter_panel.sync ();
             });
+
+            voice_analyser.analysis_complete.connect (() => {
+                detected_voices = voice_analyser.get_all_voices ();
+                detected_voice_indices = voice_analyser.get_all_category_indices ();
+                Idle.add (() => {
+                    Application.main_window.main_display_unit.update_voice_list (detected_voices);
+                    return false;
+                });
+            });
+
+            style_discoverer.analysis_complete.connect (() => {
+                Idle.add (() =>{
+                    Application.main_window.main_display_unit.update_style_list (style_discoverer.styles);
+                    return false;
+                });
+            });
         }
 
         public void garbage_collect () {
@@ -240,22 +265,18 @@ namespace Ensembles.Core {
             Thread.usleep (500000);
             // Load Voices
             debug ("LOADING DATA: Voices");
-            var voice_analyser = new VoiceAnalyser (sf_loc, sf_schema_loc);
-            detected_voices = voice_analyser.get_all_voices ();
-            detected_voice_indices = voice_analyser.get_all_category_indices ();
-            Application.main_window.main_display_unit.update_voice_list (detected_voices);
+            voice_analyser.analyse (sf_loc, sf_schema_loc);
 
             // Load Plug-ins
-            debug ("LOADING DATA: Plug-ins");
-            plugin_manager.discover ();
-            Application.main_window.main_display_unit.update_effect_list ();
+            //debug ("LOADING DATA: Plug-ins");
+            //plugin_manager.discover ();
+            //Application.main_window.main_display_unit.update_effect_list ();
 
             // Load Styles
             // Start looking for styles in the app data folder and user styles folder
             debug ("LOADING DATA: Styles");
-            var style_discoverer = new StyleDiscovery ();
             style_discoverer.load_styles ();
-            Application.main_window.main_display_unit.update_style_list (style_discoverer.styles);
+
             Idle.add (() => {
                 Application.main_window.main_display_unit.queue_remove_splash ();
                 Application.main_window.style_controller_view.ready ();

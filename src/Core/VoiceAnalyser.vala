@@ -7,7 +7,8 @@ namespace Ensembles.Core {
     public class VoiceAnalyser : Object {
         Voice[] voices;
         int[] category_indices;
-        public VoiceAnalyser (string sf_path, string sf_schema_path) {
+        public signal void analysis_complete ();
+        public void analyse (string sf_path, string sf_schema_path) {
             FileStream stream = FileStream.open (sf_schema_path, "r");
 
             if (voice_analyser_init (sf_path) == 0) {
@@ -37,6 +38,7 @@ namespace Ensembles.Core {
                     }
                     i++;
                 }
+                analysis_complete ();
             } else {
                 warning ("Soundfont is invalid");
             }

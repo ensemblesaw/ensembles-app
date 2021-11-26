@@ -317,7 +317,7 @@ namespace Ensembles.Shell {
             });
         }
 
-        ~MixerBoardView () {
+        public void stop_watch () {
             watch = false;
         }
 

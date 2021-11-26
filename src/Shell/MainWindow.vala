@@ -300,7 +300,7 @@ namespace Ensembles.Shell {
                 debug ("CLEANUP: Unloading Slider Board");
                 slider_board.unref ();
                 debug ("CLEANUP: Unloading Mixer Board");
-                mixer_board_view.unref ();
+                mixer_board_view.stop_watch ();
                 debug ("CLEANUP: Unloading On-screen Keyboard");
                 main_keyboard.unref ();
                 debug ("CLEANUP: Unloading Beat Counter");

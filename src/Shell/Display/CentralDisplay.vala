@@ -99,13 +99,10 @@ namespace Ensembles.Shell {
         }
 
         public void queue_remove_splash () {
-            Timeout.add (2000, () => {
-                main_overlay.remove (splash_screen);
-                if (splash_screen != null) {
-                    splash_screen.unref ();
-                }
-                return false;
-            });
+            main_overlay.remove (splash_screen);
+            if (splash_screen != null) {
+                splash_screen.unref ();
+            }
         }
 
         public void update_splash_text (string text) {
@@ -212,9 +209,9 @@ namespace Ensembles.Shell {
         }
 
         public void update_voice_list (Ensembles.Core.Voice[] voices) {
-            voice_menu_l.populate_voice_menu (voices);
             voice_menu_r1.populate_voice_menu (voices);
             voice_menu_r2.populate_voice_menu (voices);
+            voice_menu_l.populate_voice_menu (voices);
         }
 
         public void quick_select_voice (int index) {

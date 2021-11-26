@@ -6,8 +6,11 @@
 namespace Ensembles.Shell {
     public class VoiceItem : Gtk.ListBoxRow {
         public Ensembles.Core.Voice voice;
+
+        bool show_category;
         public VoiceItem (Ensembles.Core.Voice voice, bool show_category) {
             this.voice = voice;
+            this.show_category = show_category;
 
             var voice_label = new Gtk.Label (voice.name);
             voice_label.get_style_context ().add_class ("menu-item-label");
