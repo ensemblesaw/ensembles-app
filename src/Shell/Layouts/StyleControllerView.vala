@@ -39,14 +39,18 @@ namespace Ensembles.Shell {
         public StyleControllerView () {
             row_homogeneous = true;
             vexpand = true;
-            var intro_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL);
-            intro_button_a = new Gtk.Button.with_label ("1");
-            intro_button_b = new Gtk.Button.with_label ("2");
+            var intro_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL) {
+                expand = true
+            };
+            intro_button_a = new Gtk.Button.with_label ("1") {
+                sensitive = false
+            };
+            intro_button_b = new Gtk.Button.with_label ("2") {
+                sensitive = false
+            };
             intro_box.add (intro_button_a);
             intro_box.add (intro_button_b);
             intro_box.set_layout (Gtk.ButtonBoxStyle.EXPAND);
-            intro_button_a.set_sensitive (false);
-            intro_button_b.set_sensitive (false);
             intro_button_a.clicked.connect (() => {
                 if (RecorderScreen.sequencer != null) {
                     RecorderScreen.sequencer.initial_settings_style_part_index = 0;
@@ -74,19 +78,23 @@ namespace Ensembles.Shell {
 
             var var_fill_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL);
             var_fill_box.hexpand = true;
-            var_fill_button_a = new Gtk.Button.with_label ("A");
-            var_fill_button_b = new Gtk.Button.with_label ("B");
-            var_fill_button_c = new Gtk.Button.with_label ("C");
-            var_fill_button_d = new Gtk.Button.with_label ("D");
+            var_fill_button_a = new Gtk.Button.with_label ("A") {
+                sensitive = false
+            };
+            var_fill_button_b = new Gtk.Button.with_label ("B") {
+                sensitive = false
+            };
+            var_fill_button_c = new Gtk.Button.with_label ("C") {
+                sensitive = false
+            };
+            var_fill_button_d = new Gtk.Button.with_label ("D") {
+                sensitive = false
+            };
             var_fill_box.add (var_fill_button_a);
             var_fill_box.add (var_fill_button_b);
             var_fill_box.add (var_fill_button_c);
             var_fill_box.add (var_fill_button_d);
             var_fill_box.set_layout (Gtk.ButtonBoxStyle.EXPAND);
-            var_fill_button_a.set_sensitive (false);
-            var_fill_button_b.set_sensitive (false);
-            var_fill_button_c.set_sensitive (false);
-            var_fill_button_d.set_sensitive (false);
             var_fill_button_a.clicked.connect (() => {
                 if (RecorderScreen.sequencer != null) {
                     RecorderScreen.sequencer.initial_settings_style_part_index = 2;
@@ -139,8 +147,9 @@ namespace Ensembles.Shell {
                 set_style_section_by_index (5);
             });
 
-            break_button = new Gtk.Button.with_label (_("Break"));
-            break_button.set_sensitive (false);
+            break_button = new Gtk.Button.with_label (_("Break")) {
+                sensitive = false
+            };
             break_button.clicked.connect (() => {
                 if (RecorderScreen.sequencer != null) {
                     RecorderScreen.sequencer.initial_settings_style_part_index = 6;
@@ -156,10 +165,12 @@ namespace Ensembles.Shell {
 
             var ending_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL);
             ending_box.hexpand = true;
-            ending_button_a = new Gtk.Button.with_label ("1");
-            ending_button_b = new Gtk.Button.with_label ("2");
-            ending_button_a.set_sensitive (false);
-            ending_button_b.set_sensitive (false);
+            ending_button_a = new Gtk.Button.with_label ("1") {
+                sensitive = false
+            };
+            ending_button_b = new Gtk.Button.with_label ("2") {
+                sensitive = false
+            };
             ending_box.add (ending_button_a);
             ending_box.add (ending_button_b);
             ending_box.set_layout (Gtk.ButtonBoxStyle.EXPAND);
@@ -190,10 +201,12 @@ namespace Ensembles.Shell {
 
             var sync_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL);
             sync_box.hexpand = true;
-            sync_start_button = new Gtk.Button.with_label (_("Sync Start"));
-            sync_stop_button = new Gtk.Button.with_label (_("Sync Stop"));
-            sync_start_button.set_sensitive (false);
-            sync_stop_button.set_sensitive (false);
+            sync_start_button = new Gtk.Button.with_label (_("Sync Start")) {
+                sensitive = false
+            };
+            sync_stop_button = new Gtk.Button.with_label (_("Sync Stop")) {
+                sensitive = false
+            };
             sync_box.add (sync_start_button);
             sync_box.add (sync_stop_button);
             sync_box.set_layout (Gtk.ButtonBoxStyle.EXPAND);
@@ -222,12 +235,13 @@ namespace Ensembles.Shell {
                 set_style_section_by_index (10);
             });
 
-            start_button = new Gtk.Button.from_icon_name ("media-playback-start-symbolic");
-            start_button.hexpand = true;
+            start_button = new Gtk.Button.from_icon_name ("media-playback-start-symbolic") {
+                sensitive = false,
+                width_request = 64,
+                hexpand = true
+            };
             start_button.get_style_context ().add_class (Gtk.STYLE_CLASS_DESTRUCTIVE_ACTION);
             start_button.get_style_context ().remove_class ("image-button");
-            start_button.width_request = 64;
-            start_button.set_sensitive (false);
             start_button.clicked.connect (() => {
                 start_stop ();
             });
@@ -239,17 +253,17 @@ namespace Ensembles.Shell {
             var ending_label = new Gtk.Label ("     " + _("ENDING") + "     ");
             ending_label.set_opacity (0.4);
 
-            this.attach (intro_box, 0, 0, 1, 1);
-            this.attach (var_fill_box, 1, 0, 1, 1);
-            this.attach (break_button, 2, 0, 1, 1);
-            this.attach (ending_box, 3, 0, 1, 1);
-            this.attach (sync_box, 4, 0, 1, 1);
-            this.attach (start_button, 5, 0, 1, 1);
-            this.attach (intro_label, 0, 1, 1, 1);
-            this.attach (var_label, 1, 1, 1, 1);
-            this.attach (ending_label, 3, 1, 1, 1);
-            this.column_spacing = 4;
-            this.margin = 4;
+            attach (intro_box, 0, 0, 1, 1);
+            attach (var_fill_box, 1, 0, 1, 1);
+            attach (break_button, 2, 0, 1, 1);
+            attach (ending_box, 3, 0, 1, 1);
+            attach (sync_box, 4, 0, 1, 1);
+            attach (start_button, 5, 0, 1, 1);
+            attach (intro_label, 0, 1, 1, 1);
+            attach (var_label, 1, 1, 1, 1);
+            attach (ending_label, 3, 1, 1, 1);
+            column_spacing = 4;
+            margin = 4;
         }
         public void ready (bool? ready = true) {
             intro_button_a.set_sensitive (ready);

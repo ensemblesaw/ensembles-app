@@ -45,10 +45,12 @@ namespace Ensembles.Shell {
             sustain_button = new Gtk.Button.with_label (_("SUST"));
             stop_button = new Gtk.Button.with_label (_("STOP"));
 
-            var switch_bar = new Gtk.Grid ();
-            switch_bar.halign = Gtk.Align.END;
-            switch_bar.hexpand = true;
-            switch_bar.margin_top = 1;
+            var switch_bar = new Gtk.Grid () {
+                hexpand = true,
+                vexpand = true,
+                halign = Gtk.Align.END,
+                valign = Gtk.Align.CENTER
+            };
             switch_bar.attach (new Gtk.Label (_("H O L D")), 0, 0);
             switch_bar.attach (hold_switch, 1, 0);
             switch_bar.attach (new Gtk.Label (_("Z O O M")), 2, 0);
@@ -58,7 +60,7 @@ namespace Ensembles.Shell {
 
             var keyboard_top_bar = new Gtk.Grid ();
             keyboard_top_bar.valign = Gtk.Align.START;
-            keyboard_top_bar.height_request = 24;
+            keyboard_top_bar.height_request = 32;
             keyboard_top_bar.get_style_context ().add_class ("keyboard-top-bar");
             keyboard_top_bar.add (switch_bar);
 

@@ -10,7 +10,7 @@ namespace Ensembles.Shell {
         Gtk.Button split_button;
 
         public Key (int index, bool black_key) {
-            margin_top = 23;
+            margin_top = 32;
             _black_key = black_key;
             _index = index;
             get_style_context ().add_class ("common-key");

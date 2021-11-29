@@ -4,7 +4,7 @@
  */
 
 namespace Ensembles.Shell {
-    public class BeatCounterView : Gtk.Overlay {
+    public class BeatCounterView : Gtk.Grid {
         Gtk.Image beat_counter_0;
         Gtk.Image beat_counter_1;
         Gtk.Image beat_counter_2;
@@ -27,63 +27,68 @@ namespace Ensembles.Shell {
 
         // A panel that shows the beat progress
         public BeatCounterView () {
-            var main_grid = new Gtk.Grid ();
+            var beat_visualizer_grid = new Gtk.Grid ();
             beat_counter_0 = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/beat_counter/beat_counter_1_0.svg");
-            beat_counter_1 = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/beat_counter/beat_counter_2_0.svg");
-            beat_counter_2 = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/beat_counter/beat_counter_2_0.svg");
-            beat_counter_3 = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/beat_counter/beat_counter_2_0.svg");
-            beat_counter_0.margin_top = 1;
-            beat_counter_1.margin_top = 3;
-            beat_counter_2.margin_top = 3;
-            beat_counter_3.margin_top = 3;
-            main_grid.column_spacing = 1;
+            beat_counter_1 = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/beat_counter/beat_counter_2_0.svg") {
+                margin_top = 2
+            };
+            beat_counter_2 = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/beat_counter/beat_counter_2_0.svg") {
+                margin_top = 2,
+                margin_start = 1
+            };
+            beat_counter_3 = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/beat_counter/beat_counter_2_0.svg") {
+                margin_top = 2,
+                margin_start = 1
+            };
+
+            beat_visualizer_grid.attach (beat_counter_0, 0, 0, 1, 1);
+            beat_visualizer_grid.attach (beat_counter_1, 1, 0, 1, 1);
+            beat_visualizer_grid.attach (beat_counter_2, 2, 0, 1, 1);
+            beat_visualizer_grid.attach (beat_counter_3, 3, 0, 1, 1);
 
 
 
-            tempo_button = new Gtk.Button.with_label (_("Tempo"));
-            tempo_button.margin = 4;
-            tempo_button.margin_start = 8;
+            var beat_visualizer_active_grid = new Gtk.Grid ();
+            beat_counter_active_0 = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/beat_counter/beat_counter_1_1.svg") {
+                opacity = 0
+            };
+            beat_counter_active_1 = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/beat_counter/beat_counter_2_1.svg") {
+                margin_top = 2,
+                opacity = 0
+            };
+            beat_counter_active_2 = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/beat_counter/beat_counter_2_1.svg") {
+                margin_top = 2,
+                opacity = 0
+            };
+            beat_counter_active_3 = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/beat_counter/beat_counter_2_1.svg") {
+                margin_top = 2,
+                opacity = 0
+            };
+
+            beat_visualizer_active_grid.attach (beat_counter_active_0, 0, 0, 1, 1);
+            beat_visualizer_active_grid.attach (beat_counter_active_1, 1, 0, 1, 1);
+            beat_visualizer_active_grid.attach (beat_counter_active_2, 2, 0, 1, 1);
+            beat_visualizer_active_grid.attach (beat_counter_active_3, 3, 0, 1, 1);
+
+            tempo_button = new Gtk.Button.with_label (_("Tempo")) {
+                margin = 8
+            };
             tempo_button.clicked.connect (() => {
                 open_tempo_editor ();
             });
-            main_grid.attach (beat_counter_0, 0, 0, 1, 1);
-            main_grid.attach (beat_counter_1, 1, 0, 1, 1);
-            main_grid.attach (beat_counter_2, 2, 0, 1, 1);
-            main_grid.attach (beat_counter_3, 3, 0, 1, 1);
-            main_grid.attach (tempo_button, 4, 0, 1, 1);
 
+            var visualizer_overlay = new Gtk.Overlay () {
+                width_request = 116,
+                margin_top = 12
+            };
+            visualizer_overlay.add_overlay (beat_visualizer_grid);
+            visualizer_overlay.add_overlay (beat_visualizer_active_grid);
 
-
-            var overlay_grid = new Gtk.Grid ();
-            beat_counter_active_0 = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/beat_counter/beat_counter_1_1.svg");
-            beat_counter_active_1 = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/beat_counter/beat_counter_2_1.svg");
-            beat_counter_active_2 = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/beat_counter/beat_counter_2_1.svg");
-            beat_counter_active_3 = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/beat_counter/beat_counter_2_1.svg");
-            beat_counter_active_1.margin_top = 2;
-            beat_counter_active_1.margin_start = 1;
-            beat_counter_active_2.margin_top = 2;
-            beat_counter_active_3.margin_top = 2;
-            beat_counter_active_0.opacity = 0;
-            beat_counter_active_1.opacity = 0;
-            beat_counter_active_2.opacity = 0;
-            beat_counter_active_3.opacity = 0;
-
-            var placeholder_label = new Gtk.Label (" ");
-            placeholder_label.margin_bottom = 8;
-
-            overlay_grid.attach (beat_counter_active_0, 0, 0, 1, 1);
-            overlay_grid.attach (beat_counter_active_1, 1, 0, 1, 1);
-            overlay_grid.attach (beat_counter_active_2, 2, 0, 1, 1);
-            overlay_grid.attach (beat_counter_active_3, 3, 0, 1, 1);
-            overlay_grid.attach (placeholder_label, 4, 0, 1, 1);
-            overlay_grid.margin_top = 7;
-
-            this.add_overlay (main_grid);
-            this.add_overlay (overlay_grid);
-            this.show_all ();
-            this.set_overlay_pass_through (overlay_grid, true);
-            this.width_request = 210;
-            this.height_request = 42;
+            attach (visualizer_overlay, 0, 0);
+            attach (tempo_button, 1, 0);
+            show_all ();
+            width_request = 210;
+            height_request = 42;
         }
 
         public void change_tempo (int tempo) {
@@ -94,13 +99,13 @@ namespace Ensembles.Shell {
 
         public void change_beats_per_bar (int beats) {
             if (beats > 0) {
-                this.beats_per_bar = beats;
+                beats_per_bar = beats;
             }
         }
 
         public void change_qnotes_per_bar (int qnotes) {
             if (qnotes > 0) {
-                this.quarter_notes_per_bar = qnotes;
+                quarter_notes_per_bar = qnotes;
             }
         }
 

@@ -369,7 +369,7 @@
 .white-key-normal > * {
     padding: 0;
     margin: -8px;
-    margin-top: -172px;
+    margin-top: -178px;
 }
 .white-key-normal:active {
     background-image:linear-gradient(shade(@accent_color, 0.7), shade(@accent_color, 0.5));
@@ -405,7 +405,7 @@
 .black-key-normal > * {
     padding: 0;
     margin: -8px;
-    margin-top: -110px;
+    margin-top: -116px;
 }
 .black-key-normal:active{
     background-image:linear-gradient(shade(@accent_color, 0.7), shade(@accent_color, 0.5));
@@ -461,7 +461,7 @@
 }
 
 .keyboard-background {
-    background-image:linear-gradient(#505050 0%, #383838 23px, #000 24px, #333);
+    background-image:linear-gradient(#505050 0%, #383838 31px, #000 32px, #333);
 	border-top: 1px solid #222;
 }
 

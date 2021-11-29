@@ -58,7 +58,12 @@ namespace Ensembles.Shell {
             button_box.pack_end (y_assign_button);
             attach (button_box, 0, 0, 1, 1);
 
-            var main_overlay = new Gtk.Overlay ();
+            var main_overlay = new Gtk.Overlay () {
+                height_request = 150,
+                width_request = 150,
+                halign = Gtk.Align.CENTER,
+                valign = Gtk.Align.CENTER
+            };
 
             var main_box = new Gtk.Grid ();
             main_box.vexpand = true;
@@ -74,7 +79,6 @@ namespace Ensembles.Shell {
             main_overlay.add_overlay (event_box);
             attach (main_overlay, 0, 1, 1, 1);
             get_style_context ().add_class ("joystick-background");
-            width_request = 150;
         }
 
         public void make_all_sensitive () {
