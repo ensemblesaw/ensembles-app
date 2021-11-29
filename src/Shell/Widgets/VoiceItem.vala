@@ -6,9 +6,10 @@
 namespace Ensembles.Shell {
     public class VoiceItem : Gtk.ListBoxRow {
         public Ensembles.Core.Voice voice;
-
+        public int index;
         bool show_category;
-        public VoiceItem (Ensembles.Core.Voice voice, bool show_category) {
+        public VoiceItem (Ensembles.Core.Voice voice, bool show_category, int index) {
+            this.index = index;
             this.voice = voice;
             this.show_category = show_category;
 
@@ -17,7 +18,7 @@ namespace Ensembles.Shell {
             voice_label.halign = Gtk.Align.START;
             voice_label.hexpand = true;
 
-            var bank_preset_label = new Gtk.Label (voice.bank.to_string () + " ┅ " + voice.preset.to_string ());
+            var bank_preset_label = new Gtk.Label (index.to_string ());
             bank_preset_label.get_style_context ().add_class ("menu-item-description");
             bank_preset_label.halign = Gtk.Align.END;
             var category_label = new Gtk.Label ("");

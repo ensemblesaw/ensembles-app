@@ -333,10 +333,6 @@ namespace Ensembles.Shell {
             });
         }
 
-        void save_project () {
-            sequencer.save_sequence_to_file ();
-        }
-
         Granite.Widgets.Welcome get_welcome_widget () {
             var welcome = new Granite.Widgets.Welcome (_("No Project Open"), _("Create a new project to start recording"));
             welcome.append ("document-new", _("New Project"), _("Creates a new project from scratch"));

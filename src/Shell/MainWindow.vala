@@ -333,7 +333,9 @@ namespace Ensembles.Shell {
             }
         }
 
-        // Used by MPRIS
+        /* Used by MPRIS
+         * This enables integration with audio indicator provided by the DE
+         */
         public void media_toggle_play () {
             if (Application.arranger_core.song_player != null) {
                 if (Application.arranger_core.song_player.get_status () == Core.SongPlayer.PlayerStatus.PLAYING) {

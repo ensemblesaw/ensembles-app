@@ -23,6 +23,9 @@ namespace Ensembles.Core {
             music_player_init (sf_loc);
             current_file_tempo = music_player_load_file (midi_file_path);
             player_status_changed (0.0f, current_file_tempo, get_status ());
+            set_music_note_callback ((note, on) => {
+                Application.main_window.main_keyboard.set_note_on (note, (on == 144), true);
+            });
             start_monitoring ();
         }
 
@@ -94,6 +97,11 @@ namespace Ensembles.Core {
             }
             return 0;
         }
+
+        public static void set_note_watch_channel (int chan) {
+            print ("%d\n", chan);
+            note_watch_channel = chan;
+        }
     }
 }
 
@@ -104,6 +112,12 @@ extern void music_player_play ();
 extern void music_player_pause ();
 extern void music_player_seek (int seek_point);
 extern int music_player_get_status ();
+
+
+[CCode (cname = "style_player_change_state", has_target = false)]
+extern delegate void music_note_callback (int note, int on);
+[CCode (has_target = false)]
+extern void set_music_note_callback (music_note_callback function);
 
 extern int note_watch_channel;
 extern int total_ticks;

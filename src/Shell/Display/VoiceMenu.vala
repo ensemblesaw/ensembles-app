@@ -86,7 +86,7 @@ namespace Ensembles.Shell {
                     temp_category = voices[i].category;
                     show_category = true;
                 }
-                var row = new VoiceItem (voices[i], show_category);
+                var row = new VoiceItem (voices[i], show_category, i);
                 voice_rows[i] = row;
                 main_list.insert (row, -1);
             }
@@ -106,7 +106,7 @@ namespace Ensembles.Shell {
                     }
                     if (Core.InstrumentRack.plugin_voice_reference[i - last_voice_index] != null) {
                         print ("name: %s\n", Core.InstrumentRack.plugin_voice_reference[i - last_voice_index].name);
-                        var row = new VoiceItem (Core.InstrumentRack.plugin_voice_reference[i - last_voice_index], show_category);
+                        var row = new VoiceItem (Core.InstrumentRack.plugin_voice_reference[i - last_voice_index], show_category, i);
                         voice_rows[i] = row;
                         main_list.insert (row, -1);
                     }

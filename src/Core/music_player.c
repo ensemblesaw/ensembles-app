@@ -25,8 +25,28 @@ gchar* midi_file_path;
 
 int player_repeat;
 
+// Note callback
+typedef void
+(*music_note_callback)(gint note, gint on);
+
+static music_note_callback music_callback;
+
+void
+set_music_note_callback (music_note_callback callback) {
+    music_callback = callback;
+}
+
 int
 mp_parse_midi_events (void *data, fluid_midi_event_t *event) {
+    int type = fluid_midi_event_get_type (event);
+    int channel = fluid_midi_event_get_channel (event);
+    int key = fluid_midi_event_get_key (event);
+
+    if (music_callback != NULL && channel == note_watch_channel) {
+        if (type == 144 || type == 128) {
+            music_callback (key, type);
+        }
+    }
     return fluid_synth_handle_midi_event (mp_synth, event);
 }
 
@@ -54,11 +74,6 @@ mp_parse_ticks (void* data, int ticks) {
 void
 music_player_init (const gchar* sf_loc) {
     mp_settings = get_settings(MIDI_SONG_PLAYER);
-    // fluid_settings_setstr(mp_settings, "audio.driver", "pulseaudio");
-    // fluid_settings_setint(mp_settings, "audio.periods", 16);
-    // fluid_settings_setint(mp_settings, "audio.period-size", 4096);
-    // fluid_settings_setint(mp_settings, "audio.realtime-prio", 40);
-    // fluid_settings_setnum(mp_settings, "synth.gain", 1.0);
     mp_synth = new_fluid_synth(mp_settings);
     mp_adriver = new_fluid_audio_driver(mp_settings, mp_synth);
 

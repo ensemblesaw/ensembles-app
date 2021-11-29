@@ -23,29 +23,41 @@ namespace Ensembles.Shell {
             });
         }
 
-        public void note_on () {
+        public void note_on (bool auto) {
             if (_black_key) {
                 if ((_index <= Ensembles.Core.CentralBus.get_split_key ()) &&
-                   (Ensembles.Core.CentralBus.get_accomp_on () || Ensembles.Core.CentralBus.get_split_on ()))
+                   (Ensembles.Core.CentralBus.get_accomp_on () || Ensembles.Core.CentralBus.get_split_on ())) {
                     get_style_context ().add_class ("black-key-split-active");
-                else
+                } else if (auto) {
+                    get_style_context ().add_class ("black-key-active-auto");
+                } else {
                     get_style_context ().add_class ("black-key-active");
+                }
             } else {
                 if ((_index <= Ensembles.Core.CentralBus.get_split_key ()) &&
-                   (Ensembles.Core.CentralBus.get_accomp_on () || Ensembles.Core.CentralBus.get_split_on ()))
+                   (Ensembles.Core.CentralBus.get_accomp_on () || Ensembles.Core.CentralBus.get_split_on ())) {
                     get_style_context ().add_class ("white-key-split-active");
-                else
+                } else if (auto) {
+                    get_style_context ().add_class ("white-key-active-auto");
+                } else {
                     get_style_context ().add_class ("white-key-active");
+                }
             }
         }
 
-        public void note_off () {
+        public void note_off (bool auto) {
             if (_black_key) {
                 get_style_context ().remove_class ("black-key-active");
                 get_style_context ().remove_class ("black-key-split-active");
+                if (auto) {
+                    get_style_context ().remove_class ("black-key-active-auto");
+                }
             } else {
                 get_style_context ().remove_class ("white-key-active");
                 get_style_context ().remove_class ("white-key-split-active");
+                if (auto) {
+                    get_style_context ().remove_class ("white-key-active-auto");
+                }
             }
         }
 

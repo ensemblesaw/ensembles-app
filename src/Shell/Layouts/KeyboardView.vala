@@ -98,9 +98,9 @@ namespace Ensembles.Shell {
             }
         }
 
-        public void set_note_on (int key, bool on) {
+        public void set_note_on (int key, bool on, bool? auto = false) {
             if (key > 35 && key < 96) {
-                octaves[(int)(key / 12) - 3].set_note_on (key % 12, on);
+                octaves[(int)(key / 12) - 3].set_note_on (key % 12, on, auto);
             }
         }
 

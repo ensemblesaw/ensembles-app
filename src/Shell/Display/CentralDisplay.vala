@@ -8,6 +8,11 @@
  */
 
 namespace Ensembles.Shell {
+    /*
+     * Central Display is a slightly excluded section of the overall UI
+     * It has its own theme and is ideally visually separated from the
+     * rest of the layout.
+     */
     public class CentralDisplay : Gtk.Box {
         Gtk.Stack main_stack;
         Gtk.Overlay main_overlay;
@@ -93,7 +98,7 @@ namespace Ensembles.Shell {
             add (main_overlay);
             vexpand = false;
             margin = 4;
-            get_style_context ().add_class ("display-background");
+            get_style_context ().add_class ("ensembles-central-display");
 
             make_events ();
         }

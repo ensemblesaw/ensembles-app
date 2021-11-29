@@ -283,11 +283,11 @@ namespace Ensembles.Shell {
             });
         }
 
-        public void set_note_on (int key, bool on) {
+        public void set_note_on (int key, bool on, bool? auto = false) {
             if (on) {
-                keys[key].note_on ();
+                keys[key].note_on (auto);
             } else {
-                keys[key].note_off ();
+                keys[key].note_off (auto);
             }
         }
         public void update_split () {

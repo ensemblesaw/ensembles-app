@@ -18,26 +18,30 @@ namespace Ensembles.Shell {
 
         public signal void set_sampler_gain (double gain);
 
+        // A panel where you can modify the gain modulators of various channels
         public MixerBoardView () {
-            halign = Gtk.Align.CENTER;
             vexpand = true;
+            column_homogeneous = true;
+            margin_start = 8;
+            margin_end = 8;
             int i = 0;
             style_gain_sliders = new Gtk.Scale [16];
 
             for (i = 0; i < 16; i++) {
-                style_gain_sliders[i] = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1);
-                style_gain_sliders[i].inverted = true;
-                style_gain_sliders[i].draw_value = false;
+                style_gain_sliders[i] = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1)  {
+                    inverted = true,
+                    draw_value = false
+                };
                 attach (style_gain_sliders[i], i, 0, 1, 1);
             }
             style_gain_sliders[0].vexpand = true;
             connect_style_sliders ();
 
-            voice_l_gain_slider = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1);
-            voice_l_gain_slider.inverted = true;
-            voice_l_gain_slider.draw_value = false;
-            voice_l_gain_slider.margin_start = 4;
-            voice_l_gain_slider.height_request = 72;
+            voice_l_gain_slider = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1) {
+                inverted = true,
+                draw_value = false,
+                height_request = 72
+            };
             attach (voice_l_gain_slider, i++, 0, 1, 1);
             voice_l_gain_slider.change_value.connect ((scroll, value) => {
                 change_gain (0, 2, (int)(value * 127));
@@ -45,9 +49,10 @@ namespace Ensembles.Shell {
             });
 
 
-            voice_r1_gain_slider = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1);
-            voice_r1_gain_slider.inverted = true;
-            voice_r1_gain_slider.draw_value = false;
+            voice_r1_gain_slider = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1) {
+                inverted = true,
+                draw_value = false
+            };
             attach (voice_r1_gain_slider, i++, 0, 1, 1);
             voice_r1_gain_slider.change_value.connect ((scroll, value) => {
                 change_gain (0, 0, (int)(value * 127));
@@ -55,9 +60,10 @@ namespace Ensembles.Shell {
             });
 
 
-            voice_r2_gain_slider = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1);
-            voice_r2_gain_slider.inverted = true;
-            voice_r2_gain_slider.draw_value = false;
+            voice_r2_gain_slider = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1) {
+                inverted = true,
+                draw_value = false
+            };
             attach (voice_r2_gain_slider, i++, 0, 1, 1);
             voice_r2_gain_slider.change_value.connect ((scroll, value) => {
                 change_gain (0, 1, (int)(value * 127));
@@ -65,9 +71,10 @@ namespace Ensembles.Shell {
             });
 
 
-            sampler_pad_gain_slider = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1);
-            sampler_pad_gain_slider.inverted = true;
-            sampler_pad_gain_slider.draw_value = false;
+            sampler_pad_gain_slider = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1) {
+                inverted = true,
+                draw_value = false
+            };
             attach (sampler_pad_gain_slider, i++, 0, 1, 1);
             sampler_pad_gain_slider.set_value (0.9);
             sampler_pad_gain_slider.change_value.connect ((scroll, value) => {

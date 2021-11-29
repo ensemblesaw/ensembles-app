@@ -51,10 +51,10 @@
             _channel = channel;
             set_size_request (424, 236);
             row_spacing = 8;
-            get_style_context ().add_class ("channel-modulator-screen");
+            get_style_context ().add_class ("quick-mod");
 
             var close_button = new Gtk.Button.from_icon_name ("window-close-symbolic", Gtk.IconSize.BUTTON);
-            close_button.get_style_context ().add_class ("channel-modulator-close-button");
+            close_button.get_style_context ().add_class ("quick-mod-close-button");
             close_button.clicked.connect (() => {
                 monitoring = false;
                 close_screen ();
@@ -62,7 +62,7 @@
             attach (close_button, 0, 0, 1, 1);
 
             header = new Gtk.Label ("");
-            header.get_style_context ().add_class ("channel-modulator-header");
+            header.get_style_context ().add_class ("quick-mod-header");
             header.halign = Gtk.Align.START;
             header.hexpand = true;
             attach (header, 1, 0, 1, 1);
@@ -71,10 +71,10 @@
             mod_grid.column_homogeneous = true;
             mod_grid.column_spacing = 6;
 
-            mod_grid.get_style_context ().add_class ("channel-modulator-grid");
+            mod_grid.get_style_context ().add_class ("quick-mod-grid");
 
             pan_button = new Gtk.Button.with_label (_("Pan"));
-            pan_button.get_style_context ().add_class ("channel-modulator-button");
+            pan_button.get_style_context ().add_class ("quick-mod-button");
             pan_spin_button = new Gtk.SpinButton.with_range (-64, 63, 1);
             pan_button.vexpand = true;
             pan_spin_button.vexpand = true;
@@ -82,7 +82,7 @@
             mod_grid.attach (pan_spin_button, 0, 1, 2, 1);
 
             reverb_button = new Gtk.Button.with_label (_("Reverb"));
-            reverb_button.get_style_context ().add_class ("channel-modulator-button");
+            reverb_button.get_style_context ().add_class ("quick-mod-button");
             reverb_spin_button = new Gtk.SpinButton.with_range (0, 127, 1);
             reverb_button.vexpand = true;
             reverb_spin_button.vexpand = true;
@@ -90,7 +90,7 @@
             mod_grid.attach (reverb_spin_button, 2, 1, 2, 1);
 
             chorus_button = new Gtk.Button.with_label (_("Chorus"));
-            chorus_button.get_style_context ().add_class ("channel-modulator-button");
+            chorus_button.get_style_context ().add_class ("quick-mod-button");
             chorus_spin_button = new Gtk.SpinButton.with_range (0, 127, 1);
             chorus_button.vexpand = true;
             chorus_spin_button.vexpand = true;
@@ -98,7 +98,7 @@
             mod_grid.attach (chorus_spin_button, 4, 1, 2, 1);
 
             pitch_button = new Gtk.Button.with_label (_("Pitch"));
-            pitch_button.get_style_context ().add_class ("channel-modulator-button");
+            pitch_button.get_style_context ().add_class ("quick-mod-button");
             pitch_spin_button = new Gtk.SpinButton.with_range (-64, 63, 1);
             pitch_spin_button.vexpand = true;
             pan_spin_button.vexpand = true;
@@ -106,7 +106,7 @@
             mod_grid.attach (pitch_spin_button, 6, 1, 2, 1);
 
             expression_button = new Gtk.Button.with_label (_("Expression"));
-            expression_button.get_style_context ().add_class ("channel-modulator-button");
+            expression_button.get_style_context ().add_class ("quick-mod-button");
             expression_spin_button = new Gtk.SpinButton.with_range (0, 127, 1);
             expression_button.vexpand = true;
             expression_spin_button.vexpand = true;
@@ -114,7 +114,7 @@
             mod_grid.attach (expression_spin_button, 0, 3, 2, 1);
 
             modulation_button = new Gtk.Button.with_label (_("Modulation"));
-            modulation_button.get_style_context ().add_class ("channel-modulator-button");
+            modulation_button.get_style_context ().add_class ("quick-mod-button");
             modulation_spin_button = new Gtk.SpinButton.with_range (0, 127, 1);
             modulation_button.vexpand = true;
             modulation_spin_button.vexpand = true;
@@ -122,7 +122,7 @@
             mod_grid.attach (modulation_spin_button, 2, 3, 2, 1);
 
             cut_off_button = new Gtk.Button.with_label (_("Cut Off"));
-            cut_off_button.get_style_context ().add_class ("channel-modulator-button");
+            cut_off_button.get_style_context ().add_class ("quick-mod-button");
             cut_off_spin_button = new Gtk.SpinButton.with_range (0, 127, 1);
             cut_off_button.vexpand = true;
             cut_off_spin_button.vexpand = true;
@@ -130,7 +130,7 @@
             mod_grid.attach (cut_off_spin_button, 4, 3, 2, 1);
 
             resonance_button = new Gtk.Button.with_label (_("Resonance"));
-            resonance_button.get_style_context ().add_class ("channel-modulator-button");
+            resonance_button.get_style_context ().add_class ("quick-mod-button");
             resonance_spin_button = new Gtk.SpinButton.with_range (0, 127, 1);
             resonance_button.vexpand = true;
             resonance_spin_button.vexpand = true;
@@ -161,38 +161,38 @@
             } else {
                 header.set_text (_("Style Channel %s Modulators").printf ((channel + 1).to_string ()));
             }
-            modulation_button.get_style_context ().remove_class ("channel-modulator-lock");
-            pan_button.get_style_context ().remove_class ("channel-modulator-lock");
-            expression_button.get_style_context ().remove_class ("channel-modulator-lock");
-            pitch_button.get_style_context ().remove_class ("channel-modulator-lock");
-            resonance_button.get_style_context ().remove_class ("channel-modulator-lock");
-            cut_off_button.get_style_context ().remove_class ("channel-modulator-lock");
-            reverb_button.get_style_context ().remove_class ("channel-modulator-lock");
-            chorus_button.get_style_context ().remove_class ("channel-modulator-lock");
+            modulation_button.get_style_context ().remove_class ("quick-mod-button-locked");
+            pan_button.get_style_context ().remove_class ("quick-mod-button-locked");
+            expression_button.get_style_context ().remove_class ("quick-mod-button-locked");
+            pitch_button.get_style_context ().remove_class ("quick-mod-button-locked");
+            resonance_button.get_style_context ().remove_class ("quick-mod-button-locked");
+            cut_off_button.get_style_context ().remove_class ("quick-mod-button-locked");
+            reverb_button.get_style_context ().remove_class ("quick-mod-button-locked");
+            chorus_button.get_style_context ().remove_class ("quick-mod-button-locked");
             if (_synth_index == 1) {
                 if (Ensembles.Core.Synthesizer.get_modulator_lock (1, _channel) == true) {
-                    modulation_button.get_style_context ().add_class ("channel-modulator-lock");
+                    modulation_button.get_style_context ().add_class ("quick-mod-button-locked");
                 }
                 if (Ensembles.Core.Synthesizer.get_modulator_lock (10, _channel) == true) {
-                    pan_button.get_style_context ().add_class ("channel-modulator-lock");
+                    pan_button.get_style_context ().add_class ("quick-mod-button-locked");
                 }
                 if (Ensembles.Core.Synthesizer.get_modulator_lock (11, _channel) == true) {
-                    expression_button.get_style_context ().add_class ("channel-modulator-lock");
+                    expression_button.get_style_context ().add_class ("quick-mod-button-locked");
                 }
                 if (Ensembles.Core.Synthesizer.get_modulator_lock (3, _channel) == true) {
-                    pitch_button.get_style_context ().add_class ("channel-modulator-lock");
+                    pitch_button.get_style_context ().add_class ("quick-mod-button-locked");
                 }
                 if (Ensembles.Core.Synthesizer.get_modulator_lock (71, _channel) == true) {
-                    resonance_button.get_style_context ().add_class ("channel-modulator-lock");
+                    resonance_button.get_style_context ().add_class ("quick-mod-button-locked");
                 }
                 if (Ensembles.Core.Synthesizer.get_modulator_lock (74, _channel) == true) {
-                    cut_off_button.get_style_context ().add_class ("channel-modulator-lock");
+                    cut_off_button.get_style_context ().add_class ("quick-mod-button-locked");
                 }
                 if (Ensembles.Core.Synthesizer.get_modulator_lock (91, _channel) == true) {
-                    reverb_button.get_style_context ().add_class ("channel-modulator-lock");
+                    reverb_button.get_style_context ().add_class ("quick-mod-button-locked");
                 }
                 if (Ensembles.Core.Synthesizer.get_modulator_lock (66, _channel) == true) {
-                    chorus_button.get_style_context ().add_class ("channel-modulator-lock");
+                    chorus_button.get_style_context ().add_class ("quick-mod-button-locked");
                 }
             }
             monitor_modulators ();
@@ -236,7 +236,7 @@
                 if (modulation_lock) {
                     Ensembles.Core.Synthesizer.set_modulator_value (_synth_index, _channel, 1, (int)modulation_spin_button.value);
                     if (_synth_index == 1) {
-                        modulation_button.get_style_context ().add_class ("channel-modulator-lock");
+                        modulation_button.get_style_context ().add_class ("quick-mod-button-locked");
                     }
                 }
             });
@@ -244,7 +244,7 @@
                 if (pan_lock) {
                     Ensembles.Core.Synthesizer.set_modulator_value (_synth_index, _channel, 10, (int)pan_spin_button.value + 64);
                     if (_synth_index == 1) {
-                        pan_button.get_style_context ().add_class ("channel-modulator-lock");
+                        pan_button.get_style_context ().add_class ("quick-mod-button-locked");
                     }
                 }
             });
@@ -252,7 +252,7 @@
                 if (expression_lock) {
                     Ensembles.Core.Synthesizer.set_modulator_value (_synth_index, _channel, 11, (int)expression_spin_button.value);
                     if (_synth_index == 1) {
-                        expression_button.get_style_context ().add_class ("channel-modulator-lock");
+                        expression_button.get_style_context ().add_class ("quick-mod-button-locked");
                     }
                 }
             });
@@ -260,7 +260,7 @@
                 if (pitch_lock) {
                     Ensembles.Core.Synthesizer.set_modulator_value (_synth_index, _channel, 3, (int)pitch_spin_button.value + 64);
                     if (_synth_index == 1) {
-                        pitch_button.get_style_context ().add_class ("channel-modulator-lock");
+                        pitch_button.get_style_context ().add_class ("quick-mod-button-locked");
                     }
                 }
             });
@@ -268,7 +268,7 @@
                 if (resonance_lock) {
                     Ensembles.Core.Synthesizer.set_modulator_value (_synth_index, _channel, 71, (int)resonance_spin_button.value);
                     if (_synth_index == 1) {
-                        resonance_button.get_style_context ().add_class ("channel-modulator-lock");
+                        resonance_button.get_style_context ().add_class ("quick-mod-button-locked");
                     }
                 }
             });
@@ -276,7 +276,7 @@
                 if (cut_off_lock) {
                     Ensembles.Core.Synthesizer.set_modulator_value (_synth_index, _channel, 74, (int)cut_off_spin_button.value);
                     if (_synth_index == 1) {
-                        cut_off_button.get_style_context ().add_class ("channel-modulator-lock");
+                        cut_off_button.get_style_context ().add_class ("quick-mod-button-locked");
                     }
                 }
             });
@@ -284,7 +284,7 @@
                 if (reverb_lock) {
                     Ensembles.Core.Synthesizer.set_modulator_value (_synth_index, _channel, 91, (int)reverb_spin_button.value);
                     if (_synth_index == 1) {
-                        reverb_button.get_style_context ().add_class ("channel-modulator-lock");
+                        reverb_button.get_style_context ().add_class ("quick-mod-button-locked");
                     }
                 }
             });
@@ -292,14 +292,14 @@
                 if (chorus_lock) {
                     Ensembles.Core.Synthesizer.set_modulator_value (_synth_index, _channel, 93, (int)chorus_spin_button.value);
                     if (_synth_index == 1) {
-                        chorus_button.get_style_context ().add_class ("channel-modulator-lock");
+                        chorus_button.get_style_context ().add_class ("quick-mod-button-locked");
                     }
                 }
             });
             modulation_button.button_release_event.connect ((event) => {
                 if (event.button == 3 && _synth_index == 1) {
                     Ensembles.Core.Synthesizer.lock_modulator (1, _channel);
-                    modulation_button.get_style_context ().remove_class ("channel-modulator-lock");
+                    modulation_button.get_style_context ().remove_class ("quick-mod-button-locked");
                 } else if (event.button == 1 && assignable) {
                     broadcast_assignment (_synth_index, _channel, 1);
                 }
@@ -308,7 +308,7 @@
             pan_button.button_release_event.connect ((event) => {
                 if (event.button == 3 && _synth_index == 1) {
                     Ensembles.Core.Synthesizer.lock_modulator (10, _channel);
-                    pan_button.get_style_context ().remove_class ("channel-modulator-lock");
+                    pan_button.get_style_context ().remove_class ("quick-mod-button-locked");
                 } else if (event.button == 1 && assignable) {
                     broadcast_assignment (_synth_index, _channel, 10);
                 }
@@ -317,7 +317,7 @@
             expression_button.button_release_event.connect ((event) => {
                 if (event.button == 3 && _synth_index == 1) {
                     Ensembles.Core.Synthesizer.lock_modulator (11, _channel);
-                    expression_button.get_style_context ().remove_class ("channel-modulator-lock");
+                    expression_button.get_style_context ().remove_class ("quick-mod-button-locked");
                 } else if (event.button == 1 && assignable) {
                     broadcast_assignment (_synth_index, _channel, 11);
                 }
@@ -326,7 +326,7 @@
             pitch_button.button_release_event.connect ((event) => {
                 if (event.button == 3 && _synth_index == 1) {
                     Ensembles.Core.Synthesizer.lock_modulator (3, _channel);
-                    pitch_button.get_style_context ().remove_class ("channel-modulator-lock");
+                    pitch_button.get_style_context ().remove_class ("quick-mod-button-locked");
                 } else if (event.button == 1 && assignable) {
                     broadcast_assignment (_synth_index, _channel, 3);
                 }
@@ -335,7 +335,7 @@
             resonance_button.button_release_event.connect ((event) => {
                 if (event.button == 3 && _synth_index == 1) {
                     Ensembles.Core.Synthesizer.lock_modulator (71, _channel);
-                    resonance_button.get_style_context ().remove_class ("channel-modulator-lock");
+                    resonance_button.get_style_context ().remove_class ("quick-mod-button-locked");
                 } else if (event.button == 1 && assignable) {
                     broadcast_assignment (_synth_index, _channel, 71);
                 }
@@ -344,7 +344,7 @@
             cut_off_button.button_release_event.connect ((event) => {
                 if (event.button == 3 && _synth_index == 1) {
                     Ensembles.Core.Synthesizer.lock_modulator (74, _channel);
-                    cut_off_button.get_style_context ().remove_class ("channel-modulator-lock");
+                    cut_off_button.get_style_context ().remove_class ("quick-mod-button-locked");
                 } else if (event.button == 1 && assignable) {
                     broadcast_assignment (_synth_index, _channel, 74);
                 }
@@ -353,7 +353,7 @@
             reverb_button.button_release_event.connect ((event) => {
                 if (event.button == 3 && _synth_index == 1) {
                     Ensembles.Core.Synthesizer.lock_modulator (91, _channel);
-                    reverb_button.get_style_context ().remove_class ("channel-modulator-lock");
+                    reverb_button.get_style_context ().remove_class ("quick-mod-button-locked");
                 } else if (event.button == 1 && assignable) {
                     broadcast_assignment (_synth_index, _channel, 91);
                 }
@@ -362,7 +362,7 @@
             chorus_button.button_release_event.connect ((event) => {
                 if (event.button == 3 && _synth_index == 1) {
                     Ensembles.Core.Synthesizer.lock_modulator (93, _channel);
-                    chorus_button.get_style_context ().remove_class ("channel-modulator-lock");
+                    chorus_button.get_style_context ().remove_class ("quick-mod-button-locked");
                 } else if (event.button == 1 && assignable) {
                     broadcast_assignment (_synth_index, _channel, 93);
                 }
@@ -373,23 +373,23 @@
         public void set_assignable (bool assignable) {
             this.assignable = assignable;
             if (assignable) {
-                modulation_button.get_style_context ().add_class ("channel-modulator-assignable");
-                pan_button.get_style_context ().add_class ("channel-modulator-assignable");
-                expression_button.get_style_context ().add_class ("channel-modulator-assignable");
-                pitch_button.get_style_context ().add_class ("channel-modulator-assignable");
-                resonance_button.get_style_context ().add_class ("channel-modulator-assignable");
-                cut_off_button.get_style_context ().add_class ("channel-modulator-assignable");
-                reverb_button.get_style_context ().add_class ("channel-modulator-assignable");
-                chorus_button.get_style_context ().add_class ("channel-modulator-assignable");
+                modulation_button.get_style_context ().add_class ("quick-mod-button-assignable");
+                pan_button.get_style_context ().add_class ("quick-mod-button-assignable");
+                expression_button.get_style_context ().add_class ("quick-mod-button-assignable");
+                pitch_button.get_style_context ().add_class ("quick-mod-button-assignable");
+                resonance_button.get_style_context ().add_class ("quick-mod-button-assignable");
+                cut_off_button.get_style_context ().add_class ("quick-mod-button-assignable");
+                reverb_button.get_style_context ().add_class ("quick-mod-button-assignable");
+                chorus_button.get_style_context ().add_class ("quick-mod-button-assignable");
             } else {
-                modulation_button.get_style_context ().remove_class ("channel-modulator-assignable");
-                pan_button.get_style_context ().remove_class ("channel-modulator-assignable");
-                expression_button.get_style_context ().remove_class ("channel-modulator-assignable");
-                pitch_button.get_style_context ().remove_class ("channel-modulator-assignable");
-                resonance_button.get_style_context ().remove_class ("channel-modulator-assignable");
-                cut_off_button.get_style_context ().remove_class ("channel-modulator-assignable");
-                reverb_button.get_style_context ().remove_class ("channel-modulator-assignable");
-                chorus_button.get_style_context ().remove_class ("channel-modulator-assignable");
+                modulation_button.get_style_context ().remove_class ("quick-mod-button-assignable");
+                pan_button.get_style_context ().remove_class ("quick-mod-button-assignable");
+                expression_button.get_style_context ().remove_class ("quick-mod-button-assignable");
+                pitch_button.get_style_context ().remove_class ("quick-mod-button-assignable");
+                resonance_button.get_style_context ().remove_class ("quick-mod-button-assignable");
+                cut_off_button.get_style_context ().remove_class ("quick-mod-button-assignable");
+                reverb_button.get_style_context ().remove_class ("quick-mod-button-assignable");
+                chorus_button.get_style_context ().remove_class ("quick-mod-button-assignable");
             }
             set_synth_channel_to_edit (_synth_index, _channel);
         }

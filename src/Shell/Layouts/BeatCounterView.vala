@@ -25,7 +25,7 @@ namespace Ensembles.Shell {
 
         public signal void open_tempo_editor ();
 
-
+        // A panel that shows the beat progress
         public BeatCounterView () {
             var main_grid = new Gtk.Grid ();
             beat_counter_0 = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/beat_counter/beat_counter_1_0.svg");
