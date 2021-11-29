@@ -19,34 +19,81 @@ namespace Ensembles.Shell {
             }
 
             var white_grid = new Gtk.Grid ();
-            white_grid.attach (keys[0], 0, 0, 1, 1);
-            white_grid.attach (keys[2], 1, 0, 1, 1);
-            white_grid.attach (keys[4], 2, 0, 1, 1);
-            white_grid.attach (keys[5], 3, 0, 1, 1);
-            white_grid.attach (keys[7], 4, 0, 1, 1);
-            white_grid.attach (keys[9], 5, 0, 1, 1);
-            white_grid.attach (keys[11], 6, 0, 1, 1);
+            white_grid.attach (keys[0], 0, 0);
+            white_grid.attach (keys[2], 1, 0);
+            white_grid.attach (keys[4], 2, 0);
+            white_grid.attach (keys[5], 3, 0);
+            white_grid.attach (keys[7], 4, 0);
+            white_grid.attach (keys[9], 5, 0);
+            white_grid.attach (keys[11], 6, 0);
+
+            var black_place_holder_1 = new Gtk.Separator (Gtk.Orientation.VERTICAL) {
+                height_request = 0,
+                width_request = 15,
+                opacity = 0,
+                hexpand = true
+            };
+            var black_place_holder_2 = new Gtk.Separator (Gtk.Orientation.VERTICAL) {
+                height_request = 0,
+                width_request = 14,
+                opacity = 0,
+                hexpand = true
+            };
+            var black_place_holder_3 = new Gtk.Separator (Gtk.Orientation.VERTICAL) {
+                height_request = 0,
+                width_request = 15,
+                opacity = 0,
+                hexpand = true
+            };
+            var black_place_holder_4 = new Gtk.Separator (Gtk.Orientation.VERTICAL) {
+                height_request = 0,
+                width_request = 15,
+                opacity = 0,
+                hexpand = true
+            };
+            var black_place_holder_5 = new Gtk.Separator (Gtk.Orientation.VERTICAL) {
+                height_request = 0,
+                width_request = 14,
+                opacity = 0,
+                hexpand = true
+            };
+            var black_place_holder_6 = new Gtk.Separator (Gtk.Orientation.VERTICAL) {
+                height_request = 0,
+                width_request = 14,
+                opacity = 0,
+                hexpand = true
+            };
+            var black_place_holder_7 = new Gtk.Separator (Gtk.Orientation.VERTICAL) {
+                height_request = 0,
+                width_request = 15,
+                opacity = 0,
+                hexpand = true
+            };
+            var black_place_holder_bottom = new Gtk.Separator (Gtk.Orientation.HORIZONTAL) {
+                height_request = 100,
+                halign = Gtk.Align.END
+            };
 
             var black_grid = new Gtk.Grid ();
-            black_grid.attach (keys[1], 0, 0, 1, 1);
-            black_grid.attach (keys[3], 1, 0, 1, 1);
-            black_grid.attach (keys[6], 2, 0, 1, 1);
-            black_grid.attach (keys[8], 3, 0, 1, 1);
-            black_grid.attach (keys[10], 4, 0, 1, 1);
-            keys[1].margin_start = 18;
-            keys[1].margin_end = 5;
-            keys[3].margin_start = 6;
-            keys[3].margin_end = 14;
-            keys[6].margin_start = 23;
-            keys[6].margin_end = 10;
-            keys[8].margin_end = 10;
-            keys[10].margin_end = 18;
-            black_grid.margin_bottom = 114;
+            black_grid.attach (black_place_holder_1, 0, 0);
+            black_grid.attach (keys[1], 1, 0);
+            black_grid.attach (black_place_holder_2, 2, 0);
+            black_grid.attach (keys[3], 3, 0);
+            black_grid.attach (black_place_holder_3, 4, 0);
+            black_grid.attach (black_place_holder_4, 5, 0);
+            black_grid.attach (keys[6], 6, 0);
+            black_grid.attach (black_place_holder_5, 7, 0);
+            black_grid.attach (keys[8], 8, 0);
+            black_grid.attach (black_place_holder_6, 9, 0);
+            black_grid.attach (keys[10], 10, 0);
+            black_grid.attach (black_place_holder_7, 11, 0);
+            black_grid.attach (black_place_holder_bottom, 11, 1);
 
-            var octave_overlay = new Gtk.Overlay ();
-            octave_overlay.height_request = 168;
-            octave_overlay.hexpand = true;
-            octave_overlay.vexpand = true;
+            var octave_overlay = new Gtk.Overlay () {
+                height_request = 100,
+                hexpand = true,
+                vexpand = true
+            };
             octave_overlay.add_overlay (white_grid);
             octave_overlay.add_overlay (black_grid);
             octave_overlay.set_overlay_pass_through (black_grid, true);

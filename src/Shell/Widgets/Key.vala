@@ -10,11 +10,13 @@ namespace Ensembles.Shell {
         Gtk.Button split_button;
 
         public Key (int index, bool black_key) {
-            margin_top = 32;
+            margin_top = 14;
             _black_key = black_key;
             _index = index;
             get_style_context ().add_class ("common-key");
-            split_button = new Gtk.Button.from_icon_name ("media-playback-start-symbolic", Gtk.IconSize.BUTTON);
+            split_button = new Gtk.Button.from_icon_name ("media-playback-start-symbolic", Gtk.IconSize.BUTTON) {
+                valign = Gtk.Align.START
+            };
             this.add (split_button);
             update_split ();
 

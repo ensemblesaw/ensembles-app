@@ -17,23 +17,25 @@ namespace Ensembles.Shell {
         private double initial_x;
         private double initial_y;
 
-        private double x_value;
-        private double y_value;
+        private double x_value = 64;
+        private double y_value = 64;
 
         public signal void drag_x (double value);
         public signal void drag_y (double value);
         public signal void assignable_clicked_x (bool assignable);
         public signal void assignable_clicked_y (bool assignable);
         public JoyStick () {
-            touch_feedback_region = new Gtk.Fixed ();
-            touch_feedback_region.width_request = 140;
-            touch_feedback_region.height_request = 140;
-            touch_feedback_region.halign = Gtk.Align.CENTER;
-            touch_feedback_region.valign = Gtk.Align.CENTER;
-            touch_feedback = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
+            touch_feedback_region = new Gtk.Fixed () {
+                width_request = 140,
+                height_request = 140,
+                halign = Gtk.Align.CENTER,
+                valign = Gtk.Align.CENTER
+            };
+            touch_feedback = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
+                width_request = 60,
+                height_request = 60
+            };
             touch_feedback.get_style_context ().add_class ("touch-feedback");
-            touch_feedback.width_request = 60;
-            touch_feedback.height_request = 60;
             touch_feedback_region.put (touch_feedback, 40, 40);
 
             x_assign_button = new Gtk.Button.with_label (_("X-Assign"));
@@ -50,9 +52,10 @@ namespace Ensembles.Shell {
                 assignable_axis = 1;
                 assignable_clicked_y (assignable);
             });
-            var button_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL);
-            button_box.margin = 4;
-            button_box.width_request = 140;
+            var button_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL) {
+                margin = 4,
+                width_request = 140
+            };
             button_box.set_layout (Gtk.ButtonBoxStyle.EXPAND);
             button_box.pack_start (x_assign_button);
             button_box.pack_end (y_assign_button);

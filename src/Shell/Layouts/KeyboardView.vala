@@ -13,34 +13,45 @@ namespace Ensembles.Shell {
         Ensembles.Core.Synthesizer _synth;
         Gtk.Button sustain_button;
         Gtk.Button stop_button;
+
+        Gtk.ScrolledWindow keyboard_scroller;
         public KeyboardView () {
             get_style_context ().add_class ("keyboard-background");
             key_grid = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
-            //  key_grid.margin_start = 150;
 
             octaves = new OctaveKeyboard[5];
             for (int i = 0; i < 5; i++) {
                 octaves[i] = new OctaveKeyboard (i + 3);
+                octaves[i].margin_top = 18;
                 key_grid.pack_start (octaves[i]);
             }
 
-            var keyboard_scroller = new Gtk.ScrolledWindow (null, null);
+            keyboard_scroller = new Gtk.ScrolledWindow (null, null) {
+                kinetic_scrolling = false,
+                overlay_scrolling = false
+            };
+            keyboard_scroller.set_placement (Gtk.CornerType.BOTTOM_LEFT);
             keyboard_scroller.add (key_grid);
 
-            var keyboard_overlay = new Gtk.Overlay ();
-            keyboard_overlay.height_request = 170;
-            keyboard_overlay.hexpand = true;
+            var keyboard_overlay = new Gtk.Overlay () {
+                height_request = 170,
+                hexpand = true
+            };
             keyboard_overlay.add_overlay (keyboard_scroller);
 
-            zoom_switch = new Gtk.Switch ();
-            zoom_switch.margin_start = 8;
-            zoom_switch.margin_end = 8;
+            zoom_switch = new Gtk.Switch () {
+                valign = Gtk.Align.CENTER,
+                margin_start = 8,
+                margin_end = 8
+            };
             zoom_switch.notify["active"].connect (() => {
                 toggle_zoom (zoom_switch.active);
             });
-            hold_switch = new Gtk.Switch ();
-            hold_switch.margin_start = 8;
-            hold_switch.margin_end = 14;
+            hold_switch = new Gtk.Switch () {
+                valign = Gtk.Align.CENTER,
+                margin_start = 8,
+                margin_end = 14
+            };
 
             sustain_button = new Gtk.Button.with_label (_("SUST"));
             stop_button = new Gtk.Button.with_label (_("STOP"));
@@ -58,11 +69,13 @@ namespace Ensembles.Shell {
             switch_bar.attach (sustain_button, 4, 0);
             switch_bar.attach (stop_button, 5, 0);
 
-            var keyboard_top_bar = new Gtk.Grid ();
-            keyboard_top_bar.valign = Gtk.Align.START;
-            keyboard_top_bar.height_request = 32;
+            var keyboard_top_bar = new Gtk.Grid () {
+                valign = Gtk.Align.START,
+                height_request = 32
+            };
             keyboard_top_bar.get_style_context ().add_class ("keyboard-top-bar");
             keyboard_top_bar.add (switch_bar);
+
 
             keyboard_overlay.add_overlay (keyboard_top_bar);
             keyboard_overlay.set_overlay_pass_through (keyboard_top_bar, true);
@@ -95,8 +108,15 @@ namespace Ensembles.Shell {
         public void toggle_zoom (bool active) {
             if (active) {
                 key_grid.width_request = 2400;
+                for (int i = 0; i < 5; i++) {
+                    octaves[i].margin_top = 0;
+                }
+
             } else {
                 key_grid.width_request = -1;
+                for (int i = 0; i < 5; i++) {
+                    octaves[i].margin_top = 18;
+                }
             }
         }
 

@@ -369,7 +369,10 @@
 .white-key-normal > * {
     padding: 0;
     margin: -8px;
-    margin-top: -178px;
+    margin-top: -42px;
+}
+.white-key-normal > *:focus {
+    background-color: rgba(0,0,0,0);
 }
 .white-key-normal:active {
     background-image:linear-gradient(shade(@accent_color, 0.7), shade(@accent_color, 0.5));
@@ -405,7 +408,10 @@
 .black-key-normal > * {
     padding: 0;
     margin: -8px;
-    margin-top: -116px;
+    margin-top: -42px;
+}
+.black-key-normal > *:focus {
+    background-color: rgba(0,0,0,0);
 }
 .black-key-normal:active{
     background-image:linear-gradient(shade(@accent_color, 0.7), shade(@accent_color, 0.5));
@@ -578,4 +584,16 @@
 
 .input-key-box > .activatable:selected > .horizontal > .keycap {
     color: #666;
+}
+
+
+scrollbar.horizontal slider {
+    min-height: 15px;
+	border: none;
+	background: alpha(#000, 0);
+	background-image:linear-gradient(90deg, alpha(#fff, 0.0), alpha(#fff, 0.1), alpha(#fff, 0.0));
+}
+
+scrollbar.horizontal:hover slider {
+    min-height: 30px;
 }
