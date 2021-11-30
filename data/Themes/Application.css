@@ -439,6 +439,24 @@
     box-shadow: 0 -14px 12px -6px alpha(@accent_color_complimentary, 0.7), inset 0 -1px 4px @accent_color_complimentary;
 }
 
+.key_label_primary {
+    background: @accent_color;
+    border-radius: 50%;
+    border: 2px solid #222;
+}
+
+.key_label_secondary {
+    background: @accent_color_complimentary;
+    border-radius: 50%;
+    border: 2px solid #222;
+}
+
+.key_label_auto {
+    background: @accent_color_complimentary_alternate;
+    border-radius: 50%;
+    border: 2px solid #222;
+}
+
 .common-key-split > *{
     opacity: 0.2;
 }
@@ -615,4 +633,23 @@
 }
 .keyboard-background scrolledwindow overshoot.left {
     background-image: none;
+}
+
+.central-display-preview > * {
+    border-radius: 8px;
+    box-shadow: inset 0 1px alpha(#fff, 0.25), inset 0 -1px alpha(#fff, 0.1);
+}
+
+.central-display-preview > * > * {
+    border-radius: 4px;
+    margin: 8px;
+    border: none;
+    margin-top: -1px;
+    margin-bottom: -1px;
+}
+
+.central-display-preview {
+    border-radius: 8px;
+    box-shadow: 0 4px 8px alpha(#000, 0.75);
+    border: 1px solid #000;
 }

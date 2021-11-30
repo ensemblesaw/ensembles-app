@@ -46,7 +46,7 @@ namespace Ensembles.Shell {
             margin = 4;
             width_request = 340;
 
-            accomp_toggle = new ToggleSwitch (_("Accompaniment"));
+            accomp_toggle = new ToggleSwitch (_("Chords"));
             accomp_toggle.sensitive = false;
             layer_toggle = new ToggleSwitch (_("Layer"));
             layer_toggle.sensitive = false;

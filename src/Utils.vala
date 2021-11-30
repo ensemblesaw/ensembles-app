@@ -1,3 +1,8 @@
+/*
+ * Copyright 2020-2022 Subhadeep Jasu <subhajasu@gmail.com>
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
 namespace Ensembles {
     public class Utils {
         static string display_theme_path = "";
@@ -27,7 +32,7 @@ namespace Ensembles {
                         Gdk.Screen.get_default (), display_theme_provider,
                         Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
                     );
-                    return "Default.css";
+                    return "Default";
                 } catch (Error e1) {
                     try {
                         display_theme_provider.load_from_path (display_theme_path + "Elementary Light.css");
@@ -35,7 +40,7 @@ namespace Ensembles {
                             Gdk.Screen.get_default (), display_theme_provider,
                             Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
                         );
-                        return "Elementary Light.css";
+                        return "Elementary Light";
                     } catch (Error e2) {
                         try {
                             display_theme_provider.load_from_path (display_theme_path + "Elementary Dark.css");
@@ -43,7 +48,7 @@ namespace Ensembles {
                                 Gdk.Screen.get_default (), display_theme_provider,
                                 Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
                             );
-                            return "Elementary Dark.css";
+                            return "Elementary Dark";
                         } catch (Error e3) {
                             warning ("Failed to load any of the default Display Themes: %s", e3.message);
                         }
@@ -53,21 +58,23 @@ namespace Ensembles {
             return name;
         }
 
-        public static string[] get_theme_list () {
+        public async static string[] get_theme_list () {
             string[] themes = new string [0];
-            try {
-                Dir dir = Dir.open (display_theme_path);
-                string? name = null;
-                while ((name = dir.read_name ()) != null) {
-                    if (name.contains (".css")) {
-                        print (name + "\n");
-                        themes.resize (themes.length + 1);
-                        themes[themes.length - 1] = name;
+            var thread = new Thread<void> ("get_theme_list", () => {
+                try {
+                    Dir dir = Dir.open (display_theme_path);
+                    string? name = null;
+                    while ((name = dir.read_name ()) != null) {
+                        if (name.contains (".css")) {
+                            themes.resize (themes.length + 1);
+                            themes[themes.length - 1] = name.replace (".css", "");
+                        }
                     }
+                } catch (Error e) {
+                    warning ("Failed to load display themes: " + e.message);
                 }
-            } catch (Error e) {
-                warning ("Failed to load display themes: " + e.message);
-            }
+            });
+            thread.join ();
             return themes;
         }
 

@@ -36,7 +36,7 @@
 		<description>If window should be maximized</description>
 	</key>
 	<key name="display-theme" type="s">
-		<default>"Default.css"</default>
+		<default>"Default"</default>
 		<summary>Display Unit Theme</summary>
 	</key>
 

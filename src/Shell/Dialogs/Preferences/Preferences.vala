@@ -47,6 +47,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             stack.add_named (get_audio_widget (), "audio");
             stack.add_named (get_about_widget (), "about");
             stack.add_named (get_keyboard_widget (), "input");
+            stack.add_named (get_appearance_widget (), "appearance");
 
             // Show the intended view
             Timeout.add (125, () => {
@@ -198,7 +199,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             });
 
             theme_item.activated.connect (() => {
-                stack.visible_child_name = "theme";
+                stack.visible_child_name = "appearance";
             });
 
             plugin_item.activated.connect (() => {
@@ -573,6 +574,119 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             var separator_b = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
             main_box.pack_start (separator_b, false, false, 0);
             main_box.pack_end (btn_grid, false, false, 0);
+
+            return main_box;
+        }
+
+        private Gtk.Widget get_appearance_widget () {
+            var main_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+
+            var top_box = new Dialogs.Preferences.TopBox ("applications-graphics", _("Appearance"));
+            main_box.pack_start (top_box, false, false, 0);
+
+            var separator_a = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
+            main_box.pack_start (separator_a, false, false, 0);
+
+            var key_label = new Gtk.Label (_("Note Visualization Legend")) {
+                xalign = 0,
+                margin = 8
+            };
+            main_box.pack_start (key_label, false, false, 0);
+
+            var key_theme_guide = new Gtk.Grid () {
+                column_homogeneous = true,
+                column_spacing = 4,
+                row_spacing = 4,
+                margin_bottom = 4
+            };
+
+            var key_legend_primary = new Gtk.Box (Gtk.Orientation.VERTICAL, 0) {
+                halign = Gtk.Align.CENTER,
+                width_request = 48,
+                height_request = 48
+            };
+            key_legend_primary.get_style_context ().add_class ("key_label_primary");
+            var key_legend_secondary = new Gtk.Box (Gtk.Orientation.VERTICAL, 0) {
+                halign = Gtk.Align.CENTER,
+                width_request = 48,
+                height_request = 48
+            };
+            key_legend_secondary.get_style_context ().add_class ("key_label_secondary");
+            var key_legend_auto = new Gtk.Box (Gtk.Orientation.VERTICAL, 0) {
+                halign = Gtk.Align.CENTER,
+                width_request = 48,
+                height_request = 48
+            };
+            key_legend_auto.get_style_context ().add_class ("key_label_auto");
+
+            var key_accent_primary = new Gtk.Label (_("Voice R1, Voice R2"));
+            var key_accent_secondary = new Gtk.Label (_("Voice L, Chords"));
+            var key_accent_automatic = new Gtk.Label (_("Automations"));
+
+            key_theme_guide.attach (key_legend_primary, 0, 0);
+            key_theme_guide.attach (key_legend_secondary, 1, 0);
+            key_theme_guide.attach (key_legend_auto, 2, 0);
+            key_theme_guide.attach (key_accent_primary, 0, 1);
+            key_theme_guide.attach (key_accent_secondary, 1, 1);
+            key_theme_guide.attach (key_accent_automatic, 2, 1);
+
+            main_box.pack_start (key_theme_guide, false, false, 0);
+
+            var display_preview = new Gtk.Grid () {
+                column_homogeneous = true,
+                margin = 8
+            };
+            display_preview.get_style_context ().add_class ("central-display-preview");
+            display_preview.get_style_context ().add_class ("ensembles-central-display");
+            var top_bar_preview = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
+                height_request = 30
+            };
+            top_bar_preview.get_style_context ().add_class ("home-screen-panel-top");
+            var bottom_bar_preview = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
+                height_request = 72
+            };
+            bottom_bar_preview.get_style_context ().add_class ("home-screen-panel-bottom");
+            var home_preview = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+            home_preview.get_style_context ().add_class ("home-screen-background");
+
+            home_preview.pack_start (top_bar_preview, false, false, 8);
+            home_preview.pack_end (bottom_bar_preview, false, false, 8);
+
+            display_preview.attach (home_preview, 0, 0);
+
+            var loop = new MainLoop ();
+            Utils.get_theme_list.begin ((obj, res) => {
+                var themes = Utils.get_theme_list.end (res);
+                int selected_index = -1;
+                string selected_theme = Application.settings.get_string ("display-theme");
+                List<string> theme_list = new List<string> ();
+                for (int i = 0; i < themes.length; i++) {
+                    theme_list.append (themes[i]);
+                    print ("%s %s\n", themes[i], selected_theme);
+                    if (themes[i] == selected_theme) {
+                        selected_index = i;
+                    }
+                }
+                Dialogs.Preferences.ItemSelect theme_select = new Dialogs.Preferences.ItemSelect (
+                    _("Central Display Theme"),
+                    selected_index,
+                    theme_list,
+                    true
+                );
+                main_box.pack_start (theme_select, false, false, 0);
+                main_box.pack_end (display_preview, false, false, 0);
+                loop.quit ();
+            });
+            loop.run ();
+
+            top_box.back_activated.connect (() => {
+                stack.visible_child_name = "home";
+            });
+
+            top_box.done_activated.connect (() => {
+                hide_destroy ();
+            });
+
 
             return main_box;
         }
