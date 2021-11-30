@@ -4,6 +4,9 @@
  */
 
 namespace Ensembles.Shell {
+    /* A widget that is used for visualising musical keyboard
+     * input and also packs a joystick as part of it's layout
+     */
     public class KeyboardView : Gtk.Grid {
         OctaveKeyboard[] octaves;
         Gtk.Box key_grid;
@@ -107,7 +110,7 @@ namespace Ensembles.Shell {
 
         public void toggle_zoom (bool active) {
             if (active) {
-                key_grid.width_request = 2400;
+                key_grid.width_request = 3200;
                 for (int i = 0; i < 5; i++) {
                     octaves[i].margin_top = 0;
                 }

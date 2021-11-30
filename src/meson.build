@@ -46,6 +46,7 @@ ensembles_sources_vala = files (
     'Shell/Widgets/Dial.vala',
     'Shell/Widgets/EffectItem.vala',
     'Shell/Widgets/Key.vala',
+    'Shell/Widgets/OctaveKeyboard.vala',
     'Shell/Widgets/Knob.vala',
     'Shell/Widgets/MasterKnob.vala',
     'Shell/Widgets/StyleItem.vala',
@@ -55,7 +56,6 @@ ensembles_sources_vala = files (
     'Shell/Widgets/EqualizerBar.vala',
 
     'Shell/Common/KeyboardConstants.vala',
-    'Shell/Common/OctaveKeyboard.vala',
     'Shell/Common/PcKeyboardHandler.vala',
 
     # PlugIns

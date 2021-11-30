@@ -376,16 +376,16 @@
 }
 .white-key-normal:active {
     background-image:linear-gradient(shade(@accent_color, 0.7), shade(@accent_color, 0.5));
-    box-shadow: 0 -12px 8px  -8px @accent_color, inset 0 -1px 4px @accent_color;
+    box-shadow: 0 -12px 8px  -8px alpha(@accent_color, 0.65), inset 0 -1px 4px @accent_color;
 }
 .white-key-active {
     background-image:linear-gradient(shade(@accent_color, 0.7), shade(@accent_color, 0.5));
-    box-shadow: 0 -12px 8px  -8px @accent_color, inset 0 -1px 4px @accent_color;
+    box-shadow: 0 -12px 8px  -8px alpha(@accent_color, 0.65), inset 0 -1px 4px @accent_color;
     outline: 0;
 }
 .white-key-active-auto {
     background-image:linear-gradient(shade(@accent_color_complimentary_alternate, 0.7), shade(@accent_color_complimentary_alternate, 0.5));
-    box-shadow: 0 -12px 8px  -8px @accent_color_complimentary_alternate, inset 0 -1px 4px @accent_color_complimentary_alternate;
+    box-shadow: 0 -12px 8px  -8px alpha(@accent_color_complimentary_alternate, 0.65), inset 0 -1px 4px @accent_color_complimentary_alternate;
     outline: 0;
 }
 .white-key-split {
@@ -394,11 +394,11 @@
 }
 .white-key-split:active {
     background-image:linear-gradient(shade(@accent_color_complimentary, 0.7), shade(@accent_color_complimentary, 0.5));
-    box-shadow: 0 -12px 8px  -8px @accent_color_complimentary, inset 0 -1px 4px @accent_color_complimentary;
+    box-shadow: 0 -12px 8px  -8px alpha(@accent_color_complimentary, 0.7), inset 0 -1px 4px @accent_color_complimentary;
 }
 .white-key-split-active {
     background-image:linear-gradient(shade(@accent_color_complimentary, 0.7), shade(@accent_color_complimentary, 0.5));
-    box-shadow: 0 -12px 8px  -8px @accent_color_complimentary, inset 0 -1px 4px @accent_color_complimentary;
+    box-shadow: 0 -12px 8px  -8px alpha(@accent_color_complimentary, 0.7), inset 0 -1px 4px @accent_color_complimentary;
 }
 .black-key-normal {
     background-image:linear-gradient(#444, #141414);
@@ -415,15 +415,15 @@
 }
 .black-key-normal:active{
     background-image:linear-gradient(shade(@accent_color, 0.7), shade(@accent_color, 0.5));
-    box-shadow: 0 -14px 12px -6px @accent_color, inset 0 -1px 4px @accent_color;
+    box-shadow: 0 -14px 12px -6px alpha(@accent_color, 0.7), inset 0 -1px 4px @accent_color;
 }
 .black-key-active{
     background-image:linear-gradient(shade(@accent_color, 0.7), shade(@accent_color, 0.5));
-    box-shadow: 0 -14px 12px -6px @accent_color, inset 0 -1px 4px @accent_color;
+    box-shadow: 0 -14px 12px -6px alpha(@accent_color, 0.7), inset 0 -1px 4px @accent_color;
 }
 .black-key-active-auto{
     background-image:linear-gradient(shade(@accent_color_complimentary_alternate, 0.7), shade(@accent_color_complimentary_alternate, 0.5));
-    box-shadow: 0 -14px 12px -6px @accent_color_complimentary_alternate, inset 0 -1px 4px @accent_color_complimentary_alternate;
+    box-shadow: 0 -14px 12px -6px alpha(@accent_color_complimentary_alternate, 0.7), inset 0 -1px 4px @accent_color_complimentary_alternate;
 }
 .black-key-split {
     background-image:linear-gradient(#444, #141414);
@@ -432,11 +432,11 @@
 }
 .black-key-split:active {
     background-image:linear-gradient(shade(@accent_color_complimentary, 0.7), shade(@accent_color_complimentary, 0.5));
-    box-shadow: 0 -14px 12px -6px @accent_color_complimentary, inset 0 -1px 4px @accent_color_complimentary;
+    box-shadow: 0 -14px 12px -6px alpha(@accent_color_complimentary, 0.7), inset 0 -1px 4px @accent_color_complimentary;
 }
 .black-key-split-active {
     background-image:linear-gradient(shade(@accent_color_complimentary, 0.7), shade(@accent_color_complimentary, 0.5));
-    box-shadow: 0 -14px 12px -6px @accent_color_complimentary, inset 0 -1px 4px @accent_color_complimentary;
+    box-shadow: 0 -14px 12px -6px alpha(@accent_color_complimentary, 0.7), inset 0 -1px 4px @accent_color_complimentary;
 }
 
 .common-key-split > *{
@@ -467,7 +467,7 @@
 }
 
 .keyboard-background {
-    background-image:linear-gradient(#505050 0%, #383838 31px, #000 32px, #333);
+    background-image:linear-gradient(#666 0%, #333 15px, #222 17px, #333 31px, #000 32px, #333);
 	border-top: 1px solid #222;
 }
 
@@ -587,13 +587,32 @@
 }
 
 
-scrollbar.horizontal slider {
+.keyboard-background scrollbar.horizontal slider {
     min-height: 15px;
-	border: none;
-	background: alpha(#000, 0);
-	background-image:linear-gradient(90deg, alpha(#fff, 0.0), alpha(#fff, 0.1), alpha(#fff, 0.0));
+    border: none;
+    margin-bottom: -1px;
+    border-top: 2px solid @accent_color;
+    border-radius: 0;
+    background: alpha(#000, 0);
+    }
+
+.keyboard-background scrollbar.horizontal:hover slider {
+    min-height: 30px;
+    border: none;
+    border-top: 0px solid alpha(@accent_color, 0);
+    margin-bottom: 4px;
+    background-image:linear-gradient(90deg, alpha(@accent_color, 0.0), alpha(@accent_color, 0.3), alpha(@accent_color, 0.0));
 }
 
-scrollbar.horizontal:hover slider {
-    min-height: 30px;
+.keyboard-background scrollbar.horizontal trough {
+    background: none;
+    border: none;
+}
+
+.keyboard-background scrolledwindow overshoot.right {
+    background-image: none;
+
+}
+.keyboard-background scrolledwindow overshoot.left {
+    background-image: none;
 }

@@ -4,6 +4,11 @@
  */
 
 namespace Ensembles.Shell {
+
+    /* This class denotes one octave which is 12 keys
+     * in a specific arrangement. It starts from a "C"
+     * to the next "B".
+     */
     public class OctaveKeyboard : Gtk.Grid {
         Key[] keys;
         int _index;
@@ -13,11 +18,15 @@ namespace Ensembles.Shell {
             _index = index;
             keys = new Key[12];
             for (int i = 0; i < 12; i++) {
+                /* Keys are arranged in the array irrespective of their layout.
+                 * Instead they are arranged in order of semitones.
+                 */
                 keys[i] = new Key (_index * 12 + i, ((i == 1) || (i == 3) || (i == 6) || (i == 8) || (i == 10))
                 ? true
                 : false);
             }
-
+            /* White key arrangement.
+             */
             var white_grid = new Gtk.Grid ();
             white_grid.attach (keys[0], 0, 0);
             white_grid.attach (keys[2], 1, 0);
@@ -27,9 +36,13 @@ namespace Ensembles.Shell {
             white_grid.attach (keys[9], 5, 0);
             white_grid.attach (keys[11], 6, 0);
 
+            /* Placeholders fill the space between the black keys.
+             * This also allows better stretching of the black keys layout,
+             * by making sure a proportionate space is maintained
+             */
             var black_place_holder_1 = new Gtk.Separator (Gtk.Orientation.VERTICAL) {
                 height_request = 0,
-                width_request = 15,
+                width_request = 16,
                 opacity = 0,
                 hexpand = true
             };
@@ -74,6 +87,9 @@ namespace Ensembles.Shell {
                 halign = Gtk.Align.END
             };
 
+            /* This is where the black keys have been arranged
+             * Notice the placeholders in between
+             */
             var black_grid = new Gtk.Grid ();
             black_grid.attach (black_place_holder_1, 0, 0);
             black_grid.attach (keys[1], 1, 0);
@@ -330,6 +346,7 @@ namespace Ensembles.Shell {
             });
         }
 
+        // auto refers to any automated visualization
         public void set_note_on (int key, bool on, bool? auto = false) {
             if (on) {
                 keys[key].note_on (auto);
