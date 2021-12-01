@@ -42,7 +42,7 @@ namespace Ensembles.Shell {
              */
             var black_place_holder_1 = new Gtk.Separator (Gtk.Orientation.VERTICAL) {
                 height_request = 0,
-                width_request = 16,
+                width_request = 17,
                 opacity = 0,
                 hexpand = true
             };
@@ -54,7 +54,7 @@ namespace Ensembles.Shell {
             };
             var black_place_holder_3 = new Gtk.Separator (Gtk.Orientation.VERTICAL) {
                 height_request = 0,
-                width_request = 15,
+                width_request = 17,
                 opacity = 0,
                 hexpand = true
             };

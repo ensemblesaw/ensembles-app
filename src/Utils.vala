@@ -8,9 +8,7 @@ namespace Ensembles {
         static string display_theme_path = "";
         static Gtk.CssProvider display_theme_provider;
         public static string set_display_theme (string name) {
-            print ("Changing to %s\n", name);
             display_theme_path = Environment.get_home_dir () + "/Documents/Ensembles/DisplayThemes/";
-            print (display_theme_path);
             // Update  the stylesheets first
             if (DirUtils.create_with_parents (Environment.get_home_dir () + "/Documents/Ensembles", 2000) != -1) {
                 if (DirUtils.create_with_parents (display_theme_path, 2000) != -1) {

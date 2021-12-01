@@ -46,6 +46,10 @@ install_data (
     join_paths ('Themes', 'DisplayUnitElementaryLight.css'),
     install_dir: join_paths (get_option ('datadir'), meson.project_name (), 'themes')
 )
+install_data (
+    join_paths ('Themes', 'DisplayUnitElementaryDark.css'),
+    install_dir: join_paths (get_option ('datadir'), meson.project_name (), 'themes')
+)
 
 # Install documents
 install_subdir (
