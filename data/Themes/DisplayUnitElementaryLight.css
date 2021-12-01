@@ -6,8 +6,9 @@ Mother class for the central display section
 */
 .ensembles-central-display {
     background-color: #333;
-    background-image:linear-gradient(#222, #024740, #000, #444);
+    background-image:linear-gradient(#222, #777, #000, #444);
     box-shadow: inset 0 0 0 2px #000;
+    color: #222;
 }
 
 /* //////////////////////////////////////////////////////////////
@@ -17,25 +18,28 @@ General Gtk Widgets
 Buttons
 */
 .ensembles-central-display button {
-	border: 1px solid #000;
-	border-radius: 0;
-	background: alpha(#007367, 0.6);
-	box-shadow: none;
-	text-shadow: none;
+	    border: 1px solid alpha(#000, 0.25);
+background-color: #fff;
+color: #1d1d1d;
+border-radius: 4px;
+box-shadow: 0 1px 1px alpha(#000, 0.25);
+text-shadow: none;
 }
 
 .ensembles-central-display button:hover {
-	background: alpha(#007367, 0.8);
+	background-color: #fff;
 }
 
 .ensembles-central-display button:active {
-	background: #007367;
+	background-color: #f3f3f3;
+box-shadow: 0 1px alpha(#000, 0.1);
 }
 
 .ensembles-central-display .flat, .ensembles-central-display .image-button {
 	border: none;
 	background: alpha(#fff, 0.0);
-	border-radius: 0;
+	border-radius: 4px;
+    box-shadow: none;
 }
 .ensembles-central-display .flat:hover, .ensembles-central-display .image-button:disabled {
 	opacity: 0.5;
@@ -43,8 +47,8 @@ Buttons
 .ensembles-central-display .flat:focus, .ensembles-central-display .image-button:focus{
 	border: none;
 	background: alpha(#fff, 0.0);
-	border-radius: 0;
-	box-shadow: inset 0 -2px 0 0 #02A594;
+	border-radius: 4px;
+	box-shadow: inset 0 0 0 2px @accent_color;
 }
 .ensembles-central-display .flat:hover, .ensembles-central-display .image-button:hover {
 	background: alpha(#fff, 0.1);
@@ -53,51 +57,48 @@ Buttons
 
 /* Entry */
 .ensembles-central-display entry {
-    background-color: #151515;
+    background-color: #fff;
     background-clip: padding-box;
-    border: 1px solid #000;
-    border-radius: 0;
-    box-shadow: none;
-    color: #fff;
+    border: 1px solid alpha(#000, 0.5);
+    border-radius: 4px;
+    box-shadow: inset 0 -1px #666;
+    color: #333;
+    caret-color: #666;
 }
 
 /* Spin Button */
 .ensembles-central-display spinbutton {
-    background-color: alpha (#000, 0.2);
-}
-
-.ensembles-central-display spinbutton {
-    background-color: alpha (#000, 0.4);
+    background-color: #fff;
+color: #333;
+box-shadow: inset 0 0 1px 1px alpha(#666, 0.2);
+border: 1px solid alpha(#000, 0.2);
+border-radius: 4px;
 }
 
 .ensembles-central-display spinbutton entry {
     background-color: alpha (#000, 0);
-    border: none;
+color: #333;
+border: none;
+box-shadow: none;
 }
 
 .ensembles-central-display spinbutton button {
-    background-color: alpha(#333, 0.5);
     border: none;
-    border-left: 1px solid #222;
+background: none;
+border-radius: 0 4px 4px 0;
+border-left: 1px solid #ccc;
 }
 
-.ensembles-central-display spinbutton button:hover {
-    background-color: #333;
-    border: none;
-    border-left: 1px solid #222;
-}
 .ensembles-central-display spinbutton button:disabled {
-    background-color: #222;
-    color: #444;
+    color: #ccc;
 }
 
 /*
 Terminal
 */
 .ensembles-central-display .terminal {
-    background-color: #111;
-    color: #666;
-    border-radius: 0;
+    background-color: #fdf6e3;
+    color: #002b36;
 }
 
 /* /////////////////////////////////////////////////////////////////
@@ -110,8 +111,11 @@ The screen which is shown by default
 }
 
 .ensembles-central-display .home-screen-panel-top {
-    background-image: linear-gradient(alpha(#007367, 0.6),alpha(#007367, 0.6)),url("resource://com/github/subhadeepjasu/ensembles/images/display_unit/catalin-sandru-7SxSkCvVM1U-unsplash-blurred.jpg");
+    background-image: linear-gradient(#eaeaea, alpha(#e9e9e9, 0.6) 50px),url("resource://com/github/subhadeepjasu/ensembles/images/display_unit/catalin-sandru-7SxSkCvVM1U-unsplash-blurred.jpg");
     background-size: auto 600%;
+box-shadow: inset 0 1px rgba(255,255,255, 0.5),
+inset 0 -1px rgba(255,255,255, 0.25),
+0 1px alpha(#000, 0.1);
     background-position: 50% 0;
     border-bottom: 1px solid alpha(#000, 0.5);
 }
@@ -119,11 +123,14 @@ The screen which is shown by default
 .ensembles-central-display .home-screen-top-panel-header {
     font-size: 1.11em;
     margin-top: 4px;
+color: #333;
+text-shadow: 0 1px #f3f3f3;
 }
 
 .ensembles-central-display .home-screen-top-panel-subheader {
     font-size: 0.8em;
     margin-bottom: 6px;
+color: #666;
 }
 
 .ensembles-central-display .home-screen-top-panel-button {
@@ -135,14 +142,15 @@ The screen which is shown by default
 }
 
 .ensembles-central-display .home-screen-top-panel-button:hover {
-    background-color: alpha(#fff, 0.1);
+    background-color: alpha(#000, 0.1);
 }
 
 .ensembles-central-display .home-screen-panel-bottom {
-	background-image: linear-gradient(alpha(#273445, 0.6),alpha(#273445, 0.6)),url("resource://com/github/subhadeepjasu/ensembles/images/display_unit/catalin-sandru-7SxSkCvVM1U-unsplash-blurred.jpg");
+	background-image: linear-gradient(alpha(#666, 0.5) 150px,alpha(#333, 0.8)),url("resource://com/github/subhadeepjasu/ensembles/images/display_unit/catalin-sandru-7SxSkCvVM1U-unsplash-blurred.jpg");
     background-size: auto 250%;
     background-position: 50% 100%;
 	border-top: 1px solid alpha(#000, 0.5);
+box-shadow: inset 0 1px rgba(255,255,255, 0.2);
 }
 
 .ensembles-central-display .home-screen-bottom-panel-header {
@@ -153,7 +161,7 @@ The screen which is shown by default
 
 .ensembles-central-display .home-screen-bottom-panel-label {
     font-size: 0.9em;
-    color: #A4FFFA;
+    color: shade(@accent_color, 1.2);
 }
 
 .ensembles-central-display .home-screen-bottom-panel-label-small {
@@ -188,57 +196,63 @@ Quick mods are the screens for tempo, modulators and lfo
 */
 
 .ensembles-central-display .quick-mod {
-    background-image: linear-gradient(alpha(#273445, 0.6), alpha(#273445, 0.6)), url("resource://com/github/subhadeepjasu/ensembles/images/display_unit/catalin-sandru-7SxSkCvVM1U-unsplash-blurred.jpg");
+    background-image: linear-gradient(275deg, alpha(#f3f3f3, 0.5), alpha(#fff, 1)), url("resource://com/github/subhadeepjasu/ensembles/images/display_unit/catalin-sandru-7SxSkCvVM1U-unsplash-blurred.jpg");
     background-size: auto 100%;
     background-position: 50%;
     padding: 8px;
 }
 .ensembles-central-display .quick-mod-close-button {
-    background-color: #007367;
-    border-radius: 2px 0 0 2px;
+    background-color: rgba(0,0,0,0);
+background-image:linear-gradient(#eee, #bbb);
+color: #333;
+    border-radius: 4px 0 0 4px;
+box-shadow: inset 0 1px rgb(255,255,255), inset 0 -1px rgba(255,255,255,0.5);
+border: 1px solid alpha(#000, 0.2);
     margin-right: -2px;
+-gtk-icon-shadow: 0 1px #fff;
 }
 .ensembles-central-display .quick-mod-close-button:hover {
-    background-color: #02A594;
+    background-image:linear-gradient(#f3f3f3, #ccc);
+}
+.ensembles-central-display .quick-mod-close-button:active {
+    background-image:linear-gradient(#eee, #ccc);
+border-radius: 4px 0 0 4px;
 }
 .ensembles-central-display .quick-mod-header {
     font-size: 1.8em;
     margin-left: 4px;
-    background-image:linear-gradient(90deg, #007367, alpha(#007367, 0));
+border-radius: 0 4px 4px 0;
+    background-image:linear-gradient(#eee, #bbb);
+box-shadow: inset 0 1px rgb(255,255,255), inset 0 -1px rgba(255,255,255,0.5);
+border: 1px solid alpha(#000, 0.2);
+color: #333;
     padding: 4px;
-}
-.ensembles-central-display .quick-mod-grid > * {
-    border: 1px solid #111;
-    border-radius: 0;
-    box-shadow: none;
-    color: #f3f3f3;
-}
-.ensembles-central-display .quick-mod-grid > spinbutton {
-    background-color: alpha (#333, 0.4);
-    border-radius: 0;
-    box-shadow: none;
-    color: #00E9D0;
+text-shadow: 0 1px #fff;
 }
 .ensembles-central-display .quick-mod-button {
-    background-color: rgba (50, 80, 50, 1);
-    outline: 0;
+    border: 1px solid alpha(#000, 0.25);
+background-color: #fff;
+color: #1d1d1d;
+border-radius: 4px;
+margin-bottom: 4px;
+margin-top: 4px;
+box-shadow: 0 1px 2px alpha(#000, 0.25);
 }
 .ensembles-central-display .quick-mod-button-assignable {
-    background-color: rgba (50, 80, 50, 1);
+    background-color: @accent_color_complimentary;
     background-image: -gtk-icontheme('insert-link-symbolic');
     background-repeat: no-repeat;
     background-position: 120% 90%;
     background-size: 14px;
-    box-shadow: inset 0 0 4px rgba (0, 204, 102, 1);
 }
 .ensembles-central-display .quick-mod-button-assignable:hover {
-    background-color: rgba (100, 80, 0, 1);
+    background-color: shade(@accent_color_complimentary, 1.1);
     background-image: -gtk-icontheme('insert-link-symbolic');
     background-repeat: no-repeat;
     background-position: 97% 90%;
 }
 .ensembles-central-display .quick-mod-button-locked {
-    background-color: rgba (0, 204, 102, 1);
+    background-color: @accent_color_complimentary_alternate;
     background-image: -gtk-icontheme('changes-allow-symbolic');
     background-repeat: no-repeat;
     background-size: 14px;
@@ -251,52 +265,52 @@ Style for Menus like the Style menu, Voice menu or the Recorder
 */
 
 .ensembles-central-display .menu-background {
-    background-color: #222;
-    color: #fff;
+    background-color: #f3f3f3;
+    color: #1d1d1d;
 }
 
 .ensembles-central-display .menu-header {
-    box-shadow: none;
-    border-bottom: none;
-    background-color: #007367;
-    color: #fff;
+    box-shadow: 0 1px alpha(black, 0.1), 0 -1px alpha(white, 0.5);
+    border-bottom: 1px solid alpha(black, 0.2);
+    background-color: #e5e5e5;
+    color: #222;
     text-shadow: 0 1px #fff;
 }
 
 .ensembles-central-display .menu-header .title {
-    text-shadow: none;
+    text-shadow: 0 1px #fff;
 }
 
 .ensembles-central-display .menu-header > * {
-    color: #fff;
+    color: #222;
     text-shadow: none;
     -gtk-icon-shadow: none;
 }
 
 .ensembles-central-display .menu-header > * > * > * {
-    color: #fff;
+    color: #222;
     text-shadow: none;
     -gtk-icon-shadow: none;
 }
 
 .ensembles-central-display .menu-box {
-    background-color: #333;
-    color: #f3f3f3;
-    border: 1px solid #000000;
+    background-color: #d4d4d4;
+    border: 1px solid #666;
 }
 .ensembles-central-display .menu-box > .activatable {
     padding: 4px;
     padding-left: 8px;
-    color: #aaa;
+    color: #fff;
     border-top: 1px solid alpha(#000, 0.2);
     border-bottom: 1px solid alpha(#000, 0.2);
 }
 .ensembles-central-display .menu-box > .activatable:selected{
-    border-top: 1px solid #000;
-    border-bottom: 1px solid #000;
-    box-shadow: none;
-    background-image: none;
-    background-color: rgba (100, 80, 0, 1);
+    border-top: 1px solid shade(@accent_color, 1);
+    border-bottom: 1px solid shade(@accent_color, 1);
+    box-shadow: inset 0 1px 0 0 shade(@accent_color, 1.3),
+		inset 0 -2px 0 0 alpha(#fff, 0.1),
+		inset 0 -1px 0 0 shade(@accent_color, 0.8);
+    background-image:linear-gradient(shade(@accent_color, 1.2), shade(@accent_color, 1));
     color: #fff;
 }
 .ensembles-central-display .menu-item-label {
@@ -400,16 +414,16 @@ Style for Menus like the Style menu, Voice menu or the Recorder
 /* Welcome Screen //////////////////////////////////////////////////////
  */
 .ensembles-central-display .welcome {
-	background: #222;
+	background: #f3f3f3;
 }
 .ensembles-central-display .welcome > .vertical > .h1 {
-	color: #f3f3f3;
+	color: #222;
 	font-size: 1.6em;
 }
 .ensembles-central-display .welcome > .vertical > .h2 {
-	color: #f3f3f3;
+	color: #222;
 	font-size: 1.2em;
 }
 .ensembles-central-display .welcome > .vertical > .vertical > * {
-	color: #f3f3f3;
+	color: #222;
 }

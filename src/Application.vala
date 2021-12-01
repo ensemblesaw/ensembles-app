@@ -119,7 +119,7 @@ namespace Ensembles {
         }
 
         // Initialise main theme of the application
-        private void init_theme () {
+        public static void init_theme () {
             GLib.Value value = GLib.Value (GLib.Type.STRING);
             string theme_color = "";
             Gtk.Settings.get_default ().get_property ("gtk-theme-name", ref value);
@@ -129,6 +129,11 @@ namespace Ensembles {
                 Gtk.Settings.get_default ().set_property ("gtk-theme-name", "io.elementary.stylesheet.blueberry");
                 theme_color = "blueberry";
             }
+
+            // Initialise display theme at launch
+            var selected_theme = settings.get_string ("display-theme");
+            selected_theme = Utils.set_display_theme (selected_theme);
+            settings.set_string ("display-theme", selected_theme);
 
             if (main_css_provider == null) {
                 main_css_provider = new Gtk.CssProvider ();
@@ -191,11 +196,6 @@ namespace Ensembles {
                     Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
                 );
             }
-
-            // Initialise display theme at launch
-            var selected_theme = settings.get_string ("display-theme");
-            selected_theme = Utils.set_display_theme (selected_theme);
-            settings.set_string ("display-theme", selected_theme);
         }
     }
 }

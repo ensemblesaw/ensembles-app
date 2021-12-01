@@ -13,6 +13,10 @@
     animation: ripple 1s 0.2s;
 }
 
+.splash-text {
+    color: #fff;
+}
+
 @keyframes ripple {
     from {
         background-image:radial-gradient(#202020 0%, #333 5%, #202020 6%);

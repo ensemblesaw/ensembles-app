@@ -61,10 +61,11 @@
             });
             attach (close_button, 0, 0, 1, 1);
 
-            header = new Gtk.Label ("");
+            header = new Gtk.Label ("") {
+                xalign = 0,
+                hexpand = true
+            };
             header.get_style_context ().add_class ("quick-mod-header");
-            header.halign = Gtk.Align.START;
-            header.hexpand = true;
             attach (header, 1, 0, 1, 1);
 
             var mod_grid = new Gtk.Grid ();

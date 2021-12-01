@@ -23,10 +23,11 @@ namespace Ensembles.Shell {
             });
             attach (close_button, 0, 0, 1, 1);
 
-            var header = new Gtk.Label (_("Tempo"));
+            var header = new Gtk.Label (_("Tempo")) {
+                xalign = 0,
+                hexpand = true
+            };
             header.get_style_context ().add_class ("quick-mod-header");
-            header.halign = Gtk.Align.START;
-            header.hexpand = true;
             attach (header, 1, 0, 1, 1);
 
             var tempo_grid = new Gtk.Grid ();

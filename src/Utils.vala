@@ -6,26 +6,33 @@
 namespace Ensembles {
     public class Utils {
         static string display_theme_path = "";
+        static Gtk.CssProvider display_theme_provider;
         public static string set_display_theme (string name) {
+            print ("Changing to %s\n", name);
             display_theme_path = Environment.get_home_dir () + "/Documents/Ensembles/DisplayThemes/";
             print (display_theme_path);
             // Update  the stylesheets first
             if (DirUtils.create_with_parents (Environment.get_home_dir () + "/Documents/Ensembles", 2000) != -1) {
                 if (DirUtils.create_with_parents (display_theme_path, 2000) != -1) {
                     create_file ("DisplayUnit", "Default", "css");
-                    create_file ("DisplayUnitElementaryLight", "Elementary Light", "css");
-                    create_file ("DisplayUnitElementaryDark", "Elementary Dark", "css");
+                    create_file ("DisplayUnitElementaryLight", "elementary Light", "css");
+                    create_file ("DisplayUnitElementaryDark", "elementary Dark", "css");
                 }
             }
             // Attempt to set the given theme
-            var display_theme_provider = new Gtk.CssProvider ();
+            if (display_theme_provider == null) {
+                display_theme_provider = new Gtk.CssProvider ();
+            } else {
+                Gtk.StyleContext.remove_provider_for_screen (Gdk.Screen.get_default (), display_theme_provider);
+            }
             try {
-                display_theme_provider.load_from_path (display_theme_path + name);
+                display_theme_provider.load_from_path (display_theme_path + name + ".css");
                 Gtk.StyleContext.add_provider_for_screen (
                     Gdk.Screen.get_default (), display_theme_provider,
                     Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
                 );
             } catch (Error e) {
+                warning (e.message);
                 try {
                     display_theme_provider.load_from_path (display_theme_path + "Default.css");
                     Gtk.StyleContext.add_provider_for_screen (
@@ -34,6 +41,7 @@ namespace Ensembles {
                     );
                     return "Default";
                 } catch (Error e1) {
+                    warning (e1.message);
                     try {
                         display_theme_provider.load_from_path (display_theme_path + "Elementary Light.css");
                         Gtk.StyleContext.add_provider_for_screen (
@@ -42,6 +50,7 @@ namespace Ensembles {
                         );
                         return "Elementary Light";
                     } catch (Error e2) {
+                        warning (e2.message);
                         try {
                             display_theme_provider.load_from_path (display_theme_path + "Elementary Dark.css");
                             Gtk.StyleContext.add_provider_for_screen (
