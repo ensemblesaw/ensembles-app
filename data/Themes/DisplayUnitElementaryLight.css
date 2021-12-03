@@ -303,7 +303,7 @@ Style for Menus like the Style menu, Voice menu or the Recorder
 .ensembles-central-display .menu-box > .activatable {
     padding: 4px;
     padding-left: 8px;
-    color: #fff;
+    color: #222;
     border-top: 1px solid alpha(#000, 0.2);
     border-bottom: 1px solid alpha(#000, 0.2);
 }
