@@ -4,7 +4,7 @@
  */
 
 namespace Ensembles.Core {
-    public class DriverSettingsProvider {
+    public class AudioDriverSniffer {
         #if PIPEWIRE_CORE_DRIVER
         public static bool get_is_pipewire_available () {
             string info = "";

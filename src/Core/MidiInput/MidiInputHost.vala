@@ -4,13 +4,13 @@
  */
 
 namespace Ensembles.Core {
-    public struct ControllerDevice {
+    public struct MidiDevice {
         string name;
         int id;
         bool available;
     }
-    public class Controller : Object {
-        ControllerDevice[] controller_device;
+    public class MidiInputHost : Object {
+        MidiDevice[] midi_device;
 
         public void destroy () {
             stream_connected = false;
@@ -21,22 +21,22 @@ namespace Ensembles.Core {
 
         public signal void receive_note_event (int key, int on, int velocity, int channel);
 
-        public Ensembles.Core.ControllerDevice[] refresh () {
+        public Ensembles.Core.MidiDevice[] refresh () {
             stream_connected = false;
             Thread.usleep (200);
             controller_destruct ();
             controller_init ();
             int n = controller_query_input_device_count ();
-            //debug ("Found %d devices...\n", n);
-            controller_device = new ControllerDevice[n];
+            debug ("Found %d devices...\n", n);
+            midi_device = new MidiDevice[n];
             for (int i = 0; i < n; i++) {
                 controller_query_device_info (i);
-                controller_device[i].name = controller_input_device_name;
-                controller_device[i].available = controller_input_device_available > 0 ? true : false;
-                controller_device[i].id = i;
-                //debug("Found %s device: %s\n", controller_device[i].available ? "input" : "output", controller_device[i].name);
+                midi_device[i].name = controller_input_device_name;
+                midi_device[i].available = controller_input_device_available > 0 ? true : false;
+                midi_device[i].id = i;
+                debug("Found %s device: %s\n", midi_device[i].available ? "input" : "output", midi_device[i].name);
             }
-            return controller_device;
+            return midi_device;
         }
 
         int read_device_stream () {

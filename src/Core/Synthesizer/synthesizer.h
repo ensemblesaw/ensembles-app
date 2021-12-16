@@ -9,6 +9,11 @@
 
 #include <fluidsynth.h>
 
+#include "central_bus.h"
+#include "providers/synthesizer_settings.h"
+#include "providers/synthesizer_instance.h"
+#include "../Utils/chord_finder.h"
+
 /** This function is used to receive midi events from style_player
  */
 int handle_events_for_styles (fluid_midi_event_t *event);

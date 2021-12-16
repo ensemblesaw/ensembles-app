@@ -3,12 +3,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-#include <fluidsynth.h>
-#include <gtk/gtk.h>
-#include "central_bus.h"
-#include "synthesizer_settings.h"
-#include "driver_settings_provider.h"
-#include "chord_finder.h"
+#include "synthesizer.h"
 
 fluid_synth_t* style_synth;
 fluid_settings_t* style_synth_settings;
@@ -20,7 +15,7 @@ fluid_audio_driver_t* realtime_adriver;
 
 
 // Accompaniment Flags
-int32_t accompaniment_mode = 0;
+int accompaniment_mode = 0;
 
 // Voice Settings
 int realtime_synth_sf_id = 0;
@@ -128,14 +123,14 @@ synthesizer_set_defaults () {
 
 // Effect Rack callback
 typedef void
-(*synthesizer_fx_callback)(gfloat* input_l,
-                        gint input_l_length1,
-                        gfloat* input_r,
-                        gint input_r_length1,
-                        gfloat** output_l,
-                        gint* output_l_length1,
-                        gfloat** output_r,
-                        gint* output_r_length1);
+(*synthesizer_fx_callback)(float* input_l,
+                        int input_l_length1,
+                        float* input_r,
+                        int input_r_length1,
+                        float** output_l,
+                        int* output_l_length1,
+                        float** output_r,
+                        int* output_r_length1);
 
 static synthesizer_fx_callback fx_callback;
 
@@ -193,7 +188,7 @@ fx_function_realtime(void *synth_data, int len,
 }
 
 void
-synthesizer_init (const gchar* loc) {
+synthesizer_init (const char* loc) {
     style_synth_settings = get_settings(STYLE_SYNTH);
 
     realtime_synth_settings = get_settings(REALTIME_SYNTH);
@@ -363,7 +358,7 @@ handle_events_for_styles (fluid_midi_event_t *event) {
     return ret_val;
 }
 
-int
+void
 synthesizer_send_notes_metronome (int key, int on) {
     if (realtime_synth) {
         if (on == 144) {

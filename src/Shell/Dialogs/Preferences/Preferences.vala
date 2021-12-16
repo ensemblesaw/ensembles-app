@@ -348,7 +348,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
 
             buffer_length.changed.connect ((value) => {
                 Ensembles.Application.settings.set_double ("buffer-length", value);
-                var display_value = Core.DriverSettingsProvider.change_period_size (value);
+                var display_value = Core.AudioDriverSniffer.change_period_size (value);
                 buffer_length.title = buffer_length_text.printf (display_value);
                 Ensembles.Application.settings.set_int ("previous-buffer-length", display_value);
             });

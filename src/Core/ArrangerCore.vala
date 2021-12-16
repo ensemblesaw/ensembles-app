@@ -55,17 +55,17 @@ namespace Ensembles.Core {
         }
 
         void make_core_components () {
-            Core.DriverSettingsProvider.check_drivers ();
+            Core.AudioDriverSniffer.check_drivers ();
 
             // Find out which driver was selected in user settings
             debug ("STARTUP: Initializing Settings");
-            string driver_string = Core.DriverSettingsProvider.get_available_driver (Application.settings.get_string ("driver"));
+            string driver_string = Core.AudioDriverSniffer.get_available_driver (Application.settings.get_string ("driver"));
             if (driver_string == "") {
                 error ("FATAL: No compatible audio drivers found!");
             }
 
             // Initialize settings object with the given driver and buffer length
-            Core.DriverSettingsProvider.initialize_drivers (
+            Core.AudioDriverSniffer.initialize_drivers (
                 driver_string,
                 Application.settings.get_double ("buffer-length")
             );
