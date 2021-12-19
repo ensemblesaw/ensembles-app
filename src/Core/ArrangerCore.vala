@@ -21,7 +21,7 @@ namespace Ensembles.Core {
         public Ensembles.Core.StylePlayer style_player;
         public Ensembles.Core.MetronomeLFOPlayer metronome_player;
         public Ensembles.Core.CentralBus bus;
-        public Ensembles.Core.Controller controller_connection;
+        public Ensembles.Core.MidiInputHost midi_input_host;
         public Ensembles.Core.SongPlayer song_player;
         public Ensembles.Core.Arpeggiator arpeggiator;
         public Ensembles.Core.Harmonizer harmonizer;
@@ -64,12 +64,6 @@ namespace Ensembles.Core {
                 error ("FATAL: No compatible audio drivers found!");
             }
 
-            // Initialize settings object with the given driver and buffer length
-            Core.AudioDriverSniffer.initialize_drivers (
-                driver_string,
-                Application.settings.get_double ("buffer-length")
-            );
-
             // Load Central Bus
             // Central Bus is a set of variables (memory slots) that track the state of the synthesizer
             // It is accessible from various modules
@@ -78,7 +72,7 @@ namespace Ensembles.Core {
 
             // Start monitoring MIDI input streamfor devices
             debug ("STARTUP: Loading MIDI Input Monitor");
-            controller_connection = new Core.Controller ();
+            midi_input_host = new Core.MidiInputHost ();
 
             // Initialise plugins
             debug ("STARTUP: Initializing Plugin System");
@@ -86,7 +80,9 @@ namespace Ensembles.Core {
 
             // Load the main audio synthesizer
             debug ("STARTUP: Loading Synthesizer");
-            synthesizer = new Core.Synthesizer (sf_loc);
+            synthesizer = new Core.Synthesizer (sf_loc,
+                                                driver_string,
+                                                Application.settings.get_double ("buffer-length"));
 
             // Load the style engine
             debug ("STARTUP: Loading Style Engine");
@@ -160,7 +156,7 @@ namespace Ensembles.Core {
         }
 
         void make_other_core_events () {
-            controller_connection.receive_note_event.connect ((key, on, velocity)=>{
+            midi_input_host.receive_note_event.connect ((key, on, velocity)=>{
                 //  debug ("%d %d %d\n", key, on, velocity);
                 if (Application.settings.get_boolean ("arpeggiator-on")) {
                     if (Application.settings.get_boolean ("accomp-on")) {
@@ -242,7 +238,7 @@ namespace Ensembles.Core {
         public void garbage_collect () {
             debug ("Cleaning up Core");
             debug ("CLEANUP: Unloading MIDI Input Monitor");
-            controller_connection.destroy ();
+            midi_input_host.destroy ();
             Thread.usleep (5000);
             debug ("CLEANUP: Unloading Metronome and LFO Engine");
             metronome_player.unref ();

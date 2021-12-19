@@ -3,11 +3,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-
-#include <portmidi.h>
-#include <stdio.h>
-#include <string.h>
-
+#include "midi_input_host.h"
 
 PortMidiStream* controller_input_stream;
 char* controller_input_device_name;

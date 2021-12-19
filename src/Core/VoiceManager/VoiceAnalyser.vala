@@ -51,16 +51,11 @@ namespace Ensembles.Core {
         public int[] get_all_category_indices () {
             return this.category_indices;
         }
-
-        ~VoiceAnalyser () {
-            voice_analyser_deconstruct ();
-        }
     }
 }
 
 extern int voice_analyser_init (string sf_path);
 extern int voice_analyser_next ();
-extern void voice_analyser_deconstruct ();
 
 
 // Data

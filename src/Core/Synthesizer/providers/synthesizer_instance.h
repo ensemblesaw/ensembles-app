@@ -7,6 +7,8 @@
 #define SYNTHESIZER_INSTANCE_H
 
 #include <fluidsynth.h>
+#include <stdlib.h>
+#include <string.h>
 
 /*
  * Where is the synthesizer instance
@@ -23,9 +25,38 @@ enum UseCase {
 fluid_synth_t* get_synthesizer(enum UseCase use_case);
 
 /*
+ * Sets driver configuration of synthesizer instance;
+ */
+int set_driver_configuration(const char* driver_name, double buffer_length_multiplier);
+
+/*
  * Deletes the synthesizer when a use case
  * is no longer necessary
  */
 void delete_synthesizer(enum UseCase use_case);
 
 #endif /* SYNTHESIZER_INSTANCE_H */
+
+/*
+ *  RENDER SYNTH CHANNEL UTILIZATION SCHEMATICS
+ *
+ *  LFO, Style, Song:
+ *  0 - 15
+ *
+ *  Metronome:
+ *  16
+ *
+ *  MIDI INPUT:
+ *  Voice R1      - 17
+ *  Voice R2      - 18
+ *  Voice L       - 19
+ *  CHORD-EP      - 20
+ *  CHORD-Strings - 21
+ *  CHORD-Bass    - 22
+ *
+ *  CHIMES:
+ *  23
+ *
+ *  RECORDER:
+ *  24 - 63
+ */

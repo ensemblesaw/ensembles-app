@@ -16,7 +16,7 @@ namespace Ensembles.Core {
             _lfo_directory_location = lfo_directory_location;
             metronome_lfo_player_init ();
         }
-        ~MetronomeLFOPlayer () {
+        public override void dispose () {
             metronome_lfo_player_destruct ();
         }
 

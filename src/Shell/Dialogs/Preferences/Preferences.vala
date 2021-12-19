@@ -229,16 +229,16 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             var top_box = new Shell.Dialogs.Preferences.TopBox ("audio-card", _("Audio"));
 
             var driver_list = new List<string> ();
-            if (alsa_driver_found > 0) {
+            if (Core.AudioDriverSniffer.alsa_driver_found) {
                 driver_list.append ("Alsa");
             }
-            if (pulseaudio_driver_found > 0) {
+            if (Core.AudioDriverSniffer.pulseaudio_driver_found) {
                 driver_list.append ("PulseAudio");
             }
-            if (pipewire_driver_found > 0) {
+            if (Core.AudioDriverSniffer.pipewire_driver_found) {
                 driver_list.append ("PipeWire");
             }
-            if (pipewire_pulse_driver_found > 0) {
+            if (Core.AudioDriverSniffer.pipewire_pulse_driver_found) {
                 driver_list.append ("PipeWire Pulse");
             }
 
@@ -348,7 +348,10 @@ namespace Ensembles.Shell.Dialogs.Preferences {
 
             buffer_length.changed.connect ((value) => {
                 Ensembles.Application.settings.set_double ("buffer-length", value);
-                var display_value = Core.AudioDriverSniffer.change_period_size (value);
+                var display_value = Ensembles.Application.arranger_core.synthesizer.set_driver_configuration (
+                    Ensembles.Application.settings.get_string ("driver"),
+                    value
+                );
                 buffer_length.title = buffer_length_text.printf (display_value);
                 Ensembles.Application.settings.set_int ("previous-buffer-length", display_value);
             });

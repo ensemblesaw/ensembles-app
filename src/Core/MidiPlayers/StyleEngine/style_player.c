@@ -3,20 +3,9 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-#include <fluidsynth.h>
-#include <gtk/gtk.h>
-#include <glib.h>
-#include <string.h>
-
-#include "style_analyser.h"
-#include "central_bus.h"
-#include "synthesizer.h"
-#include "driver_settings_provider.h"
+#include "style_player.h"
 
 // None of this will be used to actual rendering //////////
-fluid_settings_t* settings;
-fluid_synth_t* synth;
-fluid_audio_driver_t* adriver;
 fluid_player_t* player;
 ///////////////////////////////////////////////////////////
 
@@ -147,61 +136,63 @@ parse_midi_events (void *data, fluid_midi_event_t *event) {
 
     fluid_midi_event_t* new_event = new_fluid_midi_event ();
 
-    fluid_midi_event_set_channel (new_event, fluid_midi_event_get_channel (event));
-    fluid_midi_event_set_control (new_event, fluid_midi_event_get_control (event));
+    int type = fluid_midi_event_get_type (event);
+    int channel = fluid_midi_event_get_channel (event);
+    int control = fluid_midi_event_get_control (event);
+    int key = fluid_midi_event_get_key (event);
+    int value = fluid_midi_event_get_value (event);
+    int velocity = fluid_midi_event_get_velocity (event);
+
+    fluid_midi_event_set_channel (new_event, channel);
+    fluid_midi_event_set_control (new_event, control);
     fluid_midi_event_set_pitch (new_event, fluid_midi_event_get_pitch (event));
     fluid_midi_event_set_program (new_event, fluid_midi_event_get_program (event));
-    fluid_midi_event_set_value (new_event, fluid_midi_event_get_value (event));
-    fluid_midi_event_set_velocity (new_event, fluid_midi_event_get_velocity (event));
-    fluid_midi_event_set_type (new_event, fluid_midi_event_get_type (event));
+    fluid_midi_event_set_value (new_event, value);
+    fluid_midi_event_set_velocity (new_event,velocity);
+    fluid_midi_event_set_type (new_event, type);
 
-    int type = fluid_midi_event_get_type (new_event);
-    int channel = fluid_midi_event_get_channel (new_event);
-    int control = fluid_midi_event_get_control (new_event);
-    int key = fluid_midi_event_get_key (event);
-    int value = fluid_midi_event_get_value (new_event);
     switch (channel) {
         case 0:
-        if (type == 144) channel_note_on_0 = key | (fluid_midi_event_get_velocity (event) << 16); else if (type == 128) channel_note_on_0 = -1;
+        if (type == 144) channel_note_on_0 = key | (velocity << 16); else if (type == 128) channel_note_on_0 = -1;
         break;
         case 1:
-        if (type == 144) channel_note_on_1 = key | (fluid_midi_event_get_velocity (event) << 16); else if (type == 128) channel_note_on_1 = -1;
+        if (type == 144) channel_note_on_1 = key | (velocity << 16); else if (type == 128) channel_note_on_1 = -1;
         break;
         case 2:
-        if (type == 144) channel_note_on_2 = key | (fluid_midi_event_get_velocity (event) << 16); else if (type == 128) channel_note_on_2 = -1;
+        if (type == 144) channel_note_on_2 = key | (velocity << 16); else if (type == 128) channel_note_on_2 = -1;
         break;
         case 3:
-        if (type == 144) channel_note_on_3 = key | (fluid_midi_event_get_velocity (event) << 16); else if (type == 128) channel_note_on_3 = -1;
+        if (type == 144) channel_note_on_3 = key | (velocity << 16); else if (type == 128) channel_note_on_3 = -1;
         break;
         case 4:
-        if (type == 144) channel_note_on_4 = key | (fluid_midi_event_get_velocity (event) << 16); else if (type == 128) channel_note_on_4 = -1;
+        if (type == 144) channel_note_on_4 = key | (velocity << 16); else if (type == 128) channel_note_on_4 = -1;
         break;
         case 5:
-        if (type == 144) channel_note_on_5 = key | (fluid_midi_event_get_velocity (event) << 16); else if (type == 128) channel_note_on_5 = -1;
+        if (type == 144) channel_note_on_5 = key | (velocity << 16); else if (type == 128) channel_note_on_5 = -1;
         break;
         case 6:
-        if (type == 144) channel_note_on_6 = key | (fluid_midi_event_get_velocity (event) << 16); else if (type == 128) channel_note_on_6 = -1;
+        if (type == 144) channel_note_on_6 = key | (velocity << 16); else if (type == 128) channel_note_on_6 = -1;
         break;
         case 7:
-        if (type == 144) channel_note_on_7 = key | (fluid_midi_event_get_velocity (event) << 16); else if (type == 128) channel_note_on_7 = -1;
+        if (type == 144) channel_note_on_7 = key | (velocity << 16); else if (type == 128) channel_note_on_7 = -1;
         break;
         case 8:
-        if (type == 144) channel_note_on_8 = key | (fluid_midi_event_get_velocity (event) << 16); else if (type == 128) channel_note_on_8 = -1;
+        if (type == 144) channel_note_on_8 = key | (velocity << 16); else if (type == 128) channel_note_on_8 = -1;
         break;
         case 11:
-        if (type == 144) channel_note_on_11 = key | (fluid_midi_event_get_velocity (event) << 16); else if (type == 128) channel_note_on_11 = -1;
+        if (type == 144) channel_note_on_11 = key | (velocity << 16); else if (type == 128) channel_note_on_11 = -1;
         break;
         case 12:
-        if (type == 144) channel_note_on_12 = key | (fluid_midi_event_get_velocity (event) << 16); else if (type == 128) channel_note_on_12 = -1;
+        if (type == 144) channel_note_on_12 = key | (velocity << 16); else if (type == 128) channel_note_on_12 = -1;
         break;
         case 13:
-        if (type == 144) channel_note_on_13 = key | (fluid_midi_event_get_velocity (event) << 16); else if (type == 128) channel_note_on_13 = -1;
+        if (type == 144) channel_note_on_13 = key | (velocity << 16); else if (type == 128) channel_note_on_13 = -1;
         break;
         case 14:
-        if (type == 144) channel_note_on_14 = key | (fluid_midi_event_get_velocity (event) << 16); else if (type == 128) channel_note_on_14 = -1;
+        if (type == 144) channel_note_on_14 = key | (velocity << 16); else if (type == 128) channel_note_on_14 = -1;
         break;
         case 15:
-        if (type == 144) channel_note_on_15 = key | (fluid_midi_event_get_velocity (event) << 16); else if (type == 128) channel_note_on_15 = -1;
+        if (type == 144) channel_note_on_15 = key | (velocity << 16); else if (type == 128) channel_note_on_15 = -1;
         break;
     }
 
@@ -214,18 +205,18 @@ parse_midi_events (void *data, fluid_midi_event_t *event) {
 
     // Send data to synth
     if (breaking == 0)
-        handle_events_for_styles (new_event);
+        handle_events_for_midi_players (new_event);
     return 0;
 }
 
 void
 resend_key (int value, int channel) {
-    fluid_midi_event_t* new_event = new_fluid_midi_event ();
-    fluid_midi_event_set_channel (new_event, channel);
-    fluid_midi_event_set_type (new_event, 144);
-    fluid_midi_event_set_key (new_event, get_chord_modified_key (value & 0xFFFF));
-    fluid_midi_event_set_velocity (new_event, (value >> 16) & 0xFFFF);
-    handle_events_for_styles (new_event);
+    fluid_midi_event_t* new_event = new_fluid_midi_event();
+    fluid_midi_event_set_channel(new_event, channel);
+    fluid_midi_event_set_type(new_event, 144);
+    fluid_midi_event_set_key(new_event, get_chord_modified_key (value & 0xFFFF));
+    fluid_midi_event_set_velocity(new_event, (value >> 16) & 0xFFFF);
+    handle_events_for_midi_players(new_event);
 }
 
 void
@@ -244,7 +235,7 @@ style_player_halt_continuous_notes () {
     channel_note_on_13 = -1;
     channel_note_on_14 = -1;
     channel_note_on_15 = -1;
-    synthesizer_halt_notes ();
+    synthesizer_halt_notes();
 }
 
 int
@@ -338,9 +329,6 @@ parse_ticks (void* data, int ticks) {
 void
 style_player_init () {
     set_central_style_looping (0);
-    settings = get_settings(STYLE_ENGINE);
-    synth = new_fluid_synth(settings);
-    adriver = new_fluid_audio_driver(settings, synth);
 }
 
 void
@@ -356,7 +344,7 @@ style_player_sync_start () {
 void
 queue_style_file_change (int custom_tempo) {
     printf("changing...to %s\n", style_player_style_path);
-    if (player) {
+    if (player == NULL) {
         printf ("c:\n");
         fluid_player_stop (player);
         fluid_player_join(player);
@@ -364,9 +352,10 @@ queue_style_file_change (int custom_tempo) {
         player = NULL;
         printf ("d:\n");
     }
-    player = new_fluid_player(synth);
-    fluid_player_set_playback_callback(player, parse_midi_events, synth);
-    fluid_player_set_tick_callback (player, parse_ticks, synth);
+    printf ("Making player\n");
+    player = new_fluid_player(get_synthesizer(UTILITY));
+    fluid_player_set_playback_callback(player, parse_midi_events, get_synthesizer(UTILITY));
+    fluid_player_set_tick_callback (player, parse_ticks, get_synthesizer(UTILITY));
     printf ("e:\n");
     if (fluid_is_midifile(style_player_style_path)) {
         fluid_player_add(player, style_player_style_path);
@@ -416,21 +405,12 @@ style_player_reload_style () {
 void
 style_player_destruct () {
     /* cleanup */
-    fluid_synth_all_sounds_off (synth, -1);
+    fluid_synth_all_sounds_off (get_synthesizer(UTILITY), -1);
     if (player != NULL) {
         /* wait for playback termination */
         fluid_player_stop (player);
         fluid_player_join(player);
         delete_fluid_player(player);
-    }
-    if (adriver) {
-        delete_fluid_audio_driver(adriver);
-    }
-    if (synth) {
-        delete_fluid_synth(synth);
-    }
-    if (settings) {
-        delete_settings(STYLE_ENGINE);
     }
 }
 

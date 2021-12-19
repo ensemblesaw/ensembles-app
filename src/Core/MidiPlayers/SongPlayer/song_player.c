@@ -3,17 +3,8 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-#include <fluidsynth.h>
-#include <gtk/gtk.h>
-#include <glib.h>
-#include <string.h>
+#include "song_player.h"
 
-#include "driver_settings_provider.h"
-
-// These are actually used to render audio
-fluid_settings_t* mp_settings;
-fluid_synth_t* mp_synth;
-fluid_audio_driver_t* mp_adriver;
 fluid_player_t* mp_player;
 
 int note_watch_channel = 0;
@@ -47,7 +38,17 @@ mp_parse_midi_events (void *data, fluid_midi_event_t *event) {
             music_callback (key, type);
         }
     }
-    return fluid_synth_handle_midi_event (mp_synth, event);
+    fluid_midi_event_t* new_event = new_fluid_midi_event ();
+
+    fluid_midi_event_set_channel (new_event, channel);
+    fluid_midi_event_set_control (new_event, fluid_midi_event_get_control (event));
+    fluid_midi_event_set_pitch (new_event, fluid_midi_event_get_pitch (event));
+    fluid_midi_event_set_program (new_event, fluid_midi_event_get_program (event));
+    fluid_midi_event_set_value (new_event, fluid_midi_event_get_value (event));
+    fluid_midi_event_set_key (new_event, key);
+    fluid_midi_event_set_velocity (new_event,fluid_midi_event_get_velocity (event));
+    fluid_midi_event_set_type (new_event, type);
+    return fluid_synth_handle_midi_event (get_synthesizer(UTILITY), new_event);
 }
 
 int
@@ -72,17 +73,10 @@ mp_parse_ticks (void* data, int ticks) {
 }
 
 void
-music_player_init (const gchar* sf_loc) {
-    mp_settings = get_settings(MIDI_SONG_PLAYER);
-    mp_synth = new_fluid_synth(mp_settings);
-    mp_adriver = new_fluid_audio_driver(mp_settings, mp_synth);
-
-    if (fluid_is_soundfont(sf_loc)) {
-        fluid_synth_sfload(mp_synth, sf_loc, 1);
-    }
-    mp_player = new_fluid_player(mp_synth);
-    fluid_player_set_playback_callback(mp_player, mp_parse_midi_events, mp_synth);
-    fluid_player_set_tick_callback (mp_player, mp_parse_ticks, mp_synth);
+music_player_init () {
+    mp_player = new_fluid_player(get_synthesizer(UTILITY));
+    fluid_player_set_playback_callback(mp_player, mp_parse_midi_events, get_synthesizer(UTILITY));
+    fluid_player_set_tick_callback (mp_player, mp_parse_ticks, get_synthesizer(UTILITY));
 }
 
 int
@@ -105,8 +99,8 @@ music_player_play () {
 void
 music_player_pause () {
     fluid_player_stop (mp_player);
-    fluid_synth_all_notes_off (mp_synth, -1);
-    fluid_synth_all_sounds_off (mp_synth, -1);
+    fluid_synth_all_notes_off (get_synthesizer(UTILITY), -1);
+    fluid_synth_all_sounds_off (get_synthesizer(UTILITY), -1);
 }
 
 void
@@ -129,18 +123,5 @@ music_player_destruct () {
         fluid_player_join (mp_player);
         delete_fluid_player(mp_player);
         mp_player = NULL;
-    }
-    if (mp_adriver) {
-        delete_fluid_audio_driver(mp_adriver);
-        mp_adriver = NULL;
-    }
-    if (mp_synth) {
-        fluid_synth_all_sounds_off (mp_synth, -1);
-        delete_fluid_synth(mp_synth);
-        mp_synth = NULL;
-    }
-    if (mp_settings) {
-        delete_fluid_settings(mp_settings);
-        mp_settings = NULL;
     }
 }
