@@ -205,7 +205,7 @@ parse_midi_events (void *data, fluid_midi_event_t *event) {
 
     // Send data to synth
     if (breaking == 0)
-        handle_events_for_midi_players (new_event);
+        handle_events_for_midi_players (new_event, 1);
     return 0;
 }
 
@@ -216,7 +216,7 @@ resend_key (int value, int channel) {
     fluid_midi_event_set_type(new_event, 144);
     fluid_midi_event_set_key(new_event, get_chord_modified_key (value & 0xFFFF));
     fluid_midi_event_set_velocity(new_event, (value >> 16) & 0xFFFF);
-    handle_events_for_midi_players(new_event);
+    handle_events_for_midi_players(new_event, 1);
 }
 
 void

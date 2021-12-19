@@ -332,10 +332,10 @@ namespace Ensembles.Shell {
             channel_configure_buttons[15].clicked.connect (() => {
                 edit_channel (15);
             });
-            channel_configure_buttons[17].clicked.connect (() => {
-                edit_channel (16);
-            });
             channel_configure_buttons[16].clicked.connect (() => {
+                edit_channel (19);
+            });
+            channel_configure_buttons[17].clicked.connect (() => {
                 edit_channel (17);
             });
             channel_configure_buttons[18].clicked.connect (() => {
@@ -443,13 +443,14 @@ namespace Ensembles.Shell {
         async void update_equalizer () {
             Timeout.add (60000 / (tempo * 16), () => {
                 if (Core.CentralBus.get_style_looping_on ()) {
+                    // Style channels
                     for (int i = 0; i < 16; i++) {
                         equalizer_bar[i].velocity = Ensembles.Core.Synthesizer.get_channel_velocity (i);
                     }
                 }
-                equalizer_bar[18].velocity = Ensembles.Core.Synthesizer.get_channel_velocity (18);
-                equalizer_bar[16].velocity = Ensembles.Core.Synthesizer.get_channel_velocity (16);
-                equalizer_bar[17].velocity = Ensembles.Core.Synthesizer.get_channel_velocity (17);
+                equalizer_bar[17].velocity = Ensembles.Core.Synthesizer.get_channel_velocity (17); // R1
+                equalizer_bar[18].velocity = Ensembles.Core.Synthesizer.get_channel_velocity (18); // R2
+                equalizer_bar[16].velocity = Ensembles.Core.Synthesizer.get_channel_velocity (19); // L
                 return true;
             });
         }

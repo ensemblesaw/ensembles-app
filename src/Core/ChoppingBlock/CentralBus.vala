@@ -14,10 +14,6 @@ namespace Ensembles.Core {
         int loaded_time_sig_n = 4;
         int loaded_time_sig_d = 4;
 
-
-        // System Ready Messages
-        int styles_loaded_ready = 0;
-
         // Voice Split Updates
         int split_key = 54;
 

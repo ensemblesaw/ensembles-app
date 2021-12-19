@@ -191,19 +191,19 @@ namespace Ensembles.Core {
                         if (key > Core.CentralBus.get_split_key ()) {
                             harmonizer.send_notes (key, on, velocity);
                         } else {
-                            synthesizer.send_notes_realtime (key, on, velocity);
+                            synthesizer.send_notes_realtime (key, on, velocity, 17);
                         }
                     } else {
-                        synthesizer.send_notes_realtime (key, on, velocity);
+                        synthesizer.send_notes_realtime (key, on, velocity, 17);
                     }
                 } else {
-                    synthesizer.send_notes_realtime (key, on, velocity);
+                    synthesizer.send_notes_realtime (key, on, velocity, 17);
                 }
             });
             arpeggiator.halt_notes.connect (synthesizer.halt_realtime);
             harmonizer.generate_notes.connect ((key, on, velocity) => {
                 if (key > Core.CentralBus.get_split_key ()) {
-                    synthesizer.send_notes_realtime (key, on, velocity);
+                    synthesizer.send_notes_realtime (key, on, velocity, 17);
                 }
             });
             harmonizer.halt_notes.connect (synthesizer.halt_realtime);

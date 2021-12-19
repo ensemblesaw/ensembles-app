@@ -146,15 +146,15 @@
 
         public void set_synth_channel_to_edit (int channel) {
             _channel = channel;
-            if (channel >= 16) {
+            if (channel > 16) {
                 switch (channel) {
-                    case 16:
+                    case 17:
                     header.set_text (_("Voice Right 1 Modulators"));
                     break;
-                    case 17:
+                    case 18:
                     header.set_text (_("Voice Right 2 Modulators"));
                     break;
-                    case 18:
+                    case 19:
                     header.set_text (_("Voice Left Modulators"));
                     break;
                 }

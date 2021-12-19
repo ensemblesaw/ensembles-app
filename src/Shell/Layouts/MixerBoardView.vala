@@ -44,7 +44,7 @@ namespace Ensembles.Shell {
             };
             attach (voice_l_gain_slider, i++, 0, 1, 1);
             voice_l_gain_slider.change_value.connect ((scroll, value) => {
-                change_gain (2, (int)(value * 127));
+                change_gain (19, (int)(value * 127));
                 return false;
             });
 
@@ -55,7 +55,7 @@ namespace Ensembles.Shell {
             };
             attach (voice_r1_gain_slider, i++, 0, 1, 1);
             voice_r1_gain_slider.change_value.connect ((scroll, value) => {
-                change_gain (0, (int)(value * 127));
+                change_gain (17, (int)(value * 127));
                 return false;
             });
 
@@ -66,7 +66,7 @@ namespace Ensembles.Shell {
             };
             attach (voice_r2_gain_slider, i++, 0, 1, 1);
             voice_r2_gain_slider.change_value.connect ((scroll, value) => {
-                change_gain (1, (int)(value * 127));
+                change_gain (18, (int)(value * 127));
                 return false;
             });
 
@@ -333,17 +333,17 @@ namespace Ensembles.Shell {
                 if (watch) {
                     if (channel >= 16) {
                         switch (channel) {
-                            case 16:
+                            case 17:
                             if (voice_r1_gain_slider != null && voice_r1_gain_slider.adjustment != null) {
                                 voice_r1_gain_slider.set_value ((double)value / 127);
                             }
                             break;
-                            case 17:
+                            case 18:
                             if (voice_r2_gain_slider != null && voice_r2_gain_slider.adjustment != null) {
                                 voice_r2_gain_slider.set_value ((double)value / 127);
                             }
                             break;
-                            case 18:
+                            case 19:
                             if (voice_l_gain_slider != null && voice_l_gain_slider.adjustment != null) {
                                 voice_l_gain_slider.set_value ((double)value / 127);
                             }
@@ -363,8 +363,10 @@ namespace Ensembles.Shell {
             while (watch) {
                 Thread.usleep (200000);
                 if (watch) {
-                    for (int i = 0; i < 19; i++) {
+                    for (int i = 0; i < 20; i++) {
+                        if (i != 16) {
                         set_gain_value (i, Ensembles.Core.Synthesizer.get_modulator_value (i, 7));
+                        }
                         Thread.usleep (100000);
                     }
                 }

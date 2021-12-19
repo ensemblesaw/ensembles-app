@@ -92,19 +92,19 @@ namespace Ensembles.Shell {
         public void connect_synthesizer (Ensembles.Core.Synthesizer synth) {
             _synth = synth;
             octaves[0].note_activate.connect ((index, on) => {
-                _synth.send_notes_realtime (index + 36, on ? 144 : 128, 100);
+                _synth.send_notes_realtime (index + 36, on ? 144 : 128, 100, 17);
             });
             octaves[1].note_activate.connect ((index, on) => {
-                _synth.send_notes_realtime (index + 48, on ? 144 : 128, 100);
+                _synth.send_notes_realtime (index + 48, on ? 144 : 128, 100, 17);
             });
             octaves[2].note_activate.connect ((index, on) => {
-                _synth.send_notes_realtime (index + 60, on ? 144 : 128, 100);
+                _synth.send_notes_realtime (index + 60, on ? 144 : 128, 100, 17);
             });
             octaves[3].note_activate.connect ((index, on) => {
-                _synth.send_notes_realtime (index + 72, on ? 144 : 128, 100);
+                _synth.send_notes_realtime (index + 72, on ? 144 : 128, 100, 17);
             });
             octaves[4].note_activate.connect ((index, on) => {
-                _synth.send_notes_realtime (index + 84, on ? 144 : 128, 100);
+                _synth.send_notes_realtime (index + 84, on ? 144 : 128, 100, 17);
             });
         }
 

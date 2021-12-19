@@ -16,7 +16,7 @@
 
 /** This function is used to receive midi events from style_player
  */
-int handle_events_for_midi_players (fluid_midi_event_t *event);
+int handle_events_for_midi_players (fluid_midi_event_t *event, int _is_style_player);
 
 void synthesizer_send_notes_to_metronome(int key, int on);
 

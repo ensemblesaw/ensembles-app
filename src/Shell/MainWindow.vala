@@ -185,23 +185,23 @@ namespace Ensembles.Shell {
                         if (key > Core.CentralBus.get_split_key ()) {
                             Application.arranger_core.arpeggiator.send_notes (key, on, 100);
                         } else {
-                            Application.arranger_core.synthesizer.send_notes_realtime (key, on, 100);
+                            Application.arranger_core.synthesizer.send_notes_realtime (key, on, 100, 17);
                         }
                     } else {
                         Application.arranger_core.arpeggiator.send_notes (key, on, 100);
                     }
                 } else {
-                    Application.arranger_core.synthesizer.send_notes_realtime (key, on, 100);
+                    Application.arranger_core.synthesizer.send_notes_realtime (key, on, 100, 17);
                 }
                 if (Application.settings.get_boolean ("harmonizer-on")) {
                     if (Application.settings.get_boolean ("accomp-on")) {
                         if (key > Core.CentralBus.get_split_key ()) {
                             Application.arranger_core.harmonizer.send_notes (key, on, 100);
                         } else {
-                            Application.arranger_core.synthesizer.send_notes_realtime (key, on, 100);
+                            Application.arranger_core.synthesizer.send_notes_realtime (key, on, 100, 17);
                         }
                     } else {
-                        Application.arranger_core.synthesizer.send_notes_realtime (key, on, 100);
+                        Application.arranger_core.synthesizer.send_notes_realtime (key, on, 100, 17);
                     }
                 }
                 main_keyboard.set_note_on (key, (on == 144));
