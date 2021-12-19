@@ -29,7 +29,9 @@ namespace Ensembles.Shell.Dialogs.Preferences {
                 destroy_with_parent: true,
                 window_position: Gtk.WindowPosition.CENTER_ON_PARENT,
                 modal: true,
-                title: _("Preferences")
+                title: _("Preferences"),
+                width_request: 525,
+                height_request: 400
             );
         }
 
@@ -38,10 +40,6 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             get_header_bar ().show_close_button = false;
 
             get_style_context ().add_class ("app");
-
-            //  Core.CentralBus.halt ();
-            width_request = 525;
-            height_request = 400;
 
             header_stack = new Gtk.Stack () {
                 transition_type = Gtk.StackTransitionType.CROSSFADE,

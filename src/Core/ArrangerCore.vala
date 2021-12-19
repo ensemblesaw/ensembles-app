@@ -163,13 +163,13 @@ namespace Ensembles.Core {
                         if (key > Core.CentralBus.get_split_key ()) {
                             arpeggiator.send_notes (key, on, velocity);
                         } else {
-                            synthesizer.send_notes_realtime (key, on, velocity);
+                            synthesizer.send_notes_realtime (key, on, velocity, 17);
                         }
                     } else {
                         arpeggiator.send_notes (key, on, velocity);
                     }
                 } else {
-                    synthesizer.send_notes_realtime (key, on, velocity);
+                    synthesizer.send_notes_realtime (key, on, velocity, 17);
                 }
                 if (Application.settings.get_boolean ("harmonizer-on")) {
                     if (Application.settings.get_boolean ("accomp-on")) {
@@ -204,6 +204,7 @@ namespace Ensembles.Core {
             harmonizer.generate_notes.connect ((key, on, velocity) => {
                 if (key > Core.CentralBus.get_split_key ()) {
                     synthesizer.send_notes_realtime (key, on, velocity, 17);
+                    Application.main_window.main_keyboard.set_note_on (key, (on == 144), true);
                 }
             });
             harmonizer.halt_notes.connect (synthesizer.halt_realtime);

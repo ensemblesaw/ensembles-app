@@ -19,17 +19,6 @@ fluid_settings_t* utility_settings;
 
 fluid_settings_t* get_settings(enum UseCase use_case);
 
-// Effect Rack callback
-typedef void
-(*synthesizer_fx_callback)(float* input_l,
-                        int input_l_length1,
-                        float* input_r,
-                        int input_r_lengthint1,
-                        float** output_l,
-                        int* output_l_length1,
-                        float** output_r,
-                        int* output_r_length1);
-
 static synthesizer_fx_callback fx_callback;
 
 void
@@ -73,6 +62,9 @@ fx_function(void *synth_data, int len,
     float *out_r_o = malloc (len * sizeof (float));
     int size_l, size_r;
     if (fx_callback != NULL) {
+        /*
+         * The audio buffer data is sent to the plugin system
+         */
         fx_callback (out_l_i, len, out_r_i, len, &out_l_o, &size_l, &out_r_o, &size_r);
         for (int k = 0; k < len; k++) {
             out_l_i[k] = out_l_o[k];
@@ -91,6 +83,11 @@ get_synthesizer(enum UseCase use_case)
 {
     switch (use_case)
     {
+        /*
+         * Render is synth is used for renderring audio
+         * Due to a technical limitation, we have decided to use a
+         * separate synth for midi players and other utilities (see below)
+         */
         case RENDER:
             if (rendering_synth == NULL)
             {
@@ -98,6 +95,12 @@ get_synthesizer(enum UseCase use_case)
                 rendering_driver = new_fluid_audio_driver2(rendering_settings, fx_function, rendering_synth);
             }
             return rendering_synth;
+        /*
+         * Utility synths don't render any audio, they are used
+         * by the midi players to generate events and they are also
+         * used by some other "utilities" that only temporarily need
+         * a synth instance
+         */
         case UTILITY:
             if (utility_synth == NULL)
             {
@@ -183,4 +186,18 @@ set_driver_configuration(const char* driver_name, double buffer_length_multiplie
     }
 
     return 0;
+}
+
+void
+delete_synthesizer_instances()
+{
+    // Delete utility synth instance
+    delete_fluid_audio_driver(utility_driver);
+    delete_fluid_synth(utility_synth);
+    delete_fluid_settings(utility_settings);
+
+    // Delete render synth instance
+    delete_fluid_audio_driver(rendering_driver);
+    delete_fluid_synth(rendering_synth);
+    delete_fluid_settings(rendering_settings);
 }

@@ -30,11 +30,23 @@ fluid_synth_t* get_synthesizer(enum UseCase use_case);
  */
 int set_driver_configuration(const char* driver_name, double buffer_length_multiplier);
 
+// Effect Rack callback
+typedef void
+(*synthesizer_fx_callback)(float* input_l,
+                        int input_l_length1,
+                        float* input_r,
+                        int input_r_lengthint1,
+                        float** output_l,
+                        int* output_l_length1,
+                        float** output_r,
+                        int* output_r_length1);
+
+void set_fx_callback (synthesizer_fx_callback callback);
 /*
  * Deletes the synthesizer when a use case
  * is no longer necessary
  */
-void delete_synthesizer(enum UseCase use_case);
+void delete_synthesizer_instances();
 
 #endif /* SYNTHESIZER_INSTANCE_H */
 

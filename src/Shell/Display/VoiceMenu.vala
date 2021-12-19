@@ -25,10 +25,10 @@ namespace Ensembles.Shell {
 
 
             var headerbar = new Gtk.HeaderBar ();
-            headerbar.set_title (_("Voice - %s").printf (((channel == 0) ? _("Right 1 (Main)") : (channel == 1)
+            headerbar.set_title (_("Voice - %s").printf (((channel == 17) ? _("Right 1 (Main)") : (channel == 18)
             ? _("Right 2 (Layered)")
             : _("Left (Split)"))));
-            headerbar.set_subtitle (_("Pick a Voice to play %s").printf (((channel == 0) ? "" : (channel == 1)
+            headerbar.set_subtitle (_("Pick a Voice to play %s").printf (((channel == 17) ? "" : (channel == 18)
             ? _(" on another layer")
             : _(" on left hand side of split"))));
             headerbar.get_style_context ().add_class ("menu-header");

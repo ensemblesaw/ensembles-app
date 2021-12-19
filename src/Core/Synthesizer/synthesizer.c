@@ -193,8 +193,13 @@ synthesizer_get_velocity_levels (int channel) {
 
 void
 synthesizer_destruct () {
-    printf ("Stopping Synthesizers\n");
     fluid_synth_all_sounds_off (realtime_render_synth, -1);
+    delete_synthesizer_instances ();
+}
+
+void
+synthesizer_set_fx_callback (synthesizer_fx_callback callback) {
+    set_fx_callback(callback);
 }
 
 int
