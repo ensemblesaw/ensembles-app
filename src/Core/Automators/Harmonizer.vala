@@ -25,6 +25,12 @@ namespace Ensembles.Core {
                     if (h_type > 4) {
                         halt_notes ();
                     }
+                    //  for (int i = 0; i < 60; i++) {
+                    //      if (keys[i] >= 0) {
+                    //          halt_notes ();
+                    //          break;
+                    //      }
+                    //  }
                     chord_main = chord;
                     if (h_type > 4) {
                         for (int i = 0; i < 60; i++) {

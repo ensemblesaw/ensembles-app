@@ -134,5 +134,13 @@ namespace Ensembles.Shell {
                 octaves[i].update_split ();
             }
         }
+
+        public void halt_all () {
+            for (int i = 0; i < 5; i++) {
+                for (int j = 0; j < 11; j++) {
+                    octaves[i].set_note_on (j, false, true);
+                }
+            }
+        }
     }
 }

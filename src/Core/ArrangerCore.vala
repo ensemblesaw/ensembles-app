@@ -207,7 +207,10 @@ namespace Ensembles.Core {
                     Application.main_window.main_keyboard.set_note_on (key, (on == 144), true);
                 }
             });
-            harmonizer.halt_notes.connect (synthesizer.halt_realtime);
+            harmonizer.halt_notes.connect (() => {
+                Application.main_window.main_keyboard.halt_all ();
+                synthesizer.halt_realtime ();
+            });
 
             synthesizer.detected_chord.connect ((chord, type) => {
                 style_player.change_chords (chord, type);

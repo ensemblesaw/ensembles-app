@@ -47,7 +47,7 @@ namespace Ensembles.Shell {
             }
         }
 
-        public void note_off (bool auto) {
+        public void note_off () {
             if (_black_key) {
                 get_style_context ().remove_class ("black-key-active");
                 get_style_context ().remove_class ("black-key-split-active");

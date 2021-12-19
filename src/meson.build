@@ -47,7 +47,7 @@ ensembles_sources_vala = files (
 
     'Core/ArrangerCore.vala',
 
-    # Ensembles DE Integration #####################################################
+    # DE Integration #####################################################
 
     'Interfaces/MediaKeyListener.vala',
     'Interfaces/SoundIndicator.vala',
