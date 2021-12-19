@@ -20,9 +20,8 @@ int synthesizer_voice_program_r1 = 0;
 int synthesizer_voice_bank_r2 = 0;
 int synthesizer_voice_program_r3 = 0;
 
-// StyleEqualizer
-int style_velocity_buffer[16];
-int voice_velocity_buffer[3];
+// Equalizer
+int velocity_buffer[20];
 
 
 // Global scale shift
@@ -163,7 +162,7 @@ void
 synthesizer_change_modulator (int channel, int modulator, int value) {
     if (realtime_render_synth) {
         fluid_synth_cc (realtime_render_synth, channel, modulator, value);
-        if (channel > 47) {
+        if (channel < 16) {
             if (modulator == 7) {
                 // printf ("%d, %d\n", channel, value);
                 set_gain_value (channel, value);
@@ -187,11 +186,8 @@ synthesizer_get_modulator_values (int channel, int modulator) {
 }
 
 int
-synthesizer_get_velocity_levels (int synth_index, int channel) {
-    if (synth_index == 0)
-        return voice_velocity_buffer [channel];
-    else
-        return style_velocity_buffer [channel];
+synthesizer_get_velocity_levels (int channel) {
+    return velocity_buffer [channel];
 }
 
 
@@ -242,9 +238,9 @@ handle_events_for_midi_players (fluid_midi_event_t *event) {
         return 0;
     }
     if (type == 144) {
-        style_velocity_buffer[chan] = value;
+        velocity_buffer[chan] = value;
     } else if (type == 128) {
-        style_velocity_buffer[chan] = 0;
+        velocity_buffer[chan] = 0;
     }
     int ret_val = 0;
     if (realtime_render_synth) {
@@ -289,37 +285,37 @@ synthesizer_send_notes (int key, int on, int velocity, int channel, int* type) {
                 if (key <= get_central_split_key ()) {
                     if (on == 144) {
                         fluid_synth_noteon(realtime_render_synth, 19, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0), velocity);
-                        voice_velocity_buffer[2] = velocity;
+                        velocity_buffer[18] = velocity;
                     } else if (on == 128) {
                         fluid_synth_noteoff(realtime_render_synth, 19, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0));
-                        voice_velocity_buffer[2] = 0;
+                        velocity_buffer[18] = 0;
                     }
                     return -6;
                 }
             }
             if (on == 144) {
                 fluid_synth_noteon(realtime_render_synth, channel < 0 ? 0 : channel, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0), velocity);
-                voice_velocity_buffer[0] = velocity;
+                velocity_buffer[16] = velocity;
             } else if (on == 128) {
                 fluid_synth_noteoff(realtime_render_synth, channel < 0 ? 0 : channel, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0));
-                voice_velocity_buffer[0] = 0;
+                velocity_buffer[16] = 0;
             }
             if (get_central_layer_on () > 0) {
                 if (on == 144) {
                     fluid_synth_noteon (realtime_render_synth, 18, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0), velocity);
-                    voice_velocity_buffer[1] = velocity;
+                    velocity_buffer[17] = velocity;
                 } else if (on == 128) {
                     fluid_synth_noteoff (realtime_render_synth, 18, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0));
-                    voice_velocity_buffer[1] = 0;
+                    velocity_buffer[17] = 0;
                 }
             }
         } else {
             if (on == 144) {
                 fluid_synth_noteon (realtime_render_synth, channel, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0), velocity);
-                voice_velocity_buffer[0] = velocity;
+                velocity_buffer[16] = velocity;
             } else if (on == 128) {
                 fluid_synth_noteoff (realtime_render_synth, channel, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0));
-                voice_velocity_buffer[0] = 0;
+                velocity_buffer[16] = 0;
             }
         }
     }

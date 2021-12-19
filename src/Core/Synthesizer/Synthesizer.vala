@@ -106,12 +106,12 @@ namespace Ensembles.Core {
             }
         }
 
-        public static void set_modulator_value (int synth_index, int channel, int modulator, int value) {
-            synthesizer_change_modulator (synth_index, channel, modulator, value);
+        public static void set_modulator_value (int channel, int modulator, int value) {
+            synthesizer_change_modulator (channel, modulator, value);
         }
 
-        public static int get_modulator_value (int synth_index, int channel, int modulator) {
-            return synthesizer_get_modulator_values (synth_index, channel, modulator);
+        public static int get_modulator_value (int channel, int modulator) {
+            return synthesizer_get_modulator_values (channel, modulator);
         }
 
         public static void lock_gain (int channel) {
@@ -139,8 +139,8 @@ namespace Ensembles.Core {
             return false;
         }
 
-        public static int get_channel_velocity (int synth_index, int channel) {
-            return synthesizer_get_velocity_levels (synth_index, channel);
+        public static int get_channel_velocity (int channel) {
+            return synthesizer_get_velocity_levels (channel);
         }
 
         public static int get_transpose () {
@@ -207,13 +207,13 @@ extern void synthesizer_set_master_chorus_active (int active);
 
 extern void synthesizer_change_voice (int bank, int preset, int channel);
 
-extern void synthesizer_change_modulator (int synth_index, int channel, int modulator, int value);
-extern int synthesizer_get_modulator_values (int synth_index, int channel, int modulator);
+extern void synthesizer_change_modulator (int channel, int modulator, int value);
+extern int synthesizer_get_modulator_values (int channel, int modulator);
 extern void set_gain_value (int channel, int value);
 
 extern int get_mod_buffer_value (int modulator, int channel);
 extern void set_mod_buffer_value (int modulator, int channel, int value);
-extern int synthesizer_get_velocity_levels (int synth_index, int channel);
+extern int synthesizer_get_velocity_levels (int channel);
 
 extern float synthesizer_get_version ();
 

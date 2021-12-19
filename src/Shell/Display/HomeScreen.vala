@@ -35,7 +35,7 @@ namespace Ensembles.Shell {
         public signal void open_voice_r1_menu ();
         public signal void open_voice_r2_menu ();
         public signal void open_fx_menu ();
-        public signal void edit_channel (int synth_index, int channel);
+        public signal void edit_channel (int channel);
 
         public HomeScreen () {
             this.get_style_context ().add_class ("home-screen-background");
@@ -285,61 +285,61 @@ namespace Ensembles.Shell {
 
         public void connect_channel_buttons () {
             channel_configure_buttons[0].clicked.connect (() => {
-                edit_channel (1, 0);
+                edit_channel (0);
             });
             channel_configure_buttons[1].clicked.connect (() => {
-                edit_channel (1, 1);
+                edit_channel (1);
             });
             channel_configure_buttons[2].clicked.connect (() => {
-                edit_channel (1, 2);
+                edit_channel (2);
             });
             channel_configure_buttons[3].clicked.connect (() => {
-                edit_channel (1, 3);
+                edit_channel (3);
             });
             channel_configure_buttons[4].clicked.connect (() => {
-                edit_channel (1, 4);
+                edit_channel (4);
             });
             channel_configure_buttons[5].clicked.connect (() => {
-                edit_channel (1, 5);
+                edit_channel (5);
             });
             channel_configure_buttons[6].clicked.connect (() => {
-                edit_channel (1, 6);
+                edit_channel (6);
             });
             channel_configure_buttons[7].clicked.connect (() => {
-                edit_channel (1, 7);
+                edit_channel (7);
             });
             channel_configure_buttons[8].clicked.connect (() => {
-                edit_channel (1, 8);
+                edit_channel (8);
             });
             channel_configure_buttons[9].clicked.connect (() => {
-                edit_channel (1, 9);
+                edit_channel (9);
             });
             channel_configure_buttons[10].clicked.connect (() => {
-                edit_channel (1, 10);
+                edit_channel (10);
             });
             channel_configure_buttons[11].clicked.connect (() => {
-                edit_channel (1, 11);
+                edit_channel (11);
             });
             channel_configure_buttons[12].clicked.connect (() => {
-                edit_channel (1, 12);
+                edit_channel (12);
             });
             channel_configure_buttons[13].clicked.connect (() => {
-                edit_channel (1, 13);
+                edit_channel (13);
             });
             channel_configure_buttons[14].clicked.connect (() => {
-                edit_channel (1, 14);
+                edit_channel (14);
             });
             channel_configure_buttons[15].clicked.connect (() => {
-                edit_channel (1, 15);
+                edit_channel (15);
             });
             channel_configure_buttons[17].clicked.connect (() => {
-                edit_channel (0, 0);
+                edit_channel (16);
             });
             channel_configure_buttons[16].clicked.connect (() => {
-                edit_channel (0, 2);
+                edit_channel (17);
             });
             channel_configure_buttons[18].clicked.connect (() => {
-                edit_channel (0, 1);
+                edit_channel (18);
             });
         }
 
@@ -444,12 +444,12 @@ namespace Ensembles.Shell {
             Timeout.add (60000 / (tempo * 16), () => {
                 if (Core.CentralBus.get_style_looping_on ()) {
                     for (int i = 0; i < 16; i++) {
-                        equalizer_bar[i].velocity = Ensembles.Core.Synthesizer.get_channel_velocity (1, i);
+                        equalizer_bar[i].velocity = Ensembles.Core.Synthesizer.get_channel_velocity (i);
                     }
                 }
-                equalizer_bar[16].velocity = Ensembles.Core.Synthesizer.get_channel_velocity (0, 2);
-                equalizer_bar[17].velocity = Ensembles.Core.Synthesizer.get_channel_velocity (0, 0);
-                equalizer_bar[18].velocity = Ensembles.Core.Synthesizer.get_channel_velocity (0, 1);
+                equalizer_bar[18].velocity = Ensembles.Core.Synthesizer.get_channel_velocity (18);
+                equalizer_bar[16].velocity = Ensembles.Core.Synthesizer.get_channel_velocity (16);
+                equalizer_bar[17].velocity = Ensembles.Core.Synthesizer.get_channel_velocity (17);
                 return true;
             });
         }

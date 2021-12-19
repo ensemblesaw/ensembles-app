@@ -144,18 +144,17 @@
             make_events ();
         }
 
-        public void set_synth_channel_to_edit (int synth_index, int channel) {
-            _synth_index = synth_index;
+        public void set_synth_channel_to_edit (int channel) {
             _channel = channel;
-            if (synth_index == 0) {
+            if (channel >= 16) {
                 switch (channel) {
-                    case 0:
+                    case 16:
                     header.set_text (_("Voice Right 1 Modulators"));
                     break;
-                    case 1:
+                    case 17:
                     header.set_text (_("Voice Right 2 Modulators"));
                     break;
-                    case 2:
+                    case 18:
                     header.set_text (_("Voice Left Modulators"));
                     break;
                 }
@@ -204,28 +203,28 @@
             Timeout.add (200, () => {
                 if (monitoring) {
                     pan_lock = false;
-                    pan_spin_button.value = (double)(Ensembles.Core.Synthesizer.get_modulator_value (_synth_index, _channel, 10)) - 64;
+                    pan_spin_button.value = (double)(Ensembles.Core.Synthesizer.get_modulator_value (_channel, 10)) - 64;
                     pan_lock = true;
                     reverb_lock = false;
-                    reverb_spin_button.value = (double)(Ensembles.Core.Synthesizer.get_modulator_value (_synth_index, _channel, 91));
+                    reverb_spin_button.value = (double)(Ensembles.Core.Synthesizer.get_modulator_value (_channel, 91));
                     reverb_lock = true;
                     chorus_lock = false;
-                    chorus_spin_button.value = (double)(Ensembles.Core.Synthesizer.get_modulator_value (_synth_index, _channel, 93));
+                    chorus_spin_button.value = (double)(Ensembles.Core.Synthesizer.get_modulator_value (_channel, 93));
                     chorus_lock = true;
                     pitch_lock = false;
-                    pitch_spin_button.value = (double)(Ensembles.Core.Synthesizer.get_modulator_value (_synth_index, _channel, 3)) - 64;
+                    pitch_spin_button.value = (double)(Ensembles.Core.Synthesizer.get_modulator_value (_channel, 3)) - 64;
                     pitch_lock = true;
                     expression_lock = false;
-                    expression_spin_button.value = (double)(Ensembles.Core.Synthesizer.get_modulator_value (_synth_index, _channel, 11));
+                    expression_spin_button.value = (double)(Ensembles.Core.Synthesizer.get_modulator_value (_channel, 11));
                     expression_lock = true;
                     modulation_lock = false;
-                    modulation_spin_button.value = (double)(Ensembles.Core.Synthesizer.get_modulator_value (_synth_index, _channel, 1));
+                    modulation_spin_button.value = (double)(Ensembles.Core.Synthesizer.get_modulator_value (_channel, 1));
                     modulation_lock = true;
                     cut_off_lock = false;
-                    cut_off_spin_button.value = (double)(Ensembles.Core.Synthesizer.get_modulator_value (_synth_index, _channel, 74));
+                    cut_off_spin_button.value = (double)(Ensembles.Core.Synthesizer.get_modulator_value (_channel, 74));
                     cut_off_lock = true;
                     resonance_lock = false;
-                    resonance_spin_button.value = (double)(Ensembles.Core.Synthesizer.get_modulator_value (_synth_index, _channel, 71));
+                    resonance_spin_button.value = (double)(Ensembles.Core.Synthesizer.get_modulator_value (_channel, 71));
                     resonance_lock = true;
                 }
                 return monitoring;
@@ -235,7 +234,7 @@
         void make_events () {
             modulation_spin_button.value_changed.connect (() => {
                 if (modulation_lock) {
-                    Ensembles.Core.Synthesizer.set_modulator_value (_synth_index, _channel, 1, (int)modulation_spin_button.value);
+                    Ensembles.Core.Synthesizer.set_modulator_value (_channel, 1, (int)modulation_spin_button.value);
                     if (_synth_index == 1) {
                         modulation_button.get_style_context ().add_class ("quick-mod-button-locked");
                     }
@@ -243,7 +242,7 @@
             });
             pan_spin_button.value_changed.connect (() => {
                 if (pan_lock) {
-                    Ensembles.Core.Synthesizer.set_modulator_value (_synth_index, _channel, 10, (int)pan_spin_button.value + 64);
+                    Ensembles.Core.Synthesizer.set_modulator_value (_channel, 10, (int)pan_spin_button.value + 64);
                     if (_synth_index == 1) {
                         pan_button.get_style_context ().add_class ("quick-mod-button-locked");
                     }
@@ -251,7 +250,7 @@
             });
             expression_spin_button.value_changed.connect (() => {
                 if (expression_lock) {
-                    Ensembles.Core.Synthesizer.set_modulator_value (_synth_index, _channel, 11, (int)expression_spin_button.value);
+                    Ensembles.Core.Synthesizer.set_modulator_value (_channel, 11, (int)expression_spin_button.value);
                     if (_synth_index == 1) {
                         expression_button.get_style_context ().add_class ("quick-mod-button-locked");
                     }
@@ -259,7 +258,7 @@
             });
             pitch_spin_button.value_changed.connect (() => {
                 if (pitch_lock) {
-                    Ensembles.Core.Synthesizer.set_modulator_value (_synth_index, _channel, 3, (int)pitch_spin_button.value + 64);
+                    Ensembles.Core.Synthesizer.set_modulator_value (_channel, 3, (int)pitch_spin_button.value + 64);
                     if (_synth_index == 1) {
                         pitch_button.get_style_context ().add_class ("quick-mod-button-locked");
                     }
@@ -267,7 +266,7 @@
             });
             resonance_spin_button.value_changed.connect (() => {
                 if (resonance_lock) {
-                    Ensembles.Core.Synthesizer.set_modulator_value (_synth_index, _channel, 71, (int)resonance_spin_button.value);
+                    Ensembles.Core.Synthesizer.set_modulator_value (_channel, 71, (int)resonance_spin_button.value);
                     if (_synth_index == 1) {
                         resonance_button.get_style_context ().add_class ("quick-mod-button-locked");
                     }
@@ -275,7 +274,7 @@
             });
             cut_off_spin_button.value_changed.connect (() => {
                 if (cut_off_lock) {
-                    Ensembles.Core.Synthesizer.set_modulator_value (_synth_index, _channel, 74, (int)cut_off_spin_button.value);
+                    Ensembles.Core.Synthesizer.set_modulator_value (_channel, 74, (int)cut_off_spin_button.value);
                     if (_synth_index == 1) {
                         cut_off_button.get_style_context ().add_class ("quick-mod-button-locked");
                     }
@@ -283,7 +282,7 @@
             });
             reverb_spin_button.value_changed.connect (() => {
                 if (reverb_lock) {
-                    Ensembles.Core.Synthesizer.set_modulator_value (_synth_index, _channel, 91, (int)reverb_spin_button.value);
+                    Ensembles.Core.Synthesizer.set_modulator_value (_channel, 91, (int)reverb_spin_button.value);
                     if (_synth_index == 1) {
                         reverb_button.get_style_context ().add_class ("quick-mod-button-locked");
                     }
@@ -291,7 +290,7 @@
             });
             chorus_spin_button.value_changed.connect (() => {
                 if (chorus_lock) {
-                    Ensembles.Core.Synthesizer.set_modulator_value (_synth_index, _channel, 93, (int)chorus_spin_button.value);
+                    Ensembles.Core.Synthesizer.set_modulator_value (_channel, 93, (int)chorus_spin_button.value);
                     if (_synth_index == 1) {
                         chorus_button.get_style_context ().add_class ("quick-mod-button-locked");
                     }
@@ -392,7 +391,7 @@
                 reverb_button.get_style_context ().remove_class ("quick-mod-button-assignable");
                 chorus_button.get_style_context ().remove_class ("quick-mod-button-assignable");
             }
-            set_synth_channel_to_edit (_synth_index, _channel);
+            set_synth_channel_to_edit (_channel);
         }
     }
 }

@@ -60,6 +60,7 @@ lfo_parse_ticks(void* data, int ticks)
     {
         fluid_player_stop (lfo_player);
     }
+    return 0;
 }
 
 

@@ -243,10 +243,10 @@ namespace Ensembles.Shell {
             home_screen.set_chord (chord_main, chord_type);
         }
 
-        public void edit_channel (int synth_index, int channel) {
+        public void edit_channel (int channel) {
             main_display_leaflet.set_visible_child (main_stack);
             main_stack.set_visible_child (channel_mod_screen);
-            channel_mod_screen.set_synth_channel_to_edit (synth_index, channel);
+            channel_mod_screen.set_synth_channel_to_edit (channel);
         }
 
         public void open_lfo_screen () {
