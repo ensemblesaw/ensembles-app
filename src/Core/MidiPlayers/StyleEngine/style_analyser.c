@@ -5,7 +5,7 @@
 
 #include "style_analyser.h"
 
-int time_stamps[14];
+int time_stamps[15];
 int time_stamp_index;
 
 int time_signature_n;
@@ -105,7 +105,7 @@ style_analyser (char* style) {
                     set_central_style_original_chord_type (chord_type);
                 }
                 time_stamps[time_stamp_index++] = (int)(((measure - 1) * 4 * time_signature_n  * ticks_per_beat) / time_signature_d);
-                printf ("Style: /// %s %d\n", string, time_stamps[time_stamp_index-1]);
+                printf ("Style: /// %d %s %d\n", time_stamp_index - 1, string, time_stamps[time_stamp_index-1]);
                 free(string);
                 //string = NULL;
             }

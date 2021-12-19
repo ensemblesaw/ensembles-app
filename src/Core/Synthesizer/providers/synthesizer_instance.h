@@ -12,9 +12,10 @@
 
 /*
  * Where is the synthesizer instance
- * going to operate? What is it gonna do
+ * going to operate? What is it gonna do?
  */
-enum UseCase {
+enum UseCase
+{
     RENDER,           // Whenever you are supposed to render audio
     UTILITY           // For automations and analysis and doesn't require rendering
 };

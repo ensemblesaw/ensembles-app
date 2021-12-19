@@ -101,7 +101,6 @@ get_synthesizer(enum UseCase use_case)
         case UTILITY:
             if (utility_synth == NULL)
             {
-                printf ("Making synth\n");
                 utility_synth = new_fluid_synth(utility_settings);
                 utility_driver = new_fluid_audio_driver(utility_settings, utility_synth);
             }
@@ -126,6 +125,7 @@ set_driver_configuration(const char* driver_name, double buffer_length_multiplie
         fluid_settings_setnum(utility_settings, "synth.gain", 2);
         fluid_settings_setnum(utility_settings, "synth.overflow.percussion", 5000.0);
         fluid_settings_setstr(utility_settings, "synth.midi-bank-select", "gs");
+        fluid_settings_setint(utility_settings, "synth.cpu-cores", 4);
     }
     if (strcmp (driver_name, "alsa") == 0) {
         fluid_settings_setstr(rendering_settings, "audio.driver", "alsa");

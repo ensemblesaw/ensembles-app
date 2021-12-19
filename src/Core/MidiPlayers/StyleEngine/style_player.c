@@ -6,7 +6,7 @@
 #include "style_player.h"
 
 // None of this will be used to actual rendering //////////
-fluid_player_t* player;
+fluid_player_t* player = NULL;
 ///////////////////////////////////////////////////////////
 
 int loop_start_tick = 0;
@@ -240,6 +240,8 @@ style_player_halt_continuous_notes () {
 
 int
 parse_ticks (void* data, int ticks) {
+
+    // Continue notes after a chord change
     if (chord_change_queued == 1 && breaking == 0) {
         chord_change_queued = 0;
         printf ("chord -> %d\n", chord_main);
@@ -275,14 +277,18 @@ parse_ticks (void* data, int ticks) {
         fill_queue = 0;
         fill_in = 0;
         set_central_style_section (start_s);
-        if (loop_start_tick != get_loaded_style_time_stamps_by_index (start_s)) {
+        if (loop_start_tick != get_loaded_style_time_stamps_by_index (start_s) ||
+            loop_end_tick != get_loaded_style_time_stamps_by_index (end_s)) {
             loop_start_tick = get_loaded_style_time_stamps_by_index (start_s);
             loop_end_tick = get_loaded_style_time_stamps_by_index (end_s);
             style_player_halt_continuous_notes ();
             return fluid_player_seek (player, loop_start_tick - 2);
         }
         if (get_central_style_looping () == 1) {
+            // printf ("%d >> %d", start_s, end_s);
+            // printf ("Sync stop: %d %d %d\n", sync_stop, ticks, loop_end_tick);
             if (ticks >= loop_end_tick && fill_in == 0) {
+                // printf ("Measure complete\n");
                 set_central_style_section (start_s);
                 if (intro_playing == 1) {
                     start_s = start_temp;
@@ -344,7 +350,7 @@ style_player_sync_start () {
 void
 queue_style_file_change (int custom_tempo) {
     printf("changing...to %s\n", style_player_style_path);
-    if (player == NULL) {
+    if (player != NULL) {
         printf ("c:\n");
         fluid_player_stop (player);
         fluid_player_join(player);
