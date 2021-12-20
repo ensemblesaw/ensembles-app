@@ -28,6 +28,7 @@ add_project_arguments (
     # Set Driver Compatibilities
     '-D', 'ALSA_DRIVER',
     '-D', 'PULSEAUDIO_DRIVER',
+    '-D', 'JACK_DRIVER',
     # '-D', 'PIPEWIRE_CORE_DRIVER',  # Uncomment to enable pipewire core support provided fluidsynth supports it
     language: 'vala'
 )

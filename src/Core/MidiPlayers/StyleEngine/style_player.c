@@ -143,6 +143,11 @@ parse_midi_events (void *data, fluid_midi_event_t *event) {
     int value = fluid_midi_event_get_value (event);
     int velocity = fluid_midi_event_get_velocity (event);
 
+    if (control == 120)
+    {
+        return 0;
+    }
+
     fluid_midi_event_set_channel (new_event, channel);
     fluid_midi_event_set_control (new_event, control);
     fluid_midi_event_set_pitch (new_event, fluid_midi_event_get_pitch (event));
@@ -437,7 +442,6 @@ style_player_play_loop (int start, int end) {
             if (fill_in == 0) {
                 fill_queue = 1;
             }
-            printf("Fill\n");
         }
         else {
             printf("Playing...%d -> %d\n", loop_start_tick, loop_end_tick);

@@ -259,6 +259,9 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             if (Core.AudioDriverSniffer.pipewire_pulse_driver_found) {
                 driver_list.append ("PipeWire Pulse");
             }
+            if (Core.AudioDriverSniffer.jack_driver_found) {
+                driver_list.append ("Jack");
+            }
 
             int saved_driver = 0;
 
@@ -290,6 +293,14 @@ namespace Ensembles.Shell.Dialogs.Preferences {
                 case "pipewire-pulse":
                 for (int i = 0; i < driver_list.length (); i++) {
                     if (driver_list.nth_data (i) == "PipeWire Pulse") {
+                        saved_driver = i;
+                        break;
+                    }
+                }
+                break;
+                case "jack":
+                for (int i = 0; i < driver_list.length (); i++) {
+                    if (driver_list.nth_data (i) == "Jack") {
                         saved_driver = i;
                         break;
                     }
@@ -332,6 +343,9 @@ namespace Ensembles.Shell.Dialogs.Preferences {
                     break;
                     case "PipeWire Pulse":
                     driver_string = "pipewire-pulse";
+                    break;
+                    case "Jack":
+                    driver_string = "jack";
                     break;
                 }
                 infobar.set_visible (true);

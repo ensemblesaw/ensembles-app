@@ -178,12 +178,13 @@
 		<summary>Audio interface driver</summary>
 	</key>
 	<key name="buffer-length" type="d">
-		<default>0.0</default>
+		<default>0.15</default>
 		<summary>Size of buffer to be processed by the driver</summary>
+		<description>It is a multiplier with range 0 to 1</description>
 	</key>
 	<key name="previous-buffer-length" type="i">
-		<default>64</default>
-		<summary>Size of buffer to be processed by the driver</summary>
+		<default>225</default>
+		<summary>Previously processed buffer length</summary>
 	</key>
 
 	<!-- Input Bindings -->

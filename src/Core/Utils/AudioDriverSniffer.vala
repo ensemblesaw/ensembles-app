@@ -7,6 +7,7 @@ namespace Ensembles.Core {
     public class AudioDriverSniffer {
         public static bool alsa_driver_found;
         public static bool pulseaudio_driver_found;
+        public static bool jack_driver_found;
         public static bool pipewire_driver_found;
         public static bool pipewire_pulse_driver_found;
         #if PIPEWIRE_CORE_DRIVER
@@ -82,6 +83,24 @@ namespace Ensembles.Core {
             return false;
         }
         #endif
+        #if JACK_DRIVER
+        public static bool get_is_jack_available () {
+            string info = "";
+            try {
+                Process.spawn_command_line_sync ("jackd -v", out info);
+                if (info.contains ("Copyright 2001-2009 Paul Davis, Stephane Letz, Jack O'Quinn, Torben Hohn and others.")) {
+                    print ("Alsa detected!\n");
+                    jack_driver_found = true;
+                    return true;
+                } else {
+                    jack_driver_found = false;
+                }
+            } catch (Error e) {
+                warning (e.message);
+            }
+            return false;
+        }
+        #endif
         public static void check_drivers () {
             debug ("Detecting Drivers\n");
             #if ALSA_DRIVER
@@ -93,6 +112,9 @@ namespace Ensembles.Core {
             #endif
             #if PIPEWIRE_CORE_DRIVER
             get_is_pipewire_available ();
+            #endif
+            #if JACK_DRIVER
+            get_is_jack_available ();
             #endif
         }
 
@@ -119,6 +141,11 @@ namespace Ensembles.Core {
                     driver_string = "pipewire-pulse";
                 }
                 break;
+                case "jack":
+                if (pipewire_pulse_driver_found) {
+                    driver_string = "jack";
+                }
+                break;
             }
             if (driver_string == "") {
                 if (alsa_driver_found) {
@@ -132,6 +159,9 @@ namespace Ensembles.Core {
                 }
                 if (pipewire_pulse_driver_found) {
                     return "pipewire-pulse";
+                }
+                if (jack_driver_found) {
+                    return "jack";
                 }
             }
             return driver_string;

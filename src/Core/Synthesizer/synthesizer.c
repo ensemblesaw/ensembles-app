@@ -343,7 +343,6 @@ synthesizer_send_notes (int key, int on, int velocity, int channel, int* type)
 
 void
 synthesizer_halt_notes () {
-    printf ("Halt\n");
     if (realtime_render_synth) {
         for (int i = 0; i < 16; i++) {
             if (i != 9 && i != 10) {

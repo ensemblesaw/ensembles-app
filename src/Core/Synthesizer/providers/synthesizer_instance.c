@@ -125,7 +125,6 @@ set_driver_configuration(const char* driver_name, double buffer_length_multiplie
     }
     if (utility_settings == NULL) {
         utility_settings = new_fluid_settings ();
-        fluid_settings_setnum(utility_settings, "synth.gain", 2);
         fluid_settings_setnum(utility_settings, "synth.overflow.percussion", 5000.0);
         fluid_settings_setstr(utility_settings, "synth.midi-bank-select", "gs");
         fluid_settings_setint(utility_settings, "synth.cpu-cores", 4);
@@ -138,36 +137,46 @@ set_driver_configuration(const char* driver_name, double buffer_length_multiplie
 
         fluid_settings_setstr(utility_settings, "audio.driver", "alsa");
         fluid_settings_setint(utility_settings, "audio.periods",16);
-        fluid_settings_setint(utility_settings, "audio.period-size", (int)(86.0 + (buffer_length_multiplier * 938.0)));
+        fluid_settings_setint(utility_settings, "audio.period-size", (int)(64.0 + (buffer_length_multiplier * 938.0)));
         fluid_settings_setint(utility_settings, "audio.realtime-prio", 70);
 
         return (int)(86.0 + (buffer_length_multiplier * 938.0));
     }
     if (strcmp (driver_name, "pulseaudio") == 0) {
         fluid_settings_setstr(rendering_settings, "audio.driver", "pulseaudio");
-        fluid_settings_setint(rendering_settings, "audio.periods",2);
+        fluid_settings_setint(rendering_settings, "audio.periods",8);
         fluid_settings_setint(rendering_settings, "audio.period-size", (int)(1024.0 + (buffer_length_multiplier * 3072.0)));
-        fluid_settings_setint(rendering_settings, "audio.realtime-prio", 90);
-        fluid_settings_setint(rendering_settings, "audio.pulseaudio.adjust-latency", 0);
+        fluid_settings_setint(rendering_settings, "audio.realtime-prio", 80);
+        // fluid_settings_setint(rendering_settings, "audio.pulseaudio.adjust-latency", 0);
 
         fluid_settings_setstr(utility_settings, "audio.driver", "pulseaudio");
-        fluid_settings_setint(utility_settings, "audio.periods", 8);
-        fluid_settings_setint(utility_settings, "audio.period-size", (int)(1024.0 + (buffer_length_multiplier * 3072.0)));
-        fluid_settings_setint(utility_settings, "audio.realtime-prio", 70);
+        fluid_settings_setint(utility_settings, "audio.periods", 2);
+        fluid_settings_setint(utility_settings, "audio.period-size", 512);
+        fluid_settings_setint(utility_settings, "audio.realtime-prio", 90);
 
         return (int)(1024.0 + (buffer_length_multiplier * 3072.0));
     }
     if (strcmp (driver_name, "pipewire-pulse") == 0) {
         fluid_settings_setstr(rendering_settings, "audio.driver", "pulseaudio");
-        fluid_settings_setint(rendering_settings, "audio.periods",2);
-        fluid_settings_setint(rendering_settings, "audio.period-size", (int)(1024.0 + (buffer_length_multiplier * 3072.0)));
+        fluid_settings_setint(rendering_settings, "audio.periods",8);
+        fluid_settings_setint(rendering_settings, "audio.period-size", (int)(512.0 + (buffer_length_multiplier * 3584.0)));
         fluid_settings_setint(rendering_settings, "audio.pulseaudio.adjust-latency", 0);
 
         fluid_settings_setstr(utility_settings, "audio.driver", "pulseaudio");
-        fluid_settings_setint(utility_settings, "audio.periods", 8);
-        fluid_settings_setint(utility_settings, "audio.period-size", (int)(1024.0 + (buffer_length_multiplier * 3072.0)));
+        fluid_settings_setint(utility_settings, "audio.periods", 2);
+        fluid_settings_setint(utility_settings, "audio.period-size", 512);
 
-        return (int)(1024.0 + (buffer_length_multiplier * 3072.0));
+        return (int)(512.0 + (buffer_length_multiplier * 3584.0));
+    }
+    if (strcmp (driver_name, "jack") == 0) {
+        fluid_settings_setnum(rendering_settings, "synth.gain", 0.005);
+        fluid_settings_setstr(rendering_settings, "audio.driver", "jack");
+        fluid_settings_setstr(rendering_settings, "audio.jack.id", "Ensembles Audio Output");
+
+        fluid_settings_setstr(utility_settings, "audio.driver", "jack");
+        fluid_settings_setstr(utility_settings, "audio.jack.id", "Ensembles Utility");
+
+        return 0;
     }
     if (strcmp (driver_name, "pipewire") == 0) {
         fluid_settings_setstr(rendering_settings, "audio.driver", "pipewire");

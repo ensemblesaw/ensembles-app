@@ -25,12 +25,7 @@ namespace Ensembles.Core {
                     if (h_type > 4) {
                         halt_notes ();
                     }
-                    //  for (int i = 0; i < 60; i++) {
-                    //      if (keys[i] >= 0) {
-                    //          halt_notes ();
-                    //          break;
-                    //      }
-                    //  }
+                    stop_notes ();
                     chord_main = chord;
                     if (h_type > 4) {
                         for (int i = 0; i < 60; i++) {
@@ -50,6 +45,15 @@ namespace Ensembles.Core {
                 keys[key - 36] = -1;
             }
             harmonize (key, on, velocity);
+        }
+
+        private void stop_notes () {
+            for (int i = 0; i < 60; i++) {
+                if (keys[i] >= 0) {
+                    generate_notes (i + 36, 128, 0);
+                    keys[i] = -1;
+                }
+            }
         }
         private void harmonize (int key, int on, int velocity) {
             switch (Ensembles.Application.settings.get_int ("harmonizer-type")) {
