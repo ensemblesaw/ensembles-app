@@ -58,13 +58,13 @@ namespace Ensembles.Shell {
                 scroll_wheel_location = index;
                 change_voice (voice_rows[index].voice, channel);
                 switch (channel) {
-                    case 0:
+                    case 17:
                     Ensembles.Application.settings.set_int ("voice-r1-index", index);
                     break;
-                    case 1:
+                    case 18:
                     Ensembles.Application.settings.set_int ("voice-r2-index", index);
                     break;
-                    case 2:
+                    case 19:
                     Ensembles.Application.settings.set_int ("voice-l-index", index);
                     break;
                 }
@@ -139,15 +139,15 @@ namespace Ensembles.Shell {
                 change_voice (voice_rows[index].voice, channel);
                 scroll_to_selected_row ();
                 switch (channel) {
-                    case 0:
+                    case 17:
                     if (index <= last_voice_index) {
                         Ensembles.Application.settings.set_int ("voice-r1-index", index);
                     }
                     break;
-                    case 1:
+                    case 18:
                     Ensembles.Application.settings.set_int ("voice-r2-index", index);
                     break;
-                    case 2:
+                    case 19:
                     Ensembles.Application.settings.set_int ("voice-l-index", index);
                     break;
                 }
@@ -157,13 +157,13 @@ namespace Ensembles.Shell {
 
         public void load_settings () {
             switch (channel) {
-                case 0:
+                case 17:
                 quick_select_row (Ensembles.Application.settings.get_int ("voice-r1-index"));
                 break;
-                case 1:
+                case 18:
                 quick_select_row (Ensembles.Application.settings.get_int ("voice-r2-index"));
                 break;
-                case 2:
+                case 19:
                 quick_select_row (Ensembles.Application.settings.get_int ("voice-l-index"));
                 break;
             }

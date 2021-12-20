@@ -112,7 +112,7 @@
 		<description>Keyboard shifted by entire octaves</description>
 	</key>
     <key name="reverb-level" type="i">
-		<default>5</default>
+		<default>7</default>
 		<summary>Reverb Level</summary>
 		<description>Magnitude of global reverb effect</description>
 	</key>
@@ -122,7 +122,7 @@
 		<description>Global reverb effect</description>
 	</key>
     <key name="chorus-level" type="i">
-		<default>1</default>
+		<default>2</default>
 		<summary>Chorus Level</summary>
 		<description>Magnitude of global chorus effect</description>
 	</key>

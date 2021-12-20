@@ -16,13 +16,15 @@
 
 /** This function is used to receive midi events from style_player
  */
-int handle_events_for_midi_players (fluid_midi_event_t *event, int _is_style_player);
+int handle_events_for_midi_players(fluid_midi_event_t *event, int _is_style_player);
 
+/** This function is used to receive events exclusively for metronome
+ */
 void synthesizer_send_notes_to_metronome(int key, int on);
 
 /** This function is used to stop all synthesizer sounds for styles
  * except channel 10 i.e. drums
  */
-void synthesizer_halt_notes ();
+void synthesizer_halt_notes();
 
 #endif /* SYNTHESIZER_H */

@@ -64,8 +64,8 @@ synthesizer_set_master_chorus_active (int active) {
 void
 synthesizer_set_defaults () {
     // Global reverb and chorus levels
-    synthesizer_edit_master_reverb (5);
-    synthesizer_edit_master_chorus (1);
+    synthesizer_edit_master_reverb (7);
+    synthesizer_edit_master_chorus (2);
 
     // CutOff for Realtime synth
     fluid_synth_cc (realtime_render_synth, 17, 74, 40);
@@ -73,8 +73,8 @@ synthesizer_set_defaults () {
     fluid_synth_cc (realtime_render_synth, 19, 74, 0);
 
     // Reverb and Chorus for R1 voice
-    fluid_synth_cc (realtime_render_synth, 17, 91, 4);
-    fluid_synth_cc (realtime_render_synth, 17, 93, 1);
+    fluid_synth_cc (realtime_render_synth, 17, 91, 100);
+    fluid_synth_cc (realtime_render_synth, 17, 93, 100);
 
     // Reverb and Chorus for Metronome
     fluid_synth_cc (realtime_render_synth, 16, 91, 0);
