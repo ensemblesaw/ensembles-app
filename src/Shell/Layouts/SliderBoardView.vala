@@ -63,9 +63,8 @@ namespace Ensembles.Shell {
         public SliderBoardView (JoyStick joystick_instance) {
             joystick = joystick_instance;
             row_spacing = 4;
-            valign = Gtk.Align.START;
             margin = 4;
-            width_request = 293;
+            width_request = 408;
             height_request = 236;
 
 
@@ -86,7 +85,9 @@ namespace Ensembles.Shell {
 
             slider_assign_button = new Gtk.Button.with_label (_("Slider Assign"));
 
-            slider_0 = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1);
+            slider_0 = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1) {
+                vexpand = true
+            };
             slider_0.height_request = 127;
             slider_0.inverted = true;
             slider_0.draw_value = false;

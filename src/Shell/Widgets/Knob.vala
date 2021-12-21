@@ -27,28 +27,34 @@ namespace Ensembles.Shell {
             knob_socket_graphic.height_request = 5;
             knob_socket_graphic.get_style_context ().add_class ("knob-socket-graphic");
 
-            knob_cover = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
+            knob_cover = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
+                expand = true,
+                margin = 4
+            };
             knob_cover.get_style_context ().add_class ("knob-cover-graphic");
-            knob_cover.halign = Gtk.Align.START;
-            knob_cover.valign = Gtk.Align.START;
-            knob_cover.margin_start = 4;
+            knob_cover.halign = Gtk.Align.CENTER;
+            knob_cover.valign = Gtk.Align.CENTER;
             knob_cover.width_request = 50;
             knob_cover.height_request = 50;
 
-            fixed = new Gtk.Fixed ();
-            fixed.halign = Gtk.Align.START;
-            fixed.valign = Gtk.Align.START;
-            fixed.margin_start = 4;
+            fixed = new Gtk.Fixed () {
+                expand = true,
+                margin = 4
+            };
+            fixed.halign = Gtk.Align.CENTER;
+            fixed.valign = Gtk.Align.CENTER;
             fixed.width_request = 50;
             fixed.height_request = 50;
             double px = RADIUS * GLib.Math.cos (value / Math.PI);
             double py = RADIUS * GLib.Math.sin (value / Math.PI);
             fixed.put (knob_socket_graphic, (int)(px + center), (int)(py + center));
 
-            knob_background = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
-            knob_background.halign = Gtk.Align.START;
-            knob_background.valign = Gtk.Align.START;
-            knob_background.margin_start = 4;
+            knob_background = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
+                expand = true,
+                halign = Gtk.Align.CENTER,
+                valign = Gtk.Align.CENTER,
+                margin = 4
+            };
             knob_background.width_request = 50;
             knob_background.height_request = 50;
 
@@ -57,15 +63,16 @@ namespace Ensembles.Shell {
             event_box.hexpand = true;
             event_box.vexpand = true;
 
-            add_overlay (knob_background);
+            add (knob_background);
             add_overlay (knob_cover);
             add_overlay (fixed);
             add_overlay (event_box);
 
-            this.hexpand = false;
-            this.vexpand = true;
+            this.expand = true;
+            this.halign = Gtk.Align.FILL;
+            this.valign = Gtk.Align.FILL;
             this.width_request = 58;
-            this.height_request = 52;
+            this.height_request = 58;
         }
 
         public void rotate_dial (double value) {

@@ -7,7 +7,8 @@ namespace Ensembles.Shell {
     public class MasterKnob : Knob {
         public MasterKnob () {
             // Set up visuals
-            center = 40;
+            center = 25;
+            margin_bottom = 24;
             knob_background.get_style_context ().add_class ("knob-background");
             knob_socket_graphic.get_style_context ().add_class ("super-knob-socket-graphic");
             knob_cover.get_style_context ().add_class ("super-knob-cover-graphic");

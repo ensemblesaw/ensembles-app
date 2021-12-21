@@ -38,9 +38,8 @@ namespace Ensembles.Shell {
 
         public StyleControllerView () {
             row_homogeneous = true;
-            vexpand = true;
             var intro_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL) {
-                expand = true
+                hexpand = true
             };
             intro_button_a = new Gtk.Button.with_label ("1") {
                 sensitive = false

@@ -40,11 +40,11 @@ namespace Ensembles.Shell {
         public ControlPanel () {
             row_spacing = 4;
             column_spacing = 4;
+            row_homogeneous = true;
             column_homogeneous = true;
             hexpand = true;
-            valign = Gtk.Align.START;
             margin = 4;
-            width_request = 340;
+            width_request = 293;
 
             accomp_toggle = new ToggleSwitch (_("Chords"));
             accomp_toggle.sensitive = false;
