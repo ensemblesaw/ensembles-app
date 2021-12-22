@@ -99,7 +99,6 @@ namespace Ensembles.Core {
         }
 
         public static void set_note_watch_channel (int chan) {
-            print ("%d\n", chan);
             note_watch_channel = chan;
         }
     }

@@ -5,9 +5,10 @@
  */
 
 namespace Ensembles.Shell.Dialogs.Preferences {
-    public class Preferences : Hdy.Window {
+    public class Preferences : Gtk.Dialog {
         public string view { get; construct; }
         private Gtk.Stack stack;
+        private Gtk.Stack header_stack;
         //private uint timeout_id = 0;
         private Gtk.InfoBar infobar;
         private List<ItemInput> input_binding_items;
@@ -23,24 +24,35 @@ namespace Ensembles.Shell.Dialogs.Preferences {
                 view: view,
                 transient_for: Ensembles.Application.main_window,
                 deletable: true,
-                resizable: true,
+                resizable: false,
+                use_header_bar: 1,
                 destroy_with_parent: true,
                 window_position: Gtk.WindowPosition.CENTER_ON_PARENT,
                 modal: true,
-                title: _("Preferences")
+                title: _("Preferences"),
+                width_request: 525,
+                height_request: 400
             );
         }
 
         construct {
+            //get_header_bar ().visible = false;
+            get_header_bar ().show_close_button = false;
+
             get_style_context ().add_class ("app");
 
-            //  Core.CentralBus.halt ();
-            width_request = 525;
-            height_request = 400;
+            header_stack = new Gtk.Stack () {
+                transition_type = Gtk.StackTransitionType.CROSSFADE,
+                transition_duration = 500,
+                width_request = 450
+            };
 
-            stack = new Gtk.Stack ();
-            stack.expand = true;
-            stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT_RIGHT;
+            get_header_bar ().add (header_stack);
+
+            stack = new Gtk.Stack () {
+                expand = true,
+                transition_type = Gtk.StackTransitionType.SLIDE_LEFT_RIGHT
+            };
 
             // Add the views to stack
             stack.add_named (get_home_widget (), "home");
@@ -92,7 +104,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             main_grid.add (infobar);
             main_grid.add (stack_scrolled);
 
-            add (main_grid);
+            get_content_area ().add (main_grid);
 
             key_press_event.connect ((event) => {
                 if (event.keyval == 65307) {
@@ -187,31 +199,37 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             var main_grid = new Gtk.Grid ();
             main_grid.expand = true;
             main_grid.orientation = Gtk.Orientation.VERTICAL;
-            main_grid.add (header);
+            header_stack.add_named (header, "home");
             main_grid.add (main_scrolled);
 
             audio_item.activated.connect (() => {
                 stack.visible_child_name = "audio";
+                header_stack.visible_child_name = "audio";
             });
 
             files_item.activated.connect (() => {
-                stack.visible_child_name = "badge-count";
+                stack.visible_child_name = "files";
+                header_stack.visible_child_name = "files";
             });
 
             theme_item.activated.connect (() => {
                 stack.visible_child_name = "appearance";
+                header_stack.visible_child_name = "theme";
             });
 
             plugin_item.activated.connect (() => {
-                stack.visible_child_name = "task";
+                stack.visible_child_name = "plugin";
+                header_stack.visible_child_name = "plugin";
             });
 
             input_item.activated.connect (() => {
                 stack.visible_child_name = "input";
+                header_stack.visible_child_name = "input";
             });
 
             about_item.activated.connect (() => {
                 stack.visible_child_name = "about";
+                header_stack.visible_child_name = "about";
             });
 
             //  backups_item.activated.connect (() => {
@@ -229,17 +247,20 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             var top_box = new Shell.Dialogs.Preferences.TopBox ("audio-card", _("Audio"));
 
             var driver_list = new List<string> ();
-            if (alsa_driver_found > 0) {
+            if (Core.AudioDriverSniffer.alsa_driver_found) {
                 driver_list.append ("Alsa");
             }
-            if (pulseaudio_driver_found > 0) {
+            if (Core.AudioDriverSniffer.pulseaudio_driver_found) {
                 driver_list.append ("PulseAudio");
             }
-            if (pipewire_driver_found > 0) {
+            if (Core.AudioDriverSniffer.pipewire_driver_found) {
                 driver_list.append ("PipeWire");
             }
-            if (pipewire_pulse_driver_found > 0) {
+            if (Core.AudioDriverSniffer.pipewire_pulse_driver_found) {
                 driver_list.append ("PipeWire Pulse");
+            }
+            if (Core.AudioDriverSniffer.jack_driver_found) {
+                driver_list.append ("Jack");
             }
 
             int saved_driver = 0;
@@ -272,6 +293,14 @@ namespace Ensembles.Shell.Dialogs.Preferences {
                 case "pipewire-pulse":
                 for (int i = 0; i < driver_list.length (); i++) {
                     if (driver_list.nth_data (i) == "PipeWire Pulse") {
+                        saved_driver = i;
+                        break;
+                    }
+                }
+                break;
+                case "jack":
+                for (int i = 0; i < driver_list.length (); i++) {
+                    if (driver_list.nth_data (i) == "Jack") {
                         saved_driver = i;
                         break;
                     }
@@ -315,6 +344,9 @@ namespace Ensembles.Shell.Dialogs.Preferences {
                     case "PipeWire Pulse":
                     driver_string = "pipewire-pulse";
                     break;
+                    case "Jack":
+                    driver_string = "jack";
+                    break;
                 }
                 infobar.set_visible (true);
                 buffer_length.set_sensitive (false);
@@ -348,7 +380,10 @@ namespace Ensembles.Shell.Dialogs.Preferences {
 
             buffer_length.changed.connect ((value) => {
                 Ensembles.Application.settings.set_double ("buffer-length", value);
-                var display_value = Core.DriverSettingsProvider.change_period_size (value);
+                var display_value = Ensembles.Application.arranger_core.synthesizer.set_driver_configuration (
+                    Ensembles.Application.settings.get_string ("driver"),
+                    value
+                );
                 buffer_length.title = buffer_length_text.printf (display_value);
                 Ensembles.Application.settings.set_int ("previous-buffer-length", display_value);
             });
@@ -361,12 +396,13 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             var main_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
             main_box.expand = true;
 
-            main_box.pack_start (top_box, false, false, 0);
+            header_stack.add_named (top_box, "audio");
             main_box.pack_start (box_scrolled, false, true, 0);
             main_box.pack_end (pavuctrl_button, false, false, 0);
 
             top_box.back_activated.connect (() => {
                 stack.visible_child_name = "home";
+                header_stack.visible_child_name = "home";
             });
 
             top_box.done_activated.connect (() => {
@@ -382,6 +418,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             var top_box = new Dialogs.Preferences.TopBox ("input-keyboard", _("Input"));
             top_box.back_activated.connect (() => {
                 stack.visible_child_name = "home";
+                header_stack.visible_child_name = "home";
             });
 
             top_box.done_activated.connect (() => {
@@ -567,7 +604,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             btn_grid.column_spacing = 4;
 
             var main_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-            main_box.pack_start (top_box, false, false, 0);
+            header_stack.add_named (top_box, "input");
             var separator_a = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
             main_box.pack_start (separator_a, false, false, 0);
             main_box.pack_start (scrollable, false, true, 0);
@@ -582,7 +619,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             var main_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
 
             var top_box = new Dialogs.Preferences.TopBox ("applications-graphics", _("Appearance"));
-            main_box.pack_start (top_box, false, false, 0);
+            header_stack.add_named (top_box, "theme");
 
             var separator_a = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
             main_box.pack_start (separator_a, false, false, 0);
@@ -694,6 +731,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
 
             top_box.back_activated.connect (() => {
                 stack.visible_child_name = "home";
+                header_stack.visible_child_name = "home";
             });
 
             top_box.done_activated.connect (() => {
@@ -749,7 +787,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             var main_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
             main_box.expand = true;
 
-            main_box.pack_start (top_box, false, false, 0);
+            header_stack.add_named (top_box, "about");
             main_box.pack_start (header_logo_image, false, true, 0);
             main_box.pack_start (version_label, false, true, 0);
             main_box.pack_start (fluidsynth_version, false, true, 0);
@@ -757,6 +795,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
 
             top_box.back_activated.connect (() => {
                 stack.visible_child_name = "home";
+                header_stack.visible_child_name = "home";
             });
 
             top_box.done_activated.connect (() => {

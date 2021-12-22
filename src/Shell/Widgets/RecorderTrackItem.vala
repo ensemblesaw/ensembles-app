@@ -6,7 +6,7 @@
 namespace Ensembles.Shell {
     public class RecorderTrackItem : Gtk.ListBoxRow {
         unowned List<Core.MidiEvent> _events;
-        public int track;
+        public uint8 track;
         private uint cardinality;
         private Gtk.DrawingArea area;
         private Gtk.Grid track_grid;
@@ -24,7 +24,7 @@ namespace Ensembles.Shell {
 
         unowned OptionsHandler options_handle;
 
-        public RecorderTrackItem (List<Core.MidiEvent> events, int track, OptionsHandler options_handle) {
+        public RecorderTrackItem (List<Core.MidiEvent> events, uint8 track, OptionsHandler options_handle) {
             this.options_handle = options_handle;
             active_keys = new double[60];
             this.track = track;

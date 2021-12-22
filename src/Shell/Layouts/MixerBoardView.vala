@@ -28,7 +28,7 @@ namespace Ensembles.Shell {
             style_gain_sliders = new Gtk.Scale [16];
 
             for (i = 0; i < 16; i++) {
-                style_gain_sliders[i] = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1)  {
+                style_gain_sliders[i] = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1) {
                     inverted = true,
                     draw_value = false
                 };
@@ -44,7 +44,7 @@ namespace Ensembles.Shell {
             };
             attach (voice_l_gain_slider, i++, 0, 1, 1);
             voice_l_gain_slider.change_value.connect ((scroll, value) => {
-                change_gain (0, 2, (int)(value * 127));
+                change_gain (19, (int)(value * 127));
                 return false;
             });
 
@@ -55,7 +55,7 @@ namespace Ensembles.Shell {
             };
             attach (voice_r1_gain_slider, i++, 0, 1, 1);
             voice_r1_gain_slider.change_value.connect ((scroll, value) => {
-                change_gain (0, 0, (int)(value * 127));
+                change_gain (17, (int)(value * 127));
                 return false;
             });
 
@@ -66,7 +66,7 @@ namespace Ensembles.Shell {
             };
             attach (voice_r2_gain_slider, i++, 0, 1, 1);
             voice_r2_gain_slider.change_value.connect ((scroll, value) => {
-                change_gain (0, 1, (int)(value * 127));
+                change_gain (18, (int)(value * 127));
                 return false;
             });
 
@@ -106,8 +106,8 @@ namespace Ensembles.Shell {
             new Thread<int> ("synth_gain_watch", synth_gain_watch);
         }
 
-        private void change_gain (int synth_index, int channel, int value) {
-            Ensembles.Core.Synthesizer.set_modulator_value (synth_index, channel, 7, value);
+        private void change_gain (int channel, int value) {
+            Ensembles.Core.Synthesizer.set_modulator_value (channel, 7, value);
         }
 
         private void connect_unlock_buttons () {
@@ -196,7 +196,7 @@ namespace Ensembles.Shell {
         private void connect_style_sliders () {
             style_gain_sliders[0].change_value.connect ((scroll, value) => {
                 if (value >= 0) {
-                    change_gain (1, 0, (int)(value * 127));
+                    change_gain (0, (int)(value * 127));
                     lock_buttons[0].set_image (new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON));
                     lock_buttons[0].sensitive = true;
                 }
@@ -204,7 +204,7 @@ namespace Ensembles.Shell {
             });
             style_gain_sliders[1].change_value.connect ((scroll, value) => {
                 if (value >= 0) {
-                    change_gain (1, 1, (int)(value * 127));
+                    change_gain (1, (int)(value * 127));
                     lock_buttons[1].set_image (new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON));
                     lock_buttons[1].sensitive = true;
                 }
@@ -212,7 +212,7 @@ namespace Ensembles.Shell {
             });
             style_gain_sliders[2].change_value.connect ((scroll, value) => {
                 if (value >= 0) {
-                    change_gain (1, 2, (int)(value * 127));
+                    change_gain (2, (int)(value * 127));
                     lock_buttons[2].set_image (new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON));
                     lock_buttons[2].sensitive = true;
                 }
@@ -220,7 +220,7 @@ namespace Ensembles.Shell {
             });
             style_gain_sliders[3].change_value.connect ((scroll, value) => {
                 if (value >= 0) {
-                    change_gain (1, 3, (int)(value * 127));
+                    change_gain (3, (int)(value * 127));
                     lock_buttons[3].set_image (new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON));
                     lock_buttons[3].sensitive = true;
                 }
@@ -228,7 +228,7 @@ namespace Ensembles.Shell {
             });
             style_gain_sliders[4].change_value.connect ((scroll, value) => {
                 if (value >= 0) {
-                    change_gain (1, 4, (int)(value * 127));
+                    change_gain (4, (int)(value * 127));
                     lock_buttons[4].set_image (new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON));
                     lock_buttons[4].sensitive = true;
                 }
@@ -236,7 +236,7 @@ namespace Ensembles.Shell {
             });
             style_gain_sliders[5].change_value.connect ((scroll, value) => {
                 if (value >= 0) {
-                    change_gain (1, 5, (int)(value * 127));
+                    change_gain (5, (int)(value * 127));
                     lock_buttons[5].set_image (new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON));
                     lock_buttons[5].sensitive = true;
                 }
@@ -244,7 +244,7 @@ namespace Ensembles.Shell {
             });
             style_gain_sliders[6].change_value.connect ((scroll, value) => {
                 if (value >= 0) {
-                    change_gain (1, 6, (int)(value * 127));
+                    change_gain (6, (int)(value * 127));
                     lock_buttons[6].set_image (new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON));
                     lock_buttons[6].sensitive = true;
                 }
@@ -252,7 +252,7 @@ namespace Ensembles.Shell {
             });
             style_gain_sliders[7].change_value.connect ((scroll, value) => {
                 if (value >= 0) {
-                    change_gain (1, 7, (int)(value * 127));
+                    change_gain (7, (int)(value * 127));
                     lock_buttons[7].set_image (new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON));
                     lock_buttons[7].sensitive = true;
                 }
@@ -260,7 +260,7 @@ namespace Ensembles.Shell {
             });
             style_gain_sliders[8].change_value.connect ((scroll, value) => {
                 if (value >= 0) {
-                    change_gain (1, 8, (int)(value * 127));
+                    change_gain (8, (int)(value * 127));
                     lock_buttons[8].set_image (new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON));
                     lock_buttons[8].sensitive = true;
                 }
@@ -268,7 +268,7 @@ namespace Ensembles.Shell {
             });
             style_gain_sliders[9].change_value.connect ((scroll, value) => {
                 if (value >= 0) {
-                    change_gain (1, 9, (int)(value * 127));
+                    change_gain (9, (int)(value * 127));
                     lock_buttons[9].set_image (new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON));
                     lock_buttons[9].sensitive = true;
                 }
@@ -276,7 +276,7 @@ namespace Ensembles.Shell {
             });
             style_gain_sliders[10].change_value.connect ((scroll, value) => {
                 if (value >= 0) {
-                    change_gain (1, 10, (int)(value * 127));
+                    change_gain (10, (int)(value * 127));
                     lock_buttons[10].set_image (new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON));
                     lock_buttons[10].sensitive = true;
                 }
@@ -284,7 +284,7 @@ namespace Ensembles.Shell {
             });
             style_gain_sliders[11].change_value.connect ((scroll, value) => {
                 if (value >= 0) {
-                    change_gain (1, 11, (int)(value * 127));
+                    change_gain (11, (int)(value * 127));
                     lock_buttons[11].set_image (new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON));
                     lock_buttons[11].sensitive = true;
                 }
@@ -292,7 +292,7 @@ namespace Ensembles.Shell {
             });
             style_gain_sliders[12].change_value.connect ((scroll, value) => {
                 if (value >= 0) {
-                    change_gain (1, 12, (int)(value * 127));
+                    change_gain (12, (int)(value * 127));
                     lock_buttons[12].set_image (new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON));
                     lock_buttons[12].sensitive = true;
                 }
@@ -300,7 +300,7 @@ namespace Ensembles.Shell {
             });
             style_gain_sliders[13].change_value.connect ((scroll, value) => {
                 if (value >= 0) {
-                    change_gain (1, 13, (int)(value * 127));
+                    change_gain (13, (int)(value * 127));
                     lock_buttons[13].set_image (new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON));
                     lock_buttons[13].sensitive = true;
                 }
@@ -308,7 +308,7 @@ namespace Ensembles.Shell {
             });
             style_gain_sliders[14].change_value.connect ((scroll, value) => {
                 if (value >= 0) {
-                    change_gain (1, 14, (int)(value * 127));
+                    change_gain (14, (int)(value * 127));
                     lock_buttons[14].set_image (new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON));
                     lock_buttons[14].sensitive = true;
                 }
@@ -316,7 +316,7 @@ namespace Ensembles.Shell {
             });
             style_gain_sliders[15].change_value.connect ((scroll, value) => {
                 if (value >= 0) {
-                    change_gain (1, 15, (int)(value * 127));
+                    change_gain (15, (int)(value * 127));
                     lock_buttons[15].set_image (new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON));
                     lock_buttons[15].sensitive = true;
                 }
@@ -328,22 +328,22 @@ namespace Ensembles.Shell {
             watch = false;
         }
 
-        public void set_gain_value (int synth_index, int channel, int value) {
+        public void set_gain_value (int channel, int value) {
             Idle.add (() => {
                 if (watch) {
-                    if (synth_index == 0) {
+                    if (channel >= 16) {
                         switch (channel) {
-                            case 0:
+                            case 17:
                             if (voice_r1_gain_slider != null && voice_r1_gain_slider.adjustment != null) {
                                 voice_r1_gain_slider.set_value ((double)value / 127);
                             }
                             break;
-                            case 1:
+                            case 18:
                             if (voice_r2_gain_slider != null && voice_r2_gain_slider.adjustment != null) {
                                 voice_r2_gain_slider.set_value ((double)value / 127);
                             }
                             break;
-                            case 2:
+                            case 19:
                             if (voice_l_gain_slider != null && voice_l_gain_slider.adjustment != null) {
                                 voice_l_gain_slider.set_value ((double)value / 127);
                             }
@@ -361,14 +361,12 @@ namespace Ensembles.Shell {
 
         int synth_gain_watch () {
             while (watch) {
-                Thread.usleep (200000);
+                Thread.usleep (100000);
                 if (watch) {
-                    for (int i = 0; i < 3; i++) {
-                        set_gain_value (0, i, Ensembles.Core.Synthesizer.get_modulator_value (0, i, 7));
-                        Thread.usleep (100000);
-                    }
-                    for (int i = 0; i < 16; i++) {
-                        set_gain_value (1, i, Ensembles.Core.Synthesizer.get_modulator_value (1, i, 7));
+                    for (int i = 0; i < 20; i++) {
+                        if (i != 16) {
+                        set_gain_value (i, Ensembles.Core.Synthesizer.get_modulator_value (i, 7));
+                        }
                         Thread.usleep (100000);
                     }
                 }

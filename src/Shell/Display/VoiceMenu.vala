@@ -5,7 +5,7 @@
 
 namespace Ensembles.Shell {
     public class VoiceMenu : WheelScrollableWidget {
-        int channel;
+        uint8 channel;
         Gtk.Button close_button;
         Gtk.ListBox main_list;
         VoiceItem[] voice_rows;
@@ -14,8 +14,8 @@ namespace Ensembles.Shell {
         int last_voice_index;
 
         public signal void close_menu ();
-        public signal void change_voice (Ensembles.Core.Voice voice, int channel);
-        public VoiceMenu (int channel) {
+        public signal void change_voice (Ensembles.Core.Voice voice, uint8 channel);
+        public VoiceMenu (uint8 channel) {
             this.channel = channel;
             this.get_style_context ().add_class ("menu-background");
 
@@ -25,10 +25,10 @@ namespace Ensembles.Shell {
 
 
             var headerbar = new Gtk.HeaderBar ();
-            headerbar.set_title (_("Voice - %s").printf (((channel == 0) ? _("Right 1 (Main)") : (channel == 1)
+            headerbar.set_title (_("Voice - %s").printf (((channel == 17) ? _("Right 1 (Main)") : (channel == 18)
             ? _("Right 2 (Layered)")
             : _("Left (Split)"))));
-            headerbar.set_subtitle (_("Pick a Voice to play %s").printf (((channel == 0) ? "" : (channel == 1)
+            headerbar.set_subtitle (_("Pick a Voice to play %s").printf (((channel == 17) ? "" : (channel == 18)
             ? _(" on another layer")
             : _(" on left hand side of split"))));
             headerbar.get_style_context ().add_class ("menu-header");
@@ -58,13 +58,13 @@ namespace Ensembles.Shell {
                 scroll_wheel_location = index;
                 change_voice (voice_rows[index].voice, channel);
                 switch (channel) {
-                    case 0:
+                    case 17:
                     Ensembles.Application.settings.set_int ("voice-r1-index", index);
                     break;
-                    case 1:
+                    case 18:
                     Ensembles.Application.settings.set_int ("voice-r2-index", index);
                     break;
-                    case 2:
+                    case 19:
                     Ensembles.Application.settings.set_int ("voice-l-index", index);
                     break;
                 }
@@ -139,15 +139,15 @@ namespace Ensembles.Shell {
                 change_voice (voice_rows[index].voice, channel);
                 scroll_to_selected_row ();
                 switch (channel) {
-                    case 0:
+                    case 17:
                     if (index <= last_voice_index) {
                         Ensembles.Application.settings.set_int ("voice-r1-index", index);
                     }
                     break;
-                    case 1:
+                    case 18:
                     Ensembles.Application.settings.set_int ("voice-r2-index", index);
                     break;
-                    case 2:
+                    case 19:
                     Ensembles.Application.settings.set_int ("voice-l-index", index);
                     break;
                 }
@@ -157,13 +157,13 @@ namespace Ensembles.Shell {
 
         public void load_settings () {
             switch (channel) {
-                case 0:
+                case 17:
                 quick_select_row (Ensembles.Application.settings.get_int ("voice-r1-index"));
                 break;
-                case 1:
+                case 18:
                 quick_select_row (Ensembles.Application.settings.get_int ("voice-r2-index"));
                 break;
-                case 2:
+                case 19:
                 quick_select_row (Ensembles.Application.settings.get_int ("voice-l-index"));
                 break;
             }

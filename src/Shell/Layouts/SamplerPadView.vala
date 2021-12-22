@@ -19,6 +19,9 @@ namespace Ensembles.Shell {
         Core.SampleRecorder sample_recorder;
         public SamplerPadView (Gtk.Window mainwindow) {
             this.mainwindow = mainwindow;
+            column_homogeneous = true;
+            row_spacing = 2;
+            column_spacing = 2;
             var header = new Gtk.Label (_("SAMPLING  PADS"));
             header.valign = Gtk.Align.CENTER;
             header.halign = Gtk.Align.START;
@@ -28,7 +31,7 @@ namespace Ensembles.Shell {
             separator.valign = Gtk.Align.CENTER;
 
             attach (header, 0, 0, 3, 1);
-            attach (separator, 3, 0, 7, 1);
+            attach (separator, 3, 0, 5, 1);
 
             pads = new Gtk.Button [12];
             for (int i = 0; i < 6; i++) {
@@ -50,7 +53,7 @@ namespace Ensembles.Shell {
             assign_record_button.get_style_context ().add_class ("sampler-record-button");
             assign_record_button.get_style_context ().remove_class ("image-button");
             assign_record_button.tooltip_text = _("Click and hold to sample");
-            attach (assign_record_button, 7, 1, 1, 1);
+            attach (assign_record_button, 6, 1, 1, 1);
 
             assign_file_button = new Gtk.Button.from_icon_name ("document-open-symbolic", Gtk.IconSize.BUTTON);
             assign_file_button.height_request = 38;
@@ -58,10 +61,10 @@ namespace Ensembles.Shell {
             assign_file_button.vexpand = true;
             assign_file_button.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
             assign_file_button.get_style_context ().remove_class ("image-button");
-            attach (assign_file_button, 7, 2, 1, 1);
+            attach (assign_file_button, 6, 2, 1, 1);
             stop_button = new Gtk.Button.with_label (_("Stop"));
             stop_button.width_request = 51;
-            attach (stop_button, 8, 1, 1, 2);
+            attach (stop_button, 7, 1, 1, 2);
             margin = 4;
             show_all ();
 

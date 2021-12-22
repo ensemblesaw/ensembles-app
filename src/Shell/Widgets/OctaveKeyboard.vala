@@ -351,7 +351,7 @@ namespace Ensembles.Shell {
             if (on) {
                 keys[key].note_on (auto);
             } else {
-                keys[key].note_off (auto);
+                keys[key].note_off ();
             }
         }
         public void update_split () {

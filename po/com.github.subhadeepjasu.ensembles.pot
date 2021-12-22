@@ -404,19 +404,19 @@ msgstr ""
 msgid "Y-Assign"
 msgstr ""
 
-#: src/Shell/Views/KeyboardView.vala:59
+#: src/Shell/Views/KeyBed.vala:59
 msgid "SUST"
 msgstr ""
 
-#: src/Shell/Views/KeyboardView.vala:60
+#: src/Shell/Views/KeyBed.vala:60
 msgid "STOP"
 msgstr ""
 
-#: src/Shell/Views/KeyboardView.vala:66
+#: src/Shell/Views/KeyBed.vala:66
 msgid "H O L D"
 msgstr ""
 
-#: src/Shell/Views/KeyboardView.vala:68
+#: src/Shell/Views/KeyBed.vala:68
 msgid "Z O O M"
 msgstr ""
 

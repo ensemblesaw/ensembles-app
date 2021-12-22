@@ -11,7 +11,7 @@ namespace Ensembles.Shell {
     // The menu that opens when you click the "gear" icon
     public class AppMenuView : Gtk.Popover {
 
-        Ensembles.Core.ControllerDevice[] controller_devices;
+        Ensembles.Core.MidiDevice[] midi_devices;
         Gtk.ListBox device_list_box;
 
         public signal void open_preferences_dialog ();
@@ -103,10 +103,10 @@ namespace Ensembles.Shell {
             device_input_item.notify["active"].connect (() => {
                 revealer.reveal_child = device_input_item.active;
                 if (device_input_item.active) {
-                    var devices_found = Application.arranger_core.controller_connection.refresh ();
+                    var devices_found = Application.arranger_core.midi_input_host.refresh ();
                     update_devices (devices_found);
                 } else {
-                    Application.arranger_core.controller_connection.destroy ();
+                    Application.arranger_core.midi_input_host.destroy ();
                 }
             });
 
@@ -116,7 +116,7 @@ namespace Ensembles.Shell {
             };
             device_list_box.row_activated.connect ((row) => {
                 DeviceItem device_item = row as DeviceItem;
-                Application.arranger_core.controller_connection.connect_device (device_item.device.id);
+                Application.arranger_core.midi_input_host.connect_device (device_item.device.id);
                 deselect_all_devices ();
                 device_item.radio.set_active (true);
             });
@@ -165,9 +165,9 @@ namespace Ensembles.Shell {
         }
 
 
-        public void update_devices (Ensembles.Core.ControllerDevice[] devices) {
-            controller_devices = null;
-            controller_devices = devices;
+        public void update_devices (Ensembles.Core.MidiDevice[] devices) {
+            midi_devices = null;
+            midi_devices = devices;
 
             debug ("Updating Device list\n");
 

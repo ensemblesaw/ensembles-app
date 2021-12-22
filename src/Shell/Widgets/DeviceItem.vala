@@ -5,10 +5,10 @@
 
 namespace Ensembles.Shell {
     public class DeviceItem : Gtk.ListBoxRow {
-        public Ensembles.Core.ControllerDevice device;
+        public Ensembles.Core.MidiDevice device;
         Gtk.Label device_name;
         public Gtk.CheckButton radio;
-        public DeviceItem (Ensembles.Core.ControllerDevice device) {
+        public DeviceItem (Ensembles.Core.MidiDevice device) {
             this.device = device;
             device_name = new Gtk.Label (this.device.name);
             radio = new Gtk.CheckButton ();

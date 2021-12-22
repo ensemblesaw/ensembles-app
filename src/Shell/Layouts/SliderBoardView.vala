@@ -63,9 +63,8 @@ namespace Ensembles.Shell {
         public SliderBoardView (JoyStick joystick_instance) {
             joystick = joystick_instance;
             row_spacing = 4;
-            valign = Gtk.Align.START;
             margin = 4;
-            width_request = 293;
+            width_request = 408;
             height_request = 236;
 
 
@@ -86,50 +85,62 @@ namespace Ensembles.Shell {
 
             slider_assign_button = new Gtk.Button.with_label (_("Slider Assign"));
 
-            slider_0 = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1);
-            slider_0.height_request = 127;
-            slider_0.inverted = true;
-            slider_0.draw_value = false;
-            slider_1 = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1);
-            slider_1.height_request = 127;
-            slider_1.inverted = true;
-            slider_1.draw_value = false;
-            slider_2 = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1);
-            slider_2.height_request = 127;
-            slider_2.inverted = true;
-            slider_2.draw_value = false;
-            slider_3 = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1);
-            slider_3.height_request = 127;
-            slider_3.inverted = true;
-            slider_3.draw_value = false;
-            slider_4 = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1);
-            slider_4.height_request = 127;
-            slider_4.inverted = true;
-            slider_4.draw_value = false;
-            slider_5 = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1);
-            slider_5.height_request = 127;
-            slider_5.inverted = true;
-            slider_5.draw_value = false;
-            slider_6 = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1);
-            slider_6.height_request = 127;
-            slider_6.inverted = true;
-            slider_6.draw_value = false;
-            slider_7 = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1);
-            slider_7.height_request = 127;
-            slider_7.inverted = true;
-            slider_7.draw_value = false;
-            slider_8 = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1);
-            slider_8.height_request = 127;
-            slider_8.inverted = true;
-            slider_8.draw_value = false;
-            slider_9 = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1);
-            slider_9.height_request = 127;
-            slider_9.inverted = true;
-            slider_9.draw_value = false;
+            slider_0 = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1) {
+                vexpand = true,
+                height_request = 127,
+                inverted = true,
+                draw_value = false
+            };
+            slider_1 = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1) {
+                height_request = 127,
+                inverted = true,
+                draw_value = false
+            };
+            slider_2 = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1) {
+                height_request = 127,
+                inverted = true,
+                draw_value = false
+            };
+            slider_3 = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1) {
+                height_request = 127,
+                inverted = true,
+                draw_value = false
+            };
+            slider_4 = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1) {
+                height_request = 127,
+                inverted = true,
+                draw_value = false
+            };
+            slider_5 = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1) {
+                height_request = 127,
+                inverted = true,
+                draw_value = false
+            };
+            slider_6 = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1) {
+                height_request = 127,
+                inverted = true,
+                draw_value = false
+            };
+            slider_7 = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1) {
+                height_request = 127,
+                inverted = true,
+                draw_value = false
+            };
+            slider_8 = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1) {
+                height_request = 127,
+                inverted = true,
+                draw_value = false
+            };
+            slider_9 = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1) {
+                height_request = 127,
+                inverted = true,
+                draw_value = false
+            };
 
-            var slider_grid = new Gtk.Grid ();
-            slider_grid.column_spacing = 14;
-            slider_grid.margin_start = 8;
+            var slider_grid = new Gtk.Grid () {
+                column_spacing = 14,
+                margin_start = 8
+            };
 
             slider_grid.attach (slider_0, 0, 0, 1, 1);
             slider_grid.attach (slider_1, 1, 0, 1, 1);
@@ -279,7 +290,6 @@ namespace Ensembles.Shell {
                 if (joystick_x_variables != null) {
                     Ensembles.Core.Synthesizer.set_modulator_value (joystick_x_variables[0],
                                                                     joystick_x_variables[1],
-                                                                    joystick_x_variables[2],
                                                                     (int)(value));
                 }
             });
@@ -288,7 +298,6 @@ namespace Ensembles.Shell {
                 if (joystick_y_variables != null) {
                     Ensembles.Core.Synthesizer.set_modulator_value (joystick_y_variables[0],
                                                                     joystick_y_variables[1],
-                                                                    joystick_y_variables[2],
                                                                     (int)(value));
                 }
             });
@@ -297,7 +306,6 @@ namespace Ensembles.Shell {
                 if (slider_0_variables != null) {
                     Ensembles.Core.Synthesizer.set_modulator_value (slider_0_variables[0],
                                                                     slider_0_variables[1],
-                                                                    slider_0_variables[2],
                                                                     (int)(value * 127));
                 }
                 assignable_slider_index = 0;
@@ -322,7 +330,7 @@ namespace Ensembles.Shell {
             });
             slider_1.change_value.connect ((scroll, value) => {
                 if (slider_1_variables != null) {
-                    Ensembles.Core.Synthesizer.set_modulator_value (slider_1_variables[0], slider_1_variables[1], slider_1_variables[2], (int)(value * 127));
+                    Ensembles.Core.Synthesizer.set_modulator_value (slider_1_variables[0], slider_1_variables[1], (int)(value * 127));
                 }
                 assignable_slider_index = 1;
                 slider_0.get_style_context ().remove_class ("slider-assignable");
@@ -346,7 +354,7 @@ namespace Ensembles.Shell {
             });
             slider_2.change_value.connect ((scroll, value) => {
                 if (slider_2_variables != null) {
-                    Ensembles.Core.Synthesizer.set_modulator_value (slider_2_variables[0], slider_2_variables[1], slider_2_variables[2], (int)(value * 127));
+                    Ensembles.Core.Synthesizer.set_modulator_value (slider_2_variables[0], slider_2_variables[1], (int)(value * 127));
                 }
                 assignable_slider_index = 2;
                 slider_0.get_style_context ().remove_class ("slider-assignable");
@@ -370,7 +378,7 @@ namespace Ensembles.Shell {
             });
             slider_3.change_value.connect ((scroll, value) => {
                 if (slider_3_variables != null) {
-                    Ensembles.Core.Synthesizer.set_modulator_value (slider_3_variables[0], slider_3_variables[1], slider_3_variables[2], (int)(value * 127));
+                    Ensembles.Core.Synthesizer.set_modulator_value (slider_3_variables[0], slider_3_variables[1], (int)(value * 127));
                 }
                 assignable_slider_index = 3;
                 slider_0.get_style_context ().remove_class ("slider-assignable");
@@ -394,7 +402,7 @@ namespace Ensembles.Shell {
             });
             slider_4.change_value.connect ((scroll, value) => {
                 if (slider_4_variables != null) {
-                    Ensembles.Core.Synthesizer.set_modulator_value (slider_4_variables[0], slider_4_variables[1], slider_4_variables[2], (int)(value * 127));
+                    Ensembles.Core.Synthesizer.set_modulator_value (slider_4_variables[0], slider_4_variables[1], (int)(value * 127));
                 }
                 assignable_slider_index = 4;
                 slider_0.get_style_context ().remove_class ("slider-assignable");
@@ -418,7 +426,7 @@ namespace Ensembles.Shell {
             });
             slider_5.change_value.connect ((scroll, value) => {
                 if (slider_5_variables != null) {
-                    Ensembles.Core.Synthesizer.set_modulator_value (slider_5_variables[0], slider_5_variables[1], slider_5_variables[2], (int)(value * 127));
+                    Ensembles.Core.Synthesizer.set_modulator_value (slider_5_variables[0], slider_5_variables[1], (int)(value * 127));
                 }
                 assignable_slider_index = 5;
                 slider_0.get_style_context ().remove_class ("slider-assignable");
@@ -442,7 +450,7 @@ namespace Ensembles.Shell {
             });
             slider_6.change_value.connect ((scroll, value) => {
                 if (slider_6_variables != null) {
-                    Ensembles.Core.Synthesizer.set_modulator_value (slider_6_variables[0], slider_6_variables[1], slider_6_variables[2], (int)(value * 127));
+                    Ensembles.Core.Synthesizer.set_modulator_value (slider_6_variables[0], slider_6_variables[1], (int)(value * 127));
                 }
                 assignable_slider_index = 6;
                 slider_0.get_style_context ().remove_class ("slider-assignable");
@@ -466,7 +474,7 @@ namespace Ensembles.Shell {
             });
             slider_7.change_value.connect ((scroll, value) => {
                 if (slider_7_variables != null) {
-                    Ensembles.Core.Synthesizer.set_modulator_value (slider_7_variables[0], slider_7_variables[1], slider_7_variables[2], (int)(value * 127));
+                    Ensembles.Core.Synthesizer.set_modulator_value (slider_7_variables[0], slider_7_variables[1], (int)(value * 127));
                 }
                 assignable_slider_index = 7;
                 slider_0.get_style_context ().remove_class ("slider-assignable");
@@ -490,7 +498,7 @@ namespace Ensembles.Shell {
             });
             slider_8.change_value.connect ((scroll, value) => {
                 if (slider_8_variables != null) {
-                    Ensembles.Core.Synthesizer.set_modulator_value (slider_8_variables[0], slider_8_variables[1], slider_8_variables[2], (int)(value * 127));
+                    Ensembles.Core.Synthesizer.set_modulator_value (slider_8_variables[0], slider_8_variables[1], (int)(value * 127));
                 }
                 assignable_slider_index = 8;
                 slider_0.get_style_context ().remove_class ("slider-assignable");
@@ -514,7 +522,7 @@ namespace Ensembles.Shell {
             });
             slider_9.change_value.connect ((scroll, value) => {
                 if (slider_9_variables != null) {
-                    Ensembles.Core.Synthesizer.set_modulator_value (slider_9_variables[0], slider_9_variables[1], slider_9_variables[2], (int)(value * 127));
+                    Ensembles.Core.Synthesizer.set_modulator_value (slider_9_variables[0], slider_9_variables[1], (int)(value * 127));
                 }
                 assignable_slider_index = 9;
                 slider_0.get_style_context ().remove_class ("slider-assignable");
@@ -538,7 +546,7 @@ namespace Ensembles.Shell {
             });
             modulator_knob_a.change_value.connect ((value) => {
                 if (knob_a_variables != null) {
-                    Ensembles.Core.Synthesizer.set_modulator_value (knob_a_variables[0], knob_a_variables[1], knob_a_variables[2], (int)(value * 127));
+                    Ensembles.Core.Synthesizer.set_modulator_value (knob_a_variables[0], knob_a_variables[1], (int)(value * 127));
                 }
                 assignable_knob_index = 0;
                 modulator_knob_b.get_style_context ().remove_class ("knob-assignable");
@@ -555,7 +563,7 @@ namespace Ensembles.Shell {
             });
             modulator_knob_b.change_value.connect ((value) => {
                 if (knob_b_variables != null) {
-                    Ensembles.Core.Synthesizer.set_modulator_value (knob_b_variables[0], knob_b_variables[1], knob_b_variables[2], (int)(value * 127));
+                    Ensembles.Core.Synthesizer.set_modulator_value (knob_b_variables[0], knob_b_variables[1], (int)(value * 127));
                 }
                 assignable_knob_index = 1;
                 modulator_knob_a.get_style_context ().remove_class ("knob-assignable");
@@ -572,7 +580,7 @@ namespace Ensembles.Shell {
             });
             modulator_knob_c.change_value.connect ((value) => {
                 if (knob_c_variables != null) {
-                    Ensembles.Core.Synthesizer.set_modulator_value (knob_c_variables[0], knob_c_variables[1], knob_c_variables[2], (int)(value * 127));
+                    Ensembles.Core.Synthesizer.set_modulator_value (knob_c_variables[0], knob_c_variables[1], (int)(value * 127));
                 }
                 assignable_knob_index = 2;
                 modulator_knob_a.get_style_context ().remove_class ("knob-assignable");
@@ -589,7 +597,7 @@ namespace Ensembles.Shell {
             });
             modulator_knob_d.change_value.connect ((value) => {
                 if (knob_d_variables != null) {
-                    Ensembles.Core.Synthesizer.set_modulator_value (knob_d_variables[0], knob_d_variables[1], knob_d_variables[2], (int)(value * 127));
+                    Ensembles.Core.Synthesizer.set_modulator_value (knob_d_variables[0], knob_d_variables[1], (int)(value * 127));
                 }
                 assignable_knob_index = 3;
                 modulator_knob_a.get_style_context ().remove_class ("knob-assignable");
@@ -610,59 +618,59 @@ namespace Ensembles.Shell {
                 if (master_knob_assigns != null) {
                     if (master_knob_assigns[0] && slider_0_variables != null) {
                         slider_0.set_value (value);
-                        Ensembles.Core.Synthesizer.set_modulator_value (slider_0_variables[0], slider_0_variables[1], slider_0_variables[2], (int)(value * 127));
+                        Ensembles.Core.Synthesizer.set_modulator_value (slider_0_variables[0], slider_0_variables[1], (int)(value * 127));
                     }
                     if (master_knob_assigns[1] && slider_1_variables != null) {
                         slider_1.set_value (value);
-                        Ensembles.Core.Synthesizer.set_modulator_value (slider_1_variables[0], slider_1_variables[1], slider_1_variables[2], (int)(value * 127));
+                        Ensembles.Core.Synthesizer.set_modulator_value (slider_1_variables[0], slider_1_variables[1], (int)(value * 127));
                     }
                     if (master_knob_assigns[2] && slider_2_variables != null) {
                         slider_2.set_value (value);
-                        Ensembles.Core.Synthesizer.set_modulator_value (slider_2_variables[0], slider_2_variables[1], slider_2_variables[2], (int)(value * 127));
+                        Ensembles.Core.Synthesizer.set_modulator_value (slider_2_variables[0], slider_2_variables[1], (int)(value * 127));
                     }
                     if (master_knob_assigns[3] && slider_3_variables != null) {
                         slider_3.set_value (value);
-                        Ensembles.Core.Synthesizer.set_modulator_value (slider_3_variables[0], slider_3_variables[1], slider_3_variables[2], (int)(value * 127));
+                        Ensembles.Core.Synthesizer.set_modulator_value (slider_3_variables[0], slider_3_variables[1], (int)(value * 127));
                     }
                     if (master_knob_assigns[4] && slider_4_variables != null) {
                         slider_4.set_value (value);
-                        Ensembles.Core.Synthesizer.set_modulator_value (slider_4_variables[0], slider_4_variables[1], slider_4_variables[2], (int)(value * 127));
+                        Ensembles.Core.Synthesizer.set_modulator_value (slider_4_variables[0], slider_4_variables[1], (int)(value * 127));
                     }
                     if (master_knob_assigns[5] && slider_5_variables != null) {
                         slider_5.set_value (value);
-                        Ensembles.Core.Synthesizer.set_modulator_value (slider_5_variables[0], slider_5_variables[1], slider_5_variables[2], (int)(value * 127));
+                        Ensembles.Core.Synthesizer.set_modulator_value (slider_5_variables[0], slider_5_variables[1], (int)(value * 127));
                     }
                     if (master_knob_assigns[6] && slider_6_variables != null) {
                         slider_6.set_value (value);
-                        Ensembles.Core.Synthesizer.set_modulator_value (slider_6_variables[0], slider_6_variables[1], slider_6_variables[2], (int)(value * 127));
+                        Ensembles.Core.Synthesizer.set_modulator_value (slider_6_variables[0], slider_6_variables[1], (int)(value * 127));
                     }
                     if (master_knob_assigns[7] && slider_7_variables != null) {
                         slider_7.set_value (value);
-                        Ensembles.Core.Synthesizer.set_modulator_value (slider_7_variables[0], slider_7_variables[1], slider_7_variables[2], (int)(value * 127));
+                        Ensembles.Core.Synthesizer.set_modulator_value (slider_7_variables[0], slider_7_variables[1], (int)(value * 127));
                     }
                     if (master_knob_assigns[8] && slider_8_variables != null) {
                         slider_8.set_value (value);
-                        Ensembles.Core.Synthesizer.set_modulator_value (slider_8_variables[0], slider_8_variables[1], slider_8_variables[2], (int)(value * 127));
+                        Ensembles.Core.Synthesizer.set_modulator_value (slider_8_variables[0], slider_8_variables[1], (int)(value * 127));
                     }
                     if (master_knob_assigns[9] && slider_9_variables != null) {
                         slider_9.set_value (value);
-                        Ensembles.Core.Synthesizer.set_modulator_value (slider_9_variables[0], slider_9_variables[1], slider_9_variables[2], (int)(value * 127));
+                        Ensembles.Core.Synthesizer.set_modulator_value (slider_9_variables[0], slider_9_variables[1], (int)(value * 127));
                     }
                     if (master_knob_assigns[10] && knob_a_variables != null) {
                         modulator_knob_a.set_value (value);
-                        Ensembles.Core.Synthesizer.set_modulator_value (knob_a_variables[0], knob_a_variables[1], knob_a_variables[2], (int)(value * 127));
+                        Ensembles.Core.Synthesizer.set_modulator_value (knob_a_variables[0], knob_a_variables[1], (int)(value * 127));
                     }
                     if (master_knob_assigns[11] && knob_b_variables != null) {
                         modulator_knob_b.set_value (value);
-                        Ensembles.Core.Synthesizer.set_modulator_value (knob_b_variables[0], knob_b_variables[1], knob_b_variables[2], (int)(value * 127));
+                        Ensembles.Core.Synthesizer.set_modulator_value (knob_b_variables[0], knob_b_variables[1], (int)(value * 127));
                     }
                     if (master_knob_assigns[12] && knob_c_variables != null) {
                         modulator_knob_c.set_value (value);
-                        Ensembles.Core.Synthesizer.set_modulator_value (knob_c_variables[0], knob_c_variables[1], knob_c_variables[2], (int)(value * 127));
+                        Ensembles.Core.Synthesizer.set_modulator_value (knob_c_variables[0], knob_c_variables[1], (int)(value * 127));
                     }
                     if (master_knob_assigns[13] && knob_d_variables != null) {
                         modulator_knob_d.set_value (value);
-                        Ensembles.Core.Synthesizer.set_modulator_value (knob_d_variables[0], knob_d_variables[1], knob_d_variables[2], (int)(value * 127));
+                        Ensembles.Core.Synthesizer.set_modulator_value (knob_d_variables[0], knob_d_variables[1], (int)(value * 127));
                     }
                     for (int i = 0; i < 14; i++) {
                         if (master_knob_assigns[i]) {
@@ -705,38 +713,38 @@ namespace Ensembles.Shell {
             stop_monitoring ();
         }
 
-        public void send_modulator (int synth_index, int channel, int modulator) {
+        public void send_modulator (int channel, int modulator) {
             if (slider_assign_mode) {
                 switch (assignable_slider_index) {
                     case 0:
-                    slider_0_variables = { synth_index, channel, modulator };
+                    slider_0_variables = { channel, modulator };
                     break;
                     case 1:
-                    slider_1_variables = { synth_index, channel, modulator };
+                    slider_1_variables = { channel, modulator };
                     break;
                     case 2:
-                    slider_2_variables = { synth_index, channel, modulator };
+                    slider_2_variables = { channel, modulator };
                     break;
                     case 3:
-                    slider_3_variables = { synth_index, channel, modulator };
+                    slider_3_variables = { channel, modulator };
                     break;
                     case 4:
-                    slider_4_variables = { synth_index, channel, modulator };
+                    slider_4_variables = { channel, modulator };
                     break;
                     case 5:
-                    slider_5_variables = { synth_index, channel, modulator };
+                    slider_5_variables = { channel, modulator };
                     break;
                     case 6:
-                    slider_6_variables = { synth_index, channel, modulator };
+                    slider_6_variables = { channel, modulator };
                     break;
                     case 7:
-                    slider_7_variables = { synth_index, channel, modulator };
+                    slider_7_variables = { channel, modulator };
                     break;
                     case 8:
-                    slider_8_variables = { synth_index, channel, modulator };
+                    slider_8_variables = { channel, modulator };
                     break;
                     case 9:
-                    slider_9_variables = { synth_index, channel, modulator };
+                    slider_9_variables = { channel, modulator };
                     break;
                 }
                 assignable_slider_index = -1;
@@ -756,16 +764,16 @@ namespace Ensembles.Shell {
             if (knob_assign_mode) {
                 switch (assignable_knob_index) {
                     case 0:
-                    knob_a_variables = { synth_index, channel, modulator };
+                    knob_a_variables = { channel, modulator };
                     break;
                     case 1:
-                    knob_b_variables = { synth_index, channel, modulator };
+                    knob_b_variables = { channel, modulator };
                     break;
                     case 2:
-                    knob_c_variables = { synth_index, channel, modulator };
+                    knob_c_variables = { channel, modulator };
                     break;
                     case 3:
-                    knob_d_variables = { synth_index, channel, modulator };
+                    knob_d_variables = { channel, modulator };
                     break;
                 }
                 assignable_knob_index = -1;
@@ -778,10 +786,10 @@ namespace Ensembles.Shell {
             } else if (joystick.assignable) {
                 switch (joystick.assignable_axis) {
                     case 0:
-                    joystick_x_variables = { synth_index, channel, modulator };
+                    joystick_x_variables = { channel, modulator };
                     break;
                     case 1:
-                    joystick_y_variables = { synth_index, channel, modulator };
+                    joystick_y_variables = { channel, modulator };
                     break;
                 }
                 joystick.assignable = false;
@@ -810,59 +818,59 @@ namespace Ensembles.Shell {
                         if (master_knob_assigns != null) {
                             if (master_knob_assigns[0] && slider_0_variables != null) {
                                 slider_0.set_value (value);
-                                Ensembles.Core.Synthesizer.set_modulator_value (slider_0_variables[0], slider_0_variables[1], slider_0_variables[2], (int)(value * 127));
+                                Ensembles.Core.Synthesizer.set_modulator_value (slider_0_variables[0], slider_0_variables[1], (int)(value * 127));
                             }
                             if (master_knob_assigns[1] && slider_1_variables != null) {
                                 slider_1.set_value (value);
-                                Ensembles.Core.Synthesizer.set_modulator_value (slider_1_variables[0], slider_1_variables[1], slider_1_variables[2], (int)(value * 127));
+                                Ensembles.Core.Synthesizer.set_modulator_value (slider_1_variables[0], slider_1_variables[1], (int)(value * 127));
                             }
                             if (master_knob_assigns[2] && slider_2_variables != null) {
                                 slider_2.set_value (value);
-                                Ensembles.Core.Synthesizer.set_modulator_value (slider_2_variables[0], slider_2_variables[1], slider_2_variables[2], (int)(value * 127));
+                                Ensembles.Core.Synthesizer.set_modulator_value (slider_2_variables[0], slider_2_variables[1], (int)(value * 127));
                             }
                             if (master_knob_assigns[3] && slider_3_variables != null) {
                                 slider_3.set_value (value);
-                                Ensembles.Core.Synthesizer.set_modulator_value (slider_3_variables[0], slider_3_variables[1], slider_3_variables[2], (int)(value * 127));
+                                Ensembles.Core.Synthesizer.set_modulator_value (slider_3_variables[0], slider_3_variables[1], (int)(value * 127));
                             }
                             if (master_knob_assigns[4] && slider_4_variables != null) {
                                 slider_4.set_value (value);
-                                Ensembles.Core.Synthesizer.set_modulator_value (slider_4_variables[0], slider_4_variables[1], slider_4_variables[2], (int)(value * 127));
+                                Ensembles.Core.Synthesizer.set_modulator_value (slider_4_variables[0], slider_4_variables[1], (int)(value * 127));
                             }
                             if (master_knob_assigns[5] && slider_5_variables != null) {
                                 slider_5.set_value (value);
-                                Ensembles.Core.Synthesizer.set_modulator_value (slider_5_variables[0], slider_5_variables[1], slider_5_variables[2], (int)(value * 127));
+                                Ensembles.Core.Synthesizer.set_modulator_value (slider_5_variables[0], slider_5_variables[1], (int)(value * 127));
                             }
                             if (master_knob_assigns[6] && slider_6_variables != null) {
                                 slider_6.set_value (value);
-                                Ensembles.Core.Synthesizer.set_modulator_value (slider_6_variables[0], slider_6_variables[1], slider_6_variables[2], (int)(value * 127));
+                                Ensembles.Core.Synthesizer.set_modulator_value (slider_6_variables[0], slider_6_variables[1], (int)(value * 127));
                             }
                             if (master_knob_assigns[7] && slider_7_variables != null) {
                                 slider_7.set_value (value);
-                                Ensembles.Core.Synthesizer.set_modulator_value (slider_7_variables[0], slider_7_variables[1], slider_7_variables[2], (int)(value * 127));
+                                Ensembles.Core.Synthesizer.set_modulator_value (slider_7_variables[0], slider_7_variables[1], (int)(value * 127));
                             }
                             if (master_knob_assigns[8] && slider_8_variables != null) {
                                 slider_8.set_value (value);
-                                Ensembles.Core.Synthesizer.set_modulator_value (slider_8_variables[0], slider_8_variables[1], slider_8_variables[2], (int)(value * 127));
+                                Ensembles.Core.Synthesizer.set_modulator_value (slider_8_variables[0], slider_8_variables[1], (int)(value * 127));
                             }
                             if (master_knob_assigns[9] && slider_9_variables != null) {
                                 slider_9.set_value (value);
-                                Ensembles.Core.Synthesizer.set_modulator_value (slider_9_variables[0], slider_9_variables[1], slider_9_variables[2], (int)(value * 127));
+                                Ensembles.Core.Synthesizer.set_modulator_value (slider_9_variables[0], slider_9_variables[1], (int)(value * 127));
                             }
                             if (master_knob_assigns[10] && knob_a_variables != null) {
                                 modulator_knob_a.set_value (value);
-                                Ensembles.Core.Synthesizer.set_modulator_value (knob_a_variables[0], knob_a_variables[1], knob_a_variables[2], (int)(value * 127));
+                                Ensembles.Core.Synthesizer.set_modulator_value (knob_a_variables[0], knob_a_variables[1], (int)(value * 127));
                             }
                             if (master_knob_assigns[11] && knob_b_variables != null) {
                                 modulator_knob_b.set_value (value);
-                                Ensembles.Core.Synthesizer.set_modulator_value (knob_b_variables[0], knob_b_variables[1], knob_b_variables[2], (int)(value * 127));
+                                Ensembles.Core.Synthesizer.set_modulator_value (knob_b_variables[0], knob_b_variables[1], (int)(value * 127));
                             }
                             if (master_knob_assigns[12] && knob_c_variables != null) {
                                 modulator_knob_c.set_value (value);
-                                Ensembles.Core.Synthesizer.set_modulator_value (knob_c_variables[0], knob_c_variables[1], knob_c_variables[2], (int)(value * 127));
+                                Ensembles.Core.Synthesizer.set_modulator_value (knob_c_variables[0], knob_c_variables[1], (int)(value * 127));
                             }
                             if (master_knob_assigns[13] && knob_d_variables != null) {
                                 modulator_knob_d.set_value (value);
-                                Ensembles.Core.Synthesizer.set_modulator_value (knob_d_variables[0], knob_d_variables[1], knob_d_variables[2], (int)(value * 127));
+                                Ensembles.Core.Synthesizer.set_modulator_value (knob_d_variables[0], knob_d_variables[1], (int)(value * 127));
                             }
                         }
                         return false;

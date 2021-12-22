@@ -22,7 +22,7 @@ namespace Ensembles.Shell {
         public RegistryView registry_panel;
         public AppMenuView app_menu;
         public SongControllerView song_control_panel;
-        public KeyboardView main_keyboard;
+        public KeyBed main_keyboard;
 
         Gtk.HeaderBar headerbar;
         Gtk.Button app_menu_button;
@@ -82,7 +82,7 @@ namespace Ensembles.Shell {
             ctrl_panel = new ControlPanel ();
 
             // Make the onscreen keyboard that appears at the bottom
-            main_keyboard = new KeyboardView ();
+            main_keyboard = new KeyBed ();
             // Connect the onscreen keyboard with the synthesizer
             main_keyboard.connect_synthesizer (Application.arranger_core.synthesizer);
 
@@ -306,9 +306,11 @@ namespace Ensembles.Shell {
                 debug ("CLEANUP: Unloading Beat Counter");
                 beat_counter_panel.unref ();
 
+                Thread.usleep (10000);
                 // Be sure to also run garbage collection on the core
                 Application.arranger_core.garbage_collect ();
                 if (force_close) {
+                    Thread.usleep (10000);
                     Application.main_window.close ();
                 }
                 debug ("Exiting!\n");

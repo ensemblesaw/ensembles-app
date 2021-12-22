@@ -47,19 +47,15 @@ namespace Ensembles.Shell {
             }
         }
 
-        public void note_off (bool auto) {
+        public void note_off () {
             if (_black_key) {
                 get_style_context ().remove_class ("black-key-active");
                 get_style_context ().remove_class ("black-key-split-active");
-                if (auto) {
-                    get_style_context ().remove_class ("black-key-active-auto");
-                }
+                get_style_context ().remove_class ("black-key-active-auto");
             } else {
                 get_style_context ().remove_class ("white-key-active");
                 get_style_context ().remove_class ("white-key-split-active");
-                if (auto) {
-                    get_style_context ().remove_class ("white-key-active-auto");
-                }
+                get_style_context ().remove_class ("white-key-active-auto");
             }
         }
 

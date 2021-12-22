@@ -51,39 +51,15 @@
 		<summary>Voice Right 1</summary>
 		<description>Main instrument (usually played with right hand if split)</description>
 	</key>
-	<key name="voice-r1-bank" type="i">
-		<default>0</default>
-		<summary>Voice Right 1</summary>
-	</key>
-	<key name="voice-r1-preset" type="i">
-		<default>0</default>
-		<summary>Voice Right 1</summary>
-	</key>
     <key name="voice-r2-index" type="i">
 		<default>49</default>
 		<summary>Voice Right 2</summary>
 		<description>Instrument played along with main instrument on a layer</description>
 	</key>
-	<key name="voice-r2-bank" type="i">
-		<default>0</default>
-		<summary>Voice Right 2</summary>
-	</key>
-	<key name="voice-r2-preset" type="i">
-		<default>0</default>
-		<summary>Voice Right 2</summary>
-	</key>
     <key name="voice-l-index" type="i">
 		<default>33</default>
 		<summary>Voice L</summary>
 		<description>Instrument played on the left side of keyboard split</description>
-	</key>
-	<key name="voice-l-bank" type="i">
-		<default>0</default>
-		<summary>Voice Left</summary>
-	</key>
-	<key name="voice-l-preset" type="i">
-		<default>0</default>
-		<summary>Voice Left</summary>
 	</key>
     <key name="style-index" type="i">
 		<default>0</default>
@@ -112,7 +88,7 @@
 		<description>Keyboard shifted by entire octaves</description>
 	</key>
     <key name="reverb-level" type="i">
-		<default>5</default>
+		<default>7</default>
 		<summary>Reverb Level</summary>
 		<description>Magnitude of global reverb effect</description>
 	</key>
@@ -122,7 +98,7 @@
 		<description>Global reverb effect</description>
 	</key>
     <key name="chorus-level" type="i">
-		<default>1</default>
+		<default>2</default>
 		<summary>Chorus Level</summary>
 		<description>Magnitude of global chorus effect</description>
 	</key>
@@ -178,12 +154,13 @@
 		<summary>Audio interface driver</summary>
 	</key>
 	<key name="buffer-length" type="d">
-		<default>0.0</default>
+		<default>0.15</default>
 		<summary>Size of buffer to be processed by the driver</summary>
+		<description>It is a multiplier with range 0 to 1</description>
 	</key>
 	<key name="previous-buffer-length" type="i">
-		<default>64</default>
-		<summary>Size of buffer to be processed by the driver</summary>
+		<default>225</default>
+		<summary>Previously processed buffer length</summary>
 	</key>
 
 	<!-- Input Bindings -->

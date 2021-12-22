@@ -38,9 +38,9 @@ namespace Ensembles.Shell {
             home_screen = new HomeScreen ();
             tempo_screen = new TempoScreen ();
             style_menu = new StyleMenu ();
-            voice_menu_l = new VoiceMenu (2);
-            voice_menu_r1 = new VoiceMenu (0);
-            voice_menu_r2 = new VoiceMenu (1);
+            voice_menu_l = new VoiceMenu (19);
+            voice_menu_r1 = new VoiceMenu (17);
+            voice_menu_r2 = new VoiceMenu (18);
             fx_rack_menu = new EffectRackScreen ();
             channel_mod_screen = new ChannelModulatorScreen (0, 0);
             lfo_editor = new LFOEditScreen ();
@@ -243,10 +243,10 @@ namespace Ensembles.Shell {
             home_screen.set_chord (chord_main, chord_type);
         }
 
-        public void edit_channel (int synth_index, int channel) {
+        public void edit_channel (int channel) {
             main_display_leaflet.set_visible_child (main_stack);
             main_stack.set_visible_child (channel_mod_screen);
-            channel_mod_screen.set_synth_channel_to_edit (synth_index, channel);
+            channel_mod_screen.set_synth_channel_to_edit (channel);
         }
 
         public void open_lfo_screen () {

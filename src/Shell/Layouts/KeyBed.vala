@@ -7,18 +7,18 @@ namespace Ensembles.Shell {
     /* A widget that is used for visualising musical keyboard
      * input and also packs a joystick as part of it's layout
      */
-    public class KeyboardView : Gtk.Grid {
+    public class KeyBed : Gtk.Grid {
         OctaveKeyboard[] octaves;
         Gtk.Box key_grid;
         Gtk.Switch hold_switch;
         Gtk.Switch zoom_switch;
         public JoyStick joy_stick;
-        Ensembles.Core.Synthesizer _synth;
+        Core.Synthesizer _synth;
         Gtk.Button sustain_button;
         Gtk.Button stop_button;
 
         Gtk.ScrolledWindow keyboard_scroller;
-        public KeyboardView () {
+        public KeyBed () {
             get_style_context ().add_class ("keyboard-background");
             key_grid = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
 
@@ -132,6 +132,14 @@ namespace Ensembles.Shell {
         public void update_split () {
             for (int i = 0; i < 5; i++) {
                 octaves[i].update_split ();
+            }
+        }
+
+        public void halt_all () {
+            for (int i = 0; i < 5; i++) {
+                for (int j = 0; j < 11; j++) {
+                    octaves[i].set_note_on (j, false, true);
+                }
             }
         }
     }

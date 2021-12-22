@@ -46,7 +46,13 @@ namespace Ensembles.Shell.Dialogs {
 
             response.connect ((response_id) => {
                 if (response_id == EXIT_RESPONSE_ID) {
-                    Ensembles.Application.instance.main_window.close ();
+                    try {
+                        Ensembles.Application.main_window.app_exit (true);
+                    } catch (GLib.Error e) {
+                        if (!(e is IOError.CANCELLED)) {
+                            warning ("Requesting a shutdown failed.");
+                        }
+                    }
                 }
                 destroy ();
             });

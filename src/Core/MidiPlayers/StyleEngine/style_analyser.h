@@ -7,7 +7,12 @@
 #ifndef STYLE_ANALYSER_H
 #define STYLE_ANALYSER_H
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <math.h>
+
+#include "../../ChoppingBlock/central_bus.h"
 
 /** This function is audit styles and fill the style specification buffers
  * for use with style player and analysis

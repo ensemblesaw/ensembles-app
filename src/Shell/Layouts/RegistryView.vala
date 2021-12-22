@@ -15,7 +15,6 @@ namespace Ensembles.Shell {
         public signal void notify_recall (int tempo);
         public RegistryView () {
             row_homogeneous = true;
-            vexpand = true;
             bank_select = new Gtk.SpinButton.with_range (1, 10, 1);
             attach (bank_select, 0, 0, 1, 1);
 

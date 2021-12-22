@@ -32,7 +32,7 @@ namespace Ensembles.Core {
                         }
                     }
                     voices[i] = new Voice (i, sf_preset_bank_num, sf_preset_num, sf_preset_name, category);
-                    Thread.usleep (10000);
+                    Thread.usleep (5000);
                     if (Application.main_window != null) {
                         Application.main_window.main_display_unit.update_splash_text (_("Loading Voice: ") + sf_preset_name);
                     }
@@ -51,16 +51,11 @@ namespace Ensembles.Core {
         public int[] get_all_category_indices () {
             return this.category_indices;
         }
-
-        ~VoiceAnalyser () {
-            voice_analyser_deconstruct ();
-        }
     }
 }
 
 extern int voice_analyser_init (string sf_path);
 extern int voice_analyser_next ();
-extern void voice_analyser_deconstruct ();
 
 
 // Data

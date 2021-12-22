@@ -16,8 +16,8 @@ namespace Ensembles.Shell {
             indicator_box.get_style_context ().add_class ("toggle-indicator");
             var box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
 
-            box.pack_start (indicator_box);
-            box.pack_end (text_label);
+            box.pack_start (indicator_box, false, false);
+            box.pack_end (text_label, true, true);
 
             this.add (box);
 
