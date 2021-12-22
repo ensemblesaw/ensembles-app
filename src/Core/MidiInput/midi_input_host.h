@@ -9,5 +9,6 @@
 #include <portmidi.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #endif /* MIDI_INPUT_HOST_H */
