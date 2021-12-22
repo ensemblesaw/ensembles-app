@@ -306,9 +306,11 @@ namespace Ensembles.Shell {
                 debug ("CLEANUP: Unloading Beat Counter");
                 beat_counter_panel.unref ();
 
+                Thread.usleep (10000);
                 // Be sure to also run garbage collection on the core
                 Application.arranger_core.garbage_collect ();
                 if (force_close) {
+                    Thread.usleep (10000);
                     Application.main_window.close ();
                 }
                 debug ("Exiting!\n");

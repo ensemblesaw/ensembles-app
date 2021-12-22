@@ -87,9 +87,9 @@ namespace Ensembles.Core {
         public static bool get_is_jack_available () {
             string info = "";
             try {
-                Process.spawn_command_line_sync ("jackd -v", out info);
+                Process.spawn_command_line_sync ("env LANG=C jackd -v", out info);
                 if (info.contains ("Copyright 2001-2009 Paul Davis, Stephane Letz, Jack O'Quinn, Torben Hohn and others.")) {
-                    print ("Alsa detected!\n");
+                    print ("Jack detected!\n");
                     jack_driver_found = true;
                     return true;
                 } else {
