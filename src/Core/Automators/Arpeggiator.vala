@@ -6,7 +6,7 @@
 namespace Ensembles.Core {
     public class Arpeggiator : Object {
         public signal void generate_notes (int key, int on, int velocity);
-        public signal void halt_notes ();
+        public signal void halt_notes (bool all);
         int[] keys;
         int[] active_keys;
         bool arpeggio_playing = false;
@@ -66,7 +66,7 @@ namespace Ensembles.Core {
                 }
             } else {
                 keys[key - 36] = -1;
-                halt_notes ();
+                halt_notes (true);
                 arpeggio_playing = false;
             }
         }
@@ -76,7 +76,7 @@ namespace Ensembles.Core {
             active_keys = find_keys ();
             int n = active_keys.length;
             int i = direction ? 0 : int.MAX;
-            halt_notes ();
+            halt_notes (true);
             generate_notes (active_keys[i % n] + 36, 144, keys[active_keys[i % n]]);
             if (direction)
                 i++;
@@ -88,7 +88,7 @@ namespace Ensembles.Core {
                 if (!arpeggio_playing) {
                     return false;
                 }
-                halt_notes ();
+                halt_notes (true);
                 generate_notes (active_keys[i % n] + 36, 144, keys[active_keys[i % n]]);
                 if (direction)
                     i++;
@@ -102,7 +102,7 @@ namespace Ensembles.Core {
             active_keys = find_keys ();
             int n = active_keys.length;
             int i = 0;
-            halt_notes ();
+            halt_notes (true);
             generate_notes (active_keys[0] + 36, 144, keys[active_keys[0]]);
             bool direction = true;
             if (direction)
@@ -115,7 +115,7 @@ namespace Ensembles.Core {
                 if (!arpeggio_playing) {
                     return false;
                 }
-                halt_notes ();
+                halt_notes (true);
                 generate_notes (active_keys[i % n] + 36, 144, keys[active_keys[i % n]]);
                 if (direction)
                     i++;
@@ -134,7 +134,7 @@ namespace Ensembles.Core {
             active_keys = find_keys ();
             int n = active_keys.length;
             int i = 0;
-            halt_notes ();
+            halt_notes (true);
             generate_notes (active_keys[0] + 36, 144, keys[active_keys[0]]);
             Timeout.add ((uint)((60000 / subdivision) / tempo), () => {
                 active_keys = find_keys ();
@@ -142,7 +142,7 @@ namespace Ensembles.Core {
                 if (!arpeggio_playing) {
                     return false;
                 }
-                halt_notes ();
+                halt_notes (true);
                 i = Random.int_range (0, n);
                 generate_notes (active_keys[i % n] + 36, 144, keys[active_keys[i % n]]);
                 return arpeggio_playing;

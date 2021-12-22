@@ -143,7 +143,7 @@ namespace Ensembles.Core {
                 mute_array[track] = !mute_array[track];
                 track_visuals[track].set_mute (mute_array[track]);
                 if (Application.arranger_core.synthesizer != null) {
-                    Application.arranger_core.synthesizer.halt_realtime ();
+                    Application.arranger_core.synthesizer.halt_realtime (true);
                 }
                 if (track == 0 && Application.arranger_core.style_player != null) {
                     Application.arranger_core.style_player.stop_style ();
@@ -160,7 +160,7 @@ namespace Ensembles.Core {
                     }
                 }
                 if (Application.arranger_core.synthesizer != null) {
-                    Application.arranger_core.synthesizer.halt_realtime ();
+                    Application.arranger_core.synthesizer.halt_realtime (true);
                 }
                 if (mute_array[0] && Application.arranger_core.style_player != null) {
                     Application.arranger_core.style_player.stop_style ();
@@ -180,7 +180,7 @@ namespace Ensembles.Core {
                     mute_array[track] = false;
                     track_visuals[track].set_mute (false);
                     if (Application.arranger_core.synthesizer != null) {
-                        Application.arranger_core.synthesizer.halt_realtime ();
+                        Application.arranger_core.synthesizer.halt_realtime (true);
                     }
                 } else {
                     Gdk.Display.get_default ().beep ();
@@ -339,7 +339,7 @@ namespace Ensembles.Core {
                 _sequencer_visual.sensitive = true;
                 return false;
             });
-            Application.arranger_core.synthesizer.halt_realtime ();
+            Application.arranger_core.synthesizer.halt_realtime (true);
             _sequencer_progress.queue_draw ();
         }
 

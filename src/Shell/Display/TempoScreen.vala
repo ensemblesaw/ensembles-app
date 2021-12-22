@@ -62,7 +62,7 @@ namespace Ensembles.Shell {
             tempo_grid.attach (tap_button, 0, 1, 2, 1);
 
 
-            var tempo_icon = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/tempo_icon.svg"){
+            var tempo_icon = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/tempo_icon.svg") {
                 vexpand = true
             };
             tempo_grid.attach (tempo_icon, 0, 2, 2, 1);

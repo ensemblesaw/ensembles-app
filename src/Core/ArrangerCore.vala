@@ -208,7 +208,7 @@ namespace Ensembles.Core {
             });
             harmonizer.halt_notes.connect (() => {
                 Application.main_window.main_keyboard.halt_all ();
-                synthesizer.halt_realtime ();
+                synthesizer.halt_realtime (true);
             });
 
             synthesizer.detected_chord.connect ((chord, type) => {

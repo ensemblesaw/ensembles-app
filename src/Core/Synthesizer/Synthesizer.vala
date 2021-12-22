@@ -49,7 +49,7 @@ namespace Ensembles.Core {
         public void disable_input (bool disable) {
             input_enabled = !disable;
             if (disable) {
-                halt_realtime ();
+                halt_realtime (true);
             }
         }
 
@@ -71,8 +71,12 @@ namespace Ensembles.Core {
             }
         }
 
-        public void halt_realtime () {
-            synthesizer_halt_realtime ();
+        public void halt_realtime (bool all) {
+            synthesizer_halt_realtime (all ? 1 : 0);
+        }
+
+        public void sustain (bool on) {
+            synthesizer_send_sustain (on ? 1 : 0);
         }
 
         public void set_accompaniment_on (bool active) {
@@ -193,7 +197,8 @@ extern void synthesizer_destruct ();
 extern int synthesizer_set_driver_configuration (string dname, double buffer_size);
 extern int synthesizer_send_notes (int key, int on, int velocity, int channel, out int type);
 extern void synthesizer_halt_notes ();
-extern void synthesizer_halt_realtime ();
+extern void synthesizer_halt_realtime (int b_all);
+extern void synthesizer_send_sustain (int on);
 
 extern void synthesizer_set_accomp_enable (int on);
 

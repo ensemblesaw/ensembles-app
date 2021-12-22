@@ -370,7 +370,8 @@ synthesizer_send_notes (int key, int on, int velocity, int channel, int* type)
 }
 
 void
-synthesizer_halt_notes () {
+synthesizer_halt_notes ()
+{
     if (realtime_render_synth) {
         for (int i = 0; i < 16; i++) {
             if (i != 9 && i != 10) {
@@ -381,26 +382,37 @@ synthesizer_halt_notes () {
 }
 
 void
-synthesizer_halt_realtime () {
+synthesizer_halt_realtime (int b_all)
+{
     if (realtime_render_synth) {
         fluid_synth_all_notes_off (realtime_render_synth, 17);
         fluid_synth_all_notes_off (realtime_render_synth, 18);
         fluid_synth_all_notes_off (realtime_render_synth, 19);
-
-        for (int i = 20; i < 64; i++) {
-            fluid_synth_all_notes_off (realtime_render_synth, i);
+        if (b_all > 0)
+        {
+            for (int i = 20; i < 64; i++) {
+                fluid_synth_all_notes_off (realtime_render_synth, i);
+            }
         }
     }
 }
 
+void
+synthesizer_send_sustain (int on)
+{
+    synthesizer_change_modulator (17, 66, on > 0 ? 127 : 0);
+}
+
 
 void
-synthesizer_set_accomp_enable (int on) {
+synthesizer_set_accomp_enable (int on)
+{
     set_central_accompaniment_mode (on);
 }
 
 float
-synthesizer_get_version () {
+synthesizer_get_version ()
+{
     int major_version = 0;
     int minor_version = 0;
     int macro_version = 0;
