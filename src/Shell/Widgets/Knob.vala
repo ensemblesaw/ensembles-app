@@ -7,9 +7,11 @@ namespace Ensembles.Shell {
     public class Knob : Gtk.Overlay {
         public string tooltip;
         public bool dragging;
-        private double dragging_direction;
+        private double dragging_direction_x;
+        private double dragging_direction_y;
 
         public double value = 27;
+        public int drag_force = 0;
         protected Gtk.Box knob_socket_graphic;
         protected Gtk.Box knob_cover;
         protected Gtk.Box knob_background;
@@ -22,29 +24,30 @@ namespace Ensembles.Shell {
 
         public Knob () {
             center = 25;
-            knob_socket_graphic = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
-            knob_socket_graphic.width_request = 5;
-            knob_socket_graphic.height_request = 5;
+            knob_socket_graphic = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
+                width_request = 5,
+                height_request = 5
+            };
             knob_socket_graphic.get_style_context ().add_class ("knob-socket-graphic");
 
             knob_cover = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
                 expand = true,
-                margin = 4
+                margin = 4,
+                halign = Gtk.Align.CENTER,
+                valign = Gtk.Align.CENTER,
+                width_request = 50,
+                height_request = 50
             };
             knob_cover.get_style_context ().add_class ("knob-cover-graphic");
-            knob_cover.halign = Gtk.Align.CENTER;
-            knob_cover.valign = Gtk.Align.CENTER;
-            knob_cover.width_request = 50;
-            knob_cover.height_request = 50;
 
             fixed = new Gtk.Fixed () {
                 expand = true,
-                margin = 4
+                margin = 4,
+                halign = Gtk.Align.CENTER,
+                valign = Gtk.Align.CENTER,
+                width_request = 50,
+                height_request = 50
             };
-            fixed.halign = Gtk.Align.CENTER;
-            fixed.valign = Gtk.Align.CENTER;
-            fixed.width_request = 50;
-            fixed.height_request = 50;
             double px = RADIUS * GLib.Math.cos (value / Math.PI);
             double py = RADIUS * GLib.Math.sin (value / Math.PI);
             fixed.put (knob_socket_graphic, (int)(px + center), (int)(py + center));
@@ -53,15 +56,15 @@ namespace Ensembles.Shell {
                 expand = true,
                 halign = Gtk.Align.CENTER,
                 valign = Gtk.Align.CENTER,
-                margin = 4
+                margin = 4,
+                width_request = 50,
+                width_request = 50
             };
-            knob_background.width_request = 50;
-            knob_background.height_request = 50;
 
-            var event_box = new Gtk.EventBox ();
+            var event_box = new Gtk.EventBox () {
+                expand = true
+            };
             event_box.event.connect (handle_event);
-            event_box.hexpand = true;
-            event_box.vexpand = true;
 
             add (knob_background);
             add_overlay (knob_cover);
@@ -101,38 +104,42 @@ namespace Ensembles.Shell {
             }
             if (event.type == Gdk.EventType.BUTTON_RELEASE) {
                 dragging = false;
-                dragging_direction = 0;
+                dragging_direction_x = 0;
+                dragging_direction_y = 0;
             }
 
             if (event.type == Gdk.EventType.MOTION_NOTIFY && dragging) {
-                if (dragging_direction == 0) {
-                    dragging_direction = event.motion.y - event.motion.x;
+                if (dragging_direction_x == 0) {
+                    dragging_direction_x = event.motion.x;
                 }
-                if (dragging_direction > event.motion.y - event.motion.x ||
-                    event.motion.y_root == 0 ||
-                    event.motion.x_root == 0) {
-                    value += 0.5;
-                    if (value < 27) {
-                        value = 27;
-                    }
-                    if (value > 42) {
-                        value = 42;
-                    }
-                    rotate_dial (value);
-                    dragging_direction = event.motion.y - event.motion.x;
+                if (dragging_direction_y == 0) {
+                    dragging_direction_y = event.motion.y;
+                }
+                double delta = 0.0;
+                if (dragging_direction_x > event.motion.x || event.motion.x_root == 0) {
+                    delta -= 0.1 * (dragging_direction_x - event.motion.x);
+                    dragging_direction_x = event.motion.x;
                 } else {
-                    value -= 0.5;
-                    if (value < 27) {
-                        value = 27;
-                    }
-                    if (value > 42) {
-                        value = 42;
-                    }
-                    rotate_dial (value);
-                    dragging_direction = event.motion.y - event.motion.x;
+                    delta += 0.1 * (event.motion.x - dragging_direction_x);
+                    dragging_direction_x = event.motion.x;
                 }
+                if (dragging_direction_y > event.motion.y || event.motion.y_root == 0) {
+                    delta += 0.1 * (dragging_direction_y - event.motion.y);
+                    dragging_direction_y = event.motion.y;
+                } else {
+                    delta -= 0.1 * (event.motion.y - dragging_direction_y);
+                    dragging_direction_y = event.motion.y;
+                }
+                value += delta;
+                if (value < 27) {
+                    value = 27;
+                }
+                if (value > 42) {
+                    value = 42;
+                }
+                rotate_dial (value);
             }
-            return true;
+            return false;
         }
     }
 }

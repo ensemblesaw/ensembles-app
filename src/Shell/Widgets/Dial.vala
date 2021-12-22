@@ -7,11 +7,8 @@ namespace Ensembles.Shell {
     public class Dial : Gtk.Overlay {
         public string tooltip;
         public bool dragging;
-        private double dragging_direction;
-        private double over_centre_initial;
-        private double over_centre;
-        private double left_of_centre;
-        private double left_of_centre_initial;
+        private double dragging_direction_x;
+        private double dragging_direction_y;
 
         public double value = 0;
         Gtk.Box knob_socket_graphic;
@@ -25,84 +22,93 @@ namespace Ensembles.Shell {
         private const double RADIUS = 20;
 
         public Dial () {
-            knob_socket_graphic = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
-            knob_socket_graphic.width_request = 20;
-            knob_socket_graphic.height_request = 20;
+            knob_socket_graphic = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
+                width_request = 20,
+                height_request = 20
+            };
             knob_socket_graphic.get_style_context ().add_class ("dial-socket-graphic");
 
-            dial_cover = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
+            dial_cover = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
+                halign = Gtk.Align.START,
+                valign = Gtk.Align.CENTER,
+                margin_start = 6,
+                width_request = 100,
+                height_request = 100
+            };
             dial_cover.get_style_context ().add_class ("dial-cover-graphic");
-            dial_cover.halign = Gtk.Align.START;
-            dial_cover.valign = Gtk.Align.CENTER;
-            dial_cover.margin_start = 6;
-            dial_cover.width_request = 100;
-            dial_cover.height_request = 100;
 
-            dial_light_graphics = new Gtk.Grid ();
-            dial_light_graphics.halign = Gtk.Align.START;
-            dial_light_graphics.valign = Gtk.Align.CENTER;
-            dial_light_graphics.margin_start = 6;
-            dial_light_graphics.width_request = 100;
-            dial_light_graphics.height_request = 100;
+            dial_light_graphics = new Gtk.Grid () {
+                halign = Gtk.Align.START,
+                valign = Gtk.Align.CENTER,
+                margin_start = 6,
+                width_request = 100,
+                height_request = 100
+            };
             dial_light_graphics.get_style_context ().add_class ("dial-graphic");
 
-            fixed = new Gtk.Fixed ();
-            fixed.halign = Gtk.Align.START;
-            fixed.valign = Gtk.Align.CENTER;
-            fixed.margin_start = 6;
-            fixed.width_request = 100;
-            fixed.height_request = 100;
+            fixed = new Gtk.Fixed () {
+                halign = Gtk.Align.START,
+                valign = Gtk.Align.CENTER,
+                margin_start = 6,
+                width_request = 100,
+                height_request = 100
+            };
             fixed.put (knob_socket_graphic, 70, 50);
-            var event_box = new Gtk.EventBox ();
+
+            var event_box = new Gtk.EventBox () {
+                expand = true
+            };
             event_box.event.connect (handle_event);
-            event_box.hexpand = true;
-            event_box.vexpand = true;
 
 
 
-            var plus_one_button = new Gtk.Button.from_icon_name ("list-add-symbolic", Gtk.IconSize.BUTTON);
-            plus_one_button.halign = Gtk.Align.START;
-            plus_one_button.valign = Gtk.Align.START;
-            plus_one_button.margin_top = 8;
-            plus_one_button.margin_start = 110;
-            plus_one_button.width_request = 30;
-            plus_one_button.height_request = 30;
+            var plus_one_button = new Gtk.Button.from_icon_name ("list-add-symbolic", Gtk.IconSize.BUTTON) {
+                halign = Gtk.Align.START,
+                valign = Gtk.Align.START,
+                margin_top = 8,
+                margin_start = 105,
+                width_request = 40,
+                height_request = 40
+            };
             plus_one_button.get_style_context ().add_class ("rounded");
             plus_one_button.get_style_context ().remove_class ("image-button");
             plus_one_button.clicked.connect (() => {
                 rotate (true, 1);
             });
 
-            var minus_one_button = new Gtk.Button.from_icon_name ("list-remove-symbolic", Gtk.IconSize.BUTTON);
-            minus_one_button.halign = Gtk.Align.START;
-            minus_one_button.valign = Gtk.Align.END;
-            minus_one_button.margin_bottom = 8;
-            minus_one_button.margin_start = 110;
-            minus_one_button.width_request = 30;
-            minus_one_button.height_request = 30;
+            var minus_one_button = new Gtk.Button.from_icon_name ("list-remove-symbolic", Gtk.IconSize.BUTTON) {
+                halign = Gtk.Align.START,
+                valign = Gtk.Align.END,
+                margin_bottom = 8,
+                margin_start = 105,
+                width_request = 40,
+                height_request = 40
+            };
             minus_one_button.get_style_context ().add_class ("rounded");
             minus_one_button.get_style_context ().remove_class ("image-button");
             minus_one_button.clicked.connect (() => {
                 rotate (false, 1);
             });
 
-            var activate_button = new Gtk.Button.from_icon_name ("go-next-symbolic", Gtk.IconSize.BUTTON);
-            activate_button.halign = Gtk.Align.START;
-            activate_button.valign = Gtk.Align.CENTER;
-            activate_button.margin_start = 118;
-            activate_button.margin_bottom = 4;
-            activate_button.margin_top = 4;
-            activate_button.width_request = 30;
-            activate_button.height_request = 30;
+            var activate_button = new Gtk.Button.from_icon_name ("go-next-symbolic", Gtk.IconSize.BUTTON) {
+                halign = Gtk.Align.START,
+                valign = Gtk.Align.CENTER,
+                margin_top = 4,
+                margin_bottom = 4,
+                margin_start = 118,
+                width_request = 40,
+                height_request = 40
+            };
             activate_button.get_style_context ().add_class ("rounded");
             activate_button.get_style_context ().remove_class ("image-button");
             activate_button.clicked.connect (() => {
                 activate_clicked ();
             });
 
-            var recorder_button = new Gtk.Button.with_label (_("Recorder"));
-            recorder_button.halign = Gtk.Align.END;
-            recorder_button.valign = Gtk.Align.START;
+            var recorder_button = new Gtk.Button.with_label (_("Recorder")) {
+                halign = Gtk.Align.END,
+                valign = Gtk.Align.START
+            };
             recorder_button.get_style_context ().add_class ("ctrl-panel-recorder-button");
             recorder_button.clicked.connect (() => {
                 open_recorder_screen ();
@@ -157,69 +163,45 @@ namespace Ensembles.Shell {
             //  }
             if (event.type == Gdk.EventType.BUTTON_PRESS) {
                 dragging = true;
-                over_centre_initial = event.motion.y_root;
             }
             if (event.type == Gdk.EventType.BUTTON_RELEASE) {
                 dragging = false;
-                dragging_direction = 0;
+                dragging_direction_x = 0;
+                dragging_direction_y = 0;
             }
 
+
             if (event.type == Gdk.EventType.MOTION_NOTIFY && dragging) {
-                if (dragging_direction == 0) {
-                    dragging_direction = event.motion.x;
+                if (dragging_direction_x == 0) {
+                    dragging_direction_x = event.motion.x;
                 }
-                if (over_centre == 0) {
-                    over_centre = event.motion.y_root;
+                if (dragging_direction_y == 0) {
+                    dragging_direction_y = event.motion.y;
                 }
-                if (dragging_direction > event.motion.x || event.motion.x_root == 0) {
-                    if (over_centre > over_centre_initial) {
-                        value+=0.5;
-                        if (value >= 360 || value <= -360) {
-                            value = 0;
-                        }
-                        if ((int)value % 8 == 0) {
-                            rotate (true, 5);
-                            animate_rotate_dial (true);
-                        }
-                    }
-                    else {
-                        value-=0.5;
-                        if (value >= 360 || value <= -360) {
-                            value = 0;
-                        }
-                        if ((int)value % 8 == 0) {
-                            rotate (false, 5);
-                            animate_rotate_dial (false);
-                        }
-                    }
-                    rotate_dial (value);
-                    dragging_direction = event.motion.x;
-                    over_centre = event.motion.y_root;
+                double delta = 0.0;
+                if (dragging_direction_x > event.motion.x || event.motion.x_root == 0) {
+                    delta -= 0.05 * (dragging_direction_x - event.motion.x);
+                    dragging_direction_x = event.motion.x;
                 } else {
-                    if (over_centre > over_centre_initial) {
-                        value-=0.5;
-                        if (value >= 360 || value <= -360) {
-                            value = 0;
-                        }
-                        if ((int)value % 8 == 0) {
-                            rotate (false, 5);
-                            animate_rotate_dial (false);
-                        }
-                    }
-                    else {
-                        value+=0.5;
-                        if (value >= 360 || value <= -360) {
-                            value = 0;
-                        }
-                        if ((int)value % 8 == 0) {
-                            rotate (true, 5);
-                            animate_rotate_dial (true);
-                        }
-                    }
-                    rotate_dial (value);
-                    dragging_direction = event.motion.x;
-                    over_centre = event.motion.y_root;
+                    delta += 0.05 * (event.motion.x - dragging_direction_x);
+                    dragging_direction_x = event.motion.x;
                 }
+                if (dragging_direction_y > event.motion.y || event.motion.y_root == 0) {
+                    delta += 0.05 * (dragging_direction_y - event.motion.y);
+                    dragging_direction_y = event.motion.y;
+                } else {
+                    delta -= 0.05 * (event.motion.y - dragging_direction_y);
+                    dragging_direction_y = event.motion.y;
+                }
+                value += delta;
+                if ((int)value % 8 == 0) {
+                    rotate (delta > 0, 5);
+                    animate_rotate_dial (delta > 0);
+                }
+                if (value >= 360 || value <= -360) {
+                    value = 0;
+                }
+                rotate_dial (value);
             }
             return false;
         }
