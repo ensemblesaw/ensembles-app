@@ -14,7 +14,7 @@ src/Shell/Views/AppMenuView.vala
 src/Shell/Views/BeatCounterView.vala
 src/Shell/Views/ControlPanel.vala
 src/Shell/Views/JoyStick.vala
-src/Shell/Views/KeyboardView.vala
+src/Shell/Views/KeyBed.vala
 src/Shell/Views/RegistryView.vala
 src/Shell/Views/SamplerPadView.vala
 src/Shell/Views/SliderBoardView.vala

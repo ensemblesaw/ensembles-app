@@ -27,4 +27,16 @@ void synthesizer_send_notes_to_metronome(int key, int on);
  */
 void synthesizer_halt_notes();
 
+/** Event callback
+ */
+typedef void
+(*synthesizer_note_event_callback)(int channel,
+                                   int key,
+                                   int velocity,
+                                   int on,
+                                   int chord_main,
+                                   int chord_type);
+
+void synthesizer_set_event_callback (synthesizer_note_event_callback callback);
+
 #endif /* SYNTHESIZER_H */

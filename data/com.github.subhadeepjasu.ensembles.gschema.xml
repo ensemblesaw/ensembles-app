@@ -51,39 +51,15 @@
 		<summary>Voice Right 1</summary>
 		<description>Main instrument (usually played with right hand if split)</description>
 	</key>
-	<key name="voice-r1-bank" type="i">
-		<default>0</default>
-		<summary>Voice Right 1</summary>
-	</key>
-	<key name="voice-r1-preset" type="i">
-		<default>0</default>
-		<summary>Voice Right 1</summary>
-	</key>
     <key name="voice-r2-index" type="i">
 		<default>49</default>
 		<summary>Voice Right 2</summary>
 		<description>Instrument played along with main instrument on a layer</description>
 	</key>
-	<key name="voice-r2-bank" type="i">
-		<default>0</default>
-		<summary>Voice Right 2</summary>
-	</key>
-	<key name="voice-r2-preset" type="i">
-		<default>0</default>
-		<summary>Voice Right 2</summary>
-	</key>
     <key name="voice-l-index" type="i">
 		<default>33</default>
 		<summary>Voice L</summary>
 		<description>Instrument played on the left side of keyboard split</description>
-	</key>
-	<key name="voice-l-bank" type="i">
-		<default>0</default>
-		<summary>Voice Left</summary>
-	</key>
-	<key name="voice-l-preset" type="i">
-		<default>0</default>
-		<summary>Voice Left</summary>
 	</key>
     <key name="style-index" type="i">
 		<default>0</default>

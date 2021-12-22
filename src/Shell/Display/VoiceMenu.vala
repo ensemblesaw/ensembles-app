@@ -5,7 +5,7 @@
 
 namespace Ensembles.Shell {
     public class VoiceMenu : WheelScrollableWidget {
-        int channel;
+        uint8 channel;
         Gtk.Button close_button;
         Gtk.ListBox main_list;
         VoiceItem[] voice_rows;
@@ -14,8 +14,8 @@ namespace Ensembles.Shell {
         int last_voice_index;
 
         public signal void close_menu ();
-        public signal void change_voice (Ensembles.Core.Voice voice, int channel);
-        public VoiceMenu (int channel) {
+        public signal void change_voice (Ensembles.Core.Voice voice, uint8 channel);
+        public VoiceMenu (uint8 channel) {
             this.channel = channel;
             this.get_style_context ().add_class ("menu-background");
 

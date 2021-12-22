@@ -126,29 +126,11 @@ namespace Ensembles.Shell {
             layer_toggle.toggled.connect ((active) => {
                 Ensembles.Application.settings.set_boolean ("layer-on", active);
                 Ensembles.Core.CentralBus.set_layer_on (active);
-
-                // Send to Sequencer for recording
-                if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state == Core.MidiRecorder.RecorderState.RECORDING) {
-                    var event = new Core.MidiEvent ();
-                    event.event_type = Core.MidiEvent.EventType.LAYER;
-                    event.value1 = active ? 1 : 0;
-
-                    Shell.RecorderScreen.sequencer.record_event (event);
-                }
             });
             split_toggle.toggled.connect ((active) => {
                 Ensembles.Application.settings.set_boolean ("split-on", active);
                 Ensembles.Core.CentralBus.set_split_on (active);
                 update_split ();
-
-                // Send to Sequencer for recording
-                if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state == Core.MidiRecorder.RecorderState.RECORDING) {
-                    var event = new Core.MidiEvent ();
-                    event.event_type = Core.MidiEvent.EventType.SPLIT;
-                    event.value1 = active ? 1 : 0;
-
-                    Shell.RecorderScreen.sequencer.record_event (event);
-                }
             });
             metronome_toggle.toggled.connect ((active) => {
                 start_metronome (active);

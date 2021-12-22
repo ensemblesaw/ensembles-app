@@ -29,6 +29,8 @@ ensembles_sources_vala = files (
     'Core/VoiceManager/VoiceAnalyser.vala',
 
     'Core/MidiRecorder/MidiRecorder.vala',
+    'Core/MidiRecorder/MidiEvent.vala',
+    'Core/MidiRecorder/PlayBackObject.vala',
 
     'Core/SamplingPads/SamplePlayer.vala',
     'Core/SamplingPads/SampleRecorder.vala',
@@ -107,7 +109,7 @@ ensembles_sources_vala = files (
     'Shell/Layouts/BeatCounterView.vala',
     'Shell/Layouts/ControlPanel.vala',
     'Shell/Layouts/JoyStick.vala',
-    'Shell/Layouts/KeyboardView.vala',
+    'Shell/Layouts/KeyBed.vala',
     'Shell/Layouts/MixerBoardView.vala',
     'Shell/Layouts/RegistryView.vala',
     'Shell/Layouts/SamplerPadView.vala',

@@ -22,7 +22,7 @@ namespace Ensembles.Shell {
         public RegistryView registry_panel;
         public AppMenuView app_menu;
         public SongControllerView song_control_panel;
-        public KeyboardView main_keyboard;
+        public KeyBed main_keyboard;
 
         Gtk.HeaderBar headerbar;
         Gtk.Button app_menu_button;
@@ -82,7 +82,7 @@ namespace Ensembles.Shell {
             ctrl_panel = new ControlPanel ();
 
             // Make the onscreen keyboard that appears at the bottom
-            main_keyboard = new KeyboardView ();
+            main_keyboard = new KeyBed ();
             // Connect the onscreen keyboard with the synthesizer
             main_keyboard.connect_synthesizer (Application.arranger_core.synthesizer);
 
@@ -185,23 +185,23 @@ namespace Ensembles.Shell {
                         if (key > Core.CentralBus.get_split_key ()) {
                             Application.arranger_core.arpeggiator.send_notes (key, on, 100);
                         } else {
-                            Application.arranger_core.synthesizer.send_notes_realtime (key, on, 100, 17);
+                            Application.arranger_core.synthesizer.send_notes_realtime (key, on, 100);
                         }
                     } else {
                         Application.arranger_core.arpeggiator.send_notes (key, on, 100);
                     }
                 } else {
-                    Application.arranger_core.synthesizer.send_notes_realtime (key, on, 100, 17);
+                    Application.arranger_core.synthesizer.send_notes_realtime (key, on, 100);
                 }
                 if (Application.settings.get_boolean ("harmonizer-on")) {
                     if (Application.settings.get_boolean ("accomp-on")) {
                         if (key > Core.CentralBus.get_split_key ()) {
                             Application.arranger_core.harmonizer.send_notes (key, on, 100);
                         } else {
-                            Application.arranger_core.synthesizer.send_notes_realtime (key, on, 100, 17);
+                            Application.arranger_core.synthesizer.send_notes_realtime (key, on, 100);
                         }
                     } else {
-                        Application.arranger_core.synthesizer.send_notes_realtime (key, on, 100, 17);
+                        Application.arranger_core.synthesizer.send_notes_realtime (key, on, 100);
                     }
                 }
                 main_keyboard.set_note_on (key, (on == 144));

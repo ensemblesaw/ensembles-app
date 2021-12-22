@@ -163,13 +163,13 @@ namespace Ensembles.Core {
                         if (key > Core.CentralBus.get_split_key ()) {
                             arpeggiator.send_notes (key, on, velocity);
                         } else {
-                            synthesizer.send_notes_realtime (key, on, velocity, 17);
+                            synthesizer.send_notes_realtime (key, on, velocity);
                         }
                     } else {
                         arpeggiator.send_notes (key, on, velocity);
                     }
                 } else {
-                    synthesizer.send_notes_realtime (key, on, velocity, 17);
+                    synthesizer.send_notes_realtime (key, on, velocity);
                 }
                 if (Application.settings.get_boolean ("harmonizer-on")) {
                     if (Application.settings.get_boolean ("accomp-on")) {
@@ -191,20 +191,19 @@ namespace Ensembles.Core {
                         if (key > Core.CentralBus.get_split_key ()) {
                             harmonizer.send_notes (key, on, velocity);
                         } else {
-                            synthesizer.send_notes_realtime (key, on, velocity, 17);
+                            synthesizer.send_notes_realtime (key, on, velocity);
                         }
                     } else {
-                        synthesizer.send_notes_realtime (key, on, velocity, 17);
+                        synthesizer.send_notes_realtime (key, on, velocity);
                     }
                 } else {
-                    synthesizer.send_notes_realtime (key, on, velocity, 17);
+                    synthesizer.send_notes_realtime (key, on, velocity);
                 }
             });
             arpeggiator.halt_notes.connect (synthesizer.halt_realtime);
             harmonizer.generate_notes.connect ((key, on, velocity) => {
                 if (key > Core.CentralBus.get_split_key ()) {
-                    synthesizer.send_notes_realtime (key, on, velocity, 17);
-                    Application.main_window.main_keyboard.set_note_on (key, (on == 144), true);
+                    synthesizer.send_notes_realtime (key, on, velocity);
                 }
             });
             harmonizer.halt_notes.connect (() => {

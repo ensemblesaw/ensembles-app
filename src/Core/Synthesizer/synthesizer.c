@@ -103,6 +103,13 @@ synthesizer_set_defaults () {
     }
 }
 
+static synthesizer_note_event_callback event_callback;
+
+void
+set_note_callback (synthesizer_note_event_callback callback) {
+    event_callback = callback;
+}
+
 void
 synthesizer_init(const char* loc, const char* dname, double buffer_size)
 {
@@ -159,6 +166,12 @@ synthesizer_change_voice (int bank, int preset, int channel) {
 }
 
 void
+synthesizer_get_voice_by_channel (int channel, int* bank, int* preset) {
+    int sfid = 0;
+    fluid_synth_get_program(realtime_render_synth, channel, &sfid, bank, preset);
+}
+
+void
 synthesizer_change_modulator (int channel, int modulator, int value) {
     if (realtime_render_synth) {
         fluid_synth_cc (realtime_render_synth, channel, modulator, value);
@@ -200,6 +213,13 @@ synthesizer_destruct () {
 void
 synthesizer_set_fx_callback (synthesizer_fx_callback callback) {
     set_fx_callback(callback);
+}
+
+static synthesizer_note_event_callback event_callback;
+
+void
+synthesizer_set_event_callback (synthesizer_note_event_callback callback) {
+    event_callback = callback;
 }
 
 int
@@ -268,7 +288,7 @@ synthesizer_send_notes (int key, int on, int velocity, int channel, int* type)
 {
     if (realtime_render_synth)
     {
-        if (channel == 17 || channel == 24)
+        if (channel == 17)
         {
             if (get_central_accompaniment_mode () > 0)
             {
@@ -296,6 +316,7 @@ synthesizer_send_notes (int key, int on, int velocity, int channel, int* type)
                             fluid_synth_noteoff (realtime_render_synth, 22, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0) + 36);
                             fluid_synth_noteoff (realtime_render_synth, 22, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0) + 24);
                         }
+                        event_callback(17, 0, 0, 0, chrd_main, chrd_type);
                         return chrd_main;
                     }
                 }
@@ -305,36 +326,43 @@ synthesizer_send_notes (int key, int on, int velocity, int channel, int* type)
                     if (on == 144) {
                         fluid_synth_noteon(realtime_render_synth, 19, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0), velocity);
                         velocity_buffer[19] = velocity;
+                        event_callback(19, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0), velocity, 144, 0, 0);
                     } else if (on == 128) {
                         fluid_synth_noteoff(realtime_render_synth, 19, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0));
+                        event_callback(19, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0), 0, 128, 0, 0);
                         velocity_buffer[19] = 0;
                     }
                     return -6;
                 }
             }
             if (on == 144) {
-                fluid_synth_noteon(realtime_render_synth, channel < 0 ? 0 : channel, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0), velocity);
+                fluid_synth_noteon(realtime_render_synth, channel < 0 ? 17 : channel, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0), velocity);
                 velocity_buffer[17] = velocity;
+                event_callback(17, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0), velocity, 144, 0, 0);
             } else if (on == 128) {
-                fluid_synth_noteoff(realtime_render_synth, channel < 0 ? 0 : channel, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0));
+                fluid_synth_noteoff(realtime_render_synth, channel < 0 ? 17 : channel, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0));
                 velocity_buffer[17] = 0;
+                event_callback(17, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0), 0, 128, 0, 0);
             }
             if (get_central_layer_on () > 0) {
                 if (on == 144) {
                     fluid_synth_noteon (realtime_render_synth, 18, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0), velocity);
                     velocity_buffer[18] = velocity;
+                    event_callback(24, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0), velocity, 144, 0, 0);
                 } else if (on == 128) {
                     fluid_synth_noteoff (realtime_render_synth, 18, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0));
                     velocity_buffer[18] = 0;
+                    event_callback(24, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0), 0, 128, 0, 0);
+
                 }
             }
         } else {
             if (on == 144) {
                 fluid_synth_noteon (realtime_render_synth, channel, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0), velocity);
-                velocity_buffer[17] = velocity;
+                event_callback(channel, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0), velocity, 144, 0, 0);
             } else if (on == 128) {
                 fluid_synth_noteoff (realtime_render_synth, channel, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0));
-                velocity_buffer[17] = 0;
+                event_callback(channel, key + ((synthesizer_octave_shifted > 0) ? (synthesizer_octave * 12) : 0) + ((synthesizer_transpose_enable > 0) ? synthesizer_transpose : 0), 0, 128, 0, 0);
             }
         }
     }

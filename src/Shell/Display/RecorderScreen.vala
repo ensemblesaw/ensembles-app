@@ -250,67 +250,6 @@ namespace Ensembles.Shell {
                 }
             });
 
-            sequencer.note_event.connect ((channel, key, on, velocity) => {
-                if (Application.arranger_core.synthesizer != null) {
-                    if (channel == 0) {
-                        Application.arranger_core.synthesizer.send_notes_realtime (key, on, velocity, 6, false);
-                    } else {
-                        Application.arranger_core.synthesizer.send_notes_realtime (key, on, velocity, channel, false);
-                    }
-                }
-            });
-
-            sequencer.voice_change.connect ((channel, bank, index) => {
-                if (Application.arranger_core.synthesizer != null) {
-                    var voice = new Core.Voice (index, bank, index, "", "");
-                    if (channel == 0) {
-                            Application.arranger_core.synthesizer.change_voice (voice, 6, false);
-                    } else {
-                        Application.arranger_core.synthesizer.change_voice (voice, channel, false);
-                    }
-                }
-            });
-
-            sequencer.layer_change.connect ((active) => {
-                Ensembles.Core.CentralBus.set_layer_on (active);
-            });
-
-            sequencer.split_change.connect ((active) => {
-                Ensembles.Core.CentralBus.set_split_on (active);
-            });
-
-            sequencer.accomp_change.connect ((active) => {
-                if (Application.arranger_core.synthesizer != null) {
-                    Application.arranger_core.synthesizer.set_accompaniment_on (active);
-                }
-            });
-
-            sequencer.style_change.connect ((index) => {
-                if (Application.main_window.main_display_unit != null && Application.main_window.main_display_unit.style_menu != null) {
-                    Application.main_window.main_display_unit.style_menu.quick_select_row (index, -0);
-                }
-            });
-
-            sequencer.style_part_change.connect ((section) => {
-                if (Application.main_window.style_controller_view != null) {
-                    Application.main_window.style_controller_view.set_style_section_by_index (section);
-                }
-            });
-
-            sequencer.style_start_stop.connect ((value) => {
-                if (Application.main_window.style_controller_view != null) {
-                    if (value) {
-                        Application.arranger_core.style_player.stop_style ();
-                    } else {
-                        Application.arranger_core.style_player.play_style ();
-                    }
-                }
-            });
-
-            sequencer.tempo_change.connect ((tempo) => {
-                Application.arranger_core.style_player.change_tempo (tempo);
-            });
-
             sequencer.recorder_state_change.connect ((state) => {
                 switch (state) {
                     case Core.MidiRecorder.RecorderState.PLAYING:

@@ -13,7 +13,7 @@ namespace Ensembles.Core {
 
         private string _name;
         private string _file_path;
-        private int _track;
+        private uint8 _track;
         private Gtk.ListBox _sequencer_visual;
         private Gtk.Overlay _sequencer_progress_overlay;
         private Gtk.Box _sequencer_progress;
@@ -45,44 +45,39 @@ namespace Ensembles.Core {
         public signal void progress_change (double progress);
         public signal void recorder_state_change (RecorderState state);
         public signal void set_ui_sensitive (bool sensitive);
-        public signal void note_event (int channel, int note, int on, int velocity);
-        public signal void voice_change (int channel, int bank, int index);
-        public signal void style_change (int index);
-        public signal void style_part_change (int part_index);
-        public signal void style_start_stop (bool stop);
-        public signal void tempo_change (int tempo);
-        public signal void accomp_change (bool on);
-        public signal void split_change (bool on);
-        public signal void layer_change (bool on);
 
         public void multiplex_events (MidiEvent event) {
             switch (event.event_type) {
                 case MidiEvent.EventType.NOTE:
-                note_event (event.channel, event.value1, event.value2, event.velocity);
+                Application.arranger_core.synthesizer.send_notes_realtime (event.value1, event.value2, event.velocity, event.channel);
                 break;
                 case MidiEvent.EventType.VOICECHANGE:
-                voice_change (event.channel, event.value1, event.value2);
+                var voice = new Voice (event.value2, event.value1, event.value2, "", "");
+                Application.arranger_core.synthesizer.change_voice (voice, event.channel);
                 break;
                 case MidiEvent.EventType.STYLECHANGE:
-                style_change (event.value1);
+                Application.main_window.main_display_unit.style_menu.quick_select_row (event.value1, -1);
                 break;
                 case MidiEvent.EventType.STYLECONTROL:
-                style_part_change (event.value1);
+                Application.main_window.style_controller_view.set_style_section_by_index (event.value1);
                 break;
                 case MidiEvent.EventType.STYLESTARTSTOP:
-                style_start_stop (event.value1 == 1 ? true : false);
+                if (Application.main_window.style_controller_view != null) {
+                    if (event.value1 == 1) {
+                        Application.arranger_core.style_player.stop_style ();
+                    } else {
+                        Application.arranger_core.style_player.play_style ();
+                    }
+                }
                 break;
                 case MidiEvent.EventType.TEMPO:
-                tempo_change (event.value1);
+                Application.arranger_core.style_player.change_tempo (event.value1);
                 break;
                 case MidiEvent.EventType.ACCOMP:
-                accomp_change (event.value1 == 1);
+                Application.arranger_core.synthesizer.set_accompaniment_on (event.value1 == 1);
                 break;
-                case MidiEvent.EventType.SPLIT:
-                split_change (event.value1 == 1);
-                break;
-                case MidiEvent.EventType.LAYER:
-                layer_change (event.value1 == 1);
+                case MidiEvent.EventType.STYLECHORD:
+                Application.arranger_core.synthesizer.set_chord (event.value1, event.value2);
                 break;
             }
         }
@@ -109,7 +104,7 @@ namespace Ensembles.Core {
             }
 
             track_visuals = new Shell.RecorderTrackItem [10];
-            for (int i = 0; i < 10; i++) {
+            for (uint8 i = 0; i < 10; i++) {
                 track_visuals[i] = new Shell.RecorderTrackItem (midi_event_sequence[i], i, track_options_handler);
                 _sequencer_visual.insert (track_visuals[i], -1);
             }
@@ -205,85 +200,92 @@ namespace Ensembles.Core {
                 play (true);
                 var initial_event_voice_r1 = new MidiEvent ();
                 initial_event_voice_r1.event_type = MidiEvent.EventType.VOICECHANGE;
-                initial_event_voice_r1.value1 = Ensembles.Application.settings.get_int ("voice-r1-bank");
-                initial_event_voice_r1.value2 = Ensembles.Application.settings.get_int ("voice-r1-preset");
-                if (_track == 0) {
-                    initial_event_voice_r1.channel = 6;
-                } else {
-                    initial_event_voice_r1.channel = _track + 6;
-                }
+                int _bank = 0;
+                int _preset = 0;
+                Application.arranger_core.synthesizer.get_voice_program_by_channel (17, out _bank, out _preset);
+                initial_event_voice_r1.value1 = _bank;
+                initial_event_voice_r1.value2 = _preset;
+                initial_event_voice_r1.channel = _track + 26;
+                initial_event_voice_r1.track = _track;
                 print ("Settings voice %d for track %d\n", initial_event_voice_r1.value1, _track);
                 make_initial_events (initial_event_voice_r1);
                 if (_track == 0) {
                     var initial_event_voice_r2 = new MidiEvent ();
                     initial_event_voice_r2.event_type = MidiEvent.EventType.VOICECHANGE;
-                    initial_event_voice_r2.value1 = Ensembles.Application.settings.get_int ("voice-r2-bank");
-                    initial_event_voice_r2.value2 = Ensembles.Application.settings.get_int ("voice-r2-preset");
-                    initial_event_voice_r2.channel = 1;
+                    Application.arranger_core.synthesizer.get_voice_program_by_channel (18, out _bank, out _preset);
+                    initial_event_voice_r2.value1 = _bank;
+                    initial_event_voice_r2.value2 = _preset;
+                    initial_event_voice_r2.channel = 24;
+                    initial_event_voice_r2.track = 0;
                     make_initial_events (initial_event_voice_r2);
 
                     var initial_event_voice_l = new MidiEvent ();
                     initial_event_voice_l.event_type = MidiEvent.EventType.VOICECHANGE;
-                    initial_event_voice_l.value1 = Ensembles.Application.settings.get_int ("voice-l-bank");
-                    initial_event_voice_l.value2 = Ensembles.Application.settings.get_int ("voice-l-preset");
-                    initial_event_voice_l.channel = 2;
+                    Application.arranger_core.synthesizer.get_voice_program_by_channel (19, out _bank, out _preset);
+                    initial_event_voice_l.value1 = _bank;
+                    initial_event_voice_l.value2 = _preset;
+                    initial_event_voice_l.channel = 25;
+                    initial_event_voice_l.track = 0;
                     make_initial_events (initial_event_voice_l);
-
-                    var initial_layer_event = new MidiEvent ();
-                    initial_layer_event.event_type = MidiEvent.EventType.LAYER;
-                    initial_layer_event.value1 = Ensembles.Application.settings.get_boolean ("layer-on") ? 1 : 0;
-                    make_initial_events (initial_layer_event);
-
-                    var initial_split_event = new MidiEvent ();
-                    initial_split_event.event_type = MidiEvent.EventType.SPLIT;
-                    initial_split_event.value1 = Ensembles.Application.settings.get_boolean ("split-on") ? 1 : 0;
-                    make_initial_events (initial_split_event);
 
                     var initial_accomp_event = new MidiEvent ();
                     initial_accomp_event.event_type = MidiEvent.EventType.ACCOMP;
                     initial_accomp_event.value1 = Ensembles.Application.settings.get_boolean ("accomp-on") ? 1 : 0;
+                    initial_accomp_event.track = 0;
                     make_initial_events (initial_accomp_event);
 
                     var initial_style_selection = new MidiEvent ();
                     initial_style_selection.event_type = MidiEvent.EventType.STYLECHANGE;
                     initial_style_selection.value1 = Ensembles.Application.settings.get_int ("style-index");
+                    initial_style_selection.track = 0;
                     make_initial_events (initial_style_selection);
 
                     var initial_tempo = new MidiEvent ();
                     initial_tempo.event_type = MidiEvent.EventType.TEMPO;
                     initial_tempo.value1 = initial_settings_tempo;
+                    initial_tempo.track = 0;
                     make_initial_events (initial_tempo);
 
                     var initial_style_part = new MidiEvent ();
                     initial_style_part.event_type = MidiEvent.EventType.STYLECONTROL;
                     initial_style_part.value1 = initial_settings_style_part_index;
+                    initial_style_part.track = 0;
                     make_initial_events (initial_style_part);
+
+                    var initial_chord_event = new MidiEvent ();
+                    initial_chord_event.event_type = MidiEvent.EventType.STYLECHORD;
+                    initial_chord_event.value1 = Application.arranger_core.synthesizer.chord_main;
+                    initial_chord_event.value2 = Application.arranger_core.synthesizer.chord_type;
+                    initial_chord_event.track = 0;
+                    make_initial_events (initial_chord_event);
                 }
             }
             if (recording_timer != null) {
-                recording_timer.stop ();
-                ulong microseconds = (ulong)(recording_timer.elapsed () * 1000000);
-                var new_event = event;
-                if (_track == 0) {
-                    new_event.channel = 6;
-                } else {
-                    new_event.channel = _track + 6;
-                }
-                new_event.track = _track;
-                new_event.time_stamp = microseconds;
-
                 if (current_state == RecorderState.RECORDING) {
                     if (_track != 0) {
                         if (event.event_type == MidiEvent.EventType.NOTE || event.event_type == MidiEvent.EventType.VOICECHANGE) {
+                            recording_timer.stop ();
+                            ulong microseconds = (ulong)(recording_timer.elapsed () * 1000000);
+                            var new_event = event;
+                            new_event.channel = _track + 26;
+                            new_event.track = _track;
+                            new_event.time_stamp = microseconds;
+                            recording_timer.start ();
                             midi_event_sequence[_track].append (new_event);
                             track_visuals[_track].set_track_events (midi_event_sequence[_track]);
                         }
                     } else {
+                        recording_timer.stop ();
+                        ulong microseconds = (ulong)(recording_timer.elapsed () * 1000000);
+                        var new_event = event;
+                        new_event.channel = 26;
+                        new_event.track = _track;
+                        new_event.time_stamp = microseconds;
+                        recording_timer.start ();
                         midi_event_sequence[_track].append (new_event);
                         track_visuals[_track].set_track_events (midi_event_sequence[_track]);
                     }
                 }
-                recording_timer.start ();
 
                 //  print ("////////////////////////////////////////////\n");
                 //  for (int i = 0; i < midi_event_sequence[_track].length (); i++) {
@@ -398,7 +400,7 @@ namespace Ensembles.Core {
                 if (current_state == RecorderState.STOPPED) {
                     break;
                 }
-                Thread.usleep (45454);
+                Thread.usleep (66666);
                 if (current_state == RecorderState.STOPPED) {
                     break;
                 }
@@ -484,58 +486,43 @@ namespace Ensembles.Core {
                                 midi_event.event_type = MidiEvent.EventType.VOICECHANGE;
                                 break;
                                 case 3:
-                                midi_event.event_type = MidiEvent.EventType.TRANSPOSE;
-                                break;
-                                case 4:
-                                midi_event.event_type = MidiEvent.EventType.TRANSPOSEON;
-                                break;
-                                case 5:
-                                midi_event.event_type = MidiEvent.EventType.OCTAVE;
-                                break;
-                                case 6:
-                                midi_event.event_type = MidiEvent.EventType.OCTAVEON;
-                                break;
-                                case 7:
                                 midi_event.event_type = MidiEvent.EventType.REVERB;
                                 break;
-                                case 8:
+                                case 4:
                                 midi_event.event_type = MidiEvent.EventType.REVERBON;
                                 break;
-                                case 9:
+                                case 5:
                                 midi_event.event_type = MidiEvent.EventType.CHORUS;
                                 break;
-                                case 10:
+                                case 6:
                                 midi_event.event_type = MidiEvent.EventType.CHORUSON;
                                 break;
-                                case 11:
+                                case 7:
                                 midi_event.event_type = MidiEvent.EventType.ACCOMP;
                                 break;
-                                case 12:
+                                case 8:
                                 midi_event.event_type = MidiEvent.EventType.STYLECHANGE;
                                 break;
-                                case 13:
+                                case 9:
                                 midi_event.event_type = MidiEvent.EventType.STYLECONTROL;
                                 break;
-                                case 14:
+                                case 10:
                                 midi_event.event_type = MidiEvent.EventType.STYLECONTROLACTUAL;
                                 break;
-                                case 15:
+                                case 11:
                                 midi_event.event_type = MidiEvent.EventType.STYLESTARTSTOP;
                                 break;
-                                case 16:
+                                case 12:
+                                midi_event.event_type = MidiEvent.EventType.STYLECHORD;
+                                break;
+                                case 13:
                                 midi_event.event_type = MidiEvent.EventType.TEMPO;
-                                break;
-                                case 17:
-                                midi_event.event_type = MidiEvent.EventType.SPLIT;
-                                break;
-                                case 18:
-                                midi_event.event_type = MidiEvent.EventType.LAYER;
                                 break;
                             }
 
-                            midi_event.channel = (int)event_object.get_int_member ("c");
+                            midi_event.channel = (int8)event_object.get_int_member ("c");
                             midi_event.time_stamp = (ulong)event_object.get_int_member ("t");
-                            midi_event.track = (int)event_object.get_int_member ("trck");
+                            midi_event.track = (int8)event_object.get_int_member ("trck");
                             midi_event.value1 = (int)event_object.get_int_member ("v1");
                             midi_event.value2 = (int)event_object.get_int_member ("v2");
                             midi_event.velocity = (int)event_object.get_int_member ("v");
@@ -548,78 +535,6 @@ namespace Ensembles.Core {
             catch (Error e) {
 
             }
-        }
-    }
-
-    public class MidiEvent {
-        public enum EventType {
-            NOTE,
-            CONTROL,
-            VOICECHANGE,
-            TRANSPOSE,
-            TRANSPOSEON,
-            OCTAVE,
-            OCTAVEON,
-            REVERB,
-            REVERBON,
-            CHORUS,
-            CHORUSON,
-            ACCOMP,
-            STYLECHANGE,
-            STYLECONTROL,
-            STYLECONTROLACTUAL,
-            STYLESTARTSTOP,
-            TEMPO,
-            SPLIT,
-            LAYER
-        }
-
-        public EventType event_type;
-        public int track;        // Which track this event belongs to
-        public int value1;       // note value, voice number, style number, control number
-        public int value2;       // note on
-        public int channel;
-        public int velocity;
-        public ulong time_stamp;
-    }
-
-    public class PlayBackObject {
-        public Thread<void> thread;
-        List<weak MidiEvent> midi_event_sequence;
-        MidiRecorder recorder;
-        bool playing;
-        uint _track;
-
-        public signal void fire_event (MidiEvent event);
-
-        public class PlayBackObject (List<MidiEvent> midi_event_sequence, uint track, MidiRecorder recorder) {
-            this.recorder = recorder;
-            this.midi_event_sequence = midi_event_sequence.copy ();
-            playing = true;
-            _track = track;
-            //print ("Start" + track.to_string () + "\n");
-            thread = new Thread<void> ("_play_thread_" + track.to_string (), track_thread);
-        }
-
-        private void track_thread () {
-            for (uint i = 0; i < midi_event_sequence.length (); i++) {
-                MidiEvent event = midi_event_sequence.nth_data (i);
-                ulong time_stamp = event.time_stamp;
-                Thread.usleep (time_stamp);
-                // Check if playback has been stopped before firing event
-                if (!playing) {
-                    break;
-                }
-                // Fire event
-                if (!recorder.mute_array[_track]) {
-                    recorder.multiplex_events (event);
-                }
-            }
-            playing = false;
-        }
-
-        public void stop () {
-            playing = false;
         }
     }
 }

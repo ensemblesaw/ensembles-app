@@ -52,6 +52,7 @@ void delete_synthesizer_instances();
 
 /*
  *  RENDER SYNTH CHANNEL UTILIZATION SCHEMATICS
+ * ----------------------------------------------
  *
  *  LFO, Style, Song:
  *  0 - 15
@@ -60,16 +61,18 @@ void delete_synthesizer_instances();
  *  16
  *
  *  MIDI INPUT:
- *  Voice R1      - 17
- *  Voice R2      - 18
- *  Voice L       - 19
- *  CHORD-EP      - 20
- *  CHORD-Strings - 21
- *  CHORD-Bass    - 22
+ *  Voice R1      ~ 17
+ *  Voice R2      ~ 18
+ *  Voice L       ~ 19
+ *  CHORD-EP      ~ 20
+ *  CHORD-Strings ~ 21
+ *  CHORD-Bass    ~ 22
  *
  *  CHIMES:
  *  23
  *
  *  RECORDER:
- *  24 - 63
+ *  Voice R2    ~ 24
+ *  Voice L     ~ 25
+ *  All tracks  ~ 26 - 63
  */

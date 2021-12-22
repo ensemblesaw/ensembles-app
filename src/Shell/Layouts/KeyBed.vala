@@ -7,18 +7,18 @@ namespace Ensembles.Shell {
     /* A widget that is used for visualising musical keyboard
      * input and also packs a joystick as part of it's layout
      */
-    public class KeyboardView : Gtk.Grid {
+    public class KeyBed : Gtk.Grid {
         OctaveKeyboard[] octaves;
         Gtk.Box key_grid;
         Gtk.Switch hold_switch;
         Gtk.Switch zoom_switch;
         public JoyStick joy_stick;
-        Ensembles.Core.Synthesizer _synth;
+        Core.Synthesizer _synth;
         Gtk.Button sustain_button;
         Gtk.Button stop_button;
 
         Gtk.ScrolledWindow keyboard_scroller;
-        public KeyboardView () {
+        public KeyBed () {
             get_style_context ().add_class ("keyboard-background");
             key_grid = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
 
@@ -92,19 +92,19 @@ namespace Ensembles.Shell {
         public void connect_synthesizer (Ensembles.Core.Synthesizer synth) {
             _synth = synth;
             octaves[0].note_activate.connect ((index, on) => {
-                _synth.send_notes_realtime (index + 36, on ? 144 : 128, 100, 17);
+                _synth.send_notes_realtime (index + 36, on ? 144 : 128, 100);
             });
             octaves[1].note_activate.connect ((index, on) => {
-                _synth.send_notes_realtime (index + 48, on ? 144 : 128, 100, 17);
+                _synth.send_notes_realtime (index + 48, on ? 144 : 128, 100);
             });
             octaves[2].note_activate.connect ((index, on) => {
-                _synth.send_notes_realtime (index + 60, on ? 144 : 128, 100, 17);
+                _synth.send_notes_realtime (index + 60, on ? 144 : 128, 100);
             });
             octaves[3].note_activate.connect ((index, on) => {
-                _synth.send_notes_realtime (index + 72, on ? 144 : 128, 100, 17);
+                _synth.send_notes_realtime (index + 72, on ? 144 : 128, 100);
             });
             octaves[4].note_activate.connect ((index, on) => {
-                _synth.send_notes_realtime (index + 84, on ? 144 : 128, 100, 17);
+                _synth.send_notes_realtime (index + 84, on ? 144 : 128, 100);
             });
         }
 
