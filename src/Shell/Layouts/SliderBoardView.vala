@@ -86,51 +86,61 @@ namespace Ensembles.Shell {
             slider_assign_button = new Gtk.Button.with_label (_("Slider Assign"));
 
             slider_0 = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1) {
-                vexpand = true
+                vexpand = true,
+                height_request = 127,
+                inverted = true,
+                draw_value = false
             };
-            slider_0.height_request = 127;
-            slider_0.inverted = true;
-            slider_0.draw_value = false;
-            slider_1 = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1);
-            slider_1.height_request = 127;
-            slider_1.inverted = true;
-            slider_1.draw_value = false;
-            slider_2 = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1);
-            slider_2.height_request = 127;
-            slider_2.inverted = true;
-            slider_2.draw_value = false;
-            slider_3 = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1);
-            slider_3.height_request = 127;
-            slider_3.inverted = true;
-            slider_3.draw_value = false;
-            slider_4 = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1);
-            slider_4.height_request = 127;
-            slider_4.inverted = true;
-            slider_4.draw_value = false;
-            slider_5 = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1);
-            slider_5.height_request = 127;
-            slider_5.inverted = true;
-            slider_5.draw_value = false;
-            slider_6 = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1);
-            slider_6.height_request = 127;
-            slider_6.inverted = true;
-            slider_6.draw_value = false;
-            slider_7 = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1);
-            slider_7.height_request = 127;
-            slider_7.inverted = true;
-            slider_7.draw_value = false;
-            slider_8 = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1);
-            slider_8.height_request = 127;
-            slider_8.inverted = true;
-            slider_8.draw_value = false;
-            slider_9 = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1);
-            slider_9.height_request = 127;
-            slider_9.inverted = true;
-            slider_9.draw_value = false;
+            slider_1 = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1) {
+                height_request = 127,
+                inverted = true,
+                draw_value = false
+            };
+            slider_2 = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1) {
+                height_request = 127,
+                inverted = true,
+                draw_value = false
+            };
+            slider_3 = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1) {
+                height_request = 127,
+                inverted = true,
+                draw_value = false
+            };
+            slider_4 = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1) {
+                height_request = 127,
+                inverted = true,
+                draw_value = false
+            };
+            slider_5 = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1) {
+                height_request = 127,
+                inverted = true,
+                draw_value = false
+            };
+            slider_6 = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1) {
+                height_request = 127,
+                inverted = true,
+                draw_value = false
+            };
+            slider_7 = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1) {
+                height_request = 127,
+                inverted = true,
+                draw_value = false
+            };
+            slider_8 = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1) {
+                height_request = 127,
+                inverted = true,
+                draw_value = false
+            };
+            slider_9 = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1) {
+                height_request = 127,
+                inverted = true,
+                draw_value = false
+            };
 
-            var slider_grid = new Gtk.Grid ();
-            slider_grid.column_spacing = 14;
-            slider_grid.margin_start = 8;
+            var slider_grid = new Gtk.Grid () {
+                column_spacing = 14,
+                margin_start = 8
+            };
 
             slider_grid.attach (slider_0, 0, 0, 1, 1);
             slider_grid.attach (slider_1, 1, 0, 1, 1);

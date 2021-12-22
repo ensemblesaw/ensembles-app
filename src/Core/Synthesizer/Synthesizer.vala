@@ -28,7 +28,7 @@ namespace Ensembles.Core {
                         midi_event.velocity = velocity;
                         midi_event.channel = (uint8)channel;
                         midi_event.value2 = on;
-                        Shell.RecorderScreen.sequencer.record_event(midi_event);
+                        Shell.RecorderScreen.sequencer.record_event (midi_event);
                     }
                 }
             });
@@ -64,7 +64,7 @@ namespace Ensembles.Core {
                         midi_event.event_type = MidiEvent.EventType.STYLECHORD;
                         midi_event.value1 = chord_main;
                         midi_event.value2 = chord_type;
-                        Shell.RecorderScreen.sequencer.record_event(midi_event);
+                        Shell.RecorderScreen.sequencer.record_event (midi_event);
                     }
                     Application.arranger_core.synthesizer.set_chord (chord_main, chord_type);
                 }
@@ -190,7 +190,7 @@ namespace Ensembles.Core {
 // synthesizer.c
 extern void synthesizer_init (string loc, string dname, double buffer_size);
 extern void synthesizer_destruct ();
-extern int synthesizer_set_driver_configuration(string dname, double buffer_size);
+extern int synthesizer_set_driver_configuration (string dname, double buffer_size);
 extern int synthesizer_send_notes (int key, int on, int velocity, int channel, out int type);
 extern void synthesizer_halt_notes ();
 extern void synthesizer_halt_realtime ();

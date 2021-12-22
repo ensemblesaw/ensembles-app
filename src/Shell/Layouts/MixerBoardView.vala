@@ -28,7 +28,7 @@ namespace Ensembles.Shell {
             style_gain_sliders = new Gtk.Scale [16];
 
             for (i = 0; i < 16; i++) {
-                style_gain_sliders[i] = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1)  {
+                style_gain_sliders[i] = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1) {
                     inverted = true,
                     draw_value = false
                 };
@@ -361,7 +361,7 @@ namespace Ensembles.Shell {
 
         int synth_gain_watch () {
             while (watch) {
-                Thread.usleep (200000);
+                Thread.usleep (100000);
                 if (watch) {
                     for (int i = 0; i < 20; i++) {
                         if (i != 16) {

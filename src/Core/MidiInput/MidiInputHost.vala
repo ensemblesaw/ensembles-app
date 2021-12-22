@@ -27,14 +27,14 @@ namespace Ensembles.Core {
             controller_destruct ();
             controller_init ();
             int n = controller_query_input_device_count ();
-            debug ("Found %d devices...\n", n);
+            debug ("Found %d devices…\n", n);
             midi_device = new MidiDevice[n];
             for (int i = 0; i < n; i++) {
                 controller_query_device_info (i);
                 midi_device[i].name = controller_input_device_name;
                 midi_device[i].available = controller_input_device_available > 0 ? true : false;
                 midi_device[i].id = i;
-                debug("Found %s device: %s\n", midi_device[i].available ? "input" : "output", midi_device[i].name);
+                debug ("Found %s device: %s\n", midi_device[i].available ? "input" : "output", midi_device[i].name);
             }
             return midi_device;
         }
@@ -48,7 +48,7 @@ namespace Ensembles.Core {
                     int channel = (message & 0x00000F);
                     double velocity = ((127.0 - 0.0) / (8323072.0 - 65536.0)) *
                                       (double)((0xFF0000 & message) - 65536);
-                    print ("Velocity: %d, Key: %d, Type:%d, Channel:%d, Raw: %x\n",
+                    debug ("Velocity: %d, Key: %d, Type:%d, Channel:%d, Raw: %x\n",
                           (int)velocity,
                           key,
                           type,
