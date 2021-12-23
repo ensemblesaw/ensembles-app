@@ -1,4 +1,6 @@
 conf_data = configuration_data ()
+conf_data.set_quoted('VERSIONSTRING', meson.project_version())
+conf_data.set_quoted('DISPLAYVER', display_version)
 conf_data.set_quoted('PKGDATADIR', join_paths (get_option ('prefix'), get_option ('datadir'), meson.project_name()))
 conf_data.set_quoted('SF2DATADIR', join_paths (get_option ('prefix'), get_option ('datadir'), 'sounds', 'sf2'))
 
@@ -10,35 +12,50 @@ config_header = configure_file (
 
 # Listing files to compile
 ensembles_sources_vala = files (
-    'Core/DriverSettingsProvider.vala',
-    'Core/Arpeggiator.vala',
-    'Core/CentralBus.vala',
-    'Core/Controller.vala',
-    'Core/DriverSettingsProvider.vala',
-    'Core/EffectRack.vala',
+    # Ensembles Core ################################################################
 
-    'Core/Harmonizer.vala',
-    'Core/InstrumentRack.vala',
-    'Core/MetronomeLFOPlayer.vala',
-    'Core/Registry.vala',
-    'Core/SamplePlayer.vala',
-    'Core/SampleRecorder.vala',
-    'Core/SongPlayer.vala',
-    'Core/EffectRack.vala',
-    'Core/InstrumentRack.vala',
-    'Core/MidiRecorder.vala',
-    'Core/Style.vala',
-    'Core/StyleAnalyser.vala',
-    'Core/StyleDiscovery.vala',
-    'Core/StylePlayer.vala',
-    'Core/Synthesizer.vala',
-    'Core/Voice.vala',
-    'Core/VoiceAnalyser.vala',
+    'Core/ChoppingBlock/CentralBus.vala',   # To be removed
+
+    'Core/MidiInput/MidiInputHost.vala',
+
+    'Core/MidiPlayers/MetronomeAndLFO/MetronomeLFOPlayer.vala',
+    'Core/MidiPlayers/SongPlayer/SongPlayer.vala',
+    'Core/MidiPlayers/StyleEngine/Style.vala',
+    'Core/MidiPlayers/StyleEngine/StyleAnalyser.vala',
+    'Core/MidiPlayers/StyleEngine/StyleDiscovery.vala',
+    'Core/MidiPlayers/StyleEngine/StylePlayer.vala',
+
+    'Core/VoiceManager/Voice.vala',
+    'Core/VoiceManager/VoiceAnalyser.vala',
+
+    'Core/MidiRecorder/MidiRecorder.vala',
+    'Core/MidiRecorder/MidiEvent.vala',
+    'Core/MidiRecorder/PlayBackObject.vala',
+
+    'Core/SamplingPads/SamplePlayer.vala',
+    'Core/SamplingPads/SampleRecorder.vala',
+
+    'Core/StateRegistry/Registry.vala',
+
+    'Core/Synthesizer/Synthesizer.vala',
+
+    'Core/Automators/Arpeggiator.vala',
+    'Core/Automators/Harmonizer.vala',
+
+    'Core/PluginRacks/EffectRack.vala',
+    'Core/PluginRacks/InstrumentRack.vala',
+
+    'Core/Utils/AudioDriverSniffer.vala',
+
+    'Core/ArrangerCore.vala',
+
+    # DE Integration #####################################################
 
     'Interfaces/MediaKeyListener.vala',
     'Interfaces/SoundIndicator.vala',
 
-    # PlugIns
+    # PlugIns ######################################################################
+
     'PlugIns/PlugIn.vala',
     'PlugIns/AtomPort.vala',
     'PlugIns/ControlPort.vala',
@@ -50,20 +67,23 @@ ensembles_sources_vala = files (
     'PlugIns/LV2/LV2Manager.vala',
     'PlugIns/LV2/SyMap.vala',
 
-    'Shell/Common/DeviceItem.vala',
-    'Shell/Common/Dial.vala',
-    'Shell/Common/EffectItem.vala',
-    'Shell/Common/EqualizerBar.vala',
-    'Shell/Common/Key.vala',
+    # Ensembles Shell ##############################################################
+
+    'Shell/Widgets/DeviceItem.vala',
+    'Shell/Widgets/Dial.vala',
+    'Shell/Widgets/EffectItem.vala',
+    'Shell/Widgets/Key.vala',
+    'Shell/Widgets/OctaveKeyboard.vala',
+    'Shell/Widgets/Knob.vala',
+    'Shell/Widgets/MasterKnob.vala',
+    'Shell/Widgets/StyleItem.vala',
+    'Shell/Widgets/RecorderTrackItem.vala',
+    'Shell/Widgets/ToggleSwitch.vala',
+    'Shell/Widgets/VoiceItem.vala',
+    'Shell/Widgets/EqualizerBar.vala',
+
     'Shell/Common/KeyboardConstants.vala',
-    'Shell/Common/Knob.vala',
-    'Shell/Common/MasterKnob.vala',
-    'Shell/Common/OctaveKeyboard.vala',
     'Shell/Common/PcKeyboardHandler.vala',
-    'Shell/Common/StyleItem.vala',
-    'Shell/Common/RecorderTrackItem.vala',
-    'Shell/Common/ToggleSwitch.vala',
-    'Shell/Common/VoiceItem.vala',
 
     'Shell/Dialogs/Preferences/Item.vala',
     'Shell/Dialogs/Preferences/ItemInput.vala',
@@ -78,44 +98,51 @@ ensembles_sources_vala = files (
     'Shell/Display/EffectRackScreen.vala',
     'Shell/Display/HomeScreen.vala',
     'Shell/Display/LFOEditScreen.vala',
-    'Shell/Display/MainDisplayCasing.vala',
+    'Shell/Display/CentralDisplay.vala',
     'Shell/Display/StyleMenu.vala',
     'Shell/Display/TempoScreen.vala',
     'Shell/Display/RecorderScreen.vala',
     'Shell/Display/VoiceMenu.vala',
     'Shell/Display/WheelScrollableWidget.vala',
 
-    'Shell/Views/AppMenuView.vala',
-    'Shell/Views/BeatCounterView.vala',
-    'Shell/Views/ControlPanel.vala',
-    'Shell/Views/JoyStick.vala',
-    'Shell/Views/KeyboardView.vala',
-    'Shell/Views/MixerBoardView.vala',
-    'Shell/Views/RegistryView.vala',
-    'Shell/Views/SamplerPadView.vala',
-    'Shell/Views/SliderBoardView.vala',
-    'Shell/Views/SongControllerView.vala',
-    'Shell/Views/StyleControllerView.vala',
-    'Shell/Views/VoiceCategoryView.vala',
+    'Shell/Layouts/AppMenuView.vala',
+    'Shell/Layouts/BeatCounterView.vala',
+    'Shell/Layouts/ControlPanel.vala',
+    'Shell/Layouts/JoyStick.vala',
+    'Shell/Layouts/KeyBed.vala',
+    'Shell/Layouts/MixerBoardView.vala',
+    'Shell/Layouts/RegistryView.vala',
+    'Shell/Layouts/SamplerPadView.vala',
+    'Shell/Layouts/SliderBoardView.vala',
+    'Shell/Layouts/SongControllerView.vala',
+    'Shell/Layouts/StyleControllerView.vala',
+    'Shell/Layouts/VoiceCategoryView.vala',
 
-    'Shell/Application.vala',
     'Shell/MainWindow.vala',
+
+    'Application.vala',
+    'Utils.vala',
 
     'Main.vala'
 )
 
 ensembles_sources_c = files (
-    'Core/central_bus.c',
-    'Core/chord_finder.c',
-    'Core/controller.c',
-    'Core/driver_settings_provider.c',
-    'Core/metronome_lfo_player.c',
-    'Core/music_player.c',
-    'Core/style_analyser.c',
-    'Core/style_player.c',
-    'Core/synthesizer_settings.c',
-    'Core/synthesizer.c',
-    'Core/voice_analyser.c'
+    'Core/ChoppingBlock/central_bus.c',   # To be removed
+
+    'Core/MidiInput/midi_input_host.c',
+
+    'Core/MidiPlayers/MetronomeAndLFO/metronome_lfo_player.c',
+    'Core/MidiPlayers/SongPlayer/song_player.c',
+    'Core/MidiPlayers/StyleEngine/style_analyser.c',
+    'Core/MidiPlayers/StyleEngine/style_player.c',
+
+    'Core/VoiceManager/voice_analyser.c',
+
+    'Core/Synthesizer/providers/synthesizer_instance.c',
+    'Core/Synthesizer/providers/synthesizer_settings.c',
+    'Core/Synthesizer/synthesizer.c',
+
+    'Core/Utils/chord_finder.c'
 )
 
 ensembles_sources = [

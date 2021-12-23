@@ -1,20 +1,6 @@
-/*-
- * Copyright (c) 2021-2022 Subhadeep Jasu <subhajasu@gmail.com>
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <https://www.gnu.org/licenses/>.
- *
- * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
+/*
+ * Copyright 2020-2022 Subhadeep Jasu <subhajasu@gmail.com>
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 namespace Ensembles.Shell {
@@ -66,7 +52,7 @@ namespace Ensembles.Shell {
                 _selected_index = index;
                 scroll_wheel_location = index;
                 change_style (style_rows[index].accomp_style);
-                EnsemblesApp.settings.set_int ("style-index", index);
+                Ensembles.Application.settings.set_int ("style-index", index);
 
                 if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
                     var event = new Core.MidiEvent ();
@@ -101,7 +87,6 @@ namespace Ensembles.Shell {
             min_value = 0;
             max_value = style_rows.length - 1;
             main_list.show_all ();
-            Ensembles.Core.CentralBus.set_styles_ready (true);
         }
 
         public void scroll_to_selected_row () {
@@ -142,7 +127,7 @@ namespace Ensembles.Shell {
         }
 
         public void load_settings (int? tempo = 0) {
-            quick_select_row (EnsemblesApp.settings.get_int ("style-index"), tempo);
+            quick_select_row (Application.settings.get_int ("style-index"), tempo);
         }
 
         public void scroll_wheel_activate () {

@@ -2,8 +2,13 @@
 project (
     'com.github.subhadeepjasu.ensembles',
     'c', 'vala',
-    version: '0.0.16',
+    version: '0.0.17',
 )
+
+# Common Display Version
+display_version = 'AW-200'
+
+message ('Unit Version: ' + display_version)
 
 # GNOME module
 gnome = import ('gnome')
@@ -23,6 +28,7 @@ add_project_arguments (
     # Set Driver Compatibilities
     '-D', 'ALSA_DRIVER',
     '-D', 'PULSEAUDIO_DRIVER',
+    '-D', 'JACK_DRIVER',
     # '-D', 'PIPEWIRE_CORE_DRIVER',  # Uncomment to enable pipewire core support provided fluidsynth supports it
     language: 'vala'
 )

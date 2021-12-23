@@ -1,3 +1,7 @@
+/*
+ * Copyright 2020-2022 Subhadeep Jasu <subhajasu@gmail.com>
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
 namespace Ensembles.Shell {
     public class LFOEditScreen : Gtk.Grid {
         public signal void close_screen ();
@@ -27,25 +31,26 @@ namespace Ensembles.Shell {
         public LFOEditScreen () {
             set_size_request (424, 236);
             row_spacing = 8;
-            get_style_context ().add_class ("channel-modulator-screen");
+            get_style_context ().add_class ("quick-mod");
 
             var close_button = new Gtk.Button.from_icon_name ("window-close-symbolic", Gtk.IconSize.BUTTON);
-            close_button.get_style_context ().add_class ("channel-modulator-close-button");
+            close_button.get_style_context ().add_class ("quick-mod-close-button");
             close_button.clicked.connect (() => {
                 close_screen ();
             });
             attach (close_button, 0, 0, 1, 1);
 
-            header = new Gtk.Label (_("Select Master Knob LFO"));
-            header.get_style_context ().add_class ("channel-modulator-header");
-            header.halign = Gtk.Align.START;
-            header.hexpand = true;
+            header = new Gtk.Label (_("Select Master Knob LFO")) {
+                xalign = 0,
+                hexpand = true
+            };
+            header.get_style_context ().add_class ("quick-mod-header");
             attach (header, 1, 0, 1, 1);
 
             var mod_grid = new Gtk.Grid ();
             mod_grid.column_homogeneous = true;
             mod_grid.column_spacing = 6;
-            mod_grid.get_style_context ().add_class ("channel-modulator-grid");
+            mod_grid.get_style_context ().add_class ("quick-mod-grid");
 
             lfo_type = new Gtk.Label (_("Disabled"));
             lfo_spin_button = new Gtk.SpinButton.with_range (0, 15, 1);

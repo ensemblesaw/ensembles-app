@@ -1,0 +1,659 @@
+/*
+ * Copyright 2020-2022 Subhadeep Jasu <subhajasu@gmail.com>
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
+
+.rounded {
+	border-radius: 50%;
+}
+
+.splash-background {
+    background-color: #202020;
+    animation: ripple 1s 0.2s;
+}
+
+.splash-text {
+    color: #fff;
+}
+
+@keyframes ripple {
+    from {
+        background-image:radial-gradient(#202020 0%, #333 5%, #202020 6%);
+    }
+    to {
+        background-image:radial-gradient(#202020 0%, #202020 90%, #202020 100%);
+    }
+}
+
+.slider-assignable > contents > trough {
+    animation: slider_pulse 1s linear infinite;
+}
+
+.slider-super-controlled > contents > trough {
+    background-color: alpha(@accent_color, 0.5);
+}
+
+.slider-super-assignable > contents > trough {
+    animation: slider_super_pulse 1s linear infinite;
+}
+
+@keyframes slider_pulse {
+    50% {
+        background-color: rgba (100, 80, 0, 1);
+    }
+}
+
+@keyframes slider_super_pulse {
+    50% {
+        background-color: @accent_color;
+    }
+}
+
+.knob-assignable > .knob-cover-graphic {
+    animation: knob_assign_pulse 1s linear infinite;
+}
+
+@keyframes knob_assign_pulse {
+    50% {
+        border: 1px solid rgba (127, 100, 0, 1);
+    }
+}
+
+.knob-super-assignable > .knob-cover-graphic {
+    animation: knob_super_assign_pulse 1s linear infinite;
+}
+
+.knob-super-controlled > .knob-cover-graphic {
+    border: 1px solid @accent_color;
+}
+
+@keyframes knob_super_assign_pulse {
+    50% {
+        border: 1px solid @accent_color;
+    }
+}
+
+.font-bold {
+    font-weight: bold;
+}
+
+.queue-measure {
+	animation: pulse 3s linear infinite;
+}
+
+@keyframes pulse {
+    0% {
+        background-color: #333;
+        border-color: #222;
+        box-shadow: 0 0 0 1px alpha(#000, 0.1);
+    }
+    5% {
+        background-color: alpha(@accent_color, 0.7);
+        border-color: @accent_color;
+        box-shadow: 0 0 8px @accent_color;
+    }
+    25% {
+        background-color: #333;
+        border-color: #222;
+        box-shadow: 0 0 0 1px alpha(#000, 0.1);
+	}
+    30% {
+        background-color: alpha(@accent_color, 0.5);
+        border-color: @accent_color;
+        box-shadow: 0 0 8px @accent_color;
+    }
+    50% {
+        background-color: #333;
+        border-color: #222;
+        box-shadow: 0 0 0 1px alpha(#000, 0.1);
+    }
+    55% {
+        background-color: alpha(@accent_color, 0.7);
+        border-color: @accent_color;
+        box-shadow: 0 0 8px @accent_color;
+    }
+    75% {
+        background-color: #333;
+        border-color: #222;
+        box-shadow: 0 0 0 1px alpha(#000, 0.1);
+    }
+    80% {
+        background-color: alpha(@accent_color, 0.5);
+        border-color: @accent_color;
+        box-shadow: 0 0 8px @accent_color;
+    }
+    100% {
+        background-color: #333;
+        border-color: #222;
+        box-shadow: 0 0 0 1px alpha(#000, 0.1);
+    }
+}
+
+.toggle-switch {
+	font-size: 0.9em;
+}
+
+.toggle-indicator {
+    border: 1px solid #1f1f1f;
+    border-bottom: 1px solid #111;
+    background-color: #333;
+    box-shadow: 0 1px 0 #555, inset 0 1px #666;
+    border-radius: 0 0 2px 2px;
+    margin-top: -2px;
+}
+
+.toggle-indicator-active {
+    border: 1px solid shade(@accent_color, 0.8);
+    border-bottom: 1px solid alpha(#000, 0.4);
+    background-color: shade(@accent_color, 1.1);
+    box-shadow: inset 0 1px alpha(#fff, 0.5);
+}
+
+.knob-cover-graphic {
+    background-image:linear-gradient(#222,#444);
+    border: 1px solid #000;
+    box-shadow: inset 0 1px 0 alpha(#fff, 0.1), inset 0 -1px 0 alpha(#000, 0.5),
+	0 -2px 4px alpha(#fff, 0.3), 0 2px 4px alpha(#000, 0.8);
+    border-radius: 50%;
+    margin: 6px
+}
+
+.dial-cover-graphic {
+    background-color: #333;
+    border: 1px solid #000;
+    box-shadow: inset 0 1px 0 alpha(#fff, 0.1), inset 0 -1px 0 alpha(#000, 0.5) ;
+    border-radius: 50%;
+    margin: 6px
+}
+
+.dial-socket-graphic {
+    background-image:radial-gradient(#222, #222 20%, #555);
+    background-size: 100% 200%;
+    background-position: center 100%;
+    box-shadow: inset 0 1px 0 alpha(#000, 0.8), inset 0 -1px alpha(#fff, 0.1);
+    border: 1px solid #222;
+    border-radius: 15px;
+    margin-left: -10px;
+    margin-top: -10px;
+    margin-right: 10px;
+    margin-bottom: 10px
+}
+
+.knob-socket-graphic {
+    background-color:alpha(#888, 0.5);
+    border-radius: 5px;
+    margin-left: -2px;
+    margin-top: -2px;
+    margin-right: 2px;
+    margin-bottom: 2px
+}
+.dial-graphic{
+    background-image: linear-gradient(alpha(#333, 1.0), alpha(#000, 0.5));
+    background-position: 0% 0%;
+    background-size:100% 100%;
+    background-color: #333;
+    border: 1px solid #000;
+    border-radius : 50%;
+    box-shadow:  0 -3px 4px #666, 0 4px 5px alpha(#000, 0.5), inset 0 1px 0 alpha(#fff, 0.2), 0 1px 0 alpha(#fff, 0.1);
+    animation: rotate_dial_light 0.4s linear;
+}
+
+.dial-graphic-rotate-clockwise {
+    animation: rotate_dial_light-clockwise 0.4s linear;
+}
+
+.dial-graphic-rotate-anticlockwise {
+    animation: rotate_dial_light-anticlockwise 0.4s linear;
+}
+
+@keyframes rotate_dial_light-clockwise {
+    0% {
+        background-image: linear-gradient(alpha(@accent_color, 0.0), alpha(@accent_color, 0));
+    }
+    10% {
+        background-image: linear-gradient(15deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(30deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(45deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(60deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(75deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(90deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(105deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(120deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(135deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(150deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(165deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(180deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%);
+    }
+    80% {
+    background-image: linear-gradient(45deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0) 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(60deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(75deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(90deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(105deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(120deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(135deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(150deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(165deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(180deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(195deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(210deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%);
+    }
+}
+
+@keyframes rotate_dial_light-anticlockwise {
+    0% {
+        background-image: linear-gradient(alpha(@accent_color, 0.0), alpha(@accent_color, 0));
+    }
+    10% {
+        background-image: linear-gradient(15deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(30deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(45deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(60deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(75deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(90deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(105deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(120deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(135deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(150deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(165deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(180deg,  alpha(@accent_color, 0) 45%,  @accent_color 50%, alpha(@accent_color, 0) 55%);
+    }
+    80% {
+        background-image: linear-gradient(-15deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0) 50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(0deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(15deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(30deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(45deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(60deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(75deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(90deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(105deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(120deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(135deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%),
+        linear-gradient(150deg,  alpha(@accent_color, 0) 45%,  alpha(@accent_color, 0)  50%, alpha(@accent_color, 0) 55%);
+    }
+}
+
+.knob-background {
+    background-image:linear-gradient(#333, #111);
+    border-radius: 50%;
+    margin: 6px;
+    box-shadow: inset 0 0 0 2px alpha(#000, 0.5),
+        0 -2px 3px alpha(#fff, 0.3), 0 2px 4px alpha(#000, 0.8);
+}
+.super-knob-idle {
+    animation: super_idle 2s ease-out infinite;
+}
+.super-knob-cover-graphic{
+    margin:18px;
+    box-shadow: inset 0 0 0 1px #444, inset 0 -1px alpha(#000, 0.5), inset 0 1px alpha(#fff, 0.2)
+}
+
+@keyframes super_idle {
+    0% {
+        background-image:linear-gradient(#333, #111);
+    }
+    30% {
+        background-image:radial-gradient(@accent_color 40%, #333);
+    }
+    100% {
+        background-image:linear-gradient(#333, #111);
+    }
+}
+
+.super-knob-connected-0 {
+    background-image:radial-gradient(@accent_color 40%, #333);
+}
+
+.super-knob-connected-1 {
+    background-image:radial-gradient(mix(@accent_color, @accent_color_complimentary, 0.1) 40%, #333);
+}
+
+.super-knob-connected-2 {
+    background-image:radial-gradient(mix(@accent_color, @accent_color_complimentary, 0.2) 40%, #333);
+}
+
+.super-knob-connected-3 {
+    background-image:radial-gradient(mix(@accent_color, @accent_color_complimentary, 0.3) 40%, #333);
+}
+
+.super-knob-connected-4 {
+    background-image:radial-gradient(mix(@accent_color, @accent_color_complimentary, 0.4) 40%, #333);
+}
+
+.super-knob-connected-5 {
+    background-image:radial-gradient(mix(@accent_color, @accent_color_complimentary, 0.5) 40%, #333);
+}
+
+.super-knob-connected-6 {
+    background-image:radial-gradient(mix(@accent_color, @accent_color_complimentary, 0.6) 40%, #333);
+}
+
+.super-knob-connected-7 {
+    background-image:radial-gradient(mix(@accent_color, @accent_color_complimentary, 0.7) 40%, #333);
+}
+
+.super-knob-connected-8 {
+    background-image:radial-gradient(mix(@accent_color, @accent_color_complimentary, 0.8) 40%, #333);
+}
+
+.super-knob-connected-9 {
+    background-image:radial-gradient(mix(@accent_color, @accent_color_complimentary, 0.9) 40%, #333);
+}
+
+.super-knob-connected-10 {
+    background-image:radial-gradient(@accent_color_complimentary 40%, #333);
+}
+
+
+.ctrl-panel-recorder-button {
+    border-radius: 6px 4px 4px 24px;
+    padding-left: 10px;
+    font-size: 0.96em;;
+    outline: 0;
+}
+
+.common-key > * {
+    opacity: 0;
+}
+.common-key > * :active {
+    background: none;
+    background-color: alpha(#000, 0);
+    outline: 0;
+}
+.common-key > * > *  > * > * {
+    -gtk-icon-transform: rotate(90deg);
+}
+.white-key-normal {
+    background-image:linear-gradient(#585858, #2e2e2e);
+    border: 2px solid #000;
+    outline: 0;
+}
+.white-key-normal > * {
+    padding: 0;
+    margin: -8px;
+    margin-top: -42px;
+}
+.white-key-normal > *:focus {
+    background-color: rgba(0,0,0,0);
+}
+.white-key-split {
+    background-image:linear-gradient(#585858, #2e2e2e);
+    border: 2px solid #000;
+}
+.white-key-split:active {
+    background-image:linear-gradient(shade(@accent_color_complimentary, 0.7), shade(@accent_color_complimentary, 0.5));
+    box-shadow: 0 -12px 8px  -8px alpha(@accent_color_complimentary, 0.7), inset 0 -1px 4px @accent_color_complimentary;
+}
+.white-key-split-active {
+    background-image:linear-gradient(shade(@accent_color_complimentary, 0.7), shade(@accent_color_complimentary, 0.5));
+    box-shadow: 0 -12px 8px  -8px alpha(@accent_color_complimentary, 0.7), inset 0 -1px 4px @accent_color_complimentary;
+}
+.white-key-active-auto {
+    background-image:linear-gradient(shade(@accent_color_complimentary_alternate, 0.7), shade(@accent_color_complimentary_alternate, 0.5));
+    box-shadow: 0 -12px 8px  -8px alpha(@accent_color_complimentary_alternate, 0.65), inset 0 -1px 4px @accent_color_complimentary_alternate;
+    outline: 0;
+}
+.white-key-normal:active {
+    background-image:linear-gradient(shade(@accent_color, 0.7), shade(@accent_color, 0.5));
+    box-shadow: 0 -12px 8px  -8px alpha(@accent_color, 0.65), inset 0 -1px 4px @accent_color;
+}
+.white-key-active {
+    background-image:linear-gradient(shade(@accent_color, 0.7), shade(@accent_color, 0.5));
+    box-shadow: 0 -12px 8px  -8px alpha(@accent_color, 0.65), inset 0 -1px 4px @accent_color;
+    outline: 0;
+}
+.black-key-normal {
+    background-image:linear-gradient(#444, #141414);
+    border: 2px solid #000;
+    outline: 0;
+}
+.black-key-normal > * {
+    padding: 0;
+    margin: -8px;
+    margin-top: -42px;
+}
+.black-key-normal > *:focus {
+    background-color: rgba(0,0,0,0);
+}
+.black-key-split {
+    background-image:linear-gradient(#444, #141414);
+    border: 2px solid #000;
+    outline: 0;
+}
+.black-key-split:active {
+    background-image:linear-gradient(shade(@accent_color_complimentary, 0.7), shade(@accent_color_complimentary, 0.5));
+    box-shadow: 0 -14px 12px -6px alpha(@accent_color_complimentary, 0.7), inset 0 -1px 4px @accent_color_complimentary;
+}
+.black-key-split-active {
+    background-image:linear-gradient(shade(@accent_color_complimentary, 0.7), shade(@accent_color_complimentary, 0.5));
+    box-shadow: 0 -14px 12px -6px alpha(@accent_color_complimentary, 0.7), inset 0 -1px 4px @accent_color_complimentary;
+}
+.black-key-active-auto{
+    background-image:linear-gradient(shade(@accent_color_complimentary_alternate, 0.7), shade(@accent_color_complimentary_alternate, 0.5));
+    box-shadow: 0 -14px 12px -6px alpha(@accent_color_complimentary_alternate, 0.7), inset 0 -1px 4px @accent_color_complimentary_alternate;
+}
+.black-key-normal:active{
+    background-image:linear-gradient(shade(@accent_color, 0.7), shade(@accent_color, 0.5));
+    box-shadow: 0 -14px 12px -6px alpha(@accent_color, 0.7), inset 0 -1px 4px @accent_color;
+}
+.black-key-active{
+    background-image:linear-gradient(shade(@accent_color, 0.7), shade(@accent_color, 0.5));
+    box-shadow: 0 -14px 12px -6px alpha(@accent_color, 0.7), inset 0 -1px 4px @accent_color;
+}
+
+.key_label_primary {
+    background: @accent_color;
+    border-radius: 50%;
+    border: 2px solid #222;
+}
+
+.key_label_secondary {
+    background: @accent_color_complimentary;
+    border-radius: 50%;
+    border: 2px solid #222;
+}
+
+.key_label_auto {
+    background: @accent_color_complimentary_alternate;
+    border-radius: 50%;
+    border: 2px solid #222;
+}
+
+.common-key-split > *{
+    opacity: 0.2;
+}
+
+.keyboard-top-bar {
+    border-bottom: 2px solid #000;
+    border-top: 1px solid alpha(#ccc, 0.2);
+}
+
+.keyboard-top-bar > grid > label {
+    opacity: 0.4;
+    margin-top: 1px;
+}
+
+.keyboard-top-bar > grid > switch slider{
+    min-height: 16px;
+    min-width: 16px;
+}
+
+.keyboard-top-bar > grid > button {
+    font-size: 10px;
+    padding: 0;
+    padding-left: 8px;
+    padding-right: 8px;
+    margin-right: 4px;
+}
+
+.keyboard-background {
+    background-image:linear-gradient(#666 0%, #333 15px, #222 17px, #333 31px, #000 32px, #333);
+	border-top: 1px solid #222;
+}
+
+.joystick-pad {
+    background-image:linear-gradient(#1f1f1f, #161616);
+    border: 1px solid alpha(#000, 0.7);
+    border-radius: 4px;
+    box-shadow: inset 0 1px 0 alpha(#fff, 0.2), inset 0 -1px 0 alpha(#fff, 0.1);
+}
+
+.joystick-background {
+    background-color: #333;
+    border-right: 1px solid #222;
+}
+
+.sampling-pad {
+	background-color: #666;
+	outline: 0;
+}
+.sampling-pad:active {
+	animation: pad_playing_pulse 2s;
+}
+
+@keyframes pad_playing_pulse {
+    0% {
+        background-color: alpha(@accent_color, 0.5);
+        border: 1px solid @accent_color;
+    }
+}
+
+.sampler-pad-assignable {
+    animation: sampler_pad_pulse 1s infinite;
+}
+
+@keyframes sampler_pad_pulse {
+    0% {
+        box-shadow: inset 0 0 8px alpha (rgb (100, 80, 0), 0.5);
+    }
+    50% {
+        box-shadow: inset 0 0 8px alpha (rgb (200, 100, 0), 1.0);
+    }
+    100% {
+        box-shadow: inset 0 0 8px alpha (rgb (100, 80, 0), 0.5);
+    }
+}
+
+.sampler-pad-playing {
+    background-color: alpha (@accent_color, 0.5);
+}
+
+.sampler-record-button {
+    background-color: #c6262e;
+    outline: 0;
+}
+
+.sampler-record-button-active {
+    animation: sample_recording 1s infinite;
+}
+
+@keyframes sample_recording {
+    0% {
+        background: alpha(#7a0000, 0);
+    }
+    50% {
+        background: #7a0000;
+        border: 1px solid #f00;
+    }
+    100% {
+        background: alpha(#7a0000, 0);
+    }
+}
+
+
+.touch-feedback {
+    background-image: radial-gradient(alpha(#fff, 0.0),alpha(#fff, 0) 70%);
+    transition: all 0.5s;
+}
+
+.touch-feedback-active {
+    background-image: radial-gradient(alpha(#fff, 0.5),alpha(#fff, 0) 70%);
+}
+
+
+.preferences-view {
+    background-color: shade (@bg_color, 1.1);
+}
+
+
+.setings-input-item-key-label {
+	color: #f3f3f3;
+	background: alpha(#000, 0.5);
+	border: 1px solid alpha(#ccc, 0.5);
+	border-radius: 4px;
+	font-size: 0.9em;
+}
+
+.setings-input-item-white {
+    background: #444;
+    box-shadow: inset 0 1px #666, inset 0 -1px #000;
+}
+
+.setings-input-item-black {
+    background: #222;
+    box-shadow: inset 0 1px #444, inset 0 -1px #000;
+}
+
+.input-key-box > .activatable:selected {
+	background-color: alpha(@accent_color, 0.25);
+    background-image: -gtk-icontheme('edit-symbolic');
+    background-repeat: no-repeat;
+    background-position: 10% 50%;
+    background-size: 16px;
+}
+
+.input-key-box > .activatable:selected > .horizontal > .keycap {
+    color: #666;
+}
+
+
+.keyboard-background scrollbar.horizontal slider {
+    min-height: 15px;
+    border: none;
+    margin-bottom: -1px;
+    border-top: 2px solid @accent_color;
+    border-radius: 0;
+    background: alpha(#000, 0);
+    }
+
+.keyboard-background scrollbar.horizontal:hover slider {
+    min-height: 30px;
+    border: none;
+    border-top: 0px solid alpha(@accent_color, 0);
+    margin-bottom: 4px;
+    background-image:linear-gradient(90deg, alpha(@accent_color, 0.0), alpha(@accent_color, 0.3), alpha(@accent_color, 0.0));
+}
+
+.keyboard-background scrollbar.horizontal trough {
+    background: none;
+    border: none;
+}
+
+.keyboard-background scrolledwindow overshoot.right {
+    background-image: none;
+
+}
+.keyboard-background scrolledwindow overshoot.left {
+    background-image: none;
+}
+
+.central-display-preview > * {
+    border-radius: 8px;
+    box-shadow: inset 0 1px alpha(#fff, 0.25), inset 0 -1px alpha(#fff, 0.1);
+}
+
+.central-display-preview > * > * {
+    border-radius: 4px;
+    margin: 8px;
+    border: none;
+    margin-top: -1px;
+    margin-bottom: -1px;
+}
+
+.central-display-preview {
+    border-radius: 8px;
+    box-shadow: 0 4px 8px alpha(#000, 0.75);
+    border: 1px solid #000;
+}

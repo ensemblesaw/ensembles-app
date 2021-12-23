@@ -1,25 +1,11 @@
-/*-
- * Copyright (c) 2021-2022 Subhadeep Jasu <subhajasu@gmail.com>
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <https://www.gnu.org/licenses/>.
- *
- * Authored by: Subhadeep Jasu <subhajasu@gmail.com>
+/*
+ * Copyright 2020-2022 Subhadeep Jasu <subhajasu@gmail.com>
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 namespace Ensembles.Shell {
     public class VoiceMenu : WheelScrollableWidget {
-        int channel;
+        uint8 channel;
         Gtk.Button close_button;
         Gtk.ListBox main_list;
         VoiceItem[] voice_rows;
@@ -28,8 +14,8 @@ namespace Ensembles.Shell {
         int last_voice_index;
 
         public signal void close_menu ();
-        public signal void change_voice (Ensembles.Core.Voice voice, int channel);
-        public VoiceMenu (int channel) {
+        public signal void change_voice (Ensembles.Core.Voice voice, uint8 channel);
+        public VoiceMenu (uint8 channel) {
             this.channel = channel;
             this.get_style_context ().add_class ("menu-background");
 
@@ -39,10 +25,10 @@ namespace Ensembles.Shell {
 
 
             var headerbar = new Gtk.HeaderBar ();
-            headerbar.set_title (_("Voice - %s").printf (((channel == 0) ? _("Right 1 (Main)") : (channel == 1)
+            headerbar.set_title (_("Voice - %s").printf (((channel == 17) ? _("Right 1 (Main)") : (channel == 18)
             ? _("Right 2 (Layered)")
             : _("Left (Split)"))));
-            headerbar.set_subtitle (_("Pick a Voice to play %s").printf (((channel == 0) ? "" : (channel == 1)
+            headerbar.set_subtitle (_("Pick a Voice to play %s").printf (((channel == 17) ? "" : (channel == 18)
             ? _(" on another layer")
             : _(" on left hand side of split"))));
             headerbar.get_style_context ().add_class ("menu-header");
@@ -72,14 +58,14 @@ namespace Ensembles.Shell {
                 scroll_wheel_location = index;
                 change_voice (voice_rows[index].voice, channel);
                 switch (channel) {
-                    case 0:
-                    EnsemblesApp.settings.set_int ("voice-r1-index", index);
+                    case 17:
+                    Ensembles.Application.settings.set_int ("voice-r1-index", index);
                     break;
-                    case 1:
-                    EnsemblesApp.settings.set_int ("voice-r2-index", index);
+                    case 18:
+                    Ensembles.Application.settings.set_int ("voice-r2-index", index);
                     break;
-                    case 2:
-                    EnsemblesApp.settings.set_int ("voice-l-index", index);
+                    case 19:
+                    Ensembles.Application.settings.set_int ("voice-l-index", index);
                     break;
                 }
             });
@@ -100,7 +86,7 @@ namespace Ensembles.Shell {
                     temp_category = voices[i].category;
                     show_category = true;
                 }
-                var row = new VoiceItem (voices[i], show_category);
+                var row = new VoiceItem (voices[i], show_category, i);
                 voice_rows[i] = row;
                 main_list.insert (row, -1);
             }
@@ -120,7 +106,7 @@ namespace Ensembles.Shell {
                     }
                     if (Core.InstrumentRack.plugin_voice_reference[i - last_voice_index] != null) {
                         print ("name: %s\n", Core.InstrumentRack.plugin_voice_reference[i - last_voice_index].name);
-                        var row = new VoiceItem (Core.InstrumentRack.plugin_voice_reference[i - last_voice_index], show_category);
+                        var row = new VoiceItem (Core.InstrumentRack.plugin_voice_reference[i - last_voice_index], show_category, i);
                         voice_rows[i] = row;
                         main_list.insert (row, -1);
                     }
@@ -153,16 +139,16 @@ namespace Ensembles.Shell {
                 change_voice (voice_rows[index].voice, channel);
                 scroll_to_selected_row ();
                 switch (channel) {
-                    case 0:
+                    case 17:
                     if (index <= last_voice_index) {
-                        EnsemblesApp.settings.set_int ("voice-r1-index", index);
+                        Ensembles.Application.settings.set_int ("voice-r1-index", index);
                     }
                     break;
-                    case 1:
-                    EnsemblesApp.settings.set_int ("voice-r2-index", index);
+                    case 18:
+                    Ensembles.Application.settings.set_int ("voice-r2-index", index);
                     break;
-                    case 2:
-                    EnsemblesApp.settings.set_int ("voice-l-index", index);
+                    case 19:
+                    Ensembles.Application.settings.set_int ("voice-l-index", index);
                     break;
                 }
                 return false;
@@ -171,14 +157,14 @@ namespace Ensembles.Shell {
 
         public void load_settings () {
             switch (channel) {
-                case 0:
-                quick_select_row (EnsemblesApp.settings.get_int ("voice-r1-index"));
+                case 17:
+                quick_select_row (Ensembles.Application.settings.get_int ("voice-r1-index"));
                 break;
-                case 1:
-                quick_select_row (EnsemblesApp.settings.get_int ("voice-r2-index"));
+                case 18:
+                quick_select_row (Ensembles.Application.settings.get_int ("voice-r2-index"));
                 break;
-                case 2:
-                quick_select_row (EnsemblesApp.settings.get_int ("voice-l-index"));
+                case 19:
+                quick_select_row (Ensembles.Application.settings.get_int ("voice-l-index"));
                 break;
             }
         }

@@ -45,42 +45,55 @@ You can install Ensembles by compiling it from source, here's a list of required
  - `io.elementary.Platform>=6` (flatpak)
  - `io.elementary.Sdk>=6` (flatpak)
  - `elementary-sdk`
- - `gtk+-3.0>=3.18`
- - `granite>=5.3.0`
+ - `gtk+-3.0>=3.24`
+ - `granite>=6.1.2`
  - `glib-2.0`
  - `gobject-2.0`
  - `meson`
- - `libhandy-1`
+ - `libhandy-1>=1.2`
+ - `json-glib-1.0>=1.4.4`
+ - `lv2`
+ - `lilv-0`
+ - `suil-0`
  - `fluidsynth>=2.2.1`
  - `portmidi`
 
-Clone repository and change directory
+**Clone repository and change directory**
 ```
 git clone https://github.com/SubhadeepJasu/ensembles.git
 cd ensembles
 ```
-Compile, install using flatpak and start Ensembles on your system *(Recommended)*
+
+**Compile, install using flatpak and start Ensembles on your system** *(Recommended)*
 ```
 flatpak-builder build  com.github.subhadeepjasu.ensembles.yml --user --install --force-clean
 flatpak run com.github.subhadeepjasu.ensembles
 
 ```
-_OR_ using meson *(Requires GIT-LFS)*
+**_OR_ using meson** *(Requires GIT-LFS)*
+
 ```
 meson _build --prefix=/usr
 cd _build
 sudo ninja install
 com.github.subhadeepjasu.ensembles
 ```
+Don't forget to also install the soundfont from https://gitlab.com/SubhadeepJasu/ensemblesgmsoundfont, if you are doing meson build
 
 ## Realtime Audio Performance
-The software does require quite a lot of CPU power. If you notice bad delay or stuttering audio, launch the app from terminal; check to see if there is any error messages stating that fluidsynth was unable to set realtime priority. In that case, edit the file- `/etc/security/limits.conf` and add the following lines:
+You can tweak audio settings in Ensembles and select one of the two drivers (**Alsa** or **PulseAudio**). Increasing buffer size will reduce system load but too much increase in buffer-size may also cause sounds to go out of sync. So, feel free to tinker a little until you find your sweet spot in terms of performance.
+
+Even after all that, while using **PulseAudio**, if you notice bad delay or stuttering audio, launch the app from terminal; check to see if there is any error messages stating that fluidsynth was unable to set realtime priority. In that case, edit the file- `/etc/security/limits.conf` and add the following lines:
 ```
 @audio   -  rtprio      90
 @audio   -  memlock     unlimited
 ```
 
 The problem currently usually happens with the flatpak version.
+
+**PipeWire** support is planned and Ensembles will detect if you have it installed and it will modify the PulseAudio driver settings internally to better utilise PipeWire-Pulse if that is available.
+
+**Jack** is also an option but it currently only works from outside the flatpak soundbox, ie. when you compile it natively.
 
 ## Discussions
 If you want to ask any questions or provide feedback, you can make issues in this repository or use the discussions section of this repository.
@@ -89,7 +102,7 @@ If you want to ask any questions or provide feedback, you can make issues in thi
 Feel free to send pull requests to this repository with your code, or other types of assets like soundfont voices, style files, etc. Soundfont in this repo is no longer updated and its available in a different repository https://gitlab.com/SubhadeepJasu/ensemblesgmsoundfont due to LFS concerns.
 
 ## Plug-In Development
-Ensembles will have support for sampled voice, voice synthesis and DSP plug-ins. Plug-ins may support their own UI which can be accessed from within Ensembles. You can create plug-ins and distribute them over Flathub or elementary OS AppCenter.
+Ensembles will have support for effects and instrument plug-ins. Plug-ins may support their own UI which can be accessed from within Ensembles. There is partial support for LV2 plug-ins and it will be while before that is fleshed out properly. You can create plug-ins and distribute them over Flathub or elementary OS AppCenter, provided they follow the usual standards.
 
 ## External Files
 Ensembles supports creation and distribution of external soundfonts (SF2), style files and MIDI recordings. External content can be placed in special folders in user's document folder. Style files from other formats like *STY*,  *AC7*, etc. are not compatible with Ensembles. Ensembles has its own style format *ENSTL*, check out styles Readme file in your documents folder for style specifications (Check: https://github.com/SubhadeepJasu/Ensembles/blob/master/data/Styles/README.md). External MIDI recordings may have reserved copyrights.

@@ -1,29 +1,10 @@
-/*-
- * Copyright (c) 2021-2022 Subhadeep Jasu <subhajasu@gmail.com>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- *
- * The Noise authors hereby grant permission for non-GPL compatible
- * GStreamer plugins to be used and distributed together with GStreamer
- * and Noise. This permission is above and beyond the permissions granted
- * by the GPL license by which Noise is covered. If you modify this code
- * you may extend this exception to your version of the code, but you are not
- * obligated to do so. If you do not wish to do so, delete this exception
- * statement from your version.
- *
- * Adapted from Melody by Artem Anufrij <artem.anufrij@live.de>
+/*
+ * Copyright 2020-2022 Subhadeep Jasu <subhajasu@gmail.com>
+ * SPDX-License-Identifier: GPL-3.0-or-later
  */
+/*
+* Adapted from Melody by Artem Anufrij <artem.anufrij@live.de>
+*/
 
 // vala-lint=skip-file
 
@@ -55,7 +36,7 @@ namespace Ensembles.Interfaces {
             if (media_keys != null) {
                 media_keys.MediaPlayerKeyPressed.connect (pressed_key);
                 try {
-                    media_keys.GrabMediaPlayerKeys (Shell.EnsemblesApp.instance.application_id, (uint32)0);
+                    media_keys.GrabMediaPlayerKeys (Ensembles.Application.instance.application_id, (uint32)0);
                 }
                 catch (Error err) {
                     warning ("Could not grab media player keys: %s", err.message);
@@ -71,7 +52,7 @@ namespace Ensembles.Interfaces {
         }
 
         private void pressed_key (dynamic Object bus, string application, string key) {
-            if (application == (Shell.EnsemblesApp.instance.application_id)) {
+            if (application == (Ensembles.Application.instance.application_id)) {
                 if (key == "Previous") {
                     media_key_pressed_prev ();
                 }

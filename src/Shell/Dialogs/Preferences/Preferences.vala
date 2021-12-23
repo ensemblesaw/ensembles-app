@@ -1,30 +1,14 @@
-/*/
-*- Copyright © 2021 Subhadeep Jasu
-*- Copyright © 2019 Alain M. (https://github.com/alainm23/planner)
-*
-* This program is free software; you can redistribute it and/or
-* modify it under the terms of the GNU General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-* General Public License for more details.
-*
-* You should have received a copy of the GNU General Public
-* License along with this program; if not, write to the
-* Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
-* Boston, MA 02110-1301 USA
-*
-* Authored by: Alain M. <alainmh23@gmail.com>
-*              Subhadeep Jasu <subhajasu@gmail.com>
-*/
+/*
+ * Copyright 2020-2022 Subhadeep Jasu <subhajasu@gmail.com>
+ * Copyright © 2019 Alain M. (https://github.com/alainm23/planner)<alainmh23@gmail.com>
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
 
 namespace Ensembles.Shell.Dialogs.Preferences {
-    public class Preferences : Hdy.Window {
+    public class Preferences : Gtk.Dialog {
         public string view { get; construct; }
         private Gtk.Stack stack;
+        private Gtk.Stack header_stack;
         //private uint timeout_id = 0;
         private Gtk.InfoBar infobar;
         private List<ItemInput> input_binding_items;
@@ -38,32 +22,44 @@ namespace Ensembles.Shell.Dialogs.Preferences {
         public Preferences (string view="home") {
             Object (
                 view: view,
-                transient_for: Shell.EnsemblesApp.main_window,
+                transient_for: Ensembles.Application.main_window,
                 deletable: true,
-                resizable: true,
+                resizable: false,
+                use_header_bar: 1,
                 destroy_with_parent: true,
                 window_position: Gtk.WindowPosition.CENTER_ON_PARENT,
                 modal: true,
-                title: _("Preferences")
+                title: _("Preferences"),
+                width_request: 525,
+                height_request: 400
             );
         }
 
         construct {
+            //get_header_bar ().visible = false;
+            get_header_bar ().show_close_button = false;
+
             get_style_context ().add_class ("app");
 
-            //  Core.CentralBus.halt ();
-            width_request = 525;
-            height_request = 400;
+            header_stack = new Gtk.Stack () {
+                transition_type = Gtk.StackTransitionType.CROSSFADE,
+                transition_duration = 500,
+                width_request = 450
+            };
 
-            stack = new Gtk.Stack ();
-            stack.expand = true;
-            stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT_RIGHT;
+            get_header_bar ().add (header_stack);
+
+            stack = new Gtk.Stack () {
+                expand = true,
+                transition_type = Gtk.StackTransitionType.SLIDE_LEFT_RIGHT
+            };
 
             // Add the views to stack
             stack.add_named (get_home_widget (), "home");
             stack.add_named (get_audio_widget (), "audio");
             stack.add_named (get_about_widget (), "about");
             stack.add_named (get_keyboard_widget (), "input");
+            stack.add_named (get_appearance_widget (), "appearance");
 
             // Show the intended view
             Timeout.add (125, () => {
@@ -90,7 +86,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             infobar.response.connect ((response) => {
                 if (response == 0) {
                     try {
-                        EnsemblesApp.main_window.app_exit (true);
+                        Ensembles.Application.main_window.app_exit (true);
                     } catch (GLib.Error e) {
                         if (!(e is IOError.CANCELLED)) {
                             info_label.label = _("Requesting a restart failed. Restart manually to apply changes");
@@ -108,7 +104,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             main_grid.add (infobar);
             main_grid.add (stack_scrolled);
 
-            add (main_grid);
+            get_content_area ().add (main_grid);
 
             key_press_event.connect ((event) => {
                 if (event.keyval == 65307) {
@@ -203,31 +199,37 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             var main_grid = new Gtk.Grid ();
             main_grid.expand = true;
             main_grid.orientation = Gtk.Orientation.VERTICAL;
-            main_grid.add (header);
+            header_stack.add_named (header, "home");
             main_grid.add (main_scrolled);
 
             audio_item.activated.connect (() => {
                 stack.visible_child_name = "audio";
+                header_stack.visible_child_name = "audio";
             });
 
             files_item.activated.connect (() => {
-                stack.visible_child_name = "badge-count";
+                stack.visible_child_name = "files";
+                header_stack.visible_child_name = "files";
             });
 
             theme_item.activated.connect (() => {
-                stack.visible_child_name = "theme";
+                stack.visible_child_name = "appearance";
+                header_stack.visible_child_name = "theme";
             });
 
             plugin_item.activated.connect (() => {
-                stack.visible_child_name = "task";
+                stack.visible_child_name = "plugin";
+                header_stack.visible_child_name = "plugin";
             });
 
             input_item.activated.connect (() => {
                 stack.visible_child_name = "input";
+                header_stack.visible_child_name = "input";
             });
 
             about_item.activated.connect (() => {
                 stack.visible_child_name = "about";
+                header_stack.visible_child_name = "about";
             });
 
             //  backups_item.activated.connect (() => {
@@ -245,22 +247,25 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             var top_box = new Shell.Dialogs.Preferences.TopBox ("audio-card", _("Audio"));
 
             var driver_list = new List<string> ();
-            if (alsa_driver_found > 0) {
+            if (Core.AudioDriverSniffer.alsa_driver_found) {
                 driver_list.append ("Alsa");
             }
-            if (pulseaudio_driver_found > 0) {
+            if (Core.AudioDriverSniffer.pulseaudio_driver_found) {
                 driver_list.append ("PulseAudio");
             }
-            if (pipewire_driver_found > 0) {
+            if (Core.AudioDriverSniffer.pipewire_driver_found) {
                 driver_list.append ("PipeWire");
             }
-            if (pipewire_pulse_driver_found > 0) {
+            if (Core.AudioDriverSniffer.pipewire_pulse_driver_found) {
                 driver_list.append ("PipeWire Pulse");
+            }
+            if (Core.AudioDriverSniffer.jack_driver_found) {
+                driver_list.append ("Jack");
             }
 
             int saved_driver = 0;
 
-            switch (EnsemblesApp.settings.get_string ("driver")) {
+            switch (Ensembles.Application.settings.get_string ("driver")) {
                 case "alsa":
                 for (int i = 0; i < driver_list.length (); i++) {
                     if (driver_list.nth_data (i) == "Alsa") {
@@ -293,6 +298,14 @@ namespace Ensembles.Shell.Dialogs.Preferences {
                     }
                 }
                 break;
+                case "jack":
+                for (int i = 0; i < driver_list.length (); i++) {
+                    if (driver_list.nth_data (i) == "Jack") {
+                        saved_driver = i;
+                        break;
+                    }
+                }
+                break;
             }
 
 
@@ -307,8 +320,8 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             string buffer_length_text = _("Buffer length [%d frames]");
 
             var buffer_length = new Dialogs.Preferences.ItemScale (
-                buffer_length_text.printf (EnsemblesApp.settings.get_int ("previous-buffer-length")),
-                EnsemblesApp.settings.get_double ("buffer-length"),
+                buffer_length_text.printf (Ensembles.Application.settings.get_int ("previous-buffer-length")),
+                Ensembles.Application.settings.get_double ("buffer-length"),
                 0,
                 1,
                 0.01,
@@ -331,10 +344,13 @@ namespace Ensembles.Shell.Dialogs.Preferences {
                     case "PipeWire Pulse":
                     driver_string = "pipewire-pulse";
                     break;
+                    case "Jack":
+                    driver_string = "jack";
+                    break;
                 }
                 infobar.set_visible (true);
                 buffer_length.set_sensitive (false);
-                EnsemblesApp.settings.set_string ("driver", driver_string);
+                Ensembles.Application.settings.set_string ("driver", driver_string);
             });
 
             var pavuctrl_button = new Gtk.Button.with_label (_("System Mixer"));
@@ -363,10 +379,13 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             box.add (buffer_length);
 
             buffer_length.changed.connect ((value) => {
-                EnsemblesApp.settings.set_double ("buffer-length", value);
-                var display_value = Core.DriverSettingsProvider.change_period_size (value);
+                Ensembles.Application.settings.set_double ("buffer-length", value);
+                var display_value = Ensembles.Application.arranger_core.synthesizer.set_driver_configuration (
+                    Ensembles.Application.settings.get_string ("driver"),
+                    value
+                );
                 buffer_length.title = buffer_length_text.printf (display_value);
-                EnsemblesApp.settings.set_int ("previous-buffer-length", display_value);
+                Ensembles.Application.settings.set_int ("previous-buffer-length", display_value);
             });
 
             var box_scrolled = new Gtk.ScrolledWindow (null, null);
@@ -377,12 +396,13 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             var main_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
             main_box.expand = true;
 
-            main_box.pack_start (top_box, false, false, 0);
+            header_stack.add_named (top_box, "audio");
             main_box.pack_start (box_scrolled, false, true, 0);
             main_box.pack_end (pavuctrl_button, false, false, 0);
 
             top_box.back_activated.connect (() => {
                 stack.visible_child_name = "home";
+                header_stack.visible_child_name = "home";
             });
 
             top_box.done_activated.connect (() => {
@@ -398,6 +418,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             var top_box = new Dialogs.Preferences.TopBox ("input-keyboard", _("Input"));
             top_box.back_activated.connect (() => {
                 stack.visible_child_name = "home";
+                header_stack.visible_child_name = "home";
             });
 
             top_box.done_activated.connect (() => {
@@ -414,7 +435,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
                         try {
                             var fs = preset_file.create (GLib.FileCreateFlags.NONE);
                             var ds = new DataOutputStream (fs);
-                            ds.put_string (EnsemblesApp.settings.get_string ("pc-input-bindings"));
+                            ds.put_string (Ensembles.Application.settings.get_string ("pc-input-bindings"));
                         } catch (Error e) {
                             warning ("Cannot create input preset file! " + e.message);
                         }
@@ -424,7 +445,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
 
             Gtk.FileChooserDialog mapping_file_chooser;
             mapping_file_chooser = new Gtk.FileChooserDialog (_("Export PC Keyboard Input Mapping"),
-                                                                EnsemblesApp.main_window,
+                                                                Application.main_window,
                                                                 Gtk.FileChooserAction.SAVE,
                                                                 _("Cancel"),
                                                                 Gtk.ResponseType.CANCEL,
@@ -441,13 +462,13 @@ namespace Ensembles.Shell.Dialogs.Preferences {
 
             mapping_file_chooser.response.connect ((response_id) => {
                 if (response_id == -3) {
-                    KeyboardConstants.save_mapping (EnsemblesApp.settings, mapping_file_chooser.get_file ().get_path ());
+                    KeyboardConstants.save_mapping (Application.settings, mapping_file_chooser.get_file ().get_path ());
                 }
             });
 
             Gtk.FileChooserDialog mapping_file_open_chooser;
             mapping_file_open_chooser = new Gtk.FileChooserDialog (_("Import PC Keyboard Input Mapping"),
-                                                                EnsemblesApp.main_window,
+                                                                Application.main_window,
                                                                 Gtk.FileChooserAction.OPEN,
                                                                 _("Cancel"),
                                                                 Gtk.ResponseType.CANCEL,
@@ -464,7 +485,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             input_key_box.set_activate_on_single_click (true);
             input_binding_items = new List<ItemInput> ();
 
-            KeyboardConstants.load_mapping (EnsemblesApp.settings);
+            KeyboardConstants.load_mapping (Application.settings);
             int j = 0;
             for (int i = 3; i < 8; i++) {
                 var c_note_item = new ItemInput (j, "C " + i.to_string () , KeyboardConstants.key_bindings[j++], false);
@@ -515,7 +536,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
 
             mapping_file_open_chooser.response.connect ((response_id) => {
                 if (response_id == -3) {
-                    KeyboardConstants.load_mapping (EnsemblesApp.settings, mapping_file_open_chooser.get_file ().get_path ());
+                    KeyboardConstants.load_mapping (Application.settings, mapping_file_open_chooser.get_file ().get_path ());
                     update_bindings_ui ();
                 }
             });
@@ -550,7 +571,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
 
                             KeyboardConstants.key_bindings[selected_input_item.note_index] = (KeyboardConstants.KeyMap)keyval;
                             selected_input_item.update_labels (KeyboardConstants.key_bindings[selected_input_item.note_index]);
-                            KeyboardConstants.save_mapping (EnsemblesApp.settings);
+                            KeyboardConstants.save_mapping (Application.settings);
                             input_key_box.unselect_all ();
                             selected_input_item = null;
                         }
@@ -583,13 +604,140 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             btn_grid.column_spacing = 4;
 
             var main_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-            main_box.pack_start (top_box, false, false, 0);
+            header_stack.add_named (top_box, "input");
             var separator_a = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
             main_box.pack_start (separator_a, false, false, 0);
             main_box.pack_start (scrollable, false, true, 0);
             var separator_b = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
             main_box.pack_start (separator_b, false, false, 0);
             main_box.pack_end (btn_grid, false, false, 0);
+
+            return main_box;
+        }
+
+        private Gtk.Widget get_appearance_widget () {
+            var main_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+
+            var top_box = new Dialogs.Preferences.TopBox ("applications-graphics", _("Appearance"));
+            header_stack.add_named (top_box, "theme");
+
+            var separator_a = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
+            main_box.pack_start (separator_a, false, false, 0);
+
+            var key_label = new Gtk.Label (_("Note Visualization Legend")) {
+                xalign = 0,
+                margin = 8
+            };
+            main_box.pack_start (key_label, false, false, 0);
+
+            var key_theme_guide = new Gtk.Grid () {
+                column_homogeneous = true,
+                column_spacing = 4,
+                row_spacing = 4,
+                margin = 8
+            };
+
+            var key_legend_primary = new Gtk.Box (Gtk.Orientation.VERTICAL, 0) {
+                halign = Gtk.Align.CENTER,
+                width_request = 48,
+                height_request = 48
+            };
+            key_legend_primary.get_style_context ().add_class ("key_label_primary");
+            var key_legend_secondary = new Gtk.Box (Gtk.Orientation.VERTICAL, 0) {
+                halign = Gtk.Align.CENTER,
+                width_request = 48,
+                height_request = 48
+            };
+            key_legend_secondary.get_style_context ().add_class ("key_label_secondary");
+            var key_legend_auto = new Gtk.Box (Gtk.Orientation.VERTICAL, 0) {
+                halign = Gtk.Align.CENTER,
+                width_request = 48,
+                height_request = 48
+            };
+            key_legend_auto.get_style_context ().add_class ("key_label_auto");
+
+            var key_accent_primary = new Gtk.Label (_("Voice R1, Voice R2")) {
+                opacity = 0.5
+            };
+            var key_accent_secondary = new Gtk.Label (_("Voice L, Chords")) {
+                opacity = 0.5
+            };
+            var key_accent_automatic = new Gtk.Label (_("Automations")) {
+                opacity = 0.5
+            };
+
+            key_theme_guide.attach (key_legend_primary, 0, 0);
+            key_theme_guide.attach (key_legend_secondary, 1, 0);
+            key_theme_guide.attach (key_legend_auto, 2, 0);
+            key_theme_guide.attach (key_accent_primary, 0, 1);
+            key_theme_guide.attach (key_accent_secondary, 1, 1);
+            key_theme_guide.attach (key_accent_automatic, 2, 1);
+
+            main_box.pack_start (key_theme_guide, false, false, 0);
+
+            var display_preview = new Gtk.Grid () {
+                column_homogeneous = true,
+                margin = 8
+            };
+            display_preview.get_style_context ().add_class ("central-display-preview");
+            display_preview.get_style_context ().add_class ("ensembles-central-display");
+            var top_bar_preview = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
+                height_request = 30
+            };
+            top_bar_preview.get_style_context ().add_class ("home-screen-panel-top");
+            var bottom_bar_preview = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
+                height_request = 60
+            };
+            bottom_bar_preview.get_style_context ().add_class ("home-screen-panel-bottom");
+            var home_preview = new Gtk.Box (Gtk.Orientation.VERTICAL, 0) {
+                height_request = 154
+            };
+            home_preview.get_style_context ().add_class ("home-screen-background");
+
+            home_preview.pack_start (top_bar_preview, false, false, 8);
+            home_preview.pack_end (bottom_bar_preview, false, false, 8);
+
+            display_preview.attach (home_preview, 0, 0);
+
+            var loop = new MainLoop ();
+            List<string> theme_list = new List<string> ();
+            Utils.get_theme_list.begin ((obj, res) => {
+                var themes = Utils.get_theme_list.end (res);
+                int selected_index = -1;
+                var selected_theme = Application.settings.get_string ("display-theme");
+                for (int i = 0; i < themes.length; i++) {
+                    theme_list.append (themes[i]);
+                    print ("%s %s\n", themes[i], selected_theme);
+                    if (themes[i] == selected_theme) {
+                        selected_index = i;
+                    }
+                }
+                var theme_select = new Dialogs.Preferences.ItemSelect (
+                    _("Central Display Theme"),
+                    selected_index,
+                    theme_list,
+                    true
+                );
+                theme_select.activated.connect ((index) => {
+                    Application.settings.set_string ("display-theme", theme_list.nth_data (index));
+                    print ("%s\n", theme_list.nth_data (index));
+                    Application.init_theme ();
+                });
+                main_box.pack_start (theme_select, false, false, 0);
+                main_box.pack_end (display_preview, false, false, 0);
+                loop.quit ();
+            });
+            loop.run ();
+
+            top_box.back_activated.connect (() => {
+                stack.visible_child_name = "home";
+                header_stack.visible_child_name = "home";
+            });
+
+            top_box.done_activated.connect (() => {
+                hide_destroy ();
+            });
+
 
             return main_box;
         }
@@ -639,7 +787,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             var main_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
             main_box.expand = true;
 
-            main_box.pack_start (top_box, false, false, 0);
+            header_stack.add_named (top_box, "about");
             main_box.pack_start (header_logo_image, false, true, 0);
             main_box.pack_start (version_label, false, true, 0);
             main_box.pack_start (fluidsynth_version, false, true, 0);
@@ -647,6 +795,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
 
             top_box.back_activated.connect (() => {
                 stack.visible_child_name = "home";
+                header_stack.visible_child_name = "home";
             });
 
             top_box.done_activated.connect (() => {
