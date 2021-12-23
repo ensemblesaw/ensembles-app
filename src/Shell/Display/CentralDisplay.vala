@@ -42,7 +42,7 @@ namespace Ensembles.Shell {
             voice_menu_r1 = new VoiceMenu (17);
             voice_menu_r2 = new VoiceMenu (18);
             fx_rack_menu = new EffectRackScreen ();
-            channel_mod_screen = new ChannelModulatorScreen (0, 0);
+            channel_mod_screen = new ChannelModulatorScreen (0);
             lfo_editor = new LFOEditScreen ();
             recorder_screen = new RecorderScreen ();
 
