@@ -2,7 +2,7 @@
 project (
     'com.github.subhadeepjasu.ensembles',
     'c', 'vala',
-    version: '0.0.16',
+    version: '0.0.17',
 )
 
 # Common Display Version

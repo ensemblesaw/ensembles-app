@@ -56,6 +56,10 @@
       <caption>Multi-track Recorder</caption>
       <image>https://raw.githubusercontent.com/SubhadeepJasu/Ensembles/master/screenshots/ScreenshotMultiTrackRecorder.png</image>
     </screenshot>
+    <screenshot>
+      <caption>Voice Menu and MIDI File Player</caption>
+      <image>https://raw.githubusercontent.com/SubhadeepJasu/Ensembles/master/screenshots/ScreenshotVoice.png</image>
+    </screenshot>
   </screenshots>
   <content_rating type="oars-1.1">
     <content_attribute id="violence-cartoon">none</content_attribute>
@@ -87,6 +91,37 @@
     <content_attribute id="money-gambling">none</content_attribute>
   </content_rating>
   <releases>
+    <release version="0.0.17" date="2021-12-23">
+      <description>
+        <p>Fixed:</p>
+        <ul>
+          <li>Major rewrite and re-organisation of code</li>
+          <li>Reduced number of synths to two and using more channels instead</li>
+          <li>Prevent out of bound memory access in style engine and registry memory</li>
+          <li>Fixed layout for HiDPI screens</li>
+          <li>Fixed Recorder timer false update</li>
+        </ul>
+        <p>Improved:</p>
+        <ul>
+          <li>Improved multi-touch detection in on-screen keybed</li>
+          <li>Style engine updated to use updated MIDI Player in FluidSynth 2.2.4</li>
+          <li>Recorder event sturcture improved and optimized</li>
+          <li>Fixed layout scalability for HiDPI screens</li>
+          <li>Use Gtk.Dialog for Preferences window</li>
+          <li>Improved knob input behavior</li>
+          <li>Visualize MIDI File events and automation events like harmonization, on the keybed</li>
+          <li>Reverb and Chorus effects improved (Note: styles haven't been updated to utilise them)</li>
+        </ul>
+        <p>New:</p>
+        <ul>
+          <li>Added ability to change central display themes</li>
+          <li>Added Jack driver support (only works outside sandbox for now)</li>
+          <li>Implemented tempo "Tap" button. Tap the button to the beats of a song to copy it's tempo</li>
+          <li>Implemented "Stop" and "Sustain" (Sostenuto) button on keybed top bar</li>
+          <li>Display version updated to AW-200. New manual/user-guide coming soon.</li>
+        </ul>
+      </description>
+    </release>
     <release version="0.0.16" date="2021-11-24">
       <description>
         <p>HotFix:</p>

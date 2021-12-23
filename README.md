@@ -93,6 +93,8 @@ The problem currently usually happens with the flatpak version.
 
 **PipeWire** support is planned and Ensembles will detect if you have it installed and it will modify the PulseAudio driver settings internally to better utilise PipeWire-Pulse if that is available.
 
+**Jack** is also an option but it currently only works from outside the flatpak soundbox, ie. when you compile it natively.
+
 ## Discussions
 If you want to ask any questions or provide feedback, you can make issues in this repository or use the discussions section of this repository.
 
