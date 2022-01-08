@@ -36,9 +36,10 @@ namespace Ensembles {
         ";
 
         string[] ? arg_file = null;
+        public static bool raw_midi_input = false;
 
         construct {
-            flags |= ApplicationFlags.HANDLES_OPEN;
+            flags |= ApplicationFlags.HANDLES_OPEN | ApplicationFlags.HANDLES_COMMAND_LINE;
             application_id = "com.github.subhadeepjasu.ensembles";
             settings = new Settings (application_id);
         }
@@ -89,9 +90,10 @@ namespace Ensembles {
             string[] args_cmd = cmd.get_arguments ();
             unowned string[] args = args_cmd;
 
-            GLib.OptionEntry [] options = new OptionEntry [2];
+            GLib.OptionEntry [] options = new OptionEntry [3];
             options [0] = { "", 0, 0, OptionArg.STRING_ARRAY, ref arg_file, null, "URI" };
-            options [1] = { null };
+            options [1] = { "raw", 0, 0, OptionArg.NONE, ref raw_midi_input, _("Enable Raw MIDI Input"), null };
+            options [2] = { null };
 
             var opt_context = new OptionContext ("actions");
             opt_context.add_main_entries (options, null);
@@ -102,10 +104,16 @@ namespace Ensembles {
                 return -1;
             }
 
-            if (GLib.FileUtils.test (arg_file[0], GLib.FileTest.EXISTS) && arg_file[0].down ().has_suffix (".mid")) {
-                File file = File.new_for_path (arg_file[0]);
-                open ({ file }, "");
-                return 0;
+            if (raw_midi_input) {
+                print ("Raw MIDI Input Enabled! You can now connect your DAW\n");
+            }
+
+            if (arg_file != null && arg_file[0] != null) {
+                if (GLib.FileUtils.test (arg_file[0], GLib.FileTest.EXISTS) && arg_file[0].down ().has_suffix (".mid")) {
+                    File file = File.new_for_path (arg_file[0]);
+                    open ({ file }, "");
+                    return 0;
+                }
             }
 
             activate ();

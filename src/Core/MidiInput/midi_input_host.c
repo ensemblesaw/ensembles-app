@@ -4,6 +4,7 @@
  */
 
 #include "midi_input_host.h"
+#include "../Synthesizer/synthesizer.h"
 
 PortMidiStream* controller_input_stream;
 char* controller_input_device_name;
@@ -12,18 +13,49 @@ int controller_input_device_count;
 int controller_input_device_names_length1 = 2;
 int countroller_input_device_id_length1 = 2;
 
-void
-controller_init () {
-    Pm_Initialize ();
+fluid_midi_driver_t* fluid_midi_driver;
+fluid_settings_t* midi_settings;
+
+static int
+controller_handle_midi_event(void *data, fluid_midi_event_t *midi_event )
+{
+    int channel = fluid_midi_event_get_channel (midi_event);
+    fluid_midi_event_t* new_event = new_fluid_midi_event ();
+
+    fluid_midi_event_set_channel (new_event, channel);
+    fluid_midi_event_set_control (new_event, fluid_midi_event_get_control (midi_event));
+    fluid_midi_event_set_pitch (new_event, fluid_midi_event_get_pitch (midi_event));
+    fluid_midi_event_set_program (new_event, fluid_midi_event_get_program (midi_event));
+    fluid_midi_event_set_value (new_event, fluid_midi_event_get_value (midi_event));
+    fluid_midi_event_set_velocity (new_event, fluid_midi_event_get_velocity (midi_event));
+    fluid_midi_event_set_type (new_event, fluid_midi_event_get_type (midi_event));
+
+    return handle_events_for_midi_players(new_event, 1);
 }
 
 void
-controller_query_device_info (int id) {
+controller_init (int fluid_input)
+{
+
+    if (fluid_input == 1)
+    {
+        midi_settings = new_fluid_settings();
+        fluid_midi_driver = new_fluid_midi_driver (midi_settings, controller_handle_midi_event, NULL);
+    } else {
+        Pm_Initialize ();
+    }
+}
+
+void
+controller_query_device_info (int id)
+{
     const PmDeviceInfo* device = Pm_GetDeviceInfo (id);
-    if (device->input > 0) {
+    if (device->input > 0)
+    {
         controller_input_device_available = 1;
     }
-    else {
+    else
+    {
         controller_input_device_available = 0;
     }
     controller_input_device_name = NULL;
@@ -63,6 +95,17 @@ controller_close_connection () {
 }
 
 void
-controller_destruct () {
+controller_destruct ()
+{
     Pm_Terminate ();
+
+    if (midi_settings)
+    {
+        delete_fluid_settings(midi_settings);
+    }
+
+    if (fluid_midi_driver)
+    {
+        delete_fluid_midi_driver(fluid_midi_driver);
+    }
 }

@@ -7,6 +7,7 @@
 #define MIDI_INPUT_HOST_H
 
 #include <portmidi.h>
+#include <fluidsynth.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>

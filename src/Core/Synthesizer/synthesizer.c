@@ -218,12 +218,14 @@ synthesizer_set_fx_callback (synthesizer_fx_callback callback) {
 static synthesizer_note_event_callback event_callback;
 
 void
-synthesizer_set_event_callback (synthesizer_note_event_callback callback) {
+synthesizer_set_event_callback (synthesizer_note_event_callback callback)
+{
     event_callback = callback;
 }
 
 int
-handle_events_for_midi_players (fluid_midi_event_t *event, int _is_style_player) {
+handle_events_for_midi_players(fluid_midi_event_t *event, int _is_style_player)
+{
     int type = fluid_midi_event_get_type(event);
     int chan = fluid_midi_event_get_channel(event);
     int cont = fluid_midi_event_get_control(event);

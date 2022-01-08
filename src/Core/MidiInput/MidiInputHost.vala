@@ -22,10 +22,15 @@ namespace Ensembles.Core {
         public signal void receive_note_event (int key, int on, int velocity, int channel);
 
         public Ensembles.Core.MidiDevice[] refresh () {
+            if (Application.raw_midi_input) {
+                controller_destruct ();
+                controller_init (1);
+                return new Ensembles.Core.MidiDevice[0];
+            }
             stream_connected = false;
             Thread.usleep (200);
             controller_destruct ();
-            controller_init ();
+            controller_init (0);
             int n = controller_query_input_device_count ();
             debug ("Found %d devices…\n", n);
             midi_device = new MidiDevice[n];
@@ -87,7 +92,7 @@ namespace Ensembles.Core {
 extern string controller_input_device_name;
 extern int controller_input_device_available;
 
-extern void controller_init ();
+extern void controller_init (int fluid_input);
 extern void controller_destruct ();
 
 extern int controller_query_input_device_count ();

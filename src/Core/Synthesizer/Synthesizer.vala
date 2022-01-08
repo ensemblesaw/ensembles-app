@@ -16,7 +16,7 @@ namespace Ensembles.Core {
             });
 
             synthesizer_set_event_callback ((channel, key, velocity, on, c_main, c_type) =>{
-                print ("%d, %d, %d, %d, %d, %d\n", channel, key, velocity, on, c_main, c_type);
+                //  print ("%d, %d, %d, %d, %d, %d\n", channel, key, velocity, on, c_main, c_type);
                 Application.main_window.main_keyboard.set_note_on (key, (on == 144), true);
                 if (Shell.RecorderScreen.sequencer != null &&
                     Shell.RecorderScreen.sequencer.current_state != MidiRecorder.RecorderState.PLAYING
