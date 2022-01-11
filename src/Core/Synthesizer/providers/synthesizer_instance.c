@@ -122,6 +122,7 @@ set_driver_configuration(const char* driver_name, double buffer_length_multiplie
         fluid_settings_setnum(rendering_settings, "synth.overflow.percussion", 5000.0);
         fluid_settings_setint(rendering_settings, "synth.midi-channels", 64);
         fluid_settings_setstr(rendering_settings, "synth.midi-bank-select", "gs");
+        fluid_settings_setint(rendering_settings, "synth.polyphony", 512);
     }
     if (utility_settings == NULL) {
         utility_settings = new_fluid_settings ();
