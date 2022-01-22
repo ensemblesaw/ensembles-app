@@ -26,10 +26,10 @@ With the exception of the configuration marker, all markers use the same syntax 
 
 The Configuration marker is as follows:
 
-```Config:<Measure Number (usually 1)>;<Tempo>;<Chord Type>```
+```Config:<Measure Number (usually 1)>;<Tempo>,<Chord Type>.<Alt Chord Type Present>```
 
 * Measure number is number of measures upto the occurance of that marker. So _Config_ has measure 1, _Intro A_ has 2 and so on.
-* Tempo is in BPM (Beats per Minute)
+* Tempo is in BPM (Beats per Minute) [Note: Don't use fractional tempo. It needs to be whole number!]
 * Chord Type is 0 is original scale of style is in major and 1 if it's minor
 
 ### Modulators
@@ -39,8 +39,26 @@ The Configuration marker is as follows:
 - 71 - Resonance [0, 127]
 - 74 - Cut-Off Filter [0, 127]
 - 85 - Explicit Bank Select (in case standard bank select doesn't work, required for accessing XG sounds)
-- 91 - Reverb [0, 127] (Safe range is 0 to 8)
-- 93 - Chorus [0, 127] (Safe range is 0 to 8)
+- 91 - Reverb [0, 127]
+- 93 - Chorus [0, 127]
+
+### Channels
+- 1&nbsp; - Lead
+- 2&nbsp; - Lead
+- 3&nbsp; - Bass
+- 4&nbsp; - Piano/EP Fill
+- 5&nbsp; - Guitar Fill
+- 6&nbsp; - Electric Guitar
+- 7&nbsp; - Strings/Organ Fill
+- 8&nbsp; - Strings/Synth Ambience
+- 9&nbsp; - Miscellaneous
+- 10 - Drums/Percussions
+- 11 - SFX
+- 12 - Lead (alt)
+- 13 - Bass (alt)
+- 14 - Piano/EP Fill (alt)
+- 15 - Electric Guitar/Guitar Fill (alt)
+- 16 - Strings/Pad/Organ (alt)
 
 
 ### Some Workarounds for missing voices
@@ -51,7 +69,7 @@ The Configuration marker is as follows:
 
 ### Rosegarden
 All the styles made by me were made in Rosegarden Midi Editor.
-In the `data/RoseGardenDevices` folder you will find the Ensembles device definition. In the `Styles` folder you will find a template style to get started, though you may need to place the markers manually. You can download *EnsemblesGM.sf2* soundfont archive from https://gitlab.com/SubhadeepJasu/ensemblesgmsoundfont, if you want to use any other midi editor or DAW.
+In the `data/RoseGardenDevices` folder you will find the Ensembles device definition. In the `Styles` folder you will find a template style to get started, though you may need to place the markers manually. Start Ensembles with a `--raw` option to enable Ensembles to process raw MIDI signals. Enable MIDI Input in Ensembles, notice the list of MIDI devices don't appear, which means it will process raw input from any source what so ever. You can then select Ensembles as the MIDI output devie in Rosegarden. You can download *EnsemblesGM.sf2* soundfont archive from https://gitlab.com/SubhadeepJasu/ensemblesgmsoundfont. You can also use any other midi editor or DAW of your preference.
 
 ### Conclusion
 
