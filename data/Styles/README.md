@@ -31,9 +31,10 @@ The Configuration marker is as follows:
 * Measure number is number of measures upto the occurance of that marker. So _Config_ has measure 1, _Intro A_ has 2 and so on.
 * Tempo is in BPM (Beats per Minute) [Note: Don't use fractional tempo. It needs to be whole number!]
 * Chord Type is 0 is original scale of style is in major and 1 if it's minor
+* Alt Chord Type present is 1 only if Channels 12~16 have melodies in the opposite chord type, else it is 0
 
 ### Modulators
-- 7  - Volume [0, 127]
+- 7&nbsp; - Volume [0, 127]
 - 10 - Pan [-100, 100]
 - 64 - Sustain [0, 127]
 - 71 - Resonance [0, 127]
