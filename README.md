@@ -99,13 +99,13 @@ The problem currently usually happens with the flatpak version.
 If you want to ask any questions or provide feedback, you can make issues in this repository or use the discussions section of this repository.
 
 ## Contributing
-Feel free to send pull requests to this repository with your code, or other types of assets like soundfont voices, style files, etc. Soundfont in this repo is no longer updated and its available in a different repository https://gitlab.com/SubhadeepJasu/ensemblesgmsoundfont due to LFS concerns.
+Feel free to send pull requests to this repository with your code, or other types of assets like soundfont voices, style files, etc. Soundfont in this repo is no longer updated and its available in a different repository https://gitlab.com/SubhadeepJasu/ensemblesgmsoundfont due to LFS concerns. Refrain from using copyrighted melodies or copyrighted sounds without proper license.
 
 ## Plug-In Development
 Ensembles will have support for effects and instrument plug-ins. Plug-ins may support their own UI which can be accessed from within Ensembles. There is partial support for LV2 plug-ins and it will be while before that is fleshed out properly. You can create plug-ins and distribute them over Flathub or elementary OS AppCenter, provided they follow the usual standards.
 
 ## External Files
-Ensembles supports creation and distribution of external soundfonts (SF2), style files and MIDI recordings. External content can be placed in special folders in user's document folder. Style files from other formats like *STY*,  *AC7*, etc. are not compatible with Ensembles. Ensembles has its own style format *ENSTL*, check out styles Readme file in your documents folder for style specifications (Check: https://github.com/SubhadeepJasu/Ensembles/blob/master/data/Styles/README.md). External MIDI recordings may have reserved copyrights.
+Ensembles supports creation and distribution of external soundfonts (SF2), style files and MIDI recordings. External content can be placed in special folders in user's document folder. Style files from other formats like *STY*,  *AC7*, etc. are not compatible with Ensembles. Ensembles has its own style format *ENSTL*, check out styles Readme file in your documents folder for style specifications (Check: https://github.com/SubhadeepJasu/Ensembles/blob/master/data/Styles/README.md). External MIDI recordings may have reserved copyrights. Styles used in this alpha often use copyrighted melodies and chords (Check copyright notice in the rg files). They are due to be changed to public domain melodies or original composition, before the final release when the app will actually be commercially available in AppCenter and Flathub.
 
 
 ## Contributors
