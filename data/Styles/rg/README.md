@@ -44,7 +44,7 @@
 | EDM              | Funky Breaks       |
 | EDM              | Garage             |
 | EDM              | Glitch Hop         |
-| EDM              | Ground Pop         |
+| EDM              | Ground R&B         |
 | EDM              | Hard House         |
 | EDM              | Hard Trance        |
 | EDM              | Hard Trap          |
