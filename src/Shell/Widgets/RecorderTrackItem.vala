@@ -113,7 +113,12 @@ namespace Ensembles.Shell {
                 int baseline = (int)(-get_allocated_height () * (min_point / max_height));
 
                 double total_width = 0;
+                for (int i = 0; i < cardinality; i++) {
+                    total_width += (double)_events.nth_data (i).time_stamp / 100000;
+                }
+                widget.width_request = (int)total_width;
                 // Draw bars as per data points
+                total_width = 0;
                 for (int i = 0; i < cardinality; i++) {
                     total_width += (double)_events.nth_data (i).time_stamp / 100000;
                     if (_events.nth_data (i).event_type == Core.MidiEvent.EventType.NOTE) {
@@ -137,7 +142,6 @@ namespace Ensembles.Shell {
                         draw_style_section (context, _events.nth_data (i).value1, (int)(total_width));
                     }
                 }
-                widget.width_request = (int)total_width;
             }
 
             return true;
