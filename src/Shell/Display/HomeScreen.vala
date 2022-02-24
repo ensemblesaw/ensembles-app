@@ -452,10 +452,10 @@ namespace Ensembles.Shell {
                 chord_type_label.set_text ("m7");
                 break;
                 case 10:
-                chord_type_label.set_text ("9");
+                chord_type_label.set_text ("add9");
                 break;
                 case 11:
-                chord_type_label.set_text ("add9");
+                chord_type_label.set_text ("9");
                 break;
             }
             chord_label.queue_draw ();

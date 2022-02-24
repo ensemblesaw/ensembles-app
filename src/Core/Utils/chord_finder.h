@@ -18,8 +18,8 @@
  * 7 - Dominant Seventh
  * 8 - Major Seventh
  * 9 - minor seventh
- * 10 - Dominant Ninth
- * 11 - add9
+ * 10 - add9
+ * 11 - Dominant Ninth
  */
 
 
