@@ -211,6 +211,7 @@ namespace Ensembles.Shell {
             chord_box.attach (chord_flat_label, 1, 1, 2, 1);
             chord_box.attach (chord_type_label, 1, 2, 2, 1);
             chord_box.margin_top = 2;
+            chord_box.height_request = 36;
 
             var equalizer_grid = new Gtk.Grid ();
             equalizer_bar = new EqualizerBar[19];
@@ -425,6 +426,36 @@ namespace Ensembles.Shell {
                 break;
                 case 1:
                 chord_type_label.set_text ("min");
+                break;
+                case 2:
+                chord_type_label.set_text ("dim");
+                break;
+                case 3:
+                chord_type_label.set_text ("sus2");
+                break;
+                case 4:
+                chord_type_label.set_text ("sus4");
+                break;
+                case 5:
+                chord_type_label.set_text ("aug");
+                break;
+                case 6:
+                chord_type_label.set_text ("6");
+                break;
+                case 7:
+                chord_type_label.set_text ("7");
+                break;
+                case 8:
+                chord_type_label.set_text ("M7");
+                break;
+                case 9:
+                chord_type_label.set_text ("m7");
+                break;
+                case 10:
+                chord_type_label.set_text ("9");
+                break;
+                case 11:
+                chord_type_label.set_text ("add9");
                 break;
             }
             chord_label.queue_draw ();
