@@ -93,7 +93,13 @@ namespace Ensembles.Core {
                     jack_driver_found = true;
                     return true;
                 } else {
-                    jack_driver_found = false;
+                    if (info.contains ("jackdmp -d master-backend-name --help")) {
+                        print ("Jackdmp detected!\n");
+                        jack_driver_found = true;
+                        return true;
+                    } else {
+                        jack_driver_found = false;
+                    }
                 }
             } catch (Error e) {
                 warning (e.message);
