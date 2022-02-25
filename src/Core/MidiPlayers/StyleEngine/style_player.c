@@ -198,14 +198,115 @@ get_chord_modified_key (int key)
                 return (key + chord_main);
             }
         }
+        else if (chord_type == 6)
+        {
+            if ((key - 4) % 12 == 0)
+            {
+                if (get_random_in_range(0, 3) > 2)
+                {
+                    return (key + chord_main);
+                }
+                return (key + chord_main + 5);
+            }
+            else
+            {
+                return (key + chord_main);
+            }
+        }
+        else if (chord_type == 7)
+        {
+            if ((key - 4) % 12 == 0)
+            {
+                if (get_random_in_range(0, 3) > 2)
+                {
+                    return (key + chord_main);
+                }
+                return (key + chord_main + 6);
+            }
+            else
+            {
+                return (key + chord_main);
+            }
+        }
+        else if (chord_type == 8)
+        {
+            if ((key - 4) % 12 == 0)
+            {
+                if (get_random_in_range(0, 3) > 2)
+                {
+                    return (key + chord_main);
+                }
+                return (key + chord_main - 5);
+            }
+            else
+            {
+                return (key + chord_main);
+            }
+        }
+        else if (chord_type == 9)
+        {
+            if ((key - 4) % 12 == 0)
+            {
+                if (get_random_in_range(0, 1))
+                {
+                    return (key + chord_main + 6);
+                }
+                return (key + chord_main - 1);
+            }
+            else
+            {
+                return (key + chord_main);
+            }
+        }
+        else if (chord_type == 10)
+        {
+            if ((key - 4) % 12 == 0)
+            {
+                if (get_random_in_range(0, 3) > 2)
+                {
+                    return (key + chord_main);
+                }
+                return (key + chord_main - 2);
+            }
+            else
+            {
+                return (key + chord_main);
+            }
+        }
+        else if (chord_type == 11)
+        {
+            if ((key - 4) % 12 == 0)
+            {
+                if (get_random_in_range(0, 1))
+                {
+                    return (key + chord_main - 2);
+                }
+                return (key + chord_main);
+            }
+            else if ((key - 7) % 12 == 0)
+            {
+                if (get_random_in_range(0, 1))
+                {
+                    return (key + chord_main + 3);
+                }
+                return (key + chord_main);
+            }
+            else
+            {
+                return (key + chord_main);
+            }
+        }
     }
+    // If style scale is minor
     else if (get_central_style_original_chord_type () == 1)
     {
+        // If detected chord is minor
         if (chord_type == 1)
         {
             return (key + chord_main);
         }
-        else
+        // If detected chord is Major
+        else if (chord_type == 0)
         {
             if ((key - 3) % 12 == 0 || (key - 8) % 12 == 0 || (key - 10) % 12 == 0)
             {
