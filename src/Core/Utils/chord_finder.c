@@ -9,15 +9,22 @@ int key_track[13];
 int chord_possibility[144];
 
 int
-chord_finder_infer (int key, int on, int* type) {
+chord_finder_infer (int key, int on, int* type)
+{
     key_track [key % 12] = ((on == 144) ? 1 : 0);
 
     int n_keys = 0;
-    for (int i = 0; i < 12; i++) {
+    int probable_root = -1;
+    for (int i = 0; i < 12; i++)
+    {
         n_keys += key_track[i];
+        if (probable_root < 0 && key_track[i])
+        {
+            probable_root = i;
+        }
     }
-    // printf("\n");
-    for (int i = 0; i < 144; i++) {
+    printf("\n");
+    for (int i = 0; i < 144; i++) {\
         chord_possibility[i] = 0;
     }
 
@@ -27,13 +34,18 @@ chord_finder_infer (int key, int on, int* type) {
     {
         // Major
         for (; i < 5; i++) {
-            chord_possibility [i] = 6 * key_track[i] + key_track[i + 4] + key_track[i + 7];
+            chord_possibility [i] = 6 * key_track[i] + key_track[i + 4] + key_track[i + 7]; // One way to play it
         }
+        /*                           ^
+         *                           |
+         *                           |
+         *                       Root contribution
+         */
         for (; i < 9; i++) {
-            chord_possibility [i] = key_track[i - 5] + 6 * key_track[i] + key_track[i + 4];
+            chord_possibility [i] = key_track[i - 5] + 6 * key_track[i] + key_track[i + 4]; // Another way to play it
         }
         for (; i < 12; i++) {
-            chord_possibility [i] = key_track[i - 8] + key_track[i - 5] + 6 * key_track[i];
+            chord_possibility [i] = key_track[i - 8] + key_track[i - 5] + 6 * key_track[i]; // Yet another way to play it
         }
 
         // minor
@@ -71,13 +83,13 @@ chord_finder_infer (int key, int on, int* type) {
 
         // suspended 4
         for (; i < 53; i++) {
-            chord_possibility [i] = 7 * key_track[i - 48] + key_track[i - 48 + 5] + key_track[i - 48 + 7];
+            chord_possibility [i] = (i - 48 == probable_root && n_keys > 2 ? 7 : 6) * key_track[i - 48] + key_track[i - 48 + 5] + key_track[i - 48 + 7];
         }
         for (; i < 57; i++) {
-            chord_possibility [i] = key_track[i - 48 - 5] + 7 * key_track[i - 48] + key_track[i - 48 + 5];
+            chord_possibility [i] = key_track[i - 48 - 5] + (i - 48 == probable_root && n_keys > 2 ? 7 : 6) * key_track[i - 48] + key_track[i - 48 + 5];
         }
         for (; i < 60; i++) {
-            chord_possibility [i] = key_track[i - 48 - 7] + key_track[i - 48 - 5] + 7 * key_track[i - 48];
+            chord_possibility [i] = key_track[i - 48 - 7] + key_track[i - 48 - 5] + (i - 48 == probable_root && n_keys > 2 ? 7 : 6) * key_track[i - 48];
         }
 
         // augmented
@@ -168,67 +180,68 @@ chord_finder_infer (int key, int on, int* type) {
     int max = -1;
     int max_index = 0;
     for (; i < max_i; i++) {
-        printf ("%d ", chord_possibility[i]);
+        printf("%d ", chord_possibility[i]);
         if (max < chord_possibility[i]) {
             max = chord_possibility[i];
             max_index = i;
         }
     }
-    printf("\n%d  ----------\n", max_index);
     if (on == 128)
     {
         return -6;
     }
 
+    // Set the chord type
     if (max_index < 12)
     {
-        *type = 0;
+        *type = 0; // M
     }
     else if (max_index < 24)
     {
-        *type = 1;
+        *type = 1; // m
     }
     else if (max_index < 36)
     {
-        *type = 2;
+        *type = 2; // dim
     }
     else if (max_index < 48)
     {
-        *type = 3;
+        *type = 3; // sus2
     }
     else if (max_index < 60)
     {
-        *type = 4;
+        *type = 4; // sus4
     }
     else if (max_index < 72)
     {
-        *type = 5;
+        *type = 5; // aug
     }
     else if (max_index < 84)
     {
-        *type = 6;
+        *type = 6; // 6
     }
     else if (max_index < 96)
     {
-        *type = 7;
+        *type = 7; // 7
     }
     else if (max_index < 108)
     {
-        *type = 8;
+        *type = 8; // M7
     }
     else if (max_index < 120)
     {
-        *type = 9;
+        *type = 9; // m7
     }
     else if (max_index < 132)
     {
-        *type = 10;
+        *type = 10; // add9
     }
     else
     {
-        *type = 11;
+        *type = 11; // 9
     }
 
+    // Return the root note
     if (max > 0) {
         if (max_index >= 0 && max_index <= 6)
         {

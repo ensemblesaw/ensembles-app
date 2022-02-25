@@ -113,17 +113,83 @@ style_player_change_chord (int cd_main, int cd_type)
 }
 
 int
+get_random_in_range(int lower_limit, int upper_limit)
+{
+    srand(time(0));
+    return (rand() % (upper_limit - lower_limit + 1)) + lower_limit;
+}
+
+int
 get_chord_modified_key (int key)
 {
+    // If style scale is Major
     if (get_central_style_original_chord_type () == 0)
     {
+        // If detected chord is Major
         if (chord_type == 0)
         {
             return key + chord_main;
         }
-        else
+        // If detected chord is minor
+        else if (chord_type == 1)
         {
             if ((key - 4) % 12 == 0 || (key - 9) % 12 == 0 || (key - 11) % 12 == 0)
+            {
+                return (key + chord_main - 1);
+            }
+            else
+            {
+                return (key + chord_main);
+            }
+        }
+        // If detected chord is diminished
+        else if (chord_type == 2)
+        {
+            if ((key - 4) % 12 == 0)
+            {
+                return (key + chord_main - 1);
+            }
+            else if ((key - 7) % 12 == 0)
+            {
+                return (key + chord_main - 1);
+            }
+            else
+            {
+                return (key + chord_main);
+            }
+        }
+        // If detected chord is sus2
+        else if (chord_type == 3)
+        {
+            if ((key - 4) % 12 == 0)
+            {
+                return (key + chord_main - 2);
+            }
+            else
+            {
+                return (key + chord_main);
+            }
+        }
+        // If detected chord is sus4
+        else if (chord_type == 4)
+        {
+            if ((key - 4) % 12 == 0)
+            {
+                return (key + chord_main + 1);
+            }
+            else
+            {
+                return (key + chord_main);
+            }
+        }
+        // If detected chord is augmented
+        else if (chord_type == 5)
+        {
+            if ((key - 2) % 12 == 0 || (key - 7) % 12 == 0)
+            {
+                return (key + chord_main + 1);
+            }
+            else if ((key - 5) % 12 == 0 || (key - 9) % 12 == 0)
             {
                 return (key + chord_main - 1);
             }
