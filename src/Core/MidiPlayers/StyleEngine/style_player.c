@@ -125,197 +125,349 @@ get_chord_modified_key (int key)
     // If style scale is Major
     if (get_central_style_original_chord_type () == 0)
     {
-        // If detected chord is Major
-        if (chord_type == 0)
+        switch (chord_type)
         {
-            return key + chord_main;
-        }
-        // If detected chord is minor
-        else if (chord_type == 1)
-        {
-            if ((key - 4) % 12 == 0 || (key - 9) % 12 == 0 || (key - 11) % 12 == 0)
-            {
-                return (key + chord_main - 1);
-            }
-            else
-            {
-                return (key + chord_main);
-            }
-        }
-        // If detected chord is diminished
-        else if (chord_type == 2)
-        {
-            if ((key - 4) % 12 == 0)
-            {
-                return (key + chord_main - 1);
-            }
-            else if ((key - 7) % 12 == 0)
-            {
-                return (key + chord_main - 1);
-            }
-            else
-            {
-                return (key + chord_main);
-            }
-        }
-        // If detected chord is sus2
-        else if (chord_type == 3)
-        {
-            if ((key - 4) % 12 == 0)
-            {
-                return (key + chord_main - 2);
-            }
-            else
-            {
-                return (key + chord_main);
-            }
-        }
-        // If detected chord is sus4
-        else if (chord_type == 4)
-        {
-            if ((key - 4) % 12 == 0)
-            {
-                return (key + chord_main + 1);
-            }
-            else
-            {
-                return (key + chord_main);
-            }
-        }
-        // If detected chord is augmented
-        else if (chord_type == 5)
-        {
-            if ((key - 2) % 12 == 0 || (key - 7) % 12 == 0)
-            {
-                return (key + chord_main + 1);
-            }
-            else if ((key - 5) % 12 == 0 || (key - 9) % 12 == 0)
-            {
-                return (key + chord_main - 1);
-            }
-            else
-            {
-                return (key + chord_main);
-            }
-        }
-        else if (chord_type == 6)
-        {
-            if ((key - 4) % 12 == 0)
-            {
-                if (get_random_in_range(0, 3) > 2)
+            // If detected chord is Major
+            case 0:
+                return key + chord_main;
+            // If detected chord is minor
+            case 1:
+                if ((key - 4) % 12 == 0 || (key - 9) % 12 == 0 || (key - 11) % 12 == 0)
+                {
+                    return (key + chord_main - 1);
+                }
+                else
                 {
                     return (key + chord_main);
                 }
-                return (key + chord_main + 5);
-            }
-            else
-            {
-                return (key + chord_main);
-            }
-        }
-        else if (chord_type == 7)
-        {
-            if ((key - 4) % 12 == 0)
-            {
-                if (get_random_in_range(0, 3) > 2)
+            // If detected chord is diminished
+            case 2:
+                if ((key - 4) % 12 == 0 || (key - 7) % 12 == 0)
+                {
+                    return (key + chord_main - 1);
+                }
+                else
                 {
                     return (key + chord_main);
                 }
-                return (key + chord_main + 6);
-            }
-            else
-            {
-                return (key + chord_main);
-            }
-        }
-        else if (chord_type == 8)
-        {
-            if ((key - 4) % 12 == 0)
-            {
-                if (get_random_in_range(0, 3) > 2)
-                {
-                    return (key + chord_main);
-                }
-                return (key + chord_main - 5);
-            }
-            else
-            {
-                return (key + chord_main);
-            }
-        }
-        else if (chord_type == 9)
-        {
-            if ((key - 4) % 12 == 0)
-            {
-                if (get_random_in_range(0, 1))
-                {
-                    return (key + chord_main + 6);
-                }
-                return (key + chord_main - 1);
-            }
-            else
-            {
-                return (key + chord_main);
-            }
-        }
-        else if (chord_type == 10)
-        {
-            if ((key - 4) % 12 == 0)
-            {
-                if (get_random_in_range(0, 3) > 2)
-                {
-                    return (key + chord_main);
-                }
-                return (key + chord_main - 2);
-            }
-            else
-            {
-                return (key + chord_main);
-            }
-        }
-        else if (chord_type == 11)
-        {
-            if ((key - 4) % 12 == 0)
-            {
-                if (get_random_in_range(0, 1))
+            // If detected chord is sus2
+            case 3:
+                if ((key - 4) % 12 == 0)
                 {
                     return (key + chord_main - 2);
                 }
-                return (key + chord_main);
-            }
-            else if ((key - 7) % 12 == 0)
-            {
-                if (get_random_in_range(0, 1))
+                else
                 {
-                    return (key + chord_main + 3);
+                    return (key + chord_main);
                 }
-                return (key + chord_main);
-            }
-            else
-            {
-                return (key + chord_main);
-            }
+            // If detected chord is sus4
+            case 4:
+                if ((key - 4) % 12 == 0)
+                {
+                    return (key + chord_main + 1);
+                }
+                else
+                {
+                    return (key + chord_main);
+                }
+            // If detected chord is augmented
+            case 5:
+                if ((key - 2) % 12 == 0 || (key - 7) % 12 == 0)
+                {
+                    return (key + chord_main + 1);
+                }
+                else if ((key - 5) % 12 == 0 || (key - 9) % 12 == 0)
+                {
+                    return (key + chord_main - 1);
+                }
+                else
+                {
+                    return (key + chord_main);
+                }
+            // If detected chord is sixth
+            case 6:
+                if ((key - 4) % 12 == 0)
+                {
+                    if (get_random_in_range(0, 3) > 2)
+                    {
+                        return (key + chord_main);
+                    }
+                    return (key + chord_main + 5);
+                }
+                else
+                {
+                    return (key + chord_main);
+                }
+            // If detected chord is seventh
+            case 7:
+                if ((key - 4) % 12 == 0)
+                {
+                    if (get_random_in_range(0, 3) > 2)
+                    {
+                        return (key + chord_main);
+                    }
+                    return (key + chord_main + 6);
+                }
+                else
+                {
+                    return (key + chord_main);
+                }
+            // If detected chord is major seventh
+            case 8:
+                if ((key - 4) % 12 == 0)
+                {
+                    if (get_random_in_range(0, 3) > 2)
+                    {
+                        return (key + chord_main);
+                    }
+                    return (key + chord_main - 5);
+                }
+                else
+                {
+                    return (key + chord_main);
+                }
+            // If detected chord is minor seventh
+            case 9:
+                if ((key - 4) % 12 == 0)
+                {
+                    if (get_random_in_range(0, 1))
+                    {
+                        return (key + chord_main + 6);
+                    }
+                    return (key + chord_main - 1);
+                }
+                else
+                {
+                    return (key + chord_main);
+                }
+            // If detected chord is add9
+            case 10:
+                if ((key - 4) % 12 == 0)
+                {
+                    if (get_random_in_range(0, 3) > 2)
+                    {
+                        return (key + chord_main);
+                    }
+                    return (key + chord_main - 2);
+                }
+                else
+                {
+                    return (key + chord_main);
+                }
+            // If detected chord is ninth
+            case 11:
+                if ((key - 4) % 12 == 0)
+                {
+                    if (get_random_in_range(0, 1))
+                    {
+                        return (key + chord_main - 2);
+                    }
+                    return (key + chord_main);
+                }
+                else if ((key - 7) % 12 == 0)
+                {
+                    if (get_random_in_range(0, 1))
+                    {
+                        return (key + chord_main + 3);
+                    }
+                    return (key + chord_main);
+                }
+                else
+                {
+                    return (key + chord_main);
+                }
         }
     }
     // If style scale is minor
     else if (get_central_style_original_chord_type () == 1)
     {
-        // If detected chord is minor
-        if (chord_type == 1)
+        switch (chord_type)
         {
-            return (key + chord_main);
-        }
-        // If detected chord is Major
-        else if (chord_type == 0)
-        {
-            if ((key - 3) % 12 == 0 || (key - 8) % 12 == 0 || (key - 10) % 12 == 0)
-            {
-                return (key + chord_main + 1);
-            }
-            else
-            {
+            // If detected chord is minor
+            case 1:
                 return (key + chord_main);
-            }
+            // If detected chord is Major
+            case 0:
+                if ((key - 3) % 12 == 0 || (key - 8) % 12 == 0 || (key - 10) % 12 == 0)
+                {
+                    return (key + chord_main + 1);
+                }
+                else
+                {
+                    return (key + chord_main);
+                }
+            // If detected chord is diminished
+            case 2:
+                if ((key - 7) % 12 == 0)
+                {
+                    return (key + chord_main - 1);
+                }
+                else if ((key - 8) % 12 == 0 || (key - 10) % 12 == 0)
+                {
+                    return (key + chord_main + 1);
+                }
+                else
+                {
+                    return (key + chord_main);
+                }
+            // If detected chord is sus2
+            case 3:
+                if ((key - 3) % 12 == 0)
+                {
+                    return (key + chord_main - 1);
+                }
+                else if ((key - 8) % 12 == 0 || (key - 10) % 12 == 0)
+                {
+                    return (key + chord_main + 1);
+                }
+                else
+                {
+                    return (key + chord_main);
+                }
+            // If detected chord is sus4
+            case 4:
+                if ((key - 3) % 12 == 0)
+                {
+                    return (key + chord_main + 2);
+                }
+                else if ((key - 8) % 12 == 0 || (key - 10) % 12 == 0)
+                {
+                    return (key + chord_main + 1);
+                }
+                else
+                {
+                    return (key + chord_main);
+                }
+            // If detected chord is augmented
+            case 5:
+                if ((key - 7) % 12 == 0)
+                {
+                    return (key + chord_main - 1);
+                }
+                else if ((key - 8) % 12 == 0 || (key - 10) % 12 == 0)
+                {
+                    return (key + chord_main + 1);
+                }
+                else
+                {
+                    return (key + chord_main);
+                }
+            // If detected chord is Sixth
+            case 6:
+                if ((key - 3) % 12 == 0)
+                {
+                    if (get_random_in_range(0, 3) > 2)
+                    {
+                        return (key + chord_main + 1);
+                    }
+                    return (key + chord_main + 6);
+                }
+                else if ((key - 8) % 12 == 0 || (key - 10) % 12 == 0)
+                {
+                    return (key + chord_main + 1);
+                }
+                else
+                {
+                    return (key + chord_main);
+                }
+            // If detected chord is Seventh
+            case 7:
+                if ((key - 3) % 12 == 0)
+                {
+                    if (get_random_in_range(0, 3) > 2)
+                    {
+                        return (key + chord_main + 1);
+                    }
+                    return (key + chord_main + 7);
+                }
+                else if ((key - 8) % 12 == 0)
+                {
+                    return (key + chord_main + 1);
+                }
+                else
+                {
+                    return (key + chord_main);
+                }
+            // If detected chord is Major Seventh
+            case 8:
+                if ((key - 3) % 12 == 0)
+                {
+                    if (get_random_in_range(0, 3) > 2)
+                    {
+                        return (key + chord_main + 1);
+                    }
+                    return (key + chord_main + 8);
+                }
+                else if ((key - 8) % 12 == 0 || (key - 10) % 12 == 0)
+                {
+                    return (key + chord_main + 1);
+                }
+                else
+                {
+                    return (key + chord_main);
+                }
+            // If detected chord is minor Seventh
+            case 9:
+                if ((key - 3) % 12 == 0)
+                {
+                    if (get_random_in_range(0, 3) > 2)
+                    {
+                        return (key + chord_main);
+                    }
+                    return (key + chord_main + 7);
+                }
+                else if ((key - 8) % 12 == 0)
+                {
+                    return (key + chord_main + 1);
+                }
+                else
+                {
+                    return (key + chord_main);
+                }
+            // If detected chord is add9
+            case 10:
+                if ((key - 3) % 12 == 0)
+                {
+                    if (get_random_in_range(0, 3) > 2)
+                    {
+                        return (key + chord_main + 1);
+                    }
+                    return (key + chord_main - 2);
+                }
+                else if ((key - 8) % 12 == 0 || (key - 10) % 12 == 0)
+                {
+                    return (key + chord_main + 1);
+                }
+                else
+                {
+                    return (key + chord_main);
+                }
+            // If detected chord is Ninth
+            case 11:
+                if ((key - 3) % 12 == 0)
+                {
+                    if (get_random_in_range(0, 1))
+                    {
+                        return (key + chord_main - 1);
+                    }
+                    return (key + chord_main + 1);
+                }
+                else if ((key - 7) % 12 == 0)
+                {
+                    if (get_random_in_range(0, 1))
+                    {
+                        return (key + chord_main + 3);
+                    }
+                    return (key + chord_main);
+                }
+                else if ((key - 8) % 12 == 0)
+                {
+                    return (key + chord_main + 1);
+                }
+                else
+                {
+                    return (key + chord_main);
+                }
         }
     }
     return 0;
