@@ -15,6 +15,7 @@ namespace Ensembles {
                     create_file ("DisplayUnit", "Default", "css");
                     create_file ("DisplayUnitElementaryLight", "elementary Light", "css");
                     create_file ("DisplayUnitElementaryDark", "elementary Dark", "css");
+                    create_file ("DisplayUnitAurora", "Aurora", "css");
                 }
             }
             // Attempt to set the given theme
@@ -57,7 +58,17 @@ namespace Ensembles {
                             );
                             return "Elementary Dark";
                         } catch (Error e3) {
-                            warning ("Failed to load any of the default Display Themes: %s", e3.message);
+                            warning (e3.message);
+                            try {
+                                display_theme_provider.load_from_path (display_theme_path + "Aurora.css");
+                                Gtk.StyleContext.add_provider_for_screen (
+                                    Gdk.Screen.get_default (), display_theme_provider,
+                                    Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+                                );
+                                return "Aurora";
+                            } catch (Error e4) {
+                                warning ("Failed to load any of the default Display Themes: %s", e4.message);
+                            }
                         }
                     }
                 }

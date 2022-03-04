@@ -27,6 +27,8 @@ namespace Ensembles.Shell {
             int i = 0;
             style_gain_sliders = new Gtk.Scale [16];
 
+            get_style_context ().add_class ("mixer-sliders");
+
             for (i = 0; i < 16; i++) {
                 style_gain_sliders[i] = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1) {
                     inverted = true,

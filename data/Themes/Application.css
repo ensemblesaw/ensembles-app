@@ -639,6 +639,25 @@
     background-image: none;
 }
 
+.mixer-sliders > scale > contents > trough > slider {
+	border-radius: 4px;
+	box-shadow: inset 0 3px 3px #222, inset 0 6px alpha(#fff, 0.2), inset 0 -6px alpha(#000, 0.5),
+    inset 0 -3px 3px alpha(#666, 0.5), inset 0 1px 0 alpha(#fff, 0.2);
+    border: 1px solid alpha(#000, 0.6)
+}
+
+.mixer-sliders > scale > contents > trough {
+	background: #222;
+}
+
+.mixer-sliders > scale > contents > trough > highlight {
+	background: none;
+}
+
+.mixer-sliders > label {
+    opacity: 0.5;
+}
+
 .central-display-preview > * {
     border-radius: 8px;
     box-shadow: inset 0 1px alpha(#fff, 0.25), inset 0 -1px alpha(#fff, 0.1);

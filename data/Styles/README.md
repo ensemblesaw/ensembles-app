@@ -26,12 +26,11 @@ With the exception of the configuration marker, all markers use the same syntax 
 
 The Configuration marker is as follows:
 
-```Config:<Measure Number (usually 1)>;<Tempo>,<Chord Type>.<Alt Chord Type Present>```
+```Config:<Measure Number (usually 1)>;<Tempo>,<Chord Type>```
 
 * Measure number is number of measures upto the occurance of that marker. So _Config_ has measure 1, _Intro A_ has 2 and so on.
 * Tempo is in BPM (Beats per Minute) [Note: Don't use fractional tempo. It needs to be whole number!]
 * Chord Type is 0 is original scale of style is in major and 1 if it's minor
-* Alt Chord Type present is 1 only if Channels 12~16 have melodies in the opposite chord type, else it is 0
 
 ### Modulators
 - 7&nbsp; - Volume [0, 127]
@@ -39,9 +38,12 @@ The Configuration marker is as follows:
 - 64 - Sustain [0, 127]
 - 71 - Resonance [0, 127]
 - 74 - Cut-Off Filter [0, 127]
+- 82 - Play Alt Channels [0 - 64] (Check Note)
 - 85 - Explicit Bank Select (in case standard bank select doesn't work, required for accessing XG sounds)
 - 91 - Reverb [0, 127]
 - 93 - Chorus [0, 127]
+
+[Note: If value of CC 82 is equal to 64 then it will play channels marked below as 'alt', and mute the corresponding upper channels, based on the original scale/chord of the song set in the config. If it's off, then all channels are played. The value is only read from channel 1]
 
 ### Channels
 - 1&nbsp; - Lead
@@ -55,17 +57,18 @@ The Configuration marker is as follows:
 - 9&nbsp; - Miscellaneous
 - 10 - Drums/Percussions
 - 11 - SFX
-- 12 - Lead (alt)
-- 13 - Bass (alt)
-- 14 - Piano/EP Fill (alt)
-- 15 - Electric Guitar/Guitar Fill (alt)
-- 16 - Strings/Pad/Organ (alt)
+- 12 - Lead (alt for 1)
+- 13 - Bass (alt for 3)
+- 14 - Piano/EP Fill (alt for 4)
+- 15 - Electric Guitar/Guitar Fill (alt for 5)
+- 16 - Strings/Pad/Organ (alt for 7 and 8)
 
 
 ### Some Workarounds for missing voices
 - Always keep a bit of gap from the start of the Marker or part
 - If there is cymbal or other instrument right after Fill-in or Intro, put it just a before the beginning of the next marker.
 - Reduce the number of instruments playing at a point.
+- Avoid placing notes at the beginning of the Fill-in sections.
 - Look for redundant tones
 
 ### Rosegarden

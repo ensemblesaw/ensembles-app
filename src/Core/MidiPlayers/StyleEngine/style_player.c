@@ -59,6 +59,7 @@ int channel_note_on_15 = -1;
 // Chord tracking flags
 int chord_main = 0; // C
 int chord_type = 0; // Major
+int alt_channels_on = 0;
 
 int style_original_chord_main = 0;
 
@@ -184,7 +185,7 @@ get_chord_modified_key (int key)
                 {
                     return (key + chord_main);
                 }
-            // If detected chord is sixth
+            // If detected chord is Sixth
             case 6:
                 if ((key - 4) % 12 == 0)
                 {
@@ -198,7 +199,7 @@ get_chord_modified_key (int key)
                 {
                     return (key + chord_main);
                 }
-            // If detected chord is seventh
+            // If detected chord is Seventh
             case 7:
                 if ((key - 4) % 12 == 0)
                 {
@@ -212,7 +213,7 @@ get_chord_modified_key (int key)
                 {
                     return (key + chord_main);
                 }
-            // If detected chord is major seventh
+            // If detected chord is Major Seventh
             case 8:
                 if ((key - 4) % 12 == 0)
                 {
@@ -226,7 +227,7 @@ get_chord_modified_key (int key)
                 {
                     return (key + chord_main);
                 }
-            // If detected chord is minor seventh
+            // If detected chord is minor Seventh
             case 9:
                 if ((key - 4) % 12 == 0)
                 {
@@ -254,7 +255,7 @@ get_chord_modified_key (int key)
                 {
                     return (key + chord_main);
                 }
-            // If detected chord is ninth
+            // If detected chord is Ninth
             case 11:
                 if ((key - 4) % 12 == 0)
                 {
@@ -488,7 +489,38 @@ parse_midi_events (void *data, fluid_midi_event_t *event)
 
     if (control == 120)
     {
-        return 0;
+        return FLUID_OK;
+    }
+    else if (channel == 0 && control == 82)
+    {
+        alt_channels_on = value > 63;
+    }
+
+    if (type == 144 && alt_channels_on)
+    {
+        if (get_central_style_original_chord_type() != chord_type)
+        {
+            if (channel == 0 ||
+                channel == 2 ||
+                channel == 3 ||
+                channel == 4 ||
+                channel == 6 ||
+                channel == 7)
+            {
+                return FLUID_OK;
+            }
+        }
+        else
+        {
+            if (channel == 11 ||
+                channel == 12 ||
+                channel == 13 ||
+                channel == 14 ||
+                channel == 15)
+            {
+                return FLUID_OK;
+            }
+        }
     }
 
     fluid_midi_event_set_channel (new_event, channel);
