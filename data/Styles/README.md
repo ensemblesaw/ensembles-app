@@ -43,7 +43,7 @@ The Configuration marker is as follows:
 - 91 - Reverb [0, 127]
 - 93 - Chorus [0, 127]
 
-[Note: If value of CC 82 is equal to 64 then it will play channels marked below as 'alt', and mute the corresponding upper channels, based on the original scale/chord of the song set in the config. If it's off, then all channels are played. The value is only read from channel 1]
+[Note: If value of CC 82 is equal to 64 then it will play channels marked below as 'alt', and mute the corresponding upper channels, based on the original scale/chord of the song set in the config. If it's off, then all channels are played. The value is only read from channel 12]
 
 ### Channels
 - 1&nbsp; - Lead

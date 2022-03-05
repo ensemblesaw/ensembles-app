@@ -133,7 +133,7 @@ get_chord_modified_key (int key)
                 return key + chord_main;
             // If detected chord is minor
             case 1:
-                if ((key - 4) % 12 == 0 || (key - 9) % 12 == 0 || (key - 11) % 12 == 0)
+                if (!alt_channels_on && ((key - 4) % 12 == 0 || (key - 9) % 12 == 0 || (key - 11) % 12 == 0))
                 {
                     return (key + chord_main - 1);
                 }
@@ -289,7 +289,7 @@ get_chord_modified_key (int key)
                 return (key + chord_main);
             // If detected chord is Major
             case 0:
-                if ((key - 3) % 12 == 0 || (key - 8) % 12 == 0 || (key - 10) % 12 == 0)
+                if (!alt_channels_on && ((key - 3) % 12 == 0 || (key - 8) % 12 == 0 || (key - 10) % 12 == 0))
                 {
                     return (key + chord_main + 1);
                 }
@@ -491,7 +491,7 @@ parse_midi_events (void *data, fluid_midi_event_t *event)
     {
         return FLUID_OK;
     }
-    else if (channel == 0 && control == 82)
+    else if (channel == 11 && control == 82)
     {
         alt_channels_on = value > 63;
     }
@@ -724,6 +724,7 @@ parse_ticks (void* data, int ticks)
                     }
                     printf ("Sync Stopped\n");
                 }
+                alt_channels_on = 0;
                 style_player_halt_continuous_notes ();
                 return fluid_player_seek (player, loop_start_tick - 2);
             }
@@ -755,6 +756,7 @@ style_player_sync_start ()
 void
 queue_style_file_change (int custom_tempo)
 {
+    alt_channels_on = 0;
     printf("changing...to %s\n", style_player_style_path);
     if (player != NULL)
     {

@@ -1,6 +1,7 @@
 /*
  * Copyright 2020-2022 Subhadeep Jasu <subhajasu@gmail.com>
  * SPDX-License-Identifier: GPL-3.0-or-later
+ * Based on Windows Vista Aero theme
  */
 
 /* ///////////////////////////////////////////////////////////////
@@ -21,26 +22,26 @@ Buttons
 */
 
 .ensembles-central-display button{
-border: none;
-border-radius: 4px;
-color: #333;
-background-image: linear-gradient(#f2f2f2 49%, #d6d6d6 50%);
-box-shadow: 0 0 0 2px alpha(#fff, 0.2), 0 0 0 1px #000, inset 0 0 0 1px alpha(#fff, 0.4);
-transition: background-image 0.5s linear;
+    border: none;
+    border-radius: 4px;
+    color: #333;
+    background-image: linear-gradient(#f2f2f2 49%, #d6d6d6 50%);
+    box-shadow: 0 0 0 2px alpha(#fff, 0.2), 0 0 0 1px #000, inset 0 0 0 1px alpha(#fff, 0.4);
+    transition: background-image 0.5s linear;
 }
 
 .ensembles-central-display button:hover {
-background-image: linear-gradient(#f5fcff 49%, #cae8f7 50%);
-box-shadow: 0 0 0 2px alpha(#fff, 0.2), 0 0 0 1px #000, inset 0 0 0 1px alpha(#fff, 0.4);
+    background-image: linear-gradient(#f5fcff 49%, #cae8f7 50%);
+    box-shadow: 0 0 0 2px alpha(#fff, 0.2), 0 0 0 1px #000, inset 0 0 0 1px alpha(#fff, 0.4);
 }
 
 .ensembles-central-display button:active {
-
+    background-image: linear-gradient(#dde3e6 49%, #88aec2 50%);
 }
 
 .ensembles-central-display .flat, .ensembles-central-display .image-button {
-background: none;
-box-shadow: none;
+    background: none;
+    box-shadow: none;
 }
 .ensembles-central-display .flat:hover, .ensembles-central-display .image-button:disabled {
 	opacity: 0.5;
@@ -54,34 +55,34 @@ box-shadow: none;
 
 /* Spin Button */
 .ensembles-central-display spinbutton {
-border: 1px solid alpha(#000, 0.2);
-border-radius: 4px;
-margin-bottom: 8px;
-background: alpha(#fff, 0.75);
-color: #333;
-border: 1px solid #333;
-box-shadow: 0 0 0 1px alpha(#fff, 0.3), inset 0 1px alpha(#000, 0.15);
+    border: 1px solid alpha(#000, 0.2);
+    border-radius: 4px;
+    margin-bottom: 8px;
+    background: alpha(#fff, 0.75);
+    color: #333;
+    border: 1px solid #333;
+    box-shadow: 0 0 0 1px alpha(#fff, 0.3), inset 0 1px alpha(#000, 0.15);
 }
 
 .ensembles-central-display spinbutton entry {
     background-color: alpha (#000, 0);
-color: #333;
-border: none;
-box-shadow: none;
+    color: #333;
+    border: none;
+    box-shadow: none;
 }
 
 .ensembles-central-display spinbutton .up {
     border: none;
-background: none;
-border-radius: 0 4px 4px 0;
-border-left: 1px solid #ccc;
+    background: none;
+    border-radius: 0 4px 4px 0;
+    border-left: 1px solid #ccc;
 }
 
 .ensembles-central-display spinbutton .down {
     border: none;
-background: none;
-border-radius: 0;
-border-left: 1px solid #ccc;
+    background: none;
+    border-radius: 0;
+    border-left: 1px solid #ccc;
 }
 
 .ensembles-central-display spinbutton button:disabled {
@@ -100,9 +101,9 @@ The screen which is shown by default
 .ensembles-central-display .home-screen-panel-top {
     background-image: linear-gradient(alpha(#fff, 0.4), alpha(#666, 0.3) 22px, alpha(#000, 0.4) 23px, #333 80px),url("resource://com/github/subhadeepjasu/ensembles/images/display_unit/sami-takarautio-UZOpP-YHe9Q-unsplash-blurred.jpg");
     background-size: auto 600%;
-box-shadow: inset 0 1px rgba(255,255,255, 0.2),
-inset 0 -1px rgba(255,255,255, 0.2),
-0 1px alpha(#000, 0.1);
+    box-shadow: inset 0 1px rgba(255,255,255, 0.2),
+    inset 0 -1px rgba(255,255,255, 0.2),
+    0 1px alpha(#000, 0.1);
     background-position: 50% 0;
     border-bottom: 1px solid alpha(#000, 0.5);
 }
@@ -110,14 +111,14 @@ inset 0 -1px rgba(255,255,255, 0.2),
 .ensembles-central-display .home-screen-top-panel-header {
     font-size: 1.11em;
     margin-top: 4px;
-color: #f3f3f3;
-text-shadow: 0 0 4px #000;
+    color: #f3f3f3;
+    text-shadow: 0 0 4px #000;
 }
 
 .ensembles-central-display .home-screen-top-panel-subheader {
     font-size: 0.8em;
     margin-bottom: 6px;
-color: #ccc;
+    color: #ccc;
 }
 
 .ensembles-central-display .home-screen-top-panel-button {
@@ -126,8 +127,8 @@ color: #ccc;
     padding: 0;
     box-shadow: none;
     outline: none;
-border-radius: 4px;
-transition: all 0.2s ease-in;
+    border-radius: 4px;
+    transition: all 0.2s ease-in;
 }
 
 .ensembles-central-display .home-screen-top-panel-button:hover {
@@ -137,22 +138,22 @@ transition: all 0.2s ease-in;
 
 .ensembles-central-display .home-screen-panel-bottom {
 	background-image: linear-gradient(45deg, alpha(#fff, 0.1) 100px,alpha(#fff, 0.02) 110px,
-alpha(#fff, 0.02) 140px,
-alpha(#fff, 0.06) 150px,
-alpha(#fff, 0.04) 180px,
-alpha(#fff, 0.02) 190px,
-alpha(#fff, 0.02) 220px,
-alpha(#fff, 0.1) 240px,
-alpha(#fff, 0.1) 300px,
-alpha(#fff, 0.02) 350px,
-alpha(#fff, 0.1) 360px,
-alpha(#fff, 0.02) 400px),
-url("resource://com/github/subhadeepjasu/ensembles/images/display_unit/sami-takarautio-UZOpP-YHe9Q-unsplash-blurred.jpg");
+    alpha(#fff, 0.02) 140px,
+    alpha(#fff, 0.06) 150px,
+    alpha(#fff, 0.04) 180px,
+    alpha(#fff, 0.02) 190px,
+    alpha(#fff, 0.02) 220px,
+    alpha(#fff, 0.1) 240px,
+    alpha(#fff, 0.1) 300px,
+    alpha(#fff, 0.02) 350px,
+    alpha(#fff, 0.1) 360px,
+    alpha(#fff, 0.02) 400px),
+    url("resource://com/github/subhadeepjasu/ensembles/images/display_unit/sami-takarautio-UZOpP-YHe9Q-unsplash-blurred.jpg");
     background-size: auto 250%;
     background-position: 50% 100%;
 	border-top: 1px solid alpha(#000, 0.5);
-box-shadow: inset 0 1px rgba(255,255,255, 0.2), inset 12px 12px 24px alpha(#fff, 0.2), inset -12px 12px 24px alpha(#fff, 0.2);
-border-radius: 4px 4px 0 0;
+    box-shadow: inset 0 1px rgba(255,255,255, 0.2), inset 12px 12px 24px alpha(#fff, 0.2), inset -12px 12px 24px alpha(#fff, 0.2);
+    border-radius: 4px 4px 0 0;
 }
 
 .ensembles-central-display .home-screen-bottom-panel-header {
@@ -164,7 +165,7 @@ border-radius: 4px 4px 0 0;
 .ensembles-central-display .home-screen-bottom-panel-label {
     font-size: 0.9em;
     color: #acc;
-text-shadow: 0 0 4px #000;
+    text-shadow: 0 0 4px #000;
 }
 
 .ensembles-central-display .home-screen-bottom-panel-label-small {
@@ -200,86 +201,87 @@ Quick mods are the screens for tempo, modulators and lfo
 
 .ensembles-central-display .quick-mod {
     background-image: linear-gradient(45deg, alpha(#fff, 0.2) 100px,alpha(#fff, 0.15) 110px,
-alpha(#fff, 0.15) 140px,
-alpha(#fff, 0.2) 150px,
-alpha(#fff, 0.15) 180px,
-alpha(#fff, 0.2) 190px,
-alpha(#fff, 0.1) 220px,
-alpha(#fff, 0.2) 240px,
-alpha(#fff, 0.2) 300px,
-alpha(#fff, 0.1) 350px,
-alpha(#fff, 0.2) 360px,
-alpha(#fff, 0.15) 400px),
-url("resource://com/github/subhadeepjasu/ensembles/images/display_unit/sami-takarautio-UZOpP-YHe9Q-unsplash-blurred.jpg");
+    alpha(#fff, 0.15) 140px,
+    alpha(#fff, 0.2) 150px,
+    alpha(#fff, 0.15) 180px,
+    alpha(#fff, 0.2) 190px,
+    alpha(#fff, 0.1) 220px,
+    alpha(#fff, 0.2) 240px,
+    alpha(#fff, 0.2) 300px,
+    alpha(#fff, 0.1) 350px,
+    alpha(#fff, 0.2) 360px,
+    alpha(#fff, 0.15) 400px),
+    url("resource://com/github/subhadeepjasu/ensembles/images/display_unit/sami-takarautio-UZOpP-YHe9Q-unsplash-blurred.jpg");
     background-size: auto 100%;
     background-position: 50%;
     padding: 8px;
 }
 .ensembles-central-display .quick-mod-close-button {
     background-color: rgba(0,0,0,0);
-background-image:linear-gradient(#caaba9, #cd736a 49%, #b8483a 50%, #c27d6d);
-color: #fff;
+    background-image:linear-gradient(#caaba9, #cd736a 49%, #b8483a 50%, #c27d6d);
+    color: #fff;
     border-radius: 4px 0 0 4px;
-box-shadow: inset 0 0 0 1px rgba(255,255,255, 0.2), 0 0 0 1px alpha(#fff, 0.3);
-border: 1px solid alpha(#000, 0.5);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255, 0.2), 0 0 0 1px alpha(#fff, 0.3);
+    border: 1px solid alpha(#000, 0.5);
     margin-right: -2px;
--gtk-icon-shadow: 0 0 4px #000;
+    -gtk-icon-shadow: 0 0 4px #000;
+    transition: all 0.2s linear;
 }
 .ensembles-central-display .quick-mod-close-button:hover {
-    background-image:linear-gradient(#e4a095, #ed6b4b 49%, #c12f06 50%, #e38b34);
-box-shadow: inset 0 0 0 1px rgba(255,255,255, 0.25), inset 0 1px alpha(#fff, 0.5),
-inset 0 -1px alpha(#fe0, 0.8), 0 0 0 1px alpha(#fff, 0.3);
+    background-image:linear-gradient(#e4a095, #ed6b4b 49%, #d12d00 50%, #e38b34);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255, 0.25), inset 0 1px alpha(#fff, 0.5),
+    inset 0 -1px alpha(#fe0, 0.8), 0 0 0 1px alpha(#fff, 0.3);
 }
 .ensembles-central-display .quick-mod-close-button:active {
-    background-image:linear-gradient(#e4a095, #ed6b4b 49%, #c12f06 50%, #e38b34);
-box-shadow: inset 0 0 0 1px rgba(255,255,255, 0.25), inset 0 1px alpha(#fff, 0.5),
-inset 0 -1px alpha(#fe0, 0.5);
+    background-image:linear-gradient(#eea69a, #ff714d 49%, #c12f06 50%, #e38b34);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255, 0.25), inset 0 1px alpha(#fff, 0.5),
+    inset 0 -1px alpha(#fe0, 0.5);
 }
 .ensembles-central-display .quick-mod-header {
     font-size: 1.8em;
     margin-left: 4px;
-border-radius: 0 4px 4px 0;
+    border-radius: 0 4px 4px 0;
     background-image: linear-gradient(alpha(#fff, 0.4), alpha(#666, 0.3) 49%, alpha(#000, 0.4) 50%, alpha(#333,0.2) 80px);
-box-shadow: inset 0 0 0 1px rgba(255,255,255, 0.2), inset 0 -1px rgba(255,255,255,0.1), 0 0 0 1px alpha(#fff, 0.3);
-border: 1px solid alpha(#000, 0.5);
-color: #f3f3f3;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255, 0.2), inset 0 -1px rgba(255,255,255,0.1), 0 0 0 1px alpha(#fff, 0.3);
+    border: 1px solid alpha(#000, 0.5);
+    color: #f3f3f3;
     padding: 4px;
-text-shadow: 0 0 4px #000;
+    text-shadow: 0 0 4px #000;
 }
 .ensembles-central-display .quick-mod-button {
-margin-top: 8px;
-margin-bottom: 4px;
+    margin-top: 8px;
+    margin-bottom: 4px;
 }
 .ensembles-central-display .quick-mod-button-assignable {
-background: #750;
-box-shadow: inset 0 20px 0 alpha(#fff, 0.4), 0 0 0 2px alpha(#fff, 0.2), 0 0 0 1px #000, inset 0 0 0 1px alpha(#fff, 0.4), inset 0 -8px 8px alpha(#ff0, 0.2);
-color: #f3f3f3;
+    background: #750;
+    box-shadow: inset 0 20px 0 alpha(#fff, 0.4), 0 0 0 2px alpha(#fff, 0.2), 0 0 0 1px #000, inset 0 0 0 1px alpha(#fff, 0.4), inset 0 -8px 8px alpha(#ff0, 0.2);
+    color: #f3f3f3;
 }
 .ensembles-central-display .quick-mod-button-assignable:hover {
     background-image: -gtk-icontheme('insert-link-symbolic');
     background-color: #860;
     background-repeat: no-repeat;
     background-size: 14px;
-box-shadow: inset 0 20px 0 alpha(#fff, 0.4), 0 0 0 2px alpha(#fff, 0.2), 0 0 0 1px #000, inset 0 0 0 1px alpha(#fff, 0.4), inset 0 -8px 8px alpha(#ff0, 0.5);
+    box-shadow: inset 0 20px 0 alpha(#fff, 0.4), 0 0 0 2px alpha(#fff, 0.2), 0 0 0 1px #000, inset 0 0 0 1px alpha(#fff, 0.4), inset 0 -8px 8px alpha(#ff0, 0.5);
     background-position: 97% 90%;
     color: #f3f3f3;
 }
 .ensembles-central-display .quick-mod-button-locked {
-background-color: #3e3207;
+    background-color: #3e3207;
     background-image: -gtk-icontheme('changes-allow-symbolic');
     background-repeat: no-repeat;
     background-size: 14px;
-box-shadow: inset 0 20px 0 alpha(#fff, 0.4), 0 0 0 2px alpha(#fff, 0.2), 0 0 0 1px #000, inset 0 0 0 1px alpha(#fff, 0.4), inset 0 -8px 8px #625f2c;
+    box-shadow: inset 0 20px 0 alpha(#fff, 0.4), 0 0 0 2px alpha(#fff, 0.2), 0 0 0 1px #000, inset 0 0 0 1px alpha(#fff, 0.4), inset 0 -8px 8px #625f2c;
     background-position: 97% 90%;
     color: #f3f3f3;
 }
 
 .ensembles-central-display .quick-mod-button-locked:hover {
-    background-color: #3e3207;
+        background-color: #3e3207;
         background-image: -gtk-icontheme('changes-allow-symbolic');
         background-repeat: no-repeat;
         background-size: 14px;
-    box-shadow: inset 0 20px 0 alpha(#fff, 0.5), 0 0 0 2px alpha(#fff, 0.2), 0 0 0 1px #000, inset 0 0 0 1px alpha(#fff, 0.4), inset 0 -8px 8px #8b883f;
+        box-shadow: inset 0 20px 0 alpha(#fff, 0.5), 0 0 0 2px alpha(#fff, 0.2), 0 0 0 1px #000, inset 0 0 0 1px alpha(#fff, 0.4), inset 0 -8px 8px #8b883f;
         background-position: 97% 90%;
         color: #f3f3f3;
     }
@@ -289,17 +291,17 @@ Style for Menus like the Style menu, Voice menu or the Recorder
 */
 
 .ensembles-central-display .menu-background {
-background: #f3f3f3;
+    background: #f3f3f3;
 }
 
 .ensembles-central-display .menu-header {
-background-image: linear-gradient(#5e6783, #393f4f 49%, #000 50%, #212543);
-box-shadow: inset 0 1px alpha(#fff, 0.3), inset 0 -1px alpha(#fff, 0.1);
-border-bottom: 1px solid alpha(black, 0.5);
+    background-image: linear-gradient(#5e6783, #393f4f 49%, #000 50%, #212543);
+    box-shadow: inset 0 1px alpha(#fff, 0.3), inset 0 -1px alpha(#fff, 0.1);
+    border-bottom: 1px solid alpha(black, 0.5);
 }
 
 .ensembles-central-display .menu-header .title {
-text-shadow: 0 0 4px #000;
+    text-shadow: 0 0 4px #000;
 }
 
 .ensembles-central-display .menu-header > * {
@@ -320,7 +322,7 @@ text-shadow: 0 0 4px #000;
     color: #222;
     border-top: 1px solid alpha(#000, 0.2);
     border-bottom: 1px solid alpha(#000, 0.2);
-text-shadow: none;
+    text-shadow: none;
 }
 .ensembles-central-display .menu-box > .activatable:selected{
     border-top: 1px solid #000;
@@ -331,11 +333,11 @@ text-shadow: none;
 		inset 0 -1px 0 0 alpha(#fff, 0.2);
     background-image:linear-gradient(#7f9fe3, #5976c3 49%, #143196 50%, #2588d4);
     color: #fff;
-text-shadow: 0 0 4px black;
+    text-shadow: 0 0 4px black;
 }
 .ensembles-central-display .menu-item-label {
     font-size: 1.2em;
-text-shadow: none;
+    text-shadow: none;
 }
 .ensembles-central-display .menu-box > .activatable:selected .menu-item-label {
     text-shadow: 0 0 4px black;
@@ -447,5 +449,5 @@ text-shadow: none;
 }
 .ensembles-central-display .welcome > .vertical > .vertical > * {
 	color: #222;
-opacity: 1;
+    opacity: 1;
 }
