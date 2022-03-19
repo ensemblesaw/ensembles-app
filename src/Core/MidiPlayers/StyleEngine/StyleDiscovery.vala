@@ -58,7 +58,8 @@ namespace Ensembles.Core {
                             temp[0].replace ("_", " "),
                             30,
                             4,
-                            4
+                            4,
+                            ""
                         ));
                     }
                 }
@@ -79,7 +80,8 @@ namespace Ensembles.Core {
                             temp[0].replace ("_", " "),
                             30,
                             4,
-                            4
+                            4,
+                            ""
                         ));
                     }
                 }
@@ -96,6 +98,7 @@ namespace Ensembles.Core {
                 styles.nth_data (i).tempo = tempo;
                 styles.nth_data (i).timesignature_n = analyser.time_sig_n;
                 styles.nth_data (i).timesignature_d = analyser.time_sig_d;
+                styles.nth_data (i).copyright_notice = analyser.copyright_notice;
                 Thread.usleep (10000);
                 if (Application.main_window != null) {
                     Application.main_window.main_display_unit.update_splash_text (_("Loading Styles: ") + styles.nth_data (i).name);

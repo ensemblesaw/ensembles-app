@@ -342,9 +342,14 @@ Style for Menus like the Style menu, Voice menu or the Recorder
 .ensembles-central-display .menu-box > .activatable:selected .menu-item-label {
     text-shadow: 0 0 4px black;
 }
+
 .ensembles-central-display .menu-item-description {
     font-size: 0.8em;
     margin-top: 8px;
+}
+
+.ensembles-central-display .menu-box > .activatable:selected .menu-item-icon {
+    color: #f3f3f3;
 }
 
 .ensembles-central-display .menu-item-annotation {

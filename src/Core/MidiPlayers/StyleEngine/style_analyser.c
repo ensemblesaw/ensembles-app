@@ -11,11 +11,14 @@ int time_stamp_index;
 int time_signature_n;
 int time_signature_d;
 
+char* copyright_string;
+
 
 int
-style_analyser (char* style) {
+style_analyser (char* style)
+{
     FILE *fp;
-    char *buffer;
+    char *buffer = NULL;
     long filelen;
 
     fp = fopen(style, "rb");  // Open the file in binary mode
@@ -31,11 +34,28 @@ style_analyser (char* style) {
     int ticks_per_beat = 0;
 
     for (long i = 0; i < filelen; i++) {
+        // Find the copyright notice
+        if (*(buffer + i) == 0xffffffff && *(buffer + i + 1) == 0x02)
+        {
+            int length = (*(buffer + i + 2));
+            if (copyright_string)
+            {
+                free(copyright_string);
+            }
+            copyright_string = (char *) calloc(length, sizeof(char));
+            for (int j = 0; j < length; j++)
+            {
+                *(copyright_string + j) = *(buffer + i + 3 + j);
+            }
+        }
         // Find the ticks per beat from MTHD header
         if (*(buffer + i) == 0x4D) {
-            if (*(buffer + i + 1) == 0x54) {
-                if (*(buffer + i + 2) == 0x68) {
-                    if (*(buffer + i + 3) == 0x64) {
+            if (*(buffer + i + 1) == 0x54)
+            {
+                if (*(buffer + i + 2) == 0x68)
+                {
+                    if (*(buffer + i + 3) == 0x64)
+                    {
                         int a = *(buffer + i + 12);
                         int b = *(buffer + i + 13);
                         ticks_per_beat = (a << 8) | (b & 0x000000ff);
@@ -45,10 +65,13 @@ style_analyser (char* style) {
             }
         }
 
-        if (*(buffer + i) == 0xffffffff && ticks_per_beat > 0) {
+        if (*(buffer + i) == 0xffffffff && ticks_per_beat > 0)
+        {
             // Find time signature
-            if (*(buffer + i + 1) == 0x58) {
-                if (*(buffer + i + 2) == 0x04) {
+            if (*(buffer + i + 1) == 0x58)
+            {
+                if (*(buffer + i + 2) == 0x04)
+                {
                     time_signature_n = *(buffer + i + 3);
                     set_central_beats_per_bar (time_signature_n);
                     time_signature_d = pow (2, *(buffer + i + 4));
@@ -58,11 +81,13 @@ style_analyser (char* style) {
             }
 
             // Get marker data
-            if (*(buffer + i + 1) == 0x06) {
+            if (*(buffer + i + 1) == 0x06)
+            {
                 // Get marker string length
                 int length = (*(buffer + i + 2));
                 char* string = (char *) malloc (sizeof(char) * length);
-                for (int j = 0; j < length; j++) {
+                for (int j = 0; j < length; j++)
+                {
                     *(string + j) = *(buffer + i + 3 + j);
                 }
                 // Get Measure
@@ -70,7 +95,8 @@ style_analyser (char* style) {
                 e = strchr(string, ':');
                 int index_measure = (int)(e - string);
                 int measure = 0;
-                if (index_measure < length && index_measure > 0) {
+                if (index_measure < length && index_measure > 0)
+                {
                     char subbuff[length - index_measure + 1];
                     memcpy (subbuff, &string[index_measure + 1], length - index_measure );
                     subbuff[length - index_measure] = '\0';
@@ -82,12 +108,14 @@ style_analyser (char* style) {
                 char* f;
                 f = strchr(string, ';');
                 int index_tempo = (int)(f - string);
-                if (index_tempo < length && index_tempo > 0) {
+                if (index_tempo < length && index_tempo > 0)
+                {
                     char subbuff[length - index_tempo + 1];
                     memcpy (subbuff, &string[index_tempo + 1], length - index_tempo );
                     subbuff[length - index_tempo] = '\0';
                     tempo = atoi (subbuff);
-                    if (tempo > 30) {
+                    if (tempo > 30)
+                    {
                         set_central_tempo (tempo);
                         set_central_loaded_tempo (tempo);
                     }
@@ -98,7 +126,8 @@ style_analyser (char* style) {
                 char* g;
                 g = strchr(string, ',');
                 int index_chord_type = (int)(g - string);
-                if (index_chord_type < length && index_chord_type > 0) {
+                if (index_chord_type < length && index_chord_type > 0)
+                {
                     char subbuff[length - index_chord_type + 1];
                     memcpy (subbuff, &string[index_chord_type + 1], length - index_chord_type );
                     subbuff[length - index_chord_type] = '\0';
@@ -119,7 +148,8 @@ style_analyser (char* style) {
 }
 
 int
-style_analyser_analyze (char* mid_file) {
+style_analyser_analyze (char* mid_file)
+{
     time_stamp_index = 0;
     time_signature_n = 4;
     time_signature_d = 4;
