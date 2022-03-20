@@ -96,7 +96,6 @@
 | Pop              | 16 Beat            |
 | Pop              | 16 Beat Ballad     |
 | Pop              | 16 Beat Shuffle    |
-| Pop              | 6/8 Pop            |
 | Pop              | 60's Pop           |
 | Pop              | 60'S Shuffle       |
 | Pop              | Acoustic 8 Beat    |
@@ -113,6 +112,7 @@
 | Pop              | Uptempo 8 Beat     |
 | Rock             | 12 Bt Pop Rock     |
 | Rock             | 6/8 Blues          |
+| Rock             | 6/8 Rock           |
 | Rock             | 60's Rock          |
 | Rock             | 80's Rock          |
 | Rock             | Blues              |
