@@ -13,7 +13,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
         private Gtk.InfoBar infobar;
         private List<ItemInput> input_binding_items;
         private ItemInput selected_input_item;
-        private string default_binding_preset_path = GLib.Environment.get_home_dir () + "/Documents/Ensembles/InputPresets";
+        private string default_binding_preset_path = Application.user_config_dir + "/InputPresets";
 
         private const Gtk.TargetEntry[] TARGET_ENTRIES_LABELS = {
             {"LABELROW", Gtk.TargetFlags.SAME_APP, 0}
@@ -425,7 +425,8 @@ namespace Ensembles.Shell.Dialogs.Preferences {
                 hide_destroy ();
             });
 
-            if (DirUtils.create_with_parents (Environment.get_home_dir () + "/Documents/Ensembles", 2000) != -1) {
+            default_binding_preset_path = Application.user_config_dir + "/input_presets";
+            if (DirUtils.create_with_parents (Application.user_config_dir, 2000) != -1) {
                 if (DirUtils.create_with_parents (
                     default_binding_preset_path, 2000) != -1) {
                     debug ("Made input presets folder\n");

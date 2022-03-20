@@ -81,7 +81,7 @@ com.github.subhadeepjasu.ensembles
 Don't forget to also install the soundfont from https://gitlab.com/SubhadeepJasu/ensemblesgmsoundfont, if you are doing meson build
 
 ## Realtime Audio Performance
-You can tweak audio settings in Ensembles and select one of the two drivers (**Alsa** or **PulseAudio**). Increasing buffer size will reduce system load but too much increase in buffer-size may also cause sounds to go out of sync. So, feel free to tinker a little until you find your sweet spot in terms of performance.
+You can tweak audio settings in Ensembles and select one of the three drivers (**Alsa**, **PulseAudio** or **Jack**). Increasing buffer size will reduce system load but too much increase in buffer-size may also cause sounds to go out of sync. So, feel free to tinker a little until you find your sweet spot in terms of performance.
 
 Even after all that, while using **PulseAudio**, if you notice bad delay or stuttering audio, launch the app from terminal; check to see if there is any error messages stating that fluidsynth was unable to set realtime priority. In that case, edit the file- `/etc/security/limits.conf` and add the following lines:
 ```
@@ -105,7 +105,7 @@ Feel free to send pull requests to this repository with your code, or other type
 Ensembles will have support for effects and instrument plug-ins. Plug-ins may support their own UI which can be accessed from within Ensembles. There is partial support for LV2 plug-ins and it will be while before that is fleshed out properly. You can create plug-ins and distribute them over Flathub or elementary OS AppCenter, provided they follow the usual standards.
 
 ## External Files
-Ensembles supports creation and distribution of external soundfonts (SF2), style files and MIDI recordings. External content can be placed in special folders in user's document folder. Style files from other formats like *STY*,  *AC7*, etc. are not compatible with Ensembles. Ensembles has its own style format *ENSTL*, check out styles Readme file in your documents folder for style specifications (Check: https://github.com/SubhadeepJasu/Ensembles/blob/master/data/Styles/README.md). External MIDI recordings may have reserved copyrights. Styles used in this alpha often use copyrighted melodies and chords (Check copyright notice in the rg files). They are due to be changed to public domain melodies or original composition, before the final release when the app will actually be commercially available in AppCenter and Flathub.
+Ensembles supports creation and distribution of external soundfonts (SF2), style files and MIDI recordings. External content can be placed in special folders in user's document folder. Style files in other formats like *STY*,  *AC7*, etc. are not compatible with Ensembles. Ensembles has its own style format *ENSTL*, check out styles Readme file in your documents folder for style specifications (Check: https://github.com/SubhadeepJasu/Ensembles/blob/master/data/Styles/README.md). External MIDI recordings may have reserved copyrights. Styles used in this alpha often use copyrighted melodies and chords (Check copyright notice in the rg files). They are due to be changed to public domain melodies or original composition, before the final release when the app will actually be commercially available in AppCenter and Flathub.
 
 
 ## Contributors

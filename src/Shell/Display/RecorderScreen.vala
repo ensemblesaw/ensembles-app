@@ -112,9 +112,9 @@ namespace Ensembles.Shell {
             };
             name_grid.attach (name_entry, 0, 1, 2, 1);
 
-            save_location = Environment.get_home_dir () + "/Documents/Ensembles/RecorderProjects";
+            save_location = Application.user_data_dir + "/recordings";
 
-            if (DirUtils.create_with_parents (Environment.get_home_dir () + "/Documents/Ensembles", 2000) != -1) {
+            if (DirUtils.create_with_parents (Application.user_data_dir, 2000) != -1) {
                 if (DirUtils.create_with_parents (
                     save_location, 2000) != -1) {
                     debug ("Made user projects folder\n");

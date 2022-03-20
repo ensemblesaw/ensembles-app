@@ -38,6 +38,9 @@ namespace Ensembles {
         string[] ? arg_file = null;
         public static bool raw_midi_input = false;
 
+        public static string user_data_dir;
+        public static string user_config_dir;
+
         construct {
             flags |= ApplicationFlags.HANDLES_OPEN | ApplicationFlags.HANDLES_COMMAND_LINE;
             application_id = "com.github.subhadeepjasu.ensembles";
@@ -47,6 +50,8 @@ namespace Ensembles {
         protected override void activate () {
             // Make a new Main Window only if none present
             if (main_window == null) {
+                user_data_dir = Environment.get_user_special_dir (GLib.UserDirectory.DOCUMENTS) + "/ensembles";
+                user_config_dir = Environment.get_user_config_dir () + "/ensembles";
                 arranger_core = new Core.ArrangerCore ();
                 Hdy.init ();
                 Gtk.Settings settings = Gtk.Settings.get_default ();
