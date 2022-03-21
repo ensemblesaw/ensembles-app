@@ -23,8 +23,9 @@ chord_finder_infer (int key, int on, int* type)
             probable_root = i;
         }
     }
-    printf("\n");
-    for (int i = 0; i < 144; i++) {\
+    // printf("\n");
+    for (int i = 0; i < 144; i++)
+    {
         chord_possibility[i] = 0;
     }
 
@@ -33,7 +34,8 @@ chord_finder_infer (int key, int on, int* type)
     if (n_keys < 4)
     {
         // Major
-        for (; i < 5; i++) {
+        for (; i < 5; i++)
+        {
             chord_possibility [i] = 6 * key_track[i] + key_track[i + 4] + key_track[i + 7]; // One way to play it
         }
         /*                           ^
@@ -41,135 +43,170 @@ chord_finder_infer (int key, int on, int* type)
          *                           |
          *                       Root contribution
          */
-        for (; i < 9; i++) {
+        for (; i < 9; i++)
+        {
             chord_possibility [i] = key_track[i - 5] + 6 * key_track[i] + key_track[i + 4]; // Another way to play it
         }
-        for (; i < 12; i++) {
+        for (; i < 12; i++)
+        {
             chord_possibility [i] = key_track[i - 8] + key_track[i - 5] + 6 * key_track[i]; // Yet another way to play it
         }
 
         // minor
-        for (; i < 17; i++) {
+        for (; i < 17; i++)
+        {
             chord_possibility [i] = 6 * key_track[i - 12] + key_track[i - 12 + 3] + key_track[i - 12 + 7];
         }
-        for (; i < 21; i++) {
+        for (; i < 21; i++)
+        {
             chord_possibility [i] = key_track[i - 12 - 5] + 6 * key_track[i - 12] + key_track[i - 12 + 3];
         }
-        for (; i < 24; i++) {
+        for (; i < 24; i++)
+        {
             chord_possibility [i] = key_track[i - 12 - 9] + key_track[i - 12 - 5] + 6 * key_track[i - 12];
         }
 
         // diminished
-        for (; i < 29; i++) {
+        for (; i < 29; i++)
+        {
             chord_possibility [i] = 6 * key_track[i - 24] + key_track[i - 24 + 3] + key_track[i - 24 + 6];
         }
-        for (; i < 33; i++) {
+        for (; i < 33; i++)
+        {
             chord_possibility [i] = key_track[i - 24 + 6] + 6 * key_track[i - 24] + key_track[i - 24 + 3];
         }
-        for (; i < 36; i++) {
+        for (; i < 36; i++)
+        {
             chord_possibility [i] = key_track[i - 24 - 9] + key_track[i - 24 - 6] + 6 * key_track[i - 24];
         }
 
         // suspended 2
-        for (; i < 41; i++) {
+        for (; i < 41; i++)
+        {
             chord_possibility [i] = 6 * key_track[i - 36] + key_track[i - 36 + 2] + key_track[i - 36 + 7];
         }
-        for (; i < 45; i++) {
+        for (; i < 45; i++)
+        {
             chord_possibility [i] = key_track[i - 36 - 5] + 6 * key_track[i - 36] + key_track[i - 36 + 2];
         }
-        for (; i < 48; i++) {
+        for (; i < 48; i++)
+        {
             chord_possibility [i] = key_track[i - 36 - 10] + key_track[i - 36 - 5] + 6 * key_track[i - 36];
         }
 
         // suspended 4
-        for (; i < 53; i++) {
+        for (; i < 53; i++)
+        {
             chord_possibility [i] = (i - 48 == probable_root && n_keys > 2 ? 7 : 6) * key_track[i - 48] + key_track[i - 48 + 5] + key_track[i - 48 + 7];
         }
-        for (; i < 57; i++) {
+        for (; i < 57; i++)
+        {
             chord_possibility [i] = key_track[i - 48 - 5] + (i - 48 == probable_root && n_keys > 2 ? 7 : 6) * key_track[i - 48] + key_track[i - 48 + 5];
         }
-        for (; i < 60; i++) {
+        for (; i < 60; i++)
+        {
             chord_possibility [i] = key_track[i - 48 - 7] + key_track[i - 48 - 5] + (i - 48 == probable_root && n_keys > 2 ? 7 : 6) * key_track[i - 48];
         }
 
         // augmented
-        for (; i < 65; i++) {
+        for (; i < 65; i++)
+        {
             chord_possibility [i] = 6 * key_track[i - 60] + key_track[i - 60 + 4] + key_track[i - 60 + 8];
         }
-        for (; i < 69; i++) {
+        for (; i < 69; i++)
+        {
             chord_possibility [i] = key_track[i - 60 - 4] + 6 * key_track[i - 60] + key_track[i - 60 + 4];
         }
-        for (; i < 72; i++) {
+        for (; i < 72; i++)
+        {
             chord_possibility [i] = key_track[i - 60 - 8] + key_track[i - 60 - 4] + 6 * key_track[i - 60];
         }
     }
     else if (n_keys == 4)
     {
         // Dominant Sixth
-        for (i = 72; i < 77; i++) {
+        for (i = 72; i < 77; i++)
+        {
             chord_possibility [i] = 6 * key_track[i - 72] + key_track[i - 72 + 4] + key_track[i - 72 + 7] + key_track[i - 72 + 9];
         }
-        for (; i < 81; i++) {
+        for (; i < 81; i++)
+        {
             chord_possibility [i] = key_track[i - 72 - 5] + key_track[i - 72 - 3] + 6 * key_track[i - 72] + key_track[i - 72 + 4];
         }
-        for (; i < 84; i++) {
+        for (; i < 84; i++)
+        {
             chord_possibility [i] = key_track[i - 72 - 8] + key_track[i - 72 - 5] + key_track[i - 72 - 3] + 6 * key_track[i - 72];
         }
 
         // Dominant Seventh
-        for (; i < 89; i++) {
+        for (; i < 89; i++)
+        {
             chord_possibility [i] = 6 * key_track[i - 84] + key_track[i - 84 + 4] + key_track[i - 84 + 7] + key_track[i - 84 + 10];
         }
-        for (; i < 93; i++) {
+        for (; i < 93; i++)
+        {
             chord_possibility [i] = key_track[i - 84 - 5] + key_track[i - 84 - 2] + 6 * key_track[i - 84] + key_track[i - 84 + 4];
         }
-        for (; i < 96; i++) {
+        for (; i < 96; i++)
+        {
             chord_possibility [i] = key_track[i - 84 - 8] + key_track[i - 84 - 5] + key_track[i - 84 - 2] + 6 * key_track[i - 84];
         }
 
         // Major Seventh
-        for (; i < 101; i++) {
+        for (; i < 101; i++)
+        {
             chord_possibility [i] = 6 * key_track[i - 96] + key_track[i - 96 + 4] + key_track[i - 96 + 7] + key_track[i - 96 + 11];
         }
-        for (; i < 105; i++) {
+        for (; i < 105; i++)
+        {
             chord_possibility [i] = key_track[i - 96 - 5] + key_track[i - 96 - 1] + 6 * key_track[i - 96] + key_track[i - 96 + 4];
         }
-        for (; i < 108; i++) {
+        for (; i < 108; i++)
+        {
             chord_possibility [i] = key_track[i - 96 - 8] + key_track[i - 96 - 5] + key_track[i - 96 - 1] + 6 * key_track[i - 96];
         }
 
         // minor seventh
-        for (; i < 113; i++) {
+        for (; i < 113; i++)
+        {
             chord_possibility [i] = 6 * key_track[i - 108] + key_track[i - 108 + 3] + key_track[i - 108 + 7] + key_track[i - 108 + 10];
         }
-        for (; i < 117; i++) {
+        for (; i < 117; i++)
+        {
             chord_possibility [i] = key_track[i - 108 - 5] + key_track[i - 108 - 2] + 6 * key_track[i - 108] + key_track[i - 108 + 3];
         }
-        for (; i < 120; i++) {
+        for (; i < 120; i++)
+        {
             chord_possibility [i] = key_track[i - 108 - 9] + key_track[i - 108 - 5] + key_track[i - 108 - 2] + 6 * key_track[i - 108];
         }
 
         // add9
-        for (; i < 125; i++) {
+        for (; i < 125; i++)
+        {
             chord_possibility [i] = 6 * key_track[i - 120] + key_track[i - 120 + 4] + key_track[i - 120 + 7] + key_track[i - 120 + 2];
         }
-        for (; i < 129; i++) {
+        for (; i < 129; i++)
+        {
             chord_possibility [i] = key_track[i - 120 - 5] + key_track[i - 120  + 2] + 6 * key_track[i - 120] + key_track[i - 120 + 4];
         }
-        for (; i < 132; i++) {
+        for (; i < 132; i++)
+        {
             chord_possibility [i] = key_track[i - 120 - 8] + key_track[i - 120 - 5] + key_track[i - 120 - 10] + 6 * key_track[i - 120];
         }
     }
     else if (n_keys == 5)
     {
         // Dominant 9th
-        for (; i < 137; i++) {
+        for (; i < 137; i++)
+        {
             chord_possibility [i] = 6 * key_track[i - 132] + key_track[i - 132 + 4] + key_track[i - 132 + 7] + key_track[i - 132 + 10] + key_track[i - 132 + 2];
         }
-        for (; i < 141; i++) {
+        for (; i < 141; i++)
+        {
             chord_possibility [i] = key_track[i - 132 - 5] + key_track[i - 132 - 2] + key_track[i - 120  + 2] + 6 * key_track[i - 132] + key_track[i - 132 + 4];
         }
-        for (; i < 144; i++) {
+        for (; i < 144; i++)
+        {
             chord_possibility [i] = key_track[i - 132 - 8] + key_track[i - 132 - 5] + key_track[i - 132 - 2] + 6 * key_track[i - 132] + key_track[i - 120 - 10];
         }
     }
@@ -179,9 +216,11 @@ chord_finder_infer (int key, int on, int* type)
     int max_i = n_keys < 4 ? 72 : n_keys == 4 ? 132 : 144;
     int max = -1;
     int max_index = 0;
-    for (; i < max_i; i++) {
-        printf("%d ", chord_possibility[i]);
-        if (max < chord_possibility[i]) {
+    for (; i < max_i; i++)
+    {
+        // printf("%d ", chord_possibility[i]);
+        if (max < chord_possibility[i])
+        {
             max = chord_possibility[i];
             max_index = i;
         }
@@ -242,7 +281,8 @@ chord_finder_infer (int key, int on, int* type)
     }
 
     // Return the root note
-    if (max > 0) {
+    if (max > 0)
+    {
         if (max_index >= 0 && max_index <= 6)
         {
             return max_index;

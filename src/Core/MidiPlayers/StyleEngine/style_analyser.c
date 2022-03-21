@@ -11,8 +11,9 @@ int time_stamp_index;
 int time_signature_n;
 int time_signature_d;
 
-char* copyright_string;
+char config_delimiters[3] = { ':', ';', ',' };
 
+char* copyright_string;
 
 int
 style_analyser (char* style)
@@ -92,7 +93,7 @@ style_analyser (char* style)
                 }
                 // Get Measure
                 char *e;
-                e = strchr(string, ':');
+                e = strchr(string, config_delimiters[0]);
                 int index_measure = (int)(e - string);
                 int measure = 0;
                 if (index_measure < length && index_measure > 0)
@@ -106,7 +107,7 @@ style_analyser (char* style)
                 // Get Tempo
                 int tempo = 0;
                 char* f;
-                f = strchr(string, ';');
+                f = strchr(string, config_delimiters[1]);
                 int index_tempo = (int)(f - string);
                 if (index_tempo < length && index_tempo > 0)
                 {
@@ -124,7 +125,7 @@ style_analyser (char* style)
                 // Get Scale Type (whether the style is recorded in major or minor)
                 int chord_type = 0;
                 char* g;
-                g = strchr(string, ',');
+                g = strchr(string, config_delimiters[2]);
                 int index_chord_type = (int)(g - string);
                 if (index_chord_type < length && index_chord_type > 0)
                 {

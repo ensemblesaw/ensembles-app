@@ -23,14 +23,6 @@
             tempo_label.get_style_context ().add_class ("menu-item-description");
             tempo_label.halign = Gtk.Align.END;
 
-            var copyright_button = new Gtk.Button.from_icon_name ("text-x-copying-symbolic", Gtk.IconSize.BUTTON) {
-                margin_top = 6,
-                margin_start = 4,
-                margin_end = 4,
-                tooltip_text = accomp_style.copyright_notice
-            };
-            copyright_button.get_style_context ().add_class ("menu-item-icon");
-
             var category_label = new Gtk.Label ("");
             var style_grid = new Gtk.Grid ();
             if (show_category) {
@@ -40,7 +32,18 @@
             style_grid.attach (style_label, 0, 0, 1, 2);
             style_grid.attach (category_label, 1, 0, 2, 1);
             style_grid.attach (tempo_label, 1, 1, 1, 1);
-            style_grid.attach (copyright_button, 2, 1, 1, 1);
+
+            if (accomp_style.copyright_notice != null && accomp_style.copyright_notice != "") {
+                var copyright_button = new Gtk.Button.from_icon_name ("text-x-copying-symbolic", Gtk.IconSize.BUTTON) {
+                    margin_top = 6,
+                    margin_start = 4,
+                    margin_end = 4,
+                    tooltip_text = accomp_style.copyright_notice
+                };
+                copyright_button.get_style_context ().add_class ("menu-item-icon");
+                style_grid.attach (copyright_button, 2, 1, 1, 1);
+            }
+
             this.add (style_grid);
         }
     }
