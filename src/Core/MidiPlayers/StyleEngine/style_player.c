@@ -757,31 +757,26 @@ void
 queue_style_file_change (int custom_tempo)
 {
     alt_channels_on = 0;
-    printf("changing...to %s\n", style_player_style_path);
+    printf("Changing...to %s\n", style_player_style_path);
     if (player != NULL)
     {
-        printf ("c:\n");
         fluid_player_stop (player);
         fluid_player_join(player);
         delete_fluid_player(player);
         player = NULL;
-        printf ("d:\n");
     }
     printf ("Making player\n");
     player = new_fluid_player(get_synthesizer(UTILITY));
     fluid_player_set_playback_callback(player, parse_midi_events, get_synthesizer(UTILITY));
     fluid_player_set_tick_callback (player, parse_ticks, get_synthesizer(UTILITY));
-    printf ("e:\n");
     if (fluid_is_midifile(style_player_style_path))
     {
         fluid_player_add(player, style_player_style_path);
     }
-    printf ("f:\n");
     if (custom_tempo >= 40)
     {
         fluid_player_set_tempo(player, FLUID_PLAYER_TEMPO_EXTERNAL_BPM, (double)custom_tempo);
         set_central_loaded_tempo (custom_tempo);
-        printf("%d >>>>\n", custom_tempo);
         if (custom_tempo < 130)
         {
             time_resolution_limit = 1;
@@ -795,22 +790,22 @@ queue_style_file_change (int custom_tempo)
             time_resolution_limit = 3;
         }
     }
-    printf ("g:\n");
     loop_start_tick = get_loaded_style_time_stamps_by_index(start_s);
     loop_end_tick = get_loaded_style_time_stamps_by_index(end_s);
     set_central_clock (0);
     style_player_halt_continuous_notes();
-    printf ("h\n");
 }
 
 void
 style_player_add_style_file(const gchar* mid_file, int custom_tempo)
 {
-    printf("chan...to %s\n", mid_file);
     int c_tempo = (get_central_style_looping () > 0) ?
                     fluid_player_get_bpm (player):
                     custom_tempo;
-    style_player_style_path = (char *)malloc(sizeof (char) * 200);
+    if (style_player_style_path) {
+        free(style_player_style_path);
+    }
+    style_player_style_path = (char *)malloc(sizeof (char) * strlen(mid_file));
     strcpy (style_player_style_path, mid_file);
     style_analyser_analyze (style_player_style_path);
     queue_style_file_change (c_tempo);
@@ -856,6 +851,9 @@ style_player_destruct () {
         fluid_player_stop (player);
         fluid_player_join(player);
         delete_fluid_player(player);
+    }
+    if (style_player_style_path) {
+        free(style_player_style_path);
     }
 }
 
