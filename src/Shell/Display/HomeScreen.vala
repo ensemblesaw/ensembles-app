@@ -348,22 +348,31 @@ namespace Ensembles.Shell {
             selected_style_label.set_text (name);
             selected_style_label.queue_draw ();
         }
+
+        public void set_time_signature (int n, int d) {
+            beat_label.set_text ("%d/%d".printf (n, d));
+        }
+
         public void set_voice_l_name (string name) {
             selected_voice_l_label.set_text (name);
             selected_voice_l_label.queue_draw ();
         }
+
         public void set_voice_r1_name (string name) {
             selected_voice_r1_label.set_text (name);
             selected_voice_r1_label.queue_draw ();
         }
+
         public void set_voice_r2_name (string name) {
             selected_voice_r2_label.set_text (name);
             selected_voice_r2_label.queue_draw ();
         }
+
         public void set_tempo (int tempo) {
             tempo_label.set_text (tempo.to_string ());
             this.tempo = tempo;
         }
+
         public void set_measure (int measure) {
             measure_label.set_text (measure.to_string ());
             measure_label.queue_draw ();

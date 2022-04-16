@@ -148,6 +148,7 @@ namespace Ensembles.Core {
                     Application.main_window.beat_counter_panel.change_beats_per_bar (n);
                     Application.main_window.beat_counter_panel.change_qnotes_per_bar (d);
                     print ("ts: %d\n", d);
+                    Application.main_window.main_display_unit.update_time_signature(n, d);
                 }
             });
             bus.split_key_change.connect (() => {
