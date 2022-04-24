@@ -86,7 +86,7 @@ namespace Ensembles.Core {
         #if JACK_DRIVER
         public static bool get_is_jack_available () {
             if (!Ensembles.Application.get_is_running_from_flatpak ()) {
-                print("Assuming Jack is available\n");
+                print ("Assuming Jack is available\n");
                 jack_driver_found = true;
                 return true;
             }
