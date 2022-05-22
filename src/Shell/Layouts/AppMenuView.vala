@@ -111,14 +111,18 @@ namespace Ensembles.Shell {
             });
 
             device_list_box = new Gtk.ListBox () {
-                activate_on_single_click = false,
-                selection_mode = Gtk.SelectionMode.BROWSE
+                activate_on_single_click = true,
+                selection_mode = Gtk.SelectionMode.NONE
             };
             device_list_box.row_activated.connect ((row) => {
                 DeviceItem device_item = row as DeviceItem;
-                Application.arranger_core.midi_input_host.connect_device (device_item.device.id);
-                deselect_all_devices ();
-                device_item.radio.set_active (true);
+                device_item.radio.active = !device_item.radio.active;
+
+                if (device_item.radio.active) {
+                    Application.arranger_core.midi_input_host.connect_device (device_item.device.id);
+                } else {
+                    Application.arranger_core.midi_input_host.disconnect_device (device_item.device.id);
+                }
             });
 
             revealer.add (device_list_box);
@@ -156,13 +160,13 @@ namespace Ensembles.Shell {
             this.add (menu_box);
         }
 
-        void deselect_all_devices () {
-            var items = device_list_box.get_children ();
-            foreach (var item in items) {
-                DeviceItem _item = item as DeviceItem;
-                _item.radio.set_active (false);
-            }
-        }
+        //  void deselect_all_devices () {
+        //      var items = device_list_box.get_children ();
+        //      foreach (var item in items) {
+        //          DeviceItem _item = item as DeviceItem;
+        //          _item.radio.set_active (false);
+        //      }
+        //  }
 
 
         public void update_devices (Ensembles.Core.MidiDevice[] devices) {

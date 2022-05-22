@@ -147,7 +147,7 @@ namespace Ensembles.Core {
                 if (Application.main_window.beat_counter_panel != null) {
                     Application.main_window.beat_counter_panel.change_beats_per_bar (n);
                     Application.main_window.beat_counter_panel.change_qnotes_per_bar (d);
-                    print ("ts: %d\n", d);
+                    debug ("ts: %d\n", d);
                     Application.main_window.main_display_unit.update_time_signature (n, d);
                 }
             });

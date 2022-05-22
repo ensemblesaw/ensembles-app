@@ -10,14 +10,18 @@ namespace Ensembles.Core {
         bool available;
     }
     public class MidiInputHost : Object {
-        MidiDevice[] midi_device;
+        public MidiInputHost () {
+            active_devices = new List<int> ();
+        }
 
         public void destroy () {
-            stream_connected = false;
             controller_destruct ();
         }
 
-        bool stream_connected = false;
+        MidiDevice[] midi_device;
+        List<int> active_devices;
+        Thread device_monitor_thread;
+        bool stream_connected;
 
         public signal void receive_note_event (int key, int on, int velocity, int channel);
 
@@ -27,7 +31,6 @@ namespace Ensembles.Core {
                 controller_init (1);
                 return new Ensembles.Core.MidiDevice[0];
             }
-            stream_connected = false;
             Thread.usleep (200);
             controller_destruct ();
             controller_init (0);
@@ -44,46 +47,56 @@ namespace Ensembles.Core {
             return midi_device;
         }
 
-        int read_device_stream () {
+        int monitor_device_stream () {
             while (stream_connected) {
-                if (controller_poll_device () > 0) {
-                    int message = controller_read_device_stream ();
-                    int key = (((0x00FF00 & message) - 9216) / 256) + 36;
-                    int type = (message & 0x0000F0);
-                    int channel = (message & 0x00000F);
-                    double velocity = ((127.0 - 0.0) / (8323072.0 - 65536.0)) *
-                                      (double)((0xFF0000 & message) - 65536);
-                    debug ("Velocity: %d, Key: %d, Type:%d, Channel:%d, Raw: %x\n",
-                          (int)velocity,
-                          key,
-                          type,
-                          channel,
-                          message);
-                    if (velocity < 0) {
-                        velocity = 1;
-                        type = 128;
+                for (int i = 0; i < active_devices.length (); i++) {
+                    print(active_devices.nth_data (i).to_string () + "\n");
+                    if (controller_poll_device (active_devices.nth_data (i)) > 0) {
+                        int message = controller_read_device_stream (active_devices.nth_data (i));
+                        int key = (((0x00FF00 & message) - 9216) / 256) + 36;
+                        int type = (message & 0x0000F0);
+                        int channel = (message & 0x00000F);
+                        double velocity = ((127.0 - 0.0) / (8323072.0 - 65536.0)) *
+                                        (double)((0xFF0000 & message) - 65536);
+                        debug ("Velocity: %d, Key: %d, Type:%d, Channel:%d, Raw: %x\n",
+                            (int)velocity,
+                            key,
+                            type,
+                            channel,
+                            message);
+                        if (velocity < 0) {
+                            velocity = 1;
+                            type = 128;
+                        }
+                        Idle.add (() => {
+                            receive_note_event (key, type, (int)velocity, channel);
+                            return false;
+                        });
                     }
-                    Idle.add (() => {
-                        receive_note_event (key, type, (int)velocity, channel);
-                        return false;
-                    });
+                    Thread.yield ();
+                    Thread.usleep (200);
                 }
-                Thread.yield ();
-                Thread.usleep (200);
             }
-            controller_close_connection ();
+            Thread.exit(0);
             return 0;
         }
 
         public void connect_device (int id) {
-            if (!Thread.supported ()) {
-                stderr.printf ("Cannot run without thread support.\n");
-                return;
+            if (active_devices.index (id) < 0) {
+                active_devices.append (id);
+                controller_connect_device (id);
             }
-            stream_connected = false;
-            if (controller_connect_device (id) > 0) {
+            if (active_devices.length () > 0 && !stream_connected) {
                 stream_connected = true;
-                new Thread<int> ("read_device_stream", read_device_stream);
+                device_monitor_thread = new Thread<int> ("mididevmon", monitor_device_stream);
+            }
+        }
+
+        public void disconnect_device (int id) {
+            active_devices.remove (id);
+            controller_close_connection (id);
+            if (active_devices.length () == 0) {
+                stream_connected = false;
             }
         }
     }
@@ -98,6 +111,6 @@ extern void controller_destruct ();
 extern int controller_query_input_device_count ();
 extern void controller_query_device_info (int id);
 extern int controller_connect_device (int id);
-extern int32 controller_read_device_stream ();
-extern void controller_close_connection ();
-extern int controller_poll_device ();
+extern int32 controller_read_device_stream (int id);
+extern void controller_close_connection (int id);
+extern int controller_poll_device (int id);
