@@ -200,7 +200,10 @@ synthesizer_get_modulator_values (int channel, int modulator) {
 
 int
 synthesizer_get_velocity_levels (int channel) {
-    return velocity_buffer [channel];
+    if (velocity_buffer < 0) {
+        velocity_buffer[channel] = 0;
+    }
+    return velocity_buffer[channel] -= 8;
 }
 
 
@@ -269,10 +272,6 @@ handle_events_for_midi_players(fluid_midi_event_t *event, int _is_style_player)
         if (type == 144)
         {
             velocity_buffer[chan] = value;
-        }
-        else if (type == 128)
-        {
-            velocity_buffer[chan] = 0;
         }
     }
     int ret_val = 0;
@@ -379,6 +378,7 @@ synthesizer_halt_notes ()
             if (i != 9 && i != 10) {
                 fluid_synth_all_notes_off (realtime_render_synth, i);
             }
+            velocity_buffer[i] = 0;
         }
     }
 }
