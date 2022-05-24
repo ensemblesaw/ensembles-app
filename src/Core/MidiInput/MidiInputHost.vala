@@ -12,9 +12,17 @@ namespace Ensembles.Core {
     public class MidiInputHost : Object {
         public MidiInputHost () {
             active_devices = new List<int> ();
+            note_map = new Gee.HashMap<int, int> ();
+            // Example maps
+            note_map.set (0, 1);
+            note_map.set (4, 2);
+            note_map.set (16, 3);
+            note_map.set (25, 4);
+            control_map = new Gee.HashMap<int, int> ();
         }
 
         public void destroy () {
+            stream_connected = false;
             controller_destruct ();
         }
 
@@ -23,7 +31,11 @@ namespace Ensembles.Core {
         Thread device_monitor_thread;
         bool stream_connected;
 
-        public signal void receive_note_event (int key, int on, int velocity, int channel);
+        public signal void receive_note_event (int key, bool is_pressed, int velocity, int layer);
+
+        private int note_offset = 36;
+        private Gee.HashMap<int, int> note_map;
+        private Gee.HashMap<int, int> control_map;
 
         public Ensembles.Core.MidiDevice[] refresh () {
             if (Application.raw_midi_input) {
@@ -50,32 +62,30 @@ namespace Ensembles.Core {
         int monitor_device_stream () {
             while (stream_connected) {
                 for (int i = 0; i < active_devices.length (); i++) {
-                    print(active_devices.nth_data (i).to_string () + "\n");
                     if (controller_poll_device (active_devices.nth_data (i)) > 0) {
                         int message = controller_read_device_stream (active_devices.nth_data (i));
-                        int key = (((0x00FF00 & message) - 9216) / 256) + 36;
+                        int key = ((0x00FF00 & message) - 9216) / 256;
                         int type = (message & 0x0000F0);
                         int channel = (message & 0x00000F);
                         double velocity = ((127.0 - 0.0) / (8323072.0 - 65536.0)) *
                                         (double)((0xFF0000 & message) - 65536);
                         debug ("Velocity: %d, Key: %d, Type:%d, Channel:%d, Raw: %x\n",
-                            (int)velocity,
-                            key,
-                            type,
-                            channel,
-                            message);
-                        if (velocity < 0) {
-                            velocity = 1;
-                            type = 128;
-                        }
+                                (int)velocity,
+                                key,
+                                type,
+                                channel,
+                                message);
                         Idle.add (() => {
-                            receive_note_event (key, type, (int)velocity, channel);
+                            process_midi_signal(channel, type, key, (int)velocity);
                             return false;
                         });
                     }
                     Thread.yield ();
                     Thread.usleep (200);
                 }
+            }
+            for (int i = 0; i < active_devices.length (); i++) {
+                controller_close_connection (active_devices.nth_data (i));
             }
             Thread.exit(0);
             return 0;
@@ -97,6 +107,60 @@ namespace Ensembles.Core {
             controller_close_connection (id);
             if (active_devices.length () == 0) {
                 stream_connected = false;
+            }
+        }
+
+        private void process_midi_signal (int channel, int type, int value, int velocity) {
+            // Classify MIDI signal type
+            if (type == 144 || type == 128) {
+                // Note signal
+                process_note_signal (value, type, velocity, channel);
+            } else if (type == 176) {
+                // CC signal
+                process_control_signal (channel, value, velocity);
+            }
+        }
+
+        private int szudzik_hash (int a, int b) {
+            return a >= b ? a * a + a + b : a + b * b;
+        }
+
+        private void process_note_signal (int key, int is_pressed_type, int velocity, int channel) {
+            int hash = szudzik_hash (channel, key);
+            print(hash.to_string () + "\n");
+            if (note_map.has_key (hash)) {
+                process_control_signal (channel, note_map[hash], velocity, true);
+            } else {
+                receive_note_event (key + note_offset,
+                    velocity > 0 ? (is_pressed_type == 144) : false,
+                    velocity > 0 ? velocity : 1,
+                    channel > 3 ? 3 : channel);
+            }
+        }
+
+        private void process_control_signal (int channel, int identifier, int value, bool already_hashed = false) {
+            int index = 0;
+            if (!already_hashed) {
+                int hash = szudzik_hash (channel, identifier);
+                if (control_map.has_key (hash)) {
+                    index = control_map[hash];
+                }
+            } else {
+                index = identifier;
+            }
+            switch (index) {
+                case 1:
+                Application.main_window.style_controller_view.handle_midi_button_event (3, value > 0);
+                break;
+                case 2:
+                Application.main_window.style_controller_view.handle_midi_button_event (4, value > 0);
+                break;
+                case 3:
+                Application.main_window.style_controller_view.handle_midi_button_event (5, value > 0);
+                break;
+                case 4:
+                Application.main_window.style_controller_view.handle_midi_button_event (6, value > 0);
+                break;
             }
         }
     }

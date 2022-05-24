@@ -49,7 +49,7 @@ controller_init (int fluid_input)
 void
 controller_query_device_info (int id)
 {
-    const PmDeviceInfo* device = Pm_GetDeviactive_devicesceInfo (id);
+    const PmDeviceInfo* device = Pm_GetDeviceInfo (id);
     if (device->input > 0)
     {
         controller_input_device_available = 1;

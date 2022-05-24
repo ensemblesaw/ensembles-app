@@ -157,33 +157,33 @@ namespace Ensembles.Core {
         }
 
         void make_other_core_events () {
-            midi_input_host.receive_note_event.connect ((key, on, velocity)=>{
-                //  debug ("%d %d %d\n", key, on, velocity);
+            midi_input_host.receive_note_event.connect ((key, is_pressed, velocity)=>{
+                //  debug ("%d %d %d\n", key, is_pressed, velocity);
                 if (Application.settings.get_boolean ("arpeggiator-on")) {
                     if (Application.settings.get_boolean ("accomp-on")) {
                         if (key > Core.CentralBus.get_split_key ()) {
-                            arpeggiator.send_notes (key, on, velocity);
+                            arpeggiator.send_notes (key, is_pressed, velocity);
                         } else {
-                            synthesizer.send_notes_realtime (key, on, velocity);
+                            synthesizer.send_notes_realtime (key, is_pressed, velocity);
                         }
                     } else {
-                        arpeggiator.send_notes (key, on, velocity);
+                        arpeggiator.send_notes (key, is_pressed, velocity);
                     }
                 } else {
-                    synthesizer.send_notes_realtime (key, on, velocity);
+                    synthesizer.send_notes_realtime (key, is_pressed, velocity);
                 }
                 if (Application.settings.get_boolean ("harmonizer-on")) {
                     if (Application.settings.get_boolean ("accomp-on")) {
                         if (key > Core.CentralBus.get_split_key ()) {
-                            harmonizer.send_notes (key, on, velocity);
+                            harmonizer.send_notes (key, is_pressed, velocity);
                         } else {
-                            synthesizer.send_notes_realtime (key, on, velocity);
+                            synthesizer.send_notes_realtime (key, is_pressed, velocity);
                         }
                     } else {
-                        synthesizer.send_notes_realtime (key, on, velocity);
+                        synthesizer.send_notes_realtime (key, is_pressed, velocity);
                     }
                 }
-                Application.main_window.main_keyboard.set_note_on (key, (on == 144));
+                Application.main_window.main_keyboard.set_note_on (key, is_pressed);
             });
 
             arpeggiator.generate_notes.connect ((key, on, velocity) => {

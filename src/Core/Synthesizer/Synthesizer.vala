@@ -53,9 +53,9 @@ namespace Ensembles.Core {
             }
         }
 
-        public void send_notes_realtime (int key, int on, int velocity, int? channel = 17) {
+        public void send_notes_realtime (int key, bool is_pressed, int velocity, int? channel = 17) {
             if (input_enabled) {
-                chord_main = synthesizer_send_notes (key, on, velocity, channel, out chord_type);
+                chord_main = synthesizer_send_notes (key, is_pressed ? 144 : 128, velocity, channel, out chord_type);
                 if (chord_main > -6) {
                     if (Shell.RecorderScreen.sequencer != null &&
                         Shell.RecorderScreen.sequencer.current_state != MidiRecorder.RecorderState.PLAYING

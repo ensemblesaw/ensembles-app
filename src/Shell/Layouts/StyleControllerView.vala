@@ -394,7 +394,6 @@ namespace Ensembles.Shell {
                 intro_button_b.get_style_context ().remove_class ("queue-measure");
                 ending_button_a.get_style_context ().remove_class ("queue-measure");
                 ending_button_b.get_style_context ().remove_class ("queue-measure");
-
                 break;
                 case 1:
                 queue_intro_b ();
@@ -456,6 +455,88 @@ namespace Ensembles.Shell {
                 sync_stop_button.get_style_context ().add_class ("queue-measure");
                 sync_stop ();
                 break;
+            }
+        }
+
+        public void handle_midi_button_event (int index, bool press = true) {
+            if (press) {
+                switch (index) {
+                    case 0: // START
+                    start_stop ();
+                    break;
+                    case 1: // INTRO 1
+                    if (RecorderScreen.sequencer != null) {
+                        RecorderScreen.sequencer.initial_settings_style_part_index = 0;
+                    }
+                    if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
+                        var event = new Core.MidiEvent ();
+                        event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
+                        event.value1 = 0;
+                        Shell.RecorderScreen.sequencer.record_event (event);
+                    }
+                    set_style_section_by_index (0);
+                    break;
+                    case 2: // INTRO 2
+                    if (RecorderScreen.sequencer != null) {
+                        RecorderScreen.sequencer.initial_settings_style_part_index = 1;
+                    }
+                    if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
+                        var event = new Core.MidiEvent ();
+                        event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
+                        event.value1 = 1;
+                        Shell.RecorderScreen.sequencer.record_event (event);
+                    }
+                    set_style_section_by_index (1);
+                    break;
+                    case 3: // var a
+                    if (RecorderScreen.sequencer != null) {
+                        RecorderScreen.sequencer.initial_settings_style_part_index = 2;
+                    }
+                    if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
+                        var event = new Core.MidiEvent ();
+                        event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
+                        event.value1 = 2;
+                        Shell.RecorderScreen.sequencer.record_event (event);
+                    }
+                    set_style_section_by_index (2);
+                    break;
+                    case 4: // var b
+                    if (RecorderScreen.sequencer != null) {
+                        RecorderScreen.sequencer.initial_settings_style_part_index = 3;
+                    }
+                    if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
+                        var event = new Core.MidiEvent ();
+                        event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
+                        event.value1 = 3;
+                        Shell.RecorderScreen.sequencer.record_event (event);
+                    }
+                    set_style_section_by_index (3);
+                    break;
+                    case 5: // var c
+                    if (RecorderScreen.sequencer != null) {
+                        RecorderScreen.sequencer.initial_settings_style_part_index = 4;
+                    }
+                    if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
+                        var event = new Core.MidiEvent ();
+                        event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
+                        event.value1 = 4;
+                        Shell.RecorderScreen.sequencer.record_event (event);
+                    }
+                    set_style_section_by_index (4);
+                    break;
+                    case 6: //var d
+                    if (RecorderScreen.sequencer != null) {
+                        RecorderScreen.sequencer.initial_settings_style_part_index = 5;
+                    }
+                    if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
+                        var event = new Core.MidiEvent ();
+                        event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
+                        event.value1 = 5;
+                        Shell.RecorderScreen.sequencer.record_event (event);
+                    }
+                    set_style_section_by_index (5);
+                    break;
+                }
             }
         }
     }

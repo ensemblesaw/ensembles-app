@@ -6,7 +6,7 @@
 namespace Ensembles.Shell {
     public class PcKeyboardHandler : Object {
         bool[] key_activated;
-        public signal void note_activate (int key, int on);
+        public signal void note_activate (int key, bool is_pressed);
 
         public signal void style_start_stop ();
         public signal void style_var_a ();
@@ -49,7 +49,7 @@ namespace Ensembles.Shell {
                 var note = KeyboardConstants.get_note_from_keycode (keyval);
                 if (note >= 0) {
                     if (!key_activated[note]) {
-                        note_activate (note + 36, 144);
+                        note_activate (note + 36, true);
                         key_activated[note] = true;
                     }
                 }
@@ -80,7 +80,7 @@ namespace Ensembles.Shell {
             if (keyval == KeyboardConstants.KeyMap.SHIFT || keyval == KeyboardConstants.KeyMap.SHIFTALT) {
                 for (int i = 0; i < 60; i++) {
                     if (key_activated[i]) {
-                        note_activate (i + 36, 128);
+                        note_activate (i + 36, false);
                         key_activated[i] = false;
                     }
                 }
@@ -103,7 +103,7 @@ namespace Ensembles.Shell {
 
                 var note = KeyboardConstants.get_note_from_keycode (keyval);
                 if (note >= 0) {
-                    note_activate (note + 36, 128);
+                    note_activate (note + 36, false);
                     key_activated[note] = false;
                 }
             } else {

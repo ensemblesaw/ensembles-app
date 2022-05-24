@@ -49,7 +49,7 @@ namespace Ensembles.Core {
         public void multiplex_events (MidiEvent event) {
             switch (event.event_type) {
                 case MidiEvent.EventType.NOTE:
-                Application.arranger_core.synthesizer.send_notes_realtime (event.value1, event.value2, event.velocity, event.channel);
+                Application.arranger_core.synthesizer.send_notes_realtime (event.value1, event.value2 == 144, event.velocity, event.channel);
                 break;
                 case MidiEvent.EventType.VOICECHANGE:
                 var voice = new Voice (event.value2, event.value1, event.value2, "", "");
