@@ -19,7 +19,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             {"LABELROW", Gtk.TargetFlags.SAME_APP, 0}
         };
 
-        public Preferences (string view="home") {
+        public Preferences (string view = "home") {
             Object (
                 view: view,
                 transient_for: Ensembles.Application.main_window,

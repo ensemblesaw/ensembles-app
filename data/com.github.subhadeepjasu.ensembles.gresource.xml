@@ -7,6 +7,7 @@
   <gresource prefix="/com/github/subhadeepjasu/ensembles/images">
     <file alias="ensembles_logo.svg" compressed="true" preprocess="xml-stripblanks">Images/Logo.svg</file>
     <file alias="tempo_icon.svg" compressed="true" preprocess="xml-stripblanks">Images/Metronome.svg</file>
+    <file alias="controller.svg" compressed="true" preprocess="xml-stripblanks">Images/controller.svg</file>
   </gresource>
 
   <gresource prefix="/com/github/subhadeepjasu/ensembles/images/display_unit">

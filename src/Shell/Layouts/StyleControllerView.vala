@@ -18,6 +18,20 @@ namespace Ensembles.Shell {
         Gtk.Button sync_stop_button;
         Gtk.Button start_button;
 
+        // This is required for assigning MIDI controllers to these buttons
+        public const int _intro_a_ui_index = 1;
+        public const int _intro_b_ui_index = 2;
+        public const int _var_a_ui_index = 3;
+        public const int _var_b_ui_index = 4;
+        public const int _var_c_ui_index = 5;
+        public const int _var_d_ui_index = 6;
+        public const int _break_ui_index = 7;
+        public const int _ending_a_ui_index = 8;
+        public const int _engine_b_ui_index = 9;
+        public const int _sync_start_ui_index = 10;
+        public const int _sync_stop_ui_index = 11;
+        public const int _start_stop_ui_index = 12;
+
         public signal void start_stop ();
 
         public signal void switch_var_a ();
@@ -62,6 +76,13 @@ namespace Ensembles.Shell {
                 }
                 set_style_section_by_index (0);
             });
+            intro_button_a.button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (intro_button_a, _intro_a_ui_index);
+                }
+                return false;
+            });
+
             intro_button_b.clicked.connect (() => {
                 if (RecorderScreen.sequencer != null) {
                     RecorderScreen.sequencer.initial_settings_style_part_index = 1;
@@ -73,6 +94,12 @@ namespace Ensembles.Shell {
                     Shell.RecorderScreen.sequencer.record_event (event);
                 }
                 set_style_section_by_index (1);
+            });
+            intro_button_b.button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (intro_button_b, _intro_b_ui_index);
+                }
+                return false;
             });
 
             var var_fill_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL);
@@ -106,6 +133,12 @@ namespace Ensembles.Shell {
                 }
                 set_style_section_by_index (2);
             });
+            var_fill_button_a.button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (var_fill_button_a, _var_a_ui_index);
+                }
+                return false;
+            });
 
             var_fill_button_b.clicked.connect (() => {
                 if (RecorderScreen.sequencer != null) {
@@ -118,6 +151,12 @@ namespace Ensembles.Shell {
                     Shell.RecorderScreen.sequencer.record_event (event);
                 }
                 set_style_section_by_index (3);
+            });
+            var_fill_button_b.button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (var_fill_button_b, _var_b_ui_index);
+                }
+                return false;
             });
 
             var_fill_button_c.clicked.connect (() => {
@@ -132,6 +171,12 @@ namespace Ensembles.Shell {
                 }
                 set_style_section_by_index (4);
             });
+            var_fill_button_c.button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (var_fill_button_c, _var_c_ui_index);
+                }
+                return false;
+            });
 
             var_fill_button_d.clicked.connect (() => {
                 if (RecorderScreen.sequencer != null) {
@@ -144,6 +189,12 @@ namespace Ensembles.Shell {
                     Shell.RecorderScreen.sequencer.record_event (event);
                 }
                 set_style_section_by_index (5);
+            });
+            var_fill_button_d.button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (var_fill_button_d, _var_d_ui_index);
+                }
+                return false;
             });
 
             break_button = new Gtk.Button.with_label (_("Break")) {
@@ -160,6 +211,12 @@ namespace Ensembles.Shell {
                     Shell.RecorderScreen.sequencer.record_event (event);
                 }
                 set_style_section_by_index (6);
+            });
+            break_button.button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (break_button, _break_ui_index);
+                }
+                return false;
             });
 
             var ending_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL);
@@ -185,6 +242,12 @@ namespace Ensembles.Shell {
                 }
                 set_style_section_by_index (7);
             });
+            ending_button_a.button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (ending_button_a, _ending_a_ui_index);
+                }
+                return false;
+            });
             ending_button_b.clicked.connect (() => {
                 if (RecorderScreen.sequencer != null) {
                     RecorderScreen.sequencer.initial_settings_style_part_index = 8;
@@ -196,6 +259,12 @@ namespace Ensembles.Shell {
                     Shell.RecorderScreen.sequencer.record_event (event);
                 }
                 set_style_section_by_index (8);
+            });
+            ending_button_b.button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (ending_button_b, _engine_b_ui_index);
+                }
+                return false;
             });
 
             var sync_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL);
@@ -221,6 +290,12 @@ namespace Ensembles.Shell {
                 }
                 set_style_section_by_index (9);
             });
+            sync_start_button.button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (sync_start_button, _sync_start_ui_index);
+                }
+                return false;
+            });
             sync_stop_button.clicked.connect (() => {
                 if (RecorderScreen.sequencer != null) {
                     RecorderScreen.sequencer.initial_settings_style_part_index = 10;
@@ -233,6 +308,12 @@ namespace Ensembles.Shell {
                 }
                 set_style_section_by_index (10);
             });
+            sync_stop_button.button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (sync_stop_button, _sync_stop_ui_index);
+                }
+                return false;
+            });
 
             start_button = new Gtk.Button.from_icon_name ("media-playback-start-symbolic") {
                 sensitive = false,
@@ -243,6 +324,12 @@ namespace Ensembles.Shell {
             start_button.get_style_context ().remove_class ("image-button");
             start_button.clicked.connect (() => {
                 start_stop ();
+            });
+            start_button.button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (start_button, _start_stop_ui_index);
+                }
+                return false;
             });
 
             var intro_label = new Gtk.Label ("       " + _("INTRO") + "       ");
@@ -461,10 +548,7 @@ namespace Ensembles.Shell {
         public void handle_midi_button_event (int index, bool press = true) {
             if (press) {
                 switch (index) {
-                    case 0: // START
-                    start_stop ();
-                    break;
-                    case 1: // INTRO 1
+                    case _intro_a_ui_index: // INTRO 1
                     if (RecorderScreen.sequencer != null) {
                         RecorderScreen.sequencer.initial_settings_style_part_index = 0;
                     }
@@ -476,7 +560,7 @@ namespace Ensembles.Shell {
                     }
                     set_style_section_by_index (0);
                     break;
-                    case 2: // INTRO 2
+                    case _intro_b_ui_index: // INTRO 2
                     if (RecorderScreen.sequencer != null) {
                         RecorderScreen.sequencer.initial_settings_style_part_index = 1;
                     }
@@ -488,7 +572,7 @@ namespace Ensembles.Shell {
                     }
                     set_style_section_by_index (1);
                     break;
-                    case 3: // var a
+                    case _var_a_ui_index: // var a
                     if (RecorderScreen.sequencer != null) {
                         RecorderScreen.sequencer.initial_settings_style_part_index = 2;
                     }
@@ -500,7 +584,7 @@ namespace Ensembles.Shell {
                     }
                     set_style_section_by_index (2);
                     break;
-                    case 4: // var b
+                    case _var_b_ui_index: // var b
                     if (RecorderScreen.sequencer != null) {
                         RecorderScreen.sequencer.initial_settings_style_part_index = 3;
                     }
@@ -512,7 +596,7 @@ namespace Ensembles.Shell {
                     }
                     set_style_section_by_index (3);
                     break;
-                    case 5: // var c
+                    case _var_c_ui_index: // var c
                     if (RecorderScreen.sequencer != null) {
                         RecorderScreen.sequencer.initial_settings_style_part_index = 4;
                     }
@@ -524,7 +608,7 @@ namespace Ensembles.Shell {
                     }
                     set_style_section_by_index (4);
                     break;
-                    case 6: //var d
+                    case _var_d_ui_index: //var d
                     if (RecorderScreen.sequencer != null) {
                         RecorderScreen.sequencer.initial_settings_style_part_index = 5;
                     }
@@ -535,6 +619,69 @@ namespace Ensembles.Shell {
                         Shell.RecorderScreen.sequencer.record_event (event);
                     }
                     set_style_section_by_index (5);
+                    break;
+                    case _ending_a_ui_index:
+                    if (RecorderScreen.sequencer != null) {
+                        RecorderScreen.sequencer.initial_settings_style_part_index = 7;
+                    }
+                    if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
+                        var event = new Core.MidiEvent ();
+                        event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
+                        event.value1 = 7;
+                        Shell.RecorderScreen.sequencer.record_event (event);
+                    }
+                    set_style_section_by_index (7);
+                    break;
+                    case _engine_b_ui_index:
+                    if (RecorderScreen.sequencer != null) {
+                        RecorderScreen.sequencer.initial_settings_style_part_index = 8;
+                    }
+                    if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
+                        var event = new Core.MidiEvent ();
+                        event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
+                        event.value1 = 8;
+                        Shell.RecorderScreen.sequencer.record_event (event);
+                    }
+                    set_style_section_by_index (8);
+                    break;
+                    case _sync_start_ui_index:
+                    if (RecorderScreen.sequencer != null) {
+                        RecorderScreen.sequencer.initial_settings_style_part_index = 9;
+                    }
+                    if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
+                        var event = new Core.MidiEvent ();
+                        event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
+                        event.value1 = 9;
+                        Shell.RecorderScreen.sequencer.record_event (event);
+                    }
+                    set_style_section_by_index (9);
+                    break;
+                    case _sync_stop_ui_index:
+                    if (RecorderScreen.sequencer != null) {
+                        RecorderScreen.sequencer.initial_settings_style_part_index = 10;
+                    }
+                    if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
+                        var event = new Core.MidiEvent ();
+                        event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
+                        event.value1 = 10;
+                        Shell.RecorderScreen.sequencer.record_event (event);
+                    }
+                    set_style_section_by_index (10);
+                    break;
+                    case _break_ui_index:
+                    if (RecorderScreen.sequencer != null) {
+                        RecorderScreen.sequencer.initial_settings_style_part_index = 6;
+                    }
+                    if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
+                        var event = new Core.MidiEvent ();
+                        event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
+                        event.value1 = 6;
+                        Shell.RecorderScreen.sequencer.record_event (event);
+                    }
+                    set_style_section_by_index (6);
+                    break;
+                    case _start_stop_ui_index:
+                    start_stop ();
                     break;
                 }
             }

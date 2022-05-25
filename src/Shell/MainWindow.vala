@@ -29,6 +29,11 @@ namespace Ensembles.Shell {
         Gtk.Scale seek_bar;
         public Gtk.Label custom_title_text;
         Gtk.Grid custom_title_grid;
+        Gtk.Popover common_context_menu;
+        Gtk.Label controller_assignment_label;
+        Gtk.Button controller_assign_button;
+        Gtk.Button controller_reset_button;
+        int _current_ui_assign_index;
 
         // Computer Keyboard input handling
         public PcKeyboardHandler keyboard_input_handler;
@@ -120,6 +125,47 @@ namespace Ensembles.Shell {
             grid.attach (main_keyboard, 0, 3, 3, 1);
             add (grid);
             show_all ();
+
+            common_context_menu = new Gtk.Popover (main_display_unit);
+            common_context_menu.add (get_context_menu ());
+        }
+
+        Gtk.Widget get_context_menu () {
+            var button_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 4) {
+                margin = 4
+            };
+
+            controller_assignment_label = new Gtk.Label ("") {
+                halign = Gtk.Align.START,
+                visible = false
+            };
+            controller_assignment_label.get_style_context ().add_class (Granite.STYLE_CLASS_H4_LABEL);
+            button_box.pack_start (controller_assignment_label);
+
+            var separator = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
+            button_box.pack_start (separator);
+
+            controller_assign_button = new Gtk.Button ();
+            var assign_button_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 4) {
+                halign = Gtk.Align.START
+            };
+            assign_button_box.pack_start (new Gtk.Image.from_icon_name ("insert-link", Gtk.IconSize.BUTTON));
+            assign_button_box.pack_end (new Gtk.Label (_("Link MIDI Controller")));
+            controller_assign_button.add (assign_button_box);
+            controller_assign_button.get_style_context ().add_class (Gtk.STYLE_CLASS_FLAT);
+            button_box.pack_start (controller_assign_button);
+
+            controller_reset_button = new Gtk.Button ();
+            var reset_button_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 4) {
+                halign = Gtk.Align.START
+            };
+            reset_button_box.pack_start (new Gtk.Image.from_icon_name ("list-remove", Gtk.IconSize.BUTTON));
+            reset_button_box.pack_end (new Gtk.Label (_("Remove Link")));
+            controller_reset_button.add (reset_button_box);
+            controller_reset_button.get_style_context ().add_class (Gtk.STYLE_CLASS_FLAT);
+            button_box.pack_start (controller_reset_button);
+
+            return button_box;
         }
         // Connect UI events
         void make_events () {
@@ -370,6 +416,43 @@ namespace Ensembles.Shell {
             var dialog = new Dialogs.Preferences.Preferences ();
             dialog.destroy.connect (Gtk.main_quit);
             dialog.show_all ();
+        }
+
+        public void show_context_menu (Gtk.Widget? relative_to, int ui_control_index) {
+            common_context_menu.relative_to = relative_to;
+
+            try {
+                controller_assign_button.clicked.disconnect (assign_button_handler);
+            } catch (Error e) {
+
+            }
+            _current_ui_assign_index = ui_control_index;
+            controller_assign_button.clicked.connect (assign_button_handler);
+            common_context_menu.show_all ();
+            var assignment_label = Application.arranger_core.midi_input_host.get_assignment_label (ui_control_index);
+            if (assignment_label.length > 0) {
+                controller_assignment_label.set_text (assignment_label);
+                controller_assignment_label.visible = true;
+                controller_reset_button.visible = true;
+            } else {
+                controller_assignment_label.visible = false;
+                controller_reset_button.visible = false;
+            }
+        }
+
+        public void hide_context_menu () {
+            common_context_menu.hide ();
+        }
+
+        void assign_button_handler () {
+            hide_context_menu ();
+            var assign_dialog = new Dialogs.MIDIAssignDialog (_current_ui_assign_index);
+            assign_dialog.confirm_binding.connect (binding_confirmation_handler);
+            assign_dialog.show_all();
+        }
+
+        void binding_confirmation_handler (int channel, int identifier, int signal_type, int control_type) {
+            Application.arranger_core.midi_input_host.set_control_map (channel, identifier, signal_type, control_type);
         }
     }
 }

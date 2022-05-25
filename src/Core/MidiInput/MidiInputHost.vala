@@ -14,11 +14,12 @@ namespace Ensembles.Core {
             active_devices = new List<int> ();
             note_map = new Gee.HashMap<int, int> ();
             // Example maps
-            note_map.set (0, 1);
-            note_map.set (4, 2);
-            note_map.set (16, 3);
-            note_map.set (25, 4);
+            //  note_map.set (1296, 1);
+            //  note_map.set (1444, 2);
+            //  note_map.set (1600, 3);
+            note_map.set (1764, 8);
             control_map = new Gee.HashMap<int, int> ();
+            control_label_reverse_map = new Gee.HashMap<int, string> ();
         }
 
         public void destroy () {
@@ -33,9 +34,11 @@ namespace Ensembles.Core {
 
         public signal void receive_note_event (int key, bool is_pressed, int velocity, int layer);
 
-        private int note_offset = 36;
+        public signal bool midi_event_received (int channel, int identifier, int type);
+
         private Gee.HashMap<int, int> note_map;
         private Gee.HashMap<int, int> control_map;
+        private Gee.HashMap<int, string> control_label_reverse_map;
 
         public Ensembles.Core.MidiDevice[] refresh () {
             if (Application.raw_midi_input) {
@@ -64,8 +67,8 @@ namespace Ensembles.Core {
                 for (int i = 0; i < active_devices.length (); i++) {
                     if (controller_poll_device (active_devices.nth_data (i)) > 0) {
                         int message = controller_read_device_stream (active_devices.nth_data (i));
-                        int key = ((0x00FF00 & message) - 9216) / 256;
-                        int type = (message & 0x0000F0);
+                        int type = message & 0x0000F0;
+                        int key = 0x0000FF & (message >> 8);
                         int channel = (message & 0x00000F);
                         double velocity = ((127.0 - 0.0) / (8323072.0 - 65536.0)) *
                                         (double)((0xFF0000 & message) - 65536);
@@ -111,6 +114,13 @@ namespace Ensembles.Core {
         }
 
         private void process_midi_signal (int channel, int type, int value, int velocity) {
+            var handled = false;
+            if (type == 144 || type == 176) {
+                handled = midi_event_received (channel, value, type);
+            }
+            if (handled) {
+                return;
+            }
             // Classify MIDI signal type
             if (type == 144 || type == 128) {
                 // Note signal
@@ -131,7 +141,7 @@ namespace Ensembles.Core {
             if (note_map.has_key (hash)) {
                 process_control_signal (channel, note_map[hash], velocity, true);
             } else {
-                receive_note_event (key + note_offset,
+                receive_note_event (key,
                     velocity > 0 ? (is_pressed_type == 144) : false,
                     velocity > 0 ? velocity : 1,
                     channel > 3 ? 3 : channel);
@@ -148,20 +158,26 @@ namespace Ensembles.Core {
             } else {
                 index = identifier;
             }
-            switch (index) {
-                case 1:
-                Application.main_window.style_controller_view.handle_midi_button_event (3, value > 0);
-                break;
-                case 2:
-                Application.main_window.style_controller_view.handle_midi_button_event (4, value > 0);
-                break;
-                case 3:
-                Application.main_window.style_controller_view.handle_midi_button_event (5, value > 0);
-                break;
-                case 4:
-                Application.main_window.style_controller_view.handle_midi_button_event (6, value > 0);
-                break;
+            if (index >= Shell.StyleControllerView._intro_a_ui_index && index <= Shell.StyleControllerView._start_stop_ui_index) {
+                print(">>>>>>>> %d", index);
+                Application.main_window.style_controller_view.handle_midi_button_event (index, value > 0);
             }
+        }
+
+        public void set_control_map (int channel, int identifier, int type, int ui_control_index) {
+            if (type == 144) {
+                note_map.set (szudzik_hash (channel, identifier), ui_control_index);
+            } else {
+                control_map.set (szudzik_hash (channel, identifier), ui_control_index);
+            }
+            control_label_reverse_map.set (ui_control_index, _("#%d, Channel %d").printf (identifier, channel + 1));
+        }
+
+        public string get_assignment_label (int ui_control_index) {
+            if (control_label_reverse_map.has_key (ui_control_index)) {
+                return control_label_reverse_map[ui_control_index];
+            }
+            return "";
         }
     }
 }
