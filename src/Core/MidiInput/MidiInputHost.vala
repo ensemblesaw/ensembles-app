@@ -17,7 +17,7 @@ namespace Ensembles.Core {
             //  note_map.set (1296, 1);
             //  note_map.set (1444, 2);
             //  note_map.set (1600, 3);
-            note_map.set (1764, 8);
+            //  note_map.set (1764, 8);
             control_map = new Gee.HashMap<int, int> ();
             control_label_reverse_map = new Gee.HashMap<int, string> ();
         }
