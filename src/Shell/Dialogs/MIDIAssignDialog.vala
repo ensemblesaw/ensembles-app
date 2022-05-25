@@ -40,9 +40,11 @@
                 margin_bottom = 26
             };
             controller_icon.get_style_context ().add_class ("controller-icon-box");
+            controller_icon.get_style_context ().add_class (Granite.STYLE_CLASS_CARD);
+            controller_icon.get_style_context ().add_class (Granite.STYLE_CLASS_ROUNDED);
             main_grid.attach (controller_icon, 0, 0);
 
-            var heading = new Gtk.Label (_("Assign MIDI Controller"));
+            var heading = new Gtk.Label (_("Link MIDI Controller"));
             heading.get_style_context ().add_class (Granite.STYLE_CLASS_H2_LABEL);
             main_grid.attach (heading, 0, 1);
 

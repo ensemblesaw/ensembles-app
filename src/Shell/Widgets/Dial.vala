@@ -70,7 +70,7 @@ namespace Ensembles.Shell {
                 width_request = 40,
                 height_request = 40
             };
-            plus_one_button.get_style_context ().add_class ("rounded");
+            plus_one_button.get_style_context ().add_class ("oval");
             plus_one_button.get_style_context ().remove_class ("image-button");
             plus_one_button.clicked.connect (() => {
                 rotate (true, 1);
@@ -84,7 +84,7 @@ namespace Ensembles.Shell {
                 width_request = 40,
                 height_request = 40
             };
-            minus_one_button.get_style_context ().add_class ("rounded");
+            minus_one_button.get_style_context ().add_class ("oval");
             minus_one_button.get_style_context ().remove_class ("image-button");
             minus_one_button.clicked.connect (() => {
                 rotate (false, 1);
@@ -99,7 +99,7 @@ namespace Ensembles.Shell {
                 width_request = 40,
                 height_request = 40
             };
-            activate_button.get_style_context ().add_class ("rounded");
+            activate_button.get_style_context ().add_class ("oval");
             activate_button.get_style_context ().remove_class ("image-button");
             activate_button.clicked.connect (() => {
                 activate_clicked ();

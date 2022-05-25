@@ -4,7 +4,7 @@
  */
 
 
-.rounded {
+.oval {
 	border-radius: 50%;
 }
 
@@ -659,9 +659,7 @@
 }
 
 .controller-icon-box {
-    background: alpha(@accent_color, 0.4);
-    border-radius: 8px;
-    box-shadow: 0 4px 4px alpha(#000, 0.5), inset 0 1px alpha(#fff, 0.25), inset 0 -1px alpha(#000, 0.5);
+    background: alpha(@accent_color, 0.1);
 }
 
 .central-display-preview > * {
