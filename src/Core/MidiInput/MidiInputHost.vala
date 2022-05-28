@@ -13,11 +13,6 @@ namespace Ensembles.Core {
         public MidiInputHost () {
             active_devices = new List<int> ();
             note_map = new Gee.HashMap<int, int> ();
-            // Example maps
-            //  note_map.set (1296, 1);
-            //  note_map.set (1444, 2);
-            //  note_map.set (1600, 3);
-            //  note_map.set (1764, 8);
             control_map = new Gee.HashMap<int, int> ();
             control_label_reverse_map = new Gee.HashMap<int, string> ();
         }
@@ -158,8 +153,11 @@ namespace Ensembles.Core {
             } else {
                 index = identifier;
             }
+
             if (index >= Shell.StyleControllerView.UI_INDEX_STYLE_INTRO_1 && index <= Shell.StyleControllerView.UI_INDEX_STYLE_START_STOP) {
-                Application.main_window.style_controller_view.handle_midi_button_event (index, value > 0);
+                Application.main_window.style_controller_view.handle_midi_button_event (index, value > 0); // This is an event for style player
+            } else if (index >= Shell.RegistryView.UI_INDEX_REG_1 && index <= Shell.RegistryView.UI_INDEX_REG_MEM) {
+                Application.main_window.registry_panel.handle_midi_button_event (index, value > 0); // This is an event for registry memory
             }
         }
 

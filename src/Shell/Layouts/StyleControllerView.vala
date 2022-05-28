@@ -5,19 +5,6 @@
 
 namespace Ensembles.Shell {
     public class StyleControllerView : Gtk.Grid {
-        Gtk.Button intro_button_a;
-        Gtk.Button intro_button_b;
-        Gtk.Button var_fill_button_a;
-        Gtk.Button var_fill_button_b;
-        Gtk.Button var_fill_button_c;
-        Gtk.Button var_fill_button_d;
-        Gtk.Button break_button;
-        Gtk.Button ending_button_a;
-        Gtk.Button ending_button_b;
-        Gtk.Button sync_start_button;
-        Gtk.Button sync_stop_button;
-        Gtk.Button start_button;
-
         public const int UI_INDEX_STYLE_INTRO_1 = 1;
         public const int UI_INDEX_STYLE_INTRO_2 = 2;
         public const int UI_INDEX_STYLE_VAR_A = 3;
@@ -30,6 +17,19 @@ namespace Ensembles.Shell {
         public const int UI_INDEX_STYLE_SYNC_START = 10;
         public const int UI_INDEX_STYLE_SYNC_STOP = 11;
         public const int UI_INDEX_STYLE_START_STOP = 12;
+
+        Gtk.Button intro_button_a;
+        Gtk.Button intro_button_b;
+        Gtk.Button var_fill_button_a;
+        Gtk.Button var_fill_button_b;
+        Gtk.Button var_fill_button_c;
+        Gtk.Button var_fill_button_d;
+        Gtk.Button break_button;
+        Gtk.Button ending_button_a;
+        Gtk.Button ending_button_b;
+        Gtk.Button sync_start_button;
+        Gtk.Button sync_stop_button;
+        Gtk.Button start_button;
 
         public signal void start_stop ();
 

@@ -5,6 +5,19 @@
 
 namespace Ensembles.Shell {
     public class RegistryView : Gtk.Grid {
+        public const int UI_INDEX_REG_1 = 13;
+        public const int UI_INDEX_REG_2 = 14;
+        public const int UI_INDEX_REG_3 = 15;
+        public const int UI_INDEX_REG_4 = 16;
+        public const int UI_INDEX_REG_5 = 17;
+        public const int UI_INDEX_REG_6 = 18;
+        public const int UI_INDEX_REG_7 = 19;
+        public const int UI_INDEX_REG_8 = 20;
+        public const int UI_INDEX_REG_9 = 21;
+        public const int UI_INDEX_REG_10 = 22;
+        public const int UI_INDEX_REG_BANK = 23;
+        public const int UI_INDEX_REG_MEM = 24;
+
         Gtk.SpinButton bank_select;
         Gtk.Button[] registry_buttons;
         Gtk.Button memory_button;
@@ -59,6 +72,12 @@ namespace Ensembles.Shell {
                 assignable = !assignable;
                 make_buttons_pulse (assignable);
             });
+            memory_button.button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (memory_button, UI_INDEX_REG_MEM);
+                }
+                return false;
+            });
             registry_buttons[0].clicked.connect (() => {
                 if (assignable) {
                     registry_memorize (0);
@@ -66,6 +85,12 @@ namespace Ensembles.Shell {
                 } else {
                     registry_recall (0);
                 }
+            });
+            registry_buttons[0].button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (registry_buttons[0], UI_INDEX_REG_1);
+                }
+                return false;
             });
             registry_buttons[1].clicked.connect (() => {
                 if (assignable) {
@@ -75,6 +100,12 @@ namespace Ensembles.Shell {
                     registry_recall (1);
                 }
             });
+            registry_buttons[1].button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (registry_buttons[1], UI_INDEX_REG_2);
+                }
+                return false;
+            });
             registry_buttons[2].clicked.connect (() => {
                 if (assignable) {
                     registry_memorize (2);
@@ -82,6 +113,12 @@ namespace Ensembles.Shell {
                 } else {
                     registry_recall (2);
                 }
+            });
+            registry_buttons[2].button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (registry_buttons[2], UI_INDEX_REG_3);
+                }
+                return false;
             });
             registry_buttons[3].clicked.connect (() => {
                 if (assignable) {
@@ -91,6 +128,12 @@ namespace Ensembles.Shell {
                     registry_recall (3);
                 }
             });
+            registry_buttons[3].button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (registry_buttons[3], UI_INDEX_REG_4);
+                }
+                return false;
+            });
             registry_buttons[4].clicked.connect (() => {
                 if (assignable) {
                     registry_memorize (4);
@@ -98,6 +141,12 @@ namespace Ensembles.Shell {
                 } else {
                     registry_recall (4);
                 }
+            });
+            registry_buttons[4].button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (registry_buttons[4], UI_INDEX_REG_5);
+                }
+                return false;
             });
             registry_buttons[5].clicked.connect (() => {
                 if (assignable) {
@@ -107,6 +156,12 @@ namespace Ensembles.Shell {
                     registry_recall (5);
                 }
             });
+            registry_buttons[5].button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (registry_buttons[5], UI_INDEX_REG_6);
+                }
+                return false;
+            });
             registry_buttons[6].clicked.connect (() => {
                 if (assignable) {
                     registry_memorize (6);
@@ -114,6 +169,12 @@ namespace Ensembles.Shell {
                 } else {
                     registry_recall (6);
                 }
+            });
+            registry_buttons[6].button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (registry_buttons[6], UI_INDEX_REG_7);
+                }
+                return false;
             });
             registry_buttons[7].clicked.connect (() => {
                 if (assignable) {
@@ -123,6 +184,12 @@ namespace Ensembles.Shell {
                     registry_recall (7);
                 }
             });
+            registry_buttons[7].button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (registry_buttons[7], UI_INDEX_REG_8);
+                }
+                return false;
+            });
             registry_buttons[8].clicked.connect (() => {
                 if (assignable) {
                     registry_memorize (8);
@@ -131,6 +198,12 @@ namespace Ensembles.Shell {
                     registry_recall (8);
                 }
             });
+            registry_buttons[8].button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (registry_buttons[8], UI_INDEX_REG_9);
+                }
+                return false;
+            });
             registry_buttons[9].clicked.connect (() => {
                 if (assignable) {
                     registry_memorize (9);
@@ -138,6 +211,20 @@ namespace Ensembles.Shell {
                 } else {
                     registry_recall (9);
                 }
+            });
+            registry_buttons[9].button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (registry_buttons[9], UI_INDEX_REG_10);
+                }
+                return false;
+            });
+
+            bank_select.button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (bank_select, UI_INDEX_REG_BANK);
+                    return true;
+                }
+                return false;
             });
         }
 
@@ -291,6 +378,24 @@ namespace Ensembles.Shell {
                             int.parse (settings[18]),
                             settings[19] == "1"
                         );
+                    }
+                }
+            }
+        }
+
+        public void handle_midi_button_event (int index, bool press = true) {
+            if (press) {
+                if (index == UI_INDEX_REG_BANK) {
+
+                } else if (index == UI_INDEX_REG_MEM) {
+                    assignable = !assignable;
+                    make_buttons_pulse (assignable);
+                } else {
+                    if (assignable) {
+                        registry_memorize (index - UI_INDEX_REG_1);
+                        assignable = false;
+                    } else {
+                        registry_recall (index - UI_INDEX_REG_1);
                     }
                 }
             }
