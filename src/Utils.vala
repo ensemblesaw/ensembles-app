@@ -97,13 +97,21 @@ namespace Ensembles {
         }
 
         private static bool create_file (string source_name, string dest_name, string extension) {
-            File tf_source_elementary_light = File.new_for_path (Constants.PKGDATADIR + "/themes/%s.%s".printf (source_name, extension));
-            File tf_dest_elementary_light = File.new_for_path (display_theme_path + "%s.%s".printf (dest_name, extension));
+            File tf_source_elementary_light = File.new_for_path (
+                Constants.PKGDATADIR + "/themes/%s.%s".printf (source_name, extension)
+            );
+
+            File tf_dest_elementary_light = File.new_for_path (
+                display_theme_path + "%s.%s".printf (dest_name, extension)
+            );
+
             try {
                 if (tf_source_elementary_light.query_exists () &&
                     (!tf_dest_elementary_light.query_exists () ||
-                    (tf_source_elementary_light.query_info ("*", FileQueryInfoFlags.NONE).get_modification_date_time ().to_unix () >
-                    tf_dest_elementary_light.query_info ("*", FileQueryInfoFlags.NONE).get_modification_date_time ().to_unix ()))) {
+                    (tf_source_elementary_light.query_info ("*",
+                    FileQueryInfoFlags.NONE).get_modification_date_time ().to_unix () >
+                    tf_dest_elementary_light.query_info ("*",
+                    FileQueryInfoFlags.NONE).get_modification_date_time ().to_unix ()))) {
                     print ("Installing newer stylesheet: %s.%s\n", dest_name, extension);
                     tf_source_elementary_light.copy (tf_dest_elementary_light, GLib.FileCopyFlags.OVERWRITE);
                 }

@@ -115,7 +115,8 @@ namespace Ensembles.Shell {
                 update_split ();
 
                 // Send to Sequencer for recording
-                if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state == Core.MidiRecorder.RecorderState.RECORDING) {
+                if (RecorderScreen.sequencer != null &&
+                    RecorderScreen.sequencer.current_state == Core.MidiRecorder.RecorderState.RECORDING) {
                     var event = new Core.MidiEvent ();
                     event.event_type = Core.MidiEvent.EventType.ACCOMP;
                     event.value1 = active ? 1 : 0;

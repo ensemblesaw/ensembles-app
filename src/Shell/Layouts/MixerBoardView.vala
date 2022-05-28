@@ -116,82 +116,114 @@ namespace Ensembles.Shell {
             lock_buttons[0].clicked.connect (() => {
                 Ensembles.Core.Synthesizer.lock_gain (0);
                 lock_buttons[0].sensitive = false;
-                lock_buttons[0].set_image (new Gtk.Image.from_icon_name ("changes-prevent-symbolic", Gtk.IconSize.BUTTON));
+                lock_buttons[0].set_image (
+                    new Gtk.Image.from_icon_name ("changes-prevent-symbolic", Gtk.IconSize.BUTTON)
+                );
             });
             lock_buttons[1].clicked.connect (() => {
                 Ensembles.Core.Synthesizer.lock_gain (1);
                 lock_buttons[1].sensitive = false;
-                lock_buttons[1].set_image (new Gtk.Image.from_icon_name ("changes-prevent-symbolic", Gtk.IconSize.BUTTON));
+                lock_buttons[1].set_image (
+                    new Gtk.Image.from_icon_name ("changes-prevent-symbolic", Gtk.IconSize.BUTTON)
+                );
             });
             lock_buttons[2].clicked.connect (() => {
                 Ensembles.Core.Synthesizer.lock_gain (2);
                 lock_buttons[2].sensitive = false;
-                lock_buttons[2].set_image (new Gtk.Image.from_icon_name ("changes-prevent-symbolic", Gtk.IconSize.BUTTON));
+                lock_buttons[2].set_image (
+                    new Gtk.Image.from_icon_name ("changes-prevent-symbolic", Gtk.IconSize.BUTTON)
+                );
             });
             lock_buttons[3].clicked.connect (() => {
                 Ensembles.Core.Synthesizer.lock_gain (3);
                 lock_buttons[3].sensitive = false;
-                lock_buttons[3].set_image (new Gtk.Image.from_icon_name ("changes-prevent-symbolic", Gtk.IconSize.BUTTON));
+                lock_buttons[3].set_image (
+                    new Gtk.Image.from_icon_name ("changes-prevent-symbolic", Gtk.IconSize.BUTTON)
+                );
             });
             lock_buttons[4].clicked.connect (() => {
                 Ensembles.Core.Synthesizer.lock_gain (4);
                 lock_buttons[4].sensitive = false;
-                lock_buttons[4].set_image (new Gtk.Image.from_icon_name ("changes-prevent-symbolic", Gtk.IconSize.BUTTON));
+                lock_buttons[4].set_image (
+                    new Gtk.Image.from_icon_name ("changes-prevent-symbolic", Gtk.IconSize.BUTTON)
+                );
             });
             lock_buttons[5].clicked.connect (() => {
                 Ensembles.Core.Synthesizer.lock_gain (5);
                 lock_buttons[5].sensitive = false;
-                lock_buttons[5].set_image (new Gtk.Image.from_icon_name ("changes-prevent-symbolic", Gtk.IconSize.BUTTON));
+                lock_buttons[5].set_image (
+                    new Gtk.Image.from_icon_name ("changes-prevent-symbolic", Gtk.IconSize.BUTTON)
+                );
             });
             lock_buttons[6].clicked.connect (() => {
                 Ensembles.Core.Synthesizer.lock_gain (6);
                 lock_buttons[6].sensitive = false;
-                lock_buttons[6].set_image (new Gtk.Image.from_icon_name ("changes-prevent-symbolic", Gtk.IconSize.BUTTON));
+                lock_buttons[6].set_image (
+                    new Gtk.Image.from_icon_name ("changes-prevent-symbolic", Gtk.IconSize.BUTTON)
+                );
             });
             lock_buttons[7].clicked.connect (() => {
                 Ensembles.Core.Synthesizer.lock_gain (7);
                 lock_buttons[7].sensitive = false;
-                lock_buttons[7].set_image (new Gtk.Image.from_icon_name ("changes-prevent-symbolic", Gtk.IconSize.BUTTON));
+                lock_buttons[7].set_image (
+                    new Gtk.Image.from_icon_name ("changes-prevent-symbolic", Gtk.IconSize.BUTTON)
+                );
             });
             lock_buttons[8].clicked.connect (() => {
                 Ensembles.Core.Synthesizer.lock_gain (8);
                 lock_buttons[8].sensitive = false;
-                lock_buttons[8].set_image (new Gtk.Image.from_icon_name ("changes-prevent-symbolic", Gtk.IconSize.BUTTON));
+                lock_buttons[8].set_image (
+                    new Gtk.Image.from_icon_name ("changes-prevent-symbolic", Gtk.IconSize.BUTTON)
+                );
             });
             lock_buttons[9].clicked.connect (() => {
                 Ensembles.Core.Synthesizer.lock_gain (9);
                 lock_buttons[9].sensitive = false;
-                lock_buttons[9].set_image (new Gtk.Image.from_icon_name ("changes-prevent-symbolic", Gtk.IconSize.BUTTON));
+                lock_buttons[9].set_image (
+                    new Gtk.Image.from_icon_name ("changes-prevent-symbolic", Gtk.IconSize.BUTTON)
+                );
             });
             lock_buttons[10].clicked.connect (() => {
                 Ensembles.Core.Synthesizer.lock_gain (10);
                 lock_buttons[10].sensitive = false;
-                lock_buttons[10].set_image (new Gtk.Image.from_icon_name ("changes-prevent-symbolic", Gtk.IconSize.BUTTON));
+                lock_buttons[10].set_image (
+                    new Gtk.Image.from_icon_name ("changes-prevent-symbolic", Gtk.IconSize.BUTTON)
+                );
             });
             lock_buttons[11].clicked.connect (() => {
                 Ensembles.Core.Synthesizer.lock_gain (11);
                 lock_buttons[11].sensitive = false;
-                lock_buttons[11].set_image (new Gtk.Image.from_icon_name ("changes-prevent-symbolic", Gtk.IconSize.BUTTON));
+                lock_buttons[11].set_image (
+                    new Gtk.Image.from_icon_name ("changes-prevent-symbolic", Gtk.IconSize.BUTTON)
+                );
             });
             lock_buttons[12].clicked.connect (() => {
                 Ensembles.Core.Synthesizer.lock_gain (12);
                 lock_buttons[12].sensitive = false;
-                lock_buttons[12].set_image (new Gtk.Image.from_icon_name ("changes-prevent-symbolic", Gtk.IconSize.BUTTON));
+                lock_buttons[12].set_image (
+                    new Gtk.Image.from_icon_name ("changes-prevent-symbolic", Gtk.IconSize.BUTTON)
+                );
             });
             lock_buttons[13].clicked.connect (() => {
                 Ensembles.Core.Synthesizer.lock_gain (13);
                 lock_buttons[13].sensitive = false;
-                lock_buttons[13].set_image (new Gtk.Image.from_icon_name ("changes-prevent-symbolic", Gtk.IconSize.BUTTON));
+                lock_buttons[13].set_image (
+                    new Gtk.Image.from_icon_name ("changes-prevent-symbolic", Gtk.IconSize.BUTTON)
+                );
             });
             lock_buttons[14].clicked.connect (() => {
                 Ensembles.Core.Synthesizer.lock_gain (14);
                 lock_buttons[14].sensitive = false;
-                lock_buttons[14].set_image (new Gtk.Image.from_icon_name ("changes-prevent-symbolic", Gtk.IconSize.BUTTON));
+                lock_buttons[14].set_image (
+                    new Gtk.Image.from_icon_name ("changes-prevent-symbolic", Gtk.IconSize.BUTTON)
+                );
             });
             lock_buttons[15].clicked.connect (() => {
                 Ensembles.Core.Synthesizer.lock_gain (15);
                 lock_buttons[15].sensitive = false;
-                lock_buttons[15].set_image (new Gtk.Image.from_icon_name ("changes-prevent-symbolic", Gtk.IconSize.BUTTON));
+                lock_buttons[15].set_image (
+                    new Gtk.Image.from_icon_name ("changes-prevent-symbolic", Gtk.IconSize.BUTTON)
+                );
             });
         }
 
@@ -199,7 +231,9 @@ namespace Ensembles.Shell {
             style_gain_sliders[0].change_value.connect ((scroll, value) => {
                 if (value >= 0) {
                     change_gain (0, (int)(value * 127));
-                    lock_buttons[0].set_image (new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON));
+                    lock_buttons[0].set_image (
+                        new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON)
+                    );
                     lock_buttons[0].sensitive = true;
                 }
                 return false;
@@ -207,7 +241,9 @@ namespace Ensembles.Shell {
             style_gain_sliders[1].change_value.connect ((scroll, value) => {
                 if (value >= 0) {
                     change_gain (1, (int)(value * 127));
-                    lock_buttons[1].set_image (new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON));
+                    lock_buttons[1].set_image (
+                        new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON)
+                    );
                     lock_buttons[1].sensitive = true;
                 }
                 return false;
@@ -215,7 +251,9 @@ namespace Ensembles.Shell {
             style_gain_sliders[2].change_value.connect ((scroll, value) => {
                 if (value >= 0) {
                     change_gain (2, (int)(value * 127));
-                    lock_buttons[2].set_image (new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON));
+                    lock_buttons[2].set_image (
+                        new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON)
+                    );
                     lock_buttons[2].sensitive = true;
                 }
                 return false;
@@ -223,7 +261,9 @@ namespace Ensembles.Shell {
             style_gain_sliders[3].change_value.connect ((scroll, value) => {
                 if (value >= 0) {
                     change_gain (3, (int)(value * 127));
-                    lock_buttons[3].set_image (new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON));
+                    lock_buttons[3].set_image (
+                        new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON)
+                    );
                     lock_buttons[3].sensitive = true;
                 }
                 return false;
@@ -231,7 +271,9 @@ namespace Ensembles.Shell {
             style_gain_sliders[4].change_value.connect ((scroll, value) => {
                 if (value >= 0) {
                     change_gain (4, (int)(value * 127));
-                    lock_buttons[4].set_image (new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON));
+                    lock_buttons[4].set_image (
+                        new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON)
+                    );
                     lock_buttons[4].sensitive = true;
                 }
                 return false;
@@ -239,7 +281,9 @@ namespace Ensembles.Shell {
             style_gain_sliders[5].change_value.connect ((scroll, value) => {
                 if (value >= 0) {
                     change_gain (5, (int)(value * 127));
-                    lock_buttons[5].set_image (new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON));
+                    lock_buttons[5].set_image (
+                        new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON)
+                    );
                     lock_buttons[5].sensitive = true;
                 }
                 return false;
@@ -247,7 +291,9 @@ namespace Ensembles.Shell {
             style_gain_sliders[6].change_value.connect ((scroll, value) => {
                 if (value >= 0) {
                     change_gain (6, (int)(value * 127));
-                    lock_buttons[6].set_image (new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON));
+                    lock_buttons[6].set_image (
+                        new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON)
+                    );
                     lock_buttons[6].sensitive = true;
                 }
                 return false;
@@ -255,7 +301,9 @@ namespace Ensembles.Shell {
             style_gain_sliders[7].change_value.connect ((scroll, value) => {
                 if (value >= 0) {
                     change_gain (7, (int)(value * 127));
-                    lock_buttons[7].set_image (new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON));
+                    lock_buttons[7].set_image (
+                        new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON)
+                    );
                     lock_buttons[7].sensitive = true;
                 }
                 return false;
@@ -263,7 +311,9 @@ namespace Ensembles.Shell {
             style_gain_sliders[8].change_value.connect ((scroll, value) => {
                 if (value >= 0) {
                     change_gain (8, (int)(value * 127));
-                    lock_buttons[8].set_image (new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON));
+                    lock_buttons[8].set_image (
+                        new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON)
+                    );
                     lock_buttons[8].sensitive = true;
                 }
                 return false;
@@ -271,7 +321,9 @@ namespace Ensembles.Shell {
             style_gain_sliders[9].change_value.connect ((scroll, value) => {
                 if (value >= 0) {
                     change_gain (9, (int)(value * 127));
-                    lock_buttons[9].set_image (new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON));
+                    lock_buttons[9].set_image (
+                        new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON)
+                    );
                     lock_buttons[9].sensitive = true;
                 }
                 return false;
@@ -279,7 +331,9 @@ namespace Ensembles.Shell {
             style_gain_sliders[10].change_value.connect ((scroll, value) => {
                 if (value >= 0) {
                     change_gain (10, (int)(value * 127));
-                    lock_buttons[10].set_image (new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON));
+                    lock_buttons[10].set_image (
+                        new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON)
+                    );
                     lock_buttons[10].sensitive = true;
                 }
                 return false;
@@ -287,7 +341,9 @@ namespace Ensembles.Shell {
             style_gain_sliders[11].change_value.connect ((scroll, value) => {
                 if (value >= 0) {
                     change_gain (11, (int)(value * 127));
-                    lock_buttons[11].set_image (new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON));
+                    lock_buttons[11].set_image (
+                        new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON)
+                    );
                     lock_buttons[11].sensitive = true;
                 }
                 return false;
@@ -295,7 +351,9 @@ namespace Ensembles.Shell {
             style_gain_sliders[12].change_value.connect ((scroll, value) => {
                 if (value >= 0) {
                     change_gain (12, (int)(value * 127));
-                    lock_buttons[12].set_image (new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON));
+                    lock_buttons[12].set_image (
+                        new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON)
+                    );
                     lock_buttons[12].sensitive = true;
                 }
                 return false;
@@ -303,7 +361,9 @@ namespace Ensembles.Shell {
             style_gain_sliders[13].change_value.connect ((scroll, value) => {
                 if (value >= 0) {
                     change_gain (13, (int)(value * 127));
-                    lock_buttons[13].set_image (new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON));
+                    lock_buttons[13].set_image (
+                        new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON)
+                    );
                     lock_buttons[13].sensitive = true;
                 }
                 return false;
@@ -311,7 +371,9 @@ namespace Ensembles.Shell {
             style_gain_sliders[14].change_value.connect ((scroll, value) => {
                 if (value >= 0) {
                     change_gain (14, (int)(value * 127));
-                    lock_buttons[14].set_image (new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON));
+                    lock_buttons[14].set_image (
+                        new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON)
+                    );
                     lock_buttons[14].sensitive = true;
                 }
                 return false;
@@ -319,7 +381,9 @@ namespace Ensembles.Shell {
             style_gain_sliders[15].change_value.connect ((scroll, value) => {
                 if (value >= 0) {
                     change_gain (15, (int)(value * 127));
-                    lock_buttons[15].set_image (new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON));
+                    lock_buttons[15].set_image (
+                        new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON)
+                    );
                     lock_buttons[15].sensitive = true;
                 }
                 return false;

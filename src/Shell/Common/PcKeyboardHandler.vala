@@ -154,7 +154,9 @@ namespace Ensembles.Shell {
                 }
 
                 if (KeyboardConstants.key_is_number_keypad (keyval)) {
-                    registration_recall ((keyval == KeyboardConstants.KeyMap.KEYPAD_0 ) ? 9 : (keyval - KeyboardConstants.KeyMap.KEYPAD_0 - 1));
+                    registration_recall ((keyval == KeyboardConstants.KeyMap.KEYPAD_0 )
+                    ? 9
+                    : (keyval - KeyboardConstants.KeyMap.KEYPAD_0 - 1));
                 }
             }
         }

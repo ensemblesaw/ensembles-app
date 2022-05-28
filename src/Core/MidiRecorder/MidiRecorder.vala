@@ -49,7 +49,9 @@ namespace Ensembles.Core {
         public void multiplex_events (MidiEvent event) {
             switch (event.event_type) {
                 case MidiEvent.EventType.NOTE:
-                Application.arranger_core.synthesizer.send_notes_realtime (event.value1, event.value2 == 144, event.velocity, event.channel);
+                Application.arranger_core.synthesizer.send_notes_realtime (
+                    event.value1, event.value2 == 144, event.velocity, event.channel
+                );
                 break;
                 case MidiEvent.EventType.VOICECHANGE:
                 var voice = new Voice (event.value2, event.value1, event.value2, "", "");
@@ -195,7 +197,8 @@ namespace Ensembles.Core {
         }
 
         public void record_event (MidiEvent event) {
-            if (sync_start && (event.event_type == MidiEvent.EventType.NOTE || event.event_type == MidiEvent.EventType.STYLESTARTSTOP)) {
+            if (sync_start && (event.event_type == MidiEvent.EventType.NOTE ||
+                event.event_type == MidiEvent.EventType.STYLESTARTSTOP)) {
                 sync_start = false;
                 play (true);
                 var initial_event_voice_r1 = new MidiEvent ();
@@ -263,7 +266,8 @@ namespace Ensembles.Core {
             if (recording_timer != null) {
                 if (current_state == RecorderState.RECORDING) {
                     if (_track != 0) {
-                        if (event.event_type == MidiEvent.EventType.NOTE || event.event_type == MidiEvent.EventType.VOICECHANGE) {
+                        if (event.event_type == MidiEvent.EventType.NOTE ||
+                            event.event_type == MidiEvent.EventType.VOICECHANGE) {
                             recording_timer.stop ();
                             ulong microseconds = (ulong)(recording_timer.elapsed () * 1000000);
                             var new_event = event;

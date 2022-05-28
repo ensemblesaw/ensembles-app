@@ -101,7 +101,9 @@ namespace Ensembles.Core {
                 styles.nth_data (i).copyright_notice = analyser.copyright_notice;
                 Thread.usleep (10000);
                 if (Application.main_window != null) {
-                    Application.main_window.main_display_unit.update_splash_text (_("Loading Styles: ") + styles.nth_data (i).name);
+                    Application.main_window.main_display_unit.update_splash_text (
+                        _("Loading Styles: ") + styles.nth_data (i).name
+                    );
                 }
             }
             Timeout.add (1000, () => {

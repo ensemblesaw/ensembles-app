@@ -106,7 +106,12 @@ namespace Ensembles.Shell {
                     }
                     if (Core.InstrumentRack.plugin_voice_reference[i - last_voice_index] != null) {
                         print ("name: %s\n", Core.InstrumentRack.plugin_voice_reference[i - last_voice_index].name);
-                        var row = new VoiceItem (Core.InstrumentRack.plugin_voice_reference[i - last_voice_index], show_category, i);
+                        var row = new VoiceItem (
+                            Core.InstrumentRack.plugin_voice_reference[i - last_voice_index],
+                            show_category,
+                            i
+                        );
+
                         voice_rows[i] = row;
                         main_list.insert (row, -1);
                     }

@@ -59,7 +59,9 @@ namespace Ensembles.Shell {
             mod_grid.attach (lfo_spin_button, 0, 0, 1, 1);
             mod_grid.attach (lfo_type, 1, 0, 1, 1);
 
-            lfo_graph = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/lfo_graphics/LFO_4_4_0");
+            lfo_graph = new Gtk.Image.from_resource (
+                "/com/github/subhadeepjasu/ensembles/images/lfo_graphics/LFO_4_4_0"
+            );
 
             mod_grid.attach (lfo_graph, 0, 1, 2, 1);
             attach (mod_grid, 0, 1, 2, 1);

@@ -223,12 +223,24 @@ extern float synthesizer_get_version ();
 
 
 [CCode (cname = "synthesizer_fx_callback", has_target = false)]
-extern delegate void synthesizer_fx_callback (float[] input_l, float[] input_r, out float[] output_l, out float[] output_r);
+extern delegate void synthesizer_fx_callback (
+    float[] input_l,
+    float[] input_r,
+    out float[] output_l,
+    out float[] output_r
+);
 [CCode (has_target = false)]
 extern void synthesizer_set_fx_callback (synthesizer_fx_callback function);
 
 [CCode (cname = "synthesizer_note_event_callback", has_target = false)]
-extern delegate void synthesizer_note_event_callback (int channel, int key, int velocity, int on, int chord_main, int chord_type);
+extern delegate void synthesizer_note_event_callback (
+    int channel,
+    int key,
+    int velocity,
+    int on,
+    int chord_main,
+    int chord_type
+);
 [CCode (has_target = false)]
 extern void synthesizer_set_event_callback (synthesizer_note_event_callback function);
 

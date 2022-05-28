@@ -15,7 +15,8 @@ namespace Ensembles.Core {
             }
 
             set_style_change_callback ((state) => {
-                if (Shell.RecorderScreen.sequencer != null && Shell.RecorderScreen.sequencer.current_state != MidiRecorder.RecorderState.PLAYING) {
+                if (Shell.RecorderScreen.sequencer != null &&
+                    Shell.RecorderScreen.sequencer.current_state != MidiRecorder.RecorderState.PLAYING) {
                     var part_event = new MidiEvent ();
                     part_event.event_type = MidiEvent.EventType.STYLECONTROL;
                     part_event.value1 = style_part;
@@ -34,31 +35,49 @@ namespace Ensembles.Core {
             set_style_part_change_callback ((part) => {
                 switch (part) {
                     case 1:
-                    Application.main_window.style_controller_view.set_style_section (Shell.StyleControllerView.UI_INDEX_STYLE_INTRO_1);
+                    Application.main_window.style_controller_view.set_style_section (
+                        Shell.StyleControllerView.UI_INDEX_STYLE_INTRO_1
+                    );
                     break;
                     case 2:
-                    Application.main_window.style_controller_view.set_style_section (Shell.StyleControllerView.UI_INDEX_STYLE_INTRO_2);
+                    Application.main_window.style_controller_view.set_style_section (
+                        Shell.StyleControllerView.UI_INDEX_STYLE_INTRO_2
+                    );
                     break;
                     case 3:
-                    Application.main_window.style_controller_view.set_style_section (Shell.StyleControllerView.UI_INDEX_STYLE_VAR_A);
+                    Application.main_window.style_controller_view.set_style_section (
+                        Shell.StyleControllerView.UI_INDEX_STYLE_VAR_A
+                    );
                     break;
                     case 5:
-                    Application.main_window.style_controller_view.set_style_section (Shell.StyleControllerView.UI_INDEX_STYLE_VAR_B);
+                    Application.main_window.style_controller_view.set_style_section (
+                        Shell.StyleControllerView.UI_INDEX_STYLE_VAR_B
+                    );
                     break;
                     case 7:
-                    Application.main_window.style_controller_view.set_style_section (Shell.StyleControllerView.UI_INDEX_STYLE_VAR_C);
+                    Application.main_window.style_controller_view.set_style_section (
+                        Shell.StyleControllerView.UI_INDEX_STYLE_VAR_C
+                    );
                     break;
                     case 9:
-                    Application.main_window.style_controller_view.set_style_section (Shell.StyleControllerView.UI_INDEX_STYLE_VAR_D);
+                    Application.main_window.style_controller_view.set_style_section (
+                        Shell.StyleControllerView.UI_INDEX_STYLE_VAR_D
+                    );
                     break;
                     case 11:
-                    Application.main_window.style_controller_view.set_style_section (Shell.StyleControllerView.UI_INDEX_STYLE_ENDING_1);
+                    Application.main_window.style_controller_view.set_style_section (
+                        Shell.StyleControllerView.UI_INDEX_STYLE_ENDING_1
+                    );
                     break;
                     case 13:
-                    Application.main_window.style_controller_view.set_style_section (Shell.StyleControllerView.UI_INDEX_STYLE_ENDING_2);
+                    Application.main_window.style_controller_view.set_style_section (
+                        Shell.StyleControllerView.UI_INDEX_STYLE_ENDING_2
+                    );
                     break;
                     default:
-                    Application.main_window.style_controller_view.set_style_section (0);
+                    Application.main_window.style_controller_view.set_style_section (
+                        0
+                    );
                     break;
                 }
                 if (Shell.RecorderScreen.sequencer != null &&

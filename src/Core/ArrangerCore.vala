@@ -59,7 +59,10 @@ namespace Ensembles.Core {
 
             // Find out which driver was selected in user settings
             debug ("STARTUP: Initializing Settings");
-            string driver_string = Core.AudioDriverSniffer.get_available_driver (Application.settings.get_string ("driver"));
+            string driver_string = Core.AudioDriverSniffer.get_available_driver (
+                Application.settings.get_string ("driver")
+            );
+
             if (driver_string == "") {
                 error ("FATAL: No compatible audio drivers found!");
             }
@@ -107,11 +110,17 @@ namespace Ensembles.Core {
                 Idle.add (() => {
                     Application.main_window.beat_counter_panel.sync ();
                     Application.main_window.style_controller_view.sync ();
-                    Application.main_window.main_display_unit.set_measure_display (Ensembles.Core.CentralBus.get_measure ());
+                    Application.main_window.main_display_unit.set_measure_display (
+                        Ensembles.Core.CentralBus.get_measure ()
+                    );
                     return false;
                 });
+
                 if (metronome_player.looping) metronome_player.stop_loop ();
-                metronome_player.play_measure (Core.CentralBus.get_beats_per_bar (), Core.CentralBus.get_quarter_notes_per_bar ());
+                metronome_player.play_measure (
+                    Core.CentralBus.get_beats_per_bar (),
+                    Core.CentralBus.get_quarter_notes_per_bar ()
+                );
             });
             bus.system_halt.connect (() => {
                 Idle.add (() => {

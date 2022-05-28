@@ -226,7 +226,10 @@ namespace Ensembles.Shell {
             ctrl_panel.start_metronome.connect ((active) => {
                 if (active) {
                     Ensembles.Core.CentralBus.set_metronome_on (true);
-                    Application.arranger_core.metronome_player.play_loop (Core.CentralBus.get_beats_per_bar (), Core.CentralBus.get_quarter_notes_per_bar ());
+                    Application.arranger_core.metronome_player.play_loop (
+                        Core.CentralBus.get_beats_per_bar (),
+                        Core.CentralBus.get_quarter_notes_per_bar ()
+                    );
                 } else {
                     Application.arranger_core.metronome_player.stop_loop ();
                     Ensembles.Core.CentralBus.set_metronome_on (false);
@@ -296,10 +299,14 @@ namespace Ensembles.Shell {
                 if (Application.arranger_core.song_player != null) {
                     if (Application.arranger_core.song_player.get_status () == Core.SongPlayer.PlayerStatus.PLAYING) {
                         Application.arranger_core.song_player.pause ();
-                        Application.arranger_core.song_player_state_changed (Application.arranger_core.song_player.name, Core.SongPlayer.PlayerStatus.READY);
+                        Application.arranger_core.song_player_state_changed (
+                            Application.arranger_core.song_player.name, Core.SongPlayer.PlayerStatus.READY
+                        );
                     } else {
                         Application.arranger_core.song_player.play ();
-                        Application.arranger_core.song_player_state_changed (Application.arranger_core.song_player.name, Core.SongPlayer.PlayerStatus.PLAYING);
+                        Application.arranger_core.song_player_state_changed (
+                            Application.arranger_core.song_player.name, Core.SongPlayer.PlayerStatus.PLAYING
+                        );
                     }
                 }
             });
@@ -389,10 +396,15 @@ namespace Ensembles.Shell {
             if (Application.arranger_core.song_player != null) {
                 if (Application.arranger_core.song_player.get_status () == Core.SongPlayer.PlayerStatus.PLAYING) {
                     Application.arranger_core.song_player.pause ();
-                    Application.arranger_core.song_player_state_changed (Application.arranger_core.song_player.name, Core.SongPlayer.PlayerStatus.READY);
+                    Application.arranger_core.song_player_state_changed (
+                        Application.arranger_core.song_player.name, Core.SongPlayer.PlayerStatus.READY
+                    );
                 } else {
-                    Application.arranger_core.song_player.play ();
-                    Application.arranger_core.song_player_state_changed (Application.arranger_core.song_player.name, Core.SongPlayer.PlayerStatus.PLAYING);
+                    Application.arranger_core.song_player.play
+                    ();
+                    Application.arranger_core.song_player_state_changed (
+                        Application.arranger_core.song_player.name, Core.SongPlayer.PlayerStatus.PLAYING
+                    );
                 }
             } else {
                 Application.arranger_core.style_player.play_style ();
@@ -446,7 +458,7 @@ namespace Ensembles.Shell {
             hide_context_menu ();
             var assign_dialog = new Dialogs.MIDIAssignDialog (_current_ui_assign_index);
             assign_dialog.confirm_binding.connect (binding_confirmation_handler);
-            assign_dialog.show_all();
+            assign_dialog.show_all ();
         }
 
         void binding_confirmation_handler (int channel, int identifier, int signal_type, int control_type) {

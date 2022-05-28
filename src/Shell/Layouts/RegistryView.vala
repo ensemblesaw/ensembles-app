@@ -332,7 +332,8 @@ namespace Ensembles.Shell {
                 Ensembles.Application.settings.set_int ("transpose-level", registry_memory[bank, index].transpose);
                 Ensembles.Application.settings.set_boolean ("transpose-on", registry_memory[bank, index].transpose_on);
                 Ensembles.Application.settings.set_int ("octave-shift-level", registry_memory[bank, index].octave);
-                Ensembles.Application.settings.set_boolean ("octave-shift-on", registry_memory[bank, index].octave_shift_on);
+                Ensembles.Application.settings.set_boolean ("octave-shift-on",
+                registry_memory[bank, index].octave_shift_on);
                 Ensembles.Application.settings.set_int ("reverb-level", registry_memory[bank, index].reverb_level);
                 Ensembles.Application.settings.set_boolean ("reverb-on", registry_memory[bank, index].reverb_on);
                 Ensembles.Application.settings.set_int ("chorus-level", registry_memory[bank, index].chorus_level);
@@ -340,10 +341,14 @@ namespace Ensembles.Shell {
                 Ensembles.Application.settings.set_boolean ("accomp-on", registry_memory[bank, index].accomp_on);
                 Ensembles.Application.settings.set_boolean ("layer-on", registry_memory[bank, index].layer_on);
                 Ensembles.Application.settings.set_boolean ("split-on", registry_memory[bank, index].split_on);
-                Ensembles.Application.settings.set_int ("harmonizer-type", registry_memory[bank, index].harmonizer_type);
-                Ensembles.Application.settings.set_boolean ("harmonizer-on", registry_memory[bank, index].harmonizer_on);
-                Ensembles.Application.settings.set_int ("arpeggiator-type", registry_memory[bank, index].arpeggiator_type);
-                Ensembles.Application.settings.set_boolean ("arpeggiator-on", registry_memory[bank, index].arpeggiator_on);
+                Ensembles.Application.settings.set_int ("harmonizer-type",
+                registry_memory[bank, index].harmonizer_type);
+                Ensembles.Application.settings.set_boolean ("harmonizer-on",
+                registry_memory[bank, index].harmonizer_on);
+                Ensembles.Application.settings.set_int ("arpeggiator-type",
+                registry_memory[bank, index].arpeggiator_type);
+                Ensembles.Application.settings.set_boolean ("arpeggiator-on",
+                registry_memory[bank, index].arpeggiator_on);
 
                 notify_recall (registry_memory[bank, index].tempo);
             }

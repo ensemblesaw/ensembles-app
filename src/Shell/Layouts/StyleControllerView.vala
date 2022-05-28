@@ -492,7 +492,8 @@ namespace Ensembles.Shell {
                 RecorderScreen.sequencer.initial_settings_style_part_index = event_index;
             }
 
-            if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
+            if (RecorderScreen.sequencer != null &&
+                RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
                 var event = new Core.MidiEvent ();
                 event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
                 event.value1 = event_index;

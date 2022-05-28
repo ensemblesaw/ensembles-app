@@ -240,7 +240,9 @@ namespace Ensembles.Shell {
             project_file_name = project_file_name.down ();
             project_file_name += suffix;
             sequencer = new Core.MidiRecorder (project_name,
-                                               existing_file_path == null ? Path.build_filename (save_location, project_file_name) : existing_file_path,
+                                               existing_file_path == null
+                                               ? Path.build_filename (save_location, project_file_name)
+                                               : existing_file_path,
                                                existing_file_path == null);
             headerbar.set_title (_("Recorder") + " - " + project_name);
             var visual = sequencer.get_sequencer_visual ();
@@ -290,7 +292,10 @@ namespace Ensembles.Shell {
         }
 
         Granite.Widgets.Welcome get_welcome_widget () {
-            var welcome = new Granite.Widgets.Welcome (_("No Project Open"), _("Create a new project to start recording"));
+            var welcome = new Granite.Widgets.Welcome (
+                _("No Project Open"),
+                _("Create a new project to start recording")
+            );
             welcome.append ("document-new", _("New Project"), _("Creates a new project from scratch"));
             welcome.append ("document-open", _("Open Project"), _("Opens a pre-recorded project file"));
 

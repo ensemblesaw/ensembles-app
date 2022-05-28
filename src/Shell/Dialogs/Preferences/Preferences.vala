@@ -489,40 +489,40 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             KeyboardConstants.load_mapping (Application.settings);
             int j = 0;
             for (int i = 3; i < 8; i++) {
-                var c_note_item = new ItemInput (j, "C " + i.to_string () , KeyboardConstants.key_bindings[j++], false);
+                var c_note_item = new ItemInput (j, "C " + i.to_string (), KeyboardConstants.key_bindings[j++], false);
                 input_binding_items.append (c_note_item);
                 input_key_box.insert (c_note_item, -1);
-                var cs_note_item = new ItemInput (j, "C♯ " + i.to_string () , KeyboardConstants.key_bindings[j++], true);
+                var cs_note_item = new ItemInput (j, "C♯ " + i.to_string (), KeyboardConstants.key_bindings[j++], true);
                 input_binding_items.append (cs_note_item);
                 input_key_box.insert (cs_note_item, -1);
-                var d_note_item = new ItemInput (j, "D " + i.to_string () , KeyboardConstants.key_bindings[j++], false);
+                var d_note_item = new ItemInput (j, "D " + i.to_string (), KeyboardConstants.key_bindings[j++], false);
                 input_binding_items.append (d_note_item);
                 input_key_box.insert (d_note_item, -1);
-                var ds_note_item = new ItemInput (j, "E♭ " + i.to_string () , KeyboardConstants.key_bindings[j++], true);
+                var ds_note_item = new ItemInput (j, "E♭ " + i.to_string (), KeyboardConstants.key_bindings[j++], true);
                 input_binding_items.append (ds_note_item);
                 input_key_box.insert (ds_note_item, -1);
-                var e_note_item = new ItemInput (j, "E " + i.to_string () , KeyboardConstants.key_bindings[j++], false);
+                var e_note_item = new ItemInput (j, "E " + i.to_string (), KeyboardConstants.key_bindings[j++], false);
                 input_binding_items.append (e_note_item);
                 input_key_box.insert (e_note_item, -1);
-                var f_note_item = new ItemInput (j, "F " + i.to_string () , KeyboardConstants.key_bindings[j++], false);
+                var f_note_item = new ItemInput (j, "F " + i.to_string (), KeyboardConstants.key_bindings[j++], false);
                 input_binding_items.append (f_note_item);
                 input_key_box.insert (f_note_item, -1);
-                var fs_note_item = new ItemInput (j, "F♯ " + i.to_string () , KeyboardConstants.key_bindings[j++], true);
+                var fs_note_item = new ItemInput (j, "F♯ " + i.to_string (), KeyboardConstants.key_bindings[j++], true);
                 input_binding_items.append (fs_note_item);
                 input_key_box.insert (fs_note_item, -1);
-                var g_note_item = new ItemInput (j, "G " + i.to_string () , KeyboardConstants.key_bindings[j++], false);
+                var g_note_item = new ItemInput (j, "G " + i.to_string (), KeyboardConstants.key_bindings[j++], false);
                 input_binding_items.append (g_note_item);
                 input_key_box.insert (g_note_item, -1);
-                var gs_note_item = new ItemInput (j, "G♯ " + i.to_string () , KeyboardConstants.key_bindings[j++], true);
+                var gs_note_item = new ItemInput (j, "G♯ " + i.to_string (), KeyboardConstants.key_bindings[j++], true);
                 input_binding_items.append (gs_note_item);
                 input_key_box.insert (gs_note_item, -1);
-                var a_note_item = new ItemInput (j, "A " + i.to_string () , KeyboardConstants.key_bindings[j++], false);
+                var a_note_item = new ItemInput (j, "A " + i.to_string (), KeyboardConstants.key_bindings[j++], false);
                 input_binding_items.append (a_note_item);
                 input_key_box.insert (a_note_item, -1);
-                var bf_note_item = new ItemInput (j, "B♭ " + i.to_string () , KeyboardConstants.key_bindings[j++], true);
+                var bf_note_item = new ItemInput (j, "B♭ " + i.to_string (), KeyboardConstants.key_bindings[j++], true);
                 input_binding_items.append (bf_note_item);
                 input_key_box.insert (bf_note_item, -1);
-                var b_note_item = new ItemInput (j, "B " + i.to_string () , KeyboardConstants.key_bindings[j++], false);
+                var b_note_item = new ItemInput (j, "B " + i.to_string (), KeyboardConstants.key_bindings[j++], false);
                 input_binding_items.append (b_note_item);
                 input_key_box.insert (b_note_item, -1);
             }
@@ -537,7 +537,8 @@ namespace Ensembles.Shell.Dialogs.Preferences {
 
             mapping_file_open_chooser.response.connect ((response_id) => {
                 if (response_id == -3) {
-                    KeyboardConstants.load_mapping (Application.settings, mapping_file_open_chooser.get_file ().get_path ());
+                    KeyboardConstants.load_mapping (Application.settings,
+                        mapping_file_open_chooser.get_file ().get_path ());
                     update_bindings_ui ();
                 }
             });
@@ -570,8 +571,12 @@ namespace Ensembles.Shell.Dialogs.Preferences {
                             keyval == 34 ||
                             keyval == 58) {
 
-                            KeyboardConstants.key_bindings[selected_input_item.note_index] = (KeyboardConstants.KeyMap)keyval;
-                            selected_input_item.update_labels (KeyboardConstants.key_bindings[selected_input_item.note_index]);
+                            KeyboardConstants.key_bindings[
+                                selected_input_item.note_index
+                            ] = (KeyboardConstants.KeyMap)keyval;
+                            selected_input_item.update_labels (
+                                KeyboardConstants.key_bindings[selected_input_item.note_index]
+                            );
                             KeyboardConstants.save_mapping (Application.settings);
                             input_key_box.unselect_all ();
                             selected_input_item = null;
@@ -591,7 +596,10 @@ namespace Ensembles.Shell.Dialogs.Preferences {
                 mapping_file_open_chooser.run ();
                 mapping_file_open_chooser.hide ();
             });
-            var save_pc_input_preset_button = new Gtk.Button.from_icon_name ("document-save-as-symbolic", Gtk.IconSize.BUTTON);
+            var save_pc_input_preset_button = new Gtk.Button.from_icon_name (
+                "document-save-as-symbolic",
+                Gtk.IconSize.BUTTON
+            );
             save_pc_input_preset_button.get_style_context ().remove_class ("image-button");
             save_pc_input_preset_button.tooltip_text = _("Export Preset As");
             save_pc_input_preset_button.clicked.connect (() => {
@@ -748,7 +756,9 @@ namespace Ensembles.Shell.Dialogs.Preferences {
 
             Gdk.Pixbuf header_logo = new Gdk.Pixbuf (Gdk.Colorspace.RGB, true, 8, 2, 2);
             try {
-                header_logo = new Gdk.Pixbuf.from_resource ("/com/github/subhadeepjasu/ensembles/images/ensembles_logo.svg");
+                header_logo = new Gdk.Pixbuf.from_resource (
+                    "/com/github/subhadeepjasu/ensembles/images/ensembles_logo.svg"
+                );
             } catch (Error e) {
                 warning (e.message);
             }

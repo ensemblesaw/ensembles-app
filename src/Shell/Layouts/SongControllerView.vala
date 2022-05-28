@@ -25,7 +25,10 @@ namespace Ensembles.Shell {
             this.mainwindow = mainwindow;
             rewind_button = new Gtk.Button.from_icon_name ("media-seek-backward-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
             play_button = new Gtk.Button.from_icon_name ("media-playback-start-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
-            repeat_button = new Gtk.Button.from_icon_name ("media-playlist-no-repeat-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
+            repeat_button = new Gtk.Button.from_icon_name (
+                "media-playlist-no-repeat-symbolic",
+                Gtk.IconSize.LARGE_TOOLBAR
+            );
             open_file_button = new Gtk.Button.from_icon_name ("document-open-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
 
             play_button.sensitive = false;
@@ -76,10 +79,14 @@ namespace Ensembles.Shell {
             repeat_button.clicked.connect (() => {
                 if (repeat_on) {
                     repeat_on = false;
-                    repeat_button.set_image (new Gtk.Image.from_icon_name ("media-playlist-no-repeat-symbolic", Gtk.IconSize.LARGE_TOOLBAR));
+                    repeat_button.set_image (new Gtk.Image.from_icon_name (
+                        "media-playlist-no-repeat-symbolic", Gtk.IconSize.LARGE_TOOLBAR)
+                    );
                 } else {
                     repeat_on = true;
-                    repeat_button.set_image (new Gtk.Image.from_icon_name ("media-playlist-repeat-one-symbolic", Gtk.IconSize.LARGE_TOOLBAR));
+                    repeat_button.set_image (new Gtk.Image.from_icon_name (
+                        "media-playlist-repeat-one-symbolic", Gtk.IconSize.LARGE_TOOLBAR)
+                    );
                 }
                 change_repeat (repeat_on);
             });
@@ -97,9 +104,13 @@ namespace Ensembles.Shell {
 
         public void set_playing (bool playing) {
             if (playing) {
-                play_button.set_image (new Gtk.Image.from_icon_name ("media-playback-pause-symbolic", Gtk.IconSize.LARGE_TOOLBAR));
+                play_button.set_image (new Gtk.Image.from_icon_name (
+                    "media-playback-pause-symbolic", Gtk.IconSize.LARGE_TOOLBAR)
+                );
             } else {
-                play_button.set_image (new Gtk.Image.from_icon_name ("media-playback-start-symbolic", Gtk.IconSize.LARGE_TOOLBAR));
+                play_button.set_image (new Gtk.Image.from_icon_name (
+                    "media-playback-start-symbolic", Gtk.IconSize.LARGE_TOOLBAR)
+                );
             }
         }
 

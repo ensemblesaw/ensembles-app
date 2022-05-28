@@ -35,7 +35,8 @@
 
             var main_grid = new Gtk.Grid ();
 
-            var controller_icon = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/controller.svg") {
+            var controller_icon = new Gtk.Image.from_resource (
+                "/com/github/subhadeepjasu/ensembles/images/controller.svg") {
                 halign = Gtk.Align.CENTER,
                 margin_bottom = 26
             };
