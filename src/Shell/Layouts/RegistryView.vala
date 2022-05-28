@@ -18,49 +18,57 @@ namespace Ensembles.Shell {
         public const int UI_INDEX_REG_BANK = 23;
         public const int UI_INDEX_REG_MEM = 24;
 
-        Gtk.SpinButton bank_select;
-        Gtk.Button[] registry_buttons;
-        Gtk.Button memory_button;
+        private Gtk.SpinButton bank_select;
+        private Gtk.Button[] registry_buttons;
+        private Gtk.Button memory_button;
 
-        Core.Registry[,] registry_memory;
+        private Core.Registry[,] registry_memory;
 
-        bool assignable = false;
+        private bool assignable = false;
+
         public signal void notify_recall (int tempo);
-        public RegistryView () {
+
+        construct {
             row_homogeneous = true;
+            column_spacing = 4;
+            margin = 4;
+
             bank_select = new Gtk.SpinButton.with_range (1, 10, 1);
             attach (bank_select, 0, 0, 1, 1);
 
-            var button_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL);
-            button_box.width_request = 337;
+            var button_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL) {
+                width_request = 337,
+                hexpand = true
+            };
 
             registry_buttons = new Gtk.Button [10];
             for (int i = 0; i < 10; i ++) {
                 registry_buttons[i] = new Gtk.Button.with_label ((i + 1).to_string ());
                 button_box.pack_start (registry_buttons[i]);
             }
+
             button_box.set_layout (Gtk.ButtonBoxStyle.EXPAND);
-            button_box.hexpand = true;
             attach (button_box, 1, 0, 1, 1);
             memory_button = new Gtk.Button.with_label (_("Memorize"));
             attach (memory_button, 2, 0, 1, 1);
 
-            var bank_label = new Gtk.Label (_("BANK"));
-            bank_label.set_opacity (0.4);
-            var registry_label = new Gtk.Label (_("REGISTRY MEMORY"));
-            registry_label.set_opacity (0.4);
+            var bank_label = new Gtk.Label (_("BANK")) {
+                opacity = 0.4
+            };
+            var registry_label = new Gtk.Label (_("REGISTRY MEMORY")) {
+                opacity = 0.4
+            };
 
             attach (bank_label, 0, 1, 1, 1);
             attach (registry_label, 1, 1, 1, 1);
 
-            column_spacing = 4;
-            margin = 4;
-
             this.show_all ();
 
-            load_registry_snapshot ();
-
             make_events ();
+        }
+
+        public RegistryView () {
+            load_registry_snapshot ();
         }
 
         ~RegistryView () {
@@ -72,12 +80,15 @@ namespace Ensembles.Shell {
                 assignable = !assignable;
                 make_buttons_pulse (assignable);
             });
+
             memory_button.button_press_event.connect ((button_event) => {
                 if (button_event.button == 3) {
                     Application.main_window.show_context_menu (memory_button, UI_INDEX_REG_MEM);
                 }
+
                 return false;
             });
+
             registry_buttons[0].clicked.connect (() => {
                 if (assignable) {
                     registry_memorize (0);
@@ -86,12 +97,15 @@ namespace Ensembles.Shell {
                     registry_recall (0);
                 }
             });
+
             registry_buttons[0].button_press_event.connect ((button_event) => {
                 if (button_event.button == 3) {
                     Application.main_window.show_context_menu (registry_buttons[0], UI_INDEX_REG_1);
                 }
+
                 return false;
             });
+
             registry_buttons[1].clicked.connect (() => {
                 if (assignable) {
                     registry_memorize (1);
@@ -100,12 +114,15 @@ namespace Ensembles.Shell {
                     registry_recall (1);
                 }
             });
+
             registry_buttons[1].button_press_event.connect ((button_event) => {
                 if (button_event.button == 3) {
                     Application.main_window.show_context_menu (registry_buttons[1], UI_INDEX_REG_2);
                 }
+
                 return false;
             });
+
             registry_buttons[2].clicked.connect (() => {
                 if (assignable) {
                     registry_memorize (2);
@@ -114,12 +131,15 @@ namespace Ensembles.Shell {
                     registry_recall (2);
                 }
             });
+
             registry_buttons[2].button_press_event.connect ((button_event) => {
                 if (button_event.button == 3) {
                     Application.main_window.show_context_menu (registry_buttons[2], UI_INDEX_REG_3);
                 }
+
                 return false;
             });
+
             registry_buttons[3].clicked.connect (() => {
                 if (assignable) {
                     registry_memorize (3);
@@ -128,12 +148,15 @@ namespace Ensembles.Shell {
                     registry_recall (3);
                 }
             });
+
             registry_buttons[3].button_press_event.connect ((button_event) => {
                 if (button_event.button == 3) {
                     Application.main_window.show_context_menu (registry_buttons[3], UI_INDEX_REG_4);
                 }
+
                 return false;
             });
+
             registry_buttons[4].clicked.connect (() => {
                 if (assignable) {
                     registry_memorize (4);
@@ -142,12 +165,15 @@ namespace Ensembles.Shell {
                     registry_recall (4);
                 }
             });
+
             registry_buttons[4].button_press_event.connect ((button_event) => {
                 if (button_event.button == 3) {
                     Application.main_window.show_context_menu (registry_buttons[4], UI_INDEX_REG_5);
                 }
+
                 return false;
             });
+
             registry_buttons[5].clicked.connect (() => {
                 if (assignable) {
                     registry_memorize (5);
@@ -156,12 +182,15 @@ namespace Ensembles.Shell {
                     registry_recall (5);
                 }
             });
+
             registry_buttons[5].button_press_event.connect ((button_event) => {
                 if (button_event.button == 3) {
                     Application.main_window.show_context_menu (registry_buttons[5], UI_INDEX_REG_6);
                 }
+
                 return false;
             });
+
             registry_buttons[6].clicked.connect (() => {
                 if (assignable) {
                     registry_memorize (6);
@@ -170,12 +199,15 @@ namespace Ensembles.Shell {
                     registry_recall (6);
                 }
             });
+
             registry_buttons[6].button_press_event.connect ((button_event) => {
                 if (button_event.button == 3) {
                     Application.main_window.show_context_menu (registry_buttons[6], UI_INDEX_REG_7);
                 }
+
                 return false;
             });
+
             registry_buttons[7].clicked.connect (() => {
                 if (assignable) {
                     registry_memorize (7);
@@ -184,12 +216,15 @@ namespace Ensembles.Shell {
                     registry_recall (7);
                 }
             });
+
             registry_buttons[7].button_press_event.connect ((button_event) => {
                 if (button_event.button == 3) {
                     Application.main_window.show_context_menu (registry_buttons[7], UI_INDEX_REG_8);
                 }
+
                 return false;
             });
+
             registry_buttons[8].clicked.connect (() => {
                 if (assignable) {
                     registry_memorize (8);
@@ -198,12 +233,15 @@ namespace Ensembles.Shell {
                     registry_recall (8);
                 }
             });
+
             registry_buttons[8].button_press_event.connect ((button_event) => {
                 if (button_event.button == 3) {
                     Application.main_window.show_context_menu (registry_buttons[8], UI_INDEX_REG_9);
                 }
+
                 return false;
             });
+
             registry_buttons[9].clicked.connect (() => {
                 if (assignable) {
                     registry_memorize (9);
@@ -212,10 +250,12 @@ namespace Ensembles.Shell {
                     registry_recall (9);
                 }
             });
+
             registry_buttons[9].button_press_event.connect ((button_event) => {
                 if (button_event.button == 3) {
                     Application.main_window.show_context_menu (registry_buttons[9], UI_INDEX_REG_10);
                 }
+
                 return false;
             });
 
@@ -224,6 +264,7 @@ namespace Ensembles.Shell {
                     Application.main_window.show_context_menu (bank_select, UI_INDEX_REG_BANK);
                     return true;
                 }
+
                 return false;
             });
         }
@@ -255,6 +296,7 @@ namespace Ensembles.Shell {
             if (registry_memory == null) {
                 registry_memory = new Core.Registry [16, 10];
             }
+
             registry_memory[bank_select.get_value_as_int () - 1, index] = new Core.Registry (
                 Ensembles.Application.settings.get_int ("voice-r1-index"),
                 Ensembles.Application.settings.get_int ("voice-r2-index"),
@@ -305,6 +347,7 @@ namespace Ensembles.Shell {
 
                 notify_recall (registry_memory[bank, index].tempo);
             }
+
             make_buttons_pulse (false);
         }
 
@@ -339,8 +382,10 @@ namespace Ensembles.Shell {
 
                         registry_csv += delimited_str + ",";
                     }
+
                     registry_csv += ";";
                 }
+
                 Ensembles.Application.settings.set_string ("registry-snapshot", registry_csv);
             }
         }
@@ -349,6 +394,7 @@ namespace Ensembles.Shell {
             if (registry_memory == null) {
                 registry_memory = new Core.Registry [16, 10];
             }
+
             string csv = Ensembles.Application.settings.get_string ("registry-snapshot");
             string[] banks = csv.split (";");
             for (int i = 0; i < banks.length - 1; i++) {

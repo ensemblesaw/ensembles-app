@@ -18,18 +18,18 @@ namespace Ensembles.Shell {
         public const int UI_INDEX_STYLE_SYNC_STOP = 11;
         public const int UI_INDEX_STYLE_START_STOP = 12;
 
-        Gtk.Button intro_button_a;
-        Gtk.Button intro_button_b;
-        Gtk.Button var_fill_button_a;
-        Gtk.Button var_fill_button_b;
-        Gtk.Button var_fill_button_c;
-        Gtk.Button var_fill_button_d;
-        Gtk.Button break_button;
-        Gtk.Button ending_button_a;
-        Gtk.Button ending_button_b;
-        Gtk.Button sync_start_button;
-        Gtk.Button sync_stop_button;
-        Gtk.Button start_button;
+        private Gtk.Button intro_button_a;
+        private Gtk.Button intro_button_b;
+        private Gtk.Button var_fill_button_a;
+        private Gtk.Button var_fill_button_b;
+        private Gtk.Button var_fill_button_c;
+        private Gtk.Button var_fill_button_d;
+        private Gtk.Button break_button;
+        private Gtk.Button ending_button_a;
+        private Gtk.Button ending_button_b;
+        private Gtk.Button sync_start_button;
+        private Gtk.Button sync_stop_button;
+        private Gtk.Button start_button;
 
         public signal void start_stop ();
 
@@ -49,17 +49,23 @@ namespace Ensembles.Shell {
         public signal void sync_stop ();
         public signal void sync_start ();
 
-        public StyleControllerView () {
+        construct {
             row_homogeneous = true;
+            column_spacing = 4;
+            margin = 4;
+
             var intro_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL) {
-                hexpand = true
+                hexpand = true,
             };
+
             intro_button_a = new Gtk.Button.with_label ("1") {
                 sensitive = false
             };
+
             intro_button_b = new Gtk.Button.with_label ("2") {
                 sensitive = false
             };
+
             intro_box.add (intro_button_a);
             intro_box.add (intro_button_b);
             intro_box.set_layout (Gtk.ButtonBoxStyle.EXPAND);
@@ -67,6 +73,7 @@ namespace Ensembles.Shell {
                 send_to_recorder (UI_INDEX_STYLE_INTRO_1);
                 set_style_section_by_index (UI_INDEX_STYLE_INTRO_1);
             });
+
             intro_button_a.button_press_event.connect ((button_event) => {
                 if (button_event.button == 3) {
                     Application.main_window.show_context_menu (intro_button_a, UI_INDEX_STYLE_INTRO_1);
@@ -78,6 +85,7 @@ namespace Ensembles.Shell {
                 send_to_recorder (UI_INDEX_STYLE_INTRO_2);
                 set_style_section_by_index (UI_INDEX_STYLE_INTRO_2);
             });
+
             intro_button_b.button_press_event.connect ((button_event) => {
                 if (button_event.button == 3) {
                     Application.main_window.show_context_menu (intro_button_b, UI_INDEX_STYLE_INTRO_2);
@@ -85,20 +93,26 @@ namespace Ensembles.Shell {
                 return false;
             });
 
-            var var_fill_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL);
-            var_fill_box.hexpand = true;
+            var var_fill_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL) {
+                hexpand = true
+            };
+
             var_fill_button_a = new Gtk.Button.with_label ("A") {
                 sensitive = false
             };
+
             var_fill_button_b = new Gtk.Button.with_label ("B") {
                 sensitive = false
             };
+
             var_fill_button_c = new Gtk.Button.with_label ("C") {
                 sensitive = false
             };
+
             var_fill_button_d = new Gtk.Button.with_label ("D") {
                 sensitive = false
             };
+
             var_fill_box.add (var_fill_button_a);
             var_fill_box.add (var_fill_button_b);
             var_fill_box.add (var_fill_button_c);
@@ -108,6 +122,7 @@ namespace Ensembles.Shell {
                 send_to_recorder (UI_INDEX_STYLE_VAR_A);
                 set_style_section_by_index (UI_INDEX_STYLE_VAR_A);
             });
+
             var_fill_button_a.button_press_event.connect ((button_event) => {
                 if (button_event.button == 3) {
                     Application.main_window.show_context_menu (var_fill_button_a, UI_INDEX_STYLE_VAR_A);
@@ -119,6 +134,7 @@ namespace Ensembles.Shell {
                 send_to_recorder (UI_INDEX_STYLE_VAR_B);
                 set_style_section_by_index (UI_INDEX_STYLE_VAR_B);
             });
+
             var_fill_button_b.button_press_event.connect ((button_event) => {
                 if (button_event.button == 3) {
                     Application.main_window.show_context_menu (var_fill_button_b, UI_INDEX_STYLE_VAR_B);
@@ -130,6 +146,7 @@ namespace Ensembles.Shell {
                 send_to_recorder (UI_INDEX_STYLE_VAR_C);
                 set_style_section_by_index (UI_INDEX_STYLE_VAR_C);
             });
+
             var_fill_button_c.button_press_event.connect ((button_event) => {
                 if (button_event.button == 3) {
                     Application.main_window.show_context_menu (var_fill_button_c, UI_INDEX_STYLE_VAR_C);
@@ -141,6 +158,7 @@ namespace Ensembles.Shell {
                 send_to_recorder (UI_INDEX_STYLE_VAR_D);
                 set_style_section_by_index (UI_INDEX_STYLE_VAR_D);
             });
+
             var_fill_button_d.button_press_event.connect ((button_event) => {
                 if (button_event.button == 3) {
                     Application.main_window.show_context_menu (var_fill_button_d, UI_INDEX_STYLE_VAR_D);
@@ -151,10 +169,12 @@ namespace Ensembles.Shell {
             break_button = new Gtk.Button.with_label (_("Break")) {
                 sensitive = false
             };
+
             break_button.clicked.connect (() => {
                 send_to_recorder (UI_INDEX_STYLE_BREAK);
                 set_style_section_by_index (UI_INDEX_STYLE_BREAK);
             });
+
             break_button.button_press_event.connect ((button_event) => {
                 if (button_event.button == 3) {
                     Application.main_window.show_context_menu (break_button, UI_INDEX_STYLE_BREAK);
@@ -162,14 +182,18 @@ namespace Ensembles.Shell {
                 return false;
             });
 
-            var ending_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL);
-            ending_box.hexpand = true;
+            var ending_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL) {
+                hexpand = true
+            };
+
             ending_button_a = new Gtk.Button.with_label ("1") {
                 sensitive = false
             };
+
             ending_button_b = new Gtk.Button.with_label ("2") {
                 sensitive = false
             };
+
             ending_box.add (ending_button_a);
             ending_box.add (ending_button_b);
             ending_box.set_layout (Gtk.ButtonBoxStyle.EXPAND);
@@ -177,16 +201,19 @@ namespace Ensembles.Shell {
                 send_to_recorder (UI_INDEX_STYLE_ENDING_1);
                 set_style_section_by_index (UI_INDEX_STYLE_ENDING_1);
             });
+
             ending_button_a.button_press_event.connect ((button_event) => {
                 if (button_event.button == 3) {
                     Application.main_window.show_context_menu (ending_button_a, UI_INDEX_STYLE_ENDING_1);
                 }
                 return false;
             });
+
             ending_button_b.clicked.connect (() => {
                 send_to_recorder (UI_INDEX_STYLE_ENDING_2);
                 set_style_section_by_index (UI_INDEX_STYLE_ENDING_2);
             });
+
             ending_button_b.button_press_event.connect ((button_event) => {
                 if (button_event.button == 3) {
                     Application.main_window.show_context_menu (ending_button_b, UI_INDEX_STYLE_ENDING_2);
@@ -194,14 +221,18 @@ namespace Ensembles.Shell {
                 return false;
             });
 
-            var sync_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL);
-            sync_box.hexpand = true;
+            var sync_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL) {
+                hexpand = true
+            };
+
             sync_start_button = new Gtk.Button.with_label (_("Sync Start")) {
                 sensitive = false
             };
+
             sync_stop_button = new Gtk.Button.with_label (_("Sync Stop")) {
                 sensitive = false
             };
+
             sync_box.add (sync_start_button);
             sync_box.add (sync_stop_button);
             sync_box.set_layout (Gtk.ButtonBoxStyle.EXPAND);
@@ -209,16 +240,19 @@ namespace Ensembles.Shell {
                 send_to_recorder (UI_INDEX_STYLE_SYNC_START);
                 set_style_section_by_index (UI_INDEX_STYLE_SYNC_START);
             });
+
             sync_start_button.button_press_event.connect ((button_event) => {
                 if (button_event.button == 3) {
                     Application.main_window.show_context_menu (sync_start_button, UI_INDEX_STYLE_SYNC_START);
                 }
                 return false;
             });
+
             sync_stop_button.clicked.connect (() => {
                 send_to_recorder (UI_INDEX_STYLE_SYNC_STOP);
                 set_style_section_by_index (UI_INDEX_STYLE_SYNC_STOP);
             });
+
             sync_stop_button.button_press_event.connect ((button_event) => {
                 if (button_event.button == 3) {
                     Application.main_window.show_context_menu (sync_stop_button, UI_INDEX_STYLE_SYNC_STOP);
@@ -231,11 +265,13 @@ namespace Ensembles.Shell {
                 width_request = 64,
                 hexpand = true
             };
+
             start_button.get_style_context ().add_class (Gtk.STYLE_CLASS_DESTRUCTIVE_ACTION);
             start_button.get_style_context ().remove_class ("image-button");
             start_button.clicked.connect (() => {
                 start_stop ();
             });
+
             start_button.button_press_event.connect ((button_event) => {
                 if (button_event.button == 3) {
                     Application.main_window.show_context_menu (start_button, UI_INDEX_STYLE_START_STOP);
@@ -243,12 +279,15 @@ namespace Ensembles.Shell {
                 return false;
             });
 
-            var intro_label = new Gtk.Label ("       " + _("INTRO") + "       ");
-            intro_label.set_opacity (0.4);
-            var var_label = new Gtk.Label ("       " + _("VARIATION / FILL-IN") + "       ");
-            var_label.set_opacity (0.4);
-            var ending_label = new Gtk.Label ("     " + _("ENDING") + "     ");
-            ending_label.set_opacity (0.4);
+            var intro_label = new Gtk.Label ("       " + _("INTRO") + "       ") {
+                opacity = 0.4
+            };
+            var var_label = new Gtk.Label ("       " + _("VARIATION / FILL-IN") + "       ") {
+                opacity = 0.4
+            };
+            var ending_label = new Gtk.Label ("     " + _("ENDING") + "     ") {
+                opacity = 0.4
+            };
 
             attach (intro_box, 0, 0, 1, 1);
             attach (var_fill_box, 1, 0, 1, 1);
@@ -259,9 +298,8 @@ namespace Ensembles.Shell {
             attach (intro_label, 0, 1, 1, 1);
             attach (var_label, 1, 1, 1, 1);
             attach (ending_label, 3, 1, 1, 1);
-            column_spacing = 4;
-            margin = 4;
         }
+
         public void ready (bool? ready = true) {
             intro_button_a.set_sensitive (ready);
             intro_button_b.set_sensitive (ready);
@@ -276,6 +314,7 @@ namespace Ensembles.Shell {
             start_button.set_sensitive (ready);
             break_button.set_sensitive (ready);
         }
+
         public void sync () {
             intro_button_a.get_style_context ().remove_class ("queue-measure");
             intro_button_b.get_style_context ().remove_class ("queue-measure");
@@ -288,6 +327,7 @@ namespace Ensembles.Shell {
             sync_start_button.get_style_context ().remove_class ("queue-measure");
             sync_stop_button.get_style_context ().remove_class ("queue-measure");
         }
+
         public void set_style_section (int section) {
             sync ();
             switch (section) {
@@ -471,6 +511,7 @@ namespace Ensembles.Shell {
             if (RecorderScreen.sequencer != null) {
                 RecorderScreen.sequencer.initial_settings_style_part_index = event_index;
             }
+
             if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
                 var event = new Core.MidiEvent ();
                 event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
