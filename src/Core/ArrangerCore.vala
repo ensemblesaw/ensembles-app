@@ -121,17 +121,6 @@ namespace Ensembles.Core {
                     return false;
                 });
             });
-            bus.style_section_change.connect ((section) => {
-                Application.main_window.style_controller_view.set_style_section (section);
-                if (Shell.RecorderScreen.sequencer != null &&
-                    Shell.RecorderScreen.sequencer.current_state == MidiRecorder.RecorderState.RECORDING) {
-                    var style_part_actual_event = new Core.MidiEvent ();
-                    style_part_actual_event.event_type = Core.MidiEvent.EventType.STYLECONTROLACTUAL;
-                    style_part_actual_event.value1 = section;
-
-                    Shell.RecorderScreen.sequencer.record_event (style_part_actual_event);
-                }
-            });
             bus.loaded_tempo_change.connect ((tempo) => {
                 Application.main_window.beat_counter_panel.change_tempo (tempo);
                 Application.main_window.main_display_unit.set_tempo_display (tempo);

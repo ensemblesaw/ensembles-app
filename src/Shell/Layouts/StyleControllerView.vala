@@ -18,19 +18,18 @@ namespace Ensembles.Shell {
         Gtk.Button sync_stop_button;
         Gtk.Button start_button;
 
-        // This is required for assigning MIDI controllers to these buttons
-        public const int _intro_a_ui_index = 1;
-        public const int _intro_b_ui_index = 2;
-        public const int _var_a_ui_index = 3;
-        public const int _var_b_ui_index = 4;
-        public const int _var_c_ui_index = 5;
-        public const int _var_d_ui_index = 6;
-        public const int _break_ui_index = 7;
-        public const int _ending_a_ui_index = 8;
-        public const int _engine_b_ui_index = 9;
-        public const int _sync_start_ui_index = 10;
-        public const int _sync_stop_ui_index = 11;
-        public const int _start_stop_ui_index = 12;
+        public const int UI_INDEX_STYLE_INTRO_1 = 1;
+        public const int UI_INDEX_STYLE_INTRO_2 = 2;
+        public const int UI_INDEX_STYLE_VAR_A = 3;
+        public const int UI_INDEX_STYLE_VAR_B = 4;
+        public const int UI_INDEX_STYLE_VAR_C = 5;
+        public const int UI_INDEX_STYLE_VAR_D = 6;
+        public const int UI_INDEX_STYLE_BREAK = 7;
+        public const int UI_INDEX_STYLE_ENDING_1 = 8;
+        public const int UI_INDEX_STYLE_ENDING_2 = 9;
+        public const int UI_INDEX_STYLE_SYNC_START = 10;
+        public const int UI_INDEX_STYLE_SYNC_STOP = 11;
+        public const int UI_INDEX_STYLE_START_STOP = 12;
 
         public signal void start_stop ();
 
@@ -65,39 +64,23 @@ namespace Ensembles.Shell {
             intro_box.add (intro_button_b);
             intro_box.set_layout (Gtk.ButtonBoxStyle.EXPAND);
             intro_button_a.clicked.connect (() => {
-                if (RecorderScreen.sequencer != null) {
-                    RecorderScreen.sequencer.initial_settings_style_part_index = 0;
-                }
-                if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
-                    var event = new Core.MidiEvent ();
-                    event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
-                    event.value1 = 0;
-                    Shell.RecorderScreen.sequencer.record_event (event);
-                }
-                set_style_section_by_index (0);
+                send_to_recorder (UI_INDEX_STYLE_INTRO_1);
+                set_style_section_by_index (UI_INDEX_STYLE_INTRO_1);
             });
             intro_button_a.button_press_event.connect ((button_event) => {
                 if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (intro_button_a, _intro_a_ui_index);
+                    Application.main_window.show_context_menu (intro_button_a, UI_INDEX_STYLE_INTRO_1);
                 }
                 return false;
             });
 
             intro_button_b.clicked.connect (() => {
-                if (RecorderScreen.sequencer != null) {
-                    RecorderScreen.sequencer.initial_settings_style_part_index = 1;
-                }
-                if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
-                    var event = new Core.MidiEvent ();
-                    event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
-                    event.value1 = 1;
-                    Shell.RecorderScreen.sequencer.record_event (event);
-                }
-                set_style_section_by_index (1);
+                send_to_recorder (UI_INDEX_STYLE_INTRO_2);
+                set_style_section_by_index (UI_INDEX_STYLE_INTRO_2);
             });
             intro_button_b.button_press_event.connect ((button_event) => {
                 if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (intro_button_b, _intro_b_ui_index);
+                    Application.main_window.show_context_menu (intro_button_b, UI_INDEX_STYLE_INTRO_2);
                 }
                 return false;
             });
@@ -122,77 +105,45 @@ namespace Ensembles.Shell {
             var_fill_box.add (var_fill_button_d);
             var_fill_box.set_layout (Gtk.ButtonBoxStyle.EXPAND);
             var_fill_button_a.clicked.connect (() => {
-                if (RecorderScreen.sequencer != null) {
-                    RecorderScreen.sequencer.initial_settings_style_part_index = 2;
-                }
-                if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
-                    var event = new Core.MidiEvent ();
-                    event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
-                    event.value1 = 2;
-                    Shell.RecorderScreen.sequencer.record_event (event);
-                }
-                set_style_section_by_index (2);
+                send_to_recorder (UI_INDEX_STYLE_VAR_A);
+                set_style_section_by_index (UI_INDEX_STYLE_VAR_A);
             });
             var_fill_button_a.button_press_event.connect ((button_event) => {
                 if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (var_fill_button_a, _var_a_ui_index);
+                    Application.main_window.show_context_menu (var_fill_button_a, UI_INDEX_STYLE_VAR_A);
                 }
                 return false;
             });
 
             var_fill_button_b.clicked.connect (() => {
-                if (RecorderScreen.sequencer != null) {
-                    RecorderScreen.sequencer.initial_settings_style_part_index = 3;
-                }
-                if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
-                    var event = new Core.MidiEvent ();
-                    event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
-                    event.value1 = 3;
-                    Shell.RecorderScreen.sequencer.record_event (event);
-                }
-                set_style_section_by_index (3);
+                send_to_recorder (UI_INDEX_STYLE_VAR_B);
+                set_style_section_by_index (UI_INDEX_STYLE_VAR_B);
             });
             var_fill_button_b.button_press_event.connect ((button_event) => {
                 if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (var_fill_button_b, _var_b_ui_index);
+                    Application.main_window.show_context_menu (var_fill_button_b, UI_INDEX_STYLE_VAR_B);
                 }
                 return false;
             });
 
             var_fill_button_c.clicked.connect (() => {
-                if (RecorderScreen.sequencer != null) {
-                    RecorderScreen.sequencer.initial_settings_style_part_index = 4;
-                }
-                if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
-                    var event = new Core.MidiEvent ();
-                    event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
-                    event.value1 = 4;
-                    Shell.RecorderScreen.sequencer.record_event (event);
-                }
-                set_style_section_by_index (4);
+                send_to_recorder (UI_INDEX_STYLE_VAR_C);
+                set_style_section_by_index (UI_INDEX_STYLE_VAR_C);
             });
             var_fill_button_c.button_press_event.connect ((button_event) => {
                 if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (var_fill_button_c, _var_c_ui_index);
+                    Application.main_window.show_context_menu (var_fill_button_c, UI_INDEX_STYLE_VAR_C);
                 }
                 return false;
             });
 
             var_fill_button_d.clicked.connect (() => {
-                if (RecorderScreen.sequencer != null) {
-                    RecorderScreen.sequencer.initial_settings_style_part_index = 5;
-                }
-                if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
-                    var event = new Core.MidiEvent ();
-                    event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
-                    event.value1 = 5;
-                    Shell.RecorderScreen.sequencer.record_event (event);
-                }
-                set_style_section_by_index (5);
+                send_to_recorder (UI_INDEX_STYLE_VAR_D);
+                set_style_section_by_index (UI_INDEX_STYLE_VAR_D);
             });
             var_fill_button_d.button_press_event.connect ((button_event) => {
                 if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (var_fill_button_d, _var_d_ui_index);
+                    Application.main_window.show_context_menu (var_fill_button_d, UI_INDEX_STYLE_VAR_D);
                 }
                 return false;
             });
@@ -201,20 +152,12 @@ namespace Ensembles.Shell {
                 sensitive = false
             };
             break_button.clicked.connect (() => {
-                if (RecorderScreen.sequencer != null) {
-                    RecorderScreen.sequencer.initial_settings_style_part_index = 6;
-                }
-                if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
-                    var event = new Core.MidiEvent ();
-                    event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
-                    event.value1 = 6;
-                    Shell.RecorderScreen.sequencer.record_event (event);
-                }
-                set_style_section_by_index (6);
+                send_to_recorder (UI_INDEX_STYLE_BREAK);
+                set_style_section_by_index (UI_INDEX_STYLE_BREAK);
             });
             break_button.button_press_event.connect ((button_event) => {
                 if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (break_button, _break_ui_index);
+                    Application.main_window.show_context_menu (break_button, UI_INDEX_STYLE_BREAK);
                 }
                 return false;
             });
@@ -231,38 +174,22 @@ namespace Ensembles.Shell {
             ending_box.add (ending_button_b);
             ending_box.set_layout (Gtk.ButtonBoxStyle.EXPAND);
             ending_button_a.clicked.connect (() => {
-                if (RecorderScreen.sequencer != null) {
-                    RecorderScreen.sequencer.initial_settings_style_part_index = 7;
-                }
-                if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
-                    var event = new Core.MidiEvent ();
-                    event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
-                    event.value1 = 7;
-                    Shell.RecorderScreen.sequencer.record_event (event);
-                }
-                set_style_section_by_index (7);
+                send_to_recorder (UI_INDEX_STYLE_ENDING_1);
+                set_style_section_by_index (UI_INDEX_STYLE_ENDING_1);
             });
             ending_button_a.button_press_event.connect ((button_event) => {
                 if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (ending_button_a, _ending_a_ui_index);
+                    Application.main_window.show_context_menu (ending_button_a, UI_INDEX_STYLE_ENDING_1);
                 }
                 return false;
             });
             ending_button_b.clicked.connect (() => {
-                if (RecorderScreen.sequencer != null) {
-                    RecorderScreen.sequencer.initial_settings_style_part_index = 8;
-                }
-                if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
-                    var event = new Core.MidiEvent ();
-                    event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
-                    event.value1 = 8;
-                    Shell.RecorderScreen.sequencer.record_event (event);
-                }
-                set_style_section_by_index (8);
+                send_to_recorder (UI_INDEX_STYLE_ENDING_2);
+                set_style_section_by_index (UI_INDEX_STYLE_ENDING_2);
             });
             ending_button_b.button_press_event.connect ((button_event) => {
                 if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (ending_button_b, _engine_b_ui_index);
+                    Application.main_window.show_context_menu (ending_button_b, UI_INDEX_STYLE_ENDING_2);
                 }
                 return false;
             });
@@ -279,38 +206,22 @@ namespace Ensembles.Shell {
             sync_box.add (sync_stop_button);
             sync_box.set_layout (Gtk.ButtonBoxStyle.EXPAND);
             sync_start_button.clicked.connect (() => {
-                if (RecorderScreen.sequencer != null) {
-                    RecorderScreen.sequencer.initial_settings_style_part_index = 9;
-                }
-                if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
-                    var event = new Core.MidiEvent ();
-                    event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
-                    event.value1 = 9;
-                    Shell.RecorderScreen.sequencer.record_event (event);
-                }
-                set_style_section_by_index (9);
+                send_to_recorder (UI_INDEX_STYLE_SYNC_START);
+                set_style_section_by_index (UI_INDEX_STYLE_SYNC_START);
             });
             sync_start_button.button_press_event.connect ((button_event) => {
                 if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (sync_start_button, _sync_start_ui_index);
+                    Application.main_window.show_context_menu (sync_start_button, UI_INDEX_STYLE_SYNC_START);
                 }
                 return false;
             });
             sync_stop_button.clicked.connect (() => {
-                if (RecorderScreen.sequencer != null) {
-                    RecorderScreen.sequencer.initial_settings_style_part_index = 10;
-                }
-                if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
-                    var event = new Core.MidiEvent ();
-                    event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
-                    event.value1 = 10;
-                    Shell.RecorderScreen.sequencer.record_event (event);
-                }
-                set_style_section_by_index (10);
+                send_to_recorder (UI_INDEX_STYLE_SYNC_STOP);
+                set_style_section_by_index (UI_INDEX_STYLE_SYNC_STOP);
             });
             sync_stop_button.button_press_event.connect ((button_event) => {
                 if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (sync_stop_button, _sync_stop_ui_index);
+                    Application.main_window.show_context_menu (sync_stop_button, UI_INDEX_STYLE_SYNC_STOP);
                 }
                 return false;
             });
@@ -327,7 +238,7 @@ namespace Ensembles.Shell {
             });
             start_button.button_press_event.connect ((button_event) => {
                 if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (start_button, _start_stop_ui_index);
+                    Application.main_window.show_context_menu (start_button, UI_INDEX_STYLE_START_STOP);
                 }
                 return false;
             });
@@ -380,17 +291,7 @@ namespace Ensembles.Shell {
         public void set_style_section (int section) {
             sync ();
             switch (section) {
-                case 0:
-                var_fill_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                var_fill_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                var_fill_button_c.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                var_fill_button_d.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                break;
-                case 1:
+                case UI_INDEX_STYLE_INTRO_1:
                 var_fill_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
                 var_fill_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
                 var_fill_button_c.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
@@ -400,7 +301,7 @@ namespace Ensembles.Shell {
                 ending_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
                 ending_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
                 break;
-                case 2:
+                case UI_INDEX_STYLE_INTRO_2:
                 var_fill_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
                 var_fill_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
                 var_fill_button_c.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
@@ -410,7 +311,7 @@ namespace Ensembles.Shell {
                 ending_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
                 ending_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
                 break;
-                case 3:
+                case UI_INDEX_STYLE_VAR_A:
                 var_fill_button_a.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
                 var_fill_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
                 var_fill_button_c.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
@@ -420,7 +321,7 @@ namespace Ensembles.Shell {
                 ending_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
                 ending_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
                 break;
-                case 5:
+                case UI_INDEX_STYLE_VAR_B:
                 var_fill_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
                 var_fill_button_b.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
                 var_fill_button_c.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
@@ -430,7 +331,7 @@ namespace Ensembles.Shell {
                 ending_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
                 ending_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
                 break;
-                case 7:
+                case UI_INDEX_STYLE_VAR_C:
                 var_fill_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
                 var_fill_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
                 var_fill_button_c.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
@@ -440,7 +341,7 @@ namespace Ensembles.Shell {
                 ending_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
                 ending_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
                 break;
-                case 9:
+                case UI_INDEX_STYLE_VAR_D:
                 var_fill_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
                 var_fill_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
                 var_fill_button_c.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
@@ -450,7 +351,7 @@ namespace Ensembles.Shell {
                 ending_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
                 ending_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
                 break;
-                case 11:
+                case UI_INDEX_STYLE_ENDING_1:
                 var_fill_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
                 var_fill_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
                 var_fill_button_c.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
@@ -460,7 +361,7 @@ namespace Ensembles.Shell {
                 ending_button_a.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
                 ending_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
                 break;
-                case 13:
+                case UI_INDEX_STYLE_ENDING_2:
                 var_fill_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
                 var_fill_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
                 var_fill_button_c.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
@@ -470,75 +371,85 @@ namespace Ensembles.Shell {
                 ending_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
                 ending_button_b.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
                 break;
+                default:
+                var_fill_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                var_fill_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                var_fill_button_c.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                var_fill_button_d.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                intro_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                intro_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                break;
             }
         }
 
         public void set_style_section_by_index (int index) {
             switch (index) {
-                case 0:
+                case UI_INDEX_STYLE_INTRO_1:
                 queue_intro_a ();
                 intro_button_a.get_style_context ().add_class ("queue-measure");
                 intro_button_b.get_style_context ().remove_class ("queue-measure");
                 ending_button_a.get_style_context ().remove_class ("queue-measure");
                 ending_button_b.get_style_context ().remove_class ("queue-measure");
                 break;
-                case 1:
+                case UI_INDEX_STYLE_INTRO_2:
                 queue_intro_b ();
                 intro_button_a.get_style_context ().remove_class ("queue-measure");
                 intro_button_b.get_style_context ().add_class ("queue-measure");
                 ending_button_a.get_style_context ().remove_class ("queue-measure");
                 ending_button_b.get_style_context ().remove_class ("queue-measure");
                 break;
-                case 2:
+                case UI_INDEX_STYLE_VAR_A:
                 switch_var_a ();
                 var_fill_button_a.get_style_context ().add_class ("queue-measure");
                 var_fill_button_b.get_style_context ().remove_class ("queue-measure");
                 var_fill_button_c.get_style_context ().remove_class ("queue-measure");
                 var_fill_button_d.get_style_context ().remove_class ("queue-measure");
                 break;
-                case 3:
+                case UI_INDEX_STYLE_VAR_B:
                 switch_var_b ();
                 var_fill_button_a.get_style_context ().remove_class ("queue-measure");
                 var_fill_button_b.get_style_context ().add_class ("queue-measure");
                 var_fill_button_c.get_style_context ().remove_class ("queue-measure");
                 var_fill_button_d.get_style_context ().remove_class ("queue-measure");
                 break;
-                case 4:
+                case UI_INDEX_STYLE_VAR_C:
                 switch_var_c ();
                 var_fill_button_a.get_style_context ().remove_class ("queue-measure");
                 var_fill_button_b.get_style_context ().remove_class ("queue-measure");
                 var_fill_button_c.get_style_context ().add_class ("queue-measure");
                 var_fill_button_d.get_style_context ().remove_class ("queue-measure");
                 break;
-                case 5:
+                case UI_INDEX_STYLE_VAR_D:
                 switch_var_d ();
                 var_fill_button_a.get_style_context ().remove_class ("queue-measure");
                 var_fill_button_b.get_style_context ().remove_class ("queue-measure");
                 var_fill_button_c.get_style_context ().remove_class ("queue-measure");
                 var_fill_button_d.get_style_context ().add_class ("queue-measure");
                 break;
-                case 6:
+                case UI_INDEX_STYLE_BREAK:
                 break_play ();
                 break;
-                case 7:
+                case UI_INDEX_STYLE_ENDING_1:
                 queue_ending_a ();
                 ending_button_a.get_style_context ().add_class ("queue-measure");
                 ending_button_b.get_style_context ().remove_class ("queue-measure");
                 intro_button_a.get_style_context ().remove_class ("queue-measure");
                 intro_button_b.get_style_context ().remove_class ("queue-measure");
                 break;
-                case 8:
+                case UI_INDEX_STYLE_ENDING_2:
                 queue_ending_b ();
                 ending_button_a.get_style_context ().remove_class ("queue-measure");
                 ending_button_b.get_style_context ().add_class ("queue-measure");
                 intro_button_a.get_style_context ().remove_class ("queue-measure");
                 intro_button_b.get_style_context ().remove_class ("queue-measure");
                 break;
-                case 9:
+                case UI_INDEX_STYLE_SYNC_START:
                 sync_start_button.get_style_context ().add_class ("queue-measure");
                 sync_start ();
                 break;
-                case 10:
+                case UI_INDEX_STYLE_SYNC_STOP:
                 sync_stop_button.get_style_context ().add_class ("queue-measure");
                 sync_stop ();
                 break;
@@ -547,143 +458,24 @@ namespace Ensembles.Shell {
 
         public void handle_midi_button_event (int index, bool press = true) {
             if (press) {
-                switch (index) {
-                    case _intro_a_ui_index: // INTRO 1
-                    if (RecorderScreen.sequencer != null) {
-                        RecorderScreen.sequencer.initial_settings_style_part_index = 0;
-                    }
-                    if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
-                        var event = new Core.MidiEvent ();
-                        event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
-                        event.value1 = 0;
-                        Shell.RecorderScreen.sequencer.record_event (event);
-                    }
-                    set_style_section_by_index (0);
-                    break;
-                    case _intro_b_ui_index: // INTRO 2
-                    if (RecorderScreen.sequencer != null) {
-                        RecorderScreen.sequencer.initial_settings_style_part_index = 1;
-                    }
-                    if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
-                        var event = new Core.MidiEvent ();
-                        event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
-                        event.value1 = 1;
-                        Shell.RecorderScreen.sequencer.record_event (event);
-                    }
-                    set_style_section_by_index (1);
-                    break;
-                    case _var_a_ui_index: // var a
-                    if (RecorderScreen.sequencer != null) {
-                        RecorderScreen.sequencer.initial_settings_style_part_index = 2;
-                    }
-                    if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
-                        var event = new Core.MidiEvent ();
-                        event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
-                        event.value1 = 2;
-                        Shell.RecorderScreen.sequencer.record_event (event);
-                    }
-                    set_style_section_by_index (2);
-                    break;
-                    case _var_b_ui_index: // var b
-                    if (RecorderScreen.sequencer != null) {
-                        RecorderScreen.sequencer.initial_settings_style_part_index = 3;
-                    }
-                    if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
-                        var event = new Core.MidiEvent ();
-                        event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
-                        event.value1 = 3;
-                        Shell.RecorderScreen.sequencer.record_event (event);
-                    }
-                    set_style_section_by_index (3);
-                    break;
-                    case _var_c_ui_index: // var c
-                    if (RecorderScreen.sequencer != null) {
-                        RecorderScreen.sequencer.initial_settings_style_part_index = 4;
-                    }
-                    if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
-                        var event = new Core.MidiEvent ();
-                        event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
-                        event.value1 = 4;
-                        Shell.RecorderScreen.sequencer.record_event (event);
-                    }
-                    set_style_section_by_index (4);
-                    break;
-                    case _var_d_ui_index: //var d
-                    if (RecorderScreen.sequencer != null) {
-                        RecorderScreen.sequencer.initial_settings_style_part_index = 5;
-                    }
-                    if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
-                        var event = new Core.MidiEvent ();
-                        event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
-                        event.value1 = 5;
-                        Shell.RecorderScreen.sequencer.record_event (event);
-                    }
-                    set_style_section_by_index (5);
-                    break;
-                    case _ending_a_ui_index:
-                    if (RecorderScreen.sequencer != null) {
-                        RecorderScreen.sequencer.initial_settings_style_part_index = 7;
-                    }
-                    if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
-                        var event = new Core.MidiEvent ();
-                        event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
-                        event.value1 = 7;
-                        Shell.RecorderScreen.sequencer.record_event (event);
-                    }
-                    set_style_section_by_index (7);
-                    break;
-                    case _engine_b_ui_index:
-                    if (RecorderScreen.sequencer != null) {
-                        RecorderScreen.sequencer.initial_settings_style_part_index = 8;
-                    }
-                    if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
-                        var event = new Core.MidiEvent ();
-                        event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
-                        event.value1 = 8;
-                        Shell.RecorderScreen.sequencer.record_event (event);
-                    }
-                    set_style_section_by_index (8);
-                    break;
-                    case _sync_start_ui_index:
-                    if (RecorderScreen.sequencer != null) {
-                        RecorderScreen.sequencer.initial_settings_style_part_index = 9;
-                    }
-                    if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
-                        var event = new Core.MidiEvent ();
-                        event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
-                        event.value1 = 9;
-                        Shell.RecorderScreen.sequencer.record_event (event);
-                    }
-                    set_style_section_by_index (9);
-                    break;
-                    case _sync_stop_ui_index:
-                    if (RecorderScreen.sequencer != null) {
-                        RecorderScreen.sequencer.initial_settings_style_part_index = 10;
-                    }
-                    if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
-                        var event = new Core.MidiEvent ();
-                        event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
-                        event.value1 = 10;
-                        Shell.RecorderScreen.sequencer.record_event (event);
-                    }
-                    set_style_section_by_index (10);
-                    break;
-                    case _break_ui_index:
-                    if (RecorderScreen.sequencer != null) {
-                        RecorderScreen.sequencer.initial_settings_style_part_index = 6;
-                    }
-                    if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
-                        var event = new Core.MidiEvent ();
-                        event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
-                        event.value1 = 6;
-                        Shell.RecorderScreen.sequencer.record_event (event);
-                    }
-                    set_style_section_by_index (6);
-                    break;
-                    case _start_stop_ui_index:
+                if (index == UI_INDEX_STYLE_START_STOP) {
                     start_stop ();
-                    break;
+                } else {
+                    send_to_recorder (index);
+                    set_style_section_by_index (index);
                 }
+            }
+        }
+
+        private void send_to_recorder (int event_index) {
+            if (RecorderScreen.sequencer != null) {
+                RecorderScreen.sequencer.initial_settings_style_part_index = event_index;
+            }
+            if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
+                var event = new Core.MidiEvent ();
+                event.event_type = Core.MidiEvent.EventType.STYLECONTROL;
+                event.value1 = event_index;
+                Shell.RecorderScreen.sequencer.record_event (event);
             }
         }
     }

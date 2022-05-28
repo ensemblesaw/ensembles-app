@@ -139,7 +139,7 @@ namespace Ensembles.Core {
             int hash = szudzik_hash (channel, key);
             print(hash.to_string () + "\n");
             if (note_map.has_key (hash)) {
-                process_control_signal (channel, note_map[hash], velocity, true);
+                process_control_signal (channel, note_map[hash], is_pressed_type == 144 ? velocity : 0, true);
             } else {
                 receive_note_event (key,
                     velocity > 0 ? (is_pressed_type == 144) : false,
@@ -158,8 +158,7 @@ namespace Ensembles.Core {
             } else {
                 index = identifier;
             }
-            if (index >= Shell.StyleControllerView._intro_a_ui_index && index <= Shell.StyleControllerView._start_stop_ui_index) {
-                print(">>>>>>>> %d", index);
+            if (index >= Shell.StyleControllerView.UI_INDEX_STYLE_INTRO_1 && index <= Shell.StyleControllerView.UI_INDEX_STYLE_START_STOP) {
                 Application.main_window.style_controller_view.handle_midi_button_event (index, value > 0);
             }
         }

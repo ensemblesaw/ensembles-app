@@ -25,7 +25,6 @@ namespace Ensembles.Core {
         }
         public signal void clock_tick ();
         public signal void system_halt ();
-        public signal void style_section_change (int section);
         public signal void loaded_tempo_change (int tempo);
         public signal void loaded_time_signature_change (int n, int d);
         public signal void split_key_change ();
@@ -60,10 +59,6 @@ namespace Ensembles.Core {
                         clock_tick ();
                         return false;
                     });
-                    if (style_section != central_style_section) {
-                        style_section_change (central_style_section);
-                        style_section = central_style_section;
-                    }
                     Thread.yield ();
                     Thread.usleep (300000);
                     central_measure ++;
