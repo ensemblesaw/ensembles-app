@@ -9,7 +9,17 @@ namespace Ensembles.Core {
         int id;
         bool available;
     }
+
     public class MidiInputHost : Object {
+        private MidiDevice[] midi_device;
+        private List<int> active_devices;
+        private Thread device_monitor_thread;
+        private bool stream_connected;
+
+        private Gee.HashMap<int, int> note_map;
+        private Gee.HashMap<int, int> control_map;
+        private Gee.HashMap<int, string> control_label_reverse_map;
+
         public MidiInputHost () {
             active_devices = new List<int> ();
             note_map = new Gee.HashMap<int, int> ();
@@ -22,18 +32,10 @@ namespace Ensembles.Core {
             controller_destruct ();
         }
 
-        MidiDevice[] midi_device;
-        List<int> active_devices;
-        Thread device_monitor_thread;
-        bool stream_connected;
+
 
         public signal void receive_note_event (int key, bool is_pressed, int velocity, int layer);
-
         public signal bool midi_event_received (int channel, int identifier, int type);
-
-        private Gee.HashMap<int, int> note_map;
-        private Gee.HashMap<int, int> control_map;
-        private Gee.HashMap<int, string> control_label_reverse_map;
 
         public Ensembles.Core.MidiDevice[] refresh () {
             if (Application.raw_midi_input) {
@@ -41,6 +43,7 @@ namespace Ensembles.Core {
                 controller_init (1);
                 return new Ensembles.Core.MidiDevice[0];
             }
+
             Thread.usleep (200);
             controller_destruct ();
             controller_init (0);
@@ -54,6 +57,7 @@ namespace Ensembles.Core {
                 midi_device[i].id = i;
                 debug ("Found %s device: %s\n", midi_device[i].available ? "input" : "output", midi_device[i].name);
             }
+
             return midi_device;
         }
 
@@ -74,7 +78,7 @@ namespace Ensembles.Core {
                                 channel,
                                 message);
                         Idle.add (() => {
-                            process_midi_signal(channel, type, key, (int)velocity);
+                            process_midi_signal (channel, type, key, (int)velocity);
                             return false;
                         });
                     }
@@ -82,10 +86,12 @@ namespace Ensembles.Core {
                     Thread.usleep (200);
                 }
             }
+
             for (int i = 0; i < active_devices.length (); i++) {
                 controller_close_connection (active_devices.nth_data (i));
             }
-            Thread.exit(0);
+
+            Thread.exit (0);
             return 0;
         }
 
@@ -94,6 +100,7 @@ namespace Ensembles.Core {
                 active_devices.append (id);
                 controller_connect_device (id);
             }
+
             if (active_devices.length () > 0 && !stream_connected) {
                 stream_connected = true;
                 device_monitor_thread = new Thread<int> ("mididevmon", monitor_device_stream);
@@ -113,16 +120,16 @@ namespace Ensembles.Core {
             if (type == 144 || type == 176) {
                 handled = midi_event_received (channel, value, type);
             }
-            if (handled) {
-                return;
-            }
-            // Classify MIDI signal type
-            if (type == 144 || type == 128) {
-                // Note signal
-                process_note_signal (value, type, velocity, channel);
-            } else if (type == 176) {
-                // CC signal
-                process_control_signal (channel, value, velocity);
+
+            if (!handled) {
+                // Classify MIDI signal type
+                if (type == 144 || type == 128) {
+                    // Note signal
+                    process_note_signal (value, type, velocity, channel);
+                } else if (type == 176) {
+                    // CC signal
+                    process_control_signal (channel, value, velocity);
+                }
             }
         }
 
@@ -132,7 +139,7 @@ namespace Ensembles.Core {
 
         private void process_note_signal (int key, int is_pressed_type, int velocity, int channel) {
             int hash = szudzik_hash (channel, key);
-            print(hash.to_string () + "\n");
+            print (hash.to_string () + "\n");
             if (note_map.has_key (hash)) {
                 process_control_signal (channel, note_map[hash], is_pressed_type == 144 ? velocity : 0, true);
             } else {
@@ -174,6 +181,7 @@ namespace Ensembles.Core {
             if (control_label_reverse_map.has_key (ui_control_index)) {
                 return control_label_reverse_map[ui_control_index];
             }
+
             return "";
         }
     }
