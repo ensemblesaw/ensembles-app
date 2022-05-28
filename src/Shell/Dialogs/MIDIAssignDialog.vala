@@ -23,8 +23,8 @@
                 destroy_with_parent: true,
                 window_position: Gtk.WindowPosition.CENTER_ON_PARENT,
                 modal: true,
-                title: _("Assign MIDI Control"),
-                width_request: 525,
+                title: _("Link MIDI Controller"),
+                width_request: 560,
                 height_request: 250
             );
          }
@@ -33,12 +33,13 @@
             get_header_bar ().show_close_button = false;
             get_style_context ().add_class ("app");
 
-            var main_grid = new Gtk.Grid();
+            var main_grid = new Gtk.Grid ();
 
             var controller_icon = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/controller.svg") {
                 halign = Gtk.Align.CENTER,
                 margin_bottom = 26
             };
+
             controller_icon.get_style_context ().add_class ("controller-icon-box");
             controller_icon.get_style_context ().add_class (Granite.STYLE_CLASS_CARD);
             controller_icon.get_style_context ().add_class (Granite.STYLE_CLASS_ROUNDED);
@@ -48,10 +49,11 @@
             heading.get_style_context ().add_class (Granite.STYLE_CLASS_H2_LABEL);
             main_grid.attach (heading, 0, 1);
 
-            subheading = new Gtk.Label (_("Waiting for you to move a knob, fader or button on your MIDI Controller...")) {
+            subheading = new Gtk.Label (_("Waiting for you to move a knob, fader or button on your MIDI Controller…")) {
                 margin = 12,
-                margin_bottom = 0
+                margin_bottom = 0,
             };
+
             subheading.get_style_context ().add_class (Granite.STYLE_CLASS_H4_LABEL);
             main_grid.attach (subheading, 0, 2);
 
@@ -64,19 +66,22 @@
                 margin = 12,
                 margin_bottom = 0
             };
-            confirm_button.clicked.connect(confirm);
+            confirm_button.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+            confirm_button.clicked.connect (confirm);
             revealer.add (confirm_button);
             main_grid.attach (revealer, 0, 3);
 
-            var cancel_button = new Gtk.Button.with_label(_("Cancel")) {
+            var cancel_button = new Gtk.Button.with_label (_("Cancel")) {
                 hexpand = true,
                 margin = 12
             };
+
             cancel_button.clicked.connect (() => {
                 Application.arranger_core.midi_input_host.midi_event_received.disconnect (midi_event_callback);
                 this.close ();
             });
-            main_grid.attach(cancel_button, 0, 4);
+
+            main_grid.attach (cancel_button, 0, 4);
 
             get_content_area ().add (main_grid);
 

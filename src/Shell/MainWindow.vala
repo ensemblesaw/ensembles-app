@@ -33,6 +33,7 @@ namespace Ensembles.Shell {
         Gtk.Label controller_assignment_label;
         Gtk.Button controller_assign_button;
         Gtk.Button controller_reset_button;
+        Gtk.Separator ctx_menu_main_separator;
         int _current_ui_assign_index;
 
         // Computer Keyboard input handling
@@ -139,16 +140,21 @@ namespace Ensembles.Shell {
                 halign = Gtk.Align.START,
                 visible = false
             };
+
             controller_assignment_label.get_style_context ().add_class (Granite.STYLE_CLASS_H4_LABEL);
             button_box.pack_start (controller_assignment_label);
 
-            var separator = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
-            button_box.pack_start (separator);
+            ctx_menu_main_separator = new Gtk.Separator (Gtk.Orientation.HORIZONTAL) {
+                visible = false
+            };
+
+            button_box.pack_start (ctx_menu_main_separator);
 
             controller_assign_button = new Gtk.Button ();
             var assign_button_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 4) {
                 halign = Gtk.Align.START
             };
+
             assign_button_box.pack_start (new Gtk.Image.from_icon_name ("insert-link", Gtk.IconSize.BUTTON));
             assign_button_box.pack_end (new Gtk.Label (_("Link MIDI Controller")));
             controller_assign_button.add (assign_button_box);
@@ -159,6 +165,7 @@ namespace Ensembles.Shell {
             var reset_button_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 4) {
                 halign = Gtk.Align.START
             };
+
             reset_button_box.pack_start (new Gtk.Image.from_icon_name ("list-remove", Gtk.IconSize.BUTTON));
             reset_button_box.pack_end (new Gtk.Label (_("Remove Link")));
             controller_reset_button.add (reset_button_box);
@@ -172,13 +179,16 @@ namespace Ensembles.Shell {
             app_menu_button.clicked.connect (() => {
                 app_menu.popup ();
             });
+
             key_press_event.connect ((event) => {
                 return keyboard_input_handler.handle_keypress_event (event.keyval);
             });
+
             key_release_event.connect ((event) => {
                 keyboard_input_handler.handle_keyrelease_event (event.keyval);
                 return false;
             });
+
             window_state_event.connect ((event) => {
                 if ((int)(event.changed_mask) == 4) {
                     main_keyboard.visible = false;
@@ -189,17 +199,21 @@ namespace Ensembles.Shell {
                 }
                 return false;
             });
+
             app_menu.open_preferences_dialog.connect (open_preferences);
             beat_counter_panel.open_tempo_editor.connect (main_display_unit.open_tempo_screen);
             ctrl_panel.accomp_change.connect ((active) => {
                 Application.arranger_core.synthesizer.set_accompaniment_on (active);
             });
+
             ctrl_panel.reverb_change.connect ((level) => {
                 Application.arranger_core.synthesizer.set_master_reverb_level (level);
             });
+
             ctrl_panel.reverb_active_change.connect ((active) => {
                 Application.arranger_core.synthesizer.set_master_reverb_active (active);
             });
+
             ctrl_panel.chorus_change.connect ((level) => {
                 Application.arranger_core.synthesizer.set_master_chorus_level (level);
             });
@@ -407,12 +421,7 @@ namespace Ensembles.Shell {
 
         public void show_context_menu (Gtk.Widget? relative_to, int ui_control_index) {
             common_context_menu.relative_to = relative_to;
-
-            try {
-                controller_assign_button.clicked.disconnect (assign_button_handler);
-            } catch (Error e) {
-
-            }
+            controller_assign_button.clicked.disconnect (assign_button_handler);
             _current_ui_assign_index = ui_control_index;
             controller_assign_button.clicked.connect (assign_button_handler);
             common_context_menu.show_all ();
@@ -421,9 +430,11 @@ namespace Ensembles.Shell {
                 controller_assignment_label.set_text (assignment_label);
                 controller_assignment_label.visible = true;
                 controller_reset_button.visible = true;
+                ctx_menu_main_separator.visible = true;
             } else {
                 controller_assignment_label.visible = false;
                 controller_reset_button.visible = false;
+                ctx_menu_main_separator.visible = false;
             }
         }
 
