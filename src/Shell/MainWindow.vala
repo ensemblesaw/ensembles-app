@@ -253,19 +253,6 @@ namespace Ensembles.Shell {
                 main_keyboard.set_note_on (key, on);
             });
 
-            style_controller_view.start_stop.connect (Application.arranger_core.style_player.play_style);
-            style_controller_view.switch_var_a.connect (Application.arranger_core.style_player.switch_var_a);
-            style_controller_view.switch_var_b.connect (Application.arranger_core.style_player.switch_var_b);
-            style_controller_view.switch_var_c.connect (Application.arranger_core.style_player.switch_var_c);
-            style_controller_view.switch_var_d.connect (Application.arranger_core.style_player.switch_var_d);
-            style_controller_view.queue_intro_a.connect (Application.arranger_core.style_player.queue_intro_a);
-            style_controller_view.queue_intro_b.connect (Application.arranger_core.style_player.queue_intro_b);
-            style_controller_view.queue_ending_a.connect (Application.arranger_core.style_player.queue_ending_a);
-            style_controller_view.queue_ending_b.connect (Application.arranger_core.style_player.queue_ending_b);
-            style_controller_view.break_play.connect (Application.arranger_core.style_player.break_play);
-            style_controller_view.sync_start.connect (Application.arranger_core.style_player.sync_start);
-            style_controller_view.sync_stop.connect (Application.arranger_core.style_player.sync_stop);
-
             keyboard_input_handler.style_start_stop.connect (Application.arranger_core.style_player.play_style);
             keyboard_input_handler.style_var_a.connect (Application.arranger_core.style_player.switch_var_a);
             keyboard_input_handler.style_var_b.connect (Application.arranger_core.style_player.switch_var_b);

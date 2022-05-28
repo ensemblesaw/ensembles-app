@@ -31,24 +31,6 @@ namespace Ensembles.Shell {
         private Gtk.Button sync_stop_button;
         private Gtk.Button start_button;
 
-        public signal void start_stop ();
-
-        public signal void switch_var_a ();
-        public signal void switch_var_b ();
-        public signal void switch_var_c ();
-        public signal void switch_var_d ();
-
-        public signal void queue_intro_a ();
-        public signal void queue_intro_b ();
-
-        public signal void queue_ending_a ();
-        public signal void queue_ending_b ();
-
-        public signal void break_play ();
-
-        public signal void sync_stop ();
-        public signal void sync_start ();
-
         construct {
             row_homogeneous = true;
             column_spacing = 4;
@@ -268,9 +250,7 @@ namespace Ensembles.Shell {
 
             start_button.get_style_context ().add_class (Gtk.STYLE_CLASS_DESTRUCTIVE_ACTION);
             start_button.get_style_context ().remove_class ("image-button");
-            start_button.clicked.connect (() => {
-                start_stop ();
-            });
+            start_button.clicked.connect (Application.arranger_core.style_player.play_style);
 
             start_button.button_press_event.connect ((button_event) => {
                 if (button_event.button == 3) {
@@ -427,59 +407,59 @@ namespace Ensembles.Shell {
         public void set_style_section_by_index (int index) {
             switch (index) {
                 case UI_INDEX_STYLE_INTRO_1:
-                queue_intro_a ();
+                Application.arranger_core.style_player.queue_intro_a ();
                 intro_button_a.get_style_context ().add_class ("queue-measure");
                 intro_button_b.get_style_context ().remove_class ("queue-measure");
                 ending_button_a.get_style_context ().remove_class ("queue-measure");
                 ending_button_b.get_style_context ().remove_class ("queue-measure");
                 break;
                 case UI_INDEX_STYLE_INTRO_2:
-                queue_intro_b ();
+                Application.arranger_core.style_player.queue_intro_b ();
                 intro_button_a.get_style_context ().remove_class ("queue-measure");
                 intro_button_b.get_style_context ().add_class ("queue-measure");
                 ending_button_a.get_style_context ().remove_class ("queue-measure");
                 ending_button_b.get_style_context ().remove_class ("queue-measure");
                 break;
                 case UI_INDEX_STYLE_VAR_A:
-                switch_var_a ();
+                Application.arranger_core.style_player.switch_var_a ();
                 var_fill_button_a.get_style_context ().add_class ("queue-measure");
                 var_fill_button_b.get_style_context ().remove_class ("queue-measure");
                 var_fill_button_c.get_style_context ().remove_class ("queue-measure");
                 var_fill_button_d.get_style_context ().remove_class ("queue-measure");
                 break;
                 case UI_INDEX_STYLE_VAR_B:
-                switch_var_b ();
+                Application.arranger_core.style_player.switch_var_b ();
                 var_fill_button_a.get_style_context ().remove_class ("queue-measure");
                 var_fill_button_b.get_style_context ().add_class ("queue-measure");
                 var_fill_button_c.get_style_context ().remove_class ("queue-measure");
                 var_fill_button_d.get_style_context ().remove_class ("queue-measure");
                 break;
                 case UI_INDEX_STYLE_VAR_C:
-                switch_var_c ();
+                Application.arranger_core.style_player.switch_var_c ();
                 var_fill_button_a.get_style_context ().remove_class ("queue-measure");
                 var_fill_button_b.get_style_context ().remove_class ("queue-measure");
                 var_fill_button_c.get_style_context ().add_class ("queue-measure");
                 var_fill_button_d.get_style_context ().remove_class ("queue-measure");
                 break;
                 case UI_INDEX_STYLE_VAR_D:
-                switch_var_d ();
+                Application.arranger_core.style_player.switch_var_d ();
                 var_fill_button_a.get_style_context ().remove_class ("queue-measure");
                 var_fill_button_b.get_style_context ().remove_class ("queue-measure");
                 var_fill_button_c.get_style_context ().remove_class ("queue-measure");
                 var_fill_button_d.get_style_context ().add_class ("queue-measure");
                 break;
                 case UI_INDEX_STYLE_BREAK:
-                break_play ();
+                Application.arranger_core.style_player.break_play ();
                 break;
                 case UI_INDEX_STYLE_ENDING_1:
-                queue_ending_a ();
+                Application.arranger_core.style_player.queue_ending_a ();
                 ending_button_a.get_style_context ().add_class ("queue-measure");
                 ending_button_b.get_style_context ().remove_class ("queue-measure");
                 intro_button_a.get_style_context ().remove_class ("queue-measure");
                 intro_button_b.get_style_context ().remove_class ("queue-measure");
                 break;
                 case UI_INDEX_STYLE_ENDING_2:
-                queue_ending_b ();
+                Application.arranger_core.style_player.queue_ending_b ();
                 ending_button_a.get_style_context ().remove_class ("queue-measure");
                 ending_button_b.get_style_context ().add_class ("queue-measure");
                 intro_button_a.get_style_context ().remove_class ("queue-measure");
@@ -487,11 +467,11 @@ namespace Ensembles.Shell {
                 break;
                 case UI_INDEX_STYLE_SYNC_START:
                 sync_start_button.get_style_context ().add_class ("queue-measure");
-                sync_start ();
+                Application.arranger_core.style_player.sync_start ();
                 break;
                 case UI_INDEX_STYLE_SYNC_STOP:
                 sync_stop_button.get_style_context ().add_class ("queue-measure");
-                sync_stop ();
+                Application.arranger_core.style_player.sync_stop ();
                 break;
             }
         }
@@ -499,7 +479,7 @@ namespace Ensembles.Shell {
         public void handle_midi_button_event (int index, bool press = true) {
             if (press) {
                 if (index == UI_INDEX_STYLE_START_STOP) {
-                    start_stop ();
+                    Application.arranger_core.style_player.play_style ();
                 } else {
                     send_to_recorder (index);
                     set_style_section_by_index (index);
