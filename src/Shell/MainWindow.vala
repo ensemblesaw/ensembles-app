@@ -448,6 +448,7 @@ namespace Ensembles.Shell {
                 controller_reset_button.visible = false;
                 ctx_menu_main_separator.visible = false;
             }
+            controller_assign_button.grab_focus ();
         }
 
         public void hide_context_menu () {

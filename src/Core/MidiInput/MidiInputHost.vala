@@ -166,6 +166,9 @@ namespace Ensembles.Core {
                 Application.main_window.style_controller_view.handle_midi_button_event (index, value > 0);              // This is an event for style player
             } else if (index >= Shell.RegistryView.UI_INDEX_REG_1 && index <= Shell.RegistryView.UI_INDEX_REG_MEM) {
                 Application.main_window.registry_panel.handle_midi_button_event (index, value > 0);                     // This is an event for registry memory
+            } else if (index >= Shell.MixerBoardView.UI_INDEX_MIXER_STYLE_1 &&
+                index <= Shell.MixerBoardView.UI_INDEX_MIXER_SAMPLING_PAD) {                                            // This is an event for mixer board
+                Application.main_window.mixer_board_view.handle_midi_controller_event (index, value);
             }
         }
 

@@ -5,16 +5,37 @@
 
 namespace Ensembles.Shell {
     public class MixerBoardView : Gtk.Grid {
-        Gtk.Scale[] style_gain_sliders;
+        public const int UI_INDEX_MIXER_STYLE_1 = 25;
+        public const int UI_INDEX_MIXER_STYLE_2 = 26;
+        public const int UI_INDEX_MIXER_STYLE_3 = 27;
+        public const int UI_INDEX_MIXER_STYLE_4 = 28;
+        public const int UI_INDEX_MIXER_STYLE_5 = 29;
+        public const int UI_INDEX_MIXER_STYLE_6 = 30;
+        public const int UI_INDEX_MIXER_STYLE_7 = 31;
+        public const int UI_INDEX_MIXER_STYLE_8 = 32;
+        public const int UI_INDEX_MIXER_STYLE_9 = 33;
+        public const int UI_INDEX_MIXER_STYLE_10 = 34;
+        public const int UI_INDEX_MIXER_STYLE_11 = 35;
+        public const int UI_INDEX_MIXER_STYLE_12 = 36;
+        public const int UI_INDEX_MIXER_STYLE_13 = 37;
+        public const int UI_INDEX_MIXER_STYLE_14 = 38;
+        public const int UI_INDEX_MIXER_STYLE_15 = 39;
+        public const int UI_INDEX_MIXER_STYLE_16 = 40;
+        public const int UI_INDEX_MIXER_VOICE_L = 41;
+        public const int UI_INDEX_MIXER_VOICE_R1 = 42;
+        public const int UI_INDEX_MIXER_VOICE_R2 = 43;
+        public const int UI_INDEX_MIXER_SAMPLING_PAD = 44;
 
-        Gtk.Scale voice_l_gain_slider;
-        Gtk.Scale voice_r1_gain_slider;
-        Gtk.Scale voice_r2_gain_slider;
-        Gtk.Scale sampler_pad_gain_slider;
+        private Gtk.Scale[] style_gain_sliders;
 
-        Gtk.Button[] lock_buttons;
+        private Gtk.Scale voice_l_gain_slider;
+        private Gtk.Scale voice_r1_gain_slider;
+        private Gtk.Scale voice_r2_gain_slider;
+        private Gtk.Scale sampler_pad_gain_slider;
 
-        bool watch;
+        private Gtk.Button[] lock_buttons;
+
+        private bool watch;
 
         public signal void set_sampler_gain (double gain);
 
@@ -44,20 +65,39 @@ namespace Ensembles.Shell {
                 draw_value = false,
                 height_request = 72
             };
+
             attach (voice_l_gain_slider, i++, 0, 1, 1);
             voice_l_gain_slider.change_value.connect ((scroll, value) => {
                 change_gain (19, (int)(value * 127));
                 return false;
             });
 
+            voice_l_gain_slider.button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (voice_l_gain_slider, UI_INDEX_MIXER_VOICE_L);
+                    return true;
+                }
+
+                return false;
+            });
 
             voice_r1_gain_slider = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1) {
                 inverted = true,
                 draw_value = false
             };
+
             attach (voice_r1_gain_slider, i++, 0, 1, 1);
             voice_r1_gain_slider.change_value.connect ((scroll, value) => {
                 change_gain (17, (int)(value * 127));
+                return false;
+            });
+
+            voice_r1_gain_slider.button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (voice_r1_gain_slider, UI_INDEX_MIXER_VOICE_R1);
+                    return true;
+                }
+
                 return false;
             });
 
@@ -66,9 +106,19 @@ namespace Ensembles.Shell {
                 inverted = true,
                 draw_value = false
             };
+
             attach (voice_r2_gain_slider, i++, 0, 1, 1);
             voice_r2_gain_slider.change_value.connect ((scroll, value) => {
                 change_gain (18, (int)(value * 127));
+                return false;
+            });
+
+            voice_r2_gain_slider.button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (voice_r2_gain_slider, UI_INDEX_MIXER_VOICE_R2);
+                    return true;
+                }
+
                 return false;
             });
 
@@ -227,165 +277,223 @@ namespace Ensembles.Shell {
             });
         }
 
+        private bool handle_change_gain (int index, double value) {
+            if (value >= 0) {
+                change_gain (index, (int)(value * 127));
+                lock_buttons[index].set_image (
+                    new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON)
+                );
+                lock_buttons[index].sensitive = true;
+            }
+            return false;
+        }
+
         private void connect_style_sliders () {
             style_gain_sliders[0].change_value.connect ((scroll, value) => {
-                if (value >= 0) {
-                    change_gain (0, (int)(value * 127));
-                    lock_buttons[0].set_image (
-                        new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON)
-                    );
-                    lock_buttons[0].sensitive = true;
+                return handle_change_gain (0, value);
+            });
+
+            style_gain_sliders[0].button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (style_gain_sliders[0], UI_INDEX_MIXER_STYLE_1);
+                    return true;
                 }
+
                 return false;
             });
+
             style_gain_sliders[1].change_value.connect ((scroll, value) => {
-                if (value >= 0) {
-                    change_gain (1, (int)(value * 127));
-                    lock_buttons[1].set_image (
-                        new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON)
-                    );
-                    lock_buttons[1].sensitive = true;
+                return handle_change_gain (1, value);
+            });
+
+            style_gain_sliders[1].button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (style_gain_sliders[1], UI_INDEX_MIXER_STYLE_2);
+                    return true;
                 }
+
                 return false;
             });
+
             style_gain_sliders[2].change_value.connect ((scroll, value) => {
-                if (value >= 0) {
-                    change_gain (2, (int)(value * 127));
-                    lock_buttons[2].set_image (
-                        new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON)
-                    );
-                    lock_buttons[2].sensitive = true;
+                return handle_change_gain (2, value);
+            });
+
+            style_gain_sliders[2].button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (style_gain_sliders[2], UI_INDEX_MIXER_STYLE_3);
+                    return true;
                 }
+
                 return false;
             });
+
             style_gain_sliders[3].change_value.connect ((scroll, value) => {
-                if (value >= 0) {
-                    change_gain (3, (int)(value * 127));
-                    lock_buttons[3].set_image (
-                        new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON)
-                    );
-                    lock_buttons[3].sensitive = true;
+                return handle_change_gain (3, value);
+            });
+
+            style_gain_sliders[3].button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (style_gain_sliders[3], UI_INDEX_MIXER_STYLE_4);
+                    return true;
                 }
+
                 return false;
             });
+
             style_gain_sliders[4].change_value.connect ((scroll, value) => {
-                if (value >= 0) {
-                    change_gain (4, (int)(value * 127));
-                    lock_buttons[4].set_image (
-                        new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON)
-                    );
-                    lock_buttons[4].sensitive = true;
+                return handle_change_gain (4, value);
+            });
+
+            style_gain_sliders[4].button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (style_gain_sliders[4], UI_INDEX_MIXER_STYLE_5);
+                    return true;
                 }
+
                 return false;
             });
+
             style_gain_sliders[5].change_value.connect ((scroll, value) => {
-                if (value >= 0) {
-                    change_gain (5, (int)(value * 127));
-                    lock_buttons[5].set_image (
-                        new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON)
-                    );
-                    lock_buttons[5].sensitive = true;
+                return handle_change_gain (5, value);
+            });
+
+            style_gain_sliders[5].button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (style_gain_sliders[5], UI_INDEX_MIXER_STYLE_6);
+                    return true;
                 }
+
                 return false;
             });
+
             style_gain_sliders[6].change_value.connect ((scroll, value) => {
-                if (value >= 0) {
-                    change_gain (6, (int)(value * 127));
-                    lock_buttons[6].set_image (
-                        new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON)
-                    );
-                    lock_buttons[6].sensitive = true;
+                return handle_change_gain (6, value);
+            });
+
+            style_gain_sliders[6].button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (style_gain_sliders[6], UI_INDEX_MIXER_STYLE_7);
+                    return true;
                 }
+
                 return false;
             });
+
             style_gain_sliders[7].change_value.connect ((scroll, value) => {
-                if (value >= 0) {
-                    change_gain (7, (int)(value * 127));
-                    lock_buttons[7].set_image (
-                        new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON)
-                    );
-                    lock_buttons[7].sensitive = true;
+                return handle_change_gain (7, value);
+            });
+
+            style_gain_sliders[7].button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (style_gain_sliders[7], UI_INDEX_MIXER_STYLE_8);
+                    return true;
                 }
+
                 return false;
             });
+
             style_gain_sliders[8].change_value.connect ((scroll, value) => {
-                if (value >= 0) {
-                    change_gain (8, (int)(value * 127));
-                    lock_buttons[8].set_image (
-                        new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON)
-                    );
-                    lock_buttons[8].sensitive = true;
+                return handle_change_gain (8, value);
+            });
+
+            style_gain_sliders[8].button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (style_gain_sliders[8], UI_INDEX_MIXER_STYLE_9);
+                    return true;
                 }
+
                 return false;
             });
+
             style_gain_sliders[9].change_value.connect ((scroll, value) => {
-                if (value >= 0) {
-                    change_gain (9, (int)(value * 127));
-                    lock_buttons[9].set_image (
-                        new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON)
-                    );
-                    lock_buttons[9].sensitive = true;
+                return handle_change_gain (9, value);
+            });
+
+            style_gain_sliders[9].button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (style_gain_sliders[9], UI_INDEX_MIXER_STYLE_10);
+                    return true;
                 }
+
                 return false;
             });
+
             style_gain_sliders[10].change_value.connect ((scroll, value) => {
-                if (value >= 0) {
-                    change_gain (10, (int)(value * 127));
-                    lock_buttons[10].set_image (
-                        new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON)
-                    );
-                    lock_buttons[10].sensitive = true;
+                return handle_change_gain (10, value);
+            });
+
+            style_gain_sliders[10].button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (style_gain_sliders[10], UI_INDEX_MIXER_STYLE_11);
+                    return true;
                 }
+
                 return false;
             });
+
             style_gain_sliders[11].change_value.connect ((scroll, value) => {
-                if (value >= 0) {
-                    change_gain (11, (int)(value * 127));
-                    lock_buttons[11].set_image (
-                        new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON)
-                    );
-                    lock_buttons[11].sensitive = true;
+                return handle_change_gain (11, value);
+            });
+
+            style_gain_sliders[11].button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (style_gain_sliders[11], UI_INDEX_MIXER_STYLE_12);
+                    return true;
                 }
+
                 return false;
             });
+
             style_gain_sliders[12].change_value.connect ((scroll, value) => {
-                if (value >= 0) {
-                    change_gain (12, (int)(value * 127));
-                    lock_buttons[12].set_image (
-                        new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON)
-                    );
-                    lock_buttons[12].sensitive = true;
+                return handle_change_gain (12, value);
+            });
+
+            style_gain_sliders[12].button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (style_gain_sliders[12], UI_INDEX_MIXER_STYLE_13);
+                    return true;
                 }
+
                 return false;
             });
+
             style_gain_sliders[13].change_value.connect ((scroll, value) => {
-                if (value >= 0) {
-                    change_gain (13, (int)(value * 127));
-                    lock_buttons[13].set_image (
-                        new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON)
-                    );
-                    lock_buttons[13].sensitive = true;
+                return handle_change_gain (13, value);
+            });
+
+            style_gain_sliders[13].button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (style_gain_sliders[13], UI_INDEX_MIXER_STYLE_14);
+                    return true;
                 }
+
                 return false;
             });
+
             style_gain_sliders[14].change_value.connect ((scroll, value) => {
-                if (value >= 0) {
-                    change_gain (14, (int)(value * 127));
-                    lock_buttons[14].set_image (
-                        new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON)
-                    );
-                    lock_buttons[14].sensitive = true;
+                return handle_change_gain (14, value);
+            });
+
+            style_gain_sliders[14].button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (style_gain_sliders[14], UI_INDEX_MIXER_STYLE_15);
+                    return true;
                 }
+
                 return false;
             });
+
             style_gain_sliders[15].change_value.connect ((scroll, value) => {
-                if (value >= 0) {
-                    change_gain (15, (int)(value * 127));
-                    lock_buttons[15].set_image (
-                        new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.BUTTON)
-                    );
-                    lock_buttons[15].sensitive = true;
+                return handle_change_gain (15, value);
+            });
+
+            style_gain_sliders[15].button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (style_gain_sliders[15], UI_INDEX_MIXER_STYLE_16);
+                    return true;
                 }
+
                 return false;
             });
         }
@@ -438,6 +546,12 @@ namespace Ensembles.Shell {
                 }
             }
             return 0;
+        }
+
+        public void handle_midi_controller_event (int index, int value) {
+            if (index < UI_INDEX_MIXER_VOICE_L) {
+                style_gain_sliders[index - UI_INDEX_MIXER_STYLE_1].change_value(Gtk.ScrollType.JUMP, (double)((value < 0 ? 0 : value) / 127.0));
+            }
         }
     }
 }
