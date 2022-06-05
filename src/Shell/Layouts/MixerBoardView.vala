@@ -26,6 +26,27 @@ namespace Ensembles.Shell {
         public const int UI_INDEX_MIXER_VOICE_R2 = 43;
         public const int UI_INDEX_MIXER_SAMPLING_PAD = 44;
 
+        public const int UI_INDEX_MIXER_LOCK_1 = 45;
+        public const int UI_INDEX_MIXER_LOCK_2 = 46;
+        public const int UI_INDEX_MIXER_LOCK_3 = 47;
+        public const int UI_INDEX_MIXER_LOCK_4 = 48;
+        public const int UI_INDEX_MIXER_LOCK_5 = 49;
+        public const int UI_INDEX_MIXER_LOCK_6 = 50;
+        public const int UI_INDEX_MIXER_LOCK_7 = 51;
+        public const int UI_INDEX_MIXER_LOCK_8 = 52;
+        public const int UI_INDEX_MIXER_LOCK_9 = 53;
+        public const int UI_INDEX_MIXER_LOCK_10 = 54;
+        public const int UI_INDEX_MIXER_LOCK_11 = 55;
+        public const int UI_INDEX_MIXER_LOCK_12 = 56;
+        public const int UI_INDEX_MIXER_LOCK_13 = 57;
+        public const int UI_INDEX_MIXER_LOCK_14 = 58;
+        public const int UI_INDEX_MIXER_LOCK_15 = 59;
+        public const int UI_INDEX_MIXER_LOCK_16 = 60;
+        public const int UI_INDEX_MIXER_LOCK_L = 61;
+        public const int UI_INDEX_MIXER_LOCK_R1 = 62;
+        public const int UI_INDEX_MIXER_LOCK_R2 = 63;
+        public const int UI_INDEX_MIXER_LOCK_SP = 64;
+
         private Gtk.Scale[] style_gain_sliders;
 
         private Gtk.Scale voice_l_gain_slider;

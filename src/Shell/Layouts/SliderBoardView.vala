@@ -36,24 +36,30 @@ namespace Ensembles.Shell {
         int assignable_slider_index = -1;
         int assignable_knob_index = -1;
 
-        int[] slider_0_variables;
-        int[] slider_1_variables;
-        int[] slider_2_variables;
-        int[] slider_3_variables;
-        int[] slider_4_variables;
-        int[] slider_5_variables;
-        int[] slider_6_variables;
-        int[] slider_7_variables;
-        int[] slider_8_variables;
-        int[] slider_9_variables;
+        struct SliderMap {
+            bool assigned;
+            public int channel;
+            public int modulator;
+        }
 
-        int[] knob_a_variables;
-        int[] knob_b_variables;
-        int[] knob_c_variables;
-        int[] knob_d_variables;
+        SliderMap slider_0_variables;
+        SliderMap slider_1_variables;
+        SliderMap slider_2_variables;
+        SliderMap slider_3_variables;
+        SliderMap slider_4_variables;
+        SliderMap slider_5_variables;
+        SliderMap slider_6_variables;
+        SliderMap slider_7_variables;
+        SliderMap slider_8_variables;
+        SliderMap slider_9_variables;
 
-        int[] joystick_x_variables;
-        int[] joystick_y_variables;
+        SliderMap knob_a_variables;
+        SliderMap knob_b_variables;
+        SliderMap knob_c_variables;
+        SliderMap knob_d_variables;
+
+        SliderMap joystick_x_variables;
+        SliderMap joystick_y_variables;
 
         bool[] master_knob_assigns;
         bool master_assign_mode;
@@ -287,25 +293,25 @@ namespace Ensembles.Shell {
             });
 
             joystick.drag_x.connect ((value) => {
-                if (joystick_x_variables != null) {
-                    Ensembles.Core.Synthesizer.set_modulator_value (joystick_x_variables[0],
-                                                                    joystick_x_variables[1],
+                if (joystick_x_variables.assigned) {
+                    Ensembles.Core.Synthesizer.set_modulator_value (joystick_x_variables.channel,
+                                                                    joystick_x_variables.modulator,
                                                                     (int)(value));
                 }
             });
 
             joystick.drag_y.connect ((value) => {
-                if (joystick_y_variables != null) {
-                    Ensembles.Core.Synthesizer.set_modulator_value (joystick_y_variables[0],
-                                                                    joystick_y_variables[1],
+                if (joystick_y_variables.assigned) {
+                    Ensembles.Core.Synthesizer.set_modulator_value (joystick_y_variables.channel,
+                                                                    joystick_y_variables.modulator,
                                                                     (int)(value));
                 }
             });
 
             slider_0.change_value.connect ((scroll, value) => {
-                if (slider_0_variables != null) {
-                    Ensembles.Core.Synthesizer.set_modulator_value (slider_0_variables[0],
-                                                                    slider_0_variables[1],
+                if (slider_0_variables.assigned) {
+                    Ensembles.Core.Synthesizer.set_modulator_value (slider_0_variables.channel,
+                                                                    slider_0_variables.modulator,
                                                                     (int)(value * 127));
                 }
                 assignable_slider_index = 0;
@@ -329,10 +335,10 @@ namespace Ensembles.Shell {
                 return false;
             });
             slider_1.change_value.connect ((scroll, value) => {
-                if (slider_1_variables != null) {
+                if (slider_1_variables.assigned) {
                     Ensembles.Core.Synthesizer.set_modulator_value (
-                        slider_1_variables[0],
-                        slider_1_variables[1],
+                        slider_1_variables.channel,
+                        slider_1_variables.modulator,
                         (int)(value * 127)
                     );
                 }
@@ -357,10 +363,10 @@ namespace Ensembles.Shell {
                 return false;
             });
             slider_2.change_value.connect ((scroll, value) => {
-                if (slider_2_variables != null) {
+                if (slider_2_variables.assigned) {
                     Ensembles.Core.Synthesizer.set_modulator_value (
-                        slider_2_variables[0],
-                        slider_2_variables[1],
+                        slider_2_variables.channel,
+                        slider_2_variables.modulator,
                         (int)(value * 127)
                     );
                 }
@@ -385,10 +391,10 @@ namespace Ensembles.Shell {
                 return false;
             });
             slider_3.change_value.connect ((scroll, value) => {
-                if (slider_3_variables != null) {
+                if (slider_3_variables.assigned) {
                     Ensembles.Core.Synthesizer.set_modulator_value (
-                        slider_3_variables[0],
-                        slider_3_variables[1],
+                        slider_3_variables.channel,
+                        slider_3_variables.modulator,
                         (int)(value * 127)
                     );
                 }
@@ -413,9 +419,9 @@ namespace Ensembles.Shell {
                 return false;
             });
             slider_4.change_value.connect ((scroll, value) => {
-                if (slider_4_variables != null) {
+                if (slider_4_variables.assigned) {
                     Ensembles.Core.Synthesizer.set_modulator_value (
-                        slider_4_variables[0], slider_4_variables[1], (int)(value * 127)
+                        slider_4_variables.channel, slider_4_variables.modulator, (int)(value * 127)
                     );
                 }
                 assignable_slider_index = 4;
@@ -439,9 +445,9 @@ namespace Ensembles.Shell {
                 return false;
             });
             slider_5.change_value.connect ((scroll, value) => {
-                if (slider_5_variables != null) {
+                if (slider_5_variables.assigned) {
                     Ensembles.Core.Synthesizer.set_modulator_value (
-                        slider_5_variables[0], slider_5_variables[1], (int)(value * 127)
+                        slider_5_variables.channel, slider_5_variables.modulator, (int)(value * 127)
                     );
                 }
                 assignable_slider_index = 5;
@@ -465,9 +471,9 @@ namespace Ensembles.Shell {
                 return false;
             });
             slider_6.change_value.connect ((scroll, value) => {
-                if (slider_6_variables != null) {
+                if (slider_6_variables.assigned) {
                     Ensembles.Core.Synthesizer.set_modulator_value (
-                        slider_6_variables[0], slider_6_variables[1], (int)(value * 127)
+                        slider_6_variables.channel, slider_6_variables.modulator, (int)(value * 127)
                     );
                 }
                 assignable_slider_index = 6;
@@ -491,9 +497,9 @@ namespace Ensembles.Shell {
                 return false;
             });
             slider_7.change_value.connect ((scroll, value) => {
-                if (slider_7_variables != null) {
+                if (slider_7_variables.assigned) {
                     Ensembles.Core.Synthesizer.set_modulator_value (
-                        slider_7_variables[0], slider_7_variables[1], (int)(value * 127)
+                        slider_7_variables.channel, slider_7_variables.modulator, (int)(value * 127)
                     );
                 }
                 assignable_slider_index = 7;
@@ -517,9 +523,9 @@ namespace Ensembles.Shell {
                 return false;
             });
             slider_8.change_value.connect ((scroll, value) => {
-                if (slider_8_variables != null) {
+                if (slider_8_variables.assigned) {
                     Ensembles.Core.Synthesizer.set_modulator_value (
-                        slider_8_variables[0], slider_8_variables[1], (int)(value * 127)
+                        slider_8_variables.channel, slider_8_variables.modulator, (int)(value * 127)
                     );
                 }
                 assignable_slider_index = 8;
@@ -543,9 +549,9 @@ namespace Ensembles.Shell {
                 return false;
             });
             slider_9.change_value.connect ((scroll, value) => {
-                if (slider_9_variables != null) {
+                if (slider_9_variables.assigned) {
                     Ensembles.Core.Synthesizer.set_modulator_value (
-                        slider_9_variables[0], slider_9_variables[1], (int)(value * 127)
+                        slider_9_variables.channel, slider_9_variables.modulator, (int)(value * 127)
                     );
                 }
                 assignable_slider_index = 9;
@@ -569,9 +575,9 @@ namespace Ensembles.Shell {
                 return false;
             });
             modulator_knob_a.change_value.connect ((value) => {
-                if (knob_a_variables != null) {
+                if (knob_a_variables.assigned) {
                     Ensembles.Core.Synthesizer.set_modulator_value (
-                        knob_a_variables[0], knob_a_variables[1], (int)(value * 127)
+                        knob_a_variables.channel, knob_a_variables.modulator, (int)(value * 127)
                     );
                 }
                 assignable_knob_index = 0;
@@ -588,9 +594,9 @@ namespace Ensembles.Shell {
                 }
             });
             modulator_knob_b.change_value.connect ((value) => {
-                if (knob_b_variables != null) {
+                if (knob_b_variables.assigned) {
                     Ensembles.Core.Synthesizer.set_modulator_value (
-                        knob_b_variables[0], knob_b_variables[1], (int)(value * 127)
+                        knob_b_variables.channel, knob_b_variables.modulator, (int)(value * 127)
                     );
                 }
                 assignable_knob_index = 1;
@@ -607,9 +613,9 @@ namespace Ensembles.Shell {
                 }
             });
             modulator_knob_c.change_value.connect ((value) => {
-                if (knob_c_variables != null) {
+                if (knob_c_variables.assigned) {
                     Ensembles.Core.Synthesizer.set_modulator_value (
-                        knob_c_variables[0], knob_c_variables[1], (int)(value * 127)
+                        knob_c_variables.channel, knob_c_variables.modulator, (int)(value * 127)
                     );
                 }
                 assignable_knob_index = 2;
@@ -626,9 +632,9 @@ namespace Ensembles.Shell {
                 }
             });
             modulator_knob_d.change_value.connect ((value) => {
-                if (knob_d_variables != null) {
+                if (knob_d_variables.assigned) {
                     Ensembles.Core.Synthesizer.set_modulator_value (
-                        knob_d_variables[0], knob_d_variables[1], (int)(value * 127)
+                        knob_d_variables.channel, knob_d_variables.modulator, (int)(value * 127)
                     );
                 }
                 assignable_knob_index = 3;
@@ -648,88 +654,88 @@ namespace Ensembles.Shell {
             master_knob.change_value.connect ((value) => {
                 bool assigned = false;
                 if (master_knob_assigns != null) {
-                    if (master_knob_assigns[0] && slider_0_variables != null) {
+                    if (master_knob_assigns[0] && slider_0_variables.assigned) {
                         slider_0.set_value (value);
                         Ensembles.Core.Synthesizer.set_modulator_value (
-                            slider_0_variables[0], slider_0_variables[1], (int)(value * 127)
+                            slider_0_variables.channel, slider_0_variables.modulator, (int)(value * 127)
                         );
                     }
-                    if (master_knob_assigns[1] && slider_1_variables != null) {
+                    if (master_knob_assigns[1] && slider_1_variables.assigned) {
                         slider_1.set_value (value);
                         Ensembles.Core.Synthesizer.set_modulator_value (
-                            slider_1_variables[0], slider_1_variables[1], (int)(value * 127)
+                            slider_1_variables.channel, slider_1_variables.modulator, (int)(value * 127)
                         );
                     }
-                    if (master_knob_assigns[2] && slider_2_variables != null) {
+                    if (master_knob_assigns[2] && slider_2_variables.assigned) {
                         slider_2.set_value (value);
                         Ensembles.Core.Synthesizer.set_modulator_value (
-                            slider_2_variables[0], slider_2_variables[1], (int)(value * 127)
+                            slider_2_variables.channel, slider_2_variables.modulator, (int)(value * 127)
                         );
                     }
-                    if (master_knob_assigns[3] && slider_3_variables != null) {
+                    if (master_knob_assigns[3] && slider_3_variables.assigned) {
                         slider_3.set_value (value);
                         Ensembles.Core.Synthesizer.set_modulator_value (
-                            slider_3_variables[0], slider_3_variables[1], (int)(value * 127)
+                            slider_3_variables.channel, slider_3_variables.modulator, (int)(value * 127)
                         );
                     }
-                    if (master_knob_assigns[4] && slider_4_variables != null) {
+                    if (master_knob_assigns[4] && slider_4_variables.assigned) {
                         slider_4.set_value (value);
                         Ensembles.Core.Synthesizer.set_modulator_value (
-                            slider_4_variables[0], slider_4_variables[1], (int)(value * 127)
+                            slider_4_variables.channel, slider_4_variables.modulator, (int)(value * 127)
                         );
                     }
-                    if (master_knob_assigns[5] && slider_5_variables != null) {
+                    if (master_knob_assigns[5] && slider_5_variables.assigned) {
                         slider_5.set_value (value);
                         Ensembles.Core.Synthesizer.set_modulator_value (
-                            slider_5_variables[0], slider_5_variables[1], (int)(value * 127)
+                            slider_5_variables.channel, slider_5_variables.modulator, (int)(value * 127)
                         );
                     }
-                    if (master_knob_assigns[6] && slider_6_variables != null) {
+                    if (master_knob_assigns[6] && slider_6_variables.assigned) {
                         slider_6.set_value (value);
                         Ensembles.Core.Synthesizer.set_modulator_value (
-                            slider_6_variables[0], slider_6_variables[1], (int)(value * 127)
+                            slider_6_variables.channel, slider_6_variables.modulator, (int)(value * 127)
                         );
                     }
-                    if (master_knob_assigns[7] && slider_7_variables != null) {
+                    if (master_knob_assigns[7] && slider_7_variables.assigned) {
                         slider_7.set_value (value);
                         Ensembles.Core.Synthesizer.set_modulator_value (
-                            slider_7_variables[0], slider_7_variables[1], (int)(value * 127)
+                            slider_7_variables.channel, slider_7_variables.modulator, (int)(value * 127)
                         );
                     }
-                    if (master_knob_assigns[8] && slider_8_variables != null) {
+                    if (master_knob_assigns[8] && slider_8_variables.assigned) {
                         slider_8.set_value (value);
                         Ensembles.Core.Synthesizer.set_modulator_value (
-                            slider_8_variables[0], slider_8_variables[1], (int)(value * 127)
+                            slider_8_variables.channel, slider_8_variables.modulator, (int)(value * 127)
                         );
                     }
-                    if (master_knob_assigns[9] && slider_9_variables != null) {
+                    if (master_knob_assigns[9] && slider_9_variables.assigned) {
                         slider_9.set_value (value);
                         Ensembles.Core.Synthesizer.set_modulator_value (
-                            slider_9_variables[0], slider_9_variables[1], (int)(value * 127)
+                            slider_9_variables.channel, slider_9_variables.modulator, (int)(value * 127)
                         );
                     }
-                    if (master_knob_assigns[10] && knob_a_variables != null) {
+                    if (master_knob_assigns[10] && knob_a_variables.assigned) {
                         modulator_knob_a.set_value (value);
                         Ensembles.Core.Synthesizer.set_modulator_value (
-                            knob_a_variables[0], knob_a_variables[1], (int)(value * 127)
+                            knob_a_variables.channel, knob_a_variables.modulator, (int)(value * 127)
                         );
                     }
-                    if (master_knob_assigns[11] && knob_b_variables != null) {
+                    if (master_knob_assigns[11] && knob_b_variables.assigned) {
                         modulator_knob_b.set_value (value);
                         Ensembles.Core.Synthesizer.set_modulator_value (
-                            knob_b_variables[0], knob_b_variables[1], (int)(value * 127)
+                            knob_b_variables.channel, knob_b_variables.modulator, (int)(value * 127)
                         );
                     }
-                    if (master_knob_assigns[12] && knob_c_variables != null) {
+                    if (master_knob_assigns[12] && knob_c_variables.assigned) {
                         modulator_knob_c.set_value (value);
                         Ensembles.Core.Synthesizer.set_modulator_value (
-                            knob_c_variables[0], knob_c_variables[1], (int)(value * 127)
+                            knob_c_variables.channel, knob_c_variables.modulator, (int)(value * 127)
                         );
                     }
-                    if (master_knob_assigns[13] && knob_d_variables != null) {
+                    if (master_knob_assigns[13] && knob_d_variables.assigned) {
                         modulator_knob_d.set_value (value);
                         Ensembles.Core.Synthesizer.set_modulator_value (
-                            knob_d_variables[0], knob_d_variables[1], (int)(value * 127)
+                            knob_d_variables.channel, knob_d_variables.modulator, (int)(value * 127)
                         );
                     }
                     for (int i = 0; i < 14; i++) {
@@ -777,34 +783,34 @@ namespace Ensembles.Shell {
             if (slider_assign_mode) {
                 switch (assignable_slider_index) {
                     case 0:
-                    slider_0_variables = { channel, modulator };
+                    slider_0_variables = { true, channel, modulator };
                     break;
                     case 1:
-                    slider_1_variables = { channel, modulator };
+                    slider_1_variables = { true, channel, modulator };
                     break;
                     case 2:
-                    slider_2_variables = { channel, modulator };
+                    slider_2_variables = { true, channel, modulator };
                     break;
                     case 3:
-                    slider_3_variables = { channel, modulator };
+                    slider_3_variables = { true, channel, modulator };
                     break;
                     case 4:
-                    slider_4_variables = { channel, modulator };
+                    slider_4_variables = { true, channel, modulator };
                     break;
                     case 5:
-                    slider_5_variables = { channel, modulator };
+                    slider_5_variables = { true, channel, modulator };
                     break;
                     case 6:
-                    slider_6_variables = { channel, modulator };
+                    slider_6_variables = { true, channel, modulator };
                     break;
                     case 7:
-                    slider_7_variables = { channel, modulator };
+                    slider_7_variables = { true, channel, modulator };
                     break;
                     case 8:
-                    slider_8_variables = { channel, modulator };
+                    slider_8_variables = { true, channel, modulator };
                     break;
                     case 9:
-                    slider_9_variables = { channel, modulator };
+                    slider_9_variables = { true, channel, modulator };
                     break;
                 }
                 assignable_slider_index = -1;
@@ -824,16 +830,16 @@ namespace Ensembles.Shell {
             if (knob_assign_mode) {
                 switch (assignable_knob_index) {
                     case 0:
-                    knob_a_variables = { channel, modulator };
+                    knob_a_variables = { true, channel, modulator };
                     break;
                     case 1:
-                    knob_b_variables = { channel, modulator };
+                    knob_b_variables = { true, channel, modulator };
                     break;
                     case 2:
-                    knob_c_variables = { channel, modulator };
+                    knob_c_variables = { true, channel, modulator };
                     break;
                     case 3:
-                    knob_d_variables = { channel, modulator };
+                    knob_d_variables = { true, channel, modulator };
                     break;
                 }
                 assignable_knob_index = -1;
@@ -846,10 +852,10 @@ namespace Ensembles.Shell {
             } else if (joystick.assignable) {
                 switch (joystick.assignable_axis) {
                     case 0:
-                    joystick_x_variables = { channel, modulator };
+                    joystick_x_variables = { true, channel, modulator };
                     break;
                     case 1:
-                    joystick_y_variables = { channel, modulator };
+                    joystick_y_variables = { true, channel, modulator };
                     break;
                 }
                 joystick.assignable = false;
@@ -876,88 +882,88 @@ namespace Ensembles.Shell {
                         value = value * 0.8f + 0.1f;
                         master_knob.set_value (value);
                         if (master_knob_assigns != null) {
-                            if (master_knob_assigns[0] && slider_0_variables != null) {
+                            if (master_knob_assigns[0] && slider_0_variables.assigned) {
                                 slider_0.set_value (value);
                                 Ensembles.Core.Synthesizer.set_modulator_value (
-                                    slider_0_variables[0], slider_0_variables[1], (int)(value * 127)
+                                    slider_0_variables.channel, slider_0_variables.modulator, (int)(value * 127)
                                 );
                             }
-                            if (master_knob_assigns[1] && slider_1_variables != null) {
+                            if (master_knob_assigns[1] && slider_1_variables.assigned) {
                                 slider_1.set_value (value);
                                 Ensembles.Core.Synthesizer.set_modulator_value (
-                                    slider_1_variables[0], slider_1_variables[1], (int)(value * 127)
+                                    slider_1_variables.channel, slider_1_variables.modulator, (int)(value * 127)
                                 );
                             }
-                            if (master_knob_assigns[2] && slider_2_variables != null) {
+                            if (master_knob_assigns[2] && slider_2_variables.assigned) {
                                 slider_2.set_value (value);
                                 Ensembles.Core.Synthesizer.set_modulator_value (
-                                    slider_2_variables[0], slider_2_variables[1], (int)(value * 127)
+                                    slider_2_variables.channel, slider_2_variables.modulator, (int)(value * 127)
                                 );
                             }
-                            if (master_knob_assigns[3] && slider_3_variables != null) {
+                            if (master_knob_assigns[3] && slider_3_variables.assigned) {
                                 slider_3.set_value (value);
                                 Ensembles.Core.Synthesizer.set_modulator_value (
-                                    slider_3_variables[0], slider_3_variables[1], (int)(value * 127)
+                                    slider_3_variables.channel, slider_3_variables.modulator, (int)(value * 127)
                                 );
                             }
-                            if (master_knob_assigns[4] && slider_4_variables != null) {
+                            if (master_knob_assigns[4] && slider_4_variables.assigned) {
                                 slider_4.set_value (value);
                                 Ensembles.Core.Synthesizer.set_modulator_value (
-                                    slider_4_variables[0], slider_4_variables[1], (int)(value * 127)
+                                    slider_4_variables.channel, slider_4_variables.modulator, (int)(value * 127)
                                 );
                             }
-                            if (master_knob_assigns[5] && slider_5_variables != null) {
+                            if (master_knob_assigns[5] && slider_5_variables.assigned) {
                                 slider_5.set_value (value);
                                 Ensembles.Core.Synthesizer.set_modulator_value (
-                                    slider_5_variables[0], slider_5_variables[1], (int)(value * 127)
+                                    slider_5_variables.channel, slider_5_variables.modulator, (int)(value * 127)
                                 );
                             }
-                            if (master_knob_assigns[6] && slider_6_variables != null) {
+                            if (master_knob_assigns[6] && slider_6_variables.assigned) {
                                 slider_6.set_value (value);
                                 Ensembles.Core.Synthesizer.set_modulator_value (
-                                    slider_6_variables[0], slider_6_variables[1], (int)(value * 127)
+                                    slider_6_variables.channel, slider_6_variables.modulator, (int)(value * 127)
                                 );
                             }
-                            if (master_knob_assigns[7] && slider_7_variables != null) {
+                            if (master_knob_assigns[7] && slider_7_variables.assigned) {
                                 slider_7.set_value (value);
                                 Ensembles.Core.Synthesizer.set_modulator_value (
-                                    slider_7_variables[0], slider_7_variables[1], (int)(value * 127)
+                                    slider_7_variables.channel, slider_7_variables.modulator, (int)(value * 127)
                                 );
                             }
-                            if (master_knob_assigns[8] && slider_8_variables != null) {
+                            if (master_knob_assigns[8] && slider_8_variables.assigned) {
                                 slider_8.set_value (value);
                                 Ensembles.Core.Synthesizer.set_modulator_value (
-                                    slider_8_variables[0], slider_8_variables[1], (int)(value * 127)
+                                    slider_8_variables.channel, slider_8_variables.modulator, (int)(value * 127)
                                 );
                             }
-                            if (master_knob_assigns[9] && slider_9_variables != null) {
+                            if (master_knob_assigns[9] && slider_9_variables.assigned) {
                                 slider_9.set_value (value);
                                 Ensembles.Core.Synthesizer.set_modulator_value (
-                                    slider_9_variables[0], slider_9_variables[1], (int)(value * 127)
+                                    slider_9_variables.channel, slider_9_variables.modulator, (int)(value * 127)
                                 );
                             }
-                            if (master_knob_assigns[10] && knob_a_variables != null) {
+                            if (master_knob_assigns[10] && knob_a_variables.assigned) {
                                 modulator_knob_a.set_value (value);
                                 Ensembles.Core.Synthesizer.set_modulator_value (
-                                    knob_a_variables[0], knob_a_variables[1], (int)(value * 127)
+                                    knob_a_variables.channel, knob_a_variables.modulator, (int)(value * 127)
                                 );
                             }
-                            if (master_knob_assigns[11] && knob_b_variables != null) {
+                            if (master_knob_assigns[11] && knob_b_variables.assigned) {
                                 modulator_knob_b.set_value (value);
                                 Ensembles.Core.Synthesizer.set_modulator_value (
-                                    knob_b_variables[0], knob_b_variables[1], (int)(value * 127)
+                                    knob_b_variables.channel, knob_b_variables.modulator, (int)(value * 127)
                                 );
                             }
-                            if (master_knob_assigns[12] && knob_c_variables != null) {
+                            if (master_knob_assigns[12] && knob_c_variables.assigned) {
                                 modulator_knob_c.set_value (value);
                                 Ensembles.Core.Synthesizer.set_modulator_value (
-                                    knob_c_variables[0], knob_c_variables[1], (int)(value * 127)
+                                    knob_c_variables.channel, knob_c_variables.modulator, (int)(value * 127)
                                 );
                             }
-                            if (master_knob_assigns[13] && knob_d_variables != null) {
+                            if (master_knob_assigns[13] && knob_d_variables.assigned) {
                                 modulator_knob_d.set_value (value);
                                 Ensembles.Core.Synthesizer.set_modulator_value (
-                                    knob_d_variables[0], knob_d_variables[1], (int)(value * 127)
+                                    knob_d_variables.channel, knob_d_variables.modulator, (int)(value * 127)
                                 );
                             }
                         }
