@@ -142,6 +142,10 @@
 		<summary>Arpeggiator Enabled</summary>
 		<description>Arpeggiator Enabled</description>
 	</key>
+	<key name="ui-control-maps" type="as">
+		<default>['1,0,74', '1,2,74', '1,4,74', '1,6,74', '1,7,74', '1,9,74', '1,9,91', '1,10,74', '1,18,74', '1,19,74', '1,17,91', '1,17,93', '1,17,74', '1,17,71', '1,17,10', '1,17,3']</default>
+		<summary>UI slider, knob and joystick maps</summary>
+	</key>
 	<key name="registry-snapshot" type="s">
 		<default>""</default>
 		<summary>Snapshot of registry memory</summary>

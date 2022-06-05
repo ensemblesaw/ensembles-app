@@ -767,8 +767,77 @@ namespace Ensembles.Shell {
                 slider_assign_button.sensitive = true;
                 knob_assign_button.sensitive = true;
             });
-            monitoring_lfo = true;
+
+            load_settings();
             monitor_lfo ();
+        }
+
+        void load_settings () {
+            var maps = Application.settings.get_strv ("ui-control-maps");
+
+            if (maps.length == 0) {
+                return;
+            }
+
+            var token = maps[0].split(",");
+            slider_0_control_map = { token[0] == "1", int.parse (token[1]), int.parse (token[2]) };
+            token = maps[1].split(",");
+            slider_1_control_map = { token[0] == "1", int.parse (token[1]), int.parse (token[2]) };
+            token = maps[2].split(",");
+            slider_2_control_map = { token[0] == "1", int.parse (token[1]), int.parse (token[2]) };
+            token = maps[3].split(",");
+            slider_3_control_map = { token[0] == "1", int.parse (token[1]), int.parse (token[2]) };
+            token = maps[4].split(",");
+            slider_4_control_map = { token[0] == "1", int.parse (token[1]), int.parse (token[2]) };
+            token = maps[5].split(",");
+            slider_5_control_map = { token[0] == "1", int.parse (token[1]), int.parse (token[2]) };
+            token = maps[6].split(",");
+            slider_6_control_map = { token[0] == "1", int.parse (token[1]), int.parse (token[2]) };
+            token = maps[7].split(",");
+            slider_7_control_map = { token[0] == "1", int.parse (token[1]), int.parse (token[2]) };
+            token = maps[8].split(",");
+            slider_8_control_map = { token[0] == "1", int.parse (token[1]), int.parse (token[2]) };
+            token = maps[9].split(",");
+            slider_9_control_map = { token[0] == "1", int.parse (token[1]), int.parse (token[2]) };
+
+            token = maps[10].split(",");
+            knob_a_control_map = { token[0] == "1", int.parse (token[1]), int.parse (token[2]) };
+            token = maps[11].split(",");
+            knob_b_control_map = { token[0] == "1", int.parse (token[1]), int.parse (token[2]) };
+            token = maps[12].split(",");
+            knob_c_control_map = { token[0] == "1", int.parse (token[1]), int.parse (token[2]) };
+            token = maps[13].split(",");
+            knob_d_control_map = { token[0] == "1", int.parse (token[1]), int.parse (token[2]) };
+
+            token = maps[14].split(",");
+            joystick_x_control_map = { token[0] == "1", int.parse (token[1]), int.parse (token[2]) };
+            token = maps[15].split(",");
+            joystick_y_control_map = { token[0] == "1", int.parse (token[1]), int.parse (token[2]) };
+        }
+
+        void save_settings () {
+            var tokens = new string[16];
+            tokens[0] = (slider_0_control_map.assigned ? "1" : "0") + "," + slider_0_control_map.channel.to_string () + "," + slider_0_control_map.modulator.to_string ();
+            tokens[1] = (slider_1_control_map.assigned ? "1" : "0") + "," + slider_1_control_map.channel.to_string () + "," + slider_1_control_map.modulator.to_string ();
+            tokens[2] = (slider_2_control_map.assigned ? "1" : "0") + "," + slider_2_control_map.channel.to_string () + "," + slider_2_control_map.modulator.to_string ();
+            tokens[3] = (slider_3_control_map.assigned ? "1" : "0") + "," + slider_3_control_map.channel.to_string () + "," + slider_3_control_map.modulator.to_string ();
+            tokens[4] = (slider_4_control_map.assigned ? "1" : "0") + "," + slider_4_control_map.channel.to_string () + "," + slider_4_control_map.modulator.to_string ();
+            tokens[5] = (slider_5_control_map.assigned ? "1" : "0") + "," + slider_5_control_map.channel.to_string () + "," + slider_5_control_map.modulator.to_string ();
+            tokens[6] = (slider_6_control_map.assigned ? "1" : "0") + "," + slider_6_control_map.channel.to_string () + "," + slider_6_control_map.modulator.to_string ();
+            tokens[7] = (slider_7_control_map.assigned ? "1" : "0") + "," + slider_7_control_map.channel.to_string () + "," + slider_7_control_map.modulator.to_string ();
+            tokens[8] = (slider_8_control_map.assigned ? "1" : "0") + "," + slider_8_control_map.channel.to_string () + "," + slider_8_control_map.modulator.to_string ();
+            tokens[9] = (slider_9_control_map.assigned ? "1" : "0") + "," + slider_9_control_map.channel.to_string () + "," + slider_9_control_map.modulator.to_string ();
+
+            tokens[10] = (knob_a_control_map.assigned ? "1" : "0") + "," + knob_a_control_map.channel.to_string () + "," + knob_a_control_map.modulator.to_string ();
+            tokens[11] = (knob_b_control_map.assigned ? "1" : "0") + "," + knob_b_control_map.channel.to_string () + "," + knob_b_control_map.modulator.to_string ();
+            tokens[12] = (knob_c_control_map.assigned ? "1" : "0") + "," + knob_c_control_map.channel.to_string () + "," + knob_c_control_map.modulator.to_string ();
+            tokens[13] = (knob_d_control_map.assigned ? "1" : "0") + "," + knob_d_control_map.channel.to_string () + "," + knob_d_control_map.modulator.to_string ();
+
+            tokens[14] = (joystick_x_control_map.assigned ? "1" : "0") + "," + joystick_x_control_map.channel.to_string () + "," + joystick_x_control_map.modulator.to_string ();
+            tokens[15] = (joystick_y_control_map.assigned ? "1" : "0") + "," + joystick_y_control_map.channel.to_string () + "," + joystick_y_control_map.modulator.to_string ();
+
+            //var settings_string = string.joinv (";", tokens);
+            Application.settings.set_strv ("ui-control-maps", tokens);
         }
 
         public void stop_monitoring () {
@@ -866,9 +935,12 @@ namespace Ensembles.Shell {
             slider_assign_button.sensitive = true;
             knob_assign_button.sensitive = true;
             master_assign_button.sensitive = true;
+
+            save_settings ();
         }
 
         public void monitor_lfo () {
+            monitoring_lfo = true;
             Timeout.add (10, () => {
                 if (Ensembles.Core.CentralBus.get_lfo_type () > 0) {
                     if (!monitoring_lfo) {
