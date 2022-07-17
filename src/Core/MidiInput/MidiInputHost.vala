@@ -169,7 +169,10 @@ namespace Ensembles.Core {
             } else if (index >= Shell.MixerBoardView.UI_INDEX_MIXER_STYLE_1 &&
                 index <= Shell.MixerBoardView.UI_INDEX_MIXER_SAMPLING_PAD) {                                            // This is an event for mixer board
                 Application.main_window.mixer_board_view.handle_midi_controller_event (index, value);
-            }
+            } else if (index >= Shell.SliderBoardView.UI_INDEX_SLIDER_0 &&
+                index <= Shell.SliderBoardView.UI_INDEX_MASTER_KNOB) {
+                    Application.main_window.slider_board.handle_midi_controller_event (index, value);
+                }
         }
 
         public void set_control_map (int channel, int identifier, int type, int ui_control_index) {

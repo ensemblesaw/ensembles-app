@@ -42,6 +42,24 @@ namespace Ensembles.Shell {
             public int modulator;
         }
 
+        public const int UI_INDEX_SLIDER_0 = 65;
+        public const int UI_INDEX_SLIDER_1 = 66;
+        public const int UI_INDEX_SLIDER_2 = 67;
+        public const int UI_INDEX_SLIDER_3 = 68;
+        public const int UI_INDEX_SLIDER_4 = 69;
+        public const int UI_INDEX_SLIDER_5 = 70;
+        public const int UI_INDEX_SLIDER_6 = 71;
+        public const int UI_INDEX_SLIDER_7 = 72;
+        public const int UI_INDEX_SLIDER_8 = 73;
+        public const int UI_INDEX_SLIDER_9 = 74;
+        public const int UI_INDEX_KNOB_A = 75;
+        public const int UI_INDEX_KNOB_B = 76;
+        public const int UI_INDEX_KNOB_C = 77;
+        public const int UI_INDEX_KNOB_D = 78;
+        public const int UI_INDEX_JOY_X = 79;
+        public const int UI_INDEX_JOY_Y = 80;
+        public const int UI_INDEX_MASTER_KNOB = 81;
+
         UIControlMap slider_0_control_map;
         UIControlMap slider_1_control_map;
         UIControlMap slider_2_control_map;
@@ -334,6 +352,14 @@ namespace Ensembles.Shell {
                 }
                 return false;
             });
+            slider_0.button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (slider_0, UI_INDEX_SLIDER_0);
+                    return true;
+                }
+
+                return false;
+            });
             slider_1.change_value.connect ((scroll, value) => {
                 if (slider_1_control_map.assigned) {
                     Ensembles.Core.Synthesizer.set_modulator_value (
@@ -360,6 +386,14 @@ namespace Ensembles.Shell {
                 if (slider_assign_mode) {
                     slider_1.get_style_context ().add_class ("slider-assignable");
                 }
+                return false;
+            });
+            slider_1.button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (slider_1, UI_INDEX_SLIDER_1);
+                    return true;
+                }
+
                 return false;
             });
             slider_2.change_value.connect ((scroll, value) => {
@@ -390,6 +424,14 @@ namespace Ensembles.Shell {
                 }
                 return false;
             });
+            slider_2.button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (slider_2, UI_INDEX_SLIDER_2);
+                    return true;
+                }
+
+                return false;
+            });
             slider_3.change_value.connect ((scroll, value) => {
                 if (slider_3_control_map.assigned) {
                     Ensembles.Core.Synthesizer.set_modulator_value (
@@ -418,6 +460,14 @@ namespace Ensembles.Shell {
                 }
                 return false;
             });
+            slider_3.button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (slider_3, UI_INDEX_SLIDER_3);
+                    return true;
+                }
+
+                return false;
+            });
             slider_4.change_value.connect ((scroll, value) => {
                 if (slider_4_control_map.assigned) {
                     Ensembles.Core.Synthesizer.set_modulator_value (
@@ -442,6 +492,14 @@ namespace Ensembles.Shell {
                 if (slider_assign_mode) {
                     slider_4.get_style_context ().add_class ("slider-assignable");
                 }
+                return false;
+            });
+            slider_4.button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (slider_4, UI_INDEX_SLIDER_4);
+                    return true;
+                }
+
                 return false;
             });
             slider_5.change_value.connect ((scroll, value) => {
@@ -470,6 +528,14 @@ namespace Ensembles.Shell {
                 }
                 return false;
             });
+            slider_5.button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (slider_5, UI_INDEX_SLIDER_5);
+                    return true;
+                }
+
+                return false;
+            });
             slider_6.change_value.connect ((scroll, value) => {
                 if (slider_6_control_map.assigned) {
                     Ensembles.Core.Synthesizer.set_modulator_value (
@@ -494,6 +560,14 @@ namespace Ensembles.Shell {
                 if (slider_assign_mode) {
                     slider_6.get_style_context ().add_class ("slider-assignable");
                 }
+                return false;
+            });
+            slider_6.button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (slider_6, UI_INDEX_SLIDER_6);
+                    return true;
+                }
+
                 return false;
             });
             slider_7.change_value.connect ((scroll, value) => {
@@ -522,6 +596,14 @@ namespace Ensembles.Shell {
                 }
                 return false;
             });
+            slider_7.button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (slider_7, UI_INDEX_SLIDER_7);
+                    return true;
+                }
+
+                return false;
+            });
             slider_8.change_value.connect ((scroll, value) => {
                 if (slider_8_control_map.assigned) {
                     Ensembles.Core.Synthesizer.set_modulator_value (
@@ -546,6 +628,14 @@ namespace Ensembles.Shell {
                 if (slider_assign_mode) {
                     slider_8.get_style_context ().add_class ("slider-assignable");
                 }
+                return false;
+            });
+            slider_8.button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (slider_8, UI_INDEX_SLIDER_8);
+                    return true;
+                }
+
                 return false;
             });
             slider_9.change_value.connect ((scroll, value) => {
@@ -574,6 +664,14 @@ namespace Ensembles.Shell {
                 }
                 return false;
             });
+            slider_9.button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (slider_9, UI_INDEX_SLIDER_9);
+                    return true;
+                }
+
+                return false;
+            });
             modulator_knob_a.change_value.connect ((value) => {
                 if (knob_a_control_map.assigned) {
                     Ensembles.Core.Synthesizer.set_modulator_value (
@@ -592,6 +690,14 @@ namespace Ensembles.Shell {
                 if (knob_assign_mode) {
                     modulator_knob_a.get_style_context ().add_class ("knob-assignable");
                 }
+            });
+            modulator_knob_a.button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (modulator_knob_a, UI_INDEX_KNOB_A);
+                    return true;
+                }
+
+                return false;
             });
             modulator_knob_b.change_value.connect ((value) => {
                 if (knob_b_control_map.assigned) {
@@ -612,6 +718,14 @@ namespace Ensembles.Shell {
                     modulator_knob_b.get_style_context ().add_class ("knob-assignable");
                 }
             });
+            modulator_knob_b.button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (modulator_knob_b, UI_INDEX_KNOB_B);
+                    return true;
+                }
+
+                return false;
+            });
             modulator_knob_c.change_value.connect ((value) => {
                 if (knob_c_control_map.assigned) {
                     Ensembles.Core.Synthesizer.set_modulator_value (
@@ -630,6 +744,14 @@ namespace Ensembles.Shell {
                 if (knob_assign_mode) {
                     modulator_knob_c.get_style_context ().add_class ("knob-assignable");
                 }
+            });
+            modulator_knob_c.button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (modulator_knob_c, UI_INDEX_KNOB_C);
+                    return true;
+                }
+
+                return false;
             });
             modulator_knob_d.change_value.connect ((value) => {
                 if (knob_d_control_map.assigned) {
@@ -650,122 +772,25 @@ namespace Ensembles.Shell {
                     modulator_knob_d.get_style_context ().add_class ("knob-assignable");
                 }
             });
+            modulator_knob_d.button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (modulator_knob_d, UI_INDEX_KNOB_D);
+                    return true;
+                }
+
+                return false;
+            });
 
             master_knob.change_value.connect ((value) => {
-                bool assigned = false;
-                if (master_knob_assigns != null) {
-                    if (master_knob_assigns[0] && slider_0_control_map.assigned) {
-                        slider_0.set_value (value);
-                        Ensembles.Core.Synthesizer.set_modulator_value (
-                            slider_0_control_map.channel, slider_0_control_map.modulator, (int)(value * 127)
-                        );
-                    }
-                    if (master_knob_assigns[1] && slider_1_control_map.assigned) {
-                        slider_1.set_value (value);
-                        Ensembles.Core.Synthesizer.set_modulator_value (
-                            slider_1_control_map.channel, slider_1_control_map.modulator, (int)(value * 127)
-                        );
-                    }
-                    if (master_knob_assigns[2] && slider_2_control_map.assigned) {
-                        slider_2.set_value (value);
-                        Ensembles.Core.Synthesizer.set_modulator_value (
-                            slider_2_control_map.channel, slider_2_control_map.modulator, (int)(value * 127)
-                        );
-                    }
-                    if (master_knob_assigns[3] && slider_3_control_map.assigned) {
-                        slider_3.set_value (value);
-                        Ensembles.Core.Synthesizer.set_modulator_value (
-                            slider_3_control_map.channel, slider_3_control_map.modulator, (int)(value * 127)
-                        );
-                    }
-                    if (master_knob_assigns[4] && slider_4_control_map.assigned) {
-                        slider_4.set_value (value);
-                        Ensembles.Core.Synthesizer.set_modulator_value (
-                            slider_4_control_map.channel, slider_4_control_map.modulator, (int)(value * 127)
-                        );
-                    }
-                    if (master_knob_assigns[5] && slider_5_control_map.assigned) {
-                        slider_5.set_value (value);
-                        Ensembles.Core.Synthesizer.set_modulator_value (
-                            slider_5_control_map.channel, slider_5_control_map.modulator, (int)(value * 127)
-                        );
-                    }
-                    if (master_knob_assigns[6] && slider_6_control_map.assigned) {
-                        slider_6.set_value (value);
-                        Ensembles.Core.Synthesizer.set_modulator_value (
-                            slider_6_control_map.channel, slider_6_control_map.modulator, (int)(value * 127)
-                        );
-                    }
-                    if (master_knob_assigns[7] && slider_7_control_map.assigned) {
-                        slider_7.set_value (value);
-                        Ensembles.Core.Synthesizer.set_modulator_value (
-                            slider_7_control_map.channel, slider_7_control_map.modulator, (int)(value * 127)
-                        );
-                    }
-                    if (master_knob_assigns[8] && slider_8_control_map.assigned) {
-                        slider_8.set_value (value);
-                        Ensembles.Core.Synthesizer.set_modulator_value (
-                            slider_8_control_map.channel, slider_8_control_map.modulator, (int)(value * 127)
-                        );
-                    }
-                    if (master_knob_assigns[9] && slider_9_control_map.assigned) {
-                        slider_9.set_value (value);
-                        Ensembles.Core.Synthesizer.set_modulator_value (
-                            slider_9_control_map.channel, slider_9_control_map.modulator, (int)(value * 127)
-                        );
-                    }
-                    if (master_knob_assigns[10] && knob_a_control_map.assigned) {
-                        modulator_knob_a.set_value (value);
-                        Ensembles.Core.Synthesizer.set_modulator_value (
-                            knob_a_control_map.channel, knob_a_control_map.modulator, (int)(value * 127)
-                        );
-                    }
-                    if (master_knob_assigns[11] && knob_b_control_map.assigned) {
-                        modulator_knob_b.set_value (value);
-                        Ensembles.Core.Synthesizer.set_modulator_value (
-                            knob_b_control_map.channel, knob_b_control_map.modulator, (int)(value * 127)
-                        );
-                    }
-                    if (master_knob_assigns[12] && knob_c_control_map.assigned) {
-                        modulator_knob_c.set_value (value);
-                        Ensembles.Core.Synthesizer.set_modulator_value (
-                            knob_c_control_map.channel, knob_c_control_map.modulator, (int)(value * 127)
-                        );
-                    }
-                    if (master_knob_assigns[13] && knob_d_control_map.assigned) {
-                        modulator_knob_d.set_value (value);
-                        Ensembles.Core.Synthesizer.set_modulator_value (
-                            knob_d_control_map.channel, knob_d_control_map.modulator, (int)(value * 127)
-                        );
-                    }
-                    for (int i = 0; i < 14; i++) {
-                        if (master_knob_assigns[i]) {
-                            assigned = true;
-                            break;
-                        }
-                    }
+                control_other_sliders_from_master_knob(value);
+            });
+            master_knob.button_press_event.connect ((button_event) => {
+                if (button_event.button == 3) {
+                    Application.main_window.show_context_menu (master_knob, UI_INDEX_MASTER_KNOB);
+                    return true;
                 }
-                slider_0.get_style_context ().remove_class ("slider-super-assignable");
-                slider_1.get_style_context ().remove_class ("slider-super-assignable");
-                slider_2.get_style_context ().remove_class ("slider-super-assignable");
-                slider_3.get_style_context ().remove_class ("slider-super-assignable");
-                slider_4.get_style_context ().remove_class ("slider-super-assignable");
-                slider_5.get_style_context ().remove_class ("slider-super-assignable");
-                slider_6.get_style_context ().remove_class ("slider-super-assignable");
-                slider_7.get_style_context ().remove_class ("slider-super-assignable");
-                slider_8.get_style_context ().remove_class ("slider-super-assignable");
-                slider_9.get_style_context ().remove_class ("slider-super-assignable");
-                modulator_knob_a.get_style_context ().remove_class ("knob-super-assignable");
-                modulator_knob_b.get_style_context ().remove_class ("knob-super-assignable");
-                modulator_knob_c.get_style_context ().remove_class ("knob-super-assignable");
-                modulator_knob_d.get_style_context ().remove_class ("knob-super-assignable");
-                master_knob.set_color (assigned, (int)(value * 10));
-                if (master_assign_mode) {
-                    open_LFO_editor ();
-                }
-                master_assign_mode = false;
-                slider_assign_button.sensitive = true;
-                knob_assign_button.sensitive = true;
+
+                return false;
             });
 
             load_settings();
@@ -1044,6 +1069,216 @@ namespace Ensembles.Shell {
                 }
                 return monitoring_lfo;
             });
+        }
+
+        void control_other_sliders_from_master_knob(double value) {
+            bool assigned = false;
+            if (master_knob_assigns != null) {
+                if (master_knob_assigns[0] && slider_0_control_map.assigned) {
+                    slider_0.set_value (value);
+                    Ensembles.Core.Synthesizer.set_modulator_value (
+                        slider_0_control_map.channel, slider_0_control_map.modulator, (int)(value * 127)
+                    );
+                }
+                if (master_knob_assigns[1] && slider_1_control_map.assigned) {
+                    slider_1.set_value (value);
+                    Ensembles.Core.Synthesizer.set_modulator_value (
+                        slider_1_control_map.channel, slider_1_control_map.modulator, (int)(value * 127)
+                    );
+                }
+                if (master_knob_assigns[2] && slider_2_control_map.assigned) {
+                    slider_2.set_value (value);
+                    Ensembles.Core.Synthesizer.set_modulator_value (
+                        slider_2_control_map.channel, slider_2_control_map.modulator, (int)(value * 127)
+                    );
+                }
+                if (master_knob_assigns[3] && slider_3_control_map.assigned) {
+                    slider_3.set_value (value);
+                    Ensembles.Core.Synthesizer.set_modulator_value (
+                        slider_3_control_map.channel, slider_3_control_map.modulator, (int)(value * 127)
+                    );
+                }
+                if (master_knob_assigns[4] && slider_4_control_map.assigned) {
+                    slider_4.set_value (value);
+                    Ensembles.Core.Synthesizer.set_modulator_value (
+                        slider_4_control_map.channel, slider_4_control_map.modulator, (int)(value * 127)
+                    );
+                }
+                if (master_knob_assigns[5] && slider_5_control_map.assigned) {
+                    slider_5.set_value (value);
+                    Ensembles.Core.Synthesizer.set_modulator_value (
+                        slider_5_control_map.channel, slider_5_control_map.modulator, (int)(value * 127)
+                    );
+                }
+                if (master_knob_assigns[6] && slider_6_control_map.assigned) {
+                    slider_6.set_value (value);
+                    Ensembles.Core.Synthesizer.set_modulator_value (
+                        slider_6_control_map.channel, slider_6_control_map.modulator, (int)(value * 127)
+                    );
+                }
+                if (master_knob_assigns[7] && slider_7_control_map.assigned) {
+                    slider_7.set_value (value);
+                    Ensembles.Core.Synthesizer.set_modulator_value (
+                        slider_7_control_map.channel, slider_7_control_map.modulator, (int)(value * 127)
+                    );
+                }
+                if (master_knob_assigns[8] && slider_8_control_map.assigned) {
+                    slider_8.set_value (value);
+                    Ensembles.Core.Synthesizer.set_modulator_value (
+                        slider_8_control_map.channel, slider_8_control_map.modulator, (int)(value * 127)
+                    );
+                }
+                if (master_knob_assigns[9] && slider_9_control_map.assigned) {
+                    slider_9.set_value (value);
+                    Ensembles.Core.Synthesizer.set_modulator_value (
+                        slider_9_control_map.channel, slider_9_control_map.modulator, (int)(value * 127)
+                    );
+                }
+                if (master_knob_assigns[10] && knob_a_control_map.assigned) {
+                    modulator_knob_a.set_value (value);
+                    Ensembles.Core.Synthesizer.set_modulator_value (
+                        knob_a_control_map.channel, knob_a_control_map.modulator, (int)(value * 127)
+                    );
+                }
+                if (master_knob_assigns[11] && knob_b_control_map.assigned) {
+                    modulator_knob_b.set_value (value);
+                    Ensembles.Core.Synthesizer.set_modulator_value (
+                        knob_b_control_map.channel, knob_b_control_map.modulator, (int)(value * 127)
+                    );
+                }
+                if (master_knob_assigns[12] && knob_c_control_map.assigned) {
+                    modulator_knob_c.set_value (value);
+                    Ensembles.Core.Synthesizer.set_modulator_value (
+                        knob_c_control_map.channel, knob_c_control_map.modulator, (int)(value * 127)
+                    );
+                }
+                if (master_knob_assigns[13] && knob_d_control_map.assigned) {
+                    modulator_knob_d.set_value (value);
+                    Ensembles.Core.Synthesizer.set_modulator_value (
+                        knob_d_control_map.channel, knob_d_control_map.modulator, (int)(value * 127)
+                    );
+                }
+                for (int i = 0; i < 14; i++) {
+                    if (master_knob_assigns[i]) {
+                        assigned = true;
+                        break;
+                    }
+                }
+            }
+            slider_0.get_style_context ().remove_class ("slider-super-assignable");
+            slider_1.get_style_context ().remove_class ("slider-super-assignable");
+            slider_2.get_style_context ().remove_class ("slider-super-assignable");
+            slider_3.get_style_context ().remove_class ("slider-super-assignable");
+            slider_4.get_style_context ().remove_class ("slider-super-assignable");
+            slider_5.get_style_context ().remove_class ("slider-super-assignable");
+            slider_6.get_style_context ().remove_class ("slider-super-assignable");
+            slider_7.get_style_context ().remove_class ("slider-super-assignable");
+            slider_8.get_style_context ().remove_class ("slider-super-assignable");
+            slider_9.get_style_context ().remove_class ("slider-super-assignable");
+            modulator_knob_a.get_style_context ().remove_class ("knob-super-assignable");
+            modulator_knob_b.get_style_context ().remove_class ("knob-super-assignable");
+            modulator_knob_c.get_style_context ().remove_class ("knob-super-assignable");
+            modulator_knob_d.get_style_context ().remove_class ("knob-super-assignable");
+            master_knob.set_color (assigned, (int)(value * 10));
+            if (master_assign_mode) {
+                open_LFO_editor ();
+            }
+            master_assign_mode = false;
+            slider_assign_button.sensitive = true;
+            knob_assign_button.sensitive = true;
+        }
+
+        public void handle_midi_controller_event (int index, int value) {
+            switch (index) {
+                case UI_INDEX_SLIDER_0:
+                    slider_0.change_value(Gtk.ScrollType.JUMP, (double)((value < 0 ? 0 : value) / 127.0));
+                    Ensembles.Core.Synthesizer.set_modulator_value (
+                        slider_0_control_map.channel, slider_0_control_map.modulator, (int)(value)
+                    );
+                    break;
+                case UI_INDEX_SLIDER_1:
+                    slider_1.change_value(Gtk.ScrollType.JUMP, (double)((value < 0 ? 0 : value) / 127.0));
+                    Ensembles.Core.Synthesizer.set_modulator_value (
+                        slider_1_control_map.channel, slider_1_control_map.modulator, (int)(value)
+                    );
+                    break;
+                case UI_INDEX_SLIDER_2:
+                    slider_2.change_value(Gtk.ScrollType.JUMP, (double)((value < 0 ? 0 : value) / 127.0));
+                    Ensembles.Core.Synthesizer.set_modulator_value (
+                        slider_2_control_map.channel, slider_2_control_map.modulator, (int)(value)
+                    );
+                    break;
+                case UI_INDEX_SLIDER_3:
+                    slider_3.change_value(Gtk.ScrollType.JUMP, (double)((value < 0 ? 0 : value) / 127.0));
+                    Ensembles.Core.Synthesizer.set_modulator_value (
+                        slider_3_control_map.channel, slider_3_control_map.modulator, (int)(value)
+                    );
+                    break;
+                case UI_INDEX_SLIDER_4:
+                    slider_4.change_value(Gtk.ScrollType.JUMP, (double)((value < 0 ? 0 : value) / 127.0));
+                    Ensembles.Core.Synthesizer.set_modulator_value (
+                        slider_4_control_map.channel, slider_4_control_map.modulator, (int)(value)
+                    );
+                    break;
+                case UI_INDEX_SLIDER_5:
+                    slider_5.change_value(Gtk.ScrollType.JUMP, (double)((value < 0 ? 0 : value) / 127.0));
+                    Ensembles.Core.Synthesizer.set_modulator_value (
+                        slider_5_control_map.channel, slider_5_control_map.modulator, (int)(value)
+                    );
+                    break;
+                case UI_INDEX_SLIDER_6:
+                    slider_6.change_value(Gtk.ScrollType.JUMP, (double)((value < 0 ? 0 : value) / 127.0));
+                    Ensembles.Core.Synthesizer.set_modulator_value (
+                        slider_6_control_map.channel, slider_6_control_map.modulator, (int)(value)
+                    );
+                    break;
+                case UI_INDEX_SLIDER_7:
+                    slider_7.change_value(Gtk.ScrollType.JUMP, (double)((value < 0 ? 0 : value) / 127.0));
+                    Ensembles.Core.Synthesizer.set_modulator_value (
+                        slider_7_control_map.channel, slider_7_control_map.modulator, (int)(value)
+                    );
+                    break;
+                case UI_INDEX_SLIDER_8:
+                    slider_8.change_value(Gtk.ScrollType.JUMP, (double)((value < 0 ? 0 : value) / 127.0));
+                    Ensembles.Core.Synthesizer.set_modulator_value (
+                        slider_8_control_map.channel, slider_8_control_map.modulator, (int)(value)
+                    );
+                    break;
+                case UI_INDEX_SLIDER_9:
+                    slider_9.change_value(Gtk.ScrollType.JUMP, (double)((value < 0 ? 0 : value) / 127.0));
+                    Ensembles.Core.Synthesizer.set_modulator_value (
+                        slider_9_control_map.channel, slider_9_control_map.modulator, (int)(value)
+                    );
+                    break;
+                case UI_INDEX_KNOB_A:
+                    modulator_knob_a.set_value ((double)((value < 0 ? 0 : value) / 127.0));
+                    Ensembles.Core.Synthesizer.set_modulator_value (
+                        knob_a_control_map.channel, knob_a_control_map.modulator, (int)(value)
+                    );
+                    break;
+                case UI_INDEX_KNOB_B:
+                    modulator_knob_b.set_value ((double)((value < 0 ? 0 : value) / 127.0));
+                    Ensembles.Core.Synthesizer.set_modulator_value (
+                        knob_b_control_map.channel, knob_b_control_map.modulator, (int)(value)
+                    );
+                    break;
+                case UI_INDEX_KNOB_C:
+                    modulator_knob_c.set_value ((double)((value < 0 ? 0 : value) / 127.0));
+                    Ensembles.Core.Synthesizer.set_modulator_value (
+                        knob_c_control_map.channel, knob_c_control_map.modulator, (int)(value)
+                    );
+                    break;
+                case UI_INDEX_KNOB_D:
+                    modulator_knob_d.set_value ((double)((value < 0 ? 0 : value) / 127.0));
+                    Ensembles.Core.Synthesizer.set_modulator_value (
+                        knob_d_control_map.channel, knob_d_control_map.modulator, (int)(value)
+                    );
+                    break;
+                case UI_INDEX_MASTER_KNOB:
+                    master_knob.set_value ((double)((value < 0 ? 0 : value) / 127.0));
+                    control_other_sliders_from_master_knob((double)((value < 0 ? 0 : value) / 127.0));
+                    break;
+            }
         }
     }
 }
