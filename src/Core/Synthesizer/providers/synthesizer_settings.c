@@ -6,7 +6,7 @@
 #include "synthesizer_settings.h"
 
 // Reverb presets
-double reverb_room_size[11] = { 0.0, 0.1, 0.2, 0.3, 0.4, 0.4, 0.5, 0.5, 0.6, 0.6, 0.9};
+double reverb_room_size[11] = { 0.0, 0.1, 0.2, 0.3, 0.4, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9};
 double reverb_width[11]     = { 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20 };
 double reverb_level[11]     = { 0, 0.05, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1 };
 
