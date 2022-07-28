@@ -29,7 +29,7 @@ add_project_arguments (
     '-D', 'ALSA_DRIVER',
     '-D', 'PULSEAUDIO_DRIVER',
     '-D', 'JACK_DRIVER',
-    # '-D', 'PIPEWIRE_CORE_DRIVER',  # Uncomment to enable pipewire core support provided fluidsynth supports it
+    '-D', 'PIPEWIRE_CORE_DRIVER',  # Uncomment to enable pipewire core support provided fluidsynth supports it
     language: 'vala'
 )
 
@@ -54,6 +54,7 @@ dependencies = [
     dependency ('lv2'),
     dependency ('lilv-0'),
     dependency ('suil-0'),
+    dependency ('libpipewire-0.3', version: '>= 0.3.52'),
     meson.get_compiler ('vala').find_library ('posix'),
     meson.get_compiler ('c').find_library ('m', required : true),
     meson.get_compiler ('c').find_library ('fluidsynth', required : true),

@@ -122,7 +122,7 @@ set_driver_configuration(const char* driver_name, double buffer_length_multiplie
         fluid_settings_setnum(rendering_settings, "synth.overflow.percussion", 5000.0);
         fluid_settings_setint(rendering_settings, "synth.midi-channels", 64);
         fluid_settings_setstr(rendering_settings, "synth.midi-bank-select", "gs");
-        fluid_settings_setint(rendering_settings, "synth.polyphony", 512);
+        fluid_settings_setint(rendering_settings, "synth.polyphony", 1024);
     }
     if (utility_settings == NULL) {
         utility_settings = new_fluid_settings ();
@@ -181,16 +181,18 @@ set_driver_configuration(const char* driver_name, double buffer_length_multiplie
     }
     if (strcmp (driver_name, "pipewire") == 0) {
         fluid_settings_setstr(rendering_settings, "audio.driver", "pipewire");
-        fluid_settings_setint(rendering_settings, "audio.period-size", 64);
-        fluid_settings_setint(rendering_settings, "audio.pulseaudio.adjust-latency", 0);
+        fluid_settings_setint(rendering_settings, "audio.period-size", 512);
+        fluid_settings_setint(rendering_settings, "audio.pulseaudio.adjust-latency", 1);
         fluid_settings_setstr(rendering_settings, "audio.pipewire.media-role", "Production");
         fluid_settings_setstr(rendering_settings, "audio.pipewire.media-type", "Audio");
+        fluid_settings_setstr(rendering_settings, "audio.pipewire.media-category", "Playback");
 
         fluid_settings_setstr(utility_settings, "audio.driver", "pipewire");
-        fluid_settings_setint(utility_settings, "audio.period-size", 64);
+        fluid_settings_setint(utility_settings, "audio.period-size", 256);
         fluid_settings_setint(utility_settings, "audio.realtime-prio", 1);
-        fluid_settings_setstr(utility_settings, "audio.pipewire.media-role", "Production");
+        fluid_settings_setstr(utility_settings, "audio.pipewire.media-role", "DSP");
         fluid_settings_setstr(utility_settings, "audio.pipewire.media-type", "Audio");
+        fluid_settings_setstr(utility_settings, "audio.pipewire.media-category", "Source");
 
         return (int)(64.0 + (buffer_length_multiplier * 128.0));
     }

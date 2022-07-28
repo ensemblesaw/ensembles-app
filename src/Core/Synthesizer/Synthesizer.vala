@@ -10,7 +10,11 @@ namespace Ensembles.Core {
         public int chord_type = 0;
         public signal void detected_chord (int chord_main, int type);
         public Synthesizer (string soundfont, string driver_name, double buffer_size) {
-            synthesizer_init (soundfont, driver_name, buffer_size);
+            bool use_pipewire = false;
+            #if PIPEWIRE_CORE_DRIVER
+            use_pipewire = true;
+            #endif
+            synthesizer_init (soundfont, driver_name, buffer_size, use_pipewire);
             synthesizer_set_fx_callback ((buffer_l_in, buffer_r_in, out buffer_out_l, out buffer_out_r) => {
                 EffectRack.set_synth_callback (buffer_l_in, buffer_r_in, out buffer_out_l, out buffer_out_r);
             });
@@ -192,7 +196,7 @@ namespace Ensembles.Core {
 }
 
 // synthesizer.c
-extern void synthesizer_init (string loc, string dname, double buffer_size);
+extern void synthesizer_init (string loc, string dname, double buffer_size, bool pw_enabled = false);
 extern void synthesizer_destruct ();
 extern int synthesizer_set_driver_configuration (string dname, double buffer_size);
 extern int synthesizer_send_notes (int key, int on, int velocity, int channel, out int type);
