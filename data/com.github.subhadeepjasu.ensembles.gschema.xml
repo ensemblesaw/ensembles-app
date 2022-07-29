@@ -152,6 +152,20 @@
 		<description>Registry memory in the form of delimited string array</description>
 	</key>
 
+	<!-- MIDI Maps -->
+	<key name="note-maps" type="as">
+		<default>[]</default>
+		<summary>MIDI Note to control mapping</summary>
+	</key>
+	<key name="control-maps" type="as">
+		<default>[]</default>
+		<summary>MIDI control mapping</summary>
+	</key>
+	<key name="control-label-maps" type="as">
+		<default>[]</default>
+		<summary>MIDI control to label mapping</summary>
+	</key>
+
 	<!-- Driver Settings -->
 	<key name="driver" type="s">
 		<default>"alsa"</default>

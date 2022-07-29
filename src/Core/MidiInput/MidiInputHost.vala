@@ -20,22 +20,71 @@ namespace Ensembles.Core {
         private Gee.HashMap<int, int> control_map;
         private Gee.HashMap<int, string> control_label_reverse_map;
 
+        public signal void receive_note_event (int key, bool is_pressed, int velocity, int layer);
+        public signal bool midi_event_received (int channel, int identifier, int type);
+
         public MidiInputHost () {
             active_devices = new List<int> ();
             note_map = new Gee.HashMap<int, int> ();
             control_map = new Gee.HashMap<int, int> ();
             control_label_reverse_map = new Gee.HashMap<int, string> ();
+
+            load_maps ();
+        }
+
+        private void save_maps() {
+            var note_map_arr = new string[note_map.size];
+            int i = 0;
+            foreach (var item in note_map.keys) {
+                note_map_arr[i] = item.to_string() + " " + note_map[item].to_string();
+                i++;
+            }
+
+            Application.settings.set_strv("note-maps", note_map_arr);
+
+            i = 0;
+            var control_map_arr = new string[control_map.size];
+            foreach (var item in control_map.keys) {
+                control_map_arr[i] = item.to_string() + " " + control_map[item].to_string();
+                i++;
+            }
+
+            Application.settings.set_strv("control-maps", control_map_arr);
+
+            i = 0;
+            var control_label_reverse_map_arr = new string[control_label_reverse_map.size];
+            foreach (var item in control_label_reverse_map.keys) {
+                control_label_reverse_map_arr[i] = item.to_string() + "&" + control_label_reverse_map[item];
+                i++;
+            }
+
+            Application.settings.set_strv("control-label-maps", control_label_reverse_map_arr);
+        }
+
+        private void load_maps() {
+            var note_map_arr = Application.settings.get_strv ("note-maps");
+            foreach (var item in note_map_arr) {
+                var tokens = item.split(" ", 2);
+                note_map.set(int.parse(tokens[0]), int.parse(tokens[1]));
+            }
+
+            var control_map_arr = Application.settings.get_strv ("control-maps");
+            foreach (var item in control_map_arr) {
+                var tokens = item.split(" ", 2);
+                control_map.set(int.parse(tokens[0]), int.parse(tokens[1]));
+            }
+
+            var control_label_reverse_map_arr = Application.settings.get_strv ("note-maps");
+            foreach (var item in control_label_reverse_map_arr) {
+                var tokens = item.split("&", 2);
+                control_label_reverse_map.set(int.parse(tokens[0]), tokens[1]);
+            }
         }
 
         public void destroy () {
             stream_connected = false;
             controller_destruct ();
         }
-
-
-
-        public signal void receive_note_event (int key, bool is_pressed, int velocity, int layer);
-        public signal bool midi_event_received (int channel, int identifier, int type);
 
         public Ensembles.Core.MidiDevice[] refresh () {
             if (Application.raw_midi_input) {
@@ -182,6 +231,7 @@ namespace Ensembles.Core {
                 control_map.set (szudzik_hash (channel, identifier), ui_control_index);
             }
             control_label_reverse_map.set (ui_control_index, _("#%d, Channel %d").printf (identifier, channel + 1));
+            save_maps ();
         }
 
         public string get_assignment_label (int ui_control_index) {

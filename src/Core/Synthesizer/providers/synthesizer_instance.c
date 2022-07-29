@@ -181,20 +181,20 @@ set_driver_configuration(const char* driver_name, double buffer_length_multiplie
     }
     if (strcmp (driver_name, "pipewire") == 0) {
         fluid_settings_setstr(rendering_settings, "audio.driver", "pipewire");
-        fluid_settings_setint(rendering_settings, "audio.period-size", 512);
-        fluid_settings_setint(rendering_settings, "audio.pulseaudio.adjust-latency", 1);
+        fluid_settings_setint(rendering_settings, "audio.period-size", (int)(256.0 + (buffer_length_multiplier * 3584.0)));
+        fluid_settings_setint(rendering_settings, "audio.realtime-prio", 80);
         fluid_settings_setstr(rendering_settings, "audio.pipewire.media-role", "Production");
         fluid_settings_setstr(rendering_settings, "audio.pipewire.media-type", "Audio");
         fluid_settings_setstr(rendering_settings, "audio.pipewire.media-category", "Playback");
 
         fluid_settings_setstr(utility_settings, "audio.driver", "pipewire");
         fluid_settings_setint(utility_settings, "audio.period-size", 256);
-        fluid_settings_setint(utility_settings, "audio.realtime-prio", 1);
-        fluid_settings_setstr(utility_settings, "audio.pipewire.media-role", "DSP");
+        fluid_settings_setint(utility_settings, "audio.realtime-prio", 90);
+        fluid_settings_setstr(utility_settings, "audio.pipewire.media-role", "Game");
         fluid_settings_setstr(utility_settings, "audio.pipewire.media-type", "Audio");
-        fluid_settings_setstr(utility_settings, "audio.pipewire.media-category", "Source");
+        fluid_settings_setstr(utility_settings, "audio.pipewire.media-category", "Playback");
 
-        return (int)(64.0 + (buffer_length_multiplier * 128.0));
+        return (int)(256.0 + (buffer_length_multiplier * 3584.0));
     }
 
     return 0;
