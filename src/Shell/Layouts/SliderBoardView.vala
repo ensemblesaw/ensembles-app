@@ -782,7 +782,7 @@ namespace Ensembles.Shell {
             });
 
             master_knob.change_value.connect ((value) => {
-                control_other_sliders_from_master_knob(value);
+                control_other_sliders_from_master_knob (value);
             });
             master_knob.button_press_event.connect ((button_event) => {
                 if (button_event.button == 3) {
@@ -793,7 +793,7 @@ namespace Ensembles.Shell {
                 return false;
             });
 
-            load_settings();
+            load_settings ();
             monitor_lfo ();
         }
 
@@ -804,62 +804,78 @@ namespace Ensembles.Shell {
                 return;
             }
 
-            var token = maps[0].split(",");
+            var token = maps[0].split (",");
             slider_0_control_map = { token[0] == "1", int.parse (token[1]), int.parse (token[2]) };
-            token = maps[1].split(",");
+            token = maps[1].split (",");
             slider_1_control_map = { token[0] == "1", int.parse (token[1]), int.parse (token[2]) };
-            token = maps[2].split(",");
+            token = maps[2].split (",");
             slider_2_control_map = { token[0] == "1", int.parse (token[1]), int.parse (token[2]) };
-            token = maps[3].split(",");
+            token = maps[3].split (",");
             slider_3_control_map = { token[0] == "1", int.parse (token[1]), int.parse (token[2]) };
-            token = maps[4].split(",");
+            token = maps[4].split (",");
             slider_4_control_map = { token[0] == "1", int.parse (token[1]), int.parse (token[2]) };
-            token = maps[5].split(",");
+            token = maps[5].split (",");
             slider_5_control_map = { token[0] == "1", int.parse (token[1]), int.parse (token[2]) };
-            token = maps[6].split(",");
+            token = maps[6].split (",");
             slider_6_control_map = { token[0] == "1", int.parse (token[1]), int.parse (token[2]) };
-            token = maps[7].split(",");
+            token = maps[7].split (",");
             slider_7_control_map = { token[0] == "1", int.parse (token[1]), int.parse (token[2]) };
-            token = maps[8].split(",");
+            token = maps[8].split (",");
             slider_8_control_map = { token[0] == "1", int.parse (token[1]), int.parse (token[2]) };
-            token = maps[9].split(",");
+            token = maps[9].split (",");
             slider_9_control_map = { token[0] == "1", int.parse (token[1]), int.parse (token[2]) };
 
-            token = maps[10].split(",");
+            token = maps[10].split (",");
             knob_a_control_map = { token[0] == "1", int.parse (token[1]), int.parse (token[2]) };
-            token = maps[11].split(",");
+            token = maps[11].split (",");
             knob_b_control_map = { token[0] == "1", int.parse (token[1]), int.parse (token[2]) };
-            token = maps[12].split(",");
+            token = maps[12].split (",");
             knob_c_control_map = { token[0] == "1", int.parse (token[1]), int.parse (token[2]) };
-            token = maps[13].split(",");
+            token = maps[13].split (",");
             knob_d_control_map = { token[0] == "1", int.parse (token[1]), int.parse (token[2]) };
 
-            token = maps[14].split(",");
+            token = maps[14].split (",");
             joystick_x_control_map = { token[0] == "1", int.parse (token[1]), int.parse (token[2]) };
-            token = maps[15].split(",");
+            token = maps[15].split (",");
             joystick_y_control_map = { token[0] == "1", int.parse (token[1]), int.parse (token[2]) };
         }
 
         void save_settings () {
             var tokens = new string[16];
-            tokens[0] = (slider_0_control_map.assigned ? "1" : "0") + "," + slider_0_control_map.channel.to_string () + "," + slider_0_control_map.modulator.to_string ();
-            tokens[1] = (slider_1_control_map.assigned ? "1" : "0") + "," + slider_1_control_map.channel.to_string () + "," + slider_1_control_map.modulator.to_string ();
-            tokens[2] = (slider_2_control_map.assigned ? "1" : "0") + "," + slider_2_control_map.channel.to_string () + "," + slider_2_control_map.modulator.to_string ();
-            tokens[3] = (slider_3_control_map.assigned ? "1" : "0") + "," + slider_3_control_map.channel.to_string () + "," + slider_3_control_map.modulator.to_string ();
-            tokens[4] = (slider_4_control_map.assigned ? "1" : "0") + "," + slider_4_control_map.channel.to_string () + "," + slider_4_control_map.modulator.to_string ();
-            tokens[5] = (slider_5_control_map.assigned ? "1" : "0") + "," + slider_5_control_map.channel.to_string () + "," + slider_5_control_map.modulator.to_string ();
-            tokens[6] = (slider_6_control_map.assigned ? "1" : "0") + "," + slider_6_control_map.channel.to_string () + "," + slider_6_control_map.modulator.to_string ();
-            tokens[7] = (slider_7_control_map.assigned ? "1" : "0") + "," + slider_7_control_map.channel.to_string () + "," + slider_7_control_map.modulator.to_string ();
-            tokens[8] = (slider_8_control_map.assigned ? "1" : "0") + "," + slider_8_control_map.channel.to_string () + "," + slider_8_control_map.modulator.to_string ();
-            tokens[9] = (slider_9_control_map.assigned ? "1" : "0") + "," + slider_9_control_map.channel.to_string () + "," + slider_9_control_map.modulator.to_string ();
+            tokens[0] = (slider_0_control_map.assigned ? "1" : "0") + ","
+                + slider_0_control_map.channel.to_string () + "," + slider_0_control_map.modulator.to_string ();
+            tokens[1] = (slider_1_control_map.assigned ? "1" : "0") + ","
+                + slider_1_control_map.channel.to_string () + "," + slider_1_control_map.modulator.to_string ();
+            tokens[2] = (slider_2_control_map.assigned ? "1" : "0") + ","
+                + slider_2_control_map.channel.to_string () + "," + slider_2_control_map.modulator.to_string ();
+            tokens[3] = (slider_3_control_map.assigned ? "1" : "0") + ","
+                + slider_3_control_map.channel.to_string () + "," + slider_3_control_map.modulator.to_string ();
+            tokens[4] = (slider_4_control_map.assigned ? "1" : "0") + ","
+                + slider_4_control_map.channel.to_string () + "," + slider_4_control_map.modulator.to_string ();
+            tokens[5] = (slider_5_control_map.assigned ? "1" : "0") + ","
+                + slider_5_control_map.channel.to_string () + "," + slider_5_control_map.modulator.to_string ();
+            tokens[6] = (slider_6_control_map.assigned ? "1" : "0") + ","
+                + slider_6_control_map.channel.to_string () + "," + slider_6_control_map.modulator.to_string ();
+            tokens[7] = (slider_7_control_map.assigned ? "1" : "0") + ","
+                + slider_7_control_map.channel.to_string () + "," + slider_7_control_map.modulator.to_string ();
+            tokens[8] = (slider_8_control_map.assigned ? "1" : "0") + ","
+                + slider_8_control_map.channel.to_string () + "," + slider_8_control_map.modulator.to_string ();
+            tokens[9] = (slider_9_control_map.assigned ? "1" : "0") + ","
+                + slider_9_control_map.channel.to_string () + "," + slider_9_control_map.modulator.to_string ();
 
-            tokens[10] = (knob_a_control_map.assigned ? "1" : "0") + "," + knob_a_control_map.channel.to_string () + "," + knob_a_control_map.modulator.to_string ();
-            tokens[11] = (knob_b_control_map.assigned ? "1" : "0") + "," + knob_b_control_map.channel.to_string () + "," + knob_b_control_map.modulator.to_string ();
-            tokens[12] = (knob_c_control_map.assigned ? "1" : "0") + "," + knob_c_control_map.channel.to_string () + "," + knob_c_control_map.modulator.to_string ();
-            tokens[13] = (knob_d_control_map.assigned ? "1" : "0") + "," + knob_d_control_map.channel.to_string () + "," + knob_d_control_map.modulator.to_string ();
+            tokens[10] = (knob_a_control_map.assigned ? "1" : "0") + ","
+                + knob_a_control_map.channel.to_string () + "," + knob_a_control_map.modulator.to_string ();
+            tokens[11] = (knob_b_control_map.assigned ? "1" : "0") + ","
+                + knob_b_control_map.channel.to_string () + "," + knob_b_control_map.modulator.to_string ();
+            tokens[12] = (knob_c_control_map.assigned ? "1" : "0") + ","
+                + knob_c_control_map.channel.to_string () + "," + knob_c_control_map.modulator.to_string ();
+            tokens[13] = (knob_d_control_map.assigned ? "1" : "0") + ","
+                + knob_d_control_map.channel.to_string () + "," + knob_d_control_map.modulator.to_string ();
 
-            tokens[14] = (joystick_x_control_map.assigned ? "1" : "0") + "," + joystick_x_control_map.channel.to_string () + "," + joystick_x_control_map.modulator.to_string ();
-            tokens[15] = (joystick_y_control_map.assigned ? "1" : "0") + "," + joystick_y_control_map.channel.to_string () + "," + joystick_y_control_map.modulator.to_string ();
+            tokens[14] = (joystick_x_control_map.assigned ? "1" : "0") + ","
+                + joystick_x_control_map.channel.to_string () + "," + joystick_x_control_map.modulator.to_string ();
+            tokens[15] = (joystick_y_control_map.assigned ? "1" : "0") + ","
+                + joystick_y_control_map.channel.to_string () + "," + joystick_y_control_map.modulator.to_string ();
 
             //var settings_string = string.joinv (";", tokens);
             Application.settings.set_strv ("ui-control-maps", tokens);
@@ -1191,61 +1207,61 @@ namespace Ensembles.Shell {
         public void handle_midi_controller_event (int index, int value) {
             switch (index) {
                 case UI_INDEX_SLIDER_0:
-                    slider_0.change_value(Gtk.ScrollType.JUMP, (double)((value < 0 ? 0 : value) / 127.0));
+                    slider_0.change_value (Gtk.ScrollType.JUMP, (double)((value < 0 ? 0 : value) / 127.0));
                     Ensembles.Core.Synthesizer.set_modulator_value (
                         slider_0_control_map.channel, slider_0_control_map.modulator, (int)(value)
                     );
                     break;
                 case UI_INDEX_SLIDER_1:
-                    slider_1.change_value(Gtk.ScrollType.JUMP, (double)((value < 0 ? 0 : value) / 127.0));
+                    slider_1.change_value (Gtk.ScrollType.JUMP, (double)((value < 0 ? 0 : value) / 127.0));
                     Ensembles.Core.Synthesizer.set_modulator_value (
                         slider_1_control_map.channel, slider_1_control_map.modulator, (int)(value)
                     );
                     break;
                 case UI_INDEX_SLIDER_2:
-                    slider_2.change_value(Gtk.ScrollType.JUMP, (double)((value < 0 ? 0 : value) / 127.0));
+                    slider_2.change_value (Gtk.ScrollType.JUMP, (double)((value < 0 ? 0 : value) / 127.0));
                     Ensembles.Core.Synthesizer.set_modulator_value (
                         slider_2_control_map.channel, slider_2_control_map.modulator, (int)(value)
                     );
                     break;
                 case UI_INDEX_SLIDER_3:
-                    slider_3.change_value(Gtk.ScrollType.JUMP, (double)((value < 0 ? 0 : value) / 127.0));
+                    slider_3.change_value (Gtk.ScrollType.JUMP, (double)((value < 0 ? 0 : value) / 127.0));
                     Ensembles.Core.Synthesizer.set_modulator_value (
                         slider_3_control_map.channel, slider_3_control_map.modulator, (int)(value)
                     );
                     break;
                 case UI_INDEX_SLIDER_4:
-                    slider_4.change_value(Gtk.ScrollType.JUMP, (double)((value < 0 ? 0 : value) / 127.0));
+                    slider_4.change_value (Gtk.ScrollType.JUMP, (double)((value < 0 ? 0 : value) / 127.0));
                     Ensembles.Core.Synthesizer.set_modulator_value (
                         slider_4_control_map.channel, slider_4_control_map.modulator, (int)(value)
                     );
                     break;
                 case UI_INDEX_SLIDER_5:
-                    slider_5.change_value(Gtk.ScrollType.JUMP, (double)((value < 0 ? 0 : value) / 127.0));
+                    slider_5.change_value (Gtk.ScrollType.JUMP, (double)((value < 0 ? 0 : value) / 127.0));
                     Ensembles.Core.Synthesizer.set_modulator_value (
                         slider_5_control_map.channel, slider_5_control_map.modulator, (int)(value)
                     );
                     break;
                 case UI_INDEX_SLIDER_6:
-                    slider_6.change_value(Gtk.ScrollType.JUMP, (double)((value < 0 ? 0 : value) / 127.0));
+                    slider_6.change_value (Gtk.ScrollType.JUMP, (double)((value < 0 ? 0 : value) / 127.0));
                     Ensembles.Core.Synthesizer.set_modulator_value (
                         slider_6_control_map.channel, slider_6_control_map.modulator, (int)(value)
                     );
                     break;
                 case UI_INDEX_SLIDER_7:
-                    slider_7.change_value(Gtk.ScrollType.JUMP, (double)((value < 0 ? 0 : value) / 127.0));
+                    slider_7.change_value (Gtk.ScrollType.JUMP, (double)((value < 0 ? 0 : value) / 127.0));
                     Ensembles.Core.Synthesizer.set_modulator_value (
                         slider_7_control_map.channel, slider_7_control_map.modulator, (int)(value)
                     );
                     break;
                 case UI_INDEX_SLIDER_8:
-                    slider_8.change_value(Gtk.ScrollType.JUMP, (double)((value < 0 ? 0 : value) / 127.0));
+                    slider_8.change_value (Gtk.ScrollType.JUMP, (double)((value < 0 ? 0 : value) / 127.0));
                     Ensembles.Core.Synthesizer.set_modulator_value (
                         slider_8_control_map.channel, slider_8_control_map.modulator, (int)(value)
                     );
                     break;
                 case UI_INDEX_SLIDER_9:
-                    slider_9.change_value(Gtk.ScrollType.JUMP, (double)((value < 0 ? 0 : value) / 127.0));
+                    slider_9.change_value (Gtk.ScrollType.JUMP, (double)((value < 0 ? 0 : value) / 127.0));
                     Ensembles.Core.Synthesizer.set_modulator_value (
                         slider_9_control_map.channel, slider_9_control_map.modulator, (int)(value)
                     );

@@ -32,52 +32,52 @@ namespace Ensembles.Core {
             load_maps ();
         }
 
-        private void save_maps() {
+        private void save_maps () {
             var note_map_arr = new string[note_map.size];
             int i = 0;
             foreach (var item in note_map.keys) {
-                note_map_arr[i] = item.to_string() + " " + note_map[item].to_string();
+                note_map_arr[i] = item.to_string () + " " + note_map[item].to_string ();
                 i++;
             }
 
-            Application.settings.set_strv("note-maps", note_map_arr);
+            Application.settings.set_strv ("note-maps", note_map_arr);
 
             i = 0;
             var control_map_arr = new string[control_map.size];
             foreach (var item in control_map.keys) {
-                control_map_arr[i] = item.to_string() + " " + control_map[item].to_string();
+                control_map_arr[i] = item.to_string () + " " + control_map[item].to_string ();
                 i++;
             }
 
-            Application.settings.set_strv("control-maps", control_map_arr);
+            Application.settings.set_strv ("control-maps", control_map_arr);
 
             i = 0;
             var control_label_reverse_map_arr = new string[control_label_reverse_map.size];
             foreach (var item in control_label_reverse_map.keys) {
-                control_label_reverse_map_arr[i] = item.to_string() + "&" + control_label_reverse_map[item];
+                control_label_reverse_map_arr[i] = item.to_string () + "&" + control_label_reverse_map[item];
                 i++;
             }
 
-            Application.settings.set_strv("control-label-maps", control_label_reverse_map_arr);
+            Application.settings.set_strv ("control-label-maps", control_label_reverse_map_arr);
         }
 
         private void load_maps() {
             var note_map_arr = Application.settings.get_strv ("note-maps");
             foreach (var item in note_map_arr) {
                 var tokens = item.split(" ", 2);
-                note_map.set(int.parse(tokens[0]), int.parse(tokens[1]));
+                note_map.set (int.parse (tokens[0]), int.parse (tokens[1]));
             }
 
             var control_map_arr = Application.settings.get_strv ("control-maps");
             foreach (var item in control_map_arr) {
                 var tokens = item.split(" ", 2);
-                control_map.set(int.parse(tokens[0]), int.parse(tokens[1]));
+                control_map.set (int.parse (tokens[0]), int.parse (tokens[1]));
             }
 
             var control_label_reverse_map_arr = Application.settings.get_strv ("note-maps");
             foreach (var item in control_label_reverse_map_arr) {
-                var tokens = item.split("&", 2);
-                control_label_reverse_map.set(int.parse(tokens[0]), tokens[1]);
+                var tokens = item.split ("&", 2);
+                control_label_reverse_map.set (int.parse (tokens[0]), tokens[1]);
             }
         }
 

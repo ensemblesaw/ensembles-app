@@ -571,7 +571,9 @@ namespace Ensembles.Shell {
 
         public void handle_midi_controller_event (int index, int value) {
             if (index < UI_INDEX_MIXER_VOICE_L) {
-                style_gain_sliders[index - UI_INDEX_MIXER_STYLE_1].change_value(Gtk.ScrollType.JUMP, (double)((value < 0 ? 0 : value) / 127.0));
+                style_gain_sliders[index - UI_INDEX_MIXER_STYLE_1].change_value (
+                    Gtk.ScrollType.JUMP, (double)((value < 0 ? 0 : value) / 127.0)
+                );
             }
         }
     }
