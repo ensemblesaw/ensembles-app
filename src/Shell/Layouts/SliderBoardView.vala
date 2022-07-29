@@ -1087,7 +1087,7 @@ namespace Ensembles.Shell {
             });
         }
 
-        void control_other_sliders_from_master_knob(double value) {
+        void control_other_sliders_from_master_knob (double value) {
             bool assigned = false;
             if (master_knob_assigns != null) {
                 if (master_knob_assigns[0] && slider_0_control_map.assigned) {
@@ -1292,7 +1292,7 @@ namespace Ensembles.Shell {
                     break;
                 case UI_INDEX_MASTER_KNOB:
                     master_knob.set_value ((double)((value < 0 ? 0 : value) / 127.0));
-                    control_other_sliders_from_master_knob((double)((value < 0 ? 0 : value) / 127.0));
+                    control_other_sliders_from_master_knob ((double)((value < 0 ? 0 : value) / 127.0));
                     break;
             }
         }

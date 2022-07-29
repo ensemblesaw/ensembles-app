@@ -61,16 +61,16 @@ namespace Ensembles.Core {
             Application.settings.set_strv ("control-label-maps", control_label_reverse_map_arr);
         }
 
-        private void load_maps() {
+        private void load_maps () {
             var note_map_arr = Application.settings.get_strv ("note-maps");
             foreach (var item in note_map_arr) {
-                var tokens = item.split(" ", 2);
+                var tokens = item.split (" ", 2);
                 note_map.set (int.parse (tokens[0]), int.parse (tokens[1]));
             }
 
             var control_map_arr = Application.settings.get_strv ("control-maps");
             foreach (var item in control_map_arr) {
-                var tokens = item.split(" ", 2);
+                var tokens = item.split (" ", 2);
                 control_map.set (int.parse (tokens[0]), int.parse (tokens[1]));
             }
 
