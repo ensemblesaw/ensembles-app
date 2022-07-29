@@ -111,12 +111,11 @@ set_note_callback (synthesizer_note_event_callback callback) {
 }
 
 void
-synthesizer_init(const char* loc, const char* dname, double buffer_size, __uint8_t pw_enabled)
+synthesizer_init(const char* loc, const char* dname, double buffer_size)
 {
-    if (pw_enabled)
-    {
-        pw_init(NULL, NULL);
-    }
+    #ifdef PIPEWIRE_CORE_DRIVER
+    pw_init(NULL, NULL);
+    #endif
     set_driver_configuration(dname, buffer_size);
     realtime_render_synth = get_synthesizer(RENDER);
     if (fluid_is_soundfont(loc)) {

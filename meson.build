@@ -20,6 +20,7 @@ i18n = import ('i18n')
 add_project_arguments (
     '-DGETTEXT_PACKAGE="@0@"'.format (meson.project_name ()),
     '-DHANDY_USE_UNSTABLE_API',
+    '-DPIPEWIRE_CORE_DRIVER',  # Uncomment to enable pipewire core support provided fluidsynth supports it
     language: 'c'
 )
 
@@ -54,7 +55,7 @@ dependencies = [
     dependency ('lv2'),
     dependency ('lilv-0'),
     dependency ('suil-0'),
-    dependency ('libpipewire-0.3', version: '>= 0.3.52'),
+    dependency ('libpipewire-0.3'), # Uncomment to enable pipewire core support provided fluidsynth supports it
     meson.get_compiler ('vala').find_library ('posix'),
     meson.get_compiler ('c').find_library ('m', required : true),
     meson.get_compiler ('c').find_library ('fluidsynth', required : true),
