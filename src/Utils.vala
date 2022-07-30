@@ -139,7 +139,7 @@ namespace Ensembles {
 
 
                 if (n > 0) {
-                    csv_data = new string[n, lines.nth_data (0).split("\t").length];
+                    csv_data = new string[n, lines.nth_data (0).split ("\t").length];
                     for (uint i = 0; i < n; i++) {
                         var tokens = lines.nth_data (i).split ("\t");
                         for (uint j = 0; j < tokens.length; j++) {

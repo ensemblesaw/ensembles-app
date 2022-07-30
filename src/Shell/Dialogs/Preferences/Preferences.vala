@@ -661,7 +661,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
                 wrap = true,
                 justify = Gtk.Justification.LEFT,
             };
-            main_box.attach(notes, 0, 0, 2, 1);
+            main_box.attach (notes, 0, 0, 2, 1);
 
             var label = new Gtk.Label (_("Import Mode")) {
                 halign = Gtk.Align.START,
@@ -700,7 +700,6 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             bool append_mode = false;
             append_mode_button.toggled.connect (() => {
                 append_mode = append_mode_button.active;
-                print("%d", append_mode ? 1 : 0);
             });
 
             var file_filter_csv = new Gtk.FileFilter ();
@@ -742,7 +741,6 @@ namespace Ensembles.Shell.Dialogs.Preferences {
                     string[] control_maps = {};
                     string[] control_label_maps = {};
                     for (int i = 0; i < csv_data.length[0]; i++) {
-                        print("%s <<\n", csv_data[i, 0]);
                         if (csv_data[i, 0].length > 0) {
                             note_maps += csv_data[i, 0];
                         }
