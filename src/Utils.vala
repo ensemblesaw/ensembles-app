@@ -121,5 +121,59 @@ namespace Ensembles {
             }
             return true;
         }
+
+        public static void read_csv (GLib.File csv_file, out string[,] csv_data) {
+            try {
+                var @is = csv_file.read ();
+                var dis = new DataInputStream (@is);
+
+                var lines = new List<string> ();
+
+                var line = "";
+                while ((line = dis.read_line ()) != null) {
+                    lines.append (line);
+                }
+
+                var n = lines.length ();
+
+
+
+                if (n > 0) {
+                    csv_data = new string[n, lines.nth_data (0).split("\t").length];
+                    for (uint i = 0; i < n; i++) {
+                        var tokens = lines.nth_data (i).split ("\t");
+                        for (uint j = 0; j < tokens.length; j++) {
+                            csv_data[i, j] = tokens[j];
+                        }
+                    }
+                } else {
+                    csv_data = null;
+                }
+
+            } catch (Error e) {
+                print (e.message);
+                csv_data = null;
+            }
+        }
+
+        public static void save_csv (GLib.File csv_file, string[,] csv_data) {
+            int m = csv_data.length[0], n = csv_data.length[1];
+
+            try {
+                var os = csv_file.create (GLib.FileCreateFlags.PRIVATE);
+                for (int i = 0; i < m; i++) {
+                    string[] tokens = {};
+                    for (int j = 0; j < n; j++) {
+                        tokens += csv_data[i, j];
+                    }
+                    var line = string.joinv ("\t", tokens) + "\n";
+                    os.write (line.data);
+                }
+                os.close ();
+            } catch (Error e) {
+                print (e.message);
+            }
+
+        }
     }
 }

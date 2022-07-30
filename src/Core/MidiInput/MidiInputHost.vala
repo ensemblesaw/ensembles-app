@@ -36,7 +36,7 @@ namespace Ensembles.Core {
             var note_map_arr = new string[note_map.size];
             int i = 0;
             foreach (var item in note_map.keys) {
-                note_map_arr[i] = item.to_string () + " " + note_map[item].to_string ();
+                note_map_arr[i] = item.to_string () + "_" + note_map[item].to_string ();
                 i++;
             }
 
@@ -45,7 +45,7 @@ namespace Ensembles.Core {
             i = 0;
             var control_map_arr = new string[control_map.size];
             foreach (var item in control_map.keys) {
-                control_map_arr[i] = item.to_string () + " " + control_map[item].to_string ();
+                control_map_arr[i] = item.to_string () + "_" + control_map[item].to_string ();
                 i++;
             }
 
@@ -61,24 +61,61 @@ namespace Ensembles.Core {
             Application.settings.set_strv ("control-label-maps", control_label_reverse_map_arr);
         }
 
-        private void load_maps () {
-            var note_map_arr = Application.settings.get_strv ("note-maps");
+        public void load_maps (bool append = false, string[]? note_maps = null, string[]? control_maps = null, string[]? label_maps = null) {
+            if (!append)
+                note_map.clear ();
+
+            string[] note_map_arr;
+            if (note_maps != null) {
+                note_map_arr = new string[note_maps.length];
+                for (int i = 0; i < note_maps.length; i++) {
+                    if (note_maps[i].length > 0)
+                        note_map_arr[i] = note_maps[i];
+                }
+            } else {
+                note_map_arr = Application.settings.get_strv ("note-maps");
+            }
             foreach (var item in note_map_arr) {
-                var tokens = item.split (" ", 2);
+                var tokens = item.split ("_", 2);
                 note_map.set (int.parse (tokens[0]), int.parse (tokens[1]));
             }
 
-            var control_map_arr = Application.settings.get_strv ("control-maps");
+            if (!append)
+                control_map.clear ();
+
+            string[] control_map_arr;
+            if (control_maps != null) {
+                control_map_arr = new string[control_maps.length];
+                for (int i = 0; i < control_maps.length; i++) {
+                    if (control_maps[i].length > 0)
+                        control_map_arr[i] = control_maps[i];
+                }
+            } else {
+                control_map_arr = Application.settings.get_strv ("control-maps");
+            }
             foreach (var item in control_map_arr) {
-                var tokens = item.split (" ", 2);
+                var tokens = item.split ("_", 2);
                 control_map.set (int.parse (tokens[0]), int.parse (tokens[1]));
             }
 
-            var control_label_reverse_map_arr = Application.settings.get_strv ("note-maps");
+            if (!append)
+                control_label_reverse_map.clear ();
+
+            string[] control_label_reverse_map_arr;
+            if (label_maps != null) {
+                control_label_reverse_map_arr = new string[label_maps.length];
+                for (int i = 0; i < label_maps.length; i++) {
+                    if (label_maps[i].length > 0)
+                        control_label_reverse_map_arr[i] = label_maps[i];
+                }
+            } else {
+                control_label_reverse_map_arr = Application.settings.get_strv ("control-label-maps");
+            }
             foreach (var item in control_label_reverse_map_arr) {
                 var tokens = item.split ("&", 2);
                 control_label_reverse_map.set (int.parse (tokens[0]), tokens[1]);
             }
+            save_maps ();
         }
 
         public void destroy () {
