@@ -441,14 +441,16 @@ namespace Ensembles.Shell.Dialogs.Preferences {
                     debug ("Made input presets folder\n");
 
                     var preset_file = File.new_for_path (default_binding_preset_path + "/dell_en_all_keys_generic.csv");
+
                     if (!preset_file.query_exists ()) {
-                        try {
-                            var fs = preset_file.create (GLib.FileCreateFlags.NONE);
-                            var ds = new DataOutputStream (fs);
-                            ds.put_string (Ensembles.Application.settings.get_string ("pc-input-bindings"));
-                        } catch (Error e) {
-                            warning ("Cannot create input preset file! " + e.message);
+                        var csv_data = new string[1, 60];
+                        var array = Ensembles.Application.settings.get_strv ("pc-input-maps");
+
+                        for (int i = 0; i < array.length; i++) {
+                            csv_data[0, i] = array[i];
                         }
+
+                        Utils.save_csv (preset_file, csv_data);
                     }
                 }
             }
@@ -472,7 +474,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
 
             mapping_file_chooser.response.connect ((response_id) => {
                 if (response_id == -3) {
-                    KeyboardConstants.save_mapping (Application.settings, mapping_file_chooser.get_file ().get_path ());
+                    KeyboardConstants.save_mapping (Application.settings, mapping_file_chooser.get_file ());
                 }
             });
 
@@ -547,7 +549,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             mapping_file_open_chooser.response.connect ((response_id) => {
                 if (response_id == -3) {
                     KeyboardConstants.load_mapping (Application.settings,
-                        mapping_file_open_chooser.get_file ().get_path ());
+                        mapping_file_open_chooser.get_file ());
                     update_bindings_ui ();
                 }
             });
