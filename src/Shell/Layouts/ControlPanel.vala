@@ -311,5 +311,11 @@ namespace Ensembles.Shell {
             reverb_toggle.sensitive = sensitive;
             chorus_toggle.sensitive = sensitive;
         }
+
+        public void animate_audio (float[]? buffer_l, float[]? buffer_r) {
+            if (main_dial != null) {
+                main_dial.animate_audio (buffer_l, buffer_r);
+            }
+        }
     }
 }

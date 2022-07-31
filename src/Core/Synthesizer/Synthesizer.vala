@@ -13,6 +13,9 @@ namespace Ensembles.Core {
             synthesizer_init (soundfont, driver_name, buffer_size);
             synthesizer_set_fx_callback ((buffer_l_in, buffer_r_in, out buffer_out_l, out buffer_out_r) => {
                 EffectRack.set_synth_callback (buffer_l_in, buffer_r_in, out buffer_out_l, out buffer_out_r);
+                if (Application.main_window != null && Application.main_window.ctrl_panel != null) {
+                    Application.main_window.ctrl_panel.animate_audio (buffer_l_in, buffer_r_in);
+                }
             });
 
             synthesizer_set_event_callback ((channel, key, velocity, on, c_main, c_type) =>{

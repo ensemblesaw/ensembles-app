@@ -196,6 +196,7 @@
     border: 1px solid #000;
     border-radius : 50%;
     box-shadow:  0 -3px 4px #666, 0 4px 5px alpha(#000, 0.5), inset 0 1px 0 alpha(#fff, 0.2), 0 1px 0 alpha(#fff, 0.1);
+    transition: background-image 0.2s linear;
     animation: rotate_dial_light 0.4s linear;
 }
 

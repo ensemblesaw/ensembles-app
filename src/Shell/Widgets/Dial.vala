@@ -21,6 +21,16 @@ namespace Ensembles.Shell {
         public signal void open_recorder_screen ();
         private const double RADIUS = 20;
 
+        private float[]? buffer_l;
+        private float[]? buffer_r;
+        private string css = "
+        .dial-graphic {
+            background: linear-gradient(alpha(#333, 1.0), alpha(#000, 0.5)),
+                        linear-gradient(225deg, alpha(@accent_color_complimentary, 0), alpha(@accent_color_complimentary, %0.1f)),
+                        linear-gradient(135deg, alpha(@accent_color_complimentary_alternate, 0), alpha(@accent_color_complimentary_alternate, %0.1f));
+        }
+        ";
+
         public Dial () {
             knob_socket_graphic = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
                 width_request = 20,
@@ -126,6 +136,41 @@ namespace Ensembles.Shell {
 
             this.hexpand = false;
             this.vexpand = true;
+
+            var realtime_css_provider = new Gtk.CssProvider ();
+
+            // This feature will be enabled on Gtk 4
+            //  Timeout.add (200, () => {
+            //      GLib.Idle.add (() => {
+            //          if (buffer_l != null && buffer_r != null) {
+            //              var average_l = average_of_buffer (buffer_l) - 0.05;
+            //              var average_r = average_of_buffer (buffer_r) - 0.05;
+
+            //              string provider_data = css.printf (average_l, average_r) + "";
+            //              try {
+            //                  realtime_css_provider.load_from_data (provider_data);
+            //                  Gtk.StyleContext.add_provider_for_screen (Gdk.Screen.get_default (),
+            //                      realtime_css_provider,
+            //                      Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+            //              } catch (Error e) {
+
+            //              }
+            //          }
+
+            //          return false;
+            //      }, 20);
+
+            //      return true;
+            //  }, 20);
+        }
+
+        private float average_of_buffer (float[] buffer) {
+            float sum = 0;
+            foreach (var item in buffer) {
+                sum += item < 0 ? -item : item;
+            }
+
+            return (sum / buffer.length) * 10;
         }
 
         public void rotate_dial (double value) {
@@ -152,6 +197,11 @@ namespace Ensembles.Shell {
                     return false;
                 });
             }
+        }
+
+        public void animate_audio (float[]? buffer_l, float[]? buffer_r) {
+            this.buffer_l = buffer_l;
+            this.buffer_r = buffer_r;
         }
 
         public bool handle_event (Gdk.Event event) {
