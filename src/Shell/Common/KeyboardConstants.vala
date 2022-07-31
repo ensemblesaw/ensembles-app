@@ -8,6 +8,7 @@
     public errordomain EnumError {
         UNKNOWN_VALUE
     }
+
     public class KeyboardConstants {
         public enum KeyMap {
             NUMPAD_0     = 65456,
@@ -154,20 +155,25 @@
                 if (a == null) {
                     throw new EnumError.UNKNOWN_VALUE (@"String $(value) is not a valid value for $(typeof(KeyMap).name())");
                 }
+
                 return (KeyMap)a.value;
             }
         }
+
         public static KeyMap[] key_bindings;
+
         public static bool key_is_number_numpad (uint key) {
             if ((key >= KeyMap.NUMPAD_0) && (key <= KeyMap.NUMPAD_9))
                 return true;
             return false;
         }
+
         public static bool key_is_number_keypad (uint key) {
             if ((key >= KeyMap.KEYPAD_0) && (key <= KeyMap.KEYPAD_9))
                 return true;
             return false;
         }
+
         public static string keycode_to_string (KeyboardConstants.KeyMap key) {
             string all_labels = _("abcdefghijklmnopqrstuvwxyz,./[]ABCDEFGHIJKLMNOPQRSTUVWXYZ<>{}");
             string label = "";
@@ -216,6 +222,7 @@
                     return i;
                 }
             }
+
             return -1;
         }
 

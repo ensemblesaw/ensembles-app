@@ -152,7 +152,15 @@
 		<description>Registry memory in the form of delimited string array</description>
 	</key>
 
-	<!-- MIDI Maps -->
+	<!-- MIDI -->
+	<key name="midi-enabled" type="b">
+		<default>false</default>
+		<summary>MIDI Input Enabled</summary>
+	</key>
+	<key name="midi-split" type="b">
+		<default>false</default>
+		<summary>Split keyboard between channel 1 and above</summary>
+	</key>
 	<key name="note-maps" type="as">
 		<default>[]</default>
 		<summary>MIDI Note to control mapping</summary>

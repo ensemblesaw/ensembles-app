@@ -225,14 +225,14 @@ namespace Ensembles.Core {
 
         private void process_note_signal (int key, int is_pressed_type, int velocity, int channel) {
             int hash = szudzik_hash (channel, key);
-            print (hash.to_string () + "\n");
+            //  print (hash.to_string () + "\n");
             if (note_map.has_key (hash)) {
                 process_control_signal (channel, note_map[hash], is_pressed_type == 144 ? velocity : 0, true);
             } else {
                 receive_note_event (key,
                     velocity > 0 ? (is_pressed_type == 144) : false,
                     velocity > 0 ? velocity : 1,
-                    channel > 3 ? 3 : channel);
+                    channel > 2 ? 2 : channel);
             }
         }
 

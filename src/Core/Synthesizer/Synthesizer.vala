@@ -55,7 +55,8 @@ namespace Ensembles.Core {
 
         public void send_notes_realtime (int key, bool is_pressed, int velocity, int? channel = 17) {
             if (input_enabled) {
-                chord_main = synthesizer_send_notes (key, is_pressed ? 144 : 128, velocity, channel, out chord_type);
+                chord_main = synthesizer_send_notes (key, is_pressed ? 144 : 128, velocity, channel,
+                    Application.settings.get_boolean ("midi-split"), out chord_type);
                 if (chord_main > -6) {
                     if (Shell.RecorderScreen.sequencer != null &&
                         Shell.RecorderScreen.sequencer.current_state != MidiRecorder.RecorderState.PLAYING
@@ -195,7 +196,7 @@ namespace Ensembles.Core {
 extern void synthesizer_init (string loc, string dname, double buffer_size);
 extern void synthesizer_destruct ();
 extern int synthesizer_set_driver_configuration (string dname, double buffer_size);
-extern int synthesizer_send_notes (int key, int on, int velocity, int channel, out int type);
+extern int synthesizer_send_notes (int key, int on, int velocity, int channel, bool midi_split, out int type);
 extern void synthesizer_halt_notes ();
 extern void synthesizer_halt_realtime (int b_all);
 extern void synthesizer_send_sustain (int on);

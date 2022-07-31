@@ -155,7 +155,7 @@ namespace Ensembles.Core {
         }
 
         void make_other_core_events () {
-            midi_input_host.receive_note_event.connect ((key, is_pressed, velocity)=>{
+            midi_input_host.receive_note_event.connect ((key, is_pressed, velocity, layer)=>{
                 //  debug ("%d %d %d\n", key, is_pressed, velocity);
                 if (Application.settings.get_boolean ("arpeggiator-on")) {
                     if (Application.settings.get_boolean ("accomp-on")) {
@@ -168,7 +168,7 @@ namespace Ensembles.Core {
                         arpeggiator.send_notes (key, is_pressed, velocity);
                     }
                 } else {
-                    synthesizer.send_notes_realtime (key, is_pressed, velocity);
+                    synthesizer.send_notes_realtime (key, is_pressed, velocity, layer + 17);
                 }
                 if (Application.settings.get_boolean ("harmonizer-on")) {
                     if (Application.settings.get_boolean ("accomp-on")) {

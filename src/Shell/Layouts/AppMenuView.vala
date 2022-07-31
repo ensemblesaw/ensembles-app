@@ -110,10 +110,13 @@ namespace Ensembles.Shell {
                 }
             });
 
+            var midi_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
             device_list_box = new Gtk.ListBox () {
                 activate_on_single_click = true,
                 selection_mode = Gtk.SelectionMode.NONE
             };
+            midi_box.pack_start (device_list_box);
+            midi_box.pack_start (new Gtk.Separator (Gtk.Orientation.HORIZONTAL));
             device_list_box.row_activated.connect ((row) => {
                 DeviceItem device_item = row as DeviceItem;
                 device_item.radio.active = !device_item.radio.active;
@@ -125,7 +128,16 @@ namespace Ensembles.Shell {
                 }
             });
 
-            revealer.add (device_list_box);
+            var midi_split_switch = new Granite.SwitchModelButton (_("Split By Channel"));
+            midi_split_switch.get_style_context ().add_class ("h4");
+            midi_split_switch.notify["active"].connect (() => {
+                Application.settings.set_boolean ("midi-split", midi_split_switch.active);
+            });
+            midi_split_switch.active = Application.settings.get_boolean ("midi-split");
+
+            midi_box.pack_end (midi_split_switch);
+
+            revealer.add (midi_box);
 
             menu_box.pack_start (device_input_item);
             menu_box.pack_start (revealer);
