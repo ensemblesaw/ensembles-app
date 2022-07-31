@@ -59,7 +59,8 @@ namespace Ensembles.Core {
         public void send_notes_realtime (int key, bool is_pressed, int velocity, int? channel = 17) {
             if (input_enabled) {
                 chord_main = synthesizer_send_notes (key, is_pressed ? 144 : 128, velocity, channel,
-                    Application.settings.get_boolean ("midi-split"), out chord_type);
+                    Application.settings.get_boolean ("midi-split")
+                    && Application.arranger_core.midi_input_host.get_connection_status (), out chord_type);
                 if (chord_main > -6) {
                     if (Shell.RecorderScreen.sequencer != null &&
                         Shell.RecorderScreen.sequencer.current_state != MidiRecorder.RecorderState.PLAYING

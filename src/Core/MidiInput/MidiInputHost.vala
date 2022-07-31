@@ -32,6 +32,10 @@ namespace Ensembles.Core {
             load_maps ();
         }
 
+        public bool get_connection_status () {
+            return stream_connected;
+        }
+
         private void save_maps () {
             var note_map_arr = new string[note_map.size];
             int i = 0;
