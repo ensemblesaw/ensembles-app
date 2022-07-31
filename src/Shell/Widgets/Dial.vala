@@ -137,7 +137,7 @@ namespace Ensembles.Shell {
             this.hexpand = false;
             this.vexpand = true;
 
-            var realtime_css_provider = new Gtk.CssProvider ();
+            //  var realtime_css_provider = new Gtk.CssProvider ();
 
             // This feature will be enabled on Gtk 4
             //  Timeout.add (200, () => {
@@ -164,14 +164,14 @@ namespace Ensembles.Shell {
             //  }, 20);
         }
 
-        private float average_of_buffer (float[] buffer) {
-            float sum = 0;
-            foreach (var item in buffer) {
-                sum += item < 0 ? -item : item;
-            }
+        //  private float average_of_buffer (float[] buffer) {
+        //      float sum = 0;
+        //      foreach (var item in buffer) {
+        //          sum += item < 0 ? -item : item;
+        //      }
 
-            return (sum / buffer.length) * 10;
-        }
+        //      return (sum / buffer.length) * 10;
+        //  }
 
         public void rotate_dial (double value) {
             double px = RADIUS * GLib.Math.cos (value / (Math.PI));
