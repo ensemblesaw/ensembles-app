@@ -74,7 +74,9 @@
                     debug ("--------------------------------------------------------\n");
                     debug ("%s\n %s, %s\n", uri, plug_name, plug_class);
                     if (Application.main_window != null) {
-                        Application.main_window.main_display_unit.update_splash_text (_("Loading Plugin LV2: ") + plug_name);
+                        Application.main_window.main_display_unit.update_splash_text (
+                            _("Loading Plugin LV2: ") + plug_name
+                        );
                     }
                     var valid = features_are_supported (plugin);
 
@@ -94,7 +96,8 @@
                     for (uint i = 0; i < n_ports; i++) {
                         var port = plugin.get_port_by_index (i);
                         all_ports.append (port);
-                        debug (" Port >>%s | %s\n", plugin.port_get_name (port).as_string (), plugin.port_get_symbol (port).as_string ());
+                        debug (" Port >>%s | %s\n", plugin.port_get_name (port).as_string (),
+                        plugin.port_get_symbol (port).as_string ());
                         debug (" Properties:\n");
                         port_symbols[i] = plugin.port_get_symbol (port).as_string ();
                         var properties = plugin.port_get_properties (port);

@@ -29,6 +29,12 @@ namespace Ensembles.Shell {
         Gtk.Scale seek_bar;
         public Gtk.Label custom_title_text;
         Gtk.Grid custom_title_grid;
+        Gtk.Popover common_context_menu;
+        Gtk.Label controller_assignment_label;
+        Gtk.Button controller_assign_button;
+        Gtk.Button controller_reset_button;
+        Gtk.Separator ctx_menu_main_separator;
+        int _current_ui_assign_index;
 
         // Computer Keyboard input handling
         public PcKeyboardHandler keyboard_input_handler;
@@ -120,19 +126,69 @@ namespace Ensembles.Shell {
             grid.attach (main_keyboard, 0, 3, 3, 1);
             add (grid);
             show_all ();
+
+            common_context_menu = new Gtk.Popover (main_display_unit);
+            common_context_menu.add (get_context_menu ());
+        }
+
+        Gtk.Widget get_context_menu () {
+            var button_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 4) {
+                margin = 4
+            };
+
+            controller_assignment_label = new Gtk.Label ("") {
+                halign = Gtk.Align.START,
+                visible = false
+            };
+
+            controller_assignment_label.get_style_context ().add_class (Granite.STYLE_CLASS_H4_LABEL);
+            button_box.pack_start (controller_assignment_label);
+
+            ctx_menu_main_separator = new Gtk.Separator (Gtk.Orientation.HORIZONTAL) {
+                visible = false
+            };
+
+            button_box.pack_start (ctx_menu_main_separator);
+
+            controller_assign_button = new Gtk.Button ();
+            var assign_button_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 4) {
+                halign = Gtk.Align.START
+            };
+
+            assign_button_box.pack_start (new Gtk.Image.from_icon_name ("insert-link", Gtk.IconSize.BUTTON));
+            assign_button_box.pack_end (new Gtk.Label (_("Link MIDI Controller")));
+            controller_assign_button.add (assign_button_box);
+            controller_assign_button.get_style_context ().add_class (Gtk.STYLE_CLASS_FLAT);
+            button_box.pack_start (controller_assign_button);
+
+            controller_reset_button = new Gtk.Button ();
+            var reset_button_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 4) {
+                halign = Gtk.Align.START
+            };
+
+            reset_button_box.pack_start (new Gtk.Image.from_icon_name ("list-remove", Gtk.IconSize.BUTTON));
+            reset_button_box.pack_end (new Gtk.Label (_("Remove Link")));
+            controller_reset_button.add (reset_button_box);
+            controller_reset_button.get_style_context ().add_class (Gtk.STYLE_CLASS_FLAT);
+            button_box.pack_start (controller_reset_button);
+
+            return button_box;
         }
         // Connect UI events
         void make_events () {
             app_menu_button.clicked.connect (() => {
                 app_menu.popup ();
             });
+
             key_press_event.connect ((event) => {
                 return keyboard_input_handler.handle_keypress_event (event.keyval);
             });
+
             key_release_event.connect ((event) => {
                 keyboard_input_handler.handle_keyrelease_event (event.keyval);
                 return false;
             });
+
             window_state_event.connect ((event) => {
                 if ((int)(event.changed_mask) == 4) {
                     main_keyboard.visible = false;
@@ -143,17 +199,21 @@ namespace Ensembles.Shell {
                 }
                 return false;
             });
+
             app_menu.open_preferences_dialog.connect (open_preferences);
             beat_counter_panel.open_tempo_editor.connect (main_display_unit.open_tempo_screen);
             ctrl_panel.accomp_change.connect ((active) => {
                 Application.arranger_core.synthesizer.set_accompaniment_on (active);
             });
+
             ctrl_panel.reverb_change.connect ((level) => {
                 Application.arranger_core.synthesizer.set_master_reverb_level (level);
             });
+
             ctrl_panel.reverb_active_change.connect ((active) => {
                 Application.arranger_core.synthesizer.set_master_reverb_active (active);
             });
+
             ctrl_panel.chorus_change.connect ((level) => {
                 Application.arranger_core.synthesizer.set_master_chorus_level (level);
             });
@@ -166,7 +226,10 @@ namespace Ensembles.Shell {
             ctrl_panel.start_metronome.connect ((active) => {
                 if (active) {
                     Ensembles.Core.CentralBus.set_metronome_on (true);
-                    Application.arranger_core.metronome_player.play_loop (Core.CentralBus.get_beats_per_bar (), Core.CentralBus.get_quarter_notes_per_bar ());
+                    Application.arranger_core.metronome_player.play_loop (
+                        Core.CentralBus.get_beats_per_bar (),
+                        Core.CentralBus.get_quarter_notes_per_bar ()
+                    );
                 } else {
                     Application.arranger_core.metronome_player.stop_loop ();
                     Ensembles.Core.CentralBus.set_metronome_on (false);
@@ -204,21 +267,8 @@ namespace Ensembles.Shell {
                         Application.arranger_core.synthesizer.send_notes_realtime (key, on, 100);
                     }
                 }
-                main_keyboard.set_note_on (key, (on == 144));
+                //  main_keyboard.set_note_on (key, on);
             });
-
-            style_controller_view.start_stop.connect (Application.arranger_core.style_player.play_style);
-            style_controller_view.switch_var_a.connect (Application.arranger_core.style_player.switch_var_a);
-            style_controller_view.switch_var_b.connect (Application.arranger_core.style_player.switch_var_b);
-            style_controller_view.switch_var_c.connect (Application.arranger_core.style_player.switch_var_c);
-            style_controller_view.switch_var_d.connect (Application.arranger_core.style_player.switch_var_d);
-            style_controller_view.queue_intro_a.connect (Application.arranger_core.style_player.queue_intro_a);
-            style_controller_view.queue_intro_b.connect (Application.arranger_core.style_player.queue_intro_b);
-            style_controller_view.queue_ending_a.connect (Application.arranger_core.style_player.queue_ending_a);
-            style_controller_view.queue_ending_b.connect (Application.arranger_core.style_player.queue_ending_b);
-            style_controller_view.break_play.connect (Application.arranger_core.style_player.break_play);
-            style_controller_view.sync_start.connect (Application.arranger_core.style_player.sync_start);
-            style_controller_view.sync_stop.connect (Application.arranger_core.style_player.sync_stop);
 
             keyboard_input_handler.style_start_stop.connect (Application.arranger_core.style_player.play_style);
             keyboard_input_handler.style_var_a.connect (Application.arranger_core.style_player.switch_var_a);
@@ -249,10 +299,14 @@ namespace Ensembles.Shell {
                 if (Application.arranger_core.song_player != null) {
                     if (Application.arranger_core.song_player.get_status () == Core.SongPlayer.PlayerStatus.PLAYING) {
                         Application.arranger_core.song_player.pause ();
-                        Application.arranger_core.song_player_state_changed (Application.arranger_core.song_player.name, Core.SongPlayer.PlayerStatus.READY);
+                        Application.arranger_core.song_player_state_changed (
+                            Application.arranger_core.song_player.name, Core.SongPlayer.PlayerStatus.READY
+                        );
                     } else {
                         Application.arranger_core.song_player.play ();
-                        Application.arranger_core.song_player_state_changed (Application.arranger_core.song_player.name, Core.SongPlayer.PlayerStatus.PLAYING);
+                        Application.arranger_core.song_player_state_changed (
+                            Application.arranger_core.song_player.name, Core.SongPlayer.PlayerStatus.PLAYING
+                        );
                     }
                 }
             });
@@ -342,10 +396,15 @@ namespace Ensembles.Shell {
             if (Application.arranger_core.song_player != null) {
                 if (Application.arranger_core.song_player.get_status () == Core.SongPlayer.PlayerStatus.PLAYING) {
                     Application.arranger_core.song_player.pause ();
-                    Application.arranger_core.song_player_state_changed (Application.arranger_core.song_player.name, Core.SongPlayer.PlayerStatus.READY);
+                    Application.arranger_core.song_player_state_changed (
+                        Application.arranger_core.song_player.name, Core.SongPlayer.PlayerStatus.READY
+                    );
                 } else {
-                    Application.arranger_core.song_player.play ();
-                    Application.arranger_core.song_player_state_changed (Application.arranger_core.song_player.name, Core.SongPlayer.PlayerStatus.PLAYING);
+                    Application.arranger_core.song_player.play
+                    ();
+                    Application.arranger_core.song_player_state_changed (
+                        Application.arranger_core.song_player.name, Core.SongPlayer.PlayerStatus.PLAYING
+                    );
                 }
             } else {
                 Application.arranger_core.style_player.play_style ();
@@ -370,6 +429,41 @@ namespace Ensembles.Shell {
             var dialog = new Dialogs.Preferences.Preferences ();
             dialog.destroy.connect (Gtk.main_quit);
             dialog.show_all ();
+        }
+
+        public void show_context_menu (Gtk.Widget? relative_to, int ui_control_index) {
+            common_context_menu.relative_to = relative_to;
+            controller_assign_button.clicked.disconnect (assign_button_handler);
+            _current_ui_assign_index = ui_control_index;
+            controller_assign_button.clicked.connect (assign_button_handler);
+            common_context_menu.show_all ();
+            var assignment_label = Application.arranger_core.midi_input_host.get_assignment_label (ui_control_index);
+            if (assignment_label.length > 0) {
+                controller_assignment_label.set_text (assignment_label);
+                controller_assignment_label.visible = true;
+                controller_reset_button.visible = true;
+                ctx_menu_main_separator.visible = true;
+            } else {
+                controller_assignment_label.visible = false;
+                controller_reset_button.visible = false;
+                ctx_menu_main_separator.visible = false;
+            }
+            controller_assign_button.grab_focus ();
+        }
+
+        public void hide_context_menu () {
+            common_context_menu.hide ();
+        }
+
+        void assign_button_handler () {
+            hide_context_menu ();
+            var assign_dialog = new Dialogs.MIDIAssignDialog (_current_ui_assign_index);
+            assign_dialog.confirm_binding.connect (binding_confirmation_handler);
+            assign_dialog.show_all ();
+        }
+
+        void binding_confirmation_handler (int channel, int identifier, int signal_type, int control_type) {
+            Application.arranger_core.midi_input_host.set_control_map (channel, identifier, signal_type, control_type);
         }
     }
 }

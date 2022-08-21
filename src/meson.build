@@ -92,6 +92,8 @@ ensembles_sources_vala = files (
     'Shell/Dialogs/Preferences/Preferences.vala',
     'Shell/Dialogs/Preferences/TopBox.vala',
 
+    'Shell/Dialogs/MIDIAssignDialog.vala',
+
     'Shell/Dialogs/ErrorDialog.vala',
 
     'Shell/Display/ChannelModulatorScreen.vala',

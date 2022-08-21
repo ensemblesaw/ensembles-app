@@ -58,13 +58,6 @@ int get_loaded_style_time_stamps_by_index (int index) {
 void set_loaded_style_time_stamps (int* value) {
     loaded_style_time_stamps = value;
 }
-int central_style_section;
-int get_central_style_section () {
-    return central_style_section;
-}
-void set_central_style_section (int value) {
-    central_style_section = value;
-}
 int central_time_signature;
 int get_central_time_signature () {
     return central_time_signature;

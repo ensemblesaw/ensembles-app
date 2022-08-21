@@ -49,14 +49,6 @@ int get_loaded_style_time_stamps_by_index (int index);
  */
 void set_loaded_style_time_stamps (int* value);
 
-/** The function returns the time stamp index for the currently playing
- * part of style
- */
-int get_central_style_section ();
-/** This function is used to set the currently playing style part
- */
-void set_central_style_section (int value);
-
 /** This function returns the current time signature value as loaded
  * from the style file after analysis
  */

@@ -74,6 +74,17 @@ set_style_change_callback (style_player_change_state_callback callback) {
     state_change_callback = callback;
 }
 
+// Style part change callback
+typedef void
+(*style_player_change_part_callback)(gint part);
+
+static style_player_change_part_callback part_change_callback;
+
+void
+set_style_part_change_callback (style_player_change_part_callback callback) {
+    part_change_callback = callback;
+}
+
 void
 style_player_change_chord (int cd_main, int cd_type)
 {
@@ -668,7 +679,7 @@ parse_ticks (void* data, int ticks)
         breaking = 0;
         fill_queue = 0;
         fill_in = 0;
-        set_central_style_section (start_s);
+        part_change_callback (start_s);
         if (loop_start_tick != get_loaded_style_time_stamps_by_index (start_s) ||
             loop_end_tick != get_loaded_style_time_stamps_by_index (end_s))
         {
@@ -684,7 +695,7 @@ parse_ticks (void* data, int ticks)
             if (ticks >= loop_end_tick && fill_in == 0)
             {
                 // printf ("Measure complete\n");
-                set_central_style_section (start_s);
+                part_change_callback (start_s);
                 if (intro_playing == 1)
                 {
                     start_s = start_temp;
@@ -693,7 +704,7 @@ parse_ticks (void* data, int ticks)
                     loop_start_tick = get_loaded_style_time_stamps_by_index(start_s);
                     loop_end_tick = get_loaded_style_time_stamps_by_index(end_s);
                     style_player_halt_continuous_notes ();
-                    set_central_style_section (start_s);
+                    part_change_callback (start_s);
                     return fluid_player_seek (player, loop_start_tick - 2);
                 }
                 else if (sync_stop)
@@ -715,7 +726,7 @@ parse_ticks (void* data, int ticks)
                     fill_in = 0;
                     fill_queue = 0;
                     sync_stop = 0;
-                    set_central_style_section (0);
+                    part_change_callback (0);
                     set_central_measure (0);
                     style_player_halt_continuous_notes ();
                     if (state_change_callback != NULL)
@@ -918,7 +929,7 @@ style_player_toggle_play () {
             intro_playing = 0;
             fill_in = 0;
             fill_queue = 0;
-            set_central_style_section (0);
+            part_change_callback (0);
             set_central_measure (0);
             style_player_halt_continuous_notes ();
             if (state_change_callback != NULL) {
@@ -970,7 +981,7 @@ style_player_stop () {
         intro_playing = 0;
         fill_in = 0;
         fill_queue = 0;
-        set_central_style_section (0);
+        part_change_callback (0);
         set_central_measure (0);
         style_player_halt_continuous_notes ();
         set_central_clock (0);

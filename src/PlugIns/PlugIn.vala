@@ -220,7 +220,13 @@ namespace Ensembles.PlugIns {
             return supported == 0 ? false : true;
         }
 
-        private static void ui_write (Suil.Controller handle, uint32 port_index, uint32 buffer_size, uint32 protocol, void* buffer) {
+        private static void ui_write (
+            Suil.Controller handle,
+            uint32 port_index,
+            uint32 buffer_size,
+            uint32 protocol,
+            void* buffer
+        ) {
             /* Not Implemented */
             if (protocol != 0) {
                 return;

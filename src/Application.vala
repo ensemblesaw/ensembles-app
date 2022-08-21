@@ -114,7 +114,8 @@ namespace Ensembles {
             }
 
             if (arg_file != null && arg_file[0] != null) {
-                if (GLib.FileUtils.test (arg_file[0], GLib.FileTest.EXISTS) && arg_file[0].down ().has_suffix (".mid")) {
+                if (GLib.FileUtils.test (arg_file[0], GLib.FileTest.EXISTS) &&
+                    arg_file[0].down ().has_suffix (".mid")) {
                     File file = File.new_for_path (arg_file[0]);
                     open ({ file }, "");
                     return 0;
@@ -165,38 +166,60 @@ namespace Ensembles {
                 try {
                     switch (theme_color) {
                         case "strawberry":
-                            complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS.printf ("@BANANA_500", "@ORANGE_500"));
+                            complimentary_css_provider.load_from_data (
+                                COMPLIMENTARY_ACCENT_COLORS.printf ("@BANANA_500", "@ORANGE_500")
+                            );
                             break;
                         case "orange":
-                            complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS.printf ("@BLUEBERRY_500", "@MINT_500"));
+                            complimentary_css_provider.load_from_data (
+                                COMPLIMENTARY_ACCENT_COLORS.printf ("@BLUEBERRY_500", "@MINT_500")
+                            );
                             break;
                         case "banana":
-                            complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS.printf ("@MINT_500", "@ORANGE_500"));
+                            complimentary_css_provider.load_from_data (
+                                COMPLIMENTARY_ACCENT_COLORS.printf ("@MINT_500", "@ORANGE_500")
+                            );
                             break;
                         case "lime":
-                            complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS.printf ("@BANANA_500", "@BUBBLEGUM_500"));
+                            complimentary_css_provider.load_from_data (
+                                COMPLIMENTARY_ACCENT_COLORS.printf ("@BANANA_500", "@BUBBLEGUM_500")
+                            );
                             break;
                         case "mint":
-                            complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS.printf ("@BANANA_500", "@SILVER_500"));
+                            complimentary_css_provider.load_from_data (
+                                COMPLIMENTARY_ACCENT_COLORS.printf ("@BANANA_500", "@SILVER_500")
+                            );
                             break;
                         case "blueberry":
-                            complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS.printf ("@BANANA_500", "@MINT_500"));
+                            complimentary_css_provider.load_from_data (
+                                COMPLIMENTARY_ACCENT_COLORS.printf ("@BANANA_500", "@MINT_500")
+                            );
                             break;
                         case "grape":
-                            complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS.printf ("@BANANA_500", "@BUBBLEGUM_500"));
+                            complimentary_css_provider.load_from_data (
+                                COMPLIMENTARY_ACCENT_COLORS.printf ("@BANANA_500", "@BUBBLEGUM_500")
+                            );
                             break;
                         case "bubblegum":
-                            complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS.printf ("@MINT_500", "@GRAPE_500"));
+                            complimentary_css_provider.load_from_data (
+                                COMPLIMENTARY_ACCENT_COLORS.printf ("@MINT_500", "@GRAPE_500")
+                            );
                             break;
                         case "cocoa":
-                            complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS.printf ("@BANANA_500", "@MINT_500"));
+                            complimentary_css_provider.load_from_data (
+                                COMPLIMENTARY_ACCENT_COLORS.printf ("@BANANA_500", "@MINT_500")
+                            );
                             break;
                         case "silver":
-                            complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS.printf ("@BLUEBERRY_300", "@STRAWBERRY_300"));
+                            complimentary_css_provider.load_from_data (
+                                COMPLIMENTARY_ACCENT_COLORS.printf ("@BLUEBERRY_300", "@STRAWBERRY_300")
+                            );
                             break;
                         case "slate":
                         case "black":
-                            complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS.printf ("@MINT_500", "@BANANA_500"));
+                            complimentary_css_provider.load_from_data (
+                                COMPLIMENTARY_ACCENT_COLORS.printf ("@MINT_500", "@BANANA_500")
+                            );
                             break;
 
                     }

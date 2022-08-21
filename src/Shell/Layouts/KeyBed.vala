@@ -102,20 +102,20 @@ namespace Ensembles.Shell {
 
         public void connect_synthesizer (Ensembles.Core.Synthesizer synth) {
             _synth = synth;
-            octaves[0].note_activate.connect ((index, on) => {
-                _synth.send_notes_realtime (index + 36, on ? 144 : 128, 100);
+            octaves[0].note_activate.connect ((index, is_pressed) => {
+                _synth.send_notes_realtime (index + 36, is_pressed, 100);
             });
-            octaves[1].note_activate.connect ((index, on) => {
-                _synth.send_notes_realtime (index + 48, on ? 144 : 128, 100);
+            octaves[1].note_activate.connect ((index, is_pressed) => {
+                _synth.send_notes_realtime (index + 48, is_pressed, 100);
             });
-            octaves[2].note_activate.connect ((index, on) => {
-                _synth.send_notes_realtime (index + 60, on ? 144 : 128, 100);
+            octaves[2].note_activate.connect ((index, is_pressed) => {
+                _synth.send_notes_realtime (index + 60, is_pressed, 100);
             });
-            octaves[3].note_activate.connect ((index, on) => {
-                _synth.send_notes_realtime (index + 72, on ? 144 : 128, 100);
+            octaves[3].note_activate.connect ((index, is_pressed) => {
+                _synth.send_notes_realtime (index + 72, is_pressed, 100);
             });
-            octaves[4].note_activate.connect ((index, on) => {
-                _synth.send_notes_realtime (index + 84, on ? 144 : 128, 100);
+            octaves[4].note_activate.connect ((index, is_pressed) => {
+                _synth.send_notes_realtime (index + 84, is_pressed, 100);
             });
         }
 
@@ -134,9 +134,9 @@ namespace Ensembles.Shell {
             }
         }
 
-        public void set_note_on (int key, bool on, bool? auto = false) {
+        public void set_note_on (int key, bool on, Key.NoteType note_type) {
             if (key > 35 && key < 96) {
-                octaves[(int)(key / 12) - 3].set_note_on (key % 12, on, auto);
+                octaves[(int)(key / 12) - 3].set_note_on (key % 12, on, note_type);
             }
         }
 
@@ -149,7 +149,9 @@ namespace Ensembles.Shell {
         public void halt_all () {
             for (int i = 0; i < 5; i++) {
                 for (int j = 0; j < 11; j++) {
-                    octaves[i].set_note_on (j, false, true);
+                    octaves[i].set_note_on (j, false, Key.NoteType.AUTOMATION);
+                    octaves[i].set_note_on (j, false, Key.NoteType.NORMAL);
+                    octaves[i].set_note_on (j, false, Key.NoteType.CHORD);
                 }
             }
         }

@@ -125,13 +125,28 @@ namespace Ensembles.Shell {
 
                         if (_events.nth_data (i).value2 == 144) {
                             double alpha;
-                            set_note_on (_events.nth_data (i).value1, true, _events.nth_data (i).velocity, (int)total_width, out alpha);
+                            set_note_on (
+                                _events.nth_data (i).value1,
+                                true,
+                                _events.nth_data (i).velocity,
+                                (int)total_width,
+                                out alpha
+                            );
                         } else if (_events.nth_data (i).value2 == 128) {
                             double alpha;
-                            int prev_time = set_note_on (_events.nth_data (i).value1, false, _events.nth_data (i).velocity, (int)total_width, out alpha);
+                            int prev_time = set_note_on (
+                                _events.nth_data (i).value1,
+                                false,
+                                _events.nth_data (i).velocity,
+                                (int)total_width,
+                                out alpha
+                            );
                             draw_note_event (context,
                                             1,
-                                            (int)(((_events.nth_data (i).value1 - 37) / max_height) * get_allocated_height ()),
+                                            (int)(
+                                                ((_events.nth_data (i).value1 - 37) / max_height) *
+                                                get_allocated_height ()
+                                            ),
                                             prev_time,
                                             (int)total_width,
                                             baseline,
@@ -158,7 +173,15 @@ namespace Ensembles.Shell {
             return time_out;
         }
 
-        private void draw_note_event (Cairo.Context ctx, int width, int height, int x_offset1, int x_offset2, int y_offset, double alpha) {
+        private void draw_note_event (
+            Cairo.Context ctx,
+            int width,
+            int height,
+            int x_offset1,
+            int x_offset2,
+            int y_offset,
+            double alpha
+        ) {
             if (alpha > 0) {
                 ctx.set_source_rgba (1, 1, 1, alpha);
                 ctx.set_line_width (width);

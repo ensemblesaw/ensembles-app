@@ -24,7 +24,7 @@ namespace Ensembles.Core {
             current_file_tempo = music_player_load_file (midi_file_path);
             player_status_changed (0.0f, current_file_tempo, get_status ());
             set_music_note_callback ((note, on) => {
-                Application.main_window.main_keyboard.set_note_on (note, (on == 144), true);
+                Application.main_window.main_keyboard.set_note_on (note, (on == 144), Shell.Key.NoteType.AUTOMATION);
             });
             start_monitoring ();
         }
@@ -86,7 +86,9 @@ namespace Ensembles.Core {
             while (monitoring_player) {
                 Idle.add (() => {
                     if (total_ticks > 0 && monitoring_player) {
-                        player_status_changed ((float) current_ticks / (float) total_ticks, current_file_tempo, get_status ());
+                        player_status_changed (
+                            (float) current_ticks / (float) total_ticks, current_file_tempo, get_status ()
+                        );
                     } else {
                         player_status_changed (0.0f, current_file_tempo, get_status ());
                     }

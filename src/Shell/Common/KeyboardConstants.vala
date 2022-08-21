@@ -8,6 +8,7 @@
     public errordomain EnumError {
         UNKNOWN_VALUE
     }
+
     public class KeyboardConstants {
         public enum KeyMap {
             NUMPAD_0     = 65456,
@@ -154,20 +155,25 @@
                 if (a == null) {
                     throw new EnumError.UNKNOWN_VALUE (@"String $(value) is not a valid value for $(typeof(KeyMap).name())");
                 }
+
                 return (KeyMap)a.value;
             }
         }
+
         public static KeyMap[] key_bindings;
+
         public static bool key_is_number_numpad (uint key) {
             if ((key >= KeyMap.NUMPAD_0) && (key <= KeyMap.NUMPAD_9))
                 return true;
             return false;
         }
+
         public static bool key_is_number_keypad (uint key) {
             if ((key >= KeyMap.KEYPAD_0) && (key <= KeyMap.KEYPAD_9))
                 return true;
             return false;
         }
+
         public static string keycode_to_string (KeyboardConstants.KeyMap key) {
             string all_labels = _("abcdefghijklmnopqrstuvwxyz,./[]ABCDEFGHIJKLMNOPQRSTUVWXYZ<>{}");
             string label = "";
@@ -216,59 +222,41 @@
                     return i;
                 }
             }
+
             return -1;
         }
 
-        public static void save_mapping (Settings settings, string? path = null) {
-            string csv = "";
+        public static void save_mapping (Settings settings, GLib.File? csv_file = null) {
+            string[] array = new string[60];
+            string[,] csv_data = new string[1, 60];
 
             for (int i = 0; i < 60; i++) {
-                csv += key_bindings[i].to_string ();
-                if (i < 59) {
-                    csv += ",";
-                }
+                array[i] = key_bindings[i].to_string ();
+                csv_data[0, i] = array[i];
             }
 
-            settings.set_string ("pc-input-bindings", csv);
+            settings.set_strv ("pc-input-maps", array);
 
-            if (path != null) {
-                try {
-                    var file = File.new_for_path (path);
-                    if (file.query_exists ()) {
-                        file.delete ();
-                    }
-                    var fs = file.create (GLib.FileCreateFlags.NONE);
-
-                    var ds = new DataOutputStream (fs);
-                    ds.put_string (csv);
-                } catch (Error e) {
-                    warning (e.message);
-                }
+            if (csv_file != null) {
+                Utils.save_csv (csv_file, csv_data);
             }
         }
 
-        public static void load_mapping (Settings settings, string? path = null) {
+        public static void load_mapping (Settings settings, GLib.File? csv_file = null) {
             key_bindings = new KeyMap[60];
-            string csv = "";
-            if (path != null) {
-                try {
-                    var file = File.new_for_path (path);
-                    if (!file.query_exists ()) {
-                        error ("Cannot open file");
-                    }
-                    var dis = new DataInputStream (file.read ());
-
-                    csv = dis.read_line (null);
-
-                    settings.set_string ("pc-input-bindings", csv);
-                } catch (Error e) {
-                    warning (e.message);
+            var binds = new string[60];
+            if (csv_file != null) {
+                string[,] csv_data;
+                Utils.read_csv (csv_file, out csv_data);
+                for (int i = 0; i < 60; i++) {
+                    binds[i] = csv_data[0, i];
                 }
+
+                settings.set_strv ("pc-input-maps", binds);
             } else {
-                csv = settings.get_string ("pc-input-bindings");
+                binds = settings.get_strv ("pc-input-maps");
             }
 
-            var binds = csv.split (",", 60);
             if (binds.length == 60) {
                 try {
                     for (int i = 0; i < 60; i++) {

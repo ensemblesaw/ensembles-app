@@ -115,7 +115,8 @@ namespace Ensembles.Shell {
                 update_split ();
 
                 // Send to Sequencer for recording
-                if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state == Core.MidiRecorder.RecorderState.RECORDING) {
+                if (RecorderScreen.sequencer != null &&
+                    RecorderScreen.sequencer.current_state == Core.MidiRecorder.RecorderState.RECORDING) {
                     var event = new Core.MidiEvent ();
                     event.event_type = Core.MidiEvent.EventType.ACCOMP;
                     event.value1 = active ? 1 : 0;
@@ -309,6 +310,12 @@ namespace Ensembles.Shell {
             harmonizer_toggle.sensitive = sensitive;
             reverb_toggle.sensitive = sensitive;
             chorus_toggle.sensitive = sensitive;
+        }
+
+        public void animate_audio (float[]? buffer_l, float[]? buffer_r) {
+            if (main_dial != null) {
+                main_dial.animate_audio (buffer_l, buffer_r);
+            }
         }
     }
 }
