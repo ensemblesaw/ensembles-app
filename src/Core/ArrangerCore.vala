@@ -181,7 +181,7 @@ namespace Ensembles.Core {
                         synthesizer.send_notes_realtime (key, is_pressed, velocity);
                     }
                 }
-                Application.main_window.main_keyboard.set_note_on (key, is_pressed);
+                Application.main_window.main_keyboard.set_note_on (key, is_pressed, Shell.Key.NoteType.NORMAL);
             });
 
             arpeggiator.generate_notes.connect ((key, on, velocity) => {
@@ -199,6 +199,7 @@ namespace Ensembles.Core {
                     synthesizer.send_notes_realtime (key, on, velocity);
                 }
             });
+
             arpeggiator.halt_notes.connect (synthesizer.halt_realtime);
             harmonizer.generate_notes.connect ((key, on, velocity) => {
                 if (key > Core.CentralBus.get_split_key ()) {
@@ -238,25 +239,29 @@ namespace Ensembles.Core {
         }
 
         public void garbage_collect () {
-            debug ("Cleaning up Core");
-            debug ("CLEANUP: Unloading MIDI Input Monitor");
-            midi_input_host.destroy ();
-            Thread.usleep (5000);
-            debug ("CLEANUP: Unloading Metronome and LFO Engine");
-            metronome_player.unref ();
-            debug ("CLEANUP: Unloading Style Engine");
-            style_player.unref ();
-            if (song_player != null) {
-                debug ("CLEANUP: Unloading Song Player");
-                song_player.songplayer_destroy ();
-                song_player = null;
-            }
-            Thread.usleep (5000);
-            debug ("CLEANUP: Unloading Central Bus");
-            bus.unref ();
-            Thread.usleep (5000);
-            debug ("CLEANUP: Unloading Synthesizer");
-            synthesizer.synthesizer_deinit ();
+            Idle.add (() => {
+                debug ("Cleaning up Core");
+                debug ("CLEANUP: Unloading MIDI Input Monitor");
+                midi_input_host.destroy ();
+                Thread.usleep (5000);
+                debug ("CLEANUP: Unloading Metronome and LFO Engine");
+                metronome_player.unref ();
+                debug ("CLEANUP: Unloading Style Engine");
+                style_player.unref ();
+                if (song_player != null) {
+                    debug ("CLEANUP: Unloading Song Player");
+                    song_player.songplayer_destroy ();
+                    song_player = null;
+                }
+                Thread.usleep (5000);
+                debug ("CLEANUP: Unloading Central Bus");
+                bus.unref ();
+                Thread.usleep (5000);
+                debug ("CLEANUP: Unloading Synthesizer");
+                synthesizer.synthesizer_deinit ();
+
+                return false;
+            });
         }
 
         public void load_data () {

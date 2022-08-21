@@ -134,9 +134,9 @@ namespace Ensembles.Shell {
             }
         }
 
-        public void set_note_on (int key, bool on, bool? auto = false) {
+        public void set_note_on (int key, bool on, Key.NoteType note_type) {
             if (key > 35 && key < 96) {
-                octaves[(int)(key / 12) - 3].set_note_on (key % 12, on, auto);
+                octaves[(int)(key / 12) - 3].set_note_on (key % 12, on, note_type);
             }
         }
 
@@ -149,7 +149,9 @@ namespace Ensembles.Shell {
         public void halt_all () {
             for (int i = 0; i < 5; i++) {
                 for (int j = 0; j < 11; j++) {
-                    octaves[i].set_note_on (j, false, true);
+                    octaves[i].set_note_on (j, false, Key.NoteType.AUTOMATION);
+                    octaves[i].set_note_on (j, false, Key.NoteType.NORMAL);
+                    octaves[i].set_note_on (j, false, Key.NoteType.CHORD);
                 }
             }
         }

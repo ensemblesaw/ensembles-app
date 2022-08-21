@@ -309,99 +309,103 @@ namespace Ensembles.Shell {
         }
 
         public void set_style_section (int section) {
-            sync ();
-            switch (section) {
-                case UI_INDEX_STYLE_INTRO_1:
-                var_fill_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                var_fill_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                var_fill_button_c.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                var_fill_button_d.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_button_a.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                break;
-                case UI_INDEX_STYLE_INTRO_2:
-                var_fill_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                var_fill_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                var_fill_button_c.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                var_fill_button_d.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_button_b.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                break;
-                case UI_INDEX_STYLE_VAR_A:
-                var_fill_button_a.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                var_fill_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                var_fill_button_c.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                var_fill_button_d.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                break;
-                case UI_INDEX_STYLE_VAR_B:
-                var_fill_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                var_fill_button_b.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                var_fill_button_c.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                var_fill_button_d.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                break;
-                case UI_INDEX_STYLE_VAR_C:
-                var_fill_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                var_fill_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                var_fill_button_c.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                var_fill_button_d.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                break;
-                case UI_INDEX_STYLE_VAR_D:
-                var_fill_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                var_fill_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                var_fill_button_c.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                var_fill_button_d.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                break;
-                case UI_INDEX_STYLE_ENDING_1:
-                var_fill_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                var_fill_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                var_fill_button_c.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                var_fill_button_d.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_button_a.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                break;
-                case UI_INDEX_STYLE_ENDING_2:
-                var_fill_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                var_fill_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                var_fill_button_c.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                var_fill_button_d.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_button_b.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                break;
-                default:
-                var_fill_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                var_fill_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                var_fill_button_c.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                var_fill_button_d.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                break;
-            }
+            GLib.Idle.add (() => {
+                sync ();
+                switch (section) {
+                    case UI_INDEX_STYLE_INTRO_1:
+                    var_fill_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_c.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_d.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    intro_button_a.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    intro_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    ending_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    ending_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    break;
+                    case UI_INDEX_STYLE_INTRO_2:
+                    var_fill_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_c.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_d.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    intro_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    intro_button_b.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    ending_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    ending_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    break;
+                    case UI_INDEX_STYLE_VAR_A:
+                    var_fill_button_a.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_c.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_d.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    intro_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    intro_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    ending_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    ending_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    break;
+                    case UI_INDEX_STYLE_VAR_B:
+                    var_fill_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_b.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_c.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_d.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    intro_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    intro_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    ending_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    ending_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    break;
+                    case UI_INDEX_STYLE_VAR_C:
+                    var_fill_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_c.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_d.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    intro_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    intro_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    ending_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    ending_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    break;
+                    case UI_INDEX_STYLE_VAR_D:
+                    var_fill_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_c.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_d.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    intro_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    intro_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    ending_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    ending_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    break;
+                    case UI_INDEX_STYLE_ENDING_1:
+                    var_fill_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_c.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_d.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    intro_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    intro_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    ending_button_a.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    ending_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    break;
+                    case UI_INDEX_STYLE_ENDING_2:
+                    var_fill_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_c.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_d.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    intro_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    intro_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    ending_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    ending_button_b.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    break;
+                    default:
+                    var_fill_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_c.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_d.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    intro_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    intro_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    ending_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    ending_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    break;
+                }
+
+                return false;
+            });
         }
 
         public void set_style_section_by_index (int index) {

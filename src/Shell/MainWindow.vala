@@ -267,7 +267,7 @@ namespace Ensembles.Shell {
                         Application.arranger_core.synthesizer.send_notes_realtime (key, on, 100);
                     }
                 }
-                main_keyboard.set_note_on (key, on);
+                //  main_keyboard.set_note_on (key, on);
             });
 
             keyboard_input_handler.style_start_stop.connect (Application.arranger_core.style_player.play_style);

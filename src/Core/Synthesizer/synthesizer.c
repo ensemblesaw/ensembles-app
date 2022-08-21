@@ -10,6 +10,7 @@ fluid_synth_t* realtime_render_synth;
 
 // Accompaniment Flags
 int accompaniment_mode = 0;
+int accompaniment_on = 0;
 
 // Voice Settings
 int soundfont_id = 0;
@@ -229,6 +230,12 @@ synthesizer_set_event_callback (synthesizer_note_event_callback callback)
     event_callback = callback;
 }
 
+void
+synthesizer_set_accomp_enable (int on)
+{
+    accompaniment_on = on;
+}
+
 int
 handle_events_for_midi_players(fluid_midi_event_t *event, int _is_style_player)
 {
@@ -269,7 +276,7 @@ handle_events_for_midi_players(fluid_midi_event_t *event, int _is_style_player)
                 }
             }
         }
-        if (chan != 9 && get_central_accompaniment_mode () == 0 && type == 144) {
+        if (chan != 9 && !accompaniment_on && type == 144) {
             return 0;
         }
         if (type == 144)
@@ -296,7 +303,7 @@ synthesizer_send_notes (int key, int on, int velocity, int channel, u_int8_t mid
         {
             if (channel >= 17 && channel < 24)
             {
-                if (get_central_accompaniment_mode () > 0)
+                if (accompaniment_on)
                 {
                     if (accompaniment_mode == 0)
                     {
@@ -376,7 +383,7 @@ synthesizer_send_notes (int key, int on, int velocity, int channel, u_int8_t mid
         {
             if (channel == 17)
             {
-                if (get_central_accompaniment_mode () > 0)
+                if (accompaniment_on)
                 {
                     if (accompaniment_mode == 0)
                     {
@@ -490,13 +497,6 @@ void
 synthesizer_send_sustain (int on)
 {
     synthesizer_change_modulator (17, 66, on > 0 ? 127 : 0);
-}
-
-
-void
-synthesizer_set_accomp_enable (int on)
-{
-    set_central_accompaniment_mode (on);
 }
 
 float

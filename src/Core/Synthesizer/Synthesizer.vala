@@ -20,7 +20,7 @@ namespace Ensembles.Core {
 
             synthesizer_set_event_callback ((channel, key, velocity, on, c_main, c_type) =>{
                 //  print ("%d, %d, %d, %d, %d, %d\n", channel, key, velocity, on, c_main, c_type);
-                Application.main_window.main_keyboard.set_note_on (key, (on == 144), true);
+                Application.main_window.main_keyboard.set_note_on (key, (on == 144), Shell.Key.NoteType.AUTOMATION);
                 if (Shell.RecorderScreen.sequencer != null &&
                     Shell.RecorderScreen.sequencer.current_state != MidiRecorder.RecorderState.PLAYING
                         && (channel == 17 || channel == 18 || channel == 19)) {
@@ -42,7 +42,7 @@ namespace Ensembles.Core {
         }
 
         public void synthesizer_deinit () {
-           synthesizer_destruct ();
+            synthesizer_destruct ();
         }
 
         public int set_driver_configuration (string driver_name, double buffer_size) {
@@ -58,10 +58,18 @@ namespace Ensembles.Core {
 
         public void send_notes_realtime (int key, bool is_pressed, int velocity, int? channel = 17) {
             if (input_enabled) {
+                Application.main_window.main_keyboard.set_note_on (key, is_pressed, Shell.Key.NoteType.NORMAL);
+
+                if (!is_pressed)
+                    Application.main_window.main_keyboard.set_note_on (key, false, Shell.Key.NoteType.CHORD);
+
                 chord_main = synthesizer_send_notes (key, is_pressed ? 144 : 128, velocity, channel,
                     Application.settings.get_boolean ("midi-split")
                     && Application.arranger_core.midi_input_host.get_connection_status (), out chord_type);
+
                 if (chord_main > -6) {
+                    Application.main_window.main_keyboard.set_note_on (key, is_pressed, Shell.Key.NoteType.CHORD);
+
                     if (Shell.RecorderScreen.sequencer != null &&
                         Shell.RecorderScreen.sequencer.current_state != MidiRecorder.RecorderState.PLAYING
                             && channel == 17) {

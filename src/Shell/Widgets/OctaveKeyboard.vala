@@ -127,11 +127,9 @@ namespace Ensembles.Shell {
             keys[0].touch_event.connect ((event) => {
                 if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
                     note_activate (0, true);
-                    set_note_on (0, true);
                 }
                 if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
                     note_activate (0, false);
-                    set_note_on (0, false);
                 }
                 return false;
             });
@@ -146,11 +144,9 @@ namespace Ensembles.Shell {
             keys[1].touch_event.connect ((event) => {
                 if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
                     note_activate (1, true);
-                    set_note_on (1, true);
                 }
                 if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
                     note_activate (1, false);
-                    set_note_on (1, false);
                 }
                 return false;
             });
@@ -165,11 +161,9 @@ namespace Ensembles.Shell {
             keys[2].touch_event.connect ((event) => {
                 if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
                     note_activate (2, true);
-                    set_note_on (2, true);
                 }
                 if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
                     note_activate (2, false);
-                    set_note_on (2, false);
                 }
                 return false;
             });
@@ -184,11 +178,9 @@ namespace Ensembles.Shell {
             keys[3].touch_event.connect ((event) => {
                 if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
                     note_activate (3, true);
-                    set_note_on (3, true);
                 }
                 if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
                     note_activate (3, false);
-                    set_note_on (3, false);
                 }
                 return false;
             });
@@ -203,11 +195,9 @@ namespace Ensembles.Shell {
             keys[4].touch_event.connect ((event) => {
                 if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
                     note_activate (4, true);
-                    set_note_on (4, true);
                 }
                 if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
                     note_activate (4, false);
-                    set_note_on (4, false);
                 }
                 return false;
             });
@@ -222,11 +212,9 @@ namespace Ensembles.Shell {
             keys[5].touch_event.connect ((event) => {
                 if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
                     note_activate (5, true);
-                    set_note_on (5, true);
                 }
                 if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
                     note_activate (5, false);
-                    set_note_on (5, false);
                 }
                 return false;
             });
@@ -241,11 +229,9 @@ namespace Ensembles.Shell {
             keys[6].touch_event.connect ((event) => {
                 if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
                     note_activate (6, true);
-                    set_note_on (6, true);
                 }
                 if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
                     note_activate (6, false);
-                    set_note_on (6, false);
                 }
                 return false;
             });
@@ -260,11 +246,9 @@ namespace Ensembles.Shell {
             keys[7].touch_event.connect ((event) => {
                 if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
                     note_activate (7, true);
-                    set_note_on (7, true);
                 }
                 if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
                     note_activate (7, false);
-                    set_note_on (7, false);
                 }
                 return false;
             });
@@ -279,11 +263,9 @@ namespace Ensembles.Shell {
             keys[8].touch_event.connect ((event) => {
                 if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
                     note_activate (8, true);
-                    set_note_on (8, true);
                 }
                 if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
                     note_activate (8, false);
-                    set_note_on (8, false);
                 }
                 return false;
             });
@@ -298,11 +280,9 @@ namespace Ensembles.Shell {
             keys[9].touch_event.connect ((event) => {
                 if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
                     note_activate (9, true);
-                    set_note_on (9, true);
                 }
                 if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
                     note_activate (9, false);
-                    set_note_on (9, false);
                 }
                 return false;
             });
@@ -317,11 +297,9 @@ namespace Ensembles.Shell {
             keys[10].touch_event.connect ((event) => {
                 if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
                     note_activate (10, true);
-                    set_note_on (10, true);
                 }
                 if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
                     note_activate (10, false);
-                    set_note_on (10, false);
                 }
                 return false;
             });
@@ -336,22 +314,20 @@ namespace Ensembles.Shell {
             keys[11].touch_event.connect ((event) => {
                 if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
                     note_activate (11, true);
-                    set_note_on (11, true);
                 }
                 if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
                     note_activate (11, false);
-                    set_note_on (11, false);
                 }
                 return false;
             });
         }
 
         // auto refers to any automated visualization
-        public void set_note_on (int key, bool on, bool? auto = false) {
+        public void set_note_on (int key, bool on, Key.NoteType note_type) {
             if (on) {
-                keys[key].note_on (auto);
+                keys[key].note_on (note_type);
             } else {
-                keys[key].note_off ();
+                keys[key].note_off (note_type);
             }
         }
         public void update_split () {
