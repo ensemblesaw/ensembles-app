@@ -64,6 +64,27 @@ namespace Ensembles.Shell {
             }
         }
 
+        public void note_off (NoteType note_type) {
+            string style_class = "-key-";
+            if (_black_key) {
+                style_class = "black" + style_class;
+            } else {
+                style_class = "white" + style_class;
+            }
+
+            switch (note_type) {
+                case NoteType.NORMAL:
+                    get_style_context ().remove_class (style_class + "active");
+                    break;
+                case NoteType.AUTOMATION:
+                    get_style_context ().remove_class (style_class + "auto");
+                    break;
+                case NoteType.CHORD:
+                    get_style_context ().remove_class (style_class + "chord");
+                    break;
+            }
+        }
+
         public void update_split () {
             get_style_context ().remove_class ("common-key-split");
 
