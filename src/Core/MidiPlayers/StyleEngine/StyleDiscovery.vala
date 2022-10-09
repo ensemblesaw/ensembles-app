@@ -19,7 +19,7 @@ namespace Ensembles.Core {
 
         public StyleDiscovery () {
             in_built_style_path = Constants.PKGDATADIR + "/StyleFiles";
-            user_style_path = Environment.get_home_dir () + "/Documents/Ensembles/StyleFiles";
+            user_style_path = Application.user_data_dir + "/styles";
             style_files = new List<string> ();
             style_names = new List<string> ();
             style_genre = new List<string> ();
@@ -28,9 +28,9 @@ namespace Ensembles.Core {
         }
 
         public void load_styles () {
-            if (DirUtils.create_with_parents (Environment.get_home_dir () + "/Documents/Ensembles", 2000) != -1) {
+            if (DirUtils.create_with_parents (Application.user_data_dir, 2000) != -1) {
                 if (DirUtils.create_with_parents (
-                    Environment.get_home_dir () + "/Documents/Ensembles/StyleFiles", 2000) != -1) {
+                    user_style_path, 2000) != -1) {
                     debug ("Made user style folder\n");
                 }
             }
@@ -58,7 +58,8 @@ namespace Ensembles.Core {
                             temp[0].replace ("_", " "),
                             30,
                             4,
-                            4
+                            4,
+                            ""
                         ));
                     }
                 }
@@ -79,7 +80,8 @@ namespace Ensembles.Core {
                             temp[0].replace ("_", " "),
                             30,
                             4,
-                            4
+                            4,
+                            ""
                         ));
                     }
                 }
@@ -96,9 +98,12 @@ namespace Ensembles.Core {
                 styles.nth_data (i).tempo = tempo;
                 styles.nth_data (i).timesignature_n = analyser.time_sig_n;
                 styles.nth_data (i).timesignature_d = analyser.time_sig_d;
+                styles.nth_data (i).copyright_notice = analyser.copyright_notice;
                 Thread.usleep (10000);
                 if (Application.main_window != null) {
-                    Application.main_window.main_display_unit.update_splash_text (_("Loading Styles: ") + styles.nth_data (i).name);
+                    Application.main_window.main_display_unit.update_splash_text (
+                        _("Loading Styles: ") + styles.nth_data (i).name
+                    );
                 }
             }
             Timeout.add (1000, () => {

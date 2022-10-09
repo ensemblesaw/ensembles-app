@@ -23,7 +23,13 @@ public class Ensembles.Shell.Dialogs.Preferences.ItemScale : Gtk.EventBox {
 
     Gtk.Label title_label;
 
-    public ItemScale (string title, double value, double lower_limit, double upper_limit, double step, bool visible_separator=true) {
+    public ItemScale (
+        string title,
+        double value,
+        double lower_limit,
+        double upper_limit,
+        double step,
+        bool visible_separator=true) {
         title_label = new Gtk.Label (title);
         title_label.get_style_context ().add_class ("font-weight-600");
 

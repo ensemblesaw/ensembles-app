@@ -13,11 +13,14 @@ namespace Ensembles.Core {
             synthesizer_init (soundfont, driver_name, buffer_size);
             synthesizer_set_fx_callback ((buffer_l_in, buffer_r_in, out buffer_out_l, out buffer_out_r) => {
                 EffectRack.set_synth_callback (buffer_l_in, buffer_r_in, out buffer_out_l, out buffer_out_r);
+                if (Application.main_window != null && Application.main_window.ctrl_panel != null) {
+                    Application.main_window.ctrl_panel.animate_audio (buffer_l_in, buffer_r_in);
+                }
             });
 
             synthesizer_set_event_callback ((channel, key, velocity, on, c_main, c_type) =>{
-                print ("%d, %d, %d, %d, %d, %d\n", channel, key, velocity, on, c_main, c_type);
-                Application.main_window.main_keyboard.set_note_on (key, (on == 144), true);
+                //  print ("%d, %d, %d, %d, %d, %d\n", channel, key, velocity, on, c_main, c_type);
+                Application.main_window.main_keyboard.set_note_on (key, (on == 144), Shell.Key.NoteType.AUTOMATION);
                 if (Shell.RecorderScreen.sequencer != null &&
                     Shell.RecorderScreen.sequencer.current_state != MidiRecorder.RecorderState.PLAYING
                         && (channel == 17 || channel == 18 || channel == 19)) {
@@ -39,7 +42,7 @@ namespace Ensembles.Core {
         }
 
         public void synthesizer_deinit () {
-           synthesizer_destruct ();
+            synthesizer_destruct ();
         }
 
         public int set_driver_configuration (string driver_name, double buffer_size) {
@@ -53,10 +56,20 @@ namespace Ensembles.Core {
             }
         }
 
-        public void send_notes_realtime (int key, int on, int velocity, int? channel = 17) {
+        public void send_notes_realtime (int key, bool is_pressed, int velocity, int? channel = 17) {
             if (input_enabled) {
-                chord_main = synthesizer_send_notes (key, on, velocity, channel, out chord_type);
+                Application.main_window.main_keyboard.set_note_on (key, is_pressed, Shell.Key.NoteType.NORMAL);
+
+                if (!is_pressed)
+                    Application.main_window.main_keyboard.set_note_on (key, false, Shell.Key.NoteType.CHORD);
+
+                chord_main = synthesizer_send_notes (key, is_pressed ? 144 : 128, velocity, channel,
+                    Application.settings.get_boolean ("midi-split")
+                    && Application.arranger_core.midi_input_host.get_connection_status (), out chord_type);
+
                 if (chord_main > -6) {
+                    Application.main_window.main_keyboard.set_note_on (key, is_pressed, Shell.Key.NoteType.CHORD);
+
                     if (Shell.RecorderScreen.sequencer != null &&
                         Shell.RecorderScreen.sequencer.current_state != MidiRecorder.RecorderState.PLAYING
                             && channel == 17) {
@@ -195,7 +208,7 @@ namespace Ensembles.Core {
 extern void synthesizer_init (string loc, string dname, double buffer_size);
 extern void synthesizer_destruct ();
 extern int synthesizer_set_driver_configuration (string dname, double buffer_size);
-extern int synthesizer_send_notes (int key, int on, int velocity, int channel, out int type);
+extern int synthesizer_send_notes (int key, int on, int velocity, int channel, bool midi_split, out int type);
 extern void synthesizer_halt_notes ();
 extern void synthesizer_halt_realtime (int b_all);
 extern void synthesizer_send_sustain (int on);
@@ -223,12 +236,24 @@ extern float synthesizer_get_version ();
 
 
 [CCode (cname = "synthesizer_fx_callback", has_target = false)]
-extern delegate void synthesizer_fx_callback (float[] input_l, float[] input_r, out float[] output_l, out float[] output_r);
+extern delegate void synthesizer_fx_callback (
+    float[] input_l,
+    float[] input_r,
+    out float[] output_l,
+    out float[] output_r
+);
 [CCode (has_target = false)]
 extern void synthesizer_set_fx_callback (synthesizer_fx_callback function);
 
 [CCode (cname = "synthesizer_note_event_callback", has_target = false)]
-extern delegate void synthesizer_note_event_callback (int channel, int key, int velocity, int on, int chord_main, int chord_type);
+extern delegate void synthesizer_note_event_callback (
+    int channel,
+    int key,
+    int velocity,
+    int on,
+    int chord_main,
+    int chord_type
+);
 [CCode (has_target = false)]
 extern void synthesizer_set_event_callback (synthesizer_note_event_callback function);
 

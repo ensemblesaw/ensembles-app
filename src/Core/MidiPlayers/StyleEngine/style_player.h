@@ -11,6 +11,7 @@
 #include <gtk/gtk.h>
 #include <glib.h>
 #include <string.h>
+#include <time.h>
 
 #include "style_analyser.h"
 #include "../../ChoppingBlock/central_bus.h"

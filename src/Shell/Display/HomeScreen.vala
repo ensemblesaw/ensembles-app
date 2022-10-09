@@ -211,6 +211,7 @@ namespace Ensembles.Shell {
             chord_box.attach (chord_flat_label, 1, 1, 2, 1);
             chord_box.attach (chord_type_label, 1, 2, 2, 1);
             chord_box.margin_top = 2;
+            chord_box.height_request = 36;
 
             var equalizer_grid = new Gtk.Grid ();
             equalizer_bar = new EqualizerBar[19];
@@ -347,22 +348,31 @@ namespace Ensembles.Shell {
             selected_style_label.set_text (name);
             selected_style_label.queue_draw ();
         }
+
+        public void set_time_signature (int n, int d) {
+            beat_label.set_text ("%d/%d".printf (n, d));
+        }
+
         public void set_voice_l_name (string name) {
             selected_voice_l_label.set_text (name);
             selected_voice_l_label.queue_draw ();
         }
+
         public void set_voice_r1_name (string name) {
             selected_voice_r1_label.set_text (name);
             selected_voice_r1_label.queue_draw ();
         }
+
         public void set_voice_r2_name (string name) {
             selected_voice_r2_label.set_text (name);
             selected_voice_r2_label.queue_draw ();
         }
+
         public void set_tempo (int tempo) {
             tempo_label.set_text (tempo.to_string ());
             this.tempo = tempo;
         }
+
         public void set_measure (int measure) {
             measure_label.set_text (measure.to_string ());
             measure_label.queue_draw ();
@@ -425,6 +435,36 @@ namespace Ensembles.Shell {
                 break;
                 case 1:
                 chord_type_label.set_text ("min");
+                break;
+                case 2:
+                chord_type_label.set_text ("dim");
+                break;
+                case 3:
+                chord_type_label.set_text ("sus2");
+                break;
+                case 4:
+                chord_type_label.set_text ("sus4");
+                break;
+                case 5:
+                chord_type_label.set_text ("aug");
+                break;
+                case 6:
+                chord_type_label.set_text ("6");
+                break;
+                case 7:
+                chord_type_label.set_text ("7");
+                break;
+                case 8:
+                chord_type_label.set_text ("M7");
+                break;
+                case 9:
+                chord_type_label.set_text ("m7");
+                break;
+                case 10:
+                chord_type_label.set_text ("add9");
+                break;
+                case 11:
+                chord_type_label.set_text ("9");
                 break;
             }
             chord_label.queue_draw ();

@@ -314,6 +314,11 @@ Style for Menus like the Style menu, Voice menu or the Recorder
     margin-top: 8px;
 }
 
+.ensembles-central-display .menu-item-icon {
+    border: none;
+    box-shadow: none;
+}
+
 .ensembles-central-display .menu-item-annotation {
     background-color: alpha(#fff, 0.7);
     color: #333;

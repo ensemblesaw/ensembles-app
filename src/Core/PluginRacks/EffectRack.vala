@@ -23,7 +23,12 @@ namespace Ensembles.Core {
             return plugs;
         }
 
-        public static void set_synth_callback (float[] buffer_l_in, float[] buffer_r_in, out float[] buffer_out_l, out float[] buffer_out_r) {
+        public static void set_synth_callback (
+            float[] buffer_l_in,
+            float[] buffer_r_in,
+            out float[] buffer_out_l,
+            out float[] buffer_out_r
+        ) {
             // Initialize out buffer
             buffer_out_l = buffer_l_in;
             buffer_out_r = buffer_r_in;

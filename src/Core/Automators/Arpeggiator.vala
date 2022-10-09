@@ -5,7 +5,7 @@
 
 namespace Ensembles.Core {
     public class Arpeggiator : Object {
-        public signal void generate_notes (int key, int on, int velocity);
+        public signal void generate_notes (int key, bool is_pressed, int velocity);
         public signal void halt_notes (bool all);
         int[] keys;
         int[] active_keys;
@@ -21,8 +21,8 @@ namespace Ensembles.Core {
             this.tempo = tempo;
         }
 
-        public void send_notes (int key, int on, int velocity) {
-            if (on == 144) {
+        public void send_notes (int key, bool is_pressed, int velocity) {
+            if (is_pressed) {
                 keys[key - 36] = velocity;
                 if (!arpeggio_playing) {
                     switch (Ensembles.Application.settings.get_int ("arpeggiator-type")) {
@@ -77,7 +77,7 @@ namespace Ensembles.Core {
             int n = active_keys.length;
             int i = direction ? 0 : int.MAX;
             halt_notes (true);
-            generate_notes (active_keys[i % n] + 36, 144, keys[active_keys[i % n]]);
+            generate_notes (active_keys[i % n] + 36, true, keys[active_keys[i % n]]);
             if (direction)
                 i++;
             else
@@ -89,7 +89,7 @@ namespace Ensembles.Core {
                     return false;
                 }
                 halt_notes (true);
-                generate_notes (active_keys[i % n] + 36, 144, keys[active_keys[i % n]]);
+                generate_notes (active_keys[i % n] + 36, true, keys[active_keys[i % n]]);
                 if (direction)
                     i++;
                 else
@@ -103,7 +103,7 @@ namespace Ensembles.Core {
             int n = active_keys.length;
             int i = 0;
             halt_notes (true);
-            generate_notes (active_keys[0] + 36, 144, keys[active_keys[0]]);
+            generate_notes (active_keys[0] + 36, true, keys[active_keys[0]]);
             bool direction = true;
             if (direction)
                 i++;
@@ -116,7 +116,7 @@ namespace Ensembles.Core {
                     return false;
                 }
                 halt_notes (true);
-                generate_notes (active_keys[i % n] + 36, 144, keys[active_keys[i % n]]);
+                generate_notes (active_keys[i % n] + 36, true, keys[active_keys[i % n]]);
                 if (direction)
                     i++;
                 else
@@ -135,7 +135,7 @@ namespace Ensembles.Core {
             int n = active_keys.length;
             int i = 0;
             halt_notes (true);
-            generate_notes (active_keys[0] + 36, 144, keys[active_keys[0]]);
+            generate_notes (active_keys[0] + 36, true, keys[active_keys[0]]);
             Timeout.add ((uint)((60000 / subdivision) / tempo), () => {
                 active_keys = find_keys ();
                 n = active_keys.length;
@@ -144,7 +144,7 @@ namespace Ensembles.Core {
                 }
                 halt_notes (true);
                 i = Random.int_range (0, n);
-                generate_notes (active_keys[i % n] + 36, 144, keys[active_keys[i % n]]);
+                generate_notes (active_keys[i % n] + 36, true, keys[active_keys[i % n]]);
                 return arpeggio_playing;
             });
         }

@@ -28,15 +28,23 @@ namespace Ensembles.Shell {
         // A panel that shows the beat progress
         public BeatCounterView () {
             var beat_visualizer_grid = new Gtk.Grid ();
-            beat_counter_0 = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/beat_counter/beat_counter_1_0.svg");
-            beat_counter_1 = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/beat_counter/beat_counter_2_0.svg") {
+            beat_counter_0 = new Gtk.Image.from_resource (
+                "/com/github/subhadeepjasu/ensembles/images/beat_counter/beat_counter_1_0.svg"
+            );
+            beat_counter_1 = new Gtk.Image.from_resource (
+                "/com/github/subhadeepjasu/ensembles/images/beat_counter/beat_counter_2_0.svg"
+            ) {
                 margin_top = 2
             };
-            beat_counter_2 = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/beat_counter/beat_counter_2_0.svg") {
+            beat_counter_2 = new Gtk.Image.from_resource (
+                "/com/github/subhadeepjasu/ensembles/images/beat_counter/beat_counter_2_0.svg"
+            ) {
                 margin_top = 2,
                 margin_start = 1
             };
-            beat_counter_3 = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/beat_counter/beat_counter_2_0.svg") {
+            beat_counter_3 = new Gtk.Image.from_resource (
+                "/com/github/subhadeepjasu/ensembles/images/beat_counter/beat_counter_2_0.svg"
+            ) {
                 margin_top = 2,
                 margin_start = 1
             };
@@ -49,18 +57,26 @@ namespace Ensembles.Shell {
 
 
             var beat_visualizer_active_grid = new Gtk.Grid ();
-            beat_counter_active_0 = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/beat_counter/beat_counter_1_1.svg") {
+            beat_counter_active_0 = new Gtk.Image.from_resource (
+                "/com/github/subhadeepjasu/ensembles/images/beat_counter/beat_counter_1_1.svg"
+            ) {
                 opacity = 0
             };
-            beat_counter_active_1 = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/beat_counter/beat_counter_2_1.svg") {
+            beat_counter_active_1 = new Gtk.Image.from_resource (
+                "/com/github/subhadeepjasu/ensembles/images/beat_counter/beat_counter_2_1.svg"
+            ) {
                 margin_top = 2,
                 opacity = 0
             };
-            beat_counter_active_2 = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/beat_counter/beat_counter_2_1.svg") {
+            beat_counter_active_2 = new Gtk.Image.from_resource (
+                "/com/github/subhadeepjasu/ensembles/images/beat_counter/beat_counter_2_1.svg"
+            ) {
                 margin_top = 2,
                 opacity = 0
             };
-            beat_counter_active_3 = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/beat_counter/beat_counter_2_1.svg") {
+            beat_counter_active_3 = new Gtk.Image.from_resource (
+                "/com/github/subhadeepjasu/ensembles/images/beat_counter/beat_counter_2_1.svg"
+            ) {
                 margin_top = 2,
                 opacity = 0
             };
@@ -286,13 +302,17 @@ namespace Ensembles.Shell {
                                                 pulse_1 ();
                                                 Timeout.add ((uint)(240000 / (tempo * quarter_notes_per_bar)), () => {
                                                     pulse_2 ();
-                                                    Timeout.add ((uint)(240000 / (tempo * quarter_notes_per_bar)), () => {
+                                                    Timeout.add ((uint)(240000 /
+                                                        (tempo * quarter_notes_per_bar)), () => {
                                                         pulse_3 ();
-                                                        Timeout.add ((uint)(240000 / (tempo * quarter_notes_per_bar)), () => {
+                                                        Timeout.add ((uint)(240000 /
+                                                            (tempo * quarter_notes_per_bar)), () => {
                                                             pulse_1 ();
-                                                            Timeout.add ((uint)(240000 / (tempo * quarter_notes_per_bar)), () => {
+                                                            Timeout.add ((uint)(240000 /
+                                                                (tempo * quarter_notes_per_bar)), () => {
                                                                 pulse_2 ();
-                                                                Timeout.add ((uint)(240000 / (tempo * quarter_notes_per_bar)), () => {
+                                                                Timeout.add ((uint)(240000 /
+                                                                    (tempo * quarter_notes_per_bar)), () => {
                                                                     pulse_3 ();
                                                                     return false;
                                                                 });

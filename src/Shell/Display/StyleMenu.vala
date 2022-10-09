@@ -54,7 +54,8 @@ namespace Ensembles.Shell {
                 change_style (style_rows[index].accomp_style);
                 Ensembles.Application.settings.set_int ("style-index", index);
 
-                if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
+                if (RecorderScreen.sequencer != null &&
+                    RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
                     var event = new Core.MidiEvent ();
                     event.event_type = Core.MidiEvent.EventType.STYLECHANGE;
                     event.value1 = index;
@@ -115,7 +116,8 @@ namespace Ensembles.Shell {
                 }
                 change_style (selected_style);
                 scroll_to_selected_row ();
-                if (RecorderScreen.sequencer != null && RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
+                if (RecorderScreen.sequencer != null &&
+                    RecorderScreen.sequencer.current_state != Core.MidiRecorder.RecorderState.PLAYING) {
                     var event = new Core.MidiEvent ();
                     event.event_type = Core.MidiEvent.EventType.STYLECHANGE;
                     event.value1 = index;

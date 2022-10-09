@@ -20,12 +20,12 @@ General Gtk Widgets
 Buttons
 */
 .ensembles-central-display button {
-	    border: 1px solid alpha(#000, 0.25);
-background-color: #fff;
-color: #1d1d1d;
-border-radius: 4px;
-box-shadow: 0 1px 1px alpha(#000, 0.25);
-text-shadow: none;
+    border: 1px solid alpha(#000, 0.25);
+    background-color: #fff;
+    color: #1d1d1d;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px alpha(#000, 0.25);
+    text-shadow: none;
 }
 
 .ensembles-central-display button:hover {
@@ -71,25 +71,25 @@ box-shadow: 0 1px alpha(#000, 0.1);
 /* Spin Button */
 .ensembles-central-display spinbutton {
     background-color: #fff;
-color: #333;
-box-shadow: inset 0 0 1px 1px alpha(#666, 0.2);
-border: 1px solid alpha(#000, 0.2);
-border-radius: 4px;
-margin-bottom: 8px;
+    color: #333;
+    box-shadow: inset 0 0 1px 1px alpha(#666, 0.2);
+    border: 1px solid alpha(#000, 0.2);
+    border-radius: 4px;
+    margin-bottom: 8px;
 }
 
 .ensembles-central-display spinbutton entry {
     background-color: alpha (#000, 0);
-color: #333;
-border: none;
-box-shadow: none;
+    color: #333;
+    border: none;
+    box-shadow: none;
 }
 
 .ensembles-central-display spinbutton button {
     border: none;
-background: none;
-border-radius: 0 4px 4px 0;
-border-left: 1px solid #ccc;
+    background: none;
+    border-radius: 0 4px 4px 0;
+    border-left: 1px solid #ccc;
 }
 
 .ensembles-central-display spinbutton button:disabled {
@@ -116,9 +116,9 @@ The screen which is shown by default
 .ensembles-central-display .home-screen-panel-top {
     background-image: linear-gradient(#eaeaea, alpha(#e9e9e9, 0.6) 50px),url("resource://com/github/subhadeepjasu/ensembles/images/display_unit/catalin-sandru-7SxSkCvVM1U-unsplash-blurred.jpg");
     background-size: auto 600%;
-box-shadow: inset 0 1px rgba(255,255,255, 0.5),
-inset 0 -1px rgba(255,255,255, 0.25),
-0 1px alpha(#000, 0.1);
+    box-shadow: inset 0 1px rgba(255,255,255, 0.5),
+    inset 0 -1px rgba(255,255,255, 0.25),
+    0 1px alpha(#000, 0.1);
     background-position: 50% 0;
     border-bottom: 1px solid alpha(#000, 0.5);
 }
@@ -126,14 +126,14 @@ inset 0 -1px rgba(255,255,255, 0.25),
 .ensembles-central-display .home-screen-top-panel-header {
     font-size: 1.11em;
     margin-top: 4px;
-color: #333;
-text-shadow: 0 1px #f3f3f3;
+    color: #333;
+    text-shadow: 0 1px #f3f3f3;
 }
 
 .ensembles-central-display .home-screen-top-panel-subheader {
     font-size: 0.8em;
     margin-bottom: 6px;
-color: #666;
+    color: #666;
 }
 
 .ensembles-central-display .home-screen-top-panel-button {
@@ -153,7 +153,7 @@ color: #666;
     background-size: auto 250%;
     background-position: 50% 100%;
 	border-top: 1px solid alpha(#000, 0.5);
-box-shadow: inset 0 1px rgba(255,255,255, 0.2);
+    box-shadow: inset 0 1px rgba(255,255,255, 0.2);
 }
 
 .ensembles-central-display .home-screen-bottom-panel-header {
@@ -206,40 +206,40 @@ Quick mods are the screens for tempo, modulators and lfo
 }
 .ensembles-central-display .quick-mod-close-button {
     background-color: rgba(0,0,0,0);
-background-image:linear-gradient(#eee, #bbb);
-color: #333;
+    background-image:linear-gradient(#eee, #bbb);
+    color: #333;
     border-radius: 4px 0 0 4px;
-box-shadow: inset 0 1px rgb(255,255,255), inset 0 -1px rgba(255,255,255,0.5);
-border: 1px solid alpha(#000, 0.2);
+    box-shadow: inset 0 1px rgb(255,255,255), inset 0 -1px rgba(255,255,255,0.5);
+    border: 1px solid alpha(#000, 0.2);
     margin-right: -2px;
--gtk-icon-shadow: 0 1px #fff;
+    -gtk-icon-shadow: 0 1px #fff;
 }
 .ensembles-central-display .quick-mod-close-button:hover {
     background-image:linear-gradient(#f3f3f3, #ccc);
 }
 .ensembles-central-display .quick-mod-close-button:active {
     background-image:linear-gradient(#eee, #ccc);
-border-radius: 4px 0 0 4px;
+    border-radius: 4px 0 0 4px;
 }
 .ensembles-central-display .quick-mod-header {
     font-size: 1.8em;
     margin-left: 4px;
-border-radius: 0 4px 4px 0;
+    border-radius: 0 4px 4px 0;
     background-image:linear-gradient(#eee, #bbb);
-box-shadow: inset 0 1px rgb(255,255,255), inset 0 -1px rgba(255,255,255,0.5);
-border: 1px solid alpha(#000, 0.2);
-color: #333;
+    box-shadow: inset 0 1px rgb(255,255,255), inset 0 -1px rgba(255,255,255,0.5);
+    border: 1px solid alpha(#000, 0.2);
+    color: #333;
     padding: 4px;
-text-shadow: 0 1px #fff;
+    text-shadow: 0 1px #fff;
 }
 .ensembles-central-display .quick-mod-button {
     border: 1px solid alpha(#000, 0.25);
-background-color: #fff;
-color: #1d1d1d;
-border-radius: 4px;
-margin-bottom: 4px;
-margin-top: 8px;
-box-shadow: 0 1px 2px alpha(#000, 0.25);
+    background-color: #fff;
+    color: #1d1d1d;
+    border-radius: 4px;
+    margin-bottom: 4px;
+    margin-top: 8px;
+    box-shadow: 0 1px 2px alpha(#000, 0.25);
 }
 .ensembles-central-display .quick-mod-button-assignable {
     background-color: @accent_color_complimentary;
@@ -311,8 +311,8 @@ Style for Menus like the Style menu, Voice menu or the Recorder
     border-top: 1px solid shade(@accent_color, 1);
     border-bottom: 1px solid shade(@accent_color, 1);
     box-shadow: inset 0 1px 0 0 shade(@accent_color, 1.3),
-		inset 0 -2px 0 0 alpha(#fff, 0.1),
-		inset 0 -1px 0 0 shade(@accent_color, 0.8);
+                inset 0 -2px 0 0 alpha(#fff, 0.1),
+                inset 0 -1px 0 0 shade(@accent_color, 0.8);
     background-image:linear-gradient(shade(@accent_color, 1.2), shade(@accent_color, 1));
     color: #fff;
 }
@@ -321,6 +321,9 @@ Style for Menus like the Style menu, Voice menu or the Recorder
 }
 .ensembles-central-display .menu-box > .activatable:selected .menu-item-label {
     text-shadow: none;
+}
+.ensembles-central-display .menu-box > .activatable:selected .menu-item-icon {
+    color: #f3f3f3;
 }
 .ensembles-central-display .menu-item-description {
     font-size: 0.8em;

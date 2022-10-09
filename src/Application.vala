@@ -36,9 +36,13 @@ namespace Ensembles {
         ";
 
         string[] ? arg_file = null;
+        public static bool raw_midi_input = false;
+
+        public static string user_data_dir;
+        public static string user_config_dir;
 
         construct {
-            flags |= ApplicationFlags.HANDLES_OPEN;
+            flags |= ApplicationFlags.HANDLES_OPEN | ApplicationFlags.HANDLES_COMMAND_LINE;
             application_id = "com.github.subhadeepjasu.ensembles";
             settings = new Settings (application_id);
         }
@@ -46,6 +50,8 @@ namespace Ensembles {
         protected override void activate () {
             // Make a new Main Window only if none present
             if (main_window == null) {
+                user_data_dir = Environment.get_user_special_dir (GLib.UserDirectory.DOCUMENTS) + "/ensembles";
+                user_config_dir = Environment.get_user_config_dir () + "/ensembles";
                 arranger_core = new Core.ArrangerCore ();
                 Hdy.init ();
                 Gtk.Settings settings = Gtk.Settings.get_default ();
@@ -89,9 +95,10 @@ namespace Ensembles {
             string[] args_cmd = cmd.get_arguments ();
             unowned string[] args = args_cmd;
 
-            GLib.OptionEntry [] options = new OptionEntry [2];
+            GLib.OptionEntry [] options = new OptionEntry [3];
             options [0] = { "", 0, 0, OptionArg.STRING_ARRAY, ref arg_file, null, "URI" };
-            options [1] = { null };
+            options [1] = { "raw", 0, 0, OptionArg.NONE, ref raw_midi_input, _("Enable Raw MIDI Input"), null };
+            options [2] = { null };
 
             var opt_context = new OptionContext ("actions");
             opt_context.add_main_entries (options, null);
@@ -102,10 +109,17 @@ namespace Ensembles {
                 return -1;
             }
 
-            if (GLib.FileUtils.test (arg_file[0], GLib.FileTest.EXISTS) && arg_file[0].down ().has_suffix (".mid")) {
-                File file = File.new_for_path (arg_file[0]);
-                open ({ file }, "");
-                return 0;
+            if (raw_midi_input) {
+                print ("Raw MIDI Input Enabled! You can now connect your DAW\n");
+            }
+
+            if (arg_file != null && arg_file[0] != null) {
+                if (GLib.FileUtils.test (arg_file[0], GLib.FileTest.EXISTS) &&
+                    arg_file[0].down ().has_suffix (".mid")) {
+                    File file = File.new_for_path (arg_file[0]);
+                    open ({ file }, "");
+                    return 0;
+                }
             }
 
             activate ();
@@ -152,38 +166,60 @@ namespace Ensembles {
                 try {
                     switch (theme_color) {
                         case "strawberry":
-                            complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS.printf ("@BANANA_500", "@ORANGE_500"));
+                            complimentary_css_provider.load_from_data (
+                                COMPLIMENTARY_ACCENT_COLORS.printf ("@BANANA_500", "@ORANGE_500")
+                            );
                             break;
                         case "orange":
-                            complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS.printf ("@BLUEBERRY_500", "@MINT_500"));
+                            complimentary_css_provider.load_from_data (
+                                COMPLIMENTARY_ACCENT_COLORS.printf ("@BLUEBERRY_500", "@MINT_500")
+                            );
                             break;
                         case "banana":
-                            complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS.printf ("@MINT_500", "@ORANGE_500"));
+                            complimentary_css_provider.load_from_data (
+                                COMPLIMENTARY_ACCENT_COLORS.printf ("@MINT_500", "@ORANGE_500")
+                            );
                             break;
                         case "lime":
-                            complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS.printf ("@BANANA_500", "@BUBBLEGUM_500"));
+                            complimentary_css_provider.load_from_data (
+                                COMPLIMENTARY_ACCENT_COLORS.printf ("@BANANA_500", "@BUBBLEGUM_500")
+                            );
                             break;
                         case "mint":
-                            complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS.printf ("@BANANA_500", "@SILVER_500"));
+                            complimentary_css_provider.load_from_data (
+                                COMPLIMENTARY_ACCENT_COLORS.printf ("@BANANA_500", "@SILVER_500")
+                            );
                             break;
                         case "blueberry":
-                            complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS.printf ("@BANANA_500", "@MINT_500"));
+                            complimentary_css_provider.load_from_data (
+                                COMPLIMENTARY_ACCENT_COLORS.printf ("@BANANA_500", "@MINT_500")
+                            );
                             break;
                         case "grape":
-                            complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS.printf ("@BANANA_500", "@BUBBLEGUM_500"));
+                            complimentary_css_provider.load_from_data (
+                                COMPLIMENTARY_ACCENT_COLORS.printf ("@BANANA_500", "@BUBBLEGUM_500")
+                            );
                             break;
                         case "bubblegum":
-                            complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS.printf ("@MINT_500", "@GRAPE_500"));
+                            complimentary_css_provider.load_from_data (
+                                COMPLIMENTARY_ACCENT_COLORS.printf ("@MINT_500", "@GRAPE_500")
+                            );
                             break;
                         case "cocoa":
-                            complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS.printf ("@BANANA_500", "@MINT_500"));
+                            complimentary_css_provider.load_from_data (
+                                COMPLIMENTARY_ACCENT_COLORS.printf ("@BANANA_500", "@MINT_500")
+                            );
                             break;
                         case "silver":
-                            complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS.printf ("@BLUEBERRY_300", "@STRAWBERRY_300"));
+                            complimentary_css_provider.load_from_data (
+                                COMPLIMENTARY_ACCENT_COLORS.printf ("@BLUEBERRY_300", "@STRAWBERRY_300")
+                            );
                             break;
                         case "slate":
                         case "black":
-                            complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS.printf ("@MINT_500", "@BANANA_500"));
+                            complimentary_css_provider.load_from_data (
+                                COMPLIMENTARY_ACCENT_COLORS.printf ("@MINT_500", "@BANANA_500")
+                            );
                             break;
 
                     }

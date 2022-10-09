@@ -201,28 +201,42 @@
             Timeout.add (200, () => {
                 if (monitoring) {
                     pan_lock = false;
-                    pan_spin_button.value = (double)(Ensembles.Core.Synthesizer.get_modulator_value (_channel, 10)) - 64;
+                    pan_spin_button.value = (double)(
+                        Ensembles.Core.Synthesizer.get_modulator_value (_channel, 10)) - 64;
                     pan_lock = true;
                     reverb_lock = false;
-                    reverb_spin_button.value = (double)(Ensembles.Core.Synthesizer.get_modulator_value (_channel, 91));
+                    reverb_spin_button.value = (double)(
+                        Ensembles.Core.Synthesizer.get_modulator_value (_channel, 91)
+                    );
                     reverb_lock = true;
                     chorus_lock = false;
-                    chorus_spin_button.value = (double)(Ensembles.Core.Synthesizer.get_modulator_value (_channel, 93));
+                    chorus_spin_button.value = (double)(
+                        Ensembles.Core.Synthesizer.get_modulator_value (_channel, 93)
+                    );
                     chorus_lock = true;
                     pitch_lock = false;
-                    pitch_spin_button.value = (double)(Ensembles.Core.Synthesizer.get_modulator_value (_channel, 3)) - 64;
+                    pitch_spin_button.value = (double)(
+                        Ensembles.Core.Synthesizer.get_modulator_value (_channel, 3)) - 64;
                     pitch_lock = true;
                     expression_lock = false;
-                    expression_spin_button.value = (double)(Ensembles.Core.Synthesizer.get_modulator_value (_channel, 11));
+                    expression_spin_button.value = (double)(
+                        Ensembles.Core.Synthesizer.get_modulator_value (_channel, 11)
+                    );
                     expression_lock = true;
                     modulation_lock = false;
-                    modulation_spin_button.value = (double)(Ensembles.Core.Synthesizer.get_modulator_value (_channel, 1));
+                    modulation_spin_button.value = (double)(
+                        Ensembles.Core.Synthesizer.get_modulator_value (_channel, 1)
+                    );
                     modulation_lock = true;
                     cut_off_lock = false;
-                    cut_off_spin_button.value = (double)(Ensembles.Core.Synthesizer.get_modulator_value (_channel, 74));
+                    cut_off_spin_button.value = (double)(
+                        Ensembles.Core.Synthesizer.get_modulator_value (_channel, 74)
+                    );
                     cut_off_lock = true;
                     resonance_lock = false;
-                    resonance_spin_button.value = (double)(Ensembles.Core.Synthesizer.get_modulator_value (_channel, 71));
+                    resonance_spin_button.value = (double)(
+                        Ensembles.Core.Synthesizer.get_modulator_value (_channel, 71)
+                    );
                     resonance_lock = true;
                 }
                 return monitoring;

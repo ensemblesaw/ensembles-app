@@ -59,7 +59,10 @@ namespace Ensembles.Core {
 
             // Find out which driver was selected in user settings
             debug ("STARTUP: Initializing Settings");
-            string driver_string = Core.AudioDriverSniffer.get_available_driver (Application.settings.get_string ("driver"));
+            string driver_string = Core.AudioDriverSniffer.get_available_driver (
+                Application.settings.get_string ("driver")
+            );
+
             if (driver_string == "") {
                 error ("FATAL: No compatible audio drivers found!");
             }
@@ -107,11 +110,17 @@ namespace Ensembles.Core {
                 Idle.add (() => {
                     Application.main_window.beat_counter_panel.sync ();
                     Application.main_window.style_controller_view.sync ();
-                    Application.main_window.main_display_unit.set_measure_display (Ensembles.Core.CentralBus.get_measure ());
+                    Application.main_window.main_display_unit.set_measure_display (
+                        Ensembles.Core.CentralBus.get_measure ()
+                    );
                     return false;
                 });
+
                 if (metronome_player.looping) metronome_player.stop_loop ();
-                metronome_player.play_measure (Core.CentralBus.get_beats_per_bar (), Core.CentralBus.get_quarter_notes_per_bar ());
+                metronome_player.play_measure (
+                    Core.CentralBus.get_beats_per_bar (),
+                    Core.CentralBus.get_quarter_notes_per_bar ()
+                );
             });
             bus.system_halt.connect (() => {
                 Idle.add (() => {
@@ -120,17 +129,6 @@ namespace Ensembles.Core {
                     metronome_player.stop_loop ();
                     return false;
                 });
-            });
-            bus.style_section_change.connect ((section) => {
-                Application.main_window.style_controller_view.set_style_section (section);
-                if (Shell.RecorderScreen.sequencer != null &&
-                    Shell.RecorderScreen.sequencer.current_state == MidiRecorder.RecorderState.RECORDING) {
-                    var style_part_actual_event = new Core.MidiEvent ();
-                    style_part_actual_event.event_type = Core.MidiEvent.EventType.STYLECONTROLACTUAL;
-                    style_part_actual_event.value1 = section;
-
-                    Shell.RecorderScreen.sequencer.record_event (style_part_actual_event);
-                }
             });
             bus.loaded_tempo_change.connect ((tempo) => {
                 Application.main_window.beat_counter_panel.change_tempo (tempo);
@@ -147,7 +145,8 @@ namespace Ensembles.Core {
                 if (Application.main_window.beat_counter_panel != null) {
                     Application.main_window.beat_counter_panel.change_beats_per_bar (n);
                     Application.main_window.beat_counter_panel.change_qnotes_per_bar (d);
-                    print ("ts: %d\n", d);
+                    debug ("ts: %d\n", d);
+                    Application.main_window.main_display_unit.update_time_signature (n, d);
                 }
             });
             bus.split_key_change.connect (() => {
@@ -156,33 +155,33 @@ namespace Ensembles.Core {
         }
 
         void make_other_core_events () {
-            midi_input_host.receive_note_event.connect ((key, on, velocity)=>{
-                //  debug ("%d %d %d\n", key, on, velocity);
+            midi_input_host.receive_note_event.connect ((key, is_pressed, velocity, layer)=>{
+                //  debug ("%d %d %d\n", key, is_pressed, velocity);
                 if (Application.settings.get_boolean ("arpeggiator-on")) {
                     if (Application.settings.get_boolean ("accomp-on")) {
                         if (key > Core.CentralBus.get_split_key ()) {
-                            arpeggiator.send_notes (key, on, velocity);
+                            arpeggiator.send_notes (key, is_pressed, velocity);
                         } else {
-                            synthesizer.send_notes_realtime (key, on, velocity);
+                            synthesizer.send_notes_realtime (key, is_pressed, velocity);
                         }
                     } else {
-                        arpeggiator.send_notes (key, on, velocity);
+                        arpeggiator.send_notes (key, is_pressed, velocity);
                     }
                 } else {
-                    synthesizer.send_notes_realtime (key, on, velocity);
+                    synthesizer.send_notes_realtime (key, is_pressed, velocity, layer + 17);
                 }
                 if (Application.settings.get_boolean ("harmonizer-on")) {
                     if (Application.settings.get_boolean ("accomp-on")) {
                         if (key > Core.CentralBus.get_split_key ()) {
-                            harmonizer.send_notes (key, on, velocity);
+                            harmonizer.send_notes (key, is_pressed, velocity);
                         } else {
-                            synthesizer.send_notes_realtime (key, on, velocity);
+                            synthesizer.send_notes_realtime (key, is_pressed, velocity);
                         }
                     } else {
-                        synthesizer.send_notes_realtime (key, on, velocity);
+                        synthesizer.send_notes_realtime (key, is_pressed, velocity);
                     }
                 }
-                Application.main_window.main_keyboard.set_note_on (key, (on == 144));
+                Application.main_window.main_keyboard.set_note_on (key, is_pressed, Shell.Key.NoteType.NORMAL);
             });
 
             arpeggiator.generate_notes.connect ((key, on, velocity) => {
@@ -200,6 +199,7 @@ namespace Ensembles.Core {
                     synthesizer.send_notes_realtime (key, on, velocity);
                 }
             });
+
             arpeggiator.halt_notes.connect (synthesizer.halt_realtime);
             harmonizer.generate_notes.connect ((key, on, velocity) => {
                 if (key > Core.CentralBus.get_split_key ()) {
@@ -239,25 +239,29 @@ namespace Ensembles.Core {
         }
 
         public void garbage_collect () {
-            debug ("Cleaning up Core");
-            debug ("CLEANUP: Unloading MIDI Input Monitor");
-            midi_input_host.destroy ();
-            Thread.usleep (5000);
-            debug ("CLEANUP: Unloading Metronome and LFO Engine");
-            metronome_player.unref ();
-            debug ("CLEANUP: Unloading Style Engine");
-            style_player.unref ();
-            if (song_player != null) {
-                debug ("CLEANUP: Unloading Song Player");
-                song_player.songplayer_destroy ();
-                song_player = null;
-            }
-            Thread.usleep (5000);
-            debug ("CLEANUP: Unloading Central Bus");
-            bus.unref ();
-            Thread.usleep (5000);
-            debug ("CLEANUP: Unloading Synthesizer");
-            synthesizer.synthesizer_deinit ();
+            Idle.add (() => {
+                debug ("Cleaning up Core");
+                debug ("CLEANUP: Unloading MIDI Input Monitor");
+                midi_input_host.destroy ();
+                Thread.usleep (5000);
+                debug ("CLEANUP: Unloading Metronome and LFO Engine");
+                metronome_player.unref ();
+                debug ("CLEANUP: Unloading Style Engine");
+                style_player.unref ();
+                if (song_player != null) {
+                    debug ("CLEANUP: Unloading Song Player");
+                    song_player.songplayer_destroy ();
+                    song_player = null;
+                }
+                Thread.usleep (5000);
+                debug ("CLEANUP: Unloading Central Bus");
+                bus.unref ();
+                Thread.usleep (5000);
+                debug ("CLEANUP: Unloading Synthesizer");
+                synthesizer.synthesizer_deinit ();
+
+                return false;
+            });
         }
 
         public void load_data () {

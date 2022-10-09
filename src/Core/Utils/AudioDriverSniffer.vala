@@ -85,18 +85,10 @@ namespace Ensembles.Core {
         #endif
         #if JACK_DRIVER
         public static bool get_is_jack_available () {
-            string info = "";
-            try {
-                Process.spawn_command_line_sync ("env LANG=C jackd -v", out info);
-                if (info.contains ("Copyright 2001-2009 Paul Davis, Stephane Letz, Jack O'Quinn, Torben Hohn and others.")) {
-                    print ("Jack detected!\n");
-                    jack_driver_found = true;
-                    return true;
-                } else {
-                    jack_driver_found = false;
-                }
-            } catch (Error e) {
-                warning (e.message);
+            if (!Ensembles.Application.get_is_running_from_flatpak ()) {
+                print ("Assuming Jack is available\n");
+                jack_driver_found = true;
+                return true;
             }
             return false;
         }

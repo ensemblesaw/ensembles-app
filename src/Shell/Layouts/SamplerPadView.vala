@@ -46,7 +46,12 @@ namespace Ensembles.Shell {
                 attach (pads[i], i, 1, 1, 1);
                 attach (pads[i + 6], i, 2, 1, 1);
             }
-            assign_record_button = new Gtk.Button.from_icon_name ("audio-input-microphone-symbolic", Gtk.IconSize.BUTTON);
+
+            assign_record_button = new Gtk.Button.from_icon_name (
+                "audio-input-microphone-symbolic",
+                Gtk.IconSize.BUTTON
+            );
+
             assign_record_button.height_request = 38;
             assign_record_button.hexpand = true;
             assign_record_button.vexpand = true;
@@ -100,11 +105,13 @@ namespace Ensembles.Shell {
                 sample_recorder.start_recording ();
                 return false;
             });
+
             assign_record_button.button_release_event.connect (() => {
                 assign_record_button.get_style_context ().remove_class ("sampler-record-button-active");
                 sample_recorder.stop_recording ();
                 return false;
             });
+
             sample_recorder.handle_recording_complete.connect ((path) => {
                 current_file_path = path;
                 debug ("%s\n", current_file_path);
@@ -115,10 +122,12 @@ namespace Ensembles.Shell {
                     pads[i].get_style_context ().add_class ("sampler-pad-assignable");
                 }
             });
+
             assign_file_button.clicked.connect (() => {
                 file_chooser.run ();
                 file_chooser.hide ();
             });
+
             file_chooser.response.connect ((response_id) => {
                 if (response_id == -3) {
                     current_file_path = file_chooser.get_file ().get_path ();
@@ -173,6 +182,7 @@ namespace Ensembles.Shell {
                     }
                 }
             });
+
             pads[1].clicked.connect (() => {
                 if (assign_mode) {
                     sample_players[1] = new Core.SamplePlayer (current_file_path, recorded_audio);
@@ -187,6 +197,7 @@ namespace Ensembles.Shell {
                     }
                 }
             });
+
             pads[2].clicked.connect (() => {
                 if (assign_mode) {
                     sample_players[2] = new Core.SamplePlayer (current_file_path, recorded_audio);
@@ -201,6 +212,7 @@ namespace Ensembles.Shell {
                     }
                 }
             });
+
             pads[3].clicked.connect (() => {
                 if (assign_mode) {
                     sample_players[3] = new Core.SamplePlayer (current_file_path, recorded_audio);
@@ -215,6 +227,7 @@ namespace Ensembles.Shell {
                     }
                 }
             });
+
             pads[4].clicked.connect (() => {
                 if (assign_mode) {
                     sample_players[4] = new Core.SamplePlayer (current_file_path, recorded_audio);
@@ -229,6 +242,7 @@ namespace Ensembles.Shell {
                     }
                 }
             });
+
             pads[5].clicked.connect (() => {
                 if (assign_mode) {
                     sample_players[5] = new Core.SamplePlayer (current_file_path, recorded_audio);
@@ -243,6 +257,7 @@ namespace Ensembles.Shell {
                     }
                 }
             });
+
             pads[6].clicked.connect (() => {
                 if (assign_mode) {
                     sample_players[6] = new Core.SamplePlayer (current_file_path, recorded_audio);
@@ -257,6 +272,7 @@ namespace Ensembles.Shell {
                     }
                 }
             });
+
             pads[7].clicked.connect (() => {
                 if (assign_mode) {
                     sample_players[7] = new Core.SamplePlayer (current_file_path, recorded_audio);
@@ -271,6 +287,7 @@ namespace Ensembles.Shell {
                     }
                 }
             });
+
             pads[8].clicked.connect (() => {
                 if (assign_mode) {
                     sample_players[8] = new Core.SamplePlayer (current_file_path, recorded_audio);
@@ -285,6 +302,7 @@ namespace Ensembles.Shell {
                     }
                 }
             });
+
             pads[9].clicked.connect (() => {
                 if (assign_mode) {
                     sample_players[9] = new Core.SamplePlayer (current_file_path, recorded_audio);
@@ -299,6 +317,7 @@ namespace Ensembles.Shell {
                     }
                 }
             });
+
             pads[10].clicked.connect (() => {
                 if (assign_mode) {
                     sample_players[10] = new Core.SamplePlayer (current_file_path, recorded_audio);
@@ -313,6 +332,7 @@ namespace Ensembles.Shell {
                     }
                 }
             });
+
             pads[11].clicked.connect (() => {
                 if (assign_mode) {
                     sample_players[11] = new Core.SamplePlayer (current_file_path, recorded_audio);

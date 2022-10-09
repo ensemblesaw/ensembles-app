@@ -57,7 +57,9 @@ namespace Ensembles.Shell {
             main_stack.add_named (fx_rack_menu, "Fx Rack");
             main_stack.add_named (recorder_screen, "Sequencer");
 
-            var unit_logo = new Gtk.Image.from_resource ("/com/github/subhadeepjasu/ensembles/images/display_unit/ensembles_splash.svg") {
+            var unit_logo = new Gtk.Image.from_resource (
+                "/com/github/subhadeepjasu/ensembles/images/display_unit/ensembles_splash.svg"
+            ) {
                 vexpand = true,
                 hexpand = true
             };
@@ -320,6 +322,10 @@ namespace Ensembles.Shell {
 
         public void update_octave (int octave) {
             home_screen.update_octave (octave);
+        }
+
+        public void update_time_signature (int n, int d) {
+            home_screen.set_time_signature (n, d);
         }
     }
 }
