@@ -277,6 +277,7 @@ namespace Ensembles.Shell {
             mid_panel.hexpand = true;
             mid_panel.vexpand = true;
             mid_panel.column_homogeneous = true;
+            mid_panel.attach (fx_rack_button, 0, 0, 1, 1);
             this.attach (top_panel, 0, 0, 1, 1);
             this.attach (mid_panel, 0, 1, 1, 1);
             this.attach (bottom_panel, 0, 2, 1, 1);

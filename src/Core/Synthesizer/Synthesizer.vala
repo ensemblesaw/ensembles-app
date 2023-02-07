@@ -11,13 +11,6 @@ namespace Ensembles.Core {
         public signal void detected_chord (int chord_main, int type);
         public Synthesizer (string soundfont, string driver_name, double buffer_size) {
             synthesizer_init (soundfont, driver_name, buffer_size);
-            synthesizer_set_fx_callback ((buffer_l_in, buffer_r_in, out buffer_out_l, out buffer_out_r) => {
-                EffectRack.set_synth_callback (buffer_l_in, buffer_r_in, out buffer_out_l, out buffer_out_r);
-                if (Application.main_window != null && Application.main_window.ctrl_panel != null) {
-                    Application.main_window.ctrl_panel.animate_audio (buffer_l_in, buffer_r_in);
-                }
-            });
-
             synthesizer_set_event_callback ((channel, key, velocity, on, c_main, c_type) =>{
                 //  print ("%d, %d, %d, %d, %d, %d\n", channel, key, velocity, on, c_main, c_type);
                 Application.main_window.main_keyboard.set_note_on (key, (on == 144), Shell.Key.NoteType.AUTOMATION);
@@ -33,6 +26,15 @@ namespace Ensembles.Core {
                         midi_event.value2 = on;
                         Shell.RecorderScreen.sequencer.record_event (midi_event);
                     }
+                }
+            });
+        }
+
+        public void connect_synth_to_plugins () {
+            synthesizer_set_fx_callback ((buffer_l_in, buffer_r_in, out buffer_out_l, out buffer_out_r) => {
+                EffectRack.set_synth_callback (buffer_l_in, buffer_r_in, out buffer_out_l, out buffer_out_r);
+                if (Application.main_window != null && Application.main_window.ctrl_panel != null) {
+                    Application.main_window.ctrl_panel.animate_audio (buffer_l_in, buffer_r_in);
                 }
             });
         }

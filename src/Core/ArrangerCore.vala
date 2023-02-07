@@ -271,9 +271,9 @@ namespace Ensembles.Core {
             voice_analyser.analyse (sf_loc, sf_schema_loc);
 
             // Load Plug-ins
-            //debug ("LOADING DATA: Plug-ins");
-            //plugin_manager.discover ();
-            //Application.main_window.main_display_unit.update_effect_list ();
+            debug ("LOADING DATA: Plug-ins");
+            plugin_manager.discover ();
+            Application.main_window.main_display_unit.update_effect_list ();
 
             // Load Styles
             // Start looking for styles in the app data folder and user styles folder

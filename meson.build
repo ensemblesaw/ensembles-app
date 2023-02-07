@@ -30,7 +30,7 @@ add_project_arguments (
     '-D', 'ALSA_DRIVER',
     '-D', 'PULSEAUDIO_DRIVER',
     '-D', 'JACK_DRIVER',
-    '-D', 'PIPEWIRE_CORE_DRIVER',  # Uncomment to enable pipewire core support provided fluidsynth supports it
+    # '-D', 'PIPEWIRE_CORE_DRIVER',  # Uncomment to enable pipewire core support provided fluidsynth supports it
     language: 'vala'
 )
 
@@ -48,7 +48,7 @@ dependencies = [
     dependency ('gtk+-3.0'),
     dependency ('glib-2.0'),
     dependency ('gobject-2.0'),
-    dependency ('libsoup-2.4'),
+    dependency ('libsoup-3.0'),
     dependency ('json-glib-1.0'),
     dependency ('libhandy-1', version: '>=0.83.0'),
     dependency ('gstreamer-1.0'),

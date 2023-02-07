@@ -70,7 +70,7 @@ namespace Ensembles.Core {
         }
 
         public static void create_plugins () {
-            debug ("Creating Plugins\n");
+            print ("Creating Plugin Instances\n");
             if (mixer_values == null) {
                 mixer_values = new float [plugin_references.length ()];
             }
@@ -86,12 +86,12 @@ namespace Ensembles.Core {
             void* sink_l,
             void* sink_r
         ) {
-            print ("Connecting\n");
+            print ("Connecting audio ports to plugins...\n");
             for (int i = 0; i < plugin_references.length (); i++) {
                 plugin_references.nth_data (i).connect_source_buffer (source_l, source_r);
                 plugin_references.nth_data (i).connect_sink_buffer (sink_l, sink_r);
             }
-            print ("Connected\n");
+            print ("Connected audio ports to plugins\n");
         }
 
         public static void process_audio (uint32 sample_count) {

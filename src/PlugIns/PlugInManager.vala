@@ -25,6 +25,7 @@ namespace Ensembles.PlugIns {
                     }
                 }
                 Core.EffectRack.create_plugins ();
+                Application.arranger_core.synthesizer.connect_synth_to_plugins ();
             });
         }
 

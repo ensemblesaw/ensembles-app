@@ -142,7 +142,7 @@ namespace Ensembles.Shell {
                 main_stack.set_visible_child (voice_menu_r2);
                 voice_menu_r2.scroll_to_selected_row ();
             });
-            home_screen.open_fx_menu .connect (() => {
+            home_screen.open_fx_menu.connect (() => {
                 main_display_leaflet.set_visible_child (main_stack);
                 main_stack.set_visible_child (fx_rack_menu);
             });
@@ -190,9 +190,9 @@ namespace Ensembles.Shell {
                     RecorderScreen.sequencer.initial_settings_tempo = tempo;
                 }
             });
-            //  fx_rack_menu.close_menu.connect (() => {
-            //      main_display_leaflet.set_visible_child (home_screen);
-            //  });
+            fx_rack_menu.close_menu.connect (() => {
+                main_display_leaflet.set_visible_child (home_screen);
+            });
             recorder_screen.close_menu.connect (() => {
                 main_display_leaflet.set_visible_child (home_screen);
                 main_display_leaflet.queue_draw ();
