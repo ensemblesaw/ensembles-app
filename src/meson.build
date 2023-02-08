@@ -64,8 +64,10 @@ ensembles_sources_vala = files (
     'PlugIns/PlugInControl.vala',
 
     # LADSPA VERSION 2
+    'PlugIns/LV2/LV2Plugin.vala',
     'PlugIns/LV2/LV2Manager.vala',
     'PlugIns/LV2/SyMap.vala',
+    'PlugIns/LV2/LV2URID.vala',
 
     # Ensembles Shell ##############################################################
 

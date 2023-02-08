@@ -17,18 +17,10 @@ namespace Ensembles.PlugIns {
         public uint32 sink_l_port_index;
         public uint32 source_r_port_index;
         public uint32 sink_r_port_index;
+        public uint32 sample_rate;
         public bool stereo_source;
         public bool stereo_sink;
         public string class;
-
-        // LV2
-        public unowned Lilv.World world;
-        public Lilv.Plugin lv2_plugin;
-        private Lilv.Instance? lv2_instance_l_realtime;
-        private Lilv.Instance? lv2_instance_r_realtime;
-        private Lilv.Instance? lv2_instance_style;
-        public string[] port_symbols;
-        public unowned LV2.Feature*[] features;
 
         // UI
         Hdy.Window plugin_window;
@@ -44,8 +36,13 @@ namespace Ensembles.PlugIns {
         private float[] control_variables;
         private LV2.Atom.Atom[] atom_variables;
 
+        protected virtual Gtk.Widget get_plugin_ui () {
+            return null;
+        }
+
         void make_ui () {
             plugin_window = new Hdy.Window ();
+            plugin_window.title = "Ensembles Plugin: " + plug_name;
             plugin_window.delete_event.connect (plugin_window.hide_on_delete);
             headerbar = new Gtk.HeaderBar ();
             headerbar.has_subtitle = false;
@@ -75,66 +72,26 @@ namespace Ensembles.PlugIns {
             headerbar.decoration_layout = "close:";
             headerbar.valign = Gtk.Align.START;
 
-            main_grid = new Gtk.Grid ();
-            main_grid.margin = 8;
-            main_grid.column_spacing = 4;
-            main_grid.row_spacing = 4;
-            main_grid.valign = Gtk.Align.CENTER;
-            main_grid.halign = Gtk.Align.CENTER;
+            main_grid = new Gtk.Grid () {
+                margin = 0,
+                column_spacing = 4,
+                row_spacing = 4,
+                valign = Gtk.Align.CENTER,
+                halign = Gtk.Align.CENTER
+            };
 
             // Plugin's own UI system
-            var plug_uis = lv2_plugin.get_uis ();
-
             var plug_ui_grid = new Gtk.Grid ();
 
-            var ui_iter = plug_uis.begin ();
-            Lilv.UI main_ui = null;
-            Lilv.Node ui_type = null;
-            Gtk.Widget suil_widget = null;
-            while (!plug_uis.is_end (ui_iter)) {
-                var plug_ui = plug_uis.get (ui_iter);
-                if (plug_ui != null && native_ui_supported (plug_ui, out ui_type)) {
-                    main_ui = plug_ui;
-                    break;
-                }
-                ui_iter = plug_uis.next (ui_iter);
-            }
-            if (main_ui != null) {
-                unowned Lilv.Node ui_uri = main_ui.get_uri ();
-                print ("/////UI:%s\n", ui_uri.as_uri ());
-                string bundle = main_ui.get_bundle_uri ().as_uri ();
-                string binary = main_ui.get_binary_uri ().as_uri ();
-                string bundle_path = Lilv.Node.file_uri_parse (bundle, null);
-                string binary_path = Lilv.Node.file_uri_parse (binary, null);
+            var plugin_ui = get_plugin_ui ();
 
-                var host = new Suil.Host (ui_write, port_index_by_symbol, null, null);
+            if (plugin_ui != null) {
+                plug_ui_grid.attach (plugin_ui, 0, 0);
 
-                Suil.Instance ui_instance = new Suil.Instance (
-                    host,
-                    (Suil.Controller)this,
-                    "http://lv2plug.in/ns/extensions/ui#Gtk3UI",
-                    lv2_plugin.get_uri ().as_uri (),
-                    main_ui.get_uri ().as_uri (),
-                    ui_type.as_uri (),
-                    bundle_path,
-                    binary_path,
-                    features
-                );
-
-                if (ui_instance != null) {
-                    suil_widget = (Gtk.Widget)(ui_instance.get_widget ());
-                    if (suil_widget != null) {
-                        plug_ui_grid.attach (suil_widget, 0, 0);
-
-                        ui_mode_button.append_icon ("preferences-other", Gtk.IconSize.BUTTON);
-                        ui_mode_button.append_icon ("media-eq", Gtk.IconSize.BUTTON);
-                        ui_mode_button.set_active (0);
-                        headerbar.pack_end (ui_mode_button);
-                    }
-                }
-
-            } else {
-                print ("/////UI:None\n");
+                ui_mode_button.append_icon ("preferences-other", Gtk.IconSize.BUTTON);
+                ui_mode_button.append_icon ("media-eq", Gtk.IconSize.BUTTON);
+                ui_mode_button.set_active (0);
+                headerbar.pack_end (ui_mode_button);
             }
 
 
@@ -214,135 +171,30 @@ namespace Ensembles.PlugIns {
             return this.plugin_window;
         }
 
-        private bool native_ui_supported (Lilv.UI ui, out Lilv.Node ui_type) {
-            var ui_type_node = new Lilv.Node.uri (world, "http://lv2plug.in/ns/extensions/ui#Gtk3UI");
-            uint supported = ui.is_supported (Suil.ui_supported, ui_type_node, out ui_type);
-            return supported == 0 ? false : true;
-        }
-
-        private static void ui_write (
-            Suil.Controller handle,
-            uint32 port_index,
-            uint32 buffer_size,
-            uint32 protocol,
-            void* buffer
-        ) {
-            /* Not Implemented */
-            if (protocol != 0) {
-                return;
-            }
-        }
-
-        private static uint32 port_index_by_symbol (Suil.Controller handle, string symbol) {
-            var plugin_handle = (PlugIn)handle;
-            for (int i = 0; i < plugin_handle.port_symbols.length; i++) {
-                if (plugin_handle.port_symbols[i] == symbol) {
-                    return i;
-                }
-            }
-            return -1;
-        }
-
-        public void instantiate_plug (bool realtime, float* mixer_value) {
+        public virtual void instantiate_plug (bool realtime, float* mixer_value) {
             mixing_amount = mixer_value;
-            if (plug_type == "lv2") {
-                if (realtime) {
-                    lv2_instance_l_realtime = lv2_plugin.instantiate (44100, features);
-                    if (!stereo_source) {
-                        lv2_instance_r_realtime = lv2_plugin.instantiate (44100, features);
-                    }
-                } else {
-                    lv2_instance_style = lv2_plugin.instantiate (44100, features);
-                }
-                deactivate_plug (realtime);
-                make_ui ();
-            }
+            deactivate_plug (realtime);
+            make_ui ();
         }
 
-        private void connect_control_port (void* variable, uint32 index, bool? realtime = false) {
-            if (plug_type == "lv2") {
-                if (realtime) {
-                    lv2_instance_l_realtime.connect_port (index, variable);
-                    if (!stereo_source) {
-                        lv2_instance_r_realtime.connect_port (index, variable);
-                    }
-                }
-            }
+        public virtual void connect_control_port (void* variable, uint32 index, bool? realtime = false) {
         }
 
-        public void activate_plug (bool realtime) {
-            if (realtime) {
-                if (plug_type == "lv2") {
-                    if (lv2_instance_l_realtime != null) {
-                        lv2_instance_l_realtime.activate ();
-                    }
-                    if (lv2_instance_r_realtime != null) {
-                        lv2_instance_r_realtime.activate ();
-                    }
-                }
-            }
+        public virtual void activate_plug (bool realtime) {
             active = true;
         }
 
-        public void deactivate_plug (bool realtime) {
-            if (realtime) {
-                if (plug_type == "lv2") {
-                    if (lv2_instance_l_realtime != null) {
-                        lv2_instance_l_realtime.deactivate ();
-                    }
-                    if (lv2_instance_r_realtime != null) {
-                        lv2_instance_r_realtime.deactivate ();
-                    }
-                }
-            }
+        public virtual void deactivate_plug (bool realtime) {
             active = false;
         }
 
-        public void process (uint32 sample_count) {
-            if (plug_type == "lv2") {
-                if (stereo_source) {
-                    if (lv2_instance_l_realtime != null) {
-                        lv2_instance_l_realtime.run (sample_count);
-                    }
-                } else {
-                    if (lv2_instance_l_realtime != null && lv2_instance_r_realtime != null) {
-                        lv2_instance_l_realtime.run (sample_count);
-                        lv2_instance_r_realtime.run (sample_count);
-                    }
-                }
-            }
+        public virtual void process (uint32 sample_count) {
         }
 
-        public void connect_source_buffer (void* buffer_l, void* buffer_r) {
-            if (plug_type == "lv2") {
-                if (stereo_source) {
-                    if (lv2_instance_l_realtime != null) {
-                        lv2_instance_l_realtime.connect_port (source_l_port_index, buffer_l);
-                        lv2_instance_l_realtime.connect_port (source_r_port_index, buffer_r);
-                    }
-                } else {
-                    if (lv2_instance_l_realtime != null) {
-                        lv2_instance_l_realtime.connect_port (source_l_port_index, buffer_l);
-                        lv2_instance_r_realtime.connect_port (source_l_port_index, buffer_r);
-                    }
-                }
-            }
+        public virtual void connect_source_buffer (void* buffer_l, void* buffer_r) {
         }
 
-        public void connect_sink_buffer (void* buffer_l, void* buffer_r) {
-            if (plug_type == "lv2") {
-                if (stereo_source) {
-                    if (lv2_instance_l_realtime != null) {
-                        lv2_instance_l_realtime.connect_port (sink_l_port_index, buffer_l);
-                        lv2_instance_l_realtime.connect_port (sink_r_port_index, buffer_r);
-                    }
-                } else {
-                    if (lv2_instance_l_realtime != null) {
-                        lv2_instance_l_realtime.connect_port (sink_l_port_index, buffer_l);
-                        lv2_instance_r_realtime.connect_port (sink_l_port_index, buffer_r);
-                    }
-                }
-            }
+        public virtual void connect_sink_buffer (void* buffer_l, void* buffer_r) {
         }
     }
 }

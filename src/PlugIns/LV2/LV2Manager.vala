@@ -10,15 +10,8 @@
 
         public signal void lv2_plugins_found (List<PlugIns.PlugIn> plugins);
 
-        private static SyMap symap;
-
-        public static LV2.URID.Urid map_uri (void* handle, string uri) {
-            return symap.map (uri);
-        }
-
-        public static string unmap_uri (void* handle, LV2.URID.Urid urid) {
-            return symap.unmap ((uint32)urid);
-        }
+        internal static SyMap symap = new SyMap();
+        internal static Mutex symap_lock = Mutex();
 
         LV2.Feature map_feat;
         LV2.Feature unmap_feat;
@@ -28,14 +21,13 @@
 
         public LV2Manager () {
             world = new Lilv.World ();
-            symap = new SyMap ();
 
             urid_map = LV2.URID.UridMap ();
             urid_map.handle = this;
-            urid_map.map = map_uri;
+            urid_map.map = LV2URID.map_uri;
             urid_unmap = LV2.URID.UridUnmap ();
             urid_unmap.handle = this;
-            urid_unmap.unmap = unmap_uri;
+            urid_unmap.unmap = LV2URID.unmap_uri;
 
             supported_features = new LV2.Feature* [2];
             map_feat = LV2.Feature () {
@@ -184,13 +176,12 @@
                         }
                     }
 
-                    var detected_plug = new PlugIns.PlugIn () {
+                    var detected_plug = new PlugIns.LADSPAV2.LV2Plugin () {
                         world = world,
                         valid = valid,
                         plug_name = plug_name,
                         plug_uri = uri,
-                        plug_type = "lv2",
-                        lv2_plugin = plugin,
+                        lilv_plugin = plugin,
                         class = plug_class,
                         source_l_port_index = source_l_port_index,
                         sink_l_port_index = sink_l_port_index,
