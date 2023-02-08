@@ -12,13 +12,50 @@
         private Lilv.Instance? lv2_instance_r_realtime;
         private Lilv.Instance? lv2_instance_style;
         public string[] port_symbols;
-        public unowned LV2.Feature*[] features;
+        public LV2.Feature*[] features;
+
+        LV2.Feature map_feat;
+        LV2.Feature unmap_feat;
+        LV2.Feature options_feat;
+        LV2.Feature sched_feature;
+
+
+        LV2.URID.UridMap urid_map;
+        LV2.URID.UridUnmap urid_unmap;
+
 
         public LV2Plugin () {
             plug_type = "lv2";
         }
 
+        /*
+         * Create plugin features
+         */
+         private void create_features () {
+            urid_map = LV2.URID.UridMap ();
+            urid_map.handle = this;
+            urid_map.map = LV2URID.map_uri;
+            urid_unmap = LV2.URID.UridUnmap ();
+            urid_unmap.handle = this;
+            urid_unmap.unmap = LV2URID.unmap_uri;
+
+            features = new LV2.Feature* [2];
+            map_feat = register_feature (LV2.URID._map, &urid_map);
+            unmap_feat = register_feature (LV2.URID._unmap, &urid_unmap);
+
+            features[0] = &map_feat;
+            features[1] = &unmap_feat;
+        }
+
+        private LV2.Feature register_feature (string uri, void* data) {
+            return LV2.Feature() {
+                URI = uri,
+                data = data
+            };
+        }
+
         public override void instantiate_plug(bool realtime, float* mixer_value) {
+            create_features ();
             if (realtime) {
                 lv2_instance_l_realtime = lilv_plugin.instantiate (44100, features);
                 if (!stereo_source) {

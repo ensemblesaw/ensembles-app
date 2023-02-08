@@ -6,41 +6,14 @@
  namespace Ensembles.PlugIns.LADSPAV2 {
     public class LV2Manager : Object {
         Lilv.World world;
-        LV2.Feature*[] supported_features;
 
         public signal void lv2_plugins_found (List<PlugIns.PlugIn> plugins);
 
         internal static SyMap symap = new SyMap();
         internal static Mutex symap_lock = Mutex();
 
-        LV2.Feature map_feat;
-        LV2.Feature unmap_feat;
-
-        LV2.URID.UridMap urid_map;
-        LV2.URID.UridUnmap urid_unmap;
-
         public LV2Manager () {
             world = new Lilv.World ();
-
-            urid_map = LV2.URID.UridMap ();
-            urid_map.handle = this;
-            urid_map.map = LV2URID.map_uri;
-            urid_unmap = LV2.URID.UridUnmap ();
-            urid_unmap.handle = this;
-            urid_unmap.unmap = LV2URID.unmap_uri;
-
-            supported_features = new LV2.Feature* [2];
-            map_feat = LV2.Feature () {
-                URI = "http://lv2plug.in/ns/ext/urid#map",
-                data = &urid_map
-            };
-            unmap_feat = LV2.Feature () {
-                URI = "http://lv2plug.in/ns/ext/urid#unmap",
-                data = &urid_unmap
-            };
-
-            supported_features[0] = &map_feat;
-            supported_features[1] = &unmap_feat;
         }
 
         public void discover () {
@@ -118,19 +91,19 @@
                         while (!classes.is_end (class_iter)) {
                             var clas = classes.get (class_iter).as_string ();
                             print ("  %s\n", clas);
-                            if (clas == "http://lv2plug.in/ns/lv2core#AudioPort") {
+                            if (clas == LV2.Core._AudioPort) {
                                 audio_port = true;
                             }
-                            if (clas == "http://lv2plug.in/ns/lv2core#InputPort") {
+                            if (clas == LV2.Core._InputPort) {
                                 input_port = true;
                             }
-                            if (clas == "http://lv2plug.in/ns/lv2core#OutputPort") {
+                            if (clas == LV2.Core._OutputPort) {
                                 output_port = true;
                             }
-                            if (clas == "http://lv2plug.in/ns/lv2core#ControlPort") {
+                            if (clas == LV2.Core._ControlPort) {
                                 control_port = true;
                             }
-                            if (clas == "http://lv2plug.in/ns/ext/atom#AtomPort") {
+                            if (clas == LV2.Atom._AtomPort) {
                                 atom_port = true;
                             }
                             class_iter = classes.next (class_iter);
@@ -155,6 +128,7 @@
                                 sink_audio_port_count++;
                             }
                         }
+
                         if (control_port && input_port) {
                             control_ports.resize (control_ports.length + 1);
                             control_ports[control_ports.length - 1] = new ControlPort () {
@@ -166,6 +140,7 @@
                                 max_value = max_value.as_float ()
                             };
                         }
+
                         if (atom_port) {
                             atom_ports.resize (atom_ports.length + 1);
                             atom_ports[atom_ports.length - 1] = new AtomPort () {
@@ -190,16 +165,17 @@
                         stereo_source = stereo_source,
                         control_ports = control_ports,
                         atom_ports = atom_ports,
-                        port_symbols = port_symbols,
-                        features = supported_features
+                        port_symbols = port_symbols
                     };
 
                     detected_plugins.append (detected_plug);
                 }
             }
+
             if (detected_plugins.length () > 0) {
                 lv2_plugins_found (detected_plugins);
             }
+
             return 0;
         }
 
