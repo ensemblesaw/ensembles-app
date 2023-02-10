@@ -23,25 +23,29 @@ namespace Ensembles.PlugIns {
         public string class;
 
         // UI
-        Hdy.Window plugin_window;
+        Adw.Window plugin_window;
         Gtk.HeaderBar headerbar;
         Shell.Knob main_mixing_knob;
         Gtk.Grid main_grid;
 
         private float* mixing_amount;
 
-        Gtk.Widget[] control_widgets;
-        Gtk.Widget[] atom_widgets;
+        protected Gtk.Widget[] control_widgets;
+        protected Gtk.Widget[] atom_widgets;
 
-        private float[] control_variables;
-        private LV2.Atom.Atom[] atom_variables;
+        protected float[] control_variables;
+        protected LV2.Atom.Atom[] atom_variables;
 
-        protected virtual Gtk.Widget get_plugin_ui () {
+        protected virtual Gtk.Widget get_plugin_custom_ui () {
+            return null;
+        }
+
+        protected virtual Gtk.Grid get_plugin_native_ui () {
             return null;
         }
 
         void make_ui () {
-            plugin_window = new Hdy.Window ();
+            plugin_window = new Adw.Window ();
             plugin_window.title = "Ensembles Plugin: " + plug_name;
             plugin_window.delete_event.connect (plugin_window.hide_on_delete);
             headerbar = new Gtk.HeaderBar ();
@@ -72,18 +76,12 @@ namespace Ensembles.PlugIns {
             headerbar.decoration_layout = "close:";
             headerbar.valign = Gtk.Align.START;
 
-            main_grid = new Gtk.Grid () {
-                margin = 0,
-                column_spacing = 4,
-                row_spacing = 4,
-                valign = Gtk.Align.CENTER,
-                halign = Gtk.Align.CENTER
-            };
+            var main_grid = get_plugin_native_ui ();
 
             // Plugin's own UI system
             var plug_ui_grid = new Gtk.Grid ();
 
-            var plugin_ui = get_plugin_ui ();
+            var plugin_ui = get_plugin_custom_ui ();
 
             if (plugin_ui != null) {
                 plug_ui_grid.attach (plugin_ui, 0, 0);
@@ -123,48 +121,6 @@ namespace Ensembles.PlugIns {
 
 
             plugin_window.add (main_box);
-
-            // Make rest of the plugin UI
-            uint controls_len = control_ports.length;
-            control_variables = new float [controls_len];
-            control_widgets = new Gtk.Widget [controls_len];
-
-
-            if (controls_len > 0) {
-                // Set controls
-                var controls_frame = new Gtk.Frame (_("Controls"));
-                var controls_grid = new Gtk.Grid ();
-                controls_grid.row_spacing = 4;
-                controls_grid.margin = 14;
-                controls_frame.add (controls_grid);
-                for (int i = 0; i < controls_len; i++) {
-                    var control_ui = new PlugInControl (control_ports[i], &control_variables[i]);
-                    connect_control_port (&control_variables[i], control_ports[i].port_index, true);
-                    control_widgets[i] = control_ui;
-                    controls_grid.attach (control_widgets[i], 0, i);
-                }
-                main_grid.attach (controls_frame, 0, 0);
-            }
-
-            uint atoms_len = atom_ports.length;
-            atom_variables = new LV2.Atom.Atom [atoms_len];
-            atom_widgets = new Gtk.Widget [atoms_len];
-
-            if (atoms_len > 0) {
-                // Set Atoms
-                var atoms_frame = new Gtk.Frame (_("Atoms"));
-                var atoms_grid = new Gtk.Grid ();
-                atoms_grid.row_spacing = 4;
-                atoms_grid.margin = 14;
-                atoms_frame.add (atoms_grid);
-                for (int i = 0; i < atoms_len; i++) {
-                    var control_ui = new PlugInAtom (atom_ports[i], &atom_variables[i]);
-                    connect_control_port (&atom_variables[i], atom_ports[i].port_index, true);
-                    atom_widgets[i] = control_ui;
-                    atoms_grid.attach (atom_widgets[i], 0, i);
-                }
-                main_grid.attach (atoms_frame, 1, 0);
-            }
         }
 
         public Gtk.Window get_ui () {

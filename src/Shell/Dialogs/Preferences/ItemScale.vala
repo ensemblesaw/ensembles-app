@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-public class Ensembles.Shell.Dialogs.Preferences.ItemScale : Gtk.EventBox {
+public class Ensembles.Shell.Dialogs.Preferences.ItemScale : Gtk.Box {
     private Gtk.Scale scale;
 
     public signal void changed (double value);
@@ -30,6 +30,11 @@ public class Ensembles.Shell.Dialogs.Preferences.ItemScale : Gtk.EventBox {
         double upper_limit,
         double step,
         bool visible_separator=true) {
+        Object (
+            title: title,
+            orientation: Gtk.Orientation.VERTICAL,
+            spacing: 0
+        );
         title_label = new Gtk.Label (title);
         title_label.get_style_context ().add_class ("font-weight-600");
 
@@ -46,17 +51,17 @@ public class Ensembles.Shell.Dialogs.Preferences.ItemScale : Gtk.EventBox {
         box.margin_top = 3;
         box.margin_bottom = 3;
         box.hexpand = true;
-        box.pack_start (title_label, false, true, 0);
-        box.pack_end (scale, false, true, 0);
+        box.append (title_label);
+        box.append (scale);
 
         var main_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
         main_box.get_style_context ().add_class ("preferences-view");
         main_box.hexpand = true;
-        main_box.pack_start (new Gtk.Separator (Gtk.Orientation.HORIZONTAL), false, true, 0);
-        main_box.pack_start (box, false, true, 0);
+        main_box.append (new Gtk.Separator (Gtk.Orientation.HORIZONTAL));
+        main_box.append (box);
 
         if (visible_separator == true) {
-            main_box.pack_start (new Gtk.Separator (Gtk.Orientation.HORIZONTAL), false, true, 0);
+            main_box.append (new Gtk.Separator (Gtk.Orientation.HORIZONTAL));
         }
 
         scale.change_value.connect ((scroll, value) => {
@@ -66,7 +71,7 @@ public class Ensembles.Shell.Dialogs.Preferences.ItemScale : Gtk.EventBox {
             return false;
         });
 
-        add (main_box);
+        append (main_box);
     }
 
     public void set_scale_sensitive (bool sensitive) {

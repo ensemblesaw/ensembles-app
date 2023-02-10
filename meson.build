@@ -44,18 +44,19 @@ asresources = gnome.compile_resources (
 
 # Listing dependencies
 dependencies = [
-    dependency ('granite'),
-    dependency ('gtk+-3.0'),
+    dependency ('x11'),
+    dependency ('granite-7'),
+    dependency ('libadwaita-1'),
+    dependency ('gtk4'),
     dependency ('glib-2.0'),
     dependency ('gobject-2.0'),
     dependency ('libsoup-3.0'),
     dependency ('json-glib-1.0'),
-    dependency ('libhandy-1', version: '>=0.83.0'),
     dependency ('gstreamer-1.0'),
     dependency ('lv2'),
     dependency ('lilv-0'),
     dependency ('suil-0'),
-    dependency ('libpipewire-0.3'), # Uncomment to enable pipewire core support provided fluidsynth supports it
+    # dependency ('libpipewire-0.3'), # Uncomment to enable pipewire core support provided fluidsynth supports it
     meson.get_compiler ('vala').find_library ('posix'),
     meson.get_compiler ('c').find_library ('m', required : true),
     meson.get_compiler ('c').find_library ('fluidsynth', required : true),

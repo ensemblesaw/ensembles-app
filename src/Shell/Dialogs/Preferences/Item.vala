@@ -5,7 +5,8 @@
  */
 
 namespace Ensembles.Shell.Dialogs.Preferences {
-    public class Item : Gtk.EventBox {
+    public class Item : Gtk.Box {
+        private Gtk.GestureClick gesture_click;
         public Gtk.Image icon_image;
         private Gtk.Label title_label;
 
@@ -41,11 +42,14 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             Object (
                 icon: icon,
                 title: title,
-                last: last
+                last: last,
+                orientation: Gtk.Orientation.HORIZONTAL,
+                spacing: 0
             );
         }
 
         construct {
+            gesture_click = new Gtk.GestureClick ();
             icon_image = new Gtk.Image ();
             icon_image.pixel_size = 18;
 
@@ -60,13 +64,16 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             button_icon.valign = Gtk.Align.CENTER;
             button_icon.pixel_size = 16;
 
-            var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6);
-            box.hexpand = true;
-            box.margin = 6;
-            box.margin_end = 12;
-            box.pack_start (icon_image, false, false, 0);
-            box.pack_start (title_label, false, false, 0);
-            box.pack_end (button_icon, false, true, 0);
+            var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 6) {
+                hexpand = true,
+                margin_start = 6,
+                margin_end = 12,
+                margin_top = 6,
+                margin_bottom = 6
+            };
+            box.append (icon_image);
+            box.append (title_label);
+            box.append (button_icon);
 
             var separator = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
             separator.margin_start = 32;
@@ -74,23 +81,13 @@ namespace Ensembles.Shell.Dialogs.Preferences {
 
             if (last) {
                 separator.visible = false;
-                separator.no_show_all = true;
             }
 
-            var main_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-            main_box.add (box);
-            main_box.add (separator);
+            append (box);
+            append (separator);
 
-            add (main_box);
-
-            button_press_event.connect ((sender, evt) => {
-                if (evt.type == Gdk.EventType.BUTTON_PRESS) {
-                    activated ();
-
-                    return true;
-                }
-
-                return false;
+            gesture_click.pressed.connect (() => {
+                activated ();
             });
         }
     }

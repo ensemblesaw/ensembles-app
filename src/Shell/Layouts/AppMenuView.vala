@@ -32,41 +32,57 @@ namespace Ensembles.Shell {
             };
             audio_input_label.get_style_context ().add_class ("h4");
 
-            var audio_input_buttons = new Granite.Widgets.ModeButton () {
-                margin = 8
+            var audio_input_buttons = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0) {
+                margin_top = 8,
+                margin_bottom = 8,
+                margin_start = 8,
+                margin_end = 8
             };
-            audio_input_buttons.append_text (_("Mic"));
-            audio_input_buttons.append_text (_("System"));
-            audio_input_buttons.append_text (_("Both"));
+
+            audio_input_buttons.get_style_context ().add_class ("linked");
+
+            var mic_toggle_button = new Gtk.ToggleButton.with_label (_("Mic"));
+            audio_input_buttons.append (mic_toggle_button);
+            var system_toggle_button = new Gtk.ToggleButton.with_label (_("System")) {
+                group = mic_toggle_button
+            };
+            audio_input_buttons.append (system_toggle_button);
+            var both_toggle_button = new Gtk.ToggleButton.with_label (_("Both")) {
+                group = mic_toggle_button
+            };
+            audio_input_buttons.append (both_toggle_button);
 
 
             switch (Ensembles.Application.settings.get_enum ("device")) {
                 case Core.SampleRecorder.SourceDevice.MIC:
-                audio_input_buttons.selected = 0;
+                mic_toggle_button.active = true;
+                system_toggle_button.active = false;
+                both_toggle_button.active = false;
                 break;
                 case Core.SampleRecorder.SourceDevice.SYSTEM:
-                audio_input_buttons.selected = 1;
+                mic_toggle_button.active = false;
+                system_toggle_button.active = true;
+                both_toggle_button.active = false;
                 break;
                 case Core.SampleRecorder.SourceDevice.BOTH:
-                audio_input_buttons.selected = 2;
+                mic_toggle_button.active = false;
+                system_toggle_button.active = false;
+                both_toggle_button.active = true;
                 break;
             }
-            audio_input_buttons.mode_changed.connect (() => {
-                switch (audio_input_buttons.selected) {
-                    case 0:
+            mic_toggle_button.toggled.connect (() => {
+                if (mic_toggle_button.active) {
                     Ensembles.Application.settings.set_enum ("device", Core.SampleRecorder.SourceDevice.MIC);
-                    break;
-                    case 1:
+                } else if (system_toggle_button.active) {
                     Ensembles.Application.settings.set_enum ("device", Core.SampleRecorder.SourceDevice.SYSTEM);
-                    break;
-                    case 2:
+                } else if (both_toggle_button.active) {
                     Ensembles.Application.settings.set_enum ("device", Core.SampleRecorder.SourceDevice.BOTH);
-                    break;
                 }
             });
-            audio_input_box.pack_start (audio_input_label);
-            audio_input_box.pack_end (audio_input_buttons);
-            menu_box.pack_start (audio_input_box);
+            audio_input_box.append (audio_input_label);
+            audio_input_box.append (audio_input_buttons);
+
+            menu_box.append (audio_input_box);
 
             // Song note visualization channel selection ////////////////////////////////
             var song_note_channel_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
@@ -77,20 +93,23 @@ namespace Ensembles.Shell {
             song_note_channel_label.get_style_context ().add_class ("h4");
 
             var channel_spinner = new Gtk.SpinButton.with_range (0, 15, 1) {
-                margin = 8
+                margin_top = 8,
+                margin_bottom = 8,
+                margin_start = 8,
+                margin_end = 8
             };
             channel_spinner.value_changed.connect (() => {
                 Core.SongPlayer.set_note_watch_channel ((int)(channel_spinner.get_value ()));
             });
 
-            song_note_channel_box.pack_start (song_note_channel_label);
-            song_note_channel_box.pack_end (channel_spinner);
+            song_note_channel_box.append (song_note_channel_label);
+            song_note_channel_box.append (channel_spinner);
 
-            menu_box.pack_start (song_note_channel_box);
+            menu_box.append (song_note_channel_box);
 
 
             var header_separator_b = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
-            menu_box.pack_start (header_separator_b);
+            menu_box.append (header_separator_b);
 
             // MIDI Input device selection /////////////////////////////////////////////
             var device_input_item = new Granite.SwitchModelButton (_("Midi Input"));
@@ -115,8 +134,8 @@ namespace Ensembles.Shell {
                 activate_on_single_click = true,
                 selection_mode = Gtk.SelectionMode.NONE
             };
-            midi_box.pack_start (device_list_box);
-            midi_box.pack_start (new Gtk.Separator (Gtk.Orientation.HORIZONTAL));
+            midi_box.append (device_list_box);
+            midi_box.append (new Gtk.Separator (Gtk.Orientation.HORIZONTAL));
             device_list_box.row_activated.connect ((row) => {
                 DeviceItem device_item = row as DeviceItem;
                 device_item.radio.active = !device_item.radio.active;
@@ -135,18 +154,19 @@ namespace Ensembles.Shell {
             });
             midi_split_switch.active = Application.settings.get_boolean ("midi-split");
 
-            midi_box.pack_end (midi_split_switch);
+            midi_box.append (midi_split_switch);
 
-            revealer.add (midi_box);
+            revealer.set_child (midi_box);
 
-            menu_box.pack_start (device_input_item);
-            menu_box.pack_start (revealer);
+            menu_box.append (device_input_item);
+            menu_box.append (revealer);
 
             // Open manual / user guide button ///////////////////////////////////////////////
-            var manual_button = new Gtk.ModelButton ();
-            manual_button.text = (_("Open Manual"));
+            var manual_button = new Gtk.MenuButton () {
+                label = (_("Open Manual"))
+            };
             manual_button.get_style_context ().add_class ("h4");
-            manual_button.clicked.connect (() => {
+            manual_button.activate.connect (() => {
                 var file = File.new_for_path (Constants.PKGDATADIR + "/docs/ensembles_manual.pdf");
                 if (file.query_exists ()) {
                     try {
@@ -158,18 +178,18 @@ namespace Ensembles.Shell {
             });
 
             // Open settings ui button ///hold/////////////////////////////////////////////////
-            var preferences_button = new Gtk.ModelButton () {
-                text = _("Settings")
+            var preferences_button = new Gtk.MenuButton () {
+                label = _("Settings")
             };
             preferences_button.get_style_context ().add_class ("h4");
-            preferences_button.clicked.connect (() => {
+            preferences_button.activate.connect (() => {
                 open_preferences_dialog ();
             });
-            menu_box.pack_start (new Gtk.Separator (Gtk.Orientation.HORIZONTAL));
-            menu_box.pack_start (preferences_button);
-            menu_box.pack_start (manual_button);
-            menu_box.show_all ();
-            this.add (menu_box);
+            menu_box.append (new Gtk.Separator (Gtk.Orientation.HORIZONTAL));
+            menu_box.append (preferences_button);
+            menu_box.append (manual_button);
+            menu_box.show ();
+            set_child (menu_box);
         }
 
         //  void deselect_all_devices () {
@@ -187,7 +207,16 @@ namespace Ensembles.Shell {
 
             debug ("Updating Device list\n");
 
-            var previous_items = device_list_box.get_children ();
+            var previous_items = new List<Gtk.ListBoxRow> ();
+            int c = 0;
+            Gtk.ListBoxRow current_item = null;
+            while (current_item != null) {
+                current_item = device_list_box.get_row_at_index (c++);
+                if (previous_items != null) {
+                    previous_items.append (current_item);
+                }
+            }
+
             foreach (var item in previous_items) {
                 device_list_box.remove (item);
             }
@@ -198,7 +227,7 @@ namespace Ensembles.Shell {
                 }
             }
 
-            device_list_box.show_all ();
+            device_list_box.show ();
         }
     }
 }

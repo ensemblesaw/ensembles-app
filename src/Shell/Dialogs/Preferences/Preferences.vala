@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2022 Subhadeep Jasu <subhajasu@gmail.com>
+ * Copyright © 2020-2023 Subhadeep Jasu <subhajasu@gmail.com>
  * Copyright © 2019 Alain M. (https://github.com/alainm23/planner)<alainmh23@gmail.com>
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -13,10 +13,11 @@ namespace Ensembles.Shell.Dialogs.Preferences {
         private Gtk.InfoBar infobar;
         private List<ItemInput> input_binding_items;
         private ItemInput selected_input_item;
+        private Gtk.EventControllerKey event_controller_key;
 
-        private const Gtk.TargetEntry[] TARGET_ENTRIES_LABELS = {
-            {"LABELROW", Gtk.TargetFlags.SAME_APP, 0}
-        };
+        //  private const Gtk.TargetEntry[] TARGET_ENTRIES_LABELS = {
+        //      {"LABELROW", Gtk.TargetFlags.SAME_APP, 0}
+        //  };
 
         public Preferences (string view = "home") {
             Object (
@@ -26,7 +27,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
                 resizable: false,
                 use_header_bar: 1,
                 destroy_with_parent: true,
-                window_position: Gtk.WindowPosition.CENTER_ON_PARENT,
+                //  window_position: Gtk.WindowPosition.CENTER_ON_PARENT,
                 modal: true,
                 title: _("Preferences"),
                 width_request: 525,
@@ -35,8 +36,9 @@ namespace Ensembles.Shell.Dialogs.Preferences {
         }
 
         construct {
-            //get_header_bar ().visible = false;
-            get_header_bar ().show_close_button = false;
+            event_controller_key = new Gtk.EventControllerKey ();
+            add_controller ((Gtk.ShortcutController)event_controller_key);
+            get_header_bar ().show_title_buttons = false;
 
             get_style_context ().add_class ("app");
 
@@ -46,10 +48,11 @@ namespace Ensembles.Shell.Dialogs.Preferences {
                 width_request = 450
             };
 
-            get_header_bar ().add (header_stack);
+            get_header_bar ().set_title_widget (header_stack);
 
             stack = new Gtk.Stack () {
-                expand = true,
+                hexpand = true,
+                vexpand = true,
                 transition_type = Gtk.StackTransitionType.SLIDE_LEFT_RIGHT
             };
 
@@ -67,19 +70,21 @@ namespace Ensembles.Shell.Dialogs.Preferences {
                 return GLib.Source.REMOVE;
             });
 
-            var stack_scrolled = new Gtk.ScrolledWindow (null, null);
-            stack_scrolled.hscrollbar_policy = Gtk.PolicyType.NEVER;
-            stack_scrolled.vscrollbar_policy = Gtk.PolicyType.NEVER;
-            stack_scrolled.expand = true;
-            stack_scrolled.add (stack);
+            var stack_scrolled = new Gtk.ScrolledWindow () {
+                hexpand = true,
+                vexpand = true,
+                hscrollbar_policy = Gtk.PolicyType.NEVER,
+                vscrollbar_policy = Gtk.PolicyType.NEVER
+            };
+            stack_scrolled.set_child (stack);
 
             var info_label = new Gtk.Label (_("Restart to apply changes"));
             info_label.show ();
 
-            infobar = new Gtk.InfoBar ();
-            infobar.message_type = Gtk.MessageType.WARNING;
-            infobar.no_show_all = true;
-            infobar.get_content_area ().add (info_label);
+            infobar = new Gtk.InfoBar () {
+                message_type = Gtk.MessageType.WARNING,
+            };
+            infobar.add_child (info_label);
 
             var restart_button = infobar.add_button (_("Restart"), 0);
 
@@ -97,17 +102,18 @@ namespace Ensembles.Shell.Dialogs.Preferences {
                 }
             });
 
-            var main_grid = new Gtk.Grid ();
-            main_grid.expand = true;
-            main_grid.orientation = Gtk.Orientation.VERTICAL;
-            // main_grid.add (header);
-            main_grid.add (infobar);
-            main_grid.add (stack_scrolled);
+            var main_grid = new Gtk.Grid () {
+                hexpand = true,
+                vexpand = true,
+                orientation = Gtk.Orientation.VERTICAL
+            };
+            main_grid.attach (infobar, 0, 0);
+            main_grid.attach (stack_scrolled, 0, 1);
 
-            get_content_area ().add (main_grid);
+            set_child (main_grid);
 
-            key_press_event.connect ((event) => {
-                if (event.keyval == 65307) {
+            event_controller_key.key_pressed.connect ((keyval) => {
+                if (keyval == 65307) {
                     return true;
                 }
 
@@ -116,13 +122,13 @@ namespace Ensembles.Shell.Dialogs.Preferences {
         }
 
         private Gtk.Widget get_home_widget () {
-            var header = new Hdy.HeaderBar ();
-            header.decoration_layout = "close:";
-            header.has_subtitle = false;
-            header.show_close_button = false;
-            header.get_style_context ().add_class (Gtk.STYLE_CLASS_FLAT);
+            var header = new Adw.HeaderBar () {
+                decoration_layout = ""
+            };
+            header.get_style_context ().add_class ("flat");
+            header_stack.add_named (header, "home");
 
-            var settings_icon = new Gtk.Image.from_icon_name ("open-menu-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
+            var settings_icon = new Gtk.Image.from_icon_name ("open-menu-symbolic");
             settings_icon.halign = Gtk.Align.CENTER;
             settings_icon.valign = Gtk.Align.CENTER;
 
@@ -132,14 +138,18 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             var done_button = new Gtk.Button.with_label (_("Done"));
             done_button.get_style_context ().add_class ("flat");
 
-            var header_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
-            header_box.margin = 3;
-            header_box.hexpand = true;
-            header_box.pack_start (settings_icon, false, false, 0);
-            header_box.pack_start (settings_label, false, false, 6);
-            header_box.pack_end (done_button, false, false, 0);
+            var header_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
+                margin_start = 3,
+                margin_end = 3,
+                margin_top = 3,
+                margin_bottom = 3,
+                hexpand = true
+            };
+            header_box.append (settings_icon);
+            header_box.append (settings_label);
+            header_box.append (done_button);
 
-            header.set_custom_title (header_box);
+            header.set_title_widget (header_box);
 
             /* General */
             var audio_item = new Shell.Dialogs.Preferences.Item ("audio-card", _("Audio"));
@@ -160,51 +170,53 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             var midi_input_item = new Shell.Dialogs.Preferences.Item ("input-gaming", _("MIDI Input Presets"));
             input_item.icon_image.get_style_context ().add_class ("input-midi");
 
-            var general_grid = new Gtk.Grid ();
-            general_grid.valign = Gtk.Align.START;
-            general_grid.margin_top = 18;
-            general_grid.get_style_context ().add_class ("preferences-view");
-            general_grid.orientation = Gtk.Orientation.VERTICAL;
-            general_grid.add (new Gtk.Separator (Gtk.Orientation.HORIZONTAL));
-            general_grid.add (audio_item);
-            general_grid.add (files_item);
-            general_grid.add (plugin_item);
-            general_grid.add (input_item);
-            general_grid.add (midi_input_item);
-            general_grid.add (theme_item);
-            general_grid.add (new Gtk.Separator (Gtk.Orientation.HORIZONTAL));
+            var general_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0) {
+                valign = Gtk.Align.START,
+                margin_top = 18
+            };
+            general_box.get_style_context ().add_class ("preferences-view");
+            general_box.append (new Gtk.Separator (Gtk.Orientation.HORIZONTAL));
+            general_box.append (audio_item);
+            general_box.append (files_item);
+            general_box.append (plugin_item);
+            general_box.append (input_item);
+            general_box.append (midi_input_item);
+            general_box.append (theme_item);
+            general_box.append (new Gtk.Separator (Gtk.Orientation.HORIZONTAL));
 
             /* Others */
             var about_item = new Shell.Dialogs.Preferences.Item ("help-about", _("About"), true);
             about_item.icon_image.get_style_context ().add_class ("help-about");
 
-            var others_grid = new Gtk.Grid ();
-            others_grid.margin_top = 18;
-            others_grid.margin_bottom = 3;
-            others_grid.valign = Gtk.Align.START;
-            others_grid.get_style_context ().add_class ("preferences-view");
-            others_grid.orientation = Gtk.Orientation.VERTICAL;
-            others_grid.add (new Gtk.Separator (Gtk.Orientation.HORIZONTAL));
-            others_grid.add (about_item);
-            // others_grid.add (fund_item);
-            others_grid.add (new Gtk.Separator (Gtk.Orientation.HORIZONTAL));
+            var others_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0) {
+                margin_top = 18,
+                margin_bottom = 3,
+                valign = Gtk.Align.START
+            };
+            others_box.get_style_context ().add_class ("preferences-view");
+            others_box.append (new Gtk.Separator (Gtk.Orientation.HORIZONTAL));
+            others_box.append (about_item);
+            // others_box.append (fund_item);
+            others_box.append (new Gtk.Separator (Gtk.Orientation.HORIZONTAL));
 
-            var grid = new Gtk.Grid ();
-            grid.orientation = Gtk.Orientation.VERTICAL;
-            grid.valign = Gtk.Align.START;
-            grid.add (general_grid);
-            grid.add (others_grid);
+            var box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0) {
+                valign = Gtk.Align.START
+            };
+            box.append (general_box);
+            box.append (others_box);
 
-            var main_scrolled = new Gtk.ScrolledWindow (null, null);
-            main_scrolled.hscrollbar_policy = Gtk.PolicyType.NEVER;
-            main_scrolled.expand = true;
-            main_scrolled.add (grid);
+            var main_scrolled = new Gtk.ScrolledWindow () {
+                hscrollbar_policy = Gtk.PolicyType.NEVER,
+                hexpand = true,
+                vexpand = true
+            };
+            main_scrolled.set_child (box);
 
-            var main_grid = new Gtk.Grid ();
-            main_grid.expand = true;
-            main_grid.orientation = Gtk.Orientation.VERTICAL;
-            header_stack.add_named (header, "home");
-            main_grid.add (main_scrolled);
+            var main_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0) {
+                hexpand = true,
+                vexpand = true
+            };
+            main_box.append (main_scrolled);
 
             audio_item.activated.connect (() => {
                 stack.visible_child_name = "audio";
@@ -249,7 +261,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
                 destroy ();
             });
 
-            return main_grid;
+            return main_box;
         }
 
         private Gtk.Widget get_audio_widget () {
@@ -362,8 +374,12 @@ namespace Ensembles.Shell.Dialogs.Preferences {
                 Ensembles.Application.settings.set_string ("driver", driver_string);
             });
 
-            var pavuctrl_button = new Gtk.Button.with_label (_("System Mixer"));
-            pavuctrl_button.margin = 4;
+            var pavuctrl_button = new Gtk.Button.with_label (_("System Mixer")) {
+                margin_top = 4,
+                margin_bottom = 4,
+                margin_start = 4,
+                margin_end = 4
+            };
             pavuctrl_button.clicked.connect (() => {
                 string info;
                 try {
@@ -374,18 +390,19 @@ namespace Ensembles.Shell.Dialogs.Preferences {
                                                                       _("Cannot find PulseAudio Volume Control"),
                                                                       e.message,
                                                                       false);
-                    error_dialog.transient_for = (Gtk.Window) get_toplevel ();
-                    error_dialog.show_all ();
+                    error_dialog.transient_for = Application.main_window;
+                    error_dialog.show ();
                     error_dialog.present ();
                 }
             });
 
-            var box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-            box.margin_top = 6;
-            box.valign = Gtk.Align.START;
-            box.hexpand = true;
-            box.add (driver_select);
-            box.add (buffer_length);
+            var box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0) {
+                margin_top = 6,
+                valign = Gtk.Align.START,
+                hexpand = true
+            };
+            box.append (driver_select);
+            box.append (buffer_length);
 
             buffer_length.changed.connect ((value) => {
                 Ensembles.Application.settings.set_double ("buffer-length", value);
@@ -397,17 +414,21 @@ namespace Ensembles.Shell.Dialogs.Preferences {
                 Ensembles.Application.settings.set_int ("previous-buffer-length", display_value);
             });
 
-            var box_scrolled = new Gtk.ScrolledWindow (null, null);
-            box_scrolled.hscrollbar_policy = Gtk.PolicyType.NEVER;
-            box_scrolled.expand = true;
-            box_scrolled.add (box);
+            var box_scrolled = new Gtk.ScrolledWindow () {
+                hscrollbar_policy = Gtk.PolicyType.NEVER,
+                hexpand = true,
+                vexpand = true
+            };
+            box_scrolled.set_child (box);
 
-            var main_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-            main_box.expand = true;
+            var main_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0) {
+                hexpand = true,
+                vexpand = true
+            };
 
             header_stack.add_named (top_box, "audio");
-            main_box.pack_start (box_scrolled, false, true, 0);
-            main_box.pack_end (pavuctrl_button, false, false, 0);
+            main_box.append (box_scrolled);
+            main_box.append (pavuctrl_button);
 
             top_box.back_activated.connect (() => {
                 stack.visible_child_name = "home";
@@ -435,12 +456,13 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             });
 
             var default_binding_preset_path = Application.user_config_dir + "/input_presets";
+            File preset_file;
             if (DirUtils.create_with_parents (Application.user_config_dir, 2000) != -1) {
                 if (DirUtils.create_with_parents (
                     default_binding_preset_path, 2000) != -1) {
                     debug ("Made input presets folder\n");
 
-                    var preset_file = File.new_for_path (default_binding_preset_path + "/dell_en_all_keys_generic.csv");
+                    preset_file = File.new_for_path (default_binding_preset_path + "/dell_en_all_keys_generic.csv");
 
                     if (!preset_file.query_exists ()) {
                         var csv_data = new string[1, 60];
@@ -455,18 +477,15 @@ namespace Ensembles.Shell.Dialogs.Preferences {
                 }
             }
 
-            Gtk.FileChooserDialog mapping_file_chooser;
-            mapping_file_chooser = new Gtk.FileChooserDialog (_("Export PC Keyboard Input Mapping"),
+            Gtk.FileChooserNative mapping_file_chooser =
+            new Gtk.FileChooserNative (_("Export PC Keyboard Input Mapping"),
                                                                 Application.main_window,
                                                                 Gtk.FileChooserAction.SAVE,
-                                                                _("Cancel"),
-                                                                Gtk.ResponseType.CANCEL,
                                                                 _("Export"),
-                                                                Gtk.ResponseType.ACCEPT
+                                                                _("Cancel")
                                                                 );
-            mapping_file_chooser.set_current_folder (default_binding_preset_path);
+            mapping_file_chooser.set_current_folder (preset_file);
             mapping_file_chooser.set_current_name ("Untitled.csv");
-            mapping_file_chooser.set_do_overwrite_confirmation (true);
             var file_filter_csv = new Gtk.FileFilter ();
             file_filter_csv.add_mime_type ("text/csv");
             file_filter_csv.set_filter_name (_("Comma Separated Values File"));
@@ -478,18 +497,16 @@ namespace Ensembles.Shell.Dialogs.Preferences {
                 }
             });
 
-            Gtk.FileChooserDialog mapping_file_open_chooser;
-            mapping_file_open_chooser = new Gtk.FileChooserDialog (_("Import PC Keyboard Input Mapping"),
+            Gtk.FileChooserNative mapping_file_open_chooser =
+            new Gtk.FileChooserNative (_("Import PC Keyboard Input Mapping"),
                                                                 Application.main_window,
                                                                 Gtk.FileChooserAction.OPEN,
-                                                                _("Cancel"),
-                                                                Gtk.ResponseType.CANCEL,
                                                                 _("Import"),
-                                                                Gtk.ResponseType.ACCEPT
+                                                                _("Cancel")
                                                                 );
 
             mapping_file_open_chooser.set_filter (file_filter_csv);
-            mapping_file_open_chooser.set_current_folder (default_binding_preset_path);
+            mapping_file_open_chooser.set_current_folder (preset_file);
 
             var input_key_box = new Gtk.ListBox ();
             input_key_box.selection_mode = Gtk.SelectionMode.SINGLE;
@@ -558,8 +575,11 @@ namespace Ensembles.Shell.Dialogs.Preferences {
                 selected_input_item = (ItemInput)row;
             });
 
-            input_key_box.key_press_event.connect ((event) => {
-                var keyval = event.keyval;
+            var key_event_controller = new Gtk.EventControllerKey ();
+
+            input_key_box.add_controller ((Gtk.ShortcutController) key_event_controller);
+
+            key_event_controller.key_pressed.connect ((keyval) => {;
                 if (keyval == KeyboardConstants.KeyMap.ESCAPE) {
                     input_key_box.unselect_all ();
                     selected_input_item = null;
@@ -597,40 +617,45 @@ namespace Ensembles.Shell.Dialogs.Preferences {
                 return false;
             });
 
-            var scrollable = new Gtk.ScrolledWindow (null, null);
-            scrollable.vexpand = true;
-            scrollable.add (input_key_box);
+            var scrollable = new Gtk.ScrolledWindow () {
+                vexpand = true
+            };
+            scrollable.set_child (input_key_box);
 
-            var open_pc_input_preset_button = new Gtk.Button.with_label (_("Import PC Keyboard Input Preset"));
-            open_pc_input_preset_button.hexpand = true;
+            var open_pc_input_preset_button = new Gtk.Button.with_label (_("Import PC Keyboard Input Preset")) {
+                hexpand = true
+            };
             open_pc_input_preset_button.clicked.connect (() => {
-                mapping_file_open_chooser.run ();
+                mapping_file_open_chooser.show ();
                 mapping_file_open_chooser.hide ();
             });
             var save_pc_input_preset_button = new Gtk.Button.from_icon_name (
-                "document-save-as-symbolic",
-                Gtk.IconSize.BUTTON
+                "document-save-as-symbolic"
             );
             save_pc_input_preset_button.get_style_context ().remove_class ("image-button");
             save_pc_input_preset_button.tooltip_text = _("Export preset as");
             save_pc_input_preset_button.clicked.connect (() => {
-                mapping_file_chooser.run ();
+                mapping_file_chooser.show ();
                 mapping_file_chooser.hide ();
             });
-            var btn_grid = new Gtk.Grid ();
+            var btn_grid = new Gtk.Grid () {
+                margin_top = 4,
+                margin_bottom = 4,
+                margin_start = 4,
+                margin_end = 4,
+                column_spacing = 4
+            };
             btn_grid.attach (open_pc_input_preset_button, 0, 0);
             btn_grid.attach (save_pc_input_preset_button, 1, 0);
-            btn_grid.margin = 4;
-            btn_grid.column_spacing = 4;
 
             var main_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
             header_stack.add_named (top_box, "input");
             var separator_a = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
-            main_box.pack_start (separator_a, false, false, 0);
-            main_box.pack_start (scrollable, false, true, 0);
+            main_box.append (separator_a);
+            main_box.append (scrollable);
             var separator_b = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
-            main_box.pack_start (separator_b, false, false, 0);
-            main_box.pack_end (btn_grid, false, false, 0);
+            main_box.append (separator_b);
+            main_box.append (btn_grid);
 
             return main_box;
         }
@@ -649,7 +674,10 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             header_stack.add_named (top_box, "midi");
 
             var main_box = new Gtk.Grid () {
-                margin = 4,
+                margin_start = 4,
+                margin_end = 4,
+                margin_top = 4,
+                margin_bottom = 4,
                 row_spacing = 14,
                 column_spacing = 4
             };
@@ -671,12 +699,13 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             };
             main_box.attach (label, 0, 1, 2, 1);
 
-            var replace_mode_button = new Gtk.RadioButton.with_label (null, _("Replace")) {
+            var replace_mode_button = new Gtk.CheckButton.with_label (_("Replace")) {
                 margin_start = 12
             };
             main_box.attach (replace_mode_button, 0, 2, 2, 1);
 
-            var append_mode_button = new Gtk.RadioButton.with_label (replace_mode_button.get_group (), _("Append")) {
+            var append_mode_button = new Gtk.CheckButton.with_label (_("Append")) {
+                group = replace_mode_button,
                 margin_start = 12
             };
             main_box.attach (append_mode_button, 0, 3, 2, 1);
@@ -690,10 +719,10 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             var import_button = new Gtk.Button.with_label (_("Import Preset")) {
                 hexpand = true
             };
-            import_button.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+            import_button.get_style_context ().add_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
             main_box.attach (import_button, 0, 5);
 
-            var export_button = new Gtk.Button.from_icon_name ("document-save-as-symbolic", Gtk.IconSize.BUTTON) {
+            var export_button = new Gtk.Button.from_icon_name ("document-save-as-symbolic") {
                 tooltip_text = _("Export preset as")
             };
             export_button.get_style_context ().remove_class ("image-button");
@@ -717,6 +746,8 @@ namespace Ensembles.Shell.Dialogs.Preferences {
                 }
             }
 
+            File controller_preset_file = File.new_for_path (default_controller_preset_dir);
+
             Gtk.FileChooserDialog mapping_file_open_chooser;
             mapping_file_open_chooser = new Gtk.FileChooserDialog (_("Import MIDI Input Preset"),
                                                                 Application.main_window,
@@ -728,10 +759,10 @@ namespace Ensembles.Shell.Dialogs.Preferences {
                                                                 );
 
             mapping_file_open_chooser.set_filter (file_filter_csv);
-            mapping_file_open_chooser.set_current_folder (default_controller_preset_dir);
+            mapping_file_open_chooser.set_current_folder (controller_preset_file);
 
             import_button.clicked.connect (() => {
-                mapping_file_open_chooser.run ();
+                mapping_file_open_chooser.show ();
                 mapping_file_open_chooser.hide ();
             });
 
@@ -774,12 +805,11 @@ namespace Ensembles.Shell.Dialogs.Preferences {
                                                                 _("Export"),
                                                                 Gtk.ResponseType.ACCEPT
                                                                 );
-            mapping_file_chooser.set_current_folder (default_controller_preset_dir);
+            mapping_file_chooser.set_current_folder (controller_preset_file);
             mapping_file_chooser.set_current_name ("UntitledDevice.csv");
-            mapping_file_chooser.set_do_overwrite_confirmation (true);
 
             export_button.clicked.connect (() => {
-                mapping_file_chooser.run ();
+                mapping_file_chooser.show ();
                 mapping_file_chooser.hide ();
             });
 
@@ -822,19 +852,25 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             header_stack.add_named (top_box, "theme");
 
             var separator_a = new Gtk.Separator (Gtk.Orientation.HORIZONTAL);
-            main_box.pack_start (separator_a, false, false, 0);
+            main_box.append (separator_a);
 
             var key_label = new Gtk.Label (_("Note Visualization Legend")) {
                 xalign = 0,
-                margin = 8
+                margin_top = 8,
+                margin_bottom = 8,
+                margin_start = 8,
+                margin_end = 8
             };
-            main_box.pack_start (key_label, false, false, 0);
+            main_box.append (key_label);
 
             var key_theme_guide = new Gtk.Grid () {
                 column_homogeneous = true,
                 column_spacing = 4,
                 row_spacing = 4,
-                margin = 8
+                margin_top = 8,
+                margin_bottom = 8,
+                margin_start = 8,
+                margin_end = 8
             };
 
             var key_legend_primary = new Gtk.Box (Gtk.Orientation.VERTICAL, 0) {
@@ -873,11 +909,14 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             key_theme_guide.attach (key_accent_secondary, 1, 1);
             key_theme_guide.attach (key_accent_automatic, 2, 1);
 
-            main_box.pack_start (key_theme_guide, false, false, 0);
+            main_box.append (key_theme_guide);
 
             var display_preview = new Gtk.Grid () {
                 column_homogeneous = true,
-                margin = 8
+                margin_start = 8,
+                margin_top = 8,
+                margin_end = 8,
+                margin_bottom = 8
             };
             display_preview.get_style_context ().add_class ("central-display-preview");
             display_preview.get_style_context ().add_class ("ensembles-central-display");
@@ -894,8 +933,8 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             };
             home_preview.get_style_context ().add_class ("home-screen-background");
 
-            home_preview.pack_start (top_bar_preview, false, false, 8);
-            home_preview.pack_end (bottom_bar_preview, false, false, 8);
+            home_preview.append (top_bar_preview);
+            home_preview.append (bottom_bar_preview);
 
             display_preview.attach (home_preview, 0, 0);
 
@@ -923,8 +962,8 @@ namespace Ensembles.Shell.Dialogs.Preferences {
                     print ("%s\n", theme_list.nth_data (index));
                     Application.init_theme ();
                 });
-                main_box.pack_start (theme_select, false, false, 0);
-                main_box.pack_end (display_preview, false, false, 0);
+                main_box.append (theme_select);
+                main_box.append (display_preview);
                 loop.quit ();
             });
             loop.run ();
@@ -973,27 +1012,29 @@ namespace Ensembles.Shell.Dialogs.Preferences {
             var issue_item = new Dialogs.Preferences.Item ("bug", _("Report a Problem"));
             var translation_item = new Dialogs.Preferences.Item ("config-language", _("Suggest Translations"), true);
 
-            var grid = new Gtk.Grid ();
-            grid.margin_top = 24;
-            grid.valign = Gtk.Align.START;
-            grid.get_style_context ().add_class ("preferences-view");
-            grid.orientation = Gtk.Orientation.VERTICAL;
-            grid.add (new Gtk.Separator (Gtk.Orientation.HORIZONTAL));
-            grid.add (web_item);
-            grid.add (github_item);
-            grid.add (twitter_item);
-            grid.add (issue_item);
-            grid.add (translation_item);
-            grid.add (new Gtk.Separator (Gtk.Orientation.HORIZONTAL));
+            var box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0) {
+                margin_top = 24,
+                valign = Gtk.Align.START
+            };
+            box.get_style_context ().add_class ("preferences-view");
+            box.append (new Gtk.Separator (Gtk.Orientation.HORIZONTAL));
+            box.append (web_item);
+            box.append (github_item);
+            box.append (twitter_item);
+            box.append (issue_item);
+            box.append (translation_item);
+            box.append (new Gtk.Separator (Gtk.Orientation.HORIZONTAL));
 
-            var main_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-            main_box.expand = true;
+            var main_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0) {
+                hexpand = true,
+                vexpand = true
+            };
 
             header_stack.add_named (top_box, "about");
-            main_box.pack_start (header_logo_image, false, true, 0);
-            main_box.pack_start (version_label, false, true, 0);
-            main_box.pack_start (fluidsynth_version, false, true, 0);
-            main_box.pack_start (grid, false, false, 0);
+            main_box.append (header_logo_image);
+            main_box.append (version_label);
+            main_box.append (fluidsynth_version);
+            main_box.append (box);
 
             top_box.back_activated.connect (() => {
                 stack.visible_child_name = "home";

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2022 Subhadeep Jasu <subhajasu@gmail.com>
+ * Copyright 2020-2023 Subhadeep Jasu <subhajasu@gmail.com>
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -22,20 +22,20 @@ namespace Ensembles {
             if (display_theme_provider == null) {
                 display_theme_provider = new Gtk.CssProvider ();
             } else {
-                Gtk.StyleContext.remove_provider_for_screen (Gdk.Screen.get_default (), display_theme_provider);
+                Gtk.StyleContext.remove_provider_for_display (Gdk.Display.get_default (), display_theme_provider);
             }
             try {
                 display_theme_provider.load_from_path (display_theme_path + name + ".css");
-                Gtk.StyleContext.add_provider_for_screen (
-                    Gdk.Screen.get_default (), display_theme_provider,
+                Gtk.StyleContext.add_provider_for_display (
+                    Gdk.Display.get_default (), display_theme_provider,
                     Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
                 );
             } catch (Error e) {
                 warning (e.message);
                 try {
                     display_theme_provider.load_from_path (display_theme_path + "Default.css");
-                    Gtk.StyleContext.add_provider_for_screen (
-                        Gdk.Screen.get_default (), display_theme_provider,
+                    Gtk.StyleContext.add_provider_for_display (
+                        Gdk.Display.get_default (), display_theme_provider,
                         Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
                     );
                     return "Default";
@@ -43,8 +43,8 @@ namespace Ensembles {
                     warning (e1.message);
                     try {
                         display_theme_provider.load_from_path (display_theme_path + "Elementary Light.css");
-                        Gtk.StyleContext.add_provider_for_screen (
-                            Gdk.Screen.get_default (), display_theme_provider,
+                        Gtk.StyleContext.add_provider_for_display (
+                            Gdk.Display.get_default (), display_theme_provider,
                             Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
                         );
                         return "Elementary Light";
@@ -52,8 +52,8 @@ namespace Ensembles {
                         warning (e2.message);
                         try {
                             display_theme_provider.load_from_path (display_theme_path + "Elementary Dark.css");
-                            Gtk.StyleContext.add_provider_for_screen (
-                                Gdk.Screen.get_default (), display_theme_provider,
+                            Gtk.StyleContext.add_provider_for_display (
+                                Gdk.Display.get_default (), display_theme_provider,
                                 Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
                             );
                             return "Elementary Dark";
@@ -61,8 +61,8 @@ namespace Ensembles {
                             warning (e3.message);
                             try {
                                 display_theme_provider.load_from_path (display_theme_path + "Aurora.css");
-                                Gtk.StyleContext.add_provider_for_screen (
-                                    Gdk.Screen.get_default (), display_theme_provider,
+                                Gtk.StyleContext.add_provider_for_display (
+                                    Gdk.Display.get_default (), display_theme_provider,
                                     Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
                                 );
                                 return "Aurora";

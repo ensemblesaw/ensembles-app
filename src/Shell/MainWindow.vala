@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2022 Subhadeep Jasu <subhajasu@gmail.com>
+ * Copyright 2020-2023 Subhadeep Jasu <subhajasu@gmail.com>
  * Copyright © 2019 Alain M. (https://github.com/alainm23/planner)<alainmh23@gmail.com>
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -9,7 +9,9 @@
  */
 
 namespace Ensembles.Shell {
-    public class MainWindow : Gtk.Window {
+    public class MainWindow : Gtk.ApplicationWindow {
+        private Gtk.EventControllerKey event_controller_key;
+
         // View components
         public StyleControllerView style_controller_view;
         public BeatCounterView beat_counter_panel;
@@ -41,6 +43,8 @@ namespace Ensembles.Shell {
 
 
         construct {
+            event_controller_key = new Gtk.EventControllerKey ();
+            add_controller ((Gtk.ShortcutController)event_controller_key);
             // This module looks for computer keyboard input and fires off signals that can be connected to
             keyboard_input_handler = new PcKeyboardHandler ();
 
@@ -49,22 +53,25 @@ namespace Ensembles.Shell {
         }
 
         void make_ui () {
+            title = "Ensembles";
+
             // Make headerbar
             headerbar = new Gtk.HeaderBar () {
-                title = "Ensembles",
-                has_subtitle = false,
-                show_close_button = true,
+                show_title_buttons = true,
             };
             set_titlebar (headerbar);
 
             beat_counter_panel = new BeatCounterView ();
             headerbar.pack_start (beat_counter_panel);
 
-            app_menu_button = new Gtk.Button.from_icon_name ("open-menu", Gtk.IconSize.LARGE_TOOLBAR);
+            app_menu_button = new Gtk.Button.from_icon_name ("open-menu");
             headerbar.pack_end (app_menu_button);
 
+            Gdk.Rectangle app_menu_button_rect;
+            app_menu_button.get_allocation (out app_menu_button_rect);
+
             app_menu = new AppMenuView () {
-                relative_to = app_menu_button
+                pointing_to = app_menu_button_rect
             };
 
             song_control_panel = new SongControllerView (this);
@@ -79,7 +86,7 @@ namespace Ensembles.Shell {
             custom_title_grid = new Gtk.Grid ();
             custom_title_grid.attach (custom_title_text, 0, 1, 1, 1);
             custom_title_grid.attach (seek_bar, 0, 2, 1, 1);
-            custom_title_grid.show_all ();
+            custom_title_grid.show ();
 
             // Make the display unit imitation that we see in the center of the app UI
             main_display_unit = new CentralDisplay ();
@@ -124,16 +131,19 @@ namespace Ensembles.Shell {
             grid.attach (sampler_panel, 2, 1, 1, 1);
             grid.attach (style_registry_grid, 0, 2, 3, 1);
             grid.attach (main_keyboard, 0, 3, 3, 1);
-            add (grid);
-            show_all ();
+            set_child (grid);
+            show ();
 
-            common_context_menu = new Gtk.Popover (main_display_unit);
-            common_context_menu.add (get_context_menu ());
+            common_context_menu = new Gtk.Popover ();
+            common_context_menu.set_child (get_context_menu ());
         }
 
         Gtk.Widget get_context_menu () {
             var button_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 4) {
-                margin = 4
+                margin_start = 4,
+                margin_end = 4,
+                margin_top = 4,
+                margin_bottom = 4
             };
 
             controller_assignment_label = new Gtk.Label ("") {
@@ -142,63 +152,72 @@ namespace Ensembles.Shell {
             };
 
             controller_assignment_label.get_style_context ().add_class (Granite.STYLE_CLASS_H4_LABEL);
-            button_box.pack_start (controller_assignment_label);
+            button_box.append (controller_assignment_label);
 
             ctx_menu_main_separator = new Gtk.Separator (Gtk.Orientation.HORIZONTAL) {
                 visible = false
             };
 
-            button_box.pack_start (ctx_menu_main_separator);
+            button_box.append (ctx_menu_main_separator);
 
             controller_assign_button = new Gtk.Button ();
             var assign_button_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 4) {
                 halign = Gtk.Align.START
             };
 
-            assign_button_box.pack_start (new Gtk.Image.from_icon_name ("insert-link", Gtk.IconSize.BUTTON));
-            assign_button_box.pack_end (new Gtk.Label (_("Link MIDI Controller")));
-            controller_assign_button.add (assign_button_box);
-            controller_assign_button.get_style_context ().add_class (Gtk.STYLE_CLASS_FLAT);
-            button_box.pack_start (controller_assign_button);
+            assign_button_box.append (new Gtk.Image.from_icon_name ("insert-link"));
+            assign_button_box.append (new Gtk.Label (_("Link MIDI Controller")));
+            controller_assign_button.set_child (assign_button_box);
+            controller_assign_button.get_style_context ().add_class ("flat");
+            button_box.append (controller_assign_button);
 
             controller_reset_button = new Gtk.Button ();
             var reset_button_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 4) {
                 halign = Gtk.Align.START
             };
 
-            reset_button_box.pack_start (new Gtk.Image.from_icon_name ("list-remove", Gtk.IconSize.BUTTON));
-            reset_button_box.pack_end (new Gtk.Label (_("Remove Link")));
-            controller_reset_button.add (reset_button_box);
-            controller_reset_button.get_style_context ().add_class (Gtk.STYLE_CLASS_FLAT);
-            button_box.pack_start (controller_reset_button);
+            reset_button_box.append (new Gtk.Image.from_icon_name ("list-remove"));
+            reset_button_box.append (new Gtk.Label (_("Remove Link")));
+            controller_reset_button.set_child (reset_button_box);
+            controller_reset_button.get_style_context ().add_class ("flat");
+            button_box.append (controller_reset_button);
 
             return button_box;
         }
+
+        public override void size_allocate (int width, int height, int baseline) {
+            base.size_allocate (width, height, baseline);
+            main_keyboard.visible = false;
+            Timeout.add (100, () => {
+                main_keyboard.visible = true;
+                return false;
+            }, Priority.DEFAULT_IDLE);
+        }
+
         // Connect UI events
         void make_events () {
             app_menu_button.clicked.connect (() => {
                 app_menu.popup ();
             });
 
-            key_press_event.connect ((event) => {
-                return keyboard_input_handler.handle_keypress_event (event.keyval);
+            event_controller_key.key_pressed.connect ((keyval) => {
+                return keyboard_input_handler.handle_keypress_event (keyval);
             });
 
-            key_release_event.connect ((event) => {
-                keyboard_input_handler.handle_keyrelease_event (event.keyval);
-                return false;
+            event_controller_key.key_released.connect ((keyval) => {
+                keyboard_input_handler.handle_keyrelease_event (keyval);
             });
 
-            window_state_event.connect ((event) => {
-                if ((int)(event.changed_mask) == 4) {
-                    main_keyboard.visible = false;
-                    Timeout.add (100, () => {
-                        main_keyboard.visible = true;
-                        return false;
-                    }, Priority.DEFAULT_IDLE);
-                }
-                return false;
-            });
+            //  window_state_event.connect ((event) => {
+            //      if ((int)(event.changed_mask) == 4) {
+            //          main_keyboard.visible = false;
+            //          Timeout.add (100, () => {
+            //              main_keyboard.visible = true;
+            //              return false;
+            //          }, Priority.DEFAULT_IDLE);
+            //      }
+            //      return false;
+            //  });
 
             app_menu.open_preferences_dialog.connect (open_preferences);
             beat_counter_panel.open_tempo_editor.connect (main_display_unit.open_tempo_screen);
@@ -374,12 +393,12 @@ namespace Ensembles.Shell {
 
         public void update_header_bar (float fraction, int tempo_bpm, Core.SongPlayer.PlayerStatus status) {
             if (status == Core.SongPlayer.PlayerStatus.PLAYING || status == Core.SongPlayer.PlayerStatus.READY) {
-                if (headerbar.get_custom_title () == null) {
-                    headerbar.set_custom_title (custom_title_grid);
+                if (headerbar.title_widget == null) {
+                    headerbar.set_title_widget (custom_title_grid);
                 }
                 seek_bar.set_value ((double) fraction);
             } else {
-                headerbar.set_custom_title (null);
+                headerbar.set_title_widget (null);
                 seek_bar.set_value (0);
             }
             if (status == Core.SongPlayer.PlayerStatus.PLAYING) {
@@ -427,16 +446,18 @@ namespace Ensembles.Shell {
 
         private void open_preferences () {
             var dialog = new Dialogs.Preferences.Preferences ();
-            dialog.destroy.connect (Gtk.main_quit);
-            dialog.show_all ();
+            //  dialog.close_request.connect (Gtk.main_quit);
+            dialog.show ();
         }
 
         public void show_context_menu (Gtk.Widget? relative_to, int ui_control_index) {
-            common_context_menu.relative_to = relative_to;
+            Gtk.Allocation relative_alloc;
+            relative_to.get_allocation (out relative_alloc);
+            common_context_menu.pointing_to = relative_alloc;
             controller_assign_button.clicked.disconnect (assign_button_handler);
             _current_ui_assign_index = ui_control_index;
             controller_assign_button.clicked.connect (assign_button_handler);
-            common_context_menu.show_all ();
+            common_context_menu.show ();
             var assignment_label = Application.arranger_core.midi_input_host.get_assignment_label (ui_control_index);
             if (assignment_label.length > 0) {
                 controller_assignment_label.set_text (assignment_label);
@@ -459,7 +480,7 @@ namespace Ensembles.Shell {
             hide_context_menu ();
             var assign_dialog = new Dialogs.MIDIAssignDialog (_current_ui_assign_index);
             assign_dialog.confirm_binding.connect (binding_confirmation_handler);
-            assign_dialog.show_all ();
+            assign_dialog.show ();
         }
 
         void binding_confirmation_handler (int channel, int identifier, int signal_type, int control_type) {

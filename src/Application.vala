@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2022 Subhadeep Jasu <subhajasu@gmail.com>
+ * Copyright 2020-2023 Subhadeep Jasu <subhajasu@gmail.com>
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -29,11 +29,44 @@ namespace Ensembles {
 
         static Gtk.CssProvider main_css_provider;
         static Gtk.CssProvider complimentary_css_provider;
-        const string COMPLIMENTARY_ACCENT_COLORS =
+        private const string COMPLIMENTARY_ACCENT_COLORS =
         "
         @define-color accent_color_complimentary %s;
         @define-color accent_color_complimentary_alternate %s;
         ";
+
+        private static string COMPLIMENTARY_ACCENT_COLORS_STRAWBERRY =
+        COMPLIMENTARY_ACCENT_COLORS.printf ("@BANANA_500", "@ORANGE_500");
+
+        private static string COMPLIMENTARY_ACCENT_COLORS_ORANGE =
+        COMPLIMENTARY_ACCENT_COLORS.printf ("@BLUEBERRY_500", "@MINT_500");
+
+        private static string COMPLIMENTARY_ACCENT_COLORS_BANANA =
+        COMPLIMENTARY_ACCENT_COLORS.printf ("@MINT_500", "@ORANGE_500");
+
+        private static string COMPLIMENTARY_ACCENT_COLORS_LIME =
+        COMPLIMENTARY_ACCENT_COLORS.printf ("@BANANA_500", "@BUBBLEGUM_500");
+
+        private static string COMPLIMENTARY_ACCENT_COLORS_MINT =
+        COMPLIMENTARY_ACCENT_COLORS.printf ("@BANANA_500", "@SILVER_500");
+
+        private static string COMPLIMENTARY_ACCENT_COLORS_BLUEBERRY =
+        COMPLIMENTARY_ACCENT_COLORS.printf ("@BANANA_500", "@MINT_500");
+
+        private static string COMPLIMENTARY_ACCENT_COLORS_BUBBLEGUM =
+        COMPLIMENTARY_ACCENT_COLORS.printf ("@MINT_500", "@GRAPE_500");
+
+        private static string COMPLIMENTARY_ACCENT_COLORS_COCOA =
+        COMPLIMENTARY_ACCENT_COLORS.printf ("@BANANA_500", "@MINT_500");
+
+        private static string COMPLIMENTARY_ACCENT_COLORS_GRAPE =
+        COMPLIMENTARY_ACCENT_COLORS.printf ("@BANANA_500", "@BUBBLEGUM_500");
+
+        private static string COMPLIMENTARY_ACCENT_COLORS_SILVER =
+        COMPLIMENTARY_ACCENT_COLORS.printf ("@BLUEBERRY_300", "@STRAWBERRY_300");
+
+        private static string COMPLIMENTARY_ACCENT_COLORS_SLATE =
+        COMPLIMENTARY_ACCENT_COLORS.printf ("@MINT_500", "@BANANA_500");
 
         string[] ? arg_file = null;
         public static bool raw_midi_input = false;
@@ -53,7 +86,7 @@ namespace Ensembles {
                 user_data_dir = Environment.get_user_special_dir (GLib.UserDirectory.DOCUMENTS) + "/ensembles";
                 user_config_dir = Environment.get_user_config_dir () + "/ensembles";
                 arranger_core = new Core.ArrangerCore ();
-                Hdy.init ();
+                //  Hdy.init ();
                 Gtk.Settings settings = Gtk.Settings.get_default ();
                 // Force dark theme
                 settings.gtk_application_prefer_dark_theme = true;
@@ -152,8 +185,8 @@ namespace Ensembles {
             if (main_css_provider == null) {
                 main_css_provider = new Gtk.CssProvider ();
                 main_css_provider.load_from_resource ("/com/github/subhadeepjasu/ensembles/Application.css");
-                Gtk.StyleContext.add_provider_for_screen (
-                    Gdk.Screen.get_default (),
+                Gtk.StyleContext.add_provider_for_display (
+                    Gdk.Display.get_default (),
                     main_css_provider,
                     Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
                 );
@@ -166,68 +199,46 @@ namespace Ensembles {
                 try {
                     switch (theme_color) {
                         case "strawberry":
-                            complimentary_css_provider.load_from_data (
-                                COMPLIMENTARY_ACCENT_COLORS.printf ("@BANANA_500", "@ORANGE_500")
-                            );
+                            complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS_STRAWBERRY.data);
                             break;
                         case "orange":
-                            complimentary_css_provider.load_from_data (
-                                COMPLIMENTARY_ACCENT_COLORS.printf ("@BLUEBERRY_500", "@MINT_500")
-                            );
+                            complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS_ORANGE.data);
                             break;
                         case "banana":
-                            complimentary_css_provider.load_from_data (
-                                COMPLIMENTARY_ACCENT_COLORS.printf ("@MINT_500", "@ORANGE_500")
-                            );
+                            complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS_BANANA.data);
                             break;
                         case "lime":
-                            complimentary_css_provider.load_from_data (
-                                COMPLIMENTARY_ACCENT_COLORS.printf ("@BANANA_500", "@BUBBLEGUM_500")
-                            );
+                            complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS_LIME.data);
                             break;
                         case "mint":
-                            complimentary_css_provider.load_from_data (
-                                COMPLIMENTARY_ACCENT_COLORS.printf ("@BANANA_500", "@SILVER_500")
-                            );
+                            complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS_MINT.data);
                             break;
                         case "blueberry":
-                            complimentary_css_provider.load_from_data (
-                                COMPLIMENTARY_ACCENT_COLORS.printf ("@BANANA_500", "@MINT_500")
-                            );
+                            complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS_BLUEBERRY.data);
                             break;
                         case "grape":
-                            complimentary_css_provider.load_from_data (
-                                COMPLIMENTARY_ACCENT_COLORS.printf ("@BANANA_500", "@BUBBLEGUM_500")
-                            );
+                            complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS_GRAPE.data);
                             break;
                         case "bubblegum":
-                            complimentary_css_provider.load_from_data (
-                                COMPLIMENTARY_ACCENT_COLORS.printf ("@MINT_500", "@GRAPE_500")
-                            );
+                            complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS_BUBBLEGUM.data);
                             break;
                         case "cocoa":
-                            complimentary_css_provider.load_from_data (
-                                COMPLIMENTARY_ACCENT_COLORS.printf ("@BANANA_500", "@MINT_500")
-                            );
+                            complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS_COCOA.data);
                             break;
                         case "silver":
-                            complimentary_css_provider.load_from_data (
-                                COMPLIMENTARY_ACCENT_COLORS.printf ("@BLUEBERRY_300", "@STRAWBERRY_300")
-                            );
+                            complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS_SILVER.data);
                             break;
                         case "slate":
                         case "black":
-                            complimentary_css_provider.load_from_data (
-                                COMPLIMENTARY_ACCENT_COLORS.printf ("@MINT_500", "@BANANA_500")
-                            );
+                            complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS_SLATE.data);
                             break;
 
                     }
                 } catch (Error e) {
                     warning (e.message);
                 }
-                Gtk.StyleContext.add_provider_for_screen (
-                    Gdk.Screen.get_default (),
+                Gtk.StyleContext.add_provider_for_display (
+                    Gdk.Display.get_default (),
                     complimentary_css_provider,
                     Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
                 );

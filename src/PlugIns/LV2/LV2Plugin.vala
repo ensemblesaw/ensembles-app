@@ -145,7 +145,61 @@
             }
         }
 
-        protected override Gtk.Widget get_plugin_ui () {
+        protected override Gtk.Grid get_plugin_native_ui () {
+            var main_grid = new Gtk.Grid () {
+                margin = 0,
+                column_spacing = 4,
+                row_spacing = 4,
+                valign = Gtk.Align.CENTER,
+                halign = Gtk.Align.CENTER
+            };
+
+            // Make rest of the plugin UI
+            uint controls_len = control_ports.length;
+            control_variables = new float [controls_len];
+            control_widgets = new Gtk.Widget [controls_len];
+
+
+            if (controls_len > 0) {
+                // Set controls
+                var controls_frame = new Gtk.Frame (_("Controls"));
+                var controls_grid = new Gtk.Grid ();
+                controls_grid.row_spacing = 4;
+                controls_grid.margin = 14;
+                controls_frame.add (controls_grid);
+                for (int i = 0; i < controls_len; i++) {
+                    var control_ui = new PlugInControl (control_ports[i], &control_variables[i]);
+                    connect_control_port (&control_variables[i], control_ports[i].port_index, true);
+                    control_widgets[i] = control_ui;
+                    controls_grid.attach (control_widgets[i], 0, i);
+                }
+                main_grid.attach (controls_frame, 0, 0);
+            }
+
+            uint atoms_len = atom_ports.length;
+            atom_variables = new LV2.Atom.Atom [atoms_len];
+            atom_widgets = new Gtk.Widget [atoms_len];
+
+            if (atoms_len > 0) {
+                // Set Atoms
+                var atoms_frame = new Gtk.Frame (_("Atoms"));
+                var atoms_grid = new Gtk.Grid ();
+                atoms_grid.row_spacing = 4;
+                atoms_grid.margin = 14;
+                atoms_frame.add (atoms_grid);
+                for (int i = 0; i < atoms_len; i++) {
+                    var control_ui = new PlugInAtom (atom_ports[i], &atom_variables[i]);
+                    connect_control_port (&atom_variables[i], atom_ports[i].port_index, true);
+                    atom_widgets[i] = control_ui;
+                    atoms_grid.attach (atom_widgets[i], 0, i);
+                }
+                main_grid.attach (atoms_frame, 1, 0);
+            }
+
+            return main_grid;
+        }
+
+        protected override Gtk.Widget get_plugin_custom_ui () {
             var plug_uis = lilv_plugin.get_uis ();
 
             Lilv.UI main_ui = null;
