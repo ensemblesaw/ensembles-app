@@ -32,10 +32,10 @@ namespace Ensembles.Shell {
                 vexpand = true;
             }
 
-            split_button = new Gtk.Button.from_icon_name ("media-playback-start-symbolic", Gtk.IconSize.BUTTON) {
+            split_button = new Gtk.Button.from_icon_name ("media-playback-start-symbolic") {
                 valign = Gtk.Align.START
             };
-            this.add (split_button);
+            this.set_child (split_button);
             update_split ();
 
             split_button.clicked.connect (() => {

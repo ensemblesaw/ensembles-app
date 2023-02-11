@@ -4,7 +4,7 @@
  */
 
 namespace Ensembles.Shell {
-    public class EqualizerBar : Gtk.Bin {
+    public class EqualizerBar : Gtk.Box {
         //  DrawingArea drawing_area;
         private int _velocity;
         public int velocity {

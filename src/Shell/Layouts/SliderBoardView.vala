@@ -87,7 +87,10 @@ namespace Ensembles.Shell {
         public SliderBoardView (JoyStick joystick_instance) {
             joystick = joystick_instance;
             row_spacing = 4;
-            margin = 4;
+            margin_top = 4;
+            margin_bottom = 4;
+            margin_start = 4;
+            margin_end = 4;
             width_request = 408;
             height_request = 236;
 
@@ -102,10 +105,11 @@ namespace Ensembles.Shell {
 
             knob_assign_button = new Gtk.Button.with_label (_("Knob Assign"));
             master_assign_button = new Gtk.Button.with_label (_("Master Knob Assign"));
-            var knob_assign_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL);
-            knob_assign_box.add (knob_assign_button);
-            knob_assign_box.add (master_assign_button);
-            knob_assign_box.set_layout (Gtk.ButtonBoxStyle.EXPAND);
+            var knob_assign_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
+                hexpand = true
+            };
+            knob_assign_box.append (knob_assign_button);
+            knob_assign_box.append (master_assign_button);
 
             slider_assign_button = new Gtk.Button.with_label (_("Slider Assign"));
 
@@ -197,7 +201,7 @@ namespace Ensembles.Shell {
             attach (master_knob, 4, 1, 1, 3);
             attach (slider_grid, 0, 4, 5, 1);
 
-            show_all ();
+            show ();
 
             joystick.assignable_clicked_x.connect ((assignable) => {
                 send_assignable_mode (assignable);

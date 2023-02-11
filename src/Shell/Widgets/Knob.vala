@@ -31,8 +31,12 @@ namespace Ensembles.Shell {
             knob_socket_graphic.get_style_context ().add_class ("knob-socket-graphic");
 
             knob_cover = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
-                expand = true,
-                margin = 4,
+                hexpand = true,
+                vexpand = true,
+                margin_start = 4,
+                margin_end = 4,
+                margin_top = 4,
+                margin_bottom = 4,
                 halign = Gtk.Align.CENTER,
                 valign = Gtk.Align.CENTER,
                 width_request = 50,
@@ -41,8 +45,12 @@ namespace Ensembles.Shell {
             knob_cover.get_style_context ().add_class ("knob-cover-graphic");
 
             fixed = new Gtk.Fixed () {
-                expand = true,
-                margin = 4,
+                hexpand = true,
+                vexpand = true,
+                margin_start = 4,
+                margin_end = 4,
+                margin_top = 4,
+                margin_bottom = 4,
                 halign = Gtk.Align.CENTER,
                 valign = Gtk.Align.CENTER,
                 width_request = 50,
@@ -53,10 +61,14 @@ namespace Ensembles.Shell {
             fixed.put (knob_socket_graphic, (int)(px + center), (int)(py + center));
 
             knob_background = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
-                expand = true,
+                hexpand = true,
+                vexpand = true,
                 halign = Gtk.Align.CENTER,
                 valign = Gtk.Align.CENTER,
-                margin = 4,
+                margin_start = 4,
+                margin_end = 4,
+                margin_top = 4,
+                margin_bottom = 4,
                 width_request = 50,
                 width_request = 50
             };
@@ -66,12 +78,13 @@ namespace Ensembles.Shell {
             };
             event_box.event.connect (handle_event);
 
-            add (knob_background);
+            set_child (knob_background);
             add_overlay (knob_cover);
             add_overlay (fixed);
             add_overlay (event_box);
 
-            this.expand = true;
+            this.hexpand = true;
+            this.vexpand = true;
             this.halign = Gtk.Align.FILL;
             this.valign = Gtk.Align.FILL;
             this.width_request = 58;

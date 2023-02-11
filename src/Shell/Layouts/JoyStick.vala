@@ -52,13 +52,15 @@ namespace Ensembles.Shell {
                 assignable_axis = 1;
                 assignable_clicked_y (assignable);
             });
-            var button_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL) {
-                margin = 4,
+            var button_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
+                margin_top = 4,
+                margin_bottom = 4,
+                margin_start = 4,
+                margin_end = 4,
                 width_request = 140
             };
-            button_box.set_layout (Gtk.ButtonBoxStyle.EXPAND);
-            button_box.pack_start (x_assign_button);
-            button_box.pack_end (y_assign_button);
+            button_box.append (x_assign_button);
+            button_box.append (y_assign_button);
             attach (button_box, 0, 0, 1, 1);
 
             var main_overlay = new Gtk.Overlay () {
@@ -68,9 +70,13 @@ namespace Ensembles.Shell {
                 valign = Gtk.Align.CENTER
             };
 
-            var main_box = new Gtk.Grid ();
-            main_box.vexpand = true;
-            main_box.margin = 4;
+            var main_box = new Gtk.Grid () {
+                vexpand = true,
+                margin_start = 4,
+                margin_end = 4,
+                margin_top = 4,
+                margin_bottom = 4
+            };
             main_box.get_style_context ().add_class ("joystick-pad");
 
             var event_box = new Gtk.EventBox ();

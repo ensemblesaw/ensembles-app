@@ -120,7 +120,7 @@ namespace Ensembles.Core {
         public static void show_plugin_ui (uint index) {
             var window = plugin_references.nth_data (index).get_ui ();
             window.present ();
-            window.show_all ();
+            window.show ();
         }
     }
 }

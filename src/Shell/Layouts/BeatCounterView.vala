@@ -87,7 +87,10 @@ namespace Ensembles.Shell {
             beat_visualizer_active_grid.attach (beat_counter_active_3, 3, 0, 1, 1);
 
             tempo_button = new Gtk.Button.with_label (_("Tempo")) {
-                margin = 8
+                margin_top = 8,
+                margin_bottom = 8,
+                margin_start = 8,
+                margin_end = 8
             };
             tempo_button.clicked.connect (() => {
                 open_tempo_editor ();
@@ -102,7 +105,7 @@ namespace Ensembles.Shell {
 
             attach (visualizer_overlay, 0, 0);
             attach (tempo_button, 1, 0);
-            show_all ();
+            show ();
             width_request = 210;
             height_request = 42;
         }

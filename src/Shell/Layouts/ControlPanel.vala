@@ -43,7 +43,10 @@ namespace Ensembles.Shell {
             row_homogeneous = true;
             column_homogeneous = true;
             hexpand = true;
-            margin = 4;
+            margin_top = 4;
+            margin_bottom = 4;
+            margin_start = 4;
+            margin_end = 4;
             width_request = 293;
 
             accomp_toggle = new ToggleSwitch (_("Chords"));
@@ -104,7 +107,7 @@ namespace Ensembles.Shell {
             attach (reverb_spin_button, 0, 7, 1, 1);
             attach (chorus_spin_button, 1, 7, 1, 1);
             attach (harmonizer_spin_button, 2, 7, 1, 1);
-            this.show_all ();
+            this.show ();
             make_events ();
         }
 

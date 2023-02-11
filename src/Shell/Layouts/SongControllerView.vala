@@ -10,7 +10,7 @@ namespace Ensembles.Shell {
         Gtk.Button repeat_button;
         Gtk.Button open_file_button;
 
-        Gtk.FileChooserDialog file_chooser;
+        Gtk.FileChooserNative file_chooser;
 
         Gtk.Window mainwindow;
 
@@ -23,13 +23,12 @@ namespace Ensembles.Shell {
 
         public SongControllerView (Gtk.Window mainwindow) {
             this.mainwindow = mainwindow;
-            rewind_button = new Gtk.Button.from_icon_name ("media-seek-backward-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
-            play_button = new Gtk.Button.from_icon_name ("media-playback-start-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
+            rewind_button = new Gtk.Button.from_icon_name ("media-seek-backward-symbolic");
+            play_button = new Gtk.Button.from_icon_name ("media-playback-start-symbolic");
             repeat_button = new Gtk.Button.from_icon_name (
-                "media-playlist-no-repeat-symbolic",
-                Gtk.IconSize.LARGE_TOOLBAR
+                "media-playlist-no-repeat-symbolic"
             );
-            open_file_button = new Gtk.Button.from_icon_name ("document-open-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
+            open_file_button = new Gtk.Button.from_icon_name ("document-open-symbolic");
 
             play_button.sensitive = false;
             rewind_button.sensitive = false;
@@ -46,17 +45,15 @@ namespace Ensembles.Shell {
 
             margin_end = 8;
 
-            this.show_all ();
+            this.show ();
 
-            file_chooser = new Gtk.FileChooserDialog (_("Open MIDI Song"),
+            file_chooser = new Gtk.FileChooserNative (_("Open MIDI Song"),
                                                       mainwindow,
                                                       Gtk.FileChooserAction.OPEN,
-                                                      _("Cancel"),
-                                                      Gtk.ResponseType.CANCEL,
                                                       _("Open"),
-                                                      Gtk.ResponseType.ACCEPT
+                                                      _("Cancel")
                                                      );
-            file_chooser.local_only = false;
+            //  file_chooser.local_only = false;
             file_chooser.modal = true;
 
             var file_filter_midi = new Gtk.FileFilter ();
@@ -65,7 +62,7 @@ namespace Ensembles.Shell {
             file_chooser.add_filter (file_filter_midi);
 
             open_file_button.clicked.connect (() => {
-                file_chooser.run ();
+                file_chooser.show ();
                 file_chooser.hide ();
             });
 
@@ -79,14 +76,12 @@ namespace Ensembles.Shell {
             repeat_button.clicked.connect (() => {
                 if (repeat_on) {
                     repeat_on = false;
-                    repeat_button.set_image (new Gtk.Image.from_icon_name (
-                        "media-playlist-no-repeat-symbolic", Gtk.IconSize.LARGE_TOOLBAR)
-                    );
+                    repeat_button.set_icon_name (
+                        "media-playlist-no-repeat-symbolic");
                 } else {
                     repeat_on = true;
-                    repeat_button.set_image (new Gtk.Image.from_icon_name (
-                        "media-playlist-repeat-one-symbolic", Gtk.IconSize.LARGE_TOOLBAR)
-                    );
+                    repeat_button.set_icon_name (
+                        "media-playlist-repeat-one-symbolic");
                 }
                 change_repeat (repeat_on);
             });
@@ -104,13 +99,11 @@ namespace Ensembles.Shell {
 
         public void set_playing (bool playing) {
             if (playing) {
-                play_button.set_image (new Gtk.Image.from_icon_name (
-                    "media-playback-pause-symbolic", Gtk.IconSize.LARGE_TOOLBAR)
-                );
+                play_button.set_icon_name (
+                    "media-playback-pause-symbolic");
             } else {
-                play_button.set_image (new Gtk.Image.from_icon_name (
-                    "media-playback-start-symbolic", Gtk.IconSize.LARGE_TOOLBAR)
-                );
+                play_button.set_icon_name (
+                    "media-playback-start-symbolic");
             }
         }
 

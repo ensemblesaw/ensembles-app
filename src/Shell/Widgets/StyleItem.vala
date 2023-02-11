@@ -34,7 +34,7 @@
             style_grid.attach (tempo_label, 1, 1, 1, 1);
 
             if (accomp_style.copyright_notice != null && accomp_style.copyright_notice != "") {
-                var copyright_button = new Gtk.Button.from_icon_name ("text-x-copying-symbolic", Gtk.IconSize.BUTTON) {
+                var copyright_button = new Gtk.Button.from_icon_name ("text-x-copying-symbolic") {
                     margin_top = 6,
                     margin_start = 4,
                     margin_end = 4,
@@ -44,7 +44,7 @@
                 style_grid.attach (copyright_button, 2, 1, 1, 1);
             }
 
-            this.add (style_grid);
+            this.set_child (style_grid);
         }
     }
 }

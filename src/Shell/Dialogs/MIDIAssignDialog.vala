@@ -21,7 +21,6 @@
                 resizable: false,
                 use_header_bar: 1,
                 destroy_with_parent: true,
-                window_position: Gtk.WindowPosition.CENTER_ON_PARENT,
                 modal: true,
                 title: _("Link MIDI Controller"),
                 width_request: 560,
@@ -30,7 +29,7 @@
          }
 
          construct {
-            get_header_bar ().show_close_button = false;
+            get_header_bar ().show_title_buttons = false;
             get_style_context ().add_class ("app");
 
             var main_grid = new Gtk.Grid ();
@@ -51,7 +50,9 @@
             main_grid.attach (heading, 0, 1);
 
             subheading = new Gtk.Label (_("Waiting for you to move a knob, fader or button on your MIDI Controller…")) {
-                margin = 12,
+                margin_top = 12,
+                margin_end = 12,
+                margin_start = 12,
                 margin_bottom = 0,
             };
 
@@ -64,17 +65,22 @@
 
             var confirm_button = new Gtk.Button.with_label (_("Confirm")) {
                 hexpand = true,
-                margin = 12,
+                margin_top = 12,
+                margin_end = 12,
+                margin_start = 12,
                 margin_bottom = 0
             };
-            confirm_button.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+            confirm_button.get_style_context ().add_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
             confirm_button.clicked.connect (confirm);
-            revealer.add (confirm_button);
+            revealer.set_child (confirm_button);
             main_grid.attach (revealer, 0, 3);
 
             var cancel_button = new Gtk.Button.with_label (_("Cancel")) {
                 hexpand = true,
-                margin = 12
+                margin_top = 12,
+                margin_end = 12,
+                margin_start = 12,
+                margin_bottom = 12
             };
 
             cancel_button.clicked.connect (() => {
@@ -84,7 +90,7 @@
 
             main_grid.attach (cancel_button, 0, 4);
 
-            get_content_area ().add (main_grid);
+            get_content_area ().append (main_grid);
 
             Application.arranger_core.midi_input_host.midi_event_received.connect (midi_event_callback);
          }

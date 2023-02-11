@@ -53,7 +53,7 @@ namespace Ensembles.Shell {
             voice_grid.attach (voice_label, 1, 0, 1, 2);
             voice_grid.attach (category_label, 2, 0, 1, 1);
             voice_grid.attach (bank_preset_label, 2, 1, 1, 1);
-            this.add (voice_grid);
+            this.set_child (voice_grid);
         }
     }
 }

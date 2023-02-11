@@ -16,10 +16,10 @@ namespace Ensembles.Shell {
             indicator_box.get_style_context ().add_class ("toggle-indicator");
             var box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
 
-            box.pack_start (indicator_box, false, false);
-            box.pack_end (text_label, true, true);
+            box.append (indicator_box);
+            box.append (text_label);
 
-            this.add (box);
+            this.set_child (box);
 
             this.clicked.connect (() => {
                 if (on) {

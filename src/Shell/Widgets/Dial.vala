@@ -72,7 +72,7 @@ namespace Ensembles.Shell {
 
 
 
-            var plus_one_button = new Gtk.Button.from_icon_name ("list-add-symbolic", Gtk.IconSize.BUTTON) {
+            var plus_one_button = new Gtk.Button.from_icon_name ("list-add-symbolic") {
                 halign = Gtk.Align.START,
                 valign = Gtk.Align.START,
                 margin_top = 8,
@@ -86,7 +86,7 @@ namespace Ensembles.Shell {
                 rotate (true, 1);
             });
 
-            var minus_one_button = new Gtk.Button.from_icon_name ("list-remove-symbolic", Gtk.IconSize.BUTTON) {
+            var minus_one_button = new Gtk.Button.from_icon_name ("list-remove-symbolic") {
                 halign = Gtk.Align.START,
                 valign = Gtk.Align.END,
                 margin_bottom = 8,
@@ -100,7 +100,7 @@ namespace Ensembles.Shell {
                 rotate (false, 1);
             });
 
-            var activate_button = new Gtk.Button.from_icon_name ("go-next-symbolic", Gtk.IconSize.BUTTON) {
+            var activate_button = new Gtk.Button.from_icon_name ("go-next-symbolic") {
                 halign = Gtk.Align.START,
                 valign = Gtk.Align.CENTER,
                 margin_top = 4,

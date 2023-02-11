@@ -147,7 +147,6 @@
 
         protected override Gtk.Grid get_plugin_native_ui () {
             var main_grid = new Gtk.Grid () {
-                margin = 0,
                 column_spacing = 4,
                 row_spacing = 4,
                 valign = Gtk.Align.CENTER,
@@ -163,10 +162,14 @@
             if (controls_len > 0) {
                 // Set controls
                 var controls_frame = new Gtk.Frame (_("Controls"));
-                var controls_grid = new Gtk.Grid ();
-                controls_grid.row_spacing = 4;
-                controls_grid.margin = 14;
-                controls_frame.add (controls_grid);
+                var controls_grid = new Gtk.Grid () {
+                    row_spacing = 4,
+                    margin_top = 14,
+                    margin_bottom = 14,
+                    margin_start = 14,
+                    margin_end = 14
+                };
+                controls_frame.set_child (controls_grid);
                 for (int i = 0; i < controls_len; i++) {
                     var control_ui = new PlugInControl (control_ports[i], &control_variables[i]);
                     connect_control_port (&control_variables[i], control_ports[i].port_index, true);
@@ -183,10 +186,14 @@
             if (atoms_len > 0) {
                 // Set Atoms
                 var atoms_frame = new Gtk.Frame (_("Atoms"));
-                var atoms_grid = new Gtk.Grid ();
-                atoms_grid.row_spacing = 4;
-                atoms_grid.margin = 14;
-                atoms_frame.add (atoms_grid);
+                var atoms_grid = new Gtk.Grid () {
+                    row_spacing = 4,
+                    margin_top = 14,
+                    margin_bottom = 14,
+                    margin_start = 14,
+                    margin_end = 14
+                };
+                atoms_frame.set_child (atoms_grid);
                 for (int i = 0; i < atoms_len; i++) {
                     var control_ui = new PlugInAtom (atom_ports[i], &atom_variables[i]);
                     connect_control_port (&atom_variables[i], atom_ports[i].port_index, true);

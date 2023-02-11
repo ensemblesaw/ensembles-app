@@ -18,8 +18,7 @@ namespace Ensembles.Shell {
         Gtk.Overlay main_overlay;
         Gtk.Grid splash_screen;
         Gtk.Label splash_update_text;
-        Hdy.Deck main_display_deck;
-        Hdy.Leaflet main_display_leaflet;
+        Adw.Leaflet main_display_leaflet;
 
         HomeScreen home_screen;
         TempoScreen tempo_screen;
@@ -65,7 +64,10 @@ namespace Ensembles.Shell {
             };
             splash_update_text = new Gtk.Label (_("Initializing…")) {
                 xalign = 0,
-                margin = 8,
+                margin_start = 8,
+                margin_bottom = 8,
+                margin_end = 8,
+                margin_top = 8,
                 opacity = 0.5
             };
             splash_update_text.get_style_context ().add_class ("splash-text");
@@ -74,40 +76,45 @@ namespace Ensembles.Shell {
             splash_screen.attach (splash_update_text, 0, 1);
             splash_screen.get_style_context ().add_class ("splash-background");
 
-            main_display_leaflet = new Hdy.Leaflet ();
-            main_display_leaflet.set_mode_transition_duration (400);
-            main_display_leaflet.add (home_screen);
-            main_display_leaflet.add (main_stack);
-            main_display_leaflet.set_can_swipe_back (true);
-            main_display_leaflet.set_transition_type (Hdy.LeafletTransitionType.SLIDE);
-
-            main_display_deck = new Hdy.Deck ();
-            main_display_deck.add (main_display_leaflet);
+            main_display_leaflet = new Adw.Leaflet () {
+                can_unfold = true,
+                can_navigate_back = true,
+                transition_type = Adw.LeafletTransitionType.SLIDE,
+                mode_transition_duration = 400
+            };
+            main_display_leaflet.append (home_screen);
+            main_display_leaflet.append (main_stack);
 
             main_overlay = new Gtk.Overlay () {
                 height_request = 274,
                 width_request = 460,
-                margin = 2,
+                margin_top = 2,
+                margin_bottom = 2,
+                margin_start = 2,
+                margin_end = 2,
                 valign = Gtk.Align.CENTER
             };
 
             // This helps maintain fixed size for all children
             var fixed_size_container = new Gtk.Overlay ();
-            fixed_size_container.add_overlay (main_display_deck);
+            fixed_size_container.add_overlay (main_display_leaflet);
 
-            main_overlay.add (fixed_size_container);
+            main_overlay.set_child (fixed_size_container);
             main_overlay.add_overlay (splash_screen);
 
-            add (main_overlay);
+            append (main_overlay);
             vexpand = false;
-            margin = 4;
+            margin_top = 4;
+            margin_bottom = 4;
+            margin_start = 4;
+            margin_end = 4;
             get_style_context ().add_class ("ensembles-central-display");
 
             make_events ();
         }
 
         public void queue_remove_splash () {
-            main_overlay.remove (splash_screen);
+            main_overlay.remove_overlay (splash_screen);
             if (splash_screen != null) {
                 splash_screen.unref ();
             }

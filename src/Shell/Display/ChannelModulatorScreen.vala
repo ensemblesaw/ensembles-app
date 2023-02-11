@@ -51,7 +51,7 @@
             row_spacing = 8;
             get_style_context ().add_class ("quick-mod");
 
-            var close_button = new Gtk.Button.from_icon_name ("window-close-symbolic", Gtk.IconSize.BUTTON);
+            var close_button = new Gtk.Button.from_icon_name ("window-close-symbolic");
             close_button.get_style_context ().add_class ("quick-mod-close-button");
             close_button.clicked.connect (() => {
                 monitoring = false;
@@ -137,7 +137,7 @@
             mod_grid.attach (resonance_spin_button, 6, 3, 2, 1);
 
             attach (mod_grid, 0, 1, 2, 1);
-            show_all ();
+            show ();
 
             make_events ();
         }

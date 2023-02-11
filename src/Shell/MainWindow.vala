@@ -345,21 +345,22 @@ namespace Ensembles.Shell {
                 }
                 return false;
             });
-            seek_bar.button_press_event.connect (() => {
+
+            var seek_bar_gesture = new Gtk.GestureClick ();
+            seek_bar.add_controller (seek_bar_gesture);
+            seek_bar_gesture.pressed.connect (() => {
                 if (Application.arranger_core.song_player != null) {
                     Application.arranger_core.song_player.seek_lock (true);
                 }
-                return false;
             });
-            seek_bar.button_release_event.connect (() => {
+            seek_bar_gesture.released.connect (() => {
                 if (Application.arranger_core.song_player != null) {
                     Application.arranger_core.song_player.seek_lock (false);
                 }
-                return false;
             });
 
             // Perform garbage collection when the app exits
-            this.destroy.connect (() => app_exit ());
+            this.close_request.connect (() => {app_exit ();});
             debug ("Initialized\n");
         }
 

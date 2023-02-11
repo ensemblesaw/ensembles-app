@@ -10,7 +10,7 @@ namespace Ensembles.Shell {
         Gtk.Button assign_file_button;
         Gtk.Button stop_button;
         bool assign_mode;
-        Gtk.FileChooserDialog file_chooser;
+        Gtk.FileChooserNative file_chooser;
         Gtk.Window mainwindow;
         string current_file_path;
         bool recorded_audio;
@@ -48,8 +48,7 @@ namespace Ensembles.Shell {
             }
 
             assign_record_button = new Gtk.Button.from_icon_name (
-                "audio-input-microphone-symbolic",
-                Gtk.IconSize.BUTTON
+                "audio-input-microphone-symbolic"
             );
 
             assign_record_button.height_request = 38;
@@ -60,31 +59,32 @@ namespace Ensembles.Shell {
             assign_record_button.tooltip_text = _("Click and hold to sample");
             attach (assign_record_button, 6, 1, 1, 1);
 
-            assign_file_button = new Gtk.Button.from_icon_name ("document-open-symbolic", Gtk.IconSize.BUTTON);
+            assign_file_button = new Gtk.Button.from_icon_name ("document-open-symbolic");
             assign_file_button.height_request = 38;
             assign_file_button.hexpand = true;
             assign_file_button.vexpand = true;
-            assign_file_button.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+            assign_file_button.get_style_context ().add_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
             assign_file_button.get_style_context ().remove_class ("image-button");
             attach (assign_file_button, 6, 2, 1, 1);
             stop_button = new Gtk.Button.with_label (_("Stop"));
             stop_button.width_request = 51;
             attach (stop_button, 7, 1, 1, 2);
-            margin = 4;
-            show_all ();
+            margin_top = 4;
+            margin_bottom = 4;
+            margin_start = 4;
+            margin_end = 4;
+            show ();
 
             sample_players = new Core.SamplePlayer[12];
             sample_recorder = new Core.SampleRecorder ();
 
-            file_chooser = new Gtk.FileChooserDialog (_("Open Sound Sample"),
+            file_chooser = new Gtk.FileChooserNative (_("Open Sound Sample"),
                                                       mainwindow,
                                                       Gtk.FileChooserAction.OPEN,
-                                                      _("Cancel"),
-                                                      Gtk.ResponseType.CANCEL,
                                                       _("Open"),
-                                                      Gtk.ResponseType.ACCEPT
+                                                      _("Cancel")
                                                      );
-            file_chooser.local_only = false;
+            //  file_chooser.local_only = false;
             file_chooser.modal = true;
 
             var file_filter_wav = new Gtk.FileFilter ();
@@ -124,7 +124,7 @@ namespace Ensembles.Shell {
             });
 
             assign_file_button.clicked.connect (() => {
-                file_chooser.run ();
+                file_chooser.show ();
                 file_chooser.hide ();
             });
 
@@ -155,7 +155,7 @@ namespace Ensembles.Shell {
                 }
             });
 
-            this.get_toplevel ().destroy.connect (() => {
+            Application.main_window.close_request.connect (() => {
                 debug ("CLEANUP: Removing temporary sample recordings\n");
                 for (int i = 0; i < 12; i++) {
                     if (sample_players[i] != null) {

@@ -26,15 +26,15 @@ namespace Ensembles.Shell {
             for (int i = 0; i < 5; i++) {
                 octaves[i] = new OctaveKeyboard (i + 3);
                 octaves[i].margin_top = 18;
-                key_grid.pack_start (octaves[i]);
+                key_grid.append (octaves[i]);
             }
 
-            keyboard_scroller = new Gtk.ScrolledWindow (null, null) {
+            keyboard_scroller = new Gtk.ScrolledWindow () {
                 kinetic_scrolling = false,
                 overlay_scrolling = false
             };
             keyboard_scroller.set_placement (Gtk.CornerType.BOTTOM_LEFT);
-            keyboard_scroller.add (key_grid);
+            keyboard_scroller.set_child (key_grid);
 
             var keyboard_overlay = new Gtk.Overlay () {
                 height_request = 170,
@@ -85,19 +85,19 @@ namespace Ensembles.Shell {
 
             var keyboard_top_bar = new Gtk.Grid () {
                 valign = Gtk.Align.START,
-                height_request = 32
+                height_request = 32,
+                can_target = false
             };
             keyboard_top_bar.get_style_context ().add_class ("keyboard-top-bar");
-            keyboard_top_bar.add (switch_bar);
+            keyboard_top_bar.attach (switch_bar, 0, 0);
 
 
             keyboard_overlay.add_overlay (keyboard_top_bar);
-            keyboard_overlay.set_overlay_pass_through (keyboard_top_bar, true);
 
             joy_stick = new JoyStick ();
-            add (joy_stick);
-            add (keyboard_overlay);
-            show_all ();
+            attach (joy_stick, 0, 0);
+            attach (keyboard_overlay, 1, 0);
+            show ();
         }
 
         public void connect_synthesizer (Ensembles.Core.Synthesizer synth) {

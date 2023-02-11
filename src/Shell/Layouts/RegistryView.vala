@@ -31,12 +31,15 @@ namespace Ensembles.Shell {
         construct {
             row_homogeneous = true;
             column_spacing = 4;
-            margin = 4;
+            margin_top = 4;
+            margin_bottom = 4;
+            margin_end = 4;
+            margin_start = 4;
 
             bank_select = new Gtk.SpinButton.with_range (1, 10, 1);
             attach (bank_select, 0, 0, 1, 1);
 
-            var button_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL) {
+            var button_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
                 width_request = 337,
                 hexpand = true
             };
@@ -44,10 +47,9 @@ namespace Ensembles.Shell {
             registry_buttons = new Gtk.Button [10];
             for (int i = 0; i < 10; i ++) {
                 registry_buttons[i] = new Gtk.Button.with_label ((i + 1).to_string ());
-                button_box.pack_start (registry_buttons[i]);
+                button_box.append (registry_buttons[i]);
             }
 
-            button_box.set_layout (Gtk.ButtonBoxStyle.EXPAND);
             attach (button_box, 1, 0, 1, 1);
             memory_button = new Gtk.Button.with_label (_("Memorize"));
             attach (memory_button, 2, 0, 1, 1);
@@ -62,7 +64,7 @@ namespace Ensembles.Shell {
             attach (bank_label, 0, 1, 1, 1);
             attach (registry_label, 1, 1, 1, 1);
 
-            this.show_all ();
+            this.show ();
 
             make_events ();
         }

@@ -34,9 +34,12 @@ namespace Ensembles.Shell {
         construct {
             row_homogeneous = true;
             column_spacing = 4;
-            margin = 4;
+            margin_top = 4;
+            margin_bottom = 4;
+            margin_start = 4;
+            margin_end = 4;
 
-            var intro_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL) {
+            var intro_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
                 hexpand = true,
             };
 
@@ -48,9 +51,8 @@ namespace Ensembles.Shell {
                 sensitive = false
             };
 
-            intro_box.add (intro_button_a);
-            intro_box.add (intro_button_b);
-            intro_box.set_layout (Gtk.ButtonBoxStyle.EXPAND);
+            intro_box.append (intro_button_a);
+            intro_box.append (intro_button_b);
             intro_button_a.clicked.connect (() => {
                 send_to_recorder (UI_INDEX_STYLE_INTRO_1);
                 set_style_section_by_index (UI_INDEX_STYLE_INTRO_1);
@@ -75,7 +77,7 @@ namespace Ensembles.Shell {
                 return false;
             });
 
-            var var_fill_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL) {
+            var var_fill_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
                 hexpand = true
             };
 
@@ -95,11 +97,10 @@ namespace Ensembles.Shell {
                 sensitive = false
             };
 
-            var_fill_box.add (var_fill_button_a);
-            var_fill_box.add (var_fill_button_b);
-            var_fill_box.add (var_fill_button_c);
-            var_fill_box.add (var_fill_button_d);
-            var_fill_box.set_layout (Gtk.ButtonBoxStyle.EXPAND);
+            var_fill_box.append (var_fill_button_a);
+            var_fill_box.append (var_fill_button_b);
+            var_fill_box.append (var_fill_button_c);
+            var_fill_box.append (var_fill_button_d);
             var_fill_button_a.clicked.connect (() => {
                 send_to_recorder (UI_INDEX_STYLE_VAR_A);
                 set_style_section_by_index (UI_INDEX_STYLE_VAR_A);
@@ -164,7 +165,7 @@ namespace Ensembles.Shell {
                 return false;
             });
 
-            var ending_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL) {
+            var ending_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
                 hexpand = true
             };
 
@@ -176,9 +177,8 @@ namespace Ensembles.Shell {
                 sensitive = false
             };
 
-            ending_box.add (ending_button_a);
-            ending_box.add (ending_button_b);
-            ending_box.set_layout (Gtk.ButtonBoxStyle.EXPAND);
+            ending_box.append (ending_button_a);
+            ending_box.append (ending_button_b);
             ending_button_a.clicked.connect (() => {
                 send_to_recorder (UI_INDEX_STYLE_ENDING_1);
                 set_style_section_by_index (UI_INDEX_STYLE_ENDING_1);
@@ -203,7 +203,7 @@ namespace Ensembles.Shell {
                 return false;
             });
 
-            var sync_box = new Gtk.ButtonBox (Gtk.Orientation.HORIZONTAL) {
+            var sync_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
                 hexpand = true
             };
 
@@ -215,9 +215,8 @@ namespace Ensembles.Shell {
                 sensitive = false
             };
 
-            sync_box.add (sync_start_button);
-            sync_box.add (sync_stop_button);
-            sync_box.set_layout (Gtk.ButtonBoxStyle.EXPAND);
+            sync_box.append (sync_start_button);
+            sync_box.append (sync_stop_button);
             sync_start_button.clicked.connect (() => {
                 send_to_recorder (UI_INDEX_STYLE_SYNC_START);
                 set_style_section_by_index (UI_INDEX_STYLE_SYNC_START);
@@ -248,7 +247,7 @@ namespace Ensembles.Shell {
                 hexpand = true
             };
 
-            start_button.get_style_context ().add_class (Gtk.STYLE_CLASS_DESTRUCTIVE_ACTION);
+            start_button.get_style_context ().add_class (Granite.STYLE_CLASS_DESTRUCTIVE_ACTION);
             start_button.get_style_context ().remove_class ("image-button");
             start_button.clicked.connect (Application.arranger_core.style_player.play_style);
 
@@ -313,94 +312,94 @@ namespace Ensembles.Shell {
                 sync ();
                 switch (section) {
                     case UI_INDEX_STYLE_INTRO_1:
-                    var_fill_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    var_fill_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    var_fill_button_c.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    var_fill_button_d.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    intro_button_a.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    intro_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    ending_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    ending_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_a.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_b.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_c.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_d.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    intro_button_a.get_style_context ().add_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    intro_button_b.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    ending_button_a.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    ending_button_b.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
                     break;
                     case UI_INDEX_STYLE_INTRO_2:
-                    var_fill_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    var_fill_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    var_fill_button_c.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    var_fill_button_d.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    intro_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    intro_button_b.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    ending_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    ending_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_a.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_b.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_c.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_d.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    intro_button_a.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    intro_button_b.get_style_context ().add_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    ending_button_a.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    ending_button_b.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
                     break;
                     case UI_INDEX_STYLE_VAR_A:
-                    var_fill_button_a.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    var_fill_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    var_fill_button_c.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    var_fill_button_d.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    intro_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    intro_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    ending_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    ending_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_a.get_style_context ().add_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_b.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_c.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_d.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    intro_button_a.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    intro_button_b.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    ending_button_a.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    ending_button_b.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
                     break;
                     case UI_INDEX_STYLE_VAR_B:
-                    var_fill_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    var_fill_button_b.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    var_fill_button_c.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    var_fill_button_d.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    intro_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    intro_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    ending_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    ending_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_a.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_b.get_style_context ().add_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_c.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_d.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    intro_button_a.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    intro_button_b.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    ending_button_a.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    ending_button_b.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
                     break;
                     case UI_INDEX_STYLE_VAR_C:
-                    var_fill_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    var_fill_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    var_fill_button_c.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    var_fill_button_d.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    intro_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    intro_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    ending_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    ending_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_a.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_b.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_c.get_style_context ().add_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_d.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    intro_button_a.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    intro_button_b.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    ending_button_a.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    ending_button_b.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
                     break;
                     case UI_INDEX_STYLE_VAR_D:
-                    var_fill_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    var_fill_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    var_fill_button_c.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    var_fill_button_d.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    intro_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    intro_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    ending_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    ending_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_a.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_b.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_c.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_d.get_style_context ().add_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    intro_button_a.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    intro_button_b.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    ending_button_a.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    ending_button_b.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
                     break;
                     case UI_INDEX_STYLE_ENDING_1:
-                    var_fill_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    var_fill_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    var_fill_button_c.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    var_fill_button_d.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    intro_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    intro_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    ending_button_a.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    ending_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_a.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_b.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_c.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_d.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    intro_button_a.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    intro_button_b.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    ending_button_a.get_style_context ().add_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    ending_button_b.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
                     break;
                     case UI_INDEX_STYLE_ENDING_2:
-                    var_fill_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    var_fill_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    var_fill_button_c.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    var_fill_button_d.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    intro_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    intro_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    ending_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    ending_button_b.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_a.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_b.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_c.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_d.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    intro_button_a.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    intro_button_b.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    ending_button_a.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    ending_button_b.get_style_context ().add_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
                     break;
                     default:
-                    var_fill_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    var_fill_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    var_fill_button_c.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    var_fill_button_d.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    intro_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    intro_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    ending_button_a.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
-                    ending_button_b.get_style_context ().remove_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_a.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_b.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_c.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    var_fill_button_d.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    intro_button_a.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    intro_button_b.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    ending_button_a.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                    ending_button_b.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
                     break;
                 }
 

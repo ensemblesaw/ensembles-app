@@ -38,7 +38,7 @@
                 warning ("Could not initialize MPRIS session.\n");
             }
             this.main_window = main_window;
-            main_window.destroy.connect (() => {
+            main_window.close_request.connect (() => {
                 this.conn.unregister_object (root_id);
                 this.conn.unregister_object (player_id);
                 Bus.unown_name (owner_id);

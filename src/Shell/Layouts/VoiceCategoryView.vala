@@ -64,8 +64,11 @@ namespace Ensembles.Shell {
             column_spacing = 2;
             row_spacing = 2;
             column_homogeneous = true;
-            margin = 4;
-            this.show_all ();
+            margin_top = 4;
+            margin_bottom = 4;
+            margin_start = 4;
+            margin_end = 4;
+            this.show ();
 
 
 

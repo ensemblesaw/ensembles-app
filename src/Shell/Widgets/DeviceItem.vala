@@ -16,13 +16,17 @@ namespace Ensembles.Shell {
             radio.set_active (false);
             radio.set_sensitive (false);
 
-            var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
-            box.margin = 8;
-            box.halign = Gtk.Align.START;
+            var box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
+                margin_start = 8,
+                margin_end = 8,
+                margin_top = 8,
+                margin_bottom = 8,
+                halign = Gtk.Align.START
+            };
 
-            box.pack_start (radio);
-            box.pack_start (device_name);
-            this.add (box);
+            box.append (radio);
+            box.append (device_name);
+            this.set_child (box);
         }
     }
 }

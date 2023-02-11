@@ -121,20 +121,21 @@ namespace Ensembles.Core {
             _sequencer_visual.get_style_context ().add_class ("recorder-background");
 
             _sequencer_progress_overlay = new Gtk.Overlay ();
-            _sequencer_progress_overlay.add (_sequencer_visual);
+            _sequencer_progress_overlay.set_child (_sequencer_visual);
 
             _sequencer_progress = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
             _sequencer_progress.vexpand = true;
             _sequencer_progress.opacity = 0;
             _sequencer_progress.get_style_context ().add_class ("recorder-progress-line");
 
-            var overlay_grid = new Gtk.Grid ();
+            var overlay_grid = new Gtk.Grid () {
+                can_target = false
+            };
             var place_holder_label = new Gtk.Label ("`");
             place_holder_label.width_request = 100;
             overlay_grid.attach (place_holder_label, 0, 0);
             overlay_grid.attach (_sequencer_progress, 1, 0);
             _sequencer_progress_overlay.add_overlay (overlay_grid);
-            _sequencer_progress_overlay.set_overlay_pass_through (overlay_grid, true);
 
             return _sequencer_progress_overlay;
         }

@@ -90,7 +90,9 @@ namespace Ensembles.Shell {
             /* This is where the black keys have been arranged
              * Notice the placeholders in between
              */
-            var black_grid = new Gtk.Grid ();
+            var black_grid = new Gtk.Grid () {
+                can_target = false
+            };
             black_grid.attach (black_place_holder_1, 0, 0);
             black_grid.attach (keys[1], 1, 0);
             black_grid.attach (black_place_holder_2, 2, 0);
@@ -112,7 +114,6 @@ namespace Ensembles.Shell {
             };
             octave_overlay.add_overlay (white_grid);
             octave_overlay.add_overlay (black_grid);
-            octave_overlay.set_overlay_pass_through (black_grid, true);
 
             attach (octave_overlay, 0, 0, 1, 1);
 
