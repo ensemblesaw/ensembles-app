@@ -185,14 +185,14 @@ namespace Ensembles.Shell {
             return button_box;
         }
 
-        public override void size_allocate (int width, int height, int baseline) {
-            base.size_allocate (width, height, baseline);
-            main_keyboard.visible = false;
-            Timeout.add (100, () => {
-                main_keyboard.visible = true;
-                return false;
-            }, Priority.DEFAULT_IDLE);
-        }
+        //  public override void size_allocate (int width, int height, int baseline) {
+        //      base.size_allocate (width, height, baseline);
+        //      main_keyboard.visible = false;
+        //      Timeout.add (100, () => {
+        //          main_keyboard.visible = true;
+        //          return false;
+        //      }, Priority.DEFAULT_IDLE);
+        //  }
 
         // Connect UI events
         void make_events () {
@@ -360,7 +360,7 @@ namespace Ensembles.Shell {
             });
 
             // Perform garbage collection when the app exits
-            this.close_request.connect (() => {app_exit ();});
+            this.close_request.connect (() => {app_exit (); return false;});
             debug ("Initialized\n");
         }
 

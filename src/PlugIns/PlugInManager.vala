@@ -7,7 +7,7 @@ namespace Ensembles.PlugIns {
     public class PlugInManager : Object {
         private PlugIns.LADSPAV2.LV2Manager lv2_manager;
         public PlugIns.PlugIn[] plugins;
-        
+
         public PlugInManager () {
             lv2_manager = new PlugIns.LADSPAV2.LV2Manager ();
             lv2_manager.lv2_plugins_found.connect ((plugs) => {
@@ -20,7 +20,7 @@ namespace Ensembles.PlugIns {
                             * @Todo:
                             * Make instrument plugin support
                             */
-                            Core.InstrumentRack.populate_rack (plugins[i]);
+                            //  Core.InstrumentRack.populate_rack (plugins[i]);
                             break;
                         case "Amplifier Plugin":
                         case "Utility Plugin":

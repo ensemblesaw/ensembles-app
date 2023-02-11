@@ -93,14 +93,14 @@ namespace Ensembles.Shell {
                 return false;
             });
 
-            voice_l_gain_slider.button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (voice_l_gain_slider, UI_INDEX_MIXER_VOICE_L);
-                    return true;
-                }
+            //  voice_l_gain_slider.button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (voice_l_gain_slider, UI_INDEX_MIXER_VOICE_L);
+            //          return true;
+            //      }
 
-                return false;
-            });
+            //      return false;
+            //  });
 
             voice_r1_gain_slider = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1) {
                 inverted = true,
@@ -113,14 +113,14 @@ namespace Ensembles.Shell {
                 return false;
             });
 
-            voice_r1_gain_slider.button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (voice_r1_gain_slider, UI_INDEX_MIXER_VOICE_R1);
-                    return true;
-                }
+            //  voice_r1_gain_slider.button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (voice_r1_gain_slider, UI_INDEX_MIXER_VOICE_R1);
+            //          return true;
+            //      }
 
-                return false;
-            });
+            //      return false;
+            //  });
 
 
             voice_r2_gain_slider = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1) {
@@ -134,14 +134,14 @@ namespace Ensembles.Shell {
                 return false;
             });
 
-            voice_r2_gain_slider.button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (voice_r2_gain_slider, UI_INDEX_MIXER_VOICE_R2);
-                    return true;
-                }
+            //  voice_r2_gain_slider.button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (voice_r2_gain_slider, UI_INDEX_MIXER_VOICE_R2);
+            //          return true;
+            //      }
 
-                return false;
-            });
+            //      return false;
+            //  });
 
 
             sampler_pad_gain_slider = new Gtk.Scale.with_range (Gtk.Orientation.VERTICAL, 0, 1, 0.1) {
@@ -270,8 +270,7 @@ namespace Ensembles.Shell {
         private bool handle_change_gain (int index, double value) {
             if (value >= 0) {
                 change_gain (index, (int)(value * 127));
-                lock_buttons[index].set_icon_name ("changes-allow-symbolic")
-
+                lock_buttons[index].set_icon_name ("changes-allow-symbolic");
                 lock_buttons[index].sensitive = true;
             }
             return false;
@@ -282,209 +281,209 @@ namespace Ensembles.Shell {
                 return handle_change_gain (0, value);
             });
 
-            style_gain_sliders[0].button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (style_gain_sliders[0], UI_INDEX_MIXER_STYLE_1);
-                    return true;
-                }
+            //  style_gain_sliders[0].button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (style_gain_sliders[0], UI_INDEX_MIXER_STYLE_1);
+            //          return true;
+            //      }
 
-                return false;
-            });
+            //      return false;
+            //  });
 
             style_gain_sliders[1].change_value.connect ((scroll, value) => {
                 return handle_change_gain (1, value);
             });
 
-            style_gain_sliders[1].button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (style_gain_sliders[1], UI_INDEX_MIXER_STYLE_2);
-                    return true;
-                }
+            //  style_gain_sliders[1].button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (style_gain_sliders[1], UI_INDEX_MIXER_STYLE_2);
+            //          return true;
+            //      }
 
-                return false;
-            });
+            //      return false;
+            //  });
 
             style_gain_sliders[2].change_value.connect ((scroll, value) => {
                 return handle_change_gain (2, value);
             });
 
-            style_gain_sliders[2].button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (style_gain_sliders[2], UI_INDEX_MIXER_STYLE_3);
-                    return true;
-                }
+            //  style_gain_sliders[2].button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (style_gain_sliders[2], UI_INDEX_MIXER_STYLE_3);
+            //          return true;
+            //      }
 
-                return false;
-            });
+            //      return false;
+            //  });
 
             style_gain_sliders[3].change_value.connect ((scroll, value) => {
                 return handle_change_gain (3, value);
             });
 
-            style_gain_sliders[3].button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (style_gain_sliders[3], UI_INDEX_MIXER_STYLE_4);
-                    return true;
-                }
+            //  style_gain_sliders[3].button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (style_gain_sliders[3], UI_INDEX_MIXER_STYLE_4);
+            //          return true;
+            //      }
 
-                return false;
-            });
+            //      return false;
+            //  });
 
             style_gain_sliders[4].change_value.connect ((scroll, value) => {
                 return handle_change_gain (4, value);
             });
 
-            style_gain_sliders[4].button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (style_gain_sliders[4], UI_INDEX_MIXER_STYLE_5);
-                    return true;
-                }
+            //  style_gain_sliders[4].button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (style_gain_sliders[4], UI_INDEX_MIXER_STYLE_5);
+            //          return true;
+            //      }
 
-                return false;
-            });
+            //      return false;
+            //  });
 
             style_gain_sliders[5].change_value.connect ((scroll, value) => {
                 return handle_change_gain (5, value);
             });
 
-            style_gain_sliders[5].button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (style_gain_sliders[5], UI_INDEX_MIXER_STYLE_6);
-                    return true;
-                }
+            //  style_gain_sliders[5].button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (style_gain_sliders[5], UI_INDEX_MIXER_STYLE_6);
+            //          return true;
+            //      }
 
-                return false;
-            });
+            //      return false;
+            //  });
 
             style_gain_sliders[6].change_value.connect ((scroll, value) => {
                 return handle_change_gain (6, value);
             });
 
-            style_gain_sliders[6].button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (style_gain_sliders[6], UI_INDEX_MIXER_STYLE_7);
-                    return true;
-                }
+            //  style_gain_sliders[6].button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (style_gain_sliders[6], UI_INDEX_MIXER_STYLE_7);
+            //          return true;
+            //      }
 
-                return false;
-            });
+            //      return false;
+            //  });
 
             style_gain_sliders[7].change_value.connect ((scroll, value) => {
                 return handle_change_gain (7, value);
             });
 
-            style_gain_sliders[7].button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (style_gain_sliders[7], UI_INDEX_MIXER_STYLE_8);
-                    return true;
-                }
+            //  style_gain_sliders[7].button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (style_gain_sliders[7], UI_INDEX_MIXER_STYLE_8);
+            //          return true;
+            //      }
 
-                return false;
-            });
+            //      return false;
+            //  });
 
             style_gain_sliders[8].change_value.connect ((scroll, value) => {
                 return handle_change_gain (8, value);
             });
 
-            style_gain_sliders[8].button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (style_gain_sliders[8], UI_INDEX_MIXER_STYLE_9);
-                    return true;
-                }
+            //  style_gain_sliders[8].button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (style_gain_sliders[8], UI_INDEX_MIXER_STYLE_9);
+            //          return true;
+            //      }
 
-                return false;
-            });
+            //      return false;
+            //  });
 
             style_gain_sliders[9].change_value.connect ((scroll, value) => {
                 return handle_change_gain (9, value);
             });
 
-            style_gain_sliders[9].button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (style_gain_sliders[9], UI_INDEX_MIXER_STYLE_10);
-                    return true;
-                }
+            //  style_gain_sliders[9].button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (style_gain_sliders[9], UI_INDEX_MIXER_STYLE_10);
+            //          return true;
+            //      }
 
-                return false;
-            });
+            //      return false;
+            //  });
 
             style_gain_sliders[10].change_value.connect ((scroll, value) => {
                 return handle_change_gain (10, value);
             });
 
-            style_gain_sliders[10].button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (style_gain_sliders[10], UI_INDEX_MIXER_STYLE_11);
-                    return true;
-                }
+            //  style_gain_sliders[10].button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (style_gain_sliders[10], UI_INDEX_MIXER_STYLE_11);
+            //          return true;
+            //      }
 
-                return false;
-            });
+            //      return false;
+            //  });
 
             style_gain_sliders[11].change_value.connect ((scroll, value) => {
                 return handle_change_gain (11, value);
             });
 
-            style_gain_sliders[11].button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (style_gain_sliders[11], UI_INDEX_MIXER_STYLE_12);
-                    return true;
-                }
+            //  style_gain_sliders[11].button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (style_gain_sliders[11], UI_INDEX_MIXER_STYLE_12);
+            //          return true;
+            //      }
 
-                return false;
-            });
+            //      return false;
+            //  });
 
             style_gain_sliders[12].change_value.connect ((scroll, value) => {
                 return handle_change_gain (12, value);
             });
 
-            style_gain_sliders[12].button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (style_gain_sliders[12], UI_INDEX_MIXER_STYLE_13);
-                    return true;
-                }
+            //  style_gain_sliders[12].button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (style_gain_sliders[12], UI_INDEX_MIXER_STYLE_13);
+            //          return true;
+            //      }
 
-                return false;
-            });
+            //      return false;
+            //  });
 
             style_gain_sliders[13].change_value.connect ((scroll, value) => {
                 return handle_change_gain (13, value);
             });
 
-            style_gain_sliders[13].button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (style_gain_sliders[13], UI_INDEX_MIXER_STYLE_14);
-                    return true;
-                }
+            //  style_gain_sliders[13].button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (style_gain_sliders[13], UI_INDEX_MIXER_STYLE_14);
+            //          return true;
+            //      }
 
-                return false;
-            });
+            //      return false;
+            //  });
 
             style_gain_sliders[14].change_value.connect ((scroll, value) => {
                 return handle_change_gain (14, value);
             });
 
-            style_gain_sliders[14].button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (style_gain_sliders[14], UI_INDEX_MIXER_STYLE_15);
-                    return true;
-                }
+            //  style_gain_sliders[14].button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (style_gain_sliders[14], UI_INDEX_MIXER_STYLE_15);
+            //          return true;
+            //      }
 
-                return false;
-            });
+            //      return false;
+            //  });
 
             style_gain_sliders[15].change_value.connect ((scroll, value) => {
                 return handle_change_gain (15, value);
             });
 
-            style_gain_sliders[15].button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (style_gain_sliders[15], UI_INDEX_MIXER_STYLE_16);
-                    return true;
-                }
+            //  style_gain_sliders[15].button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (style_gain_sliders[15], UI_INDEX_MIXER_STYLE_16);
+            //          return true;
+            //      }
 
-                return false;
-            });
+            //      return false;
+            //  });
         }
 
         public void stop_watch () {

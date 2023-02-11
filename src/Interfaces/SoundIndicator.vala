@@ -42,6 +42,7 @@
                 this.conn.unregister_object (root_id);
                 this.conn.unregister_object (player_id);
                 Bus.unown_name (owner_id);
+                return false;
             });
         }
 

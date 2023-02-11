@@ -100,17 +100,17 @@ namespace Ensembles.Shell {
         }
 
         void make_events () {
-            assign_record_button.button_press_event.connect (() => {
-                assign_record_button.get_style_context ().add_class ("sampler-record-button-active");
-                sample_recorder.start_recording ();
-                return false;
-            });
+            //  assign_record_button.button_press_event.connect (() => {
+            //      assign_record_button.get_style_context ().add_class ("sampler-record-button-active");
+            //      sample_recorder.start_recording ();
+            //      return false;
+            //  });
 
-            assign_record_button.button_release_event.connect (() => {
-                assign_record_button.get_style_context ().remove_class ("sampler-record-button-active");
-                sample_recorder.stop_recording ();
-                return false;
-            });
+            //  assign_record_button.button_release_event.connect (() => {
+            //      assign_record_button.get_style_context ().remove_class ("sampler-record-button-active");
+            //      sample_recorder.stop_recording ();
+            //      return false;
+            //  });
 
             sample_recorder.handle_recording_complete.connect ((path) => {
                 current_file_path = path;
@@ -162,6 +162,8 @@ namespace Ensembles.Shell {
                         sample_players[i].delete_file ();
                     }
                 }
+
+                return false;
             });
 
             pads[0].clicked.connect (() => {

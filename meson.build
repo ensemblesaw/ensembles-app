@@ -56,7 +56,7 @@ dependencies = [
     dependency ('lv2'),
     dependency ('lilv-0'),
     dependency ('suil-0'),
-    # dependency ('libpipewire-0.3'), # Uncomment to enable pipewire core support provided fluidsynth supports it
+    dependency ('libpipewire-0.3'), # Uncomment to enable pipewire core support provided fluidsynth supports it
     meson.get_compiler ('vala').find_library ('posix'),
     meson.get_compiler ('c').find_library ('m', required : true),
     meson.get_compiler ('c').find_library ('fluidsynth', required : true),

@@ -4,7 +4,7 @@
  */
 
 namespace Ensembles.Shell {
-    public class Dial : Gtk.Overlay {
+    public class Dial : Gtk.Box {
         public string tooltip;
         public bool dragging;
         private double dragging_direction_x;
@@ -65,10 +65,11 @@ namespace Ensembles.Shell {
             };
             fixed.put (knob_socket_graphic, 70, 50);
 
-            var event_box = new Gtk.EventBox () {
-                expand = true
+            var event_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
+                hexpand = true,
+                vexpand = true
             };
-            event_box.event.connect (handle_event);
+            //  event_box.event.connect (handle_event);
 
 
 
@@ -124,15 +125,18 @@ namespace Ensembles.Shell {
                 open_recorder_screen ();
             });
 
+            var overlay = new Gtk.Overlay ();
 
-            add_overlay (dial_light_graphics);
-            add_overlay (dial_cover);
-            add_overlay (fixed);
-            add_overlay (event_box);
-            add_overlay (plus_one_button);
-            add_overlay (minus_one_button);
-            add_overlay (activate_button);
-            add_overlay (recorder_button);
+            overlay.set_child (dial_light_graphics);
+            overlay.add_overlay (dial_cover);
+            overlay.add_overlay (fixed);
+            overlay.add_overlay (event_box);
+            overlay.add_overlay (plus_one_button);
+            overlay.add_overlay (minus_one_button);
+            overlay.add_overlay (activate_button);
+            overlay.add_overlay (recorder_button);
+
+            append (overlay);
 
             this.hexpand = false;
             this.vexpand = true;
@@ -204,56 +208,56 @@ namespace Ensembles.Shell {
             this.buffer_r = buffer_r;
         }
 
-        public bool handle_event (Gdk.Event event) {
-            //  if (event.type == Gdk.EventType.ENTER_NOTIFY) {
-            //      set_cursor_from_name ("ew-resize");
-            //  }
-            //  if (event.type == Gdk.EventType.LEAVE_NOTIFY) {
-            //      set_cursor (Gdk.CursorType.ARROW);
-            //  }
-            if (event.type == Gdk.EventType.BUTTON_PRESS) {
-                dragging = true;
-            }
-            if (event.type == Gdk.EventType.BUTTON_RELEASE) {
-                dragging = false;
-                dragging_direction_x = 0;
-                dragging_direction_y = 0;
-            }
+        //  public bool handle_event (Gdk.Event event) {
+        //      //  if (event.type == Gdk.EventType.ENTER_NOTIFY) {
+        //      //      set_cursor_from_name ("ew-resize");
+        //      //  }
+        //      //  if (event.type == Gdk.EventType.LEAVE_NOTIFY) {
+        //      //      set_cursor (Gdk.CursorType.ARROW);
+        //      //  }
+        //      if (event.type == Gdk.EventType.BUTTON_PRESS) {
+        //          dragging = true;
+        //      }
+        //      if (event.type == Gdk.EventType.BUTTON_RELEASE) {
+        //          dragging = false;
+        //          dragging_direction_x = 0;
+        //          dragging_direction_y = 0;
+        //      }
 
 
-            if (event.type == Gdk.EventType.MOTION_NOTIFY && dragging) {
-                if (dragging_direction_x == 0) {
-                    dragging_direction_x = event.motion.x;
-                }
-                if (dragging_direction_y == 0) {
-                    dragging_direction_y = event.motion.y;
-                }
-                double delta = 0.0;
-                if (dragging_direction_x > event.motion.x || event.motion.x_root == 0) {
-                    delta -= 0.05 * (dragging_direction_x - event.motion.x);
-                    dragging_direction_x = event.motion.x;
-                } else {
-                    delta += 0.05 * (event.motion.x - dragging_direction_x);
-                    dragging_direction_x = event.motion.x;
-                }
-                if (dragging_direction_y > event.motion.y || event.motion.y_root == 0) {
-                    delta += 0.05 * (dragging_direction_y - event.motion.y);
-                    dragging_direction_y = event.motion.y;
-                } else {
-                    delta -= 0.05 * (event.motion.y - dragging_direction_y);
-                    dragging_direction_y = event.motion.y;
-                }
-                value += delta;
-                if ((int)value % 8 == 0) {
-                    rotate (delta > 0, 5);
-                    animate_rotate_dial (delta > 0);
-                }
-                if (value >= 360 || value <= -360) {
-                    value = 0;
-                }
-                rotate_dial (value);
-            }
-            return false;
-        }
+        //      if (event.type == Gdk.EventType.MOTION_NOTIFY && dragging) {
+        //          if (dragging_direction_x == 0) {
+        //              dragging_direction_x = event.motion.x;
+        //          }
+        //          if (dragging_direction_y == 0) {
+        //              dragging_direction_y = event.motion.y;
+        //          }
+        //          double delta = 0.0;
+        //          if (dragging_direction_x > event.motion.x || event.motion.x_root == 0) {
+        //              delta -= 0.05 * (dragging_direction_x - event.motion.x);
+        //              dragging_direction_x = event.motion.x;
+        //          } else {
+        //              delta += 0.05 * (event.motion.x - dragging_direction_x);
+        //              dragging_direction_x = event.motion.x;
+        //          }
+        //          if (dragging_direction_y > event.motion.y || event.motion.y_root == 0) {
+        //              delta += 0.05 * (dragging_direction_y - event.motion.y);
+        //              dragging_direction_y = event.motion.y;
+        //          } else {
+        //              delta -= 0.05 * (event.motion.y - dragging_direction_y);
+        //              dragging_direction_y = event.motion.y;
+        //          }
+        //          value += delta;
+        //          if ((int)value % 8 == 0) {
+        //              rotate (delta > 0, 5);
+        //              animate_rotate_dial (delta > 0);
+        //          }
+        //          if (value >= 360 || value <= -360) {
+        //              value = 0;
+        //          }
+        //          rotate_dial (value);
+        //      }
+        //      return false;
+        //  }
     }
 }

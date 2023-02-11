@@ -10,7 +10,6 @@ public class Ensembles.Shell.Dialogs.Preferences.ItemSelect : Gtk.Box {
 
     public ItemSelect (string title, int active, List<string> items, bool visible_separator=true) {
         Object (
-            title: title,
             orientation: Gtk.Orientation.VERTICAL,
             spacing: 0
         );

@@ -117,210 +117,210 @@ namespace Ensembles.Shell {
 
             attach (octave_overlay, 0, 0, 1, 1);
 
-            keys[0].button_press_event.connect ((event) => {
-                note_activate (0, true);
-                return false;
-            });
-            keys[0].button_release_event.connect ((event) => {
-                note_activate (0, false);
-                return false;
-            });
-            keys[0].touch_event.connect ((event) => {
-                if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
-                    note_activate (0, true);
-                }
-                if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
-                    note_activate (0, false);
-                }
-                return false;
-            });
-            keys[1].button_press_event.connect ((event) => {
-                note_activate (1, true);
-                return false;
-            });
-            keys[1].button_release_event.connect ((event) => {
-                note_activate (1, false);
-                return false;
-            });
-            keys[1].touch_event.connect ((event) => {
-                if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
-                    note_activate (1, true);
-                }
-                if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
-                    note_activate (1, false);
-                }
-                return false;
-            });
-            keys[2].button_press_event.connect ((event) => {
-                note_activate (2, true);
-                return false;
-            });
-            keys[2].button_release_event.connect ((event) => {
-                note_activate (2, false);
-                return false;
-            });
-            keys[2].touch_event.connect ((event) => {
-                if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
-                    note_activate (2, true);
-                }
-                if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
-                    note_activate (2, false);
-                }
-                return false;
-            });
-            keys[3].button_press_event.connect ((event) => {
-                note_activate (3, true);
-                return false;
-            });
-            keys[3].button_release_event.connect ((event) => {
-                note_activate (3, false);
-                return false;
-            });
-            keys[3].touch_event.connect ((event) => {
-                if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
-                    note_activate (3, true);
-                }
-                if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
-                    note_activate (3, false);
-                }
-                return false;
-            });
-            keys[4].button_press_event.connect ((event) => {
-                note_activate (4, true);
-                return false;
-            });
-            keys[4].button_release_event.connect ((event) => {
-                note_activate (4, false);
-                return false;
-            });
-            keys[4].touch_event.connect ((event) => {
-                if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
-                    note_activate (4, true);
-                }
-                if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
-                    note_activate (4, false);
-                }
-                return false;
-            });
-            keys[5].button_press_event.connect ((event) => {
-                note_activate (5, true);
-                return false;
-            });
-            keys[5].button_release_event.connect ((event) => {
-                note_activate (5, false);
-                return false;
-            });
-            keys[5].touch_event.connect ((event) => {
-                if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
-                    note_activate (5, true);
-                }
-                if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
-                    note_activate (5, false);
-                }
-                return false;
-            });
-            keys[6].button_press_event.connect ((event) => {
-                note_activate (6, true);
-                return false;
-            });
-            keys[6].button_release_event.connect ((event) => {
-                note_activate (6, false);
-                return false;
-            });
-            keys[6].touch_event.connect ((event) => {
-                if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
-                    note_activate (6, true);
-                }
-                if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
-                    note_activate (6, false);
-                }
-                return false;
-            });
-            keys[7].button_press_event.connect ((event) => {
-                note_activate (7, true);
-                return false;
-            });
-            keys[7].button_release_event.connect ((event) => {
-                note_activate (7, false);
-                return false;
-            });
-            keys[7].touch_event.connect ((event) => {
-                if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
-                    note_activate (7, true);
-                }
-                if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
-                    note_activate (7, false);
-                }
-                return false;
-            });
-            keys[8].button_press_event.connect ((event) => {
-                note_activate (8, true);
-                return false;
-            });
-            keys[8].button_release_event.connect ((event) => {
-                note_activate (8, false);
-                return false;
-            });
-            keys[8].touch_event.connect ((event) => {
-                if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
-                    note_activate (8, true);
-                }
-                if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
-                    note_activate (8, false);
-                }
-                return false;
-            });
-            keys[9].button_press_event.connect ((event) => {
-                note_activate (9, true);
-                return false;
-            });
-            keys[9].button_release_event.connect ((event) => {
-                note_activate (9, false);
-                return false;
-            });
-            keys[9].touch_event.connect ((event) => {
-                if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
-                    note_activate (9, true);
-                }
-                if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
-                    note_activate (9, false);
-                }
-                return false;
-            });
-            keys[10].button_press_event.connect ((event) => {
-                note_activate (10, true);
-                return false;
-            });
-            keys[10].button_release_event.connect ((event) => {
-                note_activate (10, false);
-                return false;
-            });
-            keys[10].touch_event.connect ((event) => {
-                if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
-                    note_activate (10, true);
-                }
-                if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
-                    note_activate (10, false);
-                }
-                return false;
-            });
-            keys[11].button_press_event.connect ((event) => {
-                note_activate (11, true);
-                return false;
-            });
-            keys[11].button_release_event.connect ((event) => {
-                note_activate (11, false);
-                return false;
-            });
-            keys[11].touch_event.connect ((event) => {
-                if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
-                    note_activate (11, true);
-                }
-                if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
-                    note_activate (11, false);
-                }
-                return false;
-            });
+            //  keys[0].button_press_event.connect ((event) => {
+            //      note_activate (0, true);
+            //      return false;
+            //  });
+            //  keys[0].button_release_event.connect ((event) => {
+            //      note_activate (0, false);
+            //      return false;
+            //  });
+            //  keys[0].touch_event.connect ((event) => {
+            //      if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
+            //          note_activate (0, true);
+            //      }
+            //      if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
+            //          note_activate (0, false);
+            //      }
+            //      return false;
+            //  });
+            //  keys[1].button_press_event.connect ((event) => {
+            //      note_activate (1, true);
+            //      return false;
+            //  });
+            //  keys[1].button_release_event.connect ((event) => {
+            //      note_activate (1, false);
+            //      return false;
+            //  });
+            //  keys[1].touch_event.connect ((event) => {
+            //      if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
+            //          note_activate (1, true);
+            //      }
+            //      if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
+            //          note_activate (1, false);
+            //      }
+            //      return false;
+            //  });
+            //  keys[2].button_press_event.connect ((event) => {
+            //      note_activate (2, true);
+            //      return false;
+            //  });
+            //  keys[2].button_release_event.connect ((event) => {
+            //      note_activate (2, false);
+            //      return false;
+            //  });
+            //  keys[2].touch_event.connect ((event) => {
+            //      if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
+            //          note_activate (2, true);
+            //      }
+            //      if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
+            //          note_activate (2, false);
+            //      }
+            //      return false;
+            //  });
+            //  keys[3].button_press_event.connect ((event) => {
+            //      note_activate (3, true);
+            //      return false;
+            //  });
+            //  keys[3].button_release_event.connect ((event) => {
+            //      note_activate (3, false);
+            //      return false;
+            //  });
+            //  keys[3].touch_event.connect ((event) => {
+            //      if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
+            //          note_activate (3, true);
+            //      }
+            //      if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
+            //          note_activate (3, false);
+            //      }
+            //      return false;
+            //  });
+            //  keys[4].button_press_event.connect ((event) => {
+            //      note_activate (4, true);
+            //      return false;
+            //  });
+            //  keys[4].button_release_event.connect ((event) => {
+            //      note_activate (4, false);
+            //      return false;
+            //  });
+            //  keys[4].touch_event.connect ((event) => {
+            //      if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
+            //          note_activate (4, true);
+            //      }
+            //      if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
+            //          note_activate (4, false);
+            //      }
+            //      return false;
+            //  });
+            //  keys[5].button_press_event.connect ((event) => {
+            //      note_activate (5, true);
+            //      return false;
+            //  });
+            //  keys[5].button_release_event.connect ((event) => {
+            //      note_activate (5, false);
+            //      return false;
+            //  });
+            //  keys[5].touch_event.connect ((event) => {
+            //      if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
+            //          note_activate (5, true);
+            //      }
+            //      if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
+            //          note_activate (5, false);
+            //      }
+            //      return false;
+            //  });
+            //  keys[6].button_press_event.connect ((event) => {
+            //      note_activate (6, true);
+            //      return false;
+            //  });
+            //  keys[6].button_release_event.connect ((event) => {
+            //      note_activate (6, false);
+            //      return false;
+            //  });
+            //  keys[6].touch_event.connect ((event) => {
+            //      if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
+            //          note_activate (6, true);
+            //      }
+            //      if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
+            //          note_activate (6, false);
+            //      }
+            //      return false;
+            //  });
+            //  keys[7].button_press_event.connect ((event) => {
+            //      note_activate (7, true);
+            //      return false;
+            //  });
+            //  keys[7].button_release_event.connect ((event) => {
+            //      note_activate (7, false);
+            //      return false;
+            //  });
+            //  keys[7].touch_event.connect ((event) => {
+            //      if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
+            //          note_activate (7, true);
+            //      }
+            //      if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
+            //          note_activate (7, false);
+            //      }
+            //      return false;
+            //  });
+            //  keys[8].button_press_event.connect ((event) => {
+            //      note_activate (8, true);
+            //      return false;
+            //  });
+            //  keys[8].button_release_event.connect ((event) => {
+            //      note_activate (8, false);
+            //      return false;
+            //  });
+            //  keys[8].touch_event.connect ((event) => {
+            //      if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
+            //          note_activate (8, true);
+            //      }
+            //      if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
+            //          note_activate (8, false);
+            //      }
+            //      return false;
+            //  });
+            //  keys[9].button_press_event.connect ((event) => {
+            //      note_activate (9, true);
+            //      return false;
+            //  });
+            //  keys[9].button_release_event.connect ((event) => {
+            //      note_activate (9, false);
+            //      return false;
+            //  });
+            //  keys[9].touch_event.connect ((event) => {
+            //      if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
+            //          note_activate (9, true);
+            //      }
+            //      if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
+            //          note_activate (9, false);
+            //      }
+            //      return false;
+            //  });
+            //  keys[10].button_press_event.connect ((event) => {
+            //      note_activate (10, true);
+            //      return false;
+            //  });
+            //  keys[10].button_release_event.connect ((event) => {
+            //      note_activate (10, false);
+            //      return false;
+            //  });
+            //  keys[10].touch_event.connect ((event) => {
+            //      if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
+            //          note_activate (10, true);
+            //      }
+            //      if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
+            //          note_activate (10, false);
+            //      }
+            //      return false;
+            //  });
+            //  keys[11].button_press_event.connect ((event) => {
+            //      note_activate (11, true);
+            //      return false;
+            //  });
+            //  keys[11].button_release_event.connect ((event) => {
+            //      note_activate (11, false);
+            //      return false;
+            //  });
+            //  keys[11].touch_event.connect ((event) => {
+            //      if (event.get_event_type () == Gdk.EventType.TOUCH_BEGIN) {
+            //          note_activate (11, true);
+            //      }
+            //      if (event.get_event_type () == Gdk.EventType.TOUCH_END) {
+            //          note_activate (11, false);
+            //      }
+            //      return false;
+            //  });
         }
 
         // auto refers to any automated visualization

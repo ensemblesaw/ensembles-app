@@ -13,10 +13,10 @@ namespace Ensembles.Shell {
         private Gtk.Image recording_icon;
         private Gtk.Label track_label;
         private Gtk.MenuButton options_button;
-        private Gtk.MenuItem mute_button;
-        private Gtk.MenuItem solo_button;
-        private Gtk.MenuItem record_button;
-        private Gtk.MenuItem delete_button;
+        //  private Gtk.MenuItem mute_button;
+        //  private Gtk.MenuItem solo_button;
+        //  private Gtk.MenuItem record_button;
+        //  private Gtk.MenuItem delete_button;
 
         private double[] active_keys;
 
@@ -38,7 +38,7 @@ namespace Ensembles.Shell {
             track_label.width_request = 72;
             track_grid.attach (track_label, 0, 0);
 
-            recording_icon = new Gtk.Image.from_icon_name ("media-record", Gtk.IconSize.BUTTON);
+            recording_icon = new Gtk.Image.from_icon_name ("media-record");
             recording_icon.margin_end = 8;
             track_grid.attach (recording_icon, 1, 0);
 
@@ -48,51 +48,51 @@ namespace Ensembles.Shell {
             area = new Gtk.DrawingArea ();
             area.height_request = 32;
             area.width_request = 0;
-            area.draw.connect (on_draw);
+            //  area.draw.connect (on_draw);
             track_grid.attach (area, 3, 0);
 
             var separator_b = new Gtk.Separator (Gtk.Orientation.VERTICAL);
             track_grid.attach (separator_b, 4, 0);
 
-            var context_menu = new Gtk.Menu ();
-            mute_button = new Gtk.MenuItem.with_label (_("Mute"));
-            solo_button = new Gtk.MenuItem.with_label (_("Solo"));
-            record_button = new Gtk.MenuItem.with_label (_("Record"));
-            delete_button = new Gtk.MenuItem.with_label (_("Delete"));
+            //  var context_menu = new Gtk.Menu ();
+            //  mute_button = new Gtk.MenuItem.with_label (_("Mute"));
+            //  solo_button = new Gtk.MenuItem.with_label (_("Solo"));
+            //  record_button = new Gtk.MenuItem.with_label (_("Record"));
+            //  delete_button = new Gtk.MenuItem.with_label (_("Delete"));
 
-            context_menu.append (mute_button);
-            context_menu.append (solo_button);
-            context_menu.append (record_button);
-            context_menu.append (delete_button);
+            //  context_menu.append (mute_button);
+            //  context_menu.append (solo_button);
+            //  context_menu.append (record_button);
+            //  context_menu.append (delete_button);
 
-            options_button = new Gtk.MenuButton ();
-            options_button.image = new Gtk.Image.from_icon_name ("view-more-symbolic", Gtk.IconSize.BUTTON);
-            options_button.popup = context_menu;
-            track_grid.attach (options_button, 5, 0);
+            //  options_button = new Gtk.MenuButton ();
+            //  options_button.image = new Gtk.Image.from_icon_name ("view-more-symbolic", Gtk.IconSize.BUTTON);
+            //  options_button.popup = context_menu;
+            //  track_grid.attach (options_button, 5, 0);
 
             this.get_style_context ().add_class ("recorder-track");
             this.get_style_context ().add_class ("track-" + track.to_string ());
-            add (track_grid);
+            set_child (track_grid);
             _events = events;
 
             height_request = 32;
             width_request = 10;
             cardinality = _events.length ();
             area.queue_draw ();
-            context_menu.show_all ();
+            //  context_menu.show ();
 
-            mute_button.activate.connect (() => {
-                this.options_handle (track, 0);
-            });
-            solo_button.activate.connect (() => {
-                this.options_handle (track, 1);
-            });
-            record_button.activate.connect (() => {
-                this.options_handle (track, 2);
-            });
-            delete_button.activate.connect (() => {
-                this.options_handle (track, 3);
-            });
+            //  mute_button.activate.connect (() => {
+            //      this.options_handle (track, 0);
+            //  });
+            //  solo_button.activate.connect (() => {
+            //      this.options_handle (track, 1);
+            //  });
+            //  record_button.activate.connect (() => {
+            //      this.options_handle (track, 2);
+            //  });
+            //  delete_button.activate.connect (() => {
+            //      this.options_handle (track, 3);
+            //  });
         }
         public void set_track_events (List<Core.MidiEvent> events) {
             _events = events;
@@ -194,10 +194,10 @@ namespace Ensembles.Shell {
         public void set_mute (bool mute) {
             if (mute) {
                 this.get_style_context ().add_class ("recorder-track-mute");
-                mute_button.label = _("Unmute");
+                //  mute_button.label = _("Unmute");
             } else {
                 this.get_style_context ().remove_class ("recorder-track-mute");
-                mute_button.label = _("Mute");
+                //  mute_button.label = _("Mute");
             }
         }
 

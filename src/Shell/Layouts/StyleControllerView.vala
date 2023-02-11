@@ -58,24 +58,24 @@ namespace Ensembles.Shell {
                 set_style_section_by_index (UI_INDEX_STYLE_INTRO_1);
             });
 
-            intro_button_a.button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (intro_button_a, UI_INDEX_STYLE_INTRO_1);
-                }
-                return false;
-            });
+            //  intro_button_a.button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (intro_button_a, UI_INDEX_STYLE_INTRO_1);
+            //      }
+            //      return false;
+            //  });
 
             intro_button_b.clicked.connect (() => {
                 send_to_recorder (UI_INDEX_STYLE_INTRO_2);
                 set_style_section_by_index (UI_INDEX_STYLE_INTRO_2);
             });
 
-            intro_button_b.button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (intro_button_b, UI_INDEX_STYLE_INTRO_2);
-                }
-                return false;
-            });
+            //  intro_button_b.button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (intro_button_b, UI_INDEX_STYLE_INTRO_2);
+            //      }
+            //      return false;
+            //  });
 
             var var_fill_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
                 hexpand = true
@@ -106,48 +106,48 @@ namespace Ensembles.Shell {
                 set_style_section_by_index (UI_INDEX_STYLE_VAR_A);
             });
 
-            var_fill_button_a.button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (var_fill_button_a, UI_INDEX_STYLE_VAR_A);
-                }
-                return false;
-            });
+            //  var_fill_button_a.button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (var_fill_button_a, UI_INDEX_STYLE_VAR_A);
+            //      }
+            //      return false;
+            //  });
 
             var_fill_button_b.clicked.connect (() => {
                 send_to_recorder (UI_INDEX_STYLE_VAR_B);
                 set_style_section_by_index (UI_INDEX_STYLE_VAR_B);
             });
 
-            var_fill_button_b.button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (var_fill_button_b, UI_INDEX_STYLE_VAR_B);
-                }
-                return false;
-            });
+            //  var_fill_button_b.button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (var_fill_button_b, UI_INDEX_STYLE_VAR_B);
+            //      }
+            //      return false;
+            //  });
 
             var_fill_button_c.clicked.connect (() => {
                 send_to_recorder (UI_INDEX_STYLE_VAR_C);
                 set_style_section_by_index (UI_INDEX_STYLE_VAR_C);
             });
 
-            var_fill_button_c.button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (var_fill_button_c, UI_INDEX_STYLE_VAR_C);
-                }
-                return false;
-            });
+            //  var_fill_button_c.button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (var_fill_button_c, UI_INDEX_STYLE_VAR_C);
+            //      }
+            //      return false;
+            //  });
 
             var_fill_button_d.clicked.connect (() => {
                 send_to_recorder (UI_INDEX_STYLE_VAR_D);
                 set_style_section_by_index (UI_INDEX_STYLE_VAR_D);
             });
 
-            var_fill_button_d.button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (var_fill_button_d, UI_INDEX_STYLE_VAR_D);
-                }
-                return false;
-            });
+            //  var_fill_button_d.button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (var_fill_button_d, UI_INDEX_STYLE_VAR_D);
+            //      }
+            //      return false;
+            //  });
 
             break_button = new Gtk.Button.with_label (_("Break")) {
                 sensitive = false
@@ -158,12 +158,12 @@ namespace Ensembles.Shell {
                 set_style_section_by_index (UI_INDEX_STYLE_BREAK);
             });
 
-            break_button.button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (break_button, UI_INDEX_STYLE_BREAK);
-                }
-                return false;
-            });
+            //  break_button.button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (break_button, UI_INDEX_STYLE_BREAK);
+            //      }
+            //      return false;
+            //  });
 
             var ending_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
                 hexpand = true
@@ -184,24 +184,24 @@ namespace Ensembles.Shell {
                 set_style_section_by_index (UI_INDEX_STYLE_ENDING_1);
             });
 
-            ending_button_a.button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (ending_button_a, UI_INDEX_STYLE_ENDING_1);
-                }
-                return false;
-            });
+            //  ending_button_a.button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (ending_button_a, UI_INDEX_STYLE_ENDING_1);
+            //      }
+            //      return false;
+            //  });
 
             ending_button_b.clicked.connect (() => {
                 send_to_recorder (UI_INDEX_STYLE_ENDING_2);
                 set_style_section_by_index (UI_INDEX_STYLE_ENDING_2);
             });
 
-            ending_button_b.button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (ending_button_b, UI_INDEX_STYLE_ENDING_2);
-                }
-                return false;
-            });
+            //  ending_button_b.button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (ending_button_b, UI_INDEX_STYLE_ENDING_2);
+            //      }
+            //      return false;
+            //  });
 
             var sync_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
                 hexpand = true
@@ -222,24 +222,24 @@ namespace Ensembles.Shell {
                 set_style_section_by_index (UI_INDEX_STYLE_SYNC_START);
             });
 
-            sync_start_button.button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (sync_start_button, UI_INDEX_STYLE_SYNC_START);
-                }
-                return false;
-            });
+            //  sync_start_button.button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (sync_start_button, UI_INDEX_STYLE_SYNC_START);
+            //      }
+            //      return false;
+            //  });
 
             sync_stop_button.clicked.connect (() => {
                 send_to_recorder (UI_INDEX_STYLE_SYNC_STOP);
                 set_style_section_by_index (UI_INDEX_STYLE_SYNC_STOP);
             });
 
-            sync_stop_button.button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (sync_stop_button, UI_INDEX_STYLE_SYNC_STOP);
-                }
-                return false;
-            });
+            //  sync_stop_button.button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (sync_stop_button, UI_INDEX_STYLE_SYNC_STOP);
+            //      }
+            //      return false;
+            //  });
 
             start_button = new Gtk.Button.from_icon_name ("media-playback-start-symbolic") {
                 sensitive = false,
@@ -251,12 +251,12 @@ namespace Ensembles.Shell {
             start_button.get_style_context ().remove_class ("image-button");
             start_button.clicked.connect (Application.arranger_core.style_player.play_style);
 
-            start_button.button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (start_button, UI_INDEX_STYLE_START_STOP);
-                }
-                return false;
-            });
+            //  start_button.button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (start_button, UI_INDEX_STYLE_START_STOP);
+            //      }
+            //      return false;
+            //  });
 
             var intro_label = new Gtk.Label ("       " + _("INTRO") + "       ") {
                 opacity = 0.4

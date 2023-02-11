@@ -21,8 +21,8 @@ namespace Ensembles.Shell {
         Gtk.Button stop_button;
         Gtk.Stack btn_stack;
 
-        Gtk.FileChooserDialog project_folder_chooser;
-        Gtk.FileChooserDialog project_file_chooser;
+        Gtk.FileChooserNative project_folder_chooser;
+        Gtk.FileChooserNative project_file_chooser;
 
         string save_location = "";
         string project_file_name = "";
@@ -34,15 +34,15 @@ namespace Ensembles.Shell {
         public RecorderScreen () {
             this.get_style_context ().add_class ("menu-background");
 
-            close_button = new Gtk.Button.from_icon_name ("application-exit-symbolic", Gtk.IconSize.BUTTON) {
+            close_button = new Gtk.Button.from_icon_name ("application-exit-symbolic") {
                 margin_end = 4,
                 halign = Gtk.Align.END
             };
 
-            new_button = new Gtk.Button.from_icon_name ("document-new-symbolic", Gtk.IconSize.BUTTON) {
+            new_button = new Gtk.Button.from_icon_name ("document-new-symbolic") {
                 sensitive = false
             };
-            open_button = new Gtk.Button.from_icon_name ("document-open-symbolic", Gtk.IconSize.BUTTON) {
+            open_button = new Gtk.Button.from_icon_name ("document-open-symbolic") {
                 sensitive = false
             };
 
@@ -50,8 +50,8 @@ namespace Ensembles.Shell {
             headerbar = new Gtk.HeaderBar () {
                 height_request = 42
             };
-            headerbar.set_title (_("Recorder"));
-            headerbar.set_subtitle (_("Record playback in multiple tracks"));
+            //  headerbar.set_title (_("Recorder"));
+            //  headerbar.set_subtitle (_("Record playback in multiple tracks"));
             headerbar.get_style_context ().add_class ("menu-header");
             headerbar.pack_start (close_button);
             headerbar.pack_start (new_button);
@@ -62,17 +62,17 @@ namespace Ensembles.Shell {
                 transition_duration = 500
             };
 
-            play_button = new Gtk.Button.from_icon_name ("media-playback-start-symbolic", Gtk.IconSize.BUTTON) {
+            play_button = new Gtk.Button.from_icon_name ("media-playback-start-symbolic") {
                 sensitive = false
             };
-            rec_button = new Gtk.Button.from_icon_name ("media-record-symbolic", Gtk.IconSize.BUTTON) {
+            rec_button = new Gtk.Button.from_icon_name ("media-record-symbolic") {
                 sensitive = false
             };
-            stop_button = new Gtk.Button.from_icon_name ("media-playback-stop-symbolic", Gtk.IconSize.BUTTON);
+            stop_button = new Gtk.Button.from_icon_name ("media-playback-stop-symbolic");
 
             var btn_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
-            btn_box.pack_start (play_button);
-            btn_box.pack_end (rec_button);
+            btn_box.append (play_button);
+            btn_box.append (rec_button);
 
             btn_stack.add_named (btn_box, "Start");
             btn_stack.add_named (stop_button, "Stop");
@@ -84,9 +84,13 @@ namespace Ensembles.Shell {
                 Application.arranger_core.synthesizer.disable_input (false);
             });
 
-            scrollable = new Gtk.ScrolledWindow (null, null) {
-                expand = true,
-                margin = 8
+            scrollable = new Gtk.ScrolledWindow () {
+                hexpand = true,
+                vexpand = true,
+                margin_start = 8,
+                margin_end = 8,
+                margin_top = 8,
+                margin_bottom = 8
             };
 
             this.attach (headerbar, 0, 0, 1, 1);
@@ -127,21 +131,18 @@ namespace Ensembles.Shell {
             location_label.get_style_context ().add_class (Granite.STYLE_CLASS_TERMINAL);
             name_grid.attach (location_label, 0, 2, 2, 1);
 
-            project_folder_chooser = new Gtk.FileChooserDialog (_("Select Project Folder"),
+            project_folder_chooser = new Gtk.FileChooserNative (_("Select Project Folder"),
                                                                 Ensembles.Application.main_window,
                                                                 Gtk.FileChooserAction.SELECT_FOLDER,
-                                                                _("Cancel"),
-                                                                Gtk.ResponseType.CANCEL,
                                                                 _("Select"),
-                                                                Gtk.ResponseType.ACCEPT
+                                                                _("Cancel")
                                                                 ) {
-                                                                    local_only = false,
                                                                     modal = true
                                                                 };
 
             var location_change_button = new Gtk.Button.with_label (_("Change Project Location"));
             location_change_button.clicked.connect (() => {
-                project_folder_chooser.run ();
+                project_folder_chooser.show ();
                 project_folder_chooser.hide ();
             });
             project_folder_chooser.response.connect ((response_id) => {
@@ -152,13 +153,11 @@ namespace Ensembles.Shell {
             });
             name_grid.attach (location_change_button, 0, 3, 1, 1);
 
-            project_file_chooser = new Gtk.FileChooserDialog (_("Open Project File"),
+            project_file_chooser = new Gtk.FileChooserNative (_("Open Project File"),
                                                                 Ensembles.Application.main_window,
                                                                 Gtk.FileChooserAction.OPEN,
-                                                                _("Cancel"),
-                                                                Gtk.ResponseType.CANCEL,
                                                                 _("Open"),
-                                                                Gtk.ResponseType.ACCEPT
+                                                                _("Cancel")
                                                                 );
             var file_filter_enproj = new Gtk.FileFilter ();
             file_filter_enproj.add_pattern ("*.enproj");
@@ -171,7 +170,7 @@ namespace Ensembles.Shell {
             });
 
             var create_project_button = new Gtk.Button.with_label (_("Create Project"));
-            create_project_button.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+            create_project_button.get_style_context ().add_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
             create_project_button.clicked.connect (() => {
                 project_name = name_entry.get_text ();
                 create_project ();
@@ -188,7 +187,7 @@ namespace Ensembles.Shell {
                 create_project ();
             });
 
-            scrollable.add (main_stack);
+            scrollable.set_child (main_stack);
 
             play_button.clicked.connect (() => {
                 if (sequencer != null) {
@@ -218,10 +217,10 @@ namespace Ensembles.Shell {
                 Application.arranger_core.synthesizer.disable_input (true);
                 play_button.sensitive = false;
                 rec_button.sensitive = false;
-                sequencer_grid.foreach ((widget) => {
-                    sequencer_grid.remove (widget);
-                    widget.unref ();
-                });
+                //  sequencer_grid.foreach ((widget) => {
+                //      sequencer_grid.remove (widget);
+                //      widget.unref ();
+                //  });
                 name_entry.set_text ("");
                 name_entry.grab_focus ();
             });
@@ -244,15 +243,15 @@ namespace Ensembles.Shell {
                                                ? Path.build_filename (save_location, project_file_name)
                                                : existing_file_path,
                                                existing_file_path == null);
-            headerbar.set_title (_("Recorder") + " - " + project_name);
+            //  headerbar.set_title (_("Recorder") + " - " + project_name);
             var visual = sequencer.get_sequencer_visual ();
 
-            sequencer_grid.add (visual);
-            visual.show_all ();
+            sequencer_grid.attach (visual, 0, 0);
+            visual.show ();
             main_stack.set_visible_child_name ("SqnGrid");
 
             sequencer.project_name_change.connect ((value) => {
-                headerbar.set_title (_("Recorder") + " - " + value);
+                //  headerbar.set_title (_("Recorder") + " - " + value);gr
             });
 
             sequencer.progress_change.connect ((value) => {
@@ -291,28 +290,26 @@ namespace Ensembles.Shell {
             });
         }
 
-        Granite.Widgets.Welcome get_welcome_widget () {
-            var welcome = new Granite.Widgets.Welcome (
-                _("No Project Open"),
-                _("Create a new project to start recording")
-            );
-            welcome.append ("document-new", _("New Project"), _("Creates a new project from scratch"));
-            welcome.append ("document-open", _("Open Project"), _("Opens a pre-recorded project file"));
+        Granite.Placeholder get_welcome_widget () {
+            var welcome = new Granite.Placeholder (
+                _("No Project Open")
+            ) {
+                description = _("Create a new project to start recording")
+            };
+            var doc_new = welcome.append_button (new ThemedIcon ("document-new"), _("New Project"), _("Creates a new project from scratch"));
+            var doc_open = welcome.append_button (new ThemedIcon ("document-open"), _("Open Project"), _("Opens a pre-recorded project file"));
 
-            welcome.activated.connect ((index) => {
-                switch (index) {
-                    case 0:
-                        main_stack.set_visible_child_name ("EnterName");
-                        Application.arranger_core.synthesizer.disable_input (true);
-                        play_button.sensitive = false;
-                        rec_button.sensitive = false;
-                        name_entry.grab_focus ();
-                        break;
-                    case 1:
-                        project_file_chooser.run ();
-                        project_file_chooser.hide ();
-                        break;
-                }
+            doc_new.clicked.connect (() => {
+                main_stack.set_visible_child_name ("EnterName");
+                Application.arranger_core.synthesizer.disable_input (true);
+                play_button.sensitive = false;
+                rec_button.sensitive = false;
+                name_entry.grab_focus ();
+            });
+
+            doc_open.clicked.connect (() => {
+                project_file_chooser.show ();
+                project_file_chooser.hide ();
             });
 
             return welcome;

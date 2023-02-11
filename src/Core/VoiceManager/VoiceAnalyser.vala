@@ -10,6 +10,7 @@ namespace Ensembles.Core {
         public signal void analysis_complete ();
         public void analyse (string sf_path, string sf_schema_path) {
             FileStream stream = FileStream.open (sf_schema_path, "r");
+            warning(sf_path);
 
             if (voice_analyser_init (sf_path) == 0) {
                 voices = new Voice[0];

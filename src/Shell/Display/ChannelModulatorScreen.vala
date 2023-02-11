@@ -308,78 +308,78 @@
                     }
                 }
             });
-            modulation_button.button_release_event.connect ((event) => {
-                if (event.button == 3 && _channel < 16) {
-                    Ensembles.Core.Synthesizer.lock_modulator (1, _channel);
-                    modulation_button.get_style_context ().remove_class ("quick-mod-button-locked");
-                } else if (event.button == 1 && assignable) {
-                    broadcast_assignment (_channel, 1);
-                }
-                return false;
-            });
-            pan_button.button_release_event.connect ((event) => {
-                if (event.button == 3 && _channel < 16) {
-                    Ensembles.Core.Synthesizer.lock_modulator (10, _channel);
-                    pan_button.get_style_context ().remove_class ("quick-mod-button-locked");
-                } else if (event.button == 1 && assignable) {
-                    broadcast_assignment (_channel, 10);
-                }
-                return false;
-            });
-            expression_button.button_release_event.connect ((event) => {
-                if (event.button == 3 && _channel < 16) {
-                    Ensembles.Core.Synthesizer.lock_modulator (11, _channel);
-                    expression_button.get_style_context ().remove_class ("quick-mod-button-locked");
-                } else if (event.button == 1 && assignable) {
-                    broadcast_assignment (_channel, 11);
-                }
-                return false;
-            });
-            pitch_button.button_release_event.connect ((event) => {
-                if (event.button == 3 && _channel < 16) {
-                    Ensembles.Core.Synthesizer.lock_modulator (3, _channel);
-                    pitch_button.get_style_context ().remove_class ("quick-mod-button-locked");
-                } else if (event.button == 1 && assignable) {
-                    broadcast_assignment (_channel, 3);
-                }
-                return false;
-            });
-            resonance_button.button_release_event.connect ((event) => {
-                if (event.button == 3 && _channel < 16) {
-                    Ensembles.Core.Synthesizer.lock_modulator (71, _channel);
-                    resonance_button.get_style_context ().remove_class ("quick-mod-button-locked");
-                } else if (event.button == 1 && assignable) {
-                    broadcast_assignment (_channel, 71);
-                }
-                return false;
-            });
-            cut_off_button.button_release_event.connect ((event) => {
-                if (event.button == 3 && _channel < 16) {
-                    Ensembles.Core.Synthesizer.lock_modulator (74, _channel);
-                    cut_off_button.get_style_context ().remove_class ("quick-mod-button-locked");
-                } else if (event.button == 1 && assignable) {
-                    broadcast_assignment (_channel, 74);
-                }
-                return false;
-            });
-            reverb_button.button_release_event.connect ((event) => {
-                if (event.button == 3 && _channel < 16) {
-                    Ensembles.Core.Synthesizer.lock_modulator (91, _channel);
-                    reverb_button.get_style_context ().remove_class ("quick-mod-button-locked");
-                } else if (event.button == 1 && assignable) {
-                    broadcast_assignment (_channel, 91);
-                }
-                return false;
-            });
-            chorus_button.button_release_event.connect ((event) => {
-                if (event.button == 3 && _channel < 16) {
-                    Ensembles.Core.Synthesizer.lock_modulator (93, _channel);
-                    chorus_button.get_style_context ().remove_class ("quick-mod-button-locked");
-                } else if (event.button == 1 && assignable) {
-                    broadcast_assignment (_channel, 93);
-                }
-                return false;
-            });
+            //  modulation_button.button_release_event.connect ((event) => {
+            //      if (event.button == 3 && _channel < 16) {
+            //          Ensembles.Core.Synthesizer.lock_modulator (1, _channel);
+            //          modulation_button.get_style_context ().remove_class ("quick-mod-button-locked");
+            //      } else if (event.button == 1 && assignable) {
+            //          broadcast_assignment (_channel, 1);
+            //      }
+            //      return false;
+            //  });
+            //  pan_button.button_release_event.connect ((event) => {
+            //      if (event.button == 3 && _channel < 16) {
+            //          Ensembles.Core.Synthesizer.lock_modulator (10, _channel);
+            //          pan_button.get_style_context ().remove_class ("quick-mod-button-locked");
+            //      } else if (event.button == 1 && assignable) {
+            //          broadcast_assignment (_channel, 10);
+            //      }
+            //      return false;
+            //  });
+            //  expression_button.button_release_event.connect ((event) => {
+            //      if (event.button == 3 && _channel < 16) {
+            //          Ensembles.Core.Synthesizer.lock_modulator (11, _channel);
+            //          expression_button.get_style_context ().remove_class ("quick-mod-button-locked");
+            //      } else if (event.button == 1 && assignable) {
+            //          broadcast_assignment (_channel, 11);
+            //      }
+            //      return false;
+            //  });
+            //  pitch_button.button_release_event.connect ((event) => {
+            //      if (event.button == 3 && _channel < 16) {
+            //          Ensembles.Core.Synthesizer.lock_modulator (3, _channel);
+            //          pitch_button.get_style_context ().remove_class ("quick-mod-button-locked");
+            //      } else if (event.button == 1 && assignable) {
+            //          broadcast_assignment (_channel, 3);
+            //      }
+            //      return false;
+            //  });
+            //  resonance_button.button_release_event.connect ((event) => {
+            //      if (event.button == 3 && _channel < 16) {
+            //          Ensembles.Core.Synthesizer.lock_modulator (71, _channel);
+            //          resonance_button.get_style_context ().remove_class ("quick-mod-button-locked");
+            //      } else if (event.button == 1 && assignable) {
+            //          broadcast_assignment (_channel, 71);
+            //      }
+            //      return false;
+            //  });
+            //  cut_off_button.button_release_event.connect ((event) => {
+            //      if (event.button == 3 && _channel < 16) {
+            //          Ensembles.Core.Synthesizer.lock_modulator (74, _channel);
+            //          cut_off_button.get_style_context ().remove_class ("quick-mod-button-locked");
+            //      } else if (event.button == 1 && assignable) {
+            //          broadcast_assignment (_channel, 74);
+            //      }
+            //      return false;
+            //  });
+            //  reverb_button.button_release_event.connect ((event) => {
+            //      if (event.button == 3 && _channel < 16) {
+            //          Ensembles.Core.Synthesizer.lock_modulator (91, _channel);
+            //          reverb_button.get_style_context ().remove_class ("quick-mod-button-locked");
+            //      } else if (event.button == 1 && assignable) {
+            //          broadcast_assignment (_channel, 91);
+            //      }
+            //      return false;
+            //  });
+            //  chorus_button.button_release_event.connect ((event) => {
+            //      if (event.button == 3 && _channel < 16) {
+            //          Ensembles.Core.Synthesizer.lock_modulator (93, _channel);
+            //          chorus_button.get_style_context ().remove_class ("quick-mod-button-locked");
+            //      } else if (event.button == 1 && assignable) {
+            //          broadcast_assignment (_channel, 93);
+            //      }
+            //      return false;
+            //  });
         }
 
         public void set_assignable (bool assignable) {

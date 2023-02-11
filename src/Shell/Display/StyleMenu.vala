@@ -17,26 +17,32 @@ namespace Ensembles.Shell {
         public StyleMenu () {
             this.get_style_context ().add_class ("menu-background");
 
-            close_button = new Gtk.Button.from_icon_name ("application-exit-symbolic", Gtk.IconSize.BUTTON);
-            close_button.margin_end = 4;
-            close_button.halign = Gtk.Align.END;
+            close_button = new Gtk.Button.from_icon_name ("application-exit-symbolic") {
+                margin_end = 4,
+                halign = Gtk.Align.END
+            };
 
 
-            var headerbar = new Gtk.HeaderBar ();
-            headerbar.set_title (_("Style"));
-            headerbar.set_subtitle (_("Pick a Rhythm to accompany you"));
+            var headerbar = new Gtk.HeaderBar () {
+                height_request = 42
+            };
+            //  headerbar.set_title (_("Style"));
+            //  headerbar.set_subtitle (_("Pick a Rhythm to accompany you"));
             headerbar.get_style_context ().add_class ("menu-header");
-            headerbar.height_request = 42;
             headerbar.pack_start (close_button);
 
             main_list = new Gtk.ListBox ();
             main_list.get_style_context ().add_class ("menu-box");
 
-            var scrollable = new Gtk.ScrolledWindow (null, null);
-            scrollable.hexpand = true;
-            scrollable.vexpand = true;
-            scrollable.margin = 8;
-            scrollable.add (main_list);
+            var scrollable = new Gtk.ScrolledWindow () {
+                hexpand = true,
+                vexpand = true,
+                margin_top = 8,
+                margin_bottom = 8,
+                margin_start = 8,
+                margin_end = 8
+            };
+            scrollable.set_child (main_list);
 
             this.attach (headerbar, 0, 0, 1, 1);
             this.attach (scrollable, 0, 1, 1, 1);
@@ -87,7 +93,7 @@ namespace Ensembles.Shell {
             }
             min_value = 0;
             max_value = style_rows.length - 1;
-            main_list.show_all ();
+            main_list.show ();
         }
 
         public void scroll_to_selected_row () {
@@ -96,11 +102,11 @@ namespace Ensembles.Shell {
                 var adj = main_list.get_adjustment ();
                 if (adj != null) {
                     int height, _htemp;
-                    style_rows[_selected_index].get_preferred_height (out _htemp, out height);
-                    Timeout.add (200, () => {
-                        adj.set_value (_selected_index * height);
-                        return false;
-                    });
+                    //  style_rows[_selected_index].get_preferred_height (out _htemp, out height);
+                    //  Timeout.add (200, () => {
+                    //      adj.set_value (_selected_index * height);
+                    //      return false;
+                    //  });
                 }
             }
         }

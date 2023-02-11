@@ -457,6 +457,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
 
             var default_binding_preset_path = Application.user_config_dir + "/input_presets";
             File preset_file;
+            File preset_folder = File.new_for_path (default_binding_preset_path);
             if (DirUtils.create_with_parents (Application.user_config_dir, 2000) != -1) {
                 if (DirUtils.create_with_parents (
                     default_binding_preset_path, 2000) != -1) {
@@ -484,7 +485,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
                                                                 _("Export"),
                                                                 _("Cancel")
                                                                 );
-            mapping_file_chooser.set_current_folder (preset_file);
+            mapping_file_chooser.set_current_folder (preset_folder);
             mapping_file_chooser.set_current_name ("Untitled.csv");
             var file_filter_csv = new Gtk.FileFilter ();
             file_filter_csv.add_mime_type ("text/csv");
@@ -506,7 +507,7 @@ namespace Ensembles.Shell.Dialogs.Preferences {
                                                                 );
 
             mapping_file_open_chooser.set_filter (file_filter_csv);
-            mapping_file_open_chooser.set_current_folder (preset_file);
+            mapping_file_open_chooser.set_current_folder (preset_folder);
 
             var input_key_box = new Gtk.ListBox ();
             input_key_box.selection_mode = Gtk.SelectionMode.SINGLE;

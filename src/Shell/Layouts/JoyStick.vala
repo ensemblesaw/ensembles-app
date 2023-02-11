@@ -79,11 +79,11 @@ namespace Ensembles.Shell {
             };
             main_box.get_style_context ().add_class ("joystick-pad");
 
-            var event_box = new Gtk.EventBox ();
-            event_box.event.connect (handle_event);
+            var event_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
+            //  event_box.event.connect (handle_event);
             event_box.vexpand = true;
 
-            main_overlay.add (main_box);
+            main_overlay.set_child (main_box);
             main_overlay.add_overlay (touch_feedback_region);
             main_overlay.add_overlay (event_box);
             attach (main_overlay, 0, 1, 1, 1);
@@ -96,37 +96,37 @@ namespace Ensembles.Shell {
         }
 
         public bool handle_event (Gdk.Event event) {
-            if (event.type == Gdk.EventType.BUTTON_PRESS) {
-                initial_x = event.motion.x_root;
-                initial_y = event.motion.y_root;
-                dragging = true;
-                show_touch_feedback (true);
-            }
-            if (event.type == Gdk.EventType.BUTTON_RELEASE) {
-                initial_x = 0;
-                initial_y = 0;
-                dragging = false;
-                x_value = 64;
-                y_value = 64;
-                drag_x (64);
-                drag_y (64);
-                show_touch_feedback (false);
-            }
+            //  if (event.type == Gdk.EventType.BUTTON_PRESS) {
+            //      initial_x = event.motion.x_root;
+            //      initial_y = event.motion.y_root;
+            //      dragging = true;
+            //      show_touch_feedback (true);
+            //  }
+            //  if (event.type == Gdk.EventType.BUTTON_RELEASE) {
+            //      initial_x = 0;
+            //      initial_y = 0;
+            //      dragging = false;
+            //      x_value = 64;
+            //      y_value = 64;
+            //      drag_x (64);
+            //      drag_y (64);
+            //      show_touch_feedback (false);
+            //  }
 
-            if (event.type == Gdk.EventType.MOTION_NOTIFY && dragging) {
-                double x = event.motion.x_root - initial_x;
-                double y = event.motion.y_root - initial_y;
-                x = (127.0 / 120.0) * (x + 60.0);
-                y = (127.0 / 120.0) * (y + 60.0);
-                if (x >= 0 && x <= 127) {
-                    x_value = x;
-                    drag_x (x);
-                }
-                if (y >= 0 && y <= 127) {
-                    y_value = y;
-                    drag_y (127.0 - y);
-                }
-            }
+            //  if (event.type == Gdk.EventType.MOTION_NOTIFY && dragging) {
+            //      double x = event.motion.x_root - initial_x;
+            //      double y = event.motion.y_root - initial_y;
+            //      x = (127.0 / 120.0) * (x + 60.0);
+            //      y = (127.0 / 120.0) * (y + 60.0);
+            //      if (x >= 0 && x <= 127) {
+            //          x_value = x;
+            //          drag_x (x);
+            //      }
+            //      if (y >= 0 && y <= 127) {
+            //          y_value = y;
+            //          drag_y (127.0 - y);
+            //      }
+            //  }
             update_touch_feedback_position ();
             return false;
         }

@@ -33,9 +33,9 @@ namespace Ensembles.Core {
         public void connect_synth_to_plugins () {
             synthesizer_set_fx_callback ((buffer_l_in, buffer_r_in, out buffer_out_l, out buffer_out_r) => {
                 EffectRack.set_synth_callback (buffer_l_in, buffer_r_in, out buffer_out_l, out buffer_out_r);
-                if (Application.main_window != null && Application.main_window.ctrl_panel != null) {
-                    Application.main_window.ctrl_panel.animate_audio (buffer_l_in, buffer_r_in);
-                }
+                //  if (Application.main_window != null && Application.main_window.ctrl_panel != null) {
+                //      Application.main_window.ctrl_panel.animate_audio (buffer_l_in, buffer_r_in);
+                //  }
             });
         }
 

@@ -54,11 +54,11 @@ namespace Ensembles.Shell {
             selected_style_label.ellipsize = Pango.EllipsizeMode.MIDDLE;
             selected_style_label.halign = Gtk.Align.CENTER;
             selected_style_label.get_style_context ().add_class ("home-screen-top-panel-subheader");
-            style_button_box.pack_start (style_label, false, true, 0);
-            style_button_box.pack_end (selected_style_label, false, true, 0);
+            style_button_box.append (style_label);
+            style_button_box.append (selected_style_label);
             style_button_box.hexpand = true;
             style_button = new Gtk.Button ();
-            style_button.add (style_button_box);
+            style_button.set_child (style_button_box);
             style_button.get_style_context ().add_class ("home-screen-top-panel-button");
 
             style_button.clicked.connect (() => {
@@ -75,11 +75,11 @@ namespace Ensembles.Shell {
             selected_voice_l_label.ellipsize = Pango.EllipsizeMode.MIDDLE;
             selected_voice_l_label.halign = Gtk.Align.CENTER;
             selected_voice_l_label.get_style_context ().add_class ("home-screen-top-panel-subheader");
-            voice_l_button_box.pack_start (voice_l_label, false, true, 0);
-            voice_l_button_box.pack_end (selected_voice_l_label, false, true, 0);
+            voice_l_button_box.append (voice_l_label);
+            voice_l_button_box.append (selected_voice_l_label);
             voice_l_button_box.hexpand = true;
             voice_l_button = new Gtk.Button ();
-            voice_l_button.add (voice_l_button_box);
+            voice_l_button.set_child (voice_l_button_box);
             voice_l_button.get_style_context ().add_class ("home-screen-top-panel-button");
 
             voice_l_button.clicked.connect (() => {
@@ -96,11 +96,11 @@ namespace Ensembles.Shell {
             selected_voice_r1_label.ellipsize = Pango.EllipsizeMode.MIDDLE;
             selected_voice_r1_label.halign = Gtk.Align.CENTER;
             selected_voice_r1_label.get_style_context ().add_class ("home-screen-top-panel-subheader");
-            voice_r1_button_box.pack_start (voice_r1_label, false, true, 0);
-            voice_r1_button_box.pack_end (selected_voice_r1_label, false, true, 0);
+            voice_r1_button_box.append (voice_r1_label);
+            voice_r1_button_box.append (selected_voice_r1_label);
             voice_r1_button_box.hexpand = true;
             voice_r1_button = new Gtk.Button ();
-            voice_r1_button.add (voice_r1_button_box);
+            voice_r1_button.set_child (voice_r1_button_box);
             voice_r1_button.get_style_context ().add_class ("home-screen-top-panel-button");
 
             voice_r1_button.clicked.connect (() => {
@@ -117,11 +117,11 @@ namespace Ensembles.Shell {
             selected_voice_r2_label.ellipsize = Pango.EllipsizeMode.MIDDLE;
             selected_voice_r2_label.halign = Gtk.Align.CENTER;
             selected_voice_r2_label.get_style_context ().add_class ("home-screen-top-panel-subheader");
-            voice_r2_button_box.pack_start (voice_r2_label, false, true, 0);
-            voice_r2_button_box.pack_end (selected_voice_r2_label, false, true, 0);
+            voice_r2_button_box.append (voice_r2_label);
+            voice_r2_button_box.append (selected_voice_r2_label);
             voice_r2_button_box.hexpand = true;
             voice_r2_button = new Gtk.Button ();
-            voice_r2_button.add (voice_r2_button_box);
+            voice_r2_button.set_child (voice_r2_button_box);
             voice_r2_button.get_style_context ().add_class ("home-screen-top-panel-button");
 
             voice_r2_button.clicked.connect (() => {
@@ -176,32 +176,32 @@ namespace Ensembles.Shell {
             chord_type_label.halign = Gtk.Align.START;
 
             var tempo_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-            tempo_box.pack_start (tempo_header, false, true, 0);
-            tempo_box.pack_end (tempo_label, false, true, 0);
+            tempo_box.append (tempo_header);
+            tempo_box.append (tempo_label);
             tempo_box.valign = Gtk.Align.START;
             tempo_box.margin_top = 2;
 
             var measure_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-            measure_box.pack_start (measure_header, false, true, 0);
-            measure_box.pack_end (measure_label, false, true, 0);
+            measure_box.append (measure_header);
+            measure_box.append (measure_label);
             measure_box.valign = Gtk.Align.START;
             measure_box.margin_top = 2;
 
             var beat_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-            beat_box.pack_start (time_sig_header, false, true, 0);
-            beat_box.pack_end (beat_label, false, true, 0);
+            beat_box.append (time_sig_header);
+            beat_box.append (beat_label);
             beat_box.valign = Gtk.Align.START;
             beat_box.margin_top = 2;
 
             var transpose_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-            transpose_box.pack_start (transpose_header, false, true, 0);
-            transpose_box.pack_end (transpose_label, false, true, 0);
+            transpose_box.append (transpose_header);
+            transpose_box.append (transpose_label);
             transpose_box.valign = Gtk.Align.START;
             transpose_box.margin_top = 2;
 
             var octave_shift_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-            octave_shift_box.pack_start (octave_shift_header, false, true, 0);
-            octave_shift_box.pack_end (octave_shift_label, false, true, 0);
+            octave_shift_box.append (octave_shift_header);
+            octave_shift_box.append (octave_shift_label);
             octave_shift_box.valign = Gtk.Align.START;
             octave_shift_box.margin_top = 2;
 
@@ -245,8 +245,7 @@ namespace Ensembles.Shell {
             channel_button_grid.column_homogeneous = true;
             channel_configure_buttons = new Gtk.Button [19];
             for (int i = 0; i < 19; i++) {
-                channel_configure_buttons[i] = new Gtk.Button.from_icon_name ("preferences-system-symbolic",
-                                                                              Gtk.IconSize.BUTTON);
+                channel_configure_buttons[i] = new Gtk.Button.from_icon_name ("preferences-system-symbolic");
                 channel_configure_buttons[i].get_style_context ().add_class ("home-screen-channel-button");
                 channel_button_grid.attach (channel_configure_buttons[i], i, 0, 1, 1);
             }
@@ -268,7 +267,6 @@ namespace Ensembles.Shell {
 
 
             fx_rack_button = new Gtk.Button.with_label ("𝑓𝑥 Effects Rack");
-            fx_rack_button.margin = 4;
             fx_rack_button.clicked.connect (() => {
                 open_fx_menu ();
             });

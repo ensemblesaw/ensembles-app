@@ -356,14 +356,14 @@ namespace Ensembles.Shell {
                 }
                 return false;
             });
-            slider_0.button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (slider_0, UI_INDEX_SLIDER_0);
-                    return true;
-                }
+            //  slider_0.button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (slider_0, UI_INDEX_SLIDER_0);
+            //          return true;
+            //      }
 
-                return false;
-            });
+            //      return false;
+            //  });
             slider_1.change_value.connect ((scroll, value) => {
                 if (slider_1_control_map.assigned) {
                     Ensembles.Core.Synthesizer.set_modulator_value (
@@ -392,14 +392,14 @@ namespace Ensembles.Shell {
                 }
                 return false;
             });
-            slider_1.button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (slider_1, UI_INDEX_SLIDER_1);
-                    return true;
-                }
+            //  slider_1.button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (slider_1, UI_INDEX_SLIDER_1);
+            //          return true;
+            //      }
 
-                return false;
-            });
+            //      return false;
+            //  });
             slider_2.change_value.connect ((scroll, value) => {
                 if (slider_2_control_map.assigned) {
                     Ensembles.Core.Synthesizer.set_modulator_value (
@@ -428,14 +428,14 @@ namespace Ensembles.Shell {
                 }
                 return false;
             });
-            slider_2.button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (slider_2, UI_INDEX_SLIDER_2);
-                    return true;
-                }
+            //  slider_2.button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (slider_2, UI_INDEX_SLIDER_2);
+            //          return true;
+            //      }
 
-                return false;
-            });
+            //      return false;
+            //  });
             slider_3.change_value.connect ((scroll, value) => {
                 if (slider_3_control_map.assigned) {
                     Ensembles.Core.Synthesizer.set_modulator_value (
@@ -464,14 +464,14 @@ namespace Ensembles.Shell {
                 }
                 return false;
             });
-            slider_3.button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (slider_3, UI_INDEX_SLIDER_3);
-                    return true;
-                }
+            //  slider_3.button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (slider_3, UI_INDEX_SLIDER_3);
+            //          return true;
+            //      }
 
-                return false;
-            });
+            //      return false;
+            //  });
             slider_4.change_value.connect ((scroll, value) => {
                 if (slider_4_control_map.assigned) {
                     Ensembles.Core.Synthesizer.set_modulator_value (
@@ -498,14 +498,14 @@ namespace Ensembles.Shell {
                 }
                 return false;
             });
-            slider_4.button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (slider_4, UI_INDEX_SLIDER_4);
-                    return true;
-                }
+            //  slider_4.button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (slider_4, UI_INDEX_SLIDER_4);
+            //          return true;
+            //      }
 
-                return false;
-            });
+            //      return false;
+            //  });
             slider_5.change_value.connect ((scroll, value) => {
                 if (slider_5_control_map.assigned) {
                     Ensembles.Core.Synthesizer.set_modulator_value (
@@ -532,14 +532,14 @@ namespace Ensembles.Shell {
                 }
                 return false;
             });
-            slider_5.button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (slider_5, UI_INDEX_SLIDER_5);
-                    return true;
-                }
+            //  slider_5.button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (slider_5, UI_INDEX_SLIDER_5);
+            //          return true;
+            //      }
 
-                return false;
-            });
+            //      return false;
+            //  });
             slider_6.change_value.connect ((scroll, value) => {
                 if (slider_6_control_map.assigned) {
                     Ensembles.Core.Synthesizer.set_modulator_value (
@@ -566,14 +566,14 @@ namespace Ensembles.Shell {
                 }
                 return false;
             });
-            slider_6.button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (slider_6, UI_INDEX_SLIDER_6);
-                    return true;
-                }
+            //  slider_6.button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (slider_6, UI_INDEX_SLIDER_6);
+            //          return true;
+            //      }
 
-                return false;
-            });
+            //      return false;
+            //  });
             slider_7.change_value.connect ((scroll, value) => {
                 if (slider_7_control_map.assigned) {
                     Ensembles.Core.Synthesizer.set_modulator_value (
@@ -600,14 +600,14 @@ namespace Ensembles.Shell {
                 }
                 return false;
             });
-            slider_7.button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (slider_7, UI_INDEX_SLIDER_7);
-                    return true;
-                }
+            //  slider_7.button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (slider_7, UI_INDEX_SLIDER_7);
+            //          return true;
+            //      }
 
-                return false;
-            });
+            //      return false;
+            //  });
             slider_8.change_value.connect ((scroll, value) => {
                 if (slider_8_control_map.assigned) {
                     Ensembles.Core.Synthesizer.set_modulator_value (
@@ -634,14 +634,14 @@ namespace Ensembles.Shell {
                 }
                 return false;
             });
-            slider_8.button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (slider_8, UI_INDEX_SLIDER_8);
-                    return true;
-                }
+            //  slider_8.button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (slider_8, UI_INDEX_SLIDER_8);
+            //          return true;
+            //      }
 
-                return false;
-            });
+            //      return false;
+            //  });
             slider_9.change_value.connect ((scroll, value) => {
                 if (slider_9_control_map.assigned) {
                     Ensembles.Core.Synthesizer.set_modulator_value (
@@ -668,14 +668,14 @@ namespace Ensembles.Shell {
                 }
                 return false;
             });
-            slider_9.button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (slider_9, UI_INDEX_SLIDER_9);
-                    return true;
-                }
+            //  slider_9.button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (slider_9, UI_INDEX_SLIDER_9);
+            //          return true;
+            //      }
 
-                return false;
-            });
+            //      return false;
+            //  });
             modulator_knob_a.change_value.connect ((value) => {
                 if (knob_a_control_map.assigned) {
                     Ensembles.Core.Synthesizer.set_modulator_value (
@@ -695,14 +695,14 @@ namespace Ensembles.Shell {
                     modulator_knob_a.get_style_context ().add_class ("knob-assignable");
                 }
             });
-            modulator_knob_a.button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (modulator_knob_a, UI_INDEX_KNOB_A);
-                    return true;
-                }
+            //  modulator_knob_a.button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (modulator_knob_a, UI_INDEX_KNOB_A);
+            //          return true;
+            //      }
 
-                return false;
-            });
+            //      return false;
+            //  });
             modulator_knob_b.change_value.connect ((value) => {
                 if (knob_b_control_map.assigned) {
                     Ensembles.Core.Synthesizer.set_modulator_value (
@@ -722,14 +722,14 @@ namespace Ensembles.Shell {
                     modulator_knob_b.get_style_context ().add_class ("knob-assignable");
                 }
             });
-            modulator_knob_b.button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (modulator_knob_b, UI_INDEX_KNOB_B);
-                    return true;
-                }
+            //  modulator_knob_b.button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (modulator_knob_b, UI_INDEX_KNOB_B);
+            //          return true;
+            //      }
 
-                return false;
-            });
+            //      return false;
+            //  });
             modulator_knob_c.change_value.connect ((value) => {
                 if (knob_c_control_map.assigned) {
                     Ensembles.Core.Synthesizer.set_modulator_value (
@@ -749,14 +749,14 @@ namespace Ensembles.Shell {
                     modulator_knob_c.get_style_context ().add_class ("knob-assignable");
                 }
             });
-            modulator_knob_c.button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (modulator_knob_c, UI_INDEX_KNOB_C);
-                    return true;
-                }
+            //  modulator_knob_c.button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (modulator_knob_c, UI_INDEX_KNOB_C);
+            //          return true;
+            //      }
 
-                return false;
-            });
+            //      return false;
+            //  });
             modulator_knob_d.change_value.connect ((value) => {
                 if (knob_d_control_map.assigned) {
                     Ensembles.Core.Synthesizer.set_modulator_value (
@@ -776,26 +776,26 @@ namespace Ensembles.Shell {
                     modulator_knob_d.get_style_context ().add_class ("knob-assignable");
                 }
             });
-            modulator_knob_d.button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (modulator_knob_d, UI_INDEX_KNOB_D);
-                    return true;
-                }
+            //  modulator_knob_d.button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (modulator_knob_d, UI_INDEX_KNOB_D);
+            //          return true;
+            //      }
 
-                return false;
-            });
+            //      return false;
+            //  });
 
             master_knob.change_value.connect ((value) => {
                 control_other_sliders_from_master_knob (value);
             });
-            master_knob.button_press_event.connect ((button_event) => {
-                if (button_event.button == 3) {
-                    Application.main_window.show_context_menu (master_knob, UI_INDEX_MASTER_KNOB);
-                    return true;
-                }
+            //  master_knob.button_press_event.connect ((button_event) => {
+            //      if (button_event.button == 3) {
+            //          Application.main_window.show_context_menu (master_knob, UI_INDEX_MASTER_KNOB);
+            //          return true;
+            //      }
 
-                return false;
-            });
+            //      return false;
+            //  });
 
             load_settings ();
             monitor_lfo ();

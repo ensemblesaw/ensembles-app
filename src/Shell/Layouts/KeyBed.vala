@@ -57,14 +57,14 @@ namespace Ensembles.Shell {
             };
 
             sustain_button = new Gtk.Button.with_label (_("SUST"));
-            sustain_button.button_press_event.connect (() => {
-                Application.arranger_core.synthesizer.sustain (true);
-                return false;
-            });
-            sustain_button.button_release_event.connect (() => {
-                Application.arranger_core.synthesizer.sustain (false);
-                return false;
-            });
+            //  sustain_button.button_press_event.connect (() => {
+            //      Application.arranger_core.synthesizer.sustain (true);
+            //      return false;
+            //  });
+            //  sustain_button.button_release_event.connect (() => {
+            //      Application.arranger_core.synthesizer.sustain (false);
+            //      return false;
+            //  });
             stop_button = new Gtk.Button.with_label (_("STOP"));
             stop_button.clicked.connect (() => {
                 Application.arranger_core.synthesizer.halt_realtime (false);

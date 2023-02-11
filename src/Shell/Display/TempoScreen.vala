@@ -25,7 +25,7 @@ namespace Ensembles.Shell {
 
             tempo_data = new Queue<ulong> ();
 
-            var close_button = new Gtk.Button.from_icon_name ("window-close-symbolic", Gtk.IconSize.BUTTON);
+            var close_button = new Gtk.Button.from_icon_name ("window-close-symbolic");
             close_button.get_style_context ().add_class ("quick-mod-close-button");
             close_button.clicked.connect (() => {
                 close_screen ();
@@ -58,7 +58,7 @@ namespace Ensembles.Shell {
 
             tap_button = new Gtk.Button.with_label (_("Tap"));
             tap_button.get_style_context ().add_class ("quick-mod-button");
-            tap_button.button_press_event.connect (find_tempo);
+            tap_button.clicked.connect (() => {find_tempo ();});
             tempo_grid.attach (tap_button, 0, 1, 2, 1);
 
 
@@ -70,15 +70,15 @@ namespace Ensembles.Shell {
 
             attach (tempo_grid, 0, 1, 2, 1);
 
-            show_all ();
+            show ();
 
             tempo_spin_button.changed.connect (tempo_changed);
-            key_press_event.connect ((event) => {
-                if (event.keyval == KeyboardConstants.KeyMap.SPACE_BAR) {
-                    find_tempo ();
-                }
-                return false;
-            });
+            //  key_press_event.connect ((event) => {
+            //      if (event.keyval == KeyboardConstants.KeyMap.SPACE_BAR) {
+            //          find_tempo ();
+            //      }
+            //      return false;
+            //  });
 
             wheel_scrolled_absolute.connect ((value) => {
                 Idle.add (() => {

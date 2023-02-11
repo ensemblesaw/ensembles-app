@@ -10,11 +10,6 @@ public class Ensembles.Shell.Dialogs.Preferences.ItemInput : Gtk.ListBoxRow {
     public string note;
     public uint note_index;
     public ItemInput (uint note_index, string note, KeyboardConstants.KeyMap key, bool black_key) {
-        Object (
-            note_index: note_index,
-            note: note,
-            assigned_key: key
-        );
         this.note_index = note_index;
         this.note = note;
         tooltip_text = _("Click to edit binding");
