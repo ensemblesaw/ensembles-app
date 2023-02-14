@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+    <schema id="@SCHEMA_ID@" path="@SCHEMA_PATH@" gettext-domain="@GETTEXT_PACKAGE@">
+        <key name="version" type="s">
+            <default>'0.0.0'</default>
+            <summary>The currently installed version.</summary>
+            <description>The currently installed version of Ensembles, updated only after the user launched the app. This is used to know when to trigger the Release Dialog.</description>
+        </key>
+
+         <!-- Window Settings -->
+        <key name="window-x" type="i">
+            <default>-1</default>
+            <summary>The saved x-position of the window.</summary>
+            <description>The saved x-position of the window.</description>
+        </key>
+        <key name="window-y" type="i">
+            <default>-1</default>
+            <summary>The saved y-position of the window.</summary>
+            <description>The saved y-position of the window.</description>
+        </key>
+        <key name="window-w" type="i">
+            <default>800</default>
+            <summary>The saved width of the window.</summary>
+            <description>The saved width of the window.</description>
+        </key>
+        <key name="window-h" type="i">
+            <default>400</default>
+            <summary>The saved height of the window.</summary>
+            <description>The saved height of the window.</description>
+        </key>
+        <key name="window-maximized" type="b">
+            <default>false</default>
+            <summary>Window maximized</summary>
+            <description>If window should be maximized</description>
+        </key>
+        <key name="display-theme" type="s">
+            <default>"Default"</default>
+            <summary>Display Unit Theme</summary>
+        </key>
+    </schema>
+</schemalist>

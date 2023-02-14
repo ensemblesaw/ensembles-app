@@ -3,46 +3,4 @@
   <gresource prefix="/com/github/subhadeepjasu/ensembles">
     <file alias="Application.css">Themes/Application.css</file>
   </gresource>
-
-  <gresource prefix="/com/github/subhadeepjasu/ensembles/images">
-    <file alias="ensembles_logo.svg" compressed="true" preprocess="xml-stripblanks">Images/Logo.svg</file>
-    <file alias="tempo_icon.svg" compressed="true" preprocess="xml-stripblanks">Images/Metronome.svg</file>
-    <file alias="controller.svg" compressed="true" preprocess="xml-stripblanks">Images/controller.svg</file>
-  </gresource>
-
-  <gresource prefix="/com/github/subhadeepjasu/ensembles/images/display_unit">
-    <file alias="ensembles_splash.svg" compressed="true" preprocess="xml-stripblanks">Images/ensembles_splash.svg</file>
-    <file alias="catalin-sandru-7SxSkCvVM1U-unsplash.jpg" compressed="true">Images/catalin-sandru-7SxSkCvVM1U-unsplash.jpg</file>
-    <file alias="catalin-sandru-7SxSkCvVM1U-unsplash-blurred.jpg" compressed="true">Images/catalin-sandru-7SxSkCvVM1U-unsplash-blurred.jpg</file>
-    <!-- Photo by <a href="https://unsplash.com/@catalinsandru?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Catalin Sandru</a> on <a href="https://unsplash.com/s/photos/piano?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a> -->
-    <file alias="sami-takarautio-UZOpP-YHe9Q-unsplash.jpg" compressed="true">Images/sami-takarautio-UZOpP-YHe9Q-unsplash.jpg</file>
-    <file alias="sami-takarautio-UZOpP-YHe9Q-unsplash-blurred.jpg" compressed="true">Images/sami-takarautio-UZOpP-YHe9Q-unsplash-blurred.jpg</file>
-    <!-- Photo by <a href="https://unsplash.com/@samimatias?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Sami Takarautio</a> on <a href="https://unsplash.com/s/photos/aurora?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a> -->
-  </gresource>
-
-  <gresource prefix="/com/github/subhadeepjasu/ensembles/images/beat_counter">
-    <file alias="beat_counter_1_0.svg" compressed="true" preprocess="xml-stripblanks">Images/beat_counter_1_0.svg</file>
-    <file alias="beat_counter_1_1.svg" compressed="true" preprocess="xml-stripblanks">Images/beat_counter_1_1.svg</file>
-    <file alias="beat_counter_2_0.svg" compressed="true" preprocess="xml-stripblanks">Images/beat_counter_2_0.svg</file>
-    <file alias="beat_counter_2_1.svg" compressed="true" preprocess="xml-stripblanks">Images/beat_counter_2_1.svg</file>
-  </gresource>
-
-  <gresource prefix="/com/github/subhadeepjasu/ensembles/images/lfo_graphics">
-    <file alias="LFO_4_4_0" compressed="true" preprocess="xml-stripblanks">Images/LFO_Graphics/LFO_4_4_0.svg</file>
-    <file alias="LFO_4_4_1" compressed="true" preprocess="xml-stripblanks">Images/LFO_Graphics/LFO_4_4_1.svg</file>
-    <file alias="LFO_4_4_2" compressed="true" preprocess="xml-stripblanks">Images/LFO_Graphics/LFO_4_4_2.svg</file>
-    <file alias="LFO_4_4_3" compressed="true" preprocess="xml-stripblanks">Images/LFO_Graphics/LFO_4_4_3.svg</file>
-    <file alias="LFO_4_4_4" compressed="true" preprocess="xml-stripblanks">Images/LFO_Graphics/LFO_4_4_4.svg</file>
-    <file alias="LFO_4_4_5" compressed="true" preprocess="xml-stripblanks">Images/LFO_Graphics/LFO_4_4_5.svg</file>
-    <file alias="LFO_4_4_6" compressed="true" preprocess="xml-stripblanks">Images/LFO_Graphics/LFO_4_4_6.svg</file>
-    <file alias="LFO_4_4_7" compressed="true" preprocess="xml-stripblanks">Images/LFO_Graphics/LFO_4_4_7.svg</file>
-    <file alias="LFO_4_4_8" compressed="true" preprocess="xml-stripblanks">Images/LFO_Graphics/LFO_4_4_8.svg</file>
-    <file alias="LFO_4_4_9" compressed="true" preprocess="xml-stripblanks">Images/LFO_Graphics/LFO_4_4_9.svg</file>
-    <file alias="LFO_4_4_10" compressed="true" preprocess="xml-stripblanks">Images/LFO_Graphics/LFO_4_4_10.svg</file>
-    <file alias="LFO_4_4_11" compressed="true" preprocess="xml-stripblanks">Images/LFO_Graphics/LFO_4_4_11.svg</file>
-    <file alias="LFO_4_4_12" compressed="true" preprocess="xml-stripblanks">Images/LFO_Graphics/LFO_4_4_12.svg</file>
-    <file alias="LFO_4_4_13" compressed="true" preprocess="xml-stripblanks">Images/LFO_Graphics/LFO_4_4_13.svg</file>
-    <file alias="LFO_4_4_14" compressed="true" preprocess="xml-stripblanks">Images/LFO_Graphics/LFO_4_4_14.svg</file>
-    <file alias="LFO_4_4_15" compressed="true" preprocess="xml-stripblanks">Images/LFO_Graphics/LFO_4_4_15.svg</file>
-  </gresource>
 </gresources>

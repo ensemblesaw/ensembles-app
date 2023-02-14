@@ -121,4 +121,40 @@ namespace LV2.Atom {
         Atom atom;
         AtomSequenceBody body;
     }
+
+    public const string URI;
+
+    public const string PREFIX;
+
+    public const string _Atom;
+    public const string _AtomPort;
+    public const string _Blank;
+    public const string _Bool;
+    public const string _Chunk;
+    public const string _Double;
+    public const string _Event;
+    public const string _Float;
+    public const string _Int;
+    public const string _Literal;
+    public const string _Long;
+    public const string _Number;
+    public const string _Object;
+    public const string _Path;
+    public const string _Property;
+    public const string _Resource;
+    public const string _Sequence;
+    public const string _Sound;
+    public const string _String;
+    public const string _Tuple;
+    public const string _URI;
+    public const string _URID;
+    public const string _Vector;
+    public const string _atomTransfer;
+    public const string _beatTime;
+    public const string _bufferType;
+    public const string _childType;
+    public const string _eventTransfer;
+    public const string _frameTime;
+    public const string _supports;
+    public const string _timeUnit;
 }

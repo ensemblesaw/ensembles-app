@@ -3,11 +3,11 @@ icon_sizes = ['16', '24', '32', '48', '64', '128']
 
 foreach i : icon_sizes
     install_data (
-        join_paths ('icons', i, meson.project_name () + '.svg'),
+        join_paths ('Icons', i, meson.project_name () + '.svg'),
         install_dir: join_paths (get_option ('datadir'), 'icons', 'hicolor', i + 'x' + i, 'apps')
     )
     install_data (
-        join_paths ('icons', i, meson.project_name() + '.svg'),
+        join_paths ('Icons', i, meson.project_name() + '.svg'),
         install_dir: join_paths (get_option ('datadir'), 'icons', 'hicolor', i + 'x' + i + '@2', 'apps')
     )
 endforeach
@@ -32,49 +32,20 @@ i18n.merge_file (
 )
 
 # Install Settings schema
-install_data (
-    meson.project_name() + '.gschema.xml',
-    install_dir: join_paths (get_option ('datadir'), 'glib-2.0', 'schemas')
-)
+schemas_conf = configuration_data()
+schemas_conf.set('SCHEMA_ID', application_id)
+schemas_conf.set('SCHEMA_PATH', schema_path)
+schemas_conf.set('GETTEXT_PACKAGE', gettext_package)
 
-# Install Display theme files
-install_data (
-    join_paths ('Themes', 'DisplayUnit.css'),
-    install_dir: join_paths (get_option ('datadir'), meson.project_name (), 'themes')
-)
-install_data (
-    join_paths ('Themes', 'DisplayUnitElementaryLight.css'),
-    install_dir: join_paths (get_option ('datadir'), meson.project_name (), 'themes')
-)
-install_data (
-    join_paths ('Themes', 'DisplayUnitElementaryDark.css'),
-    install_dir: join_paths (get_option ('datadir'), meson.project_name (), 'themes')
-)
-install_data (
-    join_paths ('Themes', 'DisplayUnitAurora.css'),
-    install_dir: join_paths (get_option ('datadir'), meson.project_name (), 'themes')
+configure_file(
+    input: meson.project_name() + '.gschema.xml.in',
+    output: application_id + '.gschema.xml',
+    configuration: schemas_conf,
+    install_dir: join_paths(datadir, 'glib-2.0', 'schemas')
 )
 
 # Install documents
 install_subdir (
-    'docs',
-    install_dir: join_paths (get_option ('datadir'), meson.project_name ())
-)
-
-# Install Intrument Thumbnails
-install_subdir(
-    join_paths('Images', 'Instruments'),
-    install_dir: join_paths (get_option ('datadir'), meson.project_name ())
-)
-
-# Install Metronome/LFO patterns
-install_subdir (
-    join_paths ('MetronomesAndLFO'),
-    install_dir: join_paths (get_option ('datadir'), meson.project_name ())
-)
-
-# Install accompaniment styles
-install_subdir (
-    join_paths ('Styles', 'StyleFiles'),
+    'Docs',
     install_dir: join_paths (get_option ('datadir'), meson.project_name ())
 )

@@ -91,6 +91,11 @@
     <content_attribute id="money-gambling">none</content_attribute>
   </content_rating>
   <releases>
+    <release version="0.1.0" date="2023-03-01">
+      <description>
+        <p>Say Hi to Ensembles first beta 🚀</p>
+      </description>
+    </release>
     <release version="0.0.17" date="2021-12-23">
       <description>
         <p>Fixed:</p>
