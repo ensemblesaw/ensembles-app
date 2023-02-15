@@ -11,8 +11,10 @@ namespace Ensembles.Core.Synthesizer {
 
     public class Synthesizer : Object {
         private SynthInstanceProvider synth_provider;
+        private Analysers.ChordAnalyser chord_analyser;
         construct {
             synth_provider = new SynthInstanceProvider ();
+            chord_analyser = new Analysers.ChordAnalyser ();
         }
     }
 }

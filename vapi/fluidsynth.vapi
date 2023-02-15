@@ -162,6 +162,7 @@ namespace Fluid {
       *
       * Can be bitwise ORed.
       */
+    [Flags]
     [CCode (cname = "enum fluid_iir_filter_flags", has_type_id = false, cprefix = "FLUID_IIR_")]
     public enum IIRFilterFlags {
         /**
@@ -381,13 +382,6 @@ namespace Fluid {
         public double get_cpu_load ();
 
         // Audio Rendering
-        //  [CCode (cname = "fluid_synth_process")]
-        //  private int internal_process (int len, int nfx, float** fx, int nout, [CCode (cname = "out")] float** aout);
-        //  [CCode (cname = "_v_fluid_synth_process")]
-        //  public int process (float[,] fx, float[,] aout) {
-        //      return internal_process (fx.length[1], fx.length[0], fx, aout.length[0], aout);
-        //  }
-
 
         /**
          * Synthesize floating point audio to stereo audio channels
@@ -428,7 +422,7 @@ namespace Fluid {
          * fx[ ((k * synth.count_effects_channels() + j) * 2 + 1) % fx.length ]  = right_buffer_for_effect_channel_j_of_unit_k
          * }}}
          *
-         *  where `0 <= k < synth.link count_effects_groups()` is a zero-based index
+         *  where `0 <= k < synth.count_effects_groups()` is a zero-based index
          * denoting the effects unit and `0 <= j < synth.count_effects_channels()`
          * is a zero-based index denoting the effect channel within unit `k`.
          *
@@ -613,8 +607,49 @@ namespace Fluid {
     [Compact]
     [CCode (cname = "fluid_audio_driver_t", cprefix = "fluid_audio_", free_function = "delete_fluid_audio_driver", has_type_id = false)]
     public class AudioDriver {
+        /**
+         * Create a new audio driver.
+         *
+         * Creates a new audio driver for a given `synth` instance with a defined
+         * set of configuration `settings`. The `settings` instance must be the same
+         * that you have passed to {@link Fluid.AudioDriver.AudioDriver} when
+         * creating the `synth` instance. Otherwise the behaviour is undefined
+         *
+         * **Note:** As soon as an audio driver is created, the `synth` starts
+         * rendering audio. This means that all necessary initialization and
+         * sound-setup should have been completed before calling this function.
+         * Thus, of all object types in use (synth, midi player, sequencer, etc.)
+         * the audio driver should always be the last one to be created and the
+         * first one to be deleted! Also refer to the order of object creation
+         * in the code examples.
+         *
+         * @param settings Configuration settings used to select and create the audio driver.
+         * @param synth Synthesizer instance for which the audio driver is created for.
+         */
         [CCode (cname = "new_fluid_audio_driver")]
         public AudioDriver (Settings settings, Synth synth);
+        /**
+         * Create a new audio driver.
+         *
+         * Like {@link Fluid.AudioDriver.AudioDriver} but allows for custom audio
+         * processing before audio is sent to audio driver. It is the
+         * responsibility of the callback func to render the audio into the
+         * buffers. If func uses a {@link Fluid.Synth} synth, the settings instance must
+         * be the same that you have passed to {@link Fluid.Synth.Synth} when
+         * creating the synth instance. Otherwise the behaviour is undefined.
+         *
+         * **Note:** Not as efficient as {@link Fluid.AudioDriver.AudioDriver}.
+         * As soon as an audio driver is created, a new thread is spawned starting
+         * to make callbacks to func. This means that all necessary sound-setup
+         * should be completed after this point, thus of all object types in use
+         * (synth, midi player, sequencer, etc.) the audio driver should always
+         * be the last one to be created and the first one to be deleted!
+         * Also refer to the order of object creation in the code examples.
+         *
+         * @param settings Configuration settings used to select and create the audio driver.
+         * @param func Function called to fill audio buffers for audio playback
+         * @param User defined data pointer to pass to `func`
+         */
         [CCode (cname = "new_fluid_audio_driver2")]
         public AudioDriver.with_audio_callback (Settings settings, handle_audio_func_t func, void* data);
     }

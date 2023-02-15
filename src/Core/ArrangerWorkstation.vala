@@ -5,6 +5,7 @@
 
 namespace Ensembles.Core {
     public class ArrangerWorkstation : Object {
-        private Synthesizer.Synthesizer sythesizer;
+        private bool input_enabled = true;
+        
     }
 }

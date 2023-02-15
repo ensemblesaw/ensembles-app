@@ -25,6 +25,9 @@ sources = files (
     # Utilities
     'Utils/Utils.vala',
 
+    # Models
+    'Models/Chord.vala',
+
     # Shell
     'Shell/MainWindow.vala',
     'Shell/Layouts/DesktopLayout.vala',
@@ -44,5 +47,6 @@ sources = files (
     'Core/ArrangerWorkstation.vala',
     'Core/Synthesizer/Synthesizer.vala',
     'Core/Synthesizer/SynthInstanceProvider.vala',
-    'Core/Synthesizer/SynthSettingsProvider.vala'
+    'Core/Synthesizer/SynthSettingsProvider.vala',
+    'Core/Analysers/ChordAnalyser.vala'
 )
