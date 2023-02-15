@@ -13,7 +13,7 @@ namespace Ensembles.Core.Synthesizer {
     }
 
     public class SynthManager : Object {
-        private SynthInstanceProvider synth_provider;
+        private SynthInstanceProvider synth_instance_provider;
         private Analysers.ChordAnalyser chord_analyser;
 
         private unowned Fluid.Synth realtime_render_synth;
@@ -21,7 +21,7 @@ namespace Ensembles.Core.Synthesizer {
         private int soundfont_id;
 
         construct {
-            synth_provider = new SynthInstanceProvider ();
+            synth_instance_provider = new SynthInstanceProvider ();
             chord_analyser = new Analysers.ChordAnalyser ();
         }
 
@@ -29,8 +29,8 @@ namespace Ensembles.Core.Synthesizer {
             #if PIPEWIRE_CORE_DRIVER
             Pipewire.init(null, null);
             #endif
-            synth_provider.set_driver_configuration (driver_name, buffer_size);
-            realtime_render_synth = synth_provider.get_instance (SynthType.RENDER);
+            synth_instance_provider.set_driver_configuration (driver_name, buffer_size);
+            realtime_render_synth = synth_instance_provider.get_instance (SynthType.RENDER);
 
             if (Fluid.is_soundfont (soundfont)) {
                 soundfont_id = realtime_render_synth.sfload (soundfont, true);
@@ -86,6 +86,35 @@ namespace Ensembles.Core.Synthesizer {
             // Default pitch for styles
             for (int i = 0; i < 16; i++) {
                 realtime_render_synth.cc (i, 3, 64);
+            }
+        }
+
+        private void edit_master_reverb (int level) {
+            if (realtime_render_synth != null) {
+                realtime_render_synth.set_reverb_group_roomsize (-1, SynthSettingsProvider.reverb_room_size[level]);
+                realtime_render_synth.set_reverb_group_damp (-1, 0.1);
+                realtime_render_synth.set_reverb_group_width (-1, SynthSettingsProvider.reverb_width[level]);
+                realtime_render_synth.set_reverb_group_level (-1, SynthSettingsProvider.reverb_level[level]);
+            }
+        }
+
+        private void set_master_reverb_active (bool active) {
+            if (realtime_render_synth != null) {
+                realtime_render_synth.reverb_on (-1, active);
+            }
+        }
+
+        private void edit_master_chorus (int level) {
+            if (realtime_render_synth != null) {
+                realtime_render_synth.set_chorus_group_depth (-1, SynthSettingsProvider.chorus_depth[level]);
+                realtime_render_synth.set_chorus_group_level (-1, SynthSettingsProvider.chorus_level[level]);
+                realtime_render_synth.set_chorus_group_nr (-1, SynthSettingsProvider.chorus_nr[level]);
+            }
+        }
+
+        private void set_master_chorus_active (bool active) {
+            if (realtime_render_synth != null) {
+                realtime_render_synth.chorus_on (-1, active);
             }
         }
     }
