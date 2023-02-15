@@ -5,6 +5,6 @@
 
 namespace Ensembles.Core {
     public class ArrangerWorkstation : Object {
-
+        private Synthesizer.Synthesizer sythesizer;
     }
 }

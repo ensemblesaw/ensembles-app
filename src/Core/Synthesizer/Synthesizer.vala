@@ -11,16 +11,6 @@ namespace Ensembles.Core.Synthesizer {
         construct {
             rendering_settings = new Fluid.Settings ();
             rendering_synth = new Fluid.Synth (rendering_settings);
-            var x = rendering_synth.get_settings ();
-            string hello;
-            rendering_settings.copystr ("string name", out hello, 5);
-            var typesss = Fluid.Types.STR_TYPE;
-
-            rendering_settings.foreach (null, () => {
-                print("hello");
-            });
-
-            var hint = Fluid.Hint.BOUNDED_BELOW;
         }
     }
 }

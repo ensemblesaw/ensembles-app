@@ -20,15 +20,15 @@
         private Layouts.KioskLayout kiosk_layout;
 
         // Sub-layouts
-        public Layouts.AssignablesBoard assignables_board;
-        public Layouts.InfoDisplay info_display;
-        public Layouts.SynthControlPanel synth_control_panel;
-        public Layouts.VoiceNavPanel voice_nav_panel;
-        public Layouts.MixerBoard mixer_board;
-        public Layouts.SamplerPadsPanel sampler_pads_panel;
-        public Layouts.StyleControlPanel style_control_panel;
-        public Layouts.RegistryPanel registry_panel;
-        public Layouts.Keyboard keyboard;
+        private Layouts.AssignablesBoard assignables_board;
+        private Layouts.InfoDisplay info_display;
+        private Layouts.SynthControlPanel synth_control_panel;
+        private Layouts.VoiceNavPanel voice_nav_panel;
+        private Layouts.MixerBoard mixer_board;
+        private Layouts.SamplerPadsPanel sampler_pads_panel;
+        private Layouts.StyleControlPanel style_control_panel;
+        private Layouts.RegistryPanel registry_panel;
+        private Layouts.Keyboard keyboard;
 
         public MainWindow (Ensembles.Application ensembles_app) {
             Object (

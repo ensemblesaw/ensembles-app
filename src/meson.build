@@ -1,4 +1,4 @@
-# Set path constants
+# Set constants
 conf_data = configuration_data ()
 conf_data.set_quoted('VERSIONSTRING', meson.project_version())
 conf_data.set_quoted('DISPLAYVER', display_version)
@@ -16,11 +16,16 @@ config_header = configure_file (
 sources = files (
     'Main.vala',
     'Application.vala',
+
+    # Services
+    'Services/EventBus.vala',
     'Services/Settings.vala',
     'Services/Theme.vala',
 
+    # Utilities
     'Utils/Utils.vala',
 
+    # Shell
     'Shell/MainWindow.vala',
     'Shell/Layouts/DesktopLayout.vala',
     'Shell/Layouts/MobileLayout.vala',
@@ -35,6 +40,7 @@ sources = files (
     'Shell/Layouts/SynthControlPanel.vala',
     'Shell/Layouts/VoiceNavPanel.vala',
 
+    # Core
     'Core/ArrangerWorkstation.vala',
     'Core/Synthesizer/Synthesizer.vala'
 )

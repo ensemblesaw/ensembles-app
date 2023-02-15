@@ -54,8 +54,8 @@ namespace Ensembles {
             GLib.OptionEntry [] options = new OptionEntry [5];
             options [0] = { "", 0, 0, OptionArg.STRING_ARRAY, ref arg_file, null, "URI" };
             options [1] = { "raw", 0, 0, OptionArg.NONE, ref raw_midi_input, _("Enable Raw MIDI Input"), null };
-            options [2] = { "kiosk", 0, 0, OptionArg.NONE, ref kiosk_mode, _("Only show the display UI"), null };
-            options [3] = { "verbose", 0, 0, OptionArg.NONE, ref verbose, _("Only show the display UI"), null };
+            options [2] = { "kiosk", 0, 0, OptionArg.NONE, ref kiosk_mode, _("Only show the info display"), null };
+            options [3] = { "verbose", 0, 0, OptionArg.NONE, ref verbose, _("Print debug messages to terminal"), null };
             options [4] = { null };
 
             var opt_context = new OptionContext ("actions");

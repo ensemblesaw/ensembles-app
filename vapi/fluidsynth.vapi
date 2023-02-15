@@ -168,6 +168,7 @@ namespace Fluid {
     public class Synth {
         [CCode (cname = "new_fluid_synth")]
         public Synth (Settings settings);
+
         public Synth get_settings ();
         public string error ();
         public double get_cpu_load ();
@@ -535,7 +536,6 @@ namespace Fluid {
         public void set_param1 (int min, int max, float mul, int add);
         public void set_param2 (int min, int max, float mul, int add);
     }
-
 
     [Compact]
     [CCode (cname = "fluid_ladpsa_fx_t", cprefix = "fluid_ladpsa_", has_type_id = false)]
