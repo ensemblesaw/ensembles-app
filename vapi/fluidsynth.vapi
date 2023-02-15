@@ -174,12 +174,13 @@ namespace Fluid {
         public double get_cpu_load ();
 
         // Audio Rendering
-        [CCode (cname = "fluid_synth_process")]
-        private int internal_process (int len, int nfx, float** fx, int nout, [CCode (cname = "out")] float** aout);
-        [CCode (cname = "_v_fluid_synth_process")]
-        public int process (float[,] fx, float[,] aout) {
-            return internal_process (fx.length[1], fx.length[0], fx, aout.length[0], aout);
-        }
+        //  [CCode (cname = "fluid_synth_process")]
+        //  private int internal_process (int len, int nfx, float** fx, int nout, [CCode (cname = "out")] float** aout);
+        //  [CCode (cname = "_v_fluid_synth_process")]
+        //  public int process (float[,] fx, float[,] aout) {
+        //      return internal_process (fx.length[1], fx.length[0], fx, aout.length[0], aout);
+        //  }
+        public int process (int len, float*[] fx, [CCode (cname = "out")] float*[] aout);
 
         // Effect - Chorus
         public int chorus_on (int fx_group, bool on);
@@ -319,7 +320,7 @@ namespace Fluid {
 
         [SimpleType]
         [CCode (cname = "fluid_audio_func_t", has_target = false)]
-        public delegate int handle_audio_func_t (void* data, int len, out float[] fx, [CCode (cname = "out")] out float[] aout);
+        public delegate int handle_audio_func_t (void* data, int len, float*[] fx, [CCode (cname = "out")] float*[] aout);
     }
 
     [CCode (cname = "enum fluid_player_set_tempo_type", has_type_id = false, cprefix = "FLUID_PLAYER_TEMPO_")]

@@ -42,5 +42,7 @@ sources = files (
 
     # Core
     'Core/ArrangerWorkstation.vala',
-    'Core/Synthesizer/Synthesizer.vala'
+    'Core/Synthesizer/Synthesizer.vala',
+    'Core/Synthesizer/SynthInstanceProvider.vala',
+    'Core/Synthesizer/SynthSettingsProvider.vala'
 )
