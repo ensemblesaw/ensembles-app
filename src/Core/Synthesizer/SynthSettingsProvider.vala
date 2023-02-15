@@ -9,26 +9,26 @@
      */
     public class SynthSettingsProvider : Object {
         // Reverb presets
-        public const double reverb_room_size[11] = { 0.0, 0.1, 0.2, 0.3, 0.4, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9};
-        public const double reverb_width[11]     = { 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20 };
-        public const double reverb_level[11]     = { 0, 0.05, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1 };
+        public const double[] reverb_room_size = { 0.0, 0.1, 0.2, 0.3, 0.4, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9};
+        public const double[] reverb_width     = { 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20 };
+        public const double[] reverb_level     = { 0, 0.05, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1 };
 
         // Chorus presets
-        public const double chorus_depth[11] = {0, 4, 4, 4, 6, 10, 20, 25, 30, 35, 40 };
-        public const uint8 chorus_nr[11] = { 0, 2, 3, 3, 4, 5, 6, 8, 10, 16, 20 };
-        public const double chorus_level[11] = { 0, 0.1, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2 };
+        public const double[] chorus_depth = {0, 4, 4, 4, 6, 10, 20, 25, 30, 35, 40 };
+        public const uint8[] chorus_nr = { 0, 2, 3, 3, 4, 5, 6, 8, 10, 16, 20 };
+        public const double[] chorus_level = { 0, 0.1, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2 };
 
         /** Style gain values */
-        public static int16 gain_value[16] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
+        public static int16[] gain_value = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
 
-        private static int16 pan_value[16] = { -65, -65, -65, -65, -65, -65, -65, -65, -65, -65, -65, -65, -65, -65, -65, -65 };
-        private static int16 reverb_value[16] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
-        private static int16 chorus_value[16] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
-        private static int16 pitch_value[16] = { -65, -65, -65, -65, -65, -65, -65, -65, -65, -65, -65, -65, -65, -65, -65, -65 };
-        private static int16 expression_value[16] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
-        private static int16 modulation_value[16] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
-        private static int16 cut_off_value[16] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
-        private static int16 resonance_value[16] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
+        private static int16[] pan_value = { -65, -65, -65, -65, -65, -65, -65, -65, -65, -65, -65, -65, -65, -65, -65, -65 };
+        private static int16[] reverb_value = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
+        private static int16[] chorus_value = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
+        private static int16[] pitch_value = { -65, -65, -65, -65, -65, -65, -65, -65, -65, -65, -65, -65, -65, -65, -65, -65 };
+        private static int16[] expression_value = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
+        private static int16[] modulation_value = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
+        private static int16[] cut_off_value = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
+        private static int16[] resonance_value = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
 
         /** Get Gain value of style channel
           */
