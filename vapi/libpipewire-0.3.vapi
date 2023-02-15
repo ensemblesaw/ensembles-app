@@ -1,6 +1,6 @@
 [CCode(cheader_filename="pipewire/pipewire.h", cprefix = "pw_", lower_case_cprefix="pw_")]
 namespace Pipewire {
-    void init (string[]? argv = null);
+    void init (int* argc = null, string** argv = null);
     void deinit ();
     string get_application_name ();
     string get_prgname ();

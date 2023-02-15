@@ -37,7 +37,7 @@ namespace Ensembles.Core.Synthesizer {
         }
 
         /**
-         * Returns a synthesizer instance for the given use case
+         * Returns a synthesizer instance for the given purpose
          */
         public unowned Fluid.Synth get_instance (SynthType synth_type) {
             switch (synth_type) {

@@ -8,7 +8,7 @@ public static int main (string[] args) {
     Environment.set_prgname (Constants.APP_NAME);
 
     var application = new Ensembles.Application ();
-    application.init ();
+    application.init (args);
 
     return application.run (args);
 }

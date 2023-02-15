@@ -357,7 +357,7 @@ namespace Fluid {
       * create a background audio thread.
       *
       * The API for sending MIDI events is probably
-      * what you expect: {@link noteon}, {@link noteoff()}, ...
+      * what you expect: {@link noteon}, {@link noteoff}, ...
       */
     [Compact]
     [CCode (cname = "fluid_synth_t", cprefix = "fluid_synth_", free_function = "delete_fluid_synth", has_type_id = false)]
@@ -504,6 +504,14 @@ namespace Fluid {
         public int all_notes_off (int chan);
         public int all_sounds_off (int chan);
         public int bank_select (int chan, int bank);
+        /**
+         * Send a MIDI controller event on a MIDI channel.
+         *
+         * @param chan MIDI channel number (0 to MIDI channel count - 1)
+         * @param num MIDI controller number (0-127)
+         * @param val MIDI controller value (0-127)
+         * @return {@link Fluid.OK} on success, {@link Fluid.FAILED} otherwise
+         */
         public int cc (int chan, int num, int val);
         public int channel_pressure (int chan, int val);
         public int get_cc (int chan, int num, out int pval);
@@ -518,6 +526,15 @@ namespace Fluid {
         public int pitch_wheel_sens (int chan, int val);
         public int program_change (int chan, int program);
         public int program_reset ();
+        /**
+         * Select an instrument on a MIDI channel by SoundFont ID, bank and program numbers.
+         *
+         * @param chan MIDI channel number (0 to MIDI channel count - 1)
+         * @param sfont_id ID of a loaded SoundFont
+         * @param bank_num MIDI bank number
+         * @param preset_num MIDI program number
+         * @return {@link Fluid.OK} on success, {@link Fluid.FAILED} otherwise
+         */
         public int program_select (int chan, int sfont_id, int bank_num, int preset_num);
         public int program_select_by_sfont_name (int chan, string sfont_name, int bank_num, int preset_num);
         public int set_gen (int chan, GenType param, float value);
@@ -544,6 +561,26 @@ namespace Fluid {
         public void tuning_iteration_start ();
 
         // Soundfont Management
+        /**
+         * Load a SoundFont file (filename is interpreted by SoundFont loaders).
+         *
+         * The newly loaded SoundFont will be put on top of the SoundFont stack.
+         * Presets are searched starting from the SoundFont on the top of the
+         * stack, working the way down the stack until a preset is found.
+         *
+         * **Note:**     Since FluidSynth 2.2.0 `filename` is treated as an UTF8
+         * encoded string on Windows. FluidSynth will convert it to wide-char
+         * internally and then pass it to `_wfopen()`. Before `FluidSynth 2.2.0`,
+         * filename was treated as ANSI string on Windows. All other platforms
+         * directly pass it to `fopen()` without any conversion
+         * (usually, UTF8 is accepted).
+         *
+         * @param filename File to load
+         * @param reset_presets TRUE to re-assign presets for all MIDI channels
+         * (equivalent to calling {@link Fluid.Synth.program_reset})
+         * @return SoundFont ID on success, {@link Fluid.FAILED} on error
+         */
+        public int sfload (string filename, bool reset_presets);
         public int add_sfont (SoundFont sfont);
         public int get_bank_offset (int sfont_id);
         public SoundFont get_sfont (uint num);

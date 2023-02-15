@@ -92,7 +92,7 @@ namespace Ensembles {
             return 0;
         }
 
-        public void init () {
+        public void init (string[] args) {
             X.init_threads ();
         }
     }
