@@ -4,6 +4,9 @@
  */
 
 namespace Ensembles.Core.Synthesizer {
+    /**
+     * Manages fluid synth instances and driver configurations
+     */
     public class SynthInstanceProvider : Object {
         // These synth instance is used for actually renderring audio
         private Fluid.Synth rendering_synth;
@@ -33,15 +36,56 @@ namespace Ensembles.Core.Synthesizer {
             utility_settings.setint("synth.cpu-cores", 4);
         }
 
-
-        public unowned Fluid.Synth get_fluid_synth_instance (SynthType synth_type) {
+        /**
+         * Returns a synthesizer instance for the given use case
+         */
+        public unowned Fluid.Synth get_instance (SynthType synth_type) {
             switch (synth_type) {
                 case SynthType.RENDER:
                     if (rendering_synth == null)
                     {
                         rendering_synth = new Fluid.Synth (rendering_settings);
-                        rendering_driver = new Fluid.AudioDriver.with_audio_callback (rendering_settings, (synth_data, len, fx, aout) => {
-                            return 0;
+                        rendering_driver = new Fluid.AudioDriver.with_audio_callback (rendering_settings, (synth, len, fx, aout) => {
+                            if (fx == null) {
+                                /* Note that some audio drivers may not provide buffers for effects like
+                                 * reverb and chorus. In this case it's your decision what to do. If you
+                                 * had called process() like in the else branch below, no
+                                 * effects would have been rendered. Instead, you may mix the effects
+                                 * directly into the out buffers. */
+                                if (((Fluid.Synth)synth).process (len, aout, aout) != Fluid.OK) {
+                                    return Fluid.FAILED;
+                                }
+                            } else {
+                                 /* Call the synthesizer to fill the output buffers with its
+                                  * audio output. */
+                                if (((Fluid.Synth)synth).process (len, fx, aout) != Fluid.OK) {
+                                    return Fluid.FAILED;
+                                }
+                            }
+
+                            // All processing is stereo // Repeat processing if the plugin is mono
+                            //  float *out_l_i = aout[0];
+                            //  float *out_r_i = aout[1];
+
+                            //  // Apply effects here
+                            //  float *out_l_o = malloc (len * sizeof (float));
+                            //  float *out_r_o = malloc (len * sizeof (float));
+                            //  int size_l, size_r;
+
+                            //  if (fx_callback != NULL) {
+                            //      /*
+                            //       * The audio buffer data is sent to the plugin system
+                            //       */
+                            //      fx_callback (out_l_i, len, out_r_i, len, &out_l_o, &size_l, &out_r_o, &size_r);
+                            //      for (int k = 0; k < len; k++) {
+                            //          out_l_i[k] = out_l_o[k];
+                            //          out_r_i[k] = out_r_o[k];
+                            //      }
+                            //  }
+                            //  Fluid.free (out_l_o);
+                            //  Fluid.free (out_r_o);
+
+                            return Fluid.OK;
                         }, rendering_synth);
                     }
                     return rendering_synth;
@@ -57,6 +101,9 @@ namespace Ensembles.Core.Synthesizer {
             return utility_synth;
         }
 
+        /**
+         * Sets driver configuration of synthesizer instance;
+         */
         public int set_driver_configuration (string driver_name, double buffer_length_multiplier) {
             switch (driver_name) {
                 case "alsa":
@@ -127,3 +174,31 @@ namespace Ensembles.Core.Synthesizer {
         }
     }
 }
+
+
+/*
+ *  RENDER SYNTH CHANNEL UTILIZATION SCHEMATICS
+ * ----------------------------------------------
+ *
+ *  LFO, Style, Song:
+ *  0 - 15
+ *
+ *  Metronome:
+ *  16
+ *
+ *  MIDI INPUT:
+ *  Voice R1      ~ 17
+ *  Voice R2      ~ 18
+ *  Voice L       ~ 19
+ *  CHORD-EP      ~ 20
+ *  CHORD-Strings ~ 21
+ *  CHORD-Bass    ~ 22
+ *
+ *  CHIMES:
+ *  23
+ *
+ *  RECORDER:
+ *  Voice R2    ~ 24
+ *  Voice L     ~ 25
+ *  All tracks  ~ 26 - 63
+ */

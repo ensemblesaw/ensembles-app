@@ -5,8 +5,8 @@
 
 namespace Ensembles.Core.Synthesizer {
     public enum SynthType {
-        RENDER,
-        UTILITY
+        RENDER,    // Whenever you are supposed to render audio
+        UTILITY    // For automations and analysis and doesn't require rendering
     }
 
     public class Synthesizer : Object {
