@@ -24,6 +24,7 @@ namespace Ensembles {
         public static bool verbose = false;
 
         public static Shell.MainWindow main_window;
+        public static Core.ArrangerWorkstation arranger_workstation;
 
         construct {
             flags |= ApplicationFlags.HANDLES_OPEN | ApplicationFlags.HANDLES_COMMAND_LINE;
@@ -32,6 +33,8 @@ namespace Ensembles {
         }
 
         protected override void activate () {
+            arranger_workstation = new Core.ArrangerWorkstation ();
+
             Services.Theme.init_theme ();
 
             main_window = new Shell.MainWindow (this);
@@ -43,7 +46,7 @@ namespace Ensembles {
             }
 
             if (Constants.PROFILE == "development") {
-
+                arranger_workstation.sound_test ();
             }
         }
 

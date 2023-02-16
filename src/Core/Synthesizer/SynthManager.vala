@@ -13,6 +13,8 @@ namespace Ensembles.Core.Synthesizer {
     }
 
     public class SynthManager : Object {
+        private bool input_enabled = true;
+
         private SynthInstanceProvider synth_instance_provider;
         private Analysers.ChordAnalyser chord_analyser;
 
@@ -115,6 +117,14 @@ namespace Ensembles.Core.Synthesizer {
         private void set_master_chorus_active (bool active) {
             if (realtime_render_synth != null) {
                 realtime_render_synth.chorus_on (-1, active);
+            }
+        }
+
+        public void send_notes_realtime (int channel, int key, int velocity, bool on) {
+            if (on) {
+                realtime_render_synth.noteon (channel, key, velocity);
+            } else {
+                realtime_render_synth.noteoff (channel, key);
             }
         }
     }

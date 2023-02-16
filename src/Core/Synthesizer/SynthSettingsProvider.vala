@@ -7,7 +7,7 @@
     /**
      * Provides Synth settings, presets and variables
      */
-    public class SynthSettingsProvider : Object {
+    public class SynthSettingsProvider {
         // Reverb presets
         public const double[] reverb_room_size = { 0.0, 0.1, 0.2, 0.3, 0.4, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9};
         public const double[] reverb_width     = { 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20 };
@@ -31,19 +31,19 @@
         private static int16[] resonance_value = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
 
         /** Get Gain value of style channel
-          */
+         */
         public static int16 get_gain_value (uint8 channel) {
             return gain_value[channel];
         }
 
         /** Set Gain value of style channel
-          */
+         */
          public static void set_gain_value (uint8 channel, uint8 value) {
             gain_value[channel] = value;
         }
 
         /** Gets the modulator value of style channel by modulator number
-          */
+         */
         public static int16 get_mod_buffer_value (uint8 modulator, uint8 channel) {
             switch (modulator)
             {
@@ -68,7 +68,7 @@
         }
 
         /** Sets the modulator value of style channel by modulator number
-          */
+         */
         public static void set_mod_buffer_value (uint8 modulator, uint8 channel, int16 value) {
             switch (modulator)
             {
