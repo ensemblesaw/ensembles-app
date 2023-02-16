@@ -27,6 +27,9 @@ sources = files (
 
     # Models
     'Models/Chord.vala',
+    'Models/Registry.vala',
+    'Models/Voice.vala',
+    'Models/Style.vala',
 
     # Shell
     'Shell/MainWindow.vala',

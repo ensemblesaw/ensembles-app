@@ -16,7 +16,7 @@ namespace Ensembles.Core {
         public string sf_path = Constants.SF2DATADIR + "/EnsemblesGM.sf2";
 
         construct {
-            print (sf_path);
+            Utils.Console.log ("Loading Soundfont from %s".printf (sf_path), Utils.Console.LogLevel.TRACE);
             synth_manager = new Synthesizer.SynthManager (sf_path, "alsa", 0.1);
         }
 
