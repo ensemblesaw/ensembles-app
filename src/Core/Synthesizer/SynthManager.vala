@@ -27,7 +27,7 @@ namespace Ensembles.Core.Synthesizer {
             chord_analyser = new Analysers.ChordAnalyser ();
         }
 
-        public SynthManager (string soundfont, string driver_name, double buffer_size) {
+        public SynthManager (string soundfont, string driver_name, double buffer_size) throws FluidException {
             #if PIPEWIRE_CORE_DRIVER
             Pipewire.init(null, null);
             #endif
@@ -49,6 +49,8 @@ namespace Ensembles.Core.Synthesizer {
 
                 // Initialize metronome voice
                 realtime_render_synth.program_select (16, soundfont_id, 128, 0);
+            } else {
+                throw new FluidException.INVALID_SF (_("SoundFont from path: %s is invalid"), soundfont);
             }
 
             set_synth_defaults ();

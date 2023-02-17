@@ -33,17 +33,17 @@ namespace Ensembles {
         }
 
         protected override void activate () {
-            Utils.Console.log ("Initializing Arranger Workstation", Utils.Console.LogLevel.TRACE);
+            Console.log ("Initializing Arranger Workstation", Console.LogLevel.TRACE);
             arranger_workstation = new Core.ArrangerWorkstation ();
 
-            Utils.Console.log ("Initializing GUI Theme", Utils.Console.LogLevel.TRACE);
+            Console.log ("Initializing GUI Theme", Console.LogLevel.TRACE);
             Services.Theme.init_theme ();
 
-            Utils.Console.log ("Initializing Main Window", Utils.Console.LogLevel.TRACE);
+            Console.log ("Initializing Main Window", Console.LogLevel.TRACE);
             main_window = new Shell.MainWindow (this);
             this.add_window (main_window);
             main_window.show_ui ();
-            Utils.Console.log ("Initialization Complete!", Utils.Console.LogLevel.SUCCESS);
+            Console.log ("Initialization Complete!", Console.LogLevel.SUCCESS);
 
             if (settings.version != Constants.VERSION) {
                 settings.version = Constants.VERSION;
@@ -75,7 +75,7 @@ namespace Ensembles {
             }
 
             if (verbose || raw_midi_input || kiosk_mode) {
-                Utils.Console.get_console_header ();
+                Console.get_console_header ();
             }
 
             if (raw_midi_input) {

@@ -23,7 +23,8 @@ sources = files (
     'Services/Theme.vala',
 
     # Utilities
-    'Utils/Utils.vala',
+    'Utils/Console.vala',
+    'Utils/ErrorDomains.vala',
 
     # Models
     'Models/Chord.vala',

@@ -1,4 +1,4 @@
-namespace Ensembles.Utils {
+namespace Ensembles {
     public class Console {
         private const string RED =  "\x1B[31m";
         private const string GRN =  "\x1B[32m";
@@ -39,6 +39,7 @@ namespace Ensembles.Utils {
             switch (log_level) {
                 case SUCCESS:
                 if (Application.verbose) {
+                    print("\b");
                     print ("%s▎%s%sSUCCESS %s[%s%s%s]: %s\n", GRN, WHT, BOLD, RESET, BLU, date_time.to_string (), RESET, message);
                 }
                 GLib.log (Constants.APP_NAME, LogLevelFlags.LEVEL_INFO, message);

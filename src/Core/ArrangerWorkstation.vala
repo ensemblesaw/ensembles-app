@@ -16,8 +16,12 @@ namespace Ensembles.Core {
         public string sf_path = Constants.SF2DATADIR + "/EnsemblesGM.sf2";
 
         construct {
-            Utils.Console.log ("Loading Soundfont from %s".printf (sf_path), Utils.Console.LogLevel.TRACE);
-            synth_manager = new Synthesizer.SynthManager (sf_path, "alsa", 0.1);
+            Console.log ("Loading Soundfont from %s".printf (sf_path), Console.LogLevel.TRACE);
+            try {
+                synth_manager = new Synthesizer.SynthManager (sf_path, "alsa", 0.1);
+            } catch (FluidException e) {
+                Console.log (e.message, Console.LogLevel.ERROR);
+            }
         }
 
         public void sound_test () {
