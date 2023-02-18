@@ -32,6 +32,7 @@ sources = files (
     'Models/Registry.vala',
     'Models/Voice.vala',
     'Models/Style.vala',
+    'Models/MIDIMarker.vala',
 
     # Shell
     'Shell/MainWindow.vala',
@@ -54,5 +55,7 @@ sources = files (
     'Core/Synthesizer/SynthProvider.vala',
     'Core/Synthesizer/SynthSettingsPresets.vala',
     'Core/Analysers/ChordAnalyser.vala',
+    'Core/Analysers/StyleAnalyser.vala',
     'Core/MIDIPlayers/StyleEngine.vala'
+
 )
