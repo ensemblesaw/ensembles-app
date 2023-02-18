@@ -13,5 +13,10 @@ namespace Ensembles.Services {
             owned get { return get_string ("version"); }
             set { set_string ("version", value); }
         }
+
+        //  public uint8 tempo {
+        //      owned get { return (uint8)get_uint ("tempo"); }
+        //      set { set_uint ("tempo", value); }
+        //  }
     }
 }

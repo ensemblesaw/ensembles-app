@@ -363,7 +363,7 @@ namespace Fluid {
     [CCode (cname = "fluid_synth_t", cprefix = "fluid_synth_", free_function = "delete_fluid_synth", has_type_id = false)]
     public class Synth {
         [CCode (cname = "new_fluid_synth")]
-        public Synth (Settings settings);
+        public Synth (Settings? settings);
 
         public Synth get_settings ();
         /**
@@ -581,18 +581,18 @@ namespace Fluid {
          * @return SoundFont ID on success, {@link Fluid.FAILED} on error
          */
         public int sfload (string filename, bool reset_presets);
-        public int add_sfont (SoundFont sfont);
+        public int add_sfont (SoundFont? sfont);
         public int get_bank_offset (int sfont_id);
         public SoundFont get_sfont (uint num);
         public SoundFont get_sfont_by_id (int id);
         public SoundFont get_sfont_by_name (string name);
-        public int remove_sfont (SoundFont sfont);
+        public int remove_sfont (SoundFont? sfont);
         public int set_bank_offset (int sfont_id, int offset);
         public int sfcount ();
         public int sfreload (int id);
         public int sfunload (int id, bool reset_presets);
 
-        public int handle_midi_event (MIDIEvent event);
+        public int handle_midi_event (MIDIEvent? event);
     }
 
     /**
@@ -664,7 +664,7 @@ namespace Fluid {
          * @param synth Synthesizer instance for which the audio driver is created for.
          */
         [CCode (cname = "new_fluid_audio_driver")]
-        public AudioDriver (Settings settings, Synth synth);
+        public AudioDriver (Settings? settings, Synth? synth);
         /**
          * Create a new audio driver.
          *
@@ -688,7 +688,7 @@ namespace Fluid {
          * @param User defined data pointer to pass to `func`
          */
         [CCode (cname = "new_fluid_audio_driver2")]
-        public AudioDriver.with_audio_callback (Settings settings, handle_audio_func_t func, void* data);
+        public AudioDriver.with_audio_callback (Settings? settings, handle_audio_func_t func, void* data);
     }
 
     /**
@@ -698,7 +698,7 @@ namespace Fluid {
     [CCode (cname = "fluid_player_t", cprefix = "fluid_player_", free_function = "delete_fluid_player", has_type_id = false)]
     public class Player {
         [CCode (cname = "new_fluid_player")]
-        public Player (Synth synth);
+        public Player (Synth? synth);
 
         public int bpm {
             get {

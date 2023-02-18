@@ -5,33 +5,34 @@
 
 namespace Ensembles.Shell.Layouts {
     public class DesktopLayout : Gtk.Grid {
-        private unowned Layouts.AssignablesBoard assignables_board;
-        private unowned Layouts.InfoDisplay info_display;
-        private unowned Layouts.SynthControlPanel synth_control_panel;
-        private unowned Layouts.VoiceNavPanel voice_nav_panel;
-        private unowned Layouts.MixerBoard mixer_board;
-        private unowned Layouts.SamplerPadsPanel sampler_pads_panel;
-        private unowned Layouts.StyleControlPanel style_control_panel;
-        private unowned Layouts.RegistryPanel registry_panel;
-        private unowned Layouts.Keyboard keyboard;
+        private weak Layouts.AssignablesBoard assignables_board;
+        private weak Layouts.InfoDisplay info_display;
+        private weak Layouts.SynthControlPanel synth_control_panel;
+        private weak Layouts.VoiceNavPanel voice_nav_panel;
+        private weak Layouts.MixerBoard mixer_board;
+        private weak Layouts.SamplerPadsPanel sampler_pads_panel;
+        private weak Layouts.StyleControlPanel style_control_panel;
+        private weak Layouts.RegistryPanel registry_panel;
+        private weak Layouts.Keyboard keyboard;
 
         private Gtk.CenterBox top_row;
         private Gtk.CenterBox middle_row;
         private Gtk.Grid bottom_row;
+        private Gtk.Revealer bottom_row_revealer;
 
         construct {
             build_ui ();
         }
 
-        public DesktopLayout (Layouts.AssignablesBoard assignables_board,
-            Layouts.InfoDisplay info_display,
-            Layouts.SynthControlPanel synth_control_panel,
-            Layouts.VoiceNavPanel voice_nav_panel,
-            Layouts.MixerBoard mixer_board,
-            Layouts.SamplerPadsPanel sampler_pads_panel,
-            Layouts.StyleControlPanel style_control_panel,
-            Layouts.RegistryPanel registry_panel,
-            Layouts.Keyboard keyboard) {
+        public DesktopLayout (Layouts.AssignablesBoard? assignables_board,
+            Layouts.InfoDisplay? info_display,
+            Layouts.SynthControlPanel? synth_control_panel,
+            Layouts.VoiceNavPanel? voice_nav_panel,
+            Layouts.MixerBoard? mixer_board,
+            Layouts.SamplerPadsPanel? sampler_pads_panel,
+            Layouts.StyleControlPanel? style_control_panel,
+            Layouts.RegistryPanel? registry_panel,
+            Layouts.Keyboard? keyboard) {
             Object (
                 width_request: 812,
                 height_request: 428,
@@ -63,7 +64,7 @@ namespace Ensembles.Shell.Layouts {
             attach (middle_row, 0, 1);
 
 
-            var bottom_row_revealer = new Gtk.Revealer () {
+            bottom_row_revealer = new Gtk.Revealer () {
                 reveal_child = true,
                 hexpand = true
             };

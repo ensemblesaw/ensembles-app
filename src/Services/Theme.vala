@@ -10,58 +10,6 @@ namespace Ensembles.Services {
 
         public static string theme_color = "blueberry";
 
-        private const string COMPLIMENTARY_ACCENT_COLORS =
-        "
-        @define-color accent_color_complimentary %s;
-        @define-color accent_color_complimentary_alternate %s;
-        ";
-
-        private static string COMPLIMENTARY_ACCENT_COLORS_STRAWBERRY;
-        private static string COMPLIMENTARY_ACCENT_COLORS_ORANGE;
-        private static string COMPLIMENTARY_ACCENT_COLORS_BANANA;
-        private static string COMPLIMENTARY_ACCENT_COLORS_LIME;
-        private static string COMPLIMENTARY_ACCENT_COLORS_MINT;
-        private static string COMPLIMENTARY_ACCENT_COLORS_BLUEBERRY;
-        private static string COMPLIMENTARY_ACCENT_COLORS_BUBBLEGUM;
-        private static string COMPLIMENTARY_ACCENT_COLORS_COCOA;
-        private static string COMPLIMENTARY_ACCENT_COLORS_GRAPE;
-        private static string COMPLIMENTARY_ACCENT_COLORS_SILVER;
-        private static string COMPLIMENTARY_ACCENT_COLORS_SLATE;
-
-        private static void init_accent_colors () {
-            COMPLIMENTARY_ACCENT_COLORS_STRAWBERRY =
-            COMPLIMENTARY_ACCENT_COLORS.printf ("@BANANA_500", "@ORANGE_500");
-
-            COMPLIMENTARY_ACCENT_COLORS_ORANGE =
-            COMPLIMENTARY_ACCENT_COLORS.printf ("@BLUEBERRY_500", "@MINT_500");
-
-            COMPLIMENTARY_ACCENT_COLORS_BANANA =
-            COMPLIMENTARY_ACCENT_COLORS.printf ("@MINT_500", "@ORANGE_500");
-
-            COMPLIMENTARY_ACCENT_COLORS_LIME =
-            COMPLIMENTARY_ACCENT_COLORS.printf ("@BANANA_500", "@BUBBLEGUM_500");
-
-            COMPLIMENTARY_ACCENT_COLORS_MINT =
-            COMPLIMENTARY_ACCENT_COLORS.printf ("@BANANA_500", "@SILVER_500");
-
-            COMPLIMENTARY_ACCENT_COLORS_BLUEBERRY =
-            COMPLIMENTARY_ACCENT_COLORS.printf ("@BANANA_500", "@MINT_500");
-
-            COMPLIMENTARY_ACCENT_COLORS_BUBBLEGUM =
-            COMPLIMENTARY_ACCENT_COLORS.printf ("@MINT_500", "@GRAPE_500");
-
-            COMPLIMENTARY_ACCENT_COLORS_COCOA =
-            COMPLIMENTARY_ACCENT_COLORS.printf ("@BANANA_500", "@MINT_500");
-
-            COMPLIMENTARY_ACCENT_COLORS_GRAPE =
-            COMPLIMENTARY_ACCENT_COLORS.printf ("@BANANA_500", "@BUBBLEGUM_500");
-
-            COMPLIMENTARY_ACCENT_COLORS_SILVER =
-            COMPLIMENTARY_ACCENT_COLORS.printf ("@BLUEBERRY_300", "@STRAWBERRY_300");
-
-            COMPLIMENTARY_ACCENT_COLORS_SLATE =
-            COMPLIMENTARY_ACCENT_COLORS.printf ("@MINT_500", "@BANANA_500");
-        }
         public static void init_theme () {
             GLib.Value theme_value = GLib.Value (GLib.Type.STRING);
             Gtk.Settings.get_default ().get_property ("gtk-theme-name", ref theme_value);
@@ -86,44 +34,8 @@ namespace Ensembles.Services {
 
             // Set colors that are complimentary to the accent color for special cases
             if (complimentary_css_provider == null) {
-                init_accent_colors ();
                 complimentary_css_provider = new Gtk.CssProvider ();
-                switch (theme_color) {
-                    case "strawberry":
-                        complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS_STRAWBERRY.data);
-                        break;
-                    case "orange":
-                        complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS_ORANGE.data);
-                        break;
-                    case "banana":
-                        complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS_BANANA.data);
-                        break;
-                    case "lime":
-                        complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS_LIME.data);
-                        break;
-                    case "mint":
-                        complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS_MINT.data);
-                        break;
-                    case "blueberry":
-                        complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS_BLUEBERRY.data);
-                        break;
-                    case "grape":
-                        complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS_GRAPE.data);
-                        break;
-                    case "bubblegum":
-                        complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS_BUBBLEGUM.data);
-                        break;
-                    case "cocoa":
-                        complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS_COCOA.data);
-                        break;
-                    case "silver":
-                        complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS_SILVER.data);
-                        break;
-                    case "slate":
-                    case "black":
-                        complimentary_css_provider.load_from_data (COMPLIMENTARY_ACCENT_COLORS_SLATE.data);
-                        break;
-                }
+                complimentary_css_provider.load_from_data (AccentColors.get_complementary (theme_color));
 
                 Gtk.StyleContext.add_provider_for_display (
                     Gdk.Display.get_default (),

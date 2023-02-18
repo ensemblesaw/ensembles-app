@@ -5,15 +5,15 @@
 
 namespace Ensembles.Shell.Layouts {
     public class MobileLayout : Gtk.Grid {
-        private unowned Layouts.AssignablesBoard assignables_board;
-        private unowned Layouts.InfoDisplay info_display;
-        private unowned Layouts.SynthControlPanel synth_control_panel;
-        private unowned Layouts.VoiceNavPanel voice_nav_panel;
-        private unowned Layouts.MixerBoard mixer_board;
-        private unowned Layouts.SamplerPadsPanel sampler_pads_panel;
-        private unowned Layouts.StyleControlPanel style_control_panel;
-        private unowned Layouts.RegistryPanel registry_panel;
-        private unowned Layouts.Keyboard keyboard;
+        private weak Layouts.AssignablesBoard assignables_board;
+        private weak Layouts.InfoDisplay info_display;
+        private weak Layouts.SynthControlPanel synth_control_panel;
+        private weak Layouts.VoiceNavPanel voice_nav_panel;
+        private weak Layouts.MixerBoard mixer_board;
+        private weak Layouts.SamplerPadsPanel sampler_pads_panel;
+        private weak Layouts.StyleControlPanel style_control_panel;
+        private weak Layouts.RegistryPanel registry_panel;
+        private weak Layouts.Keyboard keyboard;
 
         private Gtk.Grid infoview;
         private Gtk.Grid keyboardview;
@@ -22,19 +22,24 @@ namespace Ensembles.Shell.Layouts {
         private Adw.TabBar tab_bar;
         private Adw.TabView tab_view;
 
+        private Adw.TabPage infopage;
+        private Adw.TabPage keyboardpage;
+
+        private Gtk.ScrolledWindow scrolled_window;
+
         construct {
             build_ui ();
         }
 
-        public MobileLayout (Layouts.AssignablesBoard assignables_board,
-            Layouts.InfoDisplay info_display,
-            Layouts.SynthControlPanel synth_control_panel,
-            Layouts.VoiceNavPanel voice_nav_panel,
-            Layouts.MixerBoard mixer_board,
-            Layouts.SamplerPadsPanel sampler_pads_panel,
-            Layouts.StyleControlPanel style_control_panel,
-            Layouts.RegistryPanel registry_panel,
-            Layouts.Keyboard keyboard) {
+        public MobileLayout (Layouts.AssignablesBoard? assignables_board,
+            Layouts.InfoDisplay? info_display,
+            Layouts.SynthControlPanel? synth_control_panel,
+            Layouts.VoiceNavPanel? voice_nav_panel,
+            Layouts.MixerBoard? mixer_board,
+            Layouts.SamplerPadsPanel? sampler_pads_panel,
+            Layouts.StyleControlPanel? style_control_panel,
+            Layouts.RegistryPanel? registry_panel,
+            Layouts.Keyboard? keyboard) {
             Object (
                 width_request: 812,
                 height_request: 375
@@ -61,14 +66,14 @@ namespace Ensembles.Shell.Layouts {
             attach (tab_bar, 0, 0);
 
             infoview = new Gtk.Grid ();
-            var infopage = tab_view.append (infoview);
+            infopage = tab_view.append (infoview);
             infopage.title = _("Info Display");
 
             keyboardview = new Gtk.Grid ();
-            var keyboardpage = tab_view.append (keyboardview);
+            keyboardpage = tab_view.append (keyboardview);
             keyboardpage.title = _("Keyboard");
 
-            var scrolled_window = new Gtk.ScrolledWindow ();
+            scrolled_window = new Gtk.ScrolledWindow ();
             keyboardview.attach (scrolled_window, 0, 0);
             style_registry_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
             scrolled_window.set_child (style_registry_box);

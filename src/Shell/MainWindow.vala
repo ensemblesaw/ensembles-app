@@ -30,7 +30,7 @@
         private Layouts.RegistryPanel registry_panel;
         private Layouts.Keyboard keyboard;
 
-        public MainWindow (Ensembles.Application ensembles_app) {
+        public MainWindow (Ensembles.Application? ensembles_app) {
             Object (
                 application: ensembles_app,
                 icon_name: Constants.APP_ID,
@@ -114,7 +114,7 @@
             ((Gtk.Widget)this).add_controller (event_controller_key);
 
             event_controller_key.key_pressed.connect ((keyval, keycode, state) => {
-                print("key: %u\n", keyval);
+                Console.log ("key: %u".printf (keyval));
 
                 return false;
             });

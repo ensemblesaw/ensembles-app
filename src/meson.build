@@ -25,6 +25,7 @@ sources = files (
     # Utilities
     'Utils/Console.vala',
     'Utils/ErrorDomains.vala',
+    'Utils/AccentColors.vala',
 
     # Models
     'Models/Chord.vala',
@@ -49,8 +50,9 @@ sources = files (
 
     # Core
     'Core/ArrangerWorkstation.vala',
-    'Core/Synthesizer/SynthManager.vala',
-    'Core/Synthesizer/SynthInstanceProvider.vala',
-    'Core/Synthesizer/SynthSettingsProvider.vala',
-    'Core/Analysers/ChordAnalyser.vala'
+    'Core/Synthesizer/Synthesizer.vala',
+    'Core/Synthesizer/SynthProvider.vala',
+    'Core/Synthesizer/SynthSettingsPresets.vala',
+    'Core/Analysers/ChordAnalyser.vala',
+    'Core/MIDIPlayers/StyleEngine.vala'
 )

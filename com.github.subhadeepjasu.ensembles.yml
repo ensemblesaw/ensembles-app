@@ -17,6 +17,7 @@ finish-args:
   - '--talk-name=org.gnome.SettingsDaemon.MediaKeys'
   # For PipeWire
   - '--filesystem=xdg-run/pipewire-0'
+  - '--system-talk-name=org.freedesktop.RealtimeKit1'
 modules:
   # Adds support for lv2 virtual instruments and effects plugins
   - name: lv2

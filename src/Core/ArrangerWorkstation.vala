@@ -5,7 +5,9 @@
 
 namespace Ensembles.Core {
     public class ArrangerWorkstation : Object {
-        private Synthesizer.SynthManager synth_manager;
+        private Synthesizer.SynthProvider synth_provider;
+        private Synthesizer.Synthesizer synthesizer;
+        private MIDIPlayers.StyleEngine style_engine;
 
         // Path constants
         /*
@@ -13,26 +15,20 @@ namespace Ensembles.Core {
          * sf_loc is location of the actual soundfont file which is also like the sound database
          * sf_schema_loc is the location for the csv file that specifies the categorization of the sounds
         */
-        public string sf_path = Constants.SF2DATADIR + "/EnsemblesGM.sf2";
+        private const string SF_PATH = Constants.SF2DATADIR + "/EnsemblesGM.sf2";
 
         construct {
-            Console.log ("Loading Soundfont from %s".printf (sf_path), Console.LogLevel.TRACE);
+            #if PIPEWIRE_CORE_DRIVER
+            Pipewire.init(null, null);
+            #endif
+            synth_provider = new Synthesizer.SynthProvider ();
+            synth_provider.init_driver ("alsa", 0.2);
+            Console.log ("Loading Soundfont from %s".printf (SF_PATH));
             try {
-                synth_manager = new Synthesizer.SynthManager (sf_path, "alsa", 0.1);
+                synthesizer = new Synthesizer.Synthesizer (synth_provider, SF_PATH);
             } catch (FluidException e) {
                 Console.log (e.message, Console.LogLevel.ERROR);
             }
         }
-
-        public void sound_test () {
-            GLib.Timeout.add (1000, () => {
-                print ("playing\n");
-                synth_manager.send_notes_realtime (17, 72, 127, true);
-                synth_manager.send_notes_realtime (17, 72, 127, false);
-                return true;
-            });
-        }
-
-
     }
 }

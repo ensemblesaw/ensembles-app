@@ -18,7 +18,7 @@ namespace Ensembles {
             }
         }
 
-        string[] ? arg_file = null;
+        private string[] ? arg_file = null;
         public static bool raw_midi_input = false;
         public static bool kiosk_mode = false;
         public static bool verbose = false;
@@ -33,13 +33,13 @@ namespace Ensembles {
         }
 
         protected override void activate () {
-            Console.log ("Initializing Arranger Workstation", Console.LogLevel.TRACE);
+            Console.log ("Initializing Arranger Workstation");
             arranger_workstation = new Core.ArrangerWorkstation ();
 
-            Console.log ("Initializing GUI Theme", Console.LogLevel.TRACE);
+            Console.log ("Initializing GUI Theme");
             Services.Theme.init_theme ();
 
-            Console.log ("Initializing Main Window", Console.LogLevel.TRACE);
+            Console.log ("Initializing Main Window");
             main_window = new Shell.MainWindow (this);
             this.add_window (main_window);
             main_window.show_ui ();
@@ -50,7 +50,7 @@ namespace Ensembles {
             }
 
             if (Constants.PROFILE == "development") {
-                arranger_workstation.sound_test ();
+
             }
         }
 
