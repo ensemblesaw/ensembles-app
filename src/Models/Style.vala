@@ -19,16 +19,29 @@ namespace Ensembles.Models {
         public StylePart[] parts;
 
         public string to_string () {
-            string output = "Style Object ->\n╭──────────────────────────────────────────────────────────\n";
-            output += "│ \x1B[1m%s\x1B[0m, Genre: %s\n".printf (name, genre);
-            output += "│ Tempo: %u BPM, Time Signature: %u/%u\n".printf (tempo, time_signature_n, time_signature_d);
-            output += "│ " + copyright_notice + "\n";
-            output += "├──────────────────────────────────────────────────────────╮\n";
-            output += "│                       STYLE  PARTS                       │\n";
+            string output = "Style Object ->\n╭──────────────────────────────────────────────────────────╮\n";
+            output += "│ \x1B[1m%s\x1B[0m, Genre: %s".printf (name, genre);
+            for (uint8 i = 0; i < 48 - (name.length + genre.length); i++) {output += " ";}
+            output += "│\n";
+            output += "│ Tempo: %u BPM, Time Signature: %u/%u".printf (tempo, time_signature_n, time_signature_d);
+            for (uint8 i = 0;
+                i < 27 - (tempo.to_string ().length + time_signature_n.to_string ().length
+                + time_signature_d.to_string ().length);
+                i++)
+            {output += " ";}
+            output += "│\n";
+            output += "│ " + copyright_notice;
+            if (copyright_notice.length < 60) {
+                for (uint8 i = 0;
+                    i < 57 - copyright_notice.length;
+                    i++)
+                {output += " ";}
+            }
+            output += "│\n";
             output += "┢━━━━━━━━━━┯━━━━━━━━━━━┯━━━━━━━━━━━┯━━━━━━━━━━━┯━━━━━━━━━━━┪\n";
             output += "┃PART      │     1     │     2     │     3     │     4     ┃\n";
             output += "┡┅┅┅┅┅┅┅┅┅┅┿┅┅┅┅┅┅┅┅┅┅┅┿┅┅┅┅┅┅┅┅┅┅┅┿┅┅┅┅┅┅┅┅┅┅┅┿┅┅┅┅┅┅┅┅┅┅┅┩\n";
-            output += "│INTRO     │  %07u  │  %07u  │  %07u  │           │\n".printf (
+            output += "│INTRO     │  %07u  │  %07u  │  %07u  │    N/A    │\n".printf (
                 2 * parts[0].time_stamp, 2 * parts[1].time_stamp, 2 * parts[2].time_stamp
             );
             output += "│VARIATION │  %07u  │  %07u  │  %07u  │  %07u  │\n".printf (
@@ -37,13 +50,13 @@ namespace Ensembles.Models {
             output += "│FILL-IN   │  %07u  │  %07u  │  %07u  │  %07u  │\n".printf (
                 2 * parts[5].time_stamp, 2 * parts[7].time_stamp, 2 * parts[9].time_stamp, 2 * parts[11].time_stamp
             );
-            output += "│BREAK     │  %07u  │           │           │           │\n".printf (
+            output += "│BREAK     │  %07u  │    N/A    │    N/A    │    N/A    │\n".printf (
                 2 * parts[3].time_stamp
             );
-            output += "│ENDING    │  %07u  │  %07u  │  %07u  │           │\n".printf (
+            output += "│ENDING    │  %07u  │  %07u  │  %07u  │    N/A    │\n".printf (
                 2 * parts[12].time_stamp, 2 * parts[14].time_stamp, 2 * parts[16].time_stamp
             );
-            output += "│EOS       │  %07u  │  %07u  │  %07u  │           │\n".printf (
+            output += "│EOS       │  %07u  │  %07u  │  %07u  │    N/A    │\n".printf (
                 2 * parts[13].time_stamp, 2 * parts[15].time_stamp, 2 * parts[17].time_stamp
             );
             output += "╰──────────┴───────────┴───────────┴───────────┴───────────╯\n";

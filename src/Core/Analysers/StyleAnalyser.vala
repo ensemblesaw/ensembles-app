@@ -131,27 +131,25 @@ namespace Ensembles.Core.Analysers {
             }
         }
 
-        private uint32 get_variable_length_value (uint8[] buffer, uint64 offset) {
-            uint32 value = buffer[offset];
+        //  private uint32 get_variable_length_value (uint8[] buffer, uint64 offset) {
+        //      uint32 value = buffer[offset];
 
-            uint8 c = 0xFF;
-            uint i = 0;
+        //      uint8 c = 0xFF;
+        //      uint i = 0;
 
-            if ((value & 0x80) > 0) {
-                value &= 0x7F;
-                print ("value: %u\n", value);
-                do {
-                    c = buffer[offset + (i++)];
-                    value = (value << 7) | (c & 0x7F);
-                } while ((c & 0x80) > 0);
-            }
+        //      if ((value & 0x80) > 0) {
+        //          value &= 0x7F;
+        //          do {
+        //              c = buffer[offset + (i++)];
+        //              value = (value << 7) | (c & 0x7F);
+        //          } while ((c & 0x80) > 0);
+        //      }
 
-            return value;
-        }
+        //      return value;
+        //  }
 
         private uint32 get_tempo (uint8[] buffer, uint64 offset) {
             uint8 len = buffer[offset];
-            print ("le: %u\n", len);
 
             uint32 tempo = 0;
             for (uint8 i = 1; i <= len; i++) {
