@@ -12,15 +12,18 @@ namespace Ensembles.Core.Analysers {
         private uint8[] copyright_notice;
         private uint8 time_signature_n;
         private uint8 time_signature_d;
-        private MIDIMarker[] markers;
+        private uint32 tempo_ms;
+        private StylePart[] parts;
 
         public StyleAnalyser (string enstl_path) {
             this.enstl_path = enstl_path;
 
             var file_tokens = enstl_path.split ("/");
             string file_name = file_tokens[file_tokens.length - 1];
-            genre = file_name.substring (0, file_name.index_of_char ('@'));
-            name = file_name.substring (file_name.index_of_char ('@') + 1, file_name.index_of_char ('.'));
+            int file_name_delimit_index = file_name.index_of_char ('@');
+            genre = file_name.substring (0, file_name_delimit_index);
+            name = file_name.substring (file_name_delimit_index + 1,
+                file_name.index_of_char ('.') - file_name_delimit_index - 1).replace ("_", " ");
 
             var style_file = File.new_for_path (enstl_path);
 
@@ -48,20 +51,11 @@ namespace Ensembles.Core.Analysers {
                 dis.close ();
 
                 uint ticks_per_beat = 0;
-                markers = new MIDIMarker[18];
+                parts = new StylePart[18];
                 uint8 marker_index = 0;
+                bool default_tempo_acquired = false;
 
                 for (uint64 i = 0; i < filelen; i++) {
-                    // Find copyright notice
-                    if (buffer[i] == 0xFF && buffer[i + 1] == 0x02) {
-                        uint8 copyright_str_len = buffer[i + 2];
-
-                        copyright_notice = new uint8[copyright_str_len];
-                        for (uint8 j = 0; j < copyright_str_len; j++) {
-                            copyright_notice[j] = buffer[i + 3 + j];
-                        }
-                    }
-
                     // Find ticks per beat from MTHD header
                     if (buffer[i] == 0x4D && buffer[i + 1] == 0x54 && buffer[i + 2] == 0x68 && buffer[i + 3] == 0x64) {
                         uint8 a = buffer[i + 12];
@@ -69,7 +63,24 @@ namespace Ensembles.Core.Analysers {
                         ticks_per_beat = (a << 8) | (b & 0x000000FF);
                     }
 
+                    // Get Meta Events
                     if (ticks_per_beat > 0 && buffer[i] == 0xFF) {
+                        // Find copyright notice
+                        if (buffer[i + 1] == 0x02) {
+                            uint8 copyright_str_len = buffer[i + 2];
+
+                            copyright_notice = new uint8[copyright_str_len];
+                            for (uint8 j = 0; j < copyright_str_len; j++) {
+                                copyright_notice[j] = buffer[i + 3 + j];
+                            }
+                        }
+
+                        // Get default tempo
+                        if (!default_tempo_acquired && buffer[i + 1] == 0x51) {
+                            tempo_ms = get_tempo (buffer, i + 2);
+                            default_tempo_acquired = true;
+                        }
+
                         // Find time signature
                         if (buffer[i + 1] == 0x58 && buffer[i + 2] == 0x04) {
                             time_signature_n = buffer[i + 3];
@@ -91,22 +102,27 @@ namespace Ensembles.Core.Analysers {
 
                             int scale_type_index = str.index_of_char (';');
 
-                            int measure = 0;
+                            uint measure = 0;
                             if (marker_token_index > 0 && marker_token_index < marker_str_length) {
-                                measure = int.parse (str.substring (marker_token_index,
-                                    scale_type_index < marker_str_length ? scale_type_index : marker_str_length));
+                                measure = uint.parse (str.substring (marker_token_index + 1,
+                                    scale_type_index < marker_str_length
+                                    ? scale_type_index - marker_token_index - 1: -1));
                             }
 
                             int scale_type = 0;
                             if (scale_type_index > 0 && scale_type_index < marker_str_length) {
-                                scale_type = int.parse (str.substring (scale_type_index));
+                                scale_type = int.parse (str.substring (scale_type_index + 1));
                             }
 
-                            markers[marker_index++] = MIDIMarker () {
-                                time_stamp = (uint16)(((measure - 1) * 4 * time_signature_n  * ticks_per_beat)
-                                    / time_signature_d),
-                                marker_name = str.substring (0, marker_token_index)
-                            };
+                            var marker_name = str.substring (0, marker_token_index);
+
+                            if (marker_name[0] != 'C') {
+                                parts[marker_index++] = StylePart () {
+                                    time_stamp = (uint)(((measure - 1) * 4 * time_signature_n * ticks_per_beat)
+                                        / time_signature_d),
+                                    style_part_type = get_style_part_type_from_marker (marker_name)
+                                };
+                            }
                         }
                     }
                 }
@@ -115,16 +131,84 @@ namespace Ensembles.Core.Analysers {
             }
         }
 
+        private uint32 get_variable_length_value (uint8[] buffer, uint64 offset) {
+            uint32 value = buffer[offset];
+
+            uint8 c = 0xFF;
+            uint i = 0;
+
+            if ((value & 0x80) > 0) {
+                value &= 0x7F;
+                print ("value: %u\n", value);
+                do {
+                    c = buffer[offset + (i++)];
+                    value = (value << 7) | (c & 0x7F);
+                } while ((c & 0x80) > 0);
+            }
+
+            return value;
+        }
+
+        private uint32 get_tempo (uint8[] buffer, uint64 offset) {
+            uint8 len = buffer[offset];
+            print ("le: %u\n", len);
+
+            uint32 tempo = 0;
+            for (uint8 i = 1; i <= len; i++) {
+                tempo = (tempo << 8) | buffer[offset + i];
+            }
+
+            return tempo;
+        }
+
         public Style get_style () {
             return Style () {
                 name = this.name,
                 genre = this.genre,
-                tempo = 0,
+                tempo = (uint8)(60000000 / this.tempo_ms),
                 time_signature_n = this.time_signature_n,
                 time_signature_d = this.time_signature_d,
                 enstl_path = this.enstl_path,
-                copyright_notice = (string)this.copyright_notice
+                copyright_notice = (string)this.copyright_notice,
+                parts = this.parts
             };
+        }
+
+        private StylePartType get_style_part_type_from_marker (string marker) {
+            switch (marker) {
+                case "INT_1":
+                return (StylePartType.INTRO_1);
+                case "INT_2":
+                return (StylePartType.INTRO_2);
+                case "INT_3":
+                return (StylePartType.INTRO_3);
+                case "BRK":
+                return (StylePartType.BREAK);
+                case "VAR_A":
+                return (StylePartType.VARIATION_A);
+                case "VAR_B":
+                return (StylePartType.VARIATION_B);
+                case "VAR_C":
+                return (StylePartType.VARIATION_C);
+                case "VAR_D":
+                return (StylePartType.VARIATION_D);
+                case "FILL_A":
+                return (StylePartType.FILL_A);
+                case "FILL_B":
+                return (StylePartType.FILL_B);
+                case "FILL_C":
+                return (StylePartType.FILL_C);
+                case "FILL_D":
+                return (StylePartType.FILL_D);
+                case "END_1":
+                return (StylePartType.ENDING_1);
+                case "END_2":
+                return (StylePartType.ENDING_2);
+                case "END_3":
+                return (StylePartType.ENDING_3);
+            }
+
+            return (StylePartType.EOS);
         }
     }
 }

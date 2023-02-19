@@ -32,7 +32,7 @@ sources = files (
     'Models/Registry.vala',
     'Models/Voice.vala',
     'Models/Style.vala',
-    'Models/MIDIMarker.vala',
+    'Models/StylePart.vala',
 
     # Shell
     'Shell/MainWindow.vala',

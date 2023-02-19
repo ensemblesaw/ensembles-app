@@ -30,5 +30,13 @@ namespace Ensembles.Core {
                 Console.log (e.message, Console.LogLevel.ERROR);
             }
         }
+
+        public ArrangerWorkstation () {
+            var style = (new Analysers.StyleAnalyser
+                ("/home/subhadeep/Documents/ensembles/styles/EDM@Dance_Pop.enstl")
+            ).get_style ();
+
+            Console.log (style.to_string ());
+        }
     }
 }
