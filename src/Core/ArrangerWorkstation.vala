@@ -7,14 +7,10 @@ namespace Ensembles.Core {
     public class ArrangerWorkstation : Object {
         private Synthesizer.SynthProvider synth_provider;
         private Synthesizer.Synthesizer synthesizer;
-        private MIDIPlayers.StyleEngine style_engine;
 
-        // Path constants
-        /*
-         * sf stands for SoundFont (Registered Trademark of Emu Systems)
-         * sf_loc is location of the actual soundfont file which is also like the sound database
-         * sf_schema_loc is the location for the csv file that specifies the categorization of the sounds
-        */
+         // Arranger Data
+        private Models.Style[] styles;
+
         private const string SF_PATH = Constants.SF2DATADIR + "/EnsemblesGM.sf2";
 
         construct {
@@ -26,17 +22,32 @@ namespace Ensembles.Core {
             Console.log ("Loading Soundfont from %s".printf (SF_PATH));
             try {
                 synthesizer = new Synthesizer.Synthesizer (synth_provider, SF_PATH);
-            } catch (FluidException e) {
+            } catch (FluidError e) {
                 Console.log (e.message, Console.LogLevel.ERROR);
             }
         }
 
         public ArrangerWorkstation () {
-            var style = (new Analysers.StyleAnalyser
-                ("/home/subhadeep/Documents/ensembles/styles/EDM@Dance_Pop.enstl")
-            ).get_style ();
+            new Thread<void> ("ensembles-data-discovery", load_data);
+        }
 
-            Console.log (style.to_string ());
+        public void load_data () {
+            Thread.usleep (500000);
+            // Load Styles
+            Console.log ("Searching for styles…");
+            var style_loader = new FileLoaders.StyleFileLoader ();
+            uint n_styles = 0;
+            styles = style_loader.get_styles (out n_styles);
+            foreach (var style in styles) {
+                Console.log (style.to_string ());
+            }
+            Console.log ("Found %u styles".printf (n_styles), Console.LogLevel.SUCCESS);
+
+            // Send ready signal
+            Idle.add (() => {
+                Ensembles.Application.event_bus.arranger_ready ();
+                return false;
+            });
         }
     }
 }

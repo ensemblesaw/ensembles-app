@@ -118,6 +118,10 @@
 
                 return false;
             });
+
+            Ensembles.Application.event_bus.arranger_ready.connect (() => {
+                Console.log ("Arranger Workstation Initialized!", Console.LogLevel.SUCCESS);
+            });
         }
 
         protected override void size_allocate (int width, int height, int baseline) {

@@ -34,15 +34,25 @@ namespace Ensembles {
             ERROR,
         }
 
-        public static void log (string message, LogLevel log_level = LogLevel.TRACE) {
+        public static void log <T>(T object, LogLevel log_level = LogLevel.TRACE) {
             DateTime date_time = new DateTime.now_utc ();
+            string message = "";
+            if (typeof(T) == Type.STRING) {
+                message = (string) object;
+            } else if (typeof (T) == typeof (Error)) {
+                message = ((Error) object).domain.to_string ()
+                .replace ("-quark", "")
+                .replace ("-", " ")
+                .up ();
+                message += ": " + ((Error) object).message;
+            }
+
             switch (log_level) {
                 case SUCCESS:
                 if (Application.verbose) {
                     print ("%s▎%s%sSUCCESS %s[%s%s%s]: %s\n", GRN, WHT, BOLD,
                         RESET, BLU, date_time.to_string (), RESET, message);
                 }
-                GLib.log (Constants.APP_NAME, LogLevelFlags.LEVEL_INFO, message);
                 break;
                 case TRACE:
                 if (Application.verbose) {
@@ -52,10 +62,9 @@ namespace Ensembles {
                 break;
                 case WARNING:
                 if (Application.verbose) {
-                    print ("%s▎%s%sWARNING  %s[%s%s%s]: %s%s%s\n", YEL, WHT, BOLD, RESET, BLU, date_time.to_string (),
+                    print ("%s▎%s%sWARNING %s[%s%s%s]: %s%s%s\n", YEL, WHT, BOLD, RESET, BLU, date_time.to_string (),
                         RESET, YEL, message, RESET);
                 }
-                GLib.log (Constants.APP_NAME, LogLevelFlags.LEVEL_WARNING, message);
                 break;
                 case ERROR:
                 if (Application.verbose) {

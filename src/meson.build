@@ -56,6 +56,6 @@ sources = files (
     'Core/Synthesizer/SynthSettingsPresets.vala',
     'Core/Analysers/ChordAnalyser.vala',
     'Core/Analysers/StyleAnalyser.vala',
-    'Core/MIDIPlayers/StyleEngine.vala'
-
+    'Core/MIDIPlayers/StyleEngine.vala',
+    'Core/FileLoaders/StyleFileLoader.vala'
 )

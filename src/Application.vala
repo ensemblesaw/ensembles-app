@@ -18,6 +18,8 @@ namespace Ensembles {
             }
         }
 
+        public static Services.EventBus event_bus = new Services.EventBus ();
+
         private string[] ? arg_file = null;
         public static bool raw_midi_input = false;
         public static bool kiosk_mode = false;
@@ -43,7 +45,7 @@ namespace Ensembles {
             main_window = new Shell.MainWindow (this);
             this.add_window (main_window);
             main_window.show_ui ();
-            Console.log ("Initialization Complete!", Console.LogLevel.SUCCESS);
+            Console.log ("GUI Initialization Complete!", Console.LogLevel.SUCCESS);
 
             if (settings.version != Constants.VERSION) {
                 settings.version = Constants.VERSION;
@@ -97,6 +99,14 @@ namespace Ensembles {
 
             activate ();
             return 0;
+        }
+
+        public unowned Services.EventBus get_event_bus () {
+            if (event_bus == null) {
+                event_bus = new Services.EventBus ();
+            }
+
+            return event_bus;
         }
 
         public void init (string[] args) {

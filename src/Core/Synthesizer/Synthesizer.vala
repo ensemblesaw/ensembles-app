@@ -16,7 +16,7 @@ namespace Ensembles.Core.Synthesizer {
             chord_analyser = new Analysers.ChordAnalyser ();
         }
 
-        public Synthesizer (SynthProvider synth_provider, string soundfont) throws FluidException {
+        public Synthesizer (SynthProvider synth_provider, string soundfont) throws FluidError {
             rendering_synth = synth_provider.rendering_synth;
 
             if (Fluid.is_soundfont (soundfont)) {
@@ -35,7 +35,7 @@ namespace Ensembles.Core.Synthesizer {
                 // Initialize metronome voice
                 rendering_synth.program_select (16, soundfont_id, 128, 0);
             } else {
-                throw new FluidException.INVALID_SF (_("SoundFont from path: %s is either missing or invalid"), soundfont);
+                throw new FluidError.INVALID_SF (_("SoundFont from path: %s is either missing or invalid"), soundfont);
             }
 
             set_synth_defaults ();

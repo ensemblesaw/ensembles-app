@@ -5,6 +5,6 @@
 
  namespace Ensembles.Services {
     public class EventBus : Object {
-        public signal void some_signal ();
+        public signal void arranger_ready ();
     }
 }

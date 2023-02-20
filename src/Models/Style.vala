@@ -36,9 +36,10 @@ namespace Ensembles.Models {
                     i < 57 - copyright_notice.length;
                     i++)
                 {output += " ";}
+                output += "│";
             }
-            output += "│\n";
-            output += "┢━━━━━━━━━━┯━━━━━━━━━━━┯━━━━━━━━━━━┯━━━━━━━━━━━┯━━━━━━━━━━━┪\n";
+
+            output += "\n┢━━━━━━━━━━┯━━━━━━━━━━━┯━━━━━━━━━━━┯━━━━━━━━━━━┯━━━━━━━━━━━┪\n";
             output += "┃PART      │     1     │     2     │     3     │     4     ┃\n";
             output += "┡┅┅┅┅┅┅┅┅┅┅┿┅┅┅┅┅┅┅┅┅┅┅┿┅┅┅┅┅┅┅┅┅┅┅┿┅┅┅┅┅┅┅┅┅┅┅┿┅┅┅┅┅┅┅┅┅┅┅┩\n";
             output += "│INTRO     │  %07u  │  %07u  │  %07u  │    N/A    │\n".printf (
@@ -59,7 +60,7 @@ namespace Ensembles.Models {
             output += "│EOS       │  %07u  │  %07u  │  %07u  │    N/A    │\n".printf (
                 2 * parts[13].time_stamp, 2 * parts[15].time_stamp, 2 * parts[17].time_stamp
             );
-            output += "╰──────────┴───────────┴───────────┴───────────┴───────────╯\n";
+            output += "╰──────────┴───────────┴───────────┴───────────┴───────────╯";
 
             return output;
         }
