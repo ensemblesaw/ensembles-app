@@ -14,6 +14,7 @@ namespace Ensembles.Models {
         public uint8 tempo;
         public uint8 time_signature_n;
         public uint8 time_signature_d;
+        public uint32 time_resolution;
         public string enstl_path;
         public string copyright_notice;
         public ChordType scale_type;

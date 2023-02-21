@@ -5,11 +5,17 @@ namespace Ensembles.MIDI {
         CONTROL = 176
     }
 
-    public enum Controls {
+    public enum Control {
         MODULATTION = 1,
+        EXPLICIT_PITCH = 3,
         GAIN = 7,
         PAN = 10,
         EXPRESSION = 11,
-        EXPLICIT_BANK_SELECT = 85
+        PITCH = 66,
+        RESONANCE = 71,
+        CUT_OFF = 74,
+        EXPLICIT_BANK_SELECT = 85,
+        REVERB = 91,
+        CHORUS = 93
     }
 }

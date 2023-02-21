@@ -12,6 +12,7 @@ namespace Ensembles.Core.Analysers {
         private uint8[] copyright_notice;
         private uint8 time_signature_n;
         private uint8 time_signature_d;
+        private uint32 ticks_per_beat;
         private uint32 tempo_ms;
         private bool scale_type;
         private StylePart[] parts;
@@ -74,7 +75,7 @@ namespace Ensembles.Core.Analysers {
             dis.close ();
 
 
-            uint ticks_per_beat = 0;
+            ticks_per_beat = 0;
             parts = new StylePart[18];
             uint8 expected_part_index = 0;
             uint8 marker_index = 0;
@@ -173,6 +174,7 @@ namespace Ensembles.Core.Analysers {
                 tempo = (uint8)(60000000 / this.tempo_ms),
                 time_signature_n = this.time_signature_n,
                 time_signature_d = this.time_signature_d,
+                time_resolution = this.ticks_per_beat,
                 enstl_path = this.enstl_path,
                 copyright_notice = (string)this.copyright_notice,
                 scale_type = this.scale_type ? ChordType.MINOR : ChordType.MAJOR,

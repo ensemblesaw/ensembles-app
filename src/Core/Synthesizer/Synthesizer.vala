@@ -50,38 +50,38 @@ namespace Ensembles.Core.Synthesizer {
 
         private void set_synth_defaults () {
             // CutOff for Realtime synth
-            rendering_synth.cc (17, 74, 40);
-            rendering_synth.cc (18, 74, 0);
-            rendering_synth.cc (19, 74, 0);
+            rendering_synth.cc (17, MIDI.Control.CUT_OFF, 40);
+            rendering_synth.cc (18, MIDI.Control.CUT_OFF, 0);
+            rendering_synth.cc (19, MIDI.Control.CUT_OFF, 0);
 
             // Reverb and Chorus for R1 voice
-            rendering_synth.cc (17, 91, 100);
-            rendering_synth.cc (17, 93, 100);
+            rendering_synth.cc (17, MIDI.Control.REVERB, 100);
+            rendering_synth.cc (17, MIDI.Control.CHORUS, 100);
 
             // Reverb and Chorus for Metronome
-            rendering_synth.cc (16, 91, 0);
-            rendering_synth.cc (16, 93, 0);
+            rendering_synth.cc (16, MIDI.Control.REVERB, 0);
+            rendering_synth.cc (16, MIDI.Control.CHORUS, 0);
 
             // Default gain for Realtime synth
-            rendering_synth.cc (17, 7, 100);
-            rendering_synth.cc (18, 7, 90);
-            rendering_synth.cc (19, 7, 80);
+            rendering_synth.cc (17, MIDI.Control.GAIN, 100);
+            rendering_synth.cc (18, MIDI.Control.GAIN, 90);
+            rendering_synth.cc (19, MIDI.Control.GAIN, 80);
 
 
             // Default pitch of all synths
             for (int i = 17; i < 64; i++) {
-                rendering_synth.cc (i, 3, 64);
+                rendering_synth.cc (i, MIDI.Control.EXPLICIT_PITCH, 64);
             }
 
             // Default cut-off and resonance for recorder
             for (int i = 24; i < 64; i++) {
-                rendering_synth.cc (i, 74, 40);
-                rendering_synth.cc (i, 71, 10);
+                rendering_synth.cc (i, MIDI.Control.CUT_OFF, 40);
+                rendering_synth.cc (i, MIDI.Control.RESONANCE, 10);
             }
 
             // Default pitch for styles
             for (int i = 0; i < 16; i++) {
-                rendering_synth.cc (i, 3, 64);
+                rendering_synth.cc (i, MIDI.Control.EXPLICIT_PITCH, 64);
             }
 
             set_master_reverb_active (true);
@@ -135,20 +135,20 @@ namespace Ensembles.Core.Synthesizer {
             int value= event.get_value ();
 
             if (type == MIDI.EventType.CONTROL) {
-                if (cont == MIDI.Controls.EXPLICIT_BANK_SELECT && (value == 1 || value == 8 || value == 16 || value == 126)) {
+                if (cont == MIDI.Control.EXPLICIT_BANK_SELECT && (value == 1 || value == 8 || value == 16 || value == 126)) {
                     int sf_id, program_id, bank_id;
                     rendering_synth.get_program (chan, out sf_id, out bank_id, out program_id);
                     rendering_synth.program_select (chan, soundfont_id, value, program_id);
                 }
 
-                if (cont == MIDI.Controls.GAIN) {
+                if (cont == MIDI.Control.GAIN) {
                     if (style_gain_settings.gain[chan] >= 0) {
                         event.set_value (style_gain_settings.gain[chan]);
                     }
                 }
 
-                if (cont == MIDI.Controls.PAN) {
-                    if (modulator_settings.get_mod_buffer_value (MIDI.Controls.PAN, (uint8)chan) >= -64) {
+                if (cont == MIDI.Control.PAN) {
+                    if (modulator_settings.get_mod_buffer_value (MIDI.Control.PAN, (uint8)chan) >= -64) {
                         event.set_value (modulator_settings.get_mod_buffer_value (10, (uint8)chan));
                     }
                 } else {

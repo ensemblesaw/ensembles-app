@@ -18,6 +18,8 @@ namespace Ensembles.Core.MIDIPlayers {
 
         // Player state
         private bool looping = false;
+        private uint32 absolute_beat_number = 0;
+        private uint32 absolute_measure_number = 0;
         private StylePartType part;
 
         // Per channel note-on tracking flags
@@ -82,7 +84,7 @@ namespace Ensembles.Core.MIDIPlayers {
             }
 
             halt_continuous_notes ();
-            measure_length = style.parts[0].time_stamp;
+            measure_length = style.time_resolution * style.time_signature_n;
         }
 
         private void halt_continuous_notes () {
@@ -109,12 +111,35 @@ namespace Ensembles.Core.MIDIPlayers {
 
             uint current_part_end;
             uint current_part_start = style.get_part_bounds (part,out current_part_end);
-            uint current_measre_start = (uint)Math.floorf ((float)ticks / (float)measure_length) * measure_length;
+            uint current_measure_start = (uint)Math.floorf ((float)ticks / (float)measure_length) * measure_length;
             uint current_measure_end = (uint)Math.ceilf ((float)ticks / (float)measure_length) * measure_length;
 
-            print ("%d %u  %u  %u  %u\n", ticks, current_part_start, current_part_end, current_measre_start, current_measure_end);
+            bool measure;
+            if (is_beat (ticks, out measure)) {
+                print ("%d %u  %u  %u  %u\n", ticks, current_part_start, current_part_end, current_measure_start, current_measure_end);
+            }
 
             return Fluid.OK;
+        }
+
+        private bool is_beat (int ticks, out bool measure) {
+            var q = ticks / style.time_resolution;
+            if (q != absolute_beat_number) {
+                absolute_beat_number = q;
+
+                var mq = ticks / (style.time_resolution * style.time_signature_n);
+                if (mq != absolute_measure_number) {
+                    absolute_measure_number = mq;
+                    measure = true;
+                } else {
+                    measure = false;
+                }
+                return true;
+            }
+
+            measure = false;
+
+            return false;
         }
 
         private int parse_midi_events (Fluid.MIDIEvent? event) {
