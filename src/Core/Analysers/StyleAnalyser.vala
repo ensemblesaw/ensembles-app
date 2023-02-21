@@ -13,6 +13,7 @@ namespace Ensembles.Core.Analysers {
         private uint8 time_signature_n;
         private uint8 time_signature_d;
         private uint32 tempo_ms;
+        private bool scale_type;
         private StylePart[] parts;
 
         private const string[] expected_parts = {
@@ -133,10 +134,11 @@ namespace Ensembles.Core.Analysers {
                                 ? scale_type_index - marker_token_index - 1: -1));
                         }
 
-                        int scale_type = 0;
+                        int i_scale_type = 0;
                         if (scale_type_index > 0 && scale_type_index < marker_str_length) {
-                            scale_type = int.parse (str.substring (scale_type_index + 1));
+                            i_scale_type = int.parse (str.substring (scale_type_index + 1));
                         }
+                        scale_type = i_scale_type > 0;
 
                         var marker_name = str.substring (0, marker_token_index);
 
@@ -173,6 +175,7 @@ namespace Ensembles.Core.Analysers {
                 time_signature_d = this.time_signature_d,
                 enstl_path = this.enstl_path,
                 copyright_notice = (string)this.copyright_notice,
+                scale_type = this.scale_type ? ChordType.MINOR : ChordType.MAJOR,
                 parts = this.parts
             };
         }

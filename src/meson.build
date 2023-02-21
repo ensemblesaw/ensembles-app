@@ -26,6 +26,8 @@ sources = files (
     'Utils/Console.vala',
     'Utils/ErrorDomains.vala',
     'Utils/AccentColors.vala',
+    'Utils/StyleMIDIModifiers.vala',
+    'Utils/MIDI.vala',
 
     # Models
     'Models/Chord.vala',

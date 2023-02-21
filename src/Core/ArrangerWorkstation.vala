@@ -7,6 +7,7 @@ namespace Ensembles.Core {
     public class ArrangerWorkstation : Object {
         private Synthesizer.SynthProvider synth_provider;
         private Synthesizer.Synthesizer synthesizer;
+        private MIDIPlayers.StyleEngine style_engine;
 
          // Arranger Data
         private Models.Style[] styles;
@@ -42,6 +43,9 @@ namespace Ensembles.Core {
                 Console.log (style.to_string ());
             }
             Console.log ("Found %u styles".printf (n_styles), Console.LogLevel.SUCCESS);
+
+            style_engine = new MIDIPlayers.StyleEngine (synth_provider, styles[0]);
+            style_engine.play ();
 
             // Send ready signal
             Idle.add (() => {

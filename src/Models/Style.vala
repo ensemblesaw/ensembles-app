@@ -16,6 +16,7 @@ namespace Ensembles.Models {
         public uint8 time_signature_d;
         public string enstl_path;
         public string copyright_notice;
+        public ChordType scale_type;
         public StylePart[] parts;
 
         public string to_string () {
@@ -63,6 +64,23 @@ namespace Ensembles.Models {
             output += "╰──────────┴───────────┴───────────┴───────────┴───────────╯";
 
             return output;
+        }
+
+        public uint get_part_bounds (StylePartType part, out uint? end = null) {
+            assert (part != EOS);
+
+            // @TODO: Use binary search later
+            uint8 i = 0;
+            foreach (var _part in parts) {
+                if (_part.style_part_type == part) {
+                    break;
+                }
+                i++;
+            }
+
+            end = parts[i + 1].time_stamp;
+
+            return parts[i].time_stamp;
         }
     }
 }

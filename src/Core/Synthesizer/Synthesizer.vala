@@ -8,12 +8,16 @@ namespace Ensembles.Core.Synthesizer {
         private bool input_enabled = true;
 
         private Analysers.ChordAnalyser chord_analyser;
+        private SynthSettingsPresets.StyleGainSettings style_gain_settings;
+        private SynthSettingsPresets.ModulatorSettings modulator_settings;
         private unowned Fluid.Synth rendering_synth;
 
         private int soundfont_id;
 
         construct {
             chord_analyser = new Analysers.ChordAnalyser ();
+            style_gain_settings = new SynthSettingsPresets.StyleGainSettings ();
+            modulator_settings = new SynthSettingsPresets.ModulatorSettings ();
         }
 
         public Synthesizer (SynthProvider synth_provider, string soundfont) throws FluidError {
@@ -21,6 +25,7 @@ namespace Ensembles.Core.Synthesizer {
 
             if (Fluid.is_soundfont (soundfont)) {
                 soundfont_id = synth_provider.rendering_synth.sfload (soundfont, true);
+                synth_provider.utility_synth.sfload (soundfont, true);
 
                 // Initialize Voices
                 rendering_synth.program_select (17, soundfont_id, 0, 0);
@@ -39,6 +44,8 @@ namespace Ensembles.Core.Synthesizer {
             }
 
             set_synth_defaults ();
+
+            Application.event_bus.style_midi_event.connect (handle_midi_event_from_player);
         }
 
         private void set_synth_defaults () {
@@ -76,6 +83,12 @@ namespace Ensembles.Core.Synthesizer {
             for (int i = 0; i < 16; i++) {
                 rendering_synth.cc (i, 3, 64);
             }
+
+            set_master_reverb_active (true);
+            edit_master_reverb (8);
+
+            set_master_chorus_active (true);
+            edit_master_chorus (2);
         }
 
         private void edit_master_reverb (int level) {
@@ -113,6 +126,44 @@ namespace Ensembles.Core.Synthesizer {
             } else {
                 rendering_synth.noteoff (channel, key);
             }
+        }
+
+        private int handle_midi_event_from_player (Fluid.MIDIEvent event) {
+            int type = event.get_type();
+            int chan = event.get_channel();
+            int cont = event.get_control();
+            int value= event.get_value ();
+
+            if (type == MIDI.EventType.CONTROL) {
+                if (cont == MIDI.Controls.EXPLICIT_BANK_SELECT && (value == 1 || value == 8 || value == 16 || value == 126)) {
+                    int sf_id, program_id, bank_id;
+                    rendering_synth.get_program (chan, out sf_id, out bank_id, out program_id);
+                    rendering_synth.program_select (chan, soundfont_id, value, program_id);
+                }
+
+                if (cont == MIDI.Controls.GAIN) {
+                    if (style_gain_settings.gain[chan] >= 0) {
+                        event.set_value (style_gain_settings.gain[chan]);
+                    }
+                }
+
+                if (cont == MIDI.Controls.PAN) {
+                    if (modulator_settings.get_mod_buffer_value (MIDI.Controls.PAN, (uint8)chan) >= -64) {
+                        event.set_value (modulator_settings.get_mod_buffer_value (10, (uint8)chan));
+                    }
+                } else {
+                    if (modulator_settings.get_mod_buffer_value ((uint8)cont, (uint8)chan) >= 0) {
+                        event.set_value (modulator_settings.get_mod_buffer_value ((uint8)cont, (uint8)chan));
+                    }
+                }
+            }
+
+            if (type == MIDI.EventType.NOTE_ON)
+            {
+                //  velocity_buffer[chan] = value;
+            }
+
+            return rendering_synth.handle_midi_event (event);
         }
     }
 }

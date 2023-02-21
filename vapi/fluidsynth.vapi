@@ -341,7 +341,7 @@ namespace Fluid {
 
     [SimpleType]
     [CCode (cname = "handle_midi_event_func_t", has_target = false)]
-    public delegate int handle_midi_event_func_t (void* data, MIDIEvent event);
+    public delegate int handle_midi_event_func_t (void* data, MIDIEvent? event);
 
     [SimpleType]
     [CCode (cname = "handle_midi_tick_func_t", has_target = false)]
@@ -755,69 +755,6 @@ namespace Fluid {
     public class MIDIEvent {
         [CCode (cname = "new_fluid_midi_event")]
         public MIDIEvent ();
-
-        public int channel {
-            get {
-                return get_channel ();
-            }
-            set {
-                set_channel (value);
-            }
-        }
-
-        public int control {
-            get {
-                return get_control ();
-            }
-            set {
-                set_control (value);
-            }
-        }
-
-        public int key {
-            get {
-                return get_key ();
-            }
-            set {
-                set_key (value);
-            }
-        }
-
-        public int pitch {
-            get {
-                return get_pitch ();
-            }
-            set {
-                set_pitch (value);
-            }
-        }
-
-        public int type {
-            get {
-                return get_type ();
-            }
-            set {
-                set_type (value);
-            }
-        }
-
-        public int value {
-            get {
-                return get_value ();
-            }
-            set {
-                set_value (value);
-            }
-        }
-
-        public int velocity {
-            get {
-                return get_velocity ();
-            }
-            set {
-                set_velocity (value);
-            }
-        }
 
         public int get_channel ();
         public int get_control ();

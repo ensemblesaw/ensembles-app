@@ -1,3 +1,8 @@
+/*
+ * Copyright 2020-2023 Subhadeep Jasu <subhajasu@gmail.com>
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
 namespace Ensembles {
     public class Console {
         private const string RED = "\x1B[31m";
