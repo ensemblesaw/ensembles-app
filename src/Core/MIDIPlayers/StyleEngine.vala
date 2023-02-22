@@ -20,7 +20,8 @@ namespace Ensembles.Core.MIDIPlayers {
         private bool looping = false;
         private uint32 absolute_beat_number = 0;
         private uint32 absolute_measure_number = 0;
-        private StylePartType part;
+        private StylePartType current_part;
+        private StylePartType next_part;
 
         // Per channel note-on tracking flags
         private int[] channel_note_on = {
@@ -33,6 +34,7 @@ namespace Ensembles.Core.MIDIPlayers {
         // Chord data
         private Chord chord;
         private bool alt_channels_active = false;
+        private HashTable<StylePartType, StylePartBounds?> part_bounds_map;
 
         // Change queues
         private bool queue_fill = false;
@@ -43,7 +45,12 @@ namespace Ensembles.Core.MIDIPlayers {
         private uint8 time_resolution_limit = 0;
         private uint measure_length;
 
-        public signal void state_changed (bool looping, StylePartType part_type, Chord chord);
+        public signal void part_changed (StylePartType part_type);
+        public signal void beat (bool measure);
+
+        construct {
+            part_bounds_map = new HashTable<StylePartType, StylePartBounds?> (direct_hash, direct_equal);
+        }
 
         public StyleEngine (Synthesizer.SynthProvider synth_provider, Models.Style? style,
             uint8? custom_tempo = 0, StylePartType? custom_part = StylePartType.VARIATION_A) {
@@ -59,6 +66,8 @@ namespace Ensembles.Core.MIDIPlayers {
             }, this);
 
             style_player.add (style.enstl_path);
+
+            style.update_part_hash_table (part_bounds_map);
 
             var actual_tempo = style_player.get_midi_tempo ();
             if (custom_tempo >= 40) {
@@ -80,7 +89,7 @@ namespace Ensembles.Core.MIDIPlayers {
             }
 
             if (custom_part != null) {
-                part = custom_part;
+                current_part = custom_part;
             }
 
             halt_continuous_notes ();
@@ -109,14 +118,25 @@ namespace Ensembles.Core.MIDIPlayers {
                 }
             }
 
-            uint current_part_end;
-            uint current_part_start = style.get_part_bounds (part,out current_part_end);
+            var current_part_bounds = part_bounds_map.get (current_part);
             uint current_measure_start = (uint)Math.floorf ((float)ticks / (float)measure_length) * measure_length;
             uint current_measure_end = (uint)Math.ceilf ((float)ticks / (float)measure_length) * measure_length;
 
             bool measure;
             if (is_beat (ticks, out measure)) {
-                print ("%d %u  %u  %u  %u\n", ticks, current_part_start, current_part_end, current_measure_start, current_measure_end);
+                beat (measure);
+                print ("%d %u  %u  %u  %u\n", ticks, current_part_bounds.start,
+                current_part_bounds.end, current_measure_start, current_measure_end);
+
+                if (ticks >= current_part_bounds.end) {
+                    switch (current_part) {
+                        case StylePartType.VARIATION_A:
+                        case StylePartType.VARIATION_B:
+                        case StylePartType.VARIATION_C:
+                        case StylePartType.VARIATION_D:
+                            return style_player.seek (part_bounds_map.get (next_part).start);
+                    }
+                }
             }
 
             return Fluid.OK;
@@ -236,7 +256,15 @@ namespace Ensembles.Core.MIDIPlayers {
 
 
         public void play () {
-            style_player.play ();
+            if (style_player.get_status () != Fluid.PlayerStatus.PLAYING) {
+                next_part = current_part;
+                style_player.seek (part_bounds_map.get (current_part).start);
+                style_player.play ();
+            }
+        }
+
+        public void set_next_part (StylePartType _part) {
+            next_part = _part;
         }
     }
 }

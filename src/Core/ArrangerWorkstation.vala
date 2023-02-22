@@ -44,7 +44,7 @@ namespace Ensembles.Core {
             }
             Console.log ("Found %u styles".printf (n_styles), Console.LogLevel.SUCCESS);
 
-            style_engine = new MIDIPlayers.StyleEngine (synth_provider, styles[0]);
+            style_engine = new MIDIPlayers.StyleEngine (synth_provider, styles[0], 0, Models.StylePartType.VARIATION_D);
             style_engine.play ();
 
             // Send ready signal

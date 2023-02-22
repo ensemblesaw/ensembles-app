@@ -18,8 +18,14 @@ namespace Ensembles.Models {
         ENDING_3,
         EOS
     }
+
     public struct StylePart {
         public uint time_stamp;
         public StylePartType style_part_type;
+    }
+
+    public struct StylePartBounds {
+        public int start;
+        public int end;
     }
 }

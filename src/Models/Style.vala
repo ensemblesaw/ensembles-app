@@ -67,21 +67,13 @@ namespace Ensembles.Models {
             return output;
         }
 
-        public uint get_part_bounds (StylePartType part, out uint? end = null) {
-            assert (part != EOS);
-
-            // @TODO: Use binary search later
-            uint8 i = 0;
-            foreach (var _part in parts) {
-                if (_part.style_part_type == part) {
-                    break;
-                }
-                i++;
+        public void update_part_hash_table (HashTable<StylePartType, StylePartBounds?>? hash_table) {
+            for (uint8 i = 0; i < parts.length; i++) {
+                hash_table.insert (parts[i].style_part_type, StylePartBounds () {
+                    start = (int)parts[i].time_stamp,
+                    end = (int)parts[i + 1].time_stamp
+                });
             }
-
-            end = parts[i + 1].time_stamp;
-
-            return parts[i].time_stamp;
         }
     }
 }
