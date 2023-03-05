@@ -14,10 +14,12 @@ namespace Ensembles.Shell.Layouts {
         private weak Layouts.StyleControlPanel style_control_panel;
         private weak Layouts.RegistryPanel registry_panel;
         private weak Layouts.Keyboard keyboard;
+        private Gtk.Button start_button;
 
         private Gtk.CenterBox top_row;
         private Gtk.CenterBox middle_row;
         private Gtk.Grid bottom_row;
+        private Gtk.CenterBox bottom_row_box;
         private Gtk.Revealer bottom_row_revealer;
 
         construct {
@@ -74,6 +76,19 @@ namespace Ensembles.Shell.Layouts {
                 hexpand = true
             };
             bottom_row_revealer.set_child (bottom_row);
+
+            bottom_row_box = new Gtk.CenterBox ();
+            bottom_row.attach (bottom_row_box, 0, 0);
+
+            start_button = new Gtk.Button.from_icon_name ("media-playback-start-symbolic") {
+                width_request = 64
+            };
+            start_button.get_style_context ().add_class (Granite.STYLE_CLASS_DESTRUCTIVE_ACTION);
+            start_button.get_style_context ().remove_class ("image-button");
+            start_button.clicked.connect (() => {
+                Application.event_bus.style_play_toggle ();
+            });
+            bottom_row_box.set_center_widget (start_button);
         }
 
         public void reparent () {
@@ -95,9 +110,9 @@ namespace Ensembles.Shell.Layouts {
             middle_row.set_center_widget (mixer_board);
             middle_row.set_end_widget (sampler_pads_panel);
 
-            bottom_row.attach (style_control_panel, 0, 0);
-            bottom_row.attach (registry_panel, 1, 0);
-            bottom_row.attach (keyboard, 0, 2, 2, 1);
+            bottom_row_box.set_start_widget (style_control_panel);
+            bottom_row_box.set_end_widget (registry_panel);
+            bottom_row.attach (keyboard, 0, 1);
         }
     }
 }

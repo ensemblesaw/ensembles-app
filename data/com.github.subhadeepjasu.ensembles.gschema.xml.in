@@ -37,5 +37,11 @@
             <default>"Default"</default>
             <summary>Display Unit Theme</summary>
         </key>
+
+        <!-- Style Engine -->
+        <key name="autofill" type="b">
+            <default>false</default>
+            <summary>Automatically trigger a fill-in when changing style variation</summary>
+        </key>
     </schema>
 </schemalist>

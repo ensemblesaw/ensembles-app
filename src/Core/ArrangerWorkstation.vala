@@ -26,6 +26,8 @@ namespace Ensembles.Core {
             } catch (FluidError e) {
                 Console.log (e.message, Console.LogLevel.ERROR);
             }
+
+            build_events ();
         }
 
         public ArrangerWorkstation () {
@@ -45,12 +47,25 @@ namespace Ensembles.Core {
             Console.log ("Found %u styles".printf (n_styles), Console.LogLevel.SUCCESS);
 
             style_engine = new MIDIPlayers.StyleEngine (synth_provider, styles[0], 0, Models.StylePartType.VARIATION_D);
-            style_engine.play ();
 
             // Send ready signal
             Idle.add (() => {
                 Ensembles.Application.event_bus.arranger_ready ();
                 return false;
+            });
+        }
+
+        private void build_events () {
+            Application.event_bus.style_play_toggle.connect (() => {
+                if (style_engine != null) {
+                    style_engine.toggle_play ();
+                }
+            });
+
+            Application.event_bus.style_set_part.connect ((part) => {
+                if (style_engine != null) {
+                    style_engine.set_next_part (part);
+                }
             });
         }
     }

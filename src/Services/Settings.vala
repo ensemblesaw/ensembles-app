@@ -18,5 +18,10 @@ namespace Ensembles.Services {
         //      owned get { return (uint8)get_uint ("tempo"); }
         //      set { set_uint ("tempo", value); }
         //  }
+
+        public bool autofill {
+            get { return get_boolean ("autofill"); }
+            set { set_boolean ("autofill", value); }
+        }
     }
 }

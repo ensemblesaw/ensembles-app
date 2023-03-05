@@ -46,6 +46,7 @@ namespace Ensembles.Core.Synthesizer {
             set_synth_defaults ();
 
             Application.event_bus.style_midi_event.connect (handle_midi_event_from_player);
+            Application.event_bus.halt_notes.connect (halt_notes);
         }
 
         private void set_synth_defaults () {
@@ -164,6 +165,14 @@ namespace Ensembles.Core.Synthesizer {
             }
 
             return rendering_synth.handle_midi_event (event);
+        }
+
+        private void halt_notes (bool except_drums) {
+            for (uint8 i = 0; i < 16; i++) {
+                if (!except_drums || (i != 9 && i != 10)) {
+                    rendering_synth.all_notes_off (i);
+                }
+            }
         }
     }
 }

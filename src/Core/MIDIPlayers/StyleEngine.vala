@@ -22,6 +22,7 @@ namespace Ensembles.Core.MIDIPlayers {
         private uint32 absolute_measure_number = 0;
         private StylePartType current_part;
         private StylePartType next_part;
+        private StylePartType current_variation;
 
         // Per channel note-on tracking flags
         private int[] channel_note_on = {
@@ -46,7 +47,7 @@ namespace Ensembles.Core.MIDIPlayers {
         private uint measure_length;
 
         public signal void part_changed (StylePartType part_type);
-        public signal void beat (bool measure);
+        public signal void beat (bool measure, uint8 time_signature_n, uint8 time_signature_d);
 
         construct {
             part_bounds_map = new HashTable<StylePartType, StylePartBounds?> (direct_hash, direct_equal);
@@ -90,6 +91,8 @@ namespace Ensembles.Core.MIDIPlayers {
 
             if (custom_part != null) {
                 current_part = custom_part;
+
+                current_variation = StylePartType.VARIATION_A;
             }
 
             halt_continuous_notes ();
@@ -119,22 +122,167 @@ namespace Ensembles.Core.MIDIPlayers {
             }
 
             var current_part_bounds = part_bounds_map.get (current_part);
-            uint current_measure_start = (uint)Math.floorf ((float)ticks / (float)measure_length) * measure_length;
-            uint current_measure_end = (uint)Math.ceilf ((float)ticks / (float)measure_length) * measure_length;
+            uint current_measure_start = (uint)Math.floor ((double)ticks / (double)measure_length) * measure_length;
+            uint current_measure_end = (uint)Math.ceil ((double)(ticks - 1) / (double)measure_length) * measure_length;
+
+            // Fills don't wait for measure
+            if (queue_fill) {
+                queue_fill = false;
+                if (Ensembles.settings.autofill) {
+                    switch (current_part) {
+                        case StylePartType.VARIATION_A:
+                            switch (next_part) {
+                                case StylePartType.VARIATION_A:
+                                    current_part = StylePartType.FILL_A;
+                                    break;
+                                case StylePartType.VARIATION_B:
+                                    current_part = StylePartType.FILL_A;
+                                    break;
+                                case StylePartType.VARIATION_C:
+                                    current_part = StylePartType.FILL_B;
+                                    break;
+                                case StylePartType.VARIATION_D:
+                                    current_part = StylePartType.FILL_C;
+                                    break;
+                            }
+                            break;
+                        case StylePartType.VARIATION_B:
+                            switch (next_part) {
+                                case StylePartType.VARIATION_A:
+                                    current_part = StylePartType.FILL_A;
+                                    break;
+                                case StylePartType.VARIATION_B:
+                                    current_part = StylePartType.FILL_B;
+                                    break;
+                                case StylePartType.VARIATION_C:
+                                    current_part = StylePartType.FILL_B;
+                                    break;
+                                case StylePartType.VARIATION_D:
+                                    current_part = StylePartType.FILL_C;
+                                    break;
+                            }
+                            break;
+                        case StylePartType.VARIATION_C:
+                            switch (next_part) {
+                                case StylePartType.VARIATION_A:
+                                    current_part = StylePartType.FILL_A;
+                                    break;
+                                case StylePartType.VARIATION_B:
+                                    current_part = StylePartType.FILL_B;
+                                    break;
+                                case StylePartType.VARIATION_C:
+                                    current_part = StylePartType.FILL_C;
+                                    break;
+                                case StylePartType.VARIATION_D:
+                                    current_part = StylePartType.FILL_C;
+                                    break;
+                            }
+                            break;
+                        case StylePartType.VARIATION_D:
+                            switch (next_part) {
+                                case StylePartType.VARIATION_A:
+                                    current_part = StylePartType.FILL_A;
+                                    break;
+                                case StylePartType.VARIATION_B:
+                                    current_part = StylePartType.FILL_B;
+                                    break;
+                                case StylePartType.VARIATION_C:
+                                    current_part = StylePartType.FILL_C;
+                                    break;
+                                case StylePartType.VARIATION_D:
+                                    current_part = StylePartType.FILL_D;
+                                    break;
+                            }
+                            break;
+                    }
+                } else {
+                    switch (current_part) {
+                        case StylePartType.VARIATION_A:
+                        current_part = StylePartType.FILL_A;
+                        break;
+                        case StylePartType.VARIATION_B:
+                        current_part = StylePartType.FILL_B;
+                        break;
+                        case StylePartType.VARIATION_C:
+                        current_part = StylePartType.FILL_C;
+                        break;
+                        case StylePartType.VARIATION_D:
+                        current_part = StylePartType.FILL_D;
+                        break;
+                    }
+                }
+
+                var fill_part_bounds = part_bounds_map.get (current_part);
+                var fill_start = fill_part_bounds.start + (ticks - current_measure_start);
+                if (Ensembles.settings.autofill && next_part < current_variation) {
+                    halt_continuous_notes ();
+                }
+                return style_player.seek ((int)fill_start);
+            }
 
             bool measure;
             if (is_beat (ticks, out measure)) {
-                beat (measure);
-                print ("%d %u  %u  %u  %u\n", ticks, current_part_bounds.start,
-                current_part_bounds.end, current_measure_start, current_measure_end);
+                beat (measure, style.time_signature_n, style.time_signature_d);
+                //  print ("%d %u  %u  %u  %u\n", ticks, current_part_bounds.start,
+                //  current_part_bounds.end, current_measure_start, current_measure_end);
+                //  print ("%d, %u, %d\n", ticks, current_measure_end, current_part);
 
-                if (ticks >= current_part_bounds.end) {
+                if (ticks >= current_measure_end) {
                     switch (current_part) {
+                        // If we are currently in a variation
                         case StylePartType.VARIATION_A:
                         case StylePartType.VARIATION_B:
                         case StylePartType.VARIATION_C:
                         case StylePartType.VARIATION_D:
-                            return style_player.seek (part_bounds_map.get (next_part).start);
+                            // If the next part is the same,
+                            // wait for current measure to end
+                            current_variation = current_part;
+                            if (current_part == next_part) {
+                                if (ticks >= current_part_bounds.end) {
+                                    halt_continuous_notes ();
+                                    return style_player.seek (part_bounds_map.get (next_part).start - 1);
+                                }
+                            } else {
+                                current_part = next_part;
+                                halt_continuous_notes ();
+                                return style_player.seek (part_bounds_map.get (next_part).start - 1);
+                            }
+                            break;
+                        case StylePartType.INTRO_1:
+                        case StylePartType.INTRO_2:
+                        case StylePartType.INTRO_3:
+                            if (current_part == next_part) {
+                                next_part = current_variation;
+                            }
+                            if (ticks >= current_part_bounds.end) {
+                                current_part = next_part;
+                                halt_continuous_notes ();
+                                return style_player.seek (part_bounds_map.get (next_part).start);
+                            }
+                            break;
+                        case StylePartType.ENDING_1:
+                        case StylePartType.ENDING_2:
+                        case StylePartType.ENDING_3:
+                            if (ticks >= current_part_bounds.end) {
+                                if (current_part == next_part) {
+                                    current_part = current_variation;
+                                    next_part = current_variation;
+                                    stop ();
+                                } else {
+                                    current_part = next_part;
+                                    halt_continuous_notes ();
+                                    return style_player.seek (part_bounds_map.get (next_part).start);
+                                }
+                            }
+                            break;
+                        case StylePartType.FILL_A:
+                        case StylePartType.FILL_B:
+                        case StylePartType.FILL_C:
+                        case StylePartType.FILL_D:
+                            current_variation = current_part;
+                            current_part = next_part;
+                            halt_continuous_notes ();
+                            return style_player.seek (part_bounds_map.get (next_part).start - 2);
                     }
                 }
             }
@@ -263,8 +411,37 @@ namespace Ensembles.Core.MIDIPlayers {
             }
         }
 
+        public void stop () {
+            if (style_player.get_status () == Fluid.PlayerStatus.PLAYING) {
+                style_player.stop ();
+                halt_continuous_notes ();
+            }
+        }
+
+        public void toggle_play () {
+            if (style_player.get_status () != Fluid.PlayerStatus.PLAYING) {
+                play ();
+            } else {
+                stop ();
+            }
+        }
+
         public void set_next_part (StylePartType _part) {
-            next_part = _part;
+            if (style_player.get_status () == Fluid.PlayerStatus.PLAYING) {
+                if (next_part != StylePartType.INTRO_1 &&
+                    next_part != StylePartType.INTRO_2 &&
+                    next_part != StylePartType.INTRO_3 &&
+                    next_part != StylePartType.ENDING_1 &&
+                    next_part != StylePartType.ENDING_2 &&
+                    next_part != StylePartType.ENDING_3) {
+                    if (next_part == _part || Ensembles.settings.autofill) {
+                        queue_fill = true;
+                    }
+                }
+                next_part = _part;
+            } else {
+                current_part = _part;
+            }
         }
     }
 }
