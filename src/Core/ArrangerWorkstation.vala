@@ -64,7 +64,7 @@ namespace Ensembles.Core {
 
             Application.event_bus.style_set_part.connect ((part) => {
                 if (style_engine != null) {
-                    style_engine.set_next_part (part);
+                    style_engine.queue_next_part (part);
                 }
             });
         }

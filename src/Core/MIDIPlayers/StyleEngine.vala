@@ -17,11 +17,28 @@ namespace Ensembles.Core.MIDIPlayers {
         private unowned Fluid.Synth utility_synth;
 
         // Player state
-        private bool looping = false;
         private uint32 absolute_beat_number = 0;
         private uint32 absolute_measure_number = 0;
-        private StylePartType current_part;
-        private StylePartType next_part;
+        private StylePartType _current_part;
+        private StylePartType current_part {
+            get {
+                return _current_part;
+            }
+            set {
+                _current_part = value;
+                Application.event_bus.style_current_part_changed (value);
+            }
+        }
+        private StylePartType _next_part;
+        private StylePartType next_part {
+            get {
+                return _next_part;
+            }
+            set {
+                _next_part = value;
+                Application.event_bus.style_next_part_changed (value);
+            }
+        }
         private StylePartType current_variation;
 
         // Per channel note-on tracking flags
@@ -40,13 +57,11 @@ namespace Ensembles.Core.MIDIPlayers {
         // Change queues
         private bool queue_fill = false;
         private bool queue_chord_change = false;
-        private bool queue_variation_change = false;
 
         // Thresholds
         private uint8 time_resolution_limit = 0;
         private uint measure_length;
 
-        public signal void part_changed (StylePartType part_type);
         public signal void beat (bool measure, uint8 time_signature_n, uint8 time_signature_d);
 
         construct {
@@ -125,7 +140,7 @@ namespace Ensembles.Core.MIDIPlayers {
             uint current_measure_start = (uint)Math.floor ((double)ticks / (double)measure_length) * measure_length;
             uint current_measure_end = (uint)Math.ceil ((double)(ticks - 1) / (double)measure_length) * measure_length;
 
-            // Fills don't wait for measure
+            // Fill Ins
             if (queue_fill) {
                 queue_fill = false;
                 if (Ensembles.settings.autofill) {
@@ -214,9 +229,11 @@ namespace Ensembles.Core.MIDIPlayers {
 
                 var fill_part_bounds = part_bounds_map.get (current_part);
                 var fill_start = fill_part_bounds.start + (ticks - current_measure_start);
+
                 if (Ensembles.settings.autofill && next_part < current_variation) {
                     halt_continuous_notes ();
                 }
+
                 return style_player.seek ((int)fill_start);
             }
 
@@ -426,7 +443,7 @@ namespace Ensembles.Core.MIDIPlayers {
             }
         }
 
-        public void set_next_part (StylePartType _part) {
+        public void queue_next_part (StylePartType _part) {
             if (style_player.get_status () == Fluid.PlayerStatus.PLAYING) {
                 if (next_part != StylePartType.INTRO_1 &&
                     next_part != StylePartType.INTRO_2 &&
@@ -438,9 +455,17 @@ namespace Ensembles.Core.MIDIPlayers {
                         queue_fill = true;
                     }
                 }
+
                 next_part = _part;
             } else {
                 current_part = _part;
+                if (_part == StylePartType.VARIATION_A ||
+                    _part == StylePartType.VARIATION_B ||
+                    _part == StylePartType.VARIATION_C ||
+                    _part == StylePartType.VARIATION_D) {
+                    next_part = _part;
+                    current_variation = _part;
+                }
             }
         }
     }
