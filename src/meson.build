@@ -50,6 +50,7 @@ sources = files (
     'Shell/Layouts/StyleControlPanel.vala',
     'Shell/Layouts/SynthControlPanel.vala',
     'Shell/Layouts/VoiceNavPanel.vala',
+    'Shell/Widgets/BeatVisualization.vala',
 
     # Core
     'Core/ArrangerWorkstation.vala',

@@ -9,6 +9,9 @@ namespace Ensembles.Services {
     public class EventBus : Object {
         public signal void arranger_ready ();
 
+        public signal void beat (bool measure, uint8 time_signature_n, uint8 time_signature_d);
+        public signal void beat_reset ();
+
         // Style Player Events
         public signal void style_chord_changed (Ensembles.Models.Chord chord);
         public signal int style_midi_event (Fluid.MIDIEvent event);

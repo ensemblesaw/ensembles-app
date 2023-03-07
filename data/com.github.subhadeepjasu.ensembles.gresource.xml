@@ -3,4 +3,8 @@
   <gresource prefix="/com/github/subhadeepjasu/ensembles">
     <file alias="Application.css">Themes/Application.css</file>
   </gresource>
+
+  <gresource prefix="/com/github/subhadeepjasu/ensembles/images">
+    <file alias="beat_counter_map" compressed="true" preprocess="xml-stripblanks">Images/beat_counter.svg</file>
+  </gresource>
 </gresources>

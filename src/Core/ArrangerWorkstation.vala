@@ -19,7 +19,7 @@ namespace Ensembles.Core {
             Pipewire.init(null, null);
             #endif
             synth_provider = new Synthesizer.SynthProvider ();
-            synth_provider.init_driver ("alsa", 0.2);
+            synth_provider.init_driver ("alsa", 0.3);
             Console.log ("Loading Soundfont from %s".printf (SF_PATH));
             try {
                 synthesizer = new Synthesizer.Synthesizer (synth_provider, SF_PATH);

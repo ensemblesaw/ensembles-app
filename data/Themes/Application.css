@@ -3,6 +3,7 @@
     margin: 4px;
     padding: 8px;
 }
+
 button {
     outline: 0;
     box-shadow: none;
@@ -21,34 +22,42 @@ button.pulse-fill {
         background-color: @bg-color;
         box-shadow: inset 0 0 0 1px alpha(#000, 0.1);
     }
+
     5% {
         background-color: alpha(@accent_color, 0.7);
         box-shadow: inset 0 0 8px @accent_color;
     }
+
     25% {
         background-color: @bg-color;
         box-shadow: inset 0 0 0 1px alpha(#000, 0.1);
-	}
+    }
+
     30% {
         background-color: alpha(@accent_color, 0.5);
         box-shadow: inset 0 0 8px @accent_color;
     }
+
     50% {
         background-color: @bg-color;
         box-shadow: inset 0 0 0 1px alpha(#000, 0.1);
     }
+
     55% {
         background-color: alpha(@accent_color, 0.7);
         box-shadow: inset 0 0 8px @accent_color;
     }
+
     75% {
         background-color: @bg-color;
         box-shadow: inset 0 0 0 1px alpha(#000, 0.1);
     }
+
     80% {
         background-color: alpha(@accent_color, 0.5);
         box-shadow: inset 0 0 8px @accent_color;
     }
+
     100% {
         background-color: @bg-color;
         box-shadow: inset 0 0 0 1px alpha(#000, 0.1);
@@ -60,36 +69,69 @@ button.pulse-fill {
         background-color: @bg-color;
         box-shadow: inset 0 0 0 1px alpha(#000, 0.1);
     }
+
     5% {
         background-color: alpha(@accent_color_complimentary, 0.7);
         box-shadow: inset 0 0 8px @accent_color_complimentary;
     }
+
     25% {
         background-color: @bg-color;
         box-shadow: inset 0 0 0 1px alpha(#000, 0.1);
-	}
+    }
+
     30% {
         background-color: alpha(@accent_color_complimentary, 0.5);
         box-shadow: inset 0 0 8px @accent_color_complimentary;
     }
+
     50% {
         background-color: @bg-color;
         box-shadow: inset 0 0 0 1px alpha(#000, 0.1);
     }
+
     55% {
         background-color: alpha(@accent_color_complimentary, 0.7);
         box-shadow: inset 0 0 8px @accent_color_complimentary;
     }
+
     75% {
         background-color: @bg-color;
         box-shadow: inset 0 0 0 1px alpha(#000, 0.1);
     }
+
     80% {
         background-color: alpha(@accent_color_complimentary, 0.5);
         box-shadow: inset 0 0 8px @accent_color_complimentary;
     }
+
     100% {
         background-color: @bg-color;
         box-shadow: inset 0 0 0 1px alpha(#000, 0.1);
     }
+}
+
+
+.beat-counter-0 {
+    background-image: url("resource://com/github/subhadeepjasu/ensembles/images/beat_counter_map");
+}
+
+.beat-counter-1 {
+    background-image: url("resource://com/github/subhadeepjasu/ensembles/images/beat_counter_map");
+    background-position: 0px -32px;
+}
+
+.beat-counter-2 {
+    background-image: url("resource://com/github/subhadeepjasu/ensembles/images/beat_counter_map");
+    background-position: 0px -64px;
+}
+
+.beat-counter-3 {
+    background-image: url("resource://com/github/subhadeepjasu/ensembles/images/beat_counter_map");
+    background-position: 0px -96px;
+}
+
+.beat-counter-4 {
+    background-image: url("resource://com/github/subhadeepjasu/ensembles/images/beat_counter_map");
+    background-position: 0px -128px;
 }

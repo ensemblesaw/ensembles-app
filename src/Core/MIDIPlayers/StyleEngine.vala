@@ -62,8 +62,6 @@ namespace Ensembles.Core.MIDIPlayers {
         private uint8 time_resolution_limit = 0;
         private uint measure_length;
 
-        public signal void beat (bool measure, uint8 time_signature_n, uint8 time_signature_d);
-
         construct {
             part_bounds_map = new HashTable<StylePartType, StylePartBounds?> (direct_hash, direct_equal);
         }
@@ -239,7 +237,7 @@ namespace Ensembles.Core.MIDIPlayers {
 
             bool measure;
             if (is_beat (ticks, out measure)) {
-                beat (measure, style.time_signature_n, style.time_signature_d);
+                Application.event_bus.beat (measure, style.time_signature_n, style.time_signature_d);
                 //  print ("%d %u  %u  %u  %u\n", ticks, current_part_bounds.start,
                 //  current_part_bounds.end, current_measure_start, current_measure_end);
                 //  print ("%d, %u, %d\n", ticks, current_measure_end, current_part);
@@ -432,6 +430,7 @@ namespace Ensembles.Core.MIDIPlayers {
             if (style_player.get_status () == Fluid.PlayerStatus.PLAYING) {
                 style_player.stop ();
                 halt_continuous_notes ();
+                Application.event_bus.beat_reset ();
             }
         }
 
@@ -444,15 +443,17 @@ namespace Ensembles.Core.MIDIPlayers {
         }
 
         public void queue_next_part (StylePartType _part) {
+            // Wait for measure end if already playing else instantly change part
             if (style_player.get_status () == Fluid.PlayerStatus.PLAYING) {
-                if (next_part != StylePartType.INTRO_1 &&
-                    next_part != StylePartType.INTRO_2 &&
-                    next_part != StylePartType.INTRO_3 &&
-                    next_part != StylePartType.ENDING_1 &&
-                    next_part != StylePartType.ENDING_2 &&
-                    next_part != StylePartType.ENDING_3) {
+                if (_part != StylePartType.INTRO_1 &&
+                    _part != StylePartType.INTRO_2 &&
+                    _part != StylePartType.INTRO_3 &&
+                    _part != StylePartType.ENDING_1 &&
+                    _part != StylePartType.ENDING_2 &&
+                    _part != StylePartType.ENDING_3) {
                     if (next_part == _part || Ensembles.settings.autofill) {
                         queue_fill = true;
+                        Console.log ("FILL >>>");
                     }
                 }
 

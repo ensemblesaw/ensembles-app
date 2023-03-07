@@ -30,6 +30,9 @@
         private Layouts.RegistryPanel registry_panel;
         private Layouts.Keyboard keyboard;
 
+        // Headerbar
+        private Widgets.BeatVisualization beat_visualization;
+
         public MainWindow (Ensembles.Application? ensembles_app) {
             Object (
                 application: ensembles_app,
@@ -44,7 +47,6 @@
         }
 
         private void build_ui () {
-            // Make headerbar
             if (Application.kiosk_mode) {
                 decorated = false;
                 fullscreened = true;
@@ -57,11 +59,15 @@
                 return;
             }
 
+            // Make headerbar
             headerbar = new Gtk.HeaderBar () {
                 show_title_buttons = true,
             };
 
             set_titlebar (headerbar);
+
+            beat_visualization = new Widgets.BeatVisualization ();
+            headerbar.pack_start (beat_visualization);
 
             squeezer = new Adw.Squeezer () {
                 orientation = Gtk.Orientation.VERTICAL,
