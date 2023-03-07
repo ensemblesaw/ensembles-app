@@ -241,6 +241,7 @@ namespace Ensembles.Core.MIDIPlayers {
                 //  print ("%d %u  %u  %u  %u\n", ticks, current_part_bounds.start,
                 //  current_part_bounds.end, current_measure_start, current_measure_end);
                 //  print ("%d, %u, %d\n", ticks, current_measure_end, current_part);
+                print ("beat %u\n", ticks);
 
                 if (ticks >= current_measure_end) {
                     switch (current_part) {
@@ -254,13 +255,11 @@ namespace Ensembles.Core.MIDIPlayers {
                             current_variation = current_part;
                             if (current_part == next_part) {
                                 if (ticks >= current_part_bounds.end) {
-                                    halt_continuous_notes ();
-                                    return style_player.seek (part_bounds_map.get (next_part).start - 1);
+                                    return seek_measure (part_bounds_map.get (next_part).start);
                                 }
                             } else {
                                 current_part = next_part;
-                                halt_continuous_notes ();
-                                return style_player.seek (part_bounds_map.get (next_part).start - 1);
+                                return seek_measure (part_bounds_map.get (next_part).start);
                             }
                             break;
                         case StylePartType.INTRO_1:
@@ -271,8 +270,7 @@ namespace Ensembles.Core.MIDIPlayers {
                             }
                             if (ticks >= current_part_bounds.end) {
                                 current_part = next_part;
-                                halt_continuous_notes ();
-                                return style_player.seek (part_bounds_map.get (next_part).start);
+                                return seek_measure (part_bounds_map.get (next_part).start);
                             }
                             break;
                         case StylePartType.ENDING_1:
@@ -285,8 +283,7 @@ namespace Ensembles.Core.MIDIPlayers {
                                     stop ();
                                 } else {
                                     current_part = next_part;
-                                    halt_continuous_notes ();
-                                    return style_player.seek (part_bounds_map.get (next_part).start);
+                                    return seek_measure (part_bounds_map.get (next_part).start);
                                 }
                             }
                             break;
@@ -294,10 +291,17 @@ namespace Ensembles.Core.MIDIPlayers {
                         case StylePartType.FILL_B:
                         case StylePartType.FILL_C:
                         case StylePartType.FILL_D:
-                            current_variation = current_part;
+                            if (current_part == StylePartType.FILL_A) {
+                                current_variation = StylePartType.VARIATION_A;
+                            } else if (current_part == StylePartType.FILL_B) {
+                                current_variation = StylePartType.VARIATION_B;
+                            } else if (current_part == StylePartType.FILL_C) {
+                                current_variation = StylePartType.VARIATION_C;
+                            } else if (current_part == StylePartType.FILL_D) {
+                                current_variation = StylePartType.VARIATION_D;
+                            }
                             current_part = next_part;
-                            halt_continuous_notes ();
-                            return style_player.seek (part_bounds_map.get (next_part).start - 2);
+                            return seek_measure (part_bounds_map.get (next_part).start);
                     }
                 }
             }
@@ -305,8 +309,16 @@ namespace Ensembles.Core.MIDIPlayers {
             return Fluid.OK;
         }
 
+        private int seek_measure (int ticks) {
+            halt_continuous_notes ();
+            absolute_beat_number = ticks / style.time_resolution;
+            absolute_measure_number = ticks / (style.time_resolution * style.time_signature_n);
+            return style_player.seek (ticks);
+        }
+
         private bool is_beat (int ticks, out bool measure) {
             var q = ticks / style.time_resolution;
+            //  print ("q: %u\n", q);
             if (q != absolute_beat_number) {
                 absolute_beat_number = q;
 
@@ -409,7 +421,7 @@ namespace Ensembles.Core.MIDIPlayers {
             var new_event = new Fluid.MIDIEvent ();
             new_event.set_channel (channel);
             new_event.set_type (MIDI.EventType.NOTE_ON);
-            // Decode key and velocty from the integer value
+            // Decode key and velocity from the integer value
             new_event.set_key (StyleMIDIModifers.modify_key_by_chord (value & 0xFFFF,
                 chord, style.scale_type, alt_channels_active));
             new_event.set_velocity ((value >> 16) & 0xFFFF);
