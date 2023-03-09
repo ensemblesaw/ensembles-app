@@ -73,7 +73,10 @@ namespace Ensembles.Shell.Layouts {
             keyboardpage = tab_view.append (keyboardview);
             keyboardpage.title = _("Keyboard");
 
-            scrolled_window = new Gtk.ScrolledWindow ();
+            scrolled_window = new Gtk.ScrolledWindow () {
+                height_request = 62,
+                vscrollbar_policy = Gtk.PolicyType.NEVER
+            };
             keyboardview.attach (scrolled_window, 0, 0);
             style_registry_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
             scrolled_window.set_child (style_registry_box);

@@ -57,6 +57,7 @@ namespace Ensembles.Core.MIDIPlayers {
         // Change queues
         private bool queue_fill = false;
         private bool queue_chord_change = false;
+        private bool force_change_part = false;
 
         // Thresholds
         private uint8 time_resolution_limit = 0;
@@ -200,7 +201,7 @@ namespace Ensembles.Core.MIDIPlayers {
                                     current_part = StylePartType.FILL_B;
                                     break;
                                 case StylePartType.VARIATION_C:
-                                    current_part = StylePartType.FILL_C;
+                                    current_part = StylePartType.FILL_D;
                                     break;
                                 case StylePartType.VARIATION_D:
                                     current_part = StylePartType.FILL_D;
@@ -241,7 +242,6 @@ namespace Ensembles.Core.MIDIPlayers {
                 //  print ("%d %u  %u  %u  %u\n", ticks, current_part_bounds.start,
                 //  current_part_bounds.end, current_measure_start, current_measure_end);
                 //  print ("%d, %u, %d\n", ticks, current_measure_end, current_part);
-                print ("beat %u\n", ticks);
 
                 if (ticks >= current_measure_end) {
                     switch (current_part) {
@@ -268,14 +268,20 @@ namespace Ensembles.Core.MIDIPlayers {
                             if (current_part == next_part) {
                                 next_part = current_variation;
                             }
-                            if (ticks >= current_part_bounds.end) {
+                            if (ticks >= current_part_bounds.end || force_change_part) {
                                 current_part = next_part;
+                                force_change_part = false;
                                 return seek_measure (part_bounds_map.get (next_part).start);
                             }
                             break;
                         case StylePartType.ENDING_1:
                         case StylePartType.ENDING_2:
                         case StylePartType.ENDING_3:
+                            if (force_change_part) {
+                                force_change_part = false;
+                                current_part = next_part;
+                                return seek_measure (part_bounds_map.get (next_part).start);
+                            }
                             if (ticks >= current_part_bounds.end) {
                                 if (current_part == next_part) {
                                     current_part = current_variation;
@@ -318,7 +324,6 @@ namespace Ensembles.Core.MIDIPlayers {
 
         private bool is_beat (int ticks, out bool measure) {
             var q = ticks / style.time_resolution;
-            //  print ("q: %u\n", q);
             if (q != absolute_beat_number) {
                 absolute_beat_number = q;
 
@@ -462,14 +467,33 @@ namespace Ensembles.Core.MIDIPlayers {
                     _part != StylePartType.INTRO_3 &&
                     _part != StylePartType.ENDING_1 &&
                     _part != StylePartType.ENDING_2 &&
-                    _part != StylePartType.ENDING_3) {
+                    _part != StylePartType.ENDING_3 &&
+                    current_part != StylePartType.INTRO_1 &&
+                    current_part != StylePartType.INTRO_2 &&
+                    current_part != StylePartType.INTRO_3 &&
+                    current_part != StylePartType.ENDING_1 &&
+                    current_part != StylePartType.ENDING_2 &&
+                    current_part != StylePartType.ENDING_3) {
                     if (next_part == _part || Ensembles.settings.autofill) {
                         queue_fill = true;
                         Console.log ("FILL >>>");
                     }
                 }
 
-                next_part = _part;
+                if (next_part != _part) {
+                    next_part = _part;
+                } else if (
+                    current_part == StylePartType.INTRO_1 ||
+                    current_part == StylePartType.INTRO_2 ||
+                    current_part == StylePartType.INTRO_3 ||
+                    current_part == StylePartType.ENDING_1 ||
+                    current_part == StylePartType.ENDING_2 ||
+                    current_part == StylePartType.ENDING_3
+                ) {
+                    next_part = _part;
+                    force_change_part = true;
+                    Console.log ("Force Change Part");
+                }
             } else {
                 current_part = _part;
                 if (_part == StylePartType.VARIATION_A ||

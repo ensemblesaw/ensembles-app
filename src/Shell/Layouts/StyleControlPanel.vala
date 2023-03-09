@@ -7,10 +7,6 @@ using Ensembles.Models;
 
 namespace Ensembles.Shell.Layouts {
     public class StyleControlPanel : Gtk.Box {
-        private Gtk.Box intro_box;
-        private Gtk.Box variation_box;
-        private Gtk.Box ending_box;
-
         private Gtk.Button intro_1_button;
         private Gtk.Button intro_2_button;
         private Gtk.Button intro_3_button;
@@ -40,52 +36,72 @@ namespace Ensembles.Shell.Layouts {
         }
 
         private void build_ui () {
-            intro_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
-                hexpand = true,
-                homogeneous = true
-            };
-            intro_box.get_style_context ().add_class (Granite.STYLE_CLASS_LINKED);
+            get_style_context ().add_class ("panel");
+
+            var intro_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 2);
             append (intro_box);
 
-            variation_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
+            var intro_button_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
                 hexpand = true,
                 homogeneous = true
             };
-            variation_box.get_style_context ().add_class (Granite.STYLE_CLASS_LINKED);
+            intro_button_box.get_style_context ().add_class (Granite.STYLE_CLASS_LINKED);
+            intro_box.append (intro_button_box);
+            intro_box.append (new Gtk.Label (_("INTRO")) { opacity = 0.5 } );
+
+            var variation_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 2);
             append (variation_box);
 
-            break_button = new Gtk.Button.with_label (_("BREAK"));
-            append (break_button);
-
-            ending_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
+            var variation_button_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
                 hexpand = true,
                 homogeneous = true
             };
-            ending_box.get_style_context ().add_class (Granite.STYLE_CLASS_LINKED);
+            variation_button_box.get_style_context ().add_class (Granite.STYLE_CLASS_LINKED);
+            variation_box.append (variation_button_box);
+            variation_box.append (new Gtk.Label (_("VARIATION / FILL-IN")) { opacity = 0.5 } );
+
+            var break_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 2);
+            append (break_box);
+
+            break_button = new Gtk.Button.with_label ("┦┟") {
+                hexpand = true
+            };
+            break_box.append (break_button);
+            break_box.append (new Gtk.Label (_("BREAK")) { opacity = 0.5 } );
+
+            var ending_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 2);
             append (ending_box);
 
+            var ending_button_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
+                hexpand = true,
+                homogeneous = true
+            };
+            ending_button_box.get_style_context ().add_class (Granite.STYLE_CLASS_LINKED);
+            ending_box.append (ending_button_box);
+            ending_box.append (new Gtk.Label (_("ENDING")) { opacity = 0.5 } );
+
             intro_1_button = new Gtk.Button.with_label (_("1"));
-            intro_box.append (intro_1_button);
+            intro_button_box.append (intro_1_button);
             intro_2_button = new Gtk.Button.with_label (_("2"));
-            intro_box.append (intro_2_button);
+            intro_button_box.append (intro_2_button);
             intro_3_button = new Gtk.Button.with_label (_("3"));
-            intro_box.append (intro_3_button);
+            intro_button_box.append (intro_3_button);
 
             variation_a_button = new Gtk.Button.with_label (_("A"));
-            variation_box.append (variation_a_button);
+            variation_button_box.append (variation_a_button);
             variation_b_button = new Gtk.Button.with_label (_("B"));
-            variation_box.append (variation_b_button);
+            variation_button_box.append (variation_b_button);
             variation_c_button = new Gtk.Button.with_label (_("C"));
-            variation_box.append (variation_c_button);
+            variation_button_box.append (variation_c_button);
             variation_d_button = new Gtk.Button.with_label (_("D"));
-            variation_box.append (variation_d_button);
+            variation_button_box.append (variation_d_button);
 
             ending_1_button = new Gtk.Button.with_label (_("1"));
-            ending_box.append (ending_1_button);
+            ending_button_box.append (ending_1_button);
             ending_2_button = new Gtk.Button.with_label (_("2"));
-            ending_box.append (ending_2_button);
+            ending_button_box.append (ending_2_button);
             ending_3_button = new Gtk.Button.with_label (_("3"));
-            ending_box.append (ending_3_button);
+            ending_button_box.append (ending_3_button);
         }
 
         private void build_events () {
