@@ -80,15 +80,22 @@ namespace Ensembles.Shell.Layouts {
             bottom_row_box = new Gtk.CenterBox ();
             bottom_row.attach (bottom_row_box, 0, 0);
 
+            var start_button_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 2);
+            start_button_box.get_style_context ().add_class ("panel");
+            bottom_row_box.set_center_widget (start_button_box);
+
             start_button = new Gtk.Button.from_icon_name ("media-playback-start-symbolic") {
-                width_request = 64
+                width_request = 64,
+                height_request = 32
             };
             start_button.get_style_context ().add_class (Granite.STYLE_CLASS_DESTRUCTIVE_ACTION);
             start_button.get_style_context ().remove_class ("image-button");
             start_button.clicked.connect (() => {
                 Application.event_bus.style_play_toggle ();
             });
-            bottom_row_box.set_center_widget (start_button);
+
+            start_button_box.append (start_button);
+            start_button_box.append (new Gtk.Label (_("START/STOP")) { opacity = 0.5 });
         }
 
         public void reparent () {

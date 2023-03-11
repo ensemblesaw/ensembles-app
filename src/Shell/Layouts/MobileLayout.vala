@@ -19,16 +19,15 @@ namespace Ensembles.Shell.Layouts {
         private Gtk.Grid keyboardview;
         private Gtk.Box style_registry_box;
 
-        private Adw.TabBar tab_bar;
-        private Adw.TabView tab_view;
-
-        private Adw.TabPage infopage;
-        private Adw.TabPage keyboardpage;
-
         private Gtk.ScrolledWindow scrolled_window;
+        private Adw.Flap flap;
+        private Gtk.Stack main_stack;
+
+        private Gtk.ListBox menu_box;
 
         construct {
             build_ui ();
+            build_events ();
         }
 
         public MobileLayout (Layouts.AssignablesBoard? assignables_board,
@@ -56,22 +55,43 @@ namespace Ensembles.Shell.Layouts {
         }
 
         private void build_ui () {
-            tab_view = new Adw.TabView ();
-            attach (tab_view, 0, 1);
+            flap = new Adw.Flap ();
+            attach (flap, 0, 0);
 
-            tab_bar = new Adw.TabBar () {
-                view = tab_view,
-                autohide = false
+            // Make menu
+            menu_box = new Gtk.ListBox () {
+                width_request = 200
             };
-            attach (tab_bar, 0, 0);
+            flap.set_flap (menu_box);
+            menu_box.get_style_context ().add_class ("adw-listbox");
 
+            var info_entry = new Adw.ActionRow () {
+                title = "Info Display",
+                subtitle = "View interactive infomation display",
+                name = "info"
+            };
+            menu_box.append (info_entry);
+
+            var keyboard_entry = new Adw.ActionRow () {
+                title = "Keyboard",
+                subtitle = "Show the keys, style control buttons and registry buttons",
+                name = "keyboard"
+            };
+            menu_box.append (keyboard_entry);
+
+            main_stack = new Gtk.Stack () {
+                width_request = 800,
+                transition_type = Gtk.StackTransitionType.SLIDE_UP_DOWN,
+                transition_duration = 300
+            };
+            flap.set_content (main_stack);
+
+            // Make Content
             infoview = new Gtk.Grid ();
-            infopage = tab_view.append (infoview);
-            infopage.title = _("Info Display");
+            main_stack.add_named (infoview, "info-view");
 
             keyboardview = new Gtk.Grid ();
-            keyboardpage = tab_view.append (keyboardview);
-            keyboardpage.title = _("Keyboard");
+            main_stack.add_named (keyboardview, "keyboard-view");
 
             scrolled_window = new Gtk.ScrolledWindow () {
                 height_request = 62,
@@ -98,6 +118,12 @@ namespace Ensembles.Shell.Layouts {
             style_registry_box.append (style_control_panel);
             style_registry_box.append (registry_panel);
             keyboardview.attach (keyboard, 0, 1);
+        }
+
+        private void build_events () {
+            menu_box.row_selected.connect ((row) => {
+                main_stack.set_visible_child_name (row.name + "-view");
+            });
         }
     }
 }

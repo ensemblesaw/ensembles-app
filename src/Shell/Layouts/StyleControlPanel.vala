@@ -18,9 +18,10 @@ namespace Ensembles.Shell.Layouts {
         private Gtk.Button ending_1_button;
         private Gtk.Button ending_2_button;
         private Gtk.Button ending_3_button;
+        private Gtk.Button sync_start_button;
 
         private StylePartType current_part;
-        private StylePartType next_part = StylePartType.VARIATION_D;
+        private StylePartType next_part = StylePartType.VARIATION_A;
 
         public StyleControlPanel () {
             Object (
@@ -58,13 +59,14 @@ namespace Ensembles.Shell.Layouts {
             };
             variation_button_box.get_style_context ().add_class (Granite.STYLE_CLASS_LINKED);
             variation_box.append (variation_button_box);
-            variation_box.append (new Gtk.Label (_("VARIATION / FILL-IN")) { opacity = 0.5 } );
+            variation_box.append (new Gtk.Label (_("VARIATION/FILL-IN")) { opacity = 0.5 } );
 
             var break_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 2);
             append (break_box);
 
             break_button = new Gtk.Button.with_label ("┦┟") {
-                hexpand = true
+                hexpand = true,
+                height_request = 32
             };
             break_box.append (break_button);
             break_box.append (new Gtk.Label (_("BREAK")) { opacity = 0.5 } );
@@ -80,28 +82,59 @@ namespace Ensembles.Shell.Layouts {
             ending_box.append (ending_button_box);
             ending_box.append (new Gtk.Label (_("ENDING")) { opacity = 0.5 } );
 
-            intro_1_button = new Gtk.Button.with_label (_("1"));
+            intro_1_button = new Gtk.Button.with_label (_("1")) {
+                height_request = 32
+            };
             intro_button_box.append (intro_1_button);
-            intro_2_button = new Gtk.Button.with_label (_("2"));
+            intro_2_button = new Gtk.Button.with_label (_("2")) {
+                height_request = 32
+            };
             intro_button_box.append (intro_2_button);
-            intro_3_button = new Gtk.Button.with_label (_("3"));
+            intro_3_button = new Gtk.Button.with_label (_("3")) {
+                height_request = 32
+            };
             intro_button_box.append (intro_3_button);
 
-            variation_a_button = new Gtk.Button.with_label (_("A"));
+            variation_a_button = new Gtk.Button.with_label (_("A")) {
+                height_request = 32
+            };
             variation_button_box.append (variation_a_button);
-            variation_b_button = new Gtk.Button.with_label (_("B"));
+            variation_b_button = new Gtk.Button.with_label (_("B")) {
+                height_request = 32
+            };
             variation_button_box.append (variation_b_button);
-            variation_c_button = new Gtk.Button.with_label (_("C"));
+            variation_c_button = new Gtk.Button.with_label (_("C")) {
+                height_request = 32
+            };
             variation_button_box.append (variation_c_button);
-            variation_d_button = new Gtk.Button.with_label (_("D"));
+            variation_d_button = new Gtk.Button.with_label (_("D")) {
+                height_request = 32
+            };
             variation_button_box.append (variation_d_button);
 
-            ending_1_button = new Gtk.Button.with_label (_("1"));
+            ending_1_button = new Gtk.Button.with_label (_("1")) {
+                height_request = 32
+            };
             ending_button_box.append (ending_1_button);
-            ending_2_button = new Gtk.Button.with_label (_("2"));
+            ending_2_button = new Gtk.Button.with_label (_("2")) {
+                height_request = 32
+            };
             ending_button_box.append (ending_2_button);
-            ending_3_button = new Gtk.Button.with_label (_("3"));
+            ending_3_button = new Gtk.Button.with_label (_("3")) {
+                height_request = 32
+            };
             ending_button_box.append (ending_3_button);
+
+            var sync_start_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 2);
+            append (sync_start_box);
+            sync_start_button = new Gtk.Button.from_icon_name ("com.github.subhadeepjasu.ensembles.sync-start-symbolic") {
+                tooltip_text = "Sync Start / Stop",
+                has_tooltip = true,
+                height_request = 32
+            };
+            sync_start_button.get_style_context ().remove_class ("image-button");
+            sync_start_box.append (sync_start_button);
+            sync_start_box.append (new Gtk.Label (_("SYNC")) { opacity = 0.5 } );
         }
 
         private void build_events () {

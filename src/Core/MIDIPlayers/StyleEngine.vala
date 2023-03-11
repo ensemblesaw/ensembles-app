@@ -56,8 +56,10 @@ namespace Ensembles.Core.MIDIPlayers {
 
         // Change queues
         private bool queue_fill = false;
+        private bool queue_break = false;
         private bool queue_chord_change = false;
         private bool force_change_part = false;
+        private bool sync_start = false;
 
         // Thresholds
         private uint8 time_resolution_limit = 0;
@@ -68,7 +70,7 @@ namespace Ensembles.Core.MIDIPlayers {
         }
 
         public StyleEngine (Synthesizer.SynthProvider synth_provider, Models.Style? style,
-            uint8? custom_tempo = 0, StylePartType? custom_part = StylePartType.VARIATION_A) {
+            uint8? custom_tempo = 0) {
             this.style = style;
             utility_synth = synth_provider.utility_synth;
 
@@ -103,11 +105,7 @@ namespace Ensembles.Core.MIDIPlayers {
                 time_resolution_limit = 3;
             }
 
-            if (custom_part != null) {
-                current_part = custom_part;
-
-                current_variation = StylePartType.VARIATION_A;
-            }
+            current_variation = StylePartType.VARIATION_A;
 
             halt_continuous_notes ();
             measure_length = style.time_resolution * style.time_signature_n;
@@ -476,7 +474,6 @@ namespace Ensembles.Core.MIDIPlayers {
                     current_part != StylePartType.ENDING_3) {
                     if (next_part == _part || Ensembles.settings.autofill) {
                         queue_fill = true;
-                        Console.log ("FILL >>>");
                     }
                 }
 
@@ -492,7 +489,6 @@ namespace Ensembles.Core.MIDIPlayers {
                 ) {
                     next_part = _part;
                     force_change_part = true;
-                    Console.log ("Force Change Part");
                 }
             } else {
                 current_part = _part;
@@ -503,6 +499,17 @@ namespace Ensembles.Core.MIDIPlayers {
                     next_part = _part;
                     current_variation = _part;
                 }
+            }
+        }
+
+        public void change_chord (Chord _chord) {
+            if (_chord.root != ChordRoot.NONE) {
+                queue_chord_change = true;
+            }
+
+            if (sync_start) {
+                sync_start = false;
+                play ();
             }
         }
     }

@@ -153,3 +153,21 @@ button.pulse-fill {
     background-image: url("resource://com/github/subhadeepjasu/ensembles/images/beat_counter_map");
     background-position: 0px -128px;
 }
+
+.adw-listbox>row {
+    margin: 8px;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #0002;
+    box-shadow: 0 2px 4px #0003, inset 0 0 0 1px #fff1;
+}
+
+.adw-listbox>row:selected {
+    background: alpha(@accent_color, 0.2);
+    box-shadow: 0 2px 4px alpha(shade(@accent_color, 0.75), 0.5), inset 0 0 0 1px #fff1;
+}
+
+.adw-listbox>row>.header>.title>.subtitle {
+    font-size: small;
+    opacity: 0.5;
+}

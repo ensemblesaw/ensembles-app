@@ -13,6 +13,7 @@
 
         // Responsive UI
         private Adw.Squeezer squeezer;
+        private Gtk.Button flap_button;
 
         // Various major layouts
         private Layouts.DesktopLayout desktop_layout;
@@ -65,6 +66,12 @@
             };
 
             set_titlebar (headerbar);
+
+            flap_button = new Gtk.Button.from_icon_name ("view-continuous-symbolic") {
+                visible = false
+            };
+            flap_button.get_style_context ().remove_class ("image-button");
+            headerbar.pack_start (flap_button);
 
             beat_visualization = new Widgets.BeatVisualization ();
             headerbar.pack_start (beat_visualization);
@@ -127,6 +134,12 @@
 
             Ensembles.Application.event_bus.arranger_ready.connect (() => {
                 Console.log ("Arranger Workstation Initialized!", Console.LogLevel.SUCCESS);
+            });
+
+            this.notify.connect ((p) => {
+                if (squeezer.transition_running && p.get_name () == "default-height") {
+                    flap_button.visible = squeezer.get_visible_child () == mobile_layout;
+                }
             });
         }
 

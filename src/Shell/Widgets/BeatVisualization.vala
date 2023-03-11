@@ -13,7 +13,8 @@ namespace Ensembles.Shell.Widgets {
         private void build_ui () {
             beat_counter_visual = new Gtk.Fixed () {
                 width_request = 108,
-                height_request = 32
+                height_request = 32,
+                valign = Gtk.Align.CENTER
             };
 
             beat_counter_visual.get_style_context ().add_class ("beat-counter-0");
