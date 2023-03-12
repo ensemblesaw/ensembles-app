@@ -64,10 +64,13 @@ namespace Ensembles.Shell.Layouts {
             var break_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 2);
             append (break_box);
 
-            break_button = new Gtk.Button.with_label ("┦┟") {
+            break_button = new Gtk.Button.from_icon_name ("com.github.subhadeepjasu.ensembles.break-symbolic") {
+                tooltip_text = "Break",
+                has_tooltip = true,
                 hexpand = true,
                 height_request = 32
             };
+            break_button.get_style_context ().remove_class ("image-button");
             break_box.append (break_button);
             break_box.append (new Gtk.Label (_("BREAK")) { opacity = 0.5 } );
 
@@ -225,8 +228,8 @@ namespace Ensembles.Shell.Layouts {
                 break;
                 case StylePartType.INTRO_3:
                 intro_1_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_2_button.get_style_context ().add_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_3_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                intro_2_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                intro_3_button.get_style_context ().add_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
                 ending_1_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
                 ending_2_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
                 ending_3_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);

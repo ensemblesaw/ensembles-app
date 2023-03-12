@@ -160,6 +160,7 @@ button.pulse-fill {
     border-radius: 8px;
     border: 1px solid #0002;
     box-shadow: 0 2px 4px #0003, inset 0 0 0 1px #fff1;
+    transition: all 0.4s cubic-bezier(0, 0, 0, 1);
 }
 
 .adw-listbox>row:selected {
@@ -170,4 +171,28 @@ button.pulse-fill {
 .adw-listbox>row>.header>.title>.subtitle {
     font-size: small;
     opacity: 0.5;
+}
+
+dimming {
+    background: #0001;
+}
+
+flap > .adw-listbox {
+    border-right: 1px solid #0004;
+}
+
+.folded>.adw-listbox {
+    border-right: 1px solid #0006;
+    box-shadow: 0px 0px 32px 32px #0004;
+}
+
+flap > stack {
+    filter: blur(0);
+    transform: scale(1);
+    transition: all 0.4s cubic-bezier(0, 0, 0, 1);
+}
+
+stack.dimmed {
+    filter: blur(4px);
+    transform: scale(0.9);
 }

@@ -11,8 +11,8 @@ namespace Ensembles.Services {
         public static string theme_color = "blueberry";
 
         public static void init_theme () {
-            //  weak Gtk.IconTheme default_theme = Gtk.IconTheme.get_for_display (Gdk.Display.get_default ());
-            //  default_theme.add_resource_path ("/com/github/subhadeepjasu/ensembles");
+            weak Gtk.IconTheme default_theme = Gtk.IconTheme.get_for_display (Gdk.Display.get_default ());
+            default_theme.add_resource_path ("/com/github/subhadeepjasu/ensembles");
 
             GLib.Value theme_value = GLib.Value (GLib.Type.STRING);
             Gtk.Settings.get_default ().get_property ("gtk-theme-name", ref theme_value);

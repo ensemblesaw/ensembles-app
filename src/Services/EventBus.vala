@@ -7,6 +7,11 @@ using Ensembles.Models;
 
 namespace Ensembles.Services {
     public class EventBus : Object {
+        // Shell Events
+        public signal bool show_menu (bool show);
+        public signal void menu_shown (bool shown);
+
+        // Core Events
         public signal void arranger_ready ();
 
         public signal void beat (bool measure, uint8 time_signature_n, uint8 time_signature_d);
