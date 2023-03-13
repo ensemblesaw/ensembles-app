@@ -12,7 +12,7 @@ namespace Ensembles.Services {
 
         public static void init_theme () {
             weak Gtk.IconTheme default_theme = Gtk.IconTheme.get_for_display (Gdk.Display.get_default ());
-            default_theme.add_resource_path ("/com/github/subhadeepjasu/ensembles");
+            default_theme.add_resource_path ("/com/github/subhadeepjasu/ensembles/icons");
 
             GLib.Value theme_value = GLib.Value (GLib.Type.STRING);
 
@@ -31,7 +31,7 @@ namespace Ensembles.Services {
 
             if (main_css_provider == null) {
                 main_css_provider = new Gtk.CssProvider ();
-                main_css_provider.load_from_resource ("/com/github/subhadeepjasu/ensembles/Application.css");
+                main_css_provider.load_from_resource ("/com/github/subhadeepjasu/ensembles/theme/Application.css");
                 Gtk.StyleContext.add_provider_for_display (
                     Gdk.Display.get_default (),
                     main_css_provider,

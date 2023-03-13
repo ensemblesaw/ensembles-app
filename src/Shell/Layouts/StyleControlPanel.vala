@@ -64,7 +64,7 @@ namespace Ensembles.Shell.Layouts {
             var break_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 2);
             append (break_box);
 
-            break_button = new Gtk.Button.from_icon_name ("com.github.subhadeepjasu.ensembles.break-symbolic") {
+            break_button = new Gtk.Button.from_icon_name ("style-break-symbolic") {
                 tooltip_text = "Break",
                 has_tooltip = true,
                 hexpand = true,
@@ -130,7 +130,7 @@ namespace Ensembles.Shell.Layouts {
 
             var sync_start_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 2);
             append (sync_start_box);
-            sync_start_button = new Gtk.Button.from_icon_name ("com.github.subhadeepjasu.ensembles.sync-start-symbolic") {
+            sync_start_button = new Gtk.Button.from_icon_name ("style-sync-start-symbolic") {
                 tooltip_text = "Sync Start / Stop",
                 has_tooltip = true,
                 height_request = 32

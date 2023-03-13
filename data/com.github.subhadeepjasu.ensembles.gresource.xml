@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
-  <gresource prefix="/com/github/subhadeepjasu/ensembles">
+  <gresource prefix="/com/github/subhadeepjasu/ensembles/theme">
     <file alias="Application.css">Themes/Application.css</file>
+  </gresource>
+
+  <gresource prefix="/com/github/subhadeepjasu/ensembles/icons">
+    <file alias="scalable/actions/style-break-symbolic.svg">icons/scalable/actions/style-break-symbolic.svg</file>
+    <file alias="scalable/actions/style-sync-start-symbolic.svg">icons/scalable/actions/style-sync-start-symbolic.svg</file>
   </gresource>
 
   <gresource prefix="/com/github/subhadeepjasu/ensembles/images">
