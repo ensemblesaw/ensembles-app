@@ -106,6 +106,8 @@ namespace Ensembles.Core.MIDIPlayers {
             }
 
             current_variation = StylePartType.VARIATION_A;
+            next_part = StylePartType.VARIATION_A;
+            current_part = StylePartType.VARIATION_A;
 
             halt_continuous_notes ();
             measure_length = style.time_resolution * style.time_signature_n;

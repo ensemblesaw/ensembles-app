@@ -20,7 +20,7 @@ namespace Ensembles.Shell.Layouts {
         private Gtk.Button ending_3_button;
         private Gtk.Button sync_start_button;
 
-        private StylePartType current_part;
+        private StylePartType current_part = StylePartType.VARIATION_A;
         private StylePartType next_part = StylePartType.VARIATION_A;
 
         public StyleControlPanel () {
@@ -138,6 +138,8 @@ namespace Ensembles.Shell.Layouts {
             sync_start_button.get_style_context ().remove_class ("image-button");
             sync_start_box.append (sync_start_button);
             sync_start_box.append (new Gtk.Label (_("SYNC")) { opacity = 0.5 } );
+
+            highlight_part ();
         }
 
         private void build_events () {
