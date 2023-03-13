@@ -1,6 +1,5 @@
 # Install icons
 icon_sizes = ['16', '24', '32', '48', '64', '128']
-# symbolic_action_icons = ['sync-start', 'break']
 
 foreach i : icon_sizes
     install_data (
@@ -13,12 +12,10 @@ foreach i : icon_sizes
     )
 endforeach
 
-# foreach i : symbolic_action_icons
-#     install_data(
-#         join_paths('icons', 'symbolic', meson.project_name () + '.' + i + '-symbolic.svg'),
-#         install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', 'symbolic', 'apps')
-#     )
-# endforeach
+install_data (
+    join_paths ('icons', 'symbolic', meson.project_name() + '-symbolic.svg'),
+    install_dir: join_paths (get_option ('datadir'), 'icons', 'hicolor', 'symbolic', 'apps')
+)
 
 # Translate and install our .desktop file so the Applications Menu will see it
 i18n.merge_file (
