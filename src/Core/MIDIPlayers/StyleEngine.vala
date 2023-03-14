@@ -60,6 +60,7 @@ namespace Ensembles.Core.MIDIPlayers {
         private bool queue_chord_change = false;
         private bool force_change_part = false;
         private bool sync_start = false;
+        private bool sync_stop = false;
 
         // Thresholds
         private uint8 time_resolution_limit = 0;
@@ -236,6 +237,18 @@ namespace Ensembles.Core.MIDIPlayers {
                 return style_player.seek ((int)fill_start);
             }
 
+            // Break
+            if (queue_break) {
+                queue_break = false;
+                Application.event_bus.style_break_changed (false);
+                var break_part_bounds = part_bounds_map.get (StylePartType.BREAK);
+                var break_start = break_part_bounds.start + (ticks - current_measure_start);
+                current_part = StylePartType.BREAK;
+                halt_continuous_notes ();
+
+                return style_player.seek ((int)break_start);
+            }
+
             bool measure;
             if (is_beat (ticks, out measure)) {
                 Application.event_bus.beat (measure, style.time_signature_n, style.time_signature_d);
@@ -244,6 +257,14 @@ namespace Ensembles.Core.MIDIPlayers {
                 //  print ("%d, %u, %d\n", ticks, current_measure_end, current_part);
 
                 if (ticks >= current_measure_end) {
+                    if (sync_stop) {
+                        sync_stop = false;
+                        sync_start = true;
+                        Application.event_bus.style_sync_changed (true);
+                        current_part = current_variation;
+                        next_part = current_variation;
+                        stop ();
+                    }
                     switch (current_part) {
                         // If we are currently in a variation
                         case StylePartType.VARIATION_A:
@@ -307,6 +328,18 @@ namespace Ensembles.Core.MIDIPlayers {
                                 current_variation = StylePartType.VARIATION_D;
                             }
                             current_part = next_part;
+                            return seek_measure (part_bounds_map.get (next_part).start);
+                        case StylePartType.BREAK:
+                            if (next_part == StylePartType.FILL_A) {
+                                next_part = StylePartType.VARIATION_A;
+                            } else if (next_part == StylePartType.FILL_B) {
+                                next_part = StylePartType.VARIATION_B;
+                            } else if (next_part == StylePartType.FILL_C) {
+                                next_part = StylePartType.VARIATION_C;
+                            } else if (next_part == StylePartType.FILL_D) {
+                                next_part = StylePartType.VARIATION_D;
+                            }
+                            current_part = current_variation;
                             return seek_measure (part_bounds_map.get (next_part).start);
                     }
                 }
@@ -457,6 +490,10 @@ namespace Ensembles.Core.MIDIPlayers {
             } else {
                 stop ();
             }
+
+            sync_start = false;
+            sync_stop = false;
+            Application.event_bus.style_sync_changed (false);
         }
 
         public void queue_next_part (StylePartType _part) {
@@ -502,6 +539,27 @@ namespace Ensembles.Core.MIDIPlayers {
                     current_variation = _part;
                 }
             }
+
+            queue_break = false;
+        }
+
+        public void break_play () {
+            if (style_player.get_status () == Fluid.PlayerStatus.PLAYING) {
+                queue_break = true;
+                Application.event_bus.style_break_changed (true);
+            }
+        }
+
+        public void sync () {
+            if (style_player.get_status () == Fluid.PlayerStatus.PLAYING) {
+                sync_start = false;
+                sync_stop = !sync_stop;
+            } else {
+                sync_start = !sync_start;
+                sync_stop = false;
+            }
+
+            Application.event_bus.style_sync_changed (sync_start || sync_stop);
         }
 
         public void change_chord (Chord _chord) {
@@ -511,6 +569,7 @@ namespace Ensembles.Core.MIDIPlayers {
 
             if (sync_start) {
                 sync_start = false;
+                Application.event_bus.style_sync_changed (false);
                 play ();
             }
         }

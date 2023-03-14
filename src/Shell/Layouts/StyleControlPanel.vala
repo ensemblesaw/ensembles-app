@@ -133,6 +133,7 @@ namespace Ensembles.Shell.Layouts {
             sync_start_button = new Gtk.Button.from_icon_name ("style-sync-start-symbolic") {
                 tooltip_text = "Sync Start / Stop",
                 has_tooltip = true,
+                hexpand = true,
                 height_request = 32
             };
             sync_start_button.get_style_context ().remove_class ("image-button");
@@ -191,6 +192,30 @@ namespace Ensembles.Shell.Layouts {
             Application.event_bus.style_next_part_changed.connect ((part) => {
                 next_part = part;
                 highlight_part ();
+            });
+
+            sync_start_button.clicked.connect (() => {
+                Application.event_bus.style_sync ();
+            });
+
+            Application.event_bus.style_sync_changed.connect ((active) => {
+                if (active) {
+                    sync_start_button.get_style_context ().add_class ("pulse");
+                } else {
+                    sync_start_button.get_style_context ().remove_class ("pulse");
+                }
+            });
+
+            break_button.clicked.connect (() => {
+                Application.event_bus.style_break ();
+            });
+
+            Application.event_bus.style_break_changed.connect ((active) => {
+                if (active) {
+                    break_button.get_style_context ().add_class ("pulse-fill");
+                } else {
+                    break_button.get_style_context ().remove_class ("pulse-fill");
+                }
             });
         }
 

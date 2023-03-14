@@ -67,6 +67,18 @@ namespace Ensembles.Core {
                     style_engine.queue_next_part (part);
                 }
             });
+
+            Application.event_bus.style_break.connect (() => {
+                if (style_engine != null) {
+                    style_engine.break_play ();
+                }
+            });
+
+            Application.event_bus.style_sync.connect (() => {
+                if (style_engine != null) {
+                    style_engine.sync ();
+                }
+            });
         }
     }
 }
