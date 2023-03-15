@@ -212,9 +212,9 @@ namespace Ensembles.Shell.Layouts {
 
             Application.event_bus.style_break_changed.connect ((active) => {
                 if (active) {
-                    break_button.get_style_context ().add_class ("pulse-fill");
+                    break_button.get_style_context ().add_class ("pulse");
                 } else {
-                    break_button.get_style_context ().remove_class ("pulse-fill");
+                    break_button.get_style_context ().remove_class ("pulse");
                 }
             });
         }

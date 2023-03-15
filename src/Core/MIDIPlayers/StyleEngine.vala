@@ -143,6 +143,7 @@ namespace Ensembles.Core.MIDIPlayers {
             // Fill Ins
             if (queue_fill) {
                 queue_fill = false;
+                Application.event_bus.style_break_changed (false);
                 if (Ensembles.settings.autofill) {
                     switch (current_part) {
                         case StylePartType.VARIATION_A:
@@ -209,6 +210,22 @@ namespace Ensembles.Core.MIDIPlayers {
                                     break;
                             }
                             break;
+                        case StylePartType.BREAK:
+                            switch (next_part) {
+                                case StylePartType.VARIATION_A:
+                                    current_part = StylePartType.FILL_A;
+                                    break;
+                                case StylePartType.VARIATION_B:
+                                    current_part = StylePartType.FILL_B;
+                                    break;
+                                case StylePartType.VARIATION_C:
+                                    current_part = StylePartType.FILL_C;
+                                    break;
+                                case StylePartType.VARIATION_D:
+                                    current_part = StylePartType.FILL_D;
+                                    break;
+                            }
+                            break;
                     }
                 } else {
                     switch (current_part) {
@@ -223,6 +240,22 @@ namespace Ensembles.Core.MIDIPlayers {
                         break;
                         case StylePartType.VARIATION_D:
                         current_part = StylePartType.FILL_D;
+                        break;
+                        default:
+                        switch (next_part) {
+                            case StylePartType.VARIATION_A:
+                            current_part = StylePartType.FILL_A;
+                            break;
+                            case StylePartType.VARIATION_B:
+                            current_part = StylePartType.FILL_B;
+                            break;
+                            case StylePartType.VARIATION_C:
+                            current_part = StylePartType.FILL_C;
+                            break;
+                            case StylePartType.VARIATION_D:
+                            current_part = StylePartType.FILL_D;
+                            break;
+                        }
                         break;
                     }
                 }
@@ -240,7 +273,7 @@ namespace Ensembles.Core.MIDIPlayers {
             // Break
             if (queue_break) {
                 queue_break = false;
-                Application.event_bus.style_break_changed (false);
+                Application.event_bus.style_break_changed (true);
                 var break_part_bounds = part_bounds_map.get (StylePartType.BREAK);
                 var break_start = break_part_bounds.start + (ticks - current_measure_start);
                 current_part = StylePartType.BREAK;
@@ -330,16 +363,18 @@ namespace Ensembles.Core.MIDIPlayers {
                             current_part = next_part;
                             return seek_measure (part_bounds_map.get (next_part).start);
                         case StylePartType.BREAK:
-                            if (next_part == StylePartType.FILL_A) {
-                                next_part = StylePartType.VARIATION_A;
-                            } else if (next_part == StylePartType.FILL_B) {
-                                next_part = StylePartType.VARIATION_B;
-                            } else if (next_part == StylePartType.FILL_C) {
-                                next_part = StylePartType.VARIATION_C;
-                            } else if (next_part == StylePartType.FILL_D) {
-                                next_part = StylePartType.VARIATION_D;
+                            if (current_part == StylePartType.INTRO_1 ||
+                            current_part == StylePartType.INTRO_2 ||
+                            current_part == StylePartType.INTRO_3 ||
+                            current_part == StylePartType.ENDING_1 ||
+                            current_part == StylePartType.ENDING_2 ||
+                            current_part == StylePartType.ENDING_3) {
+                                current_part = current_variation;
+                                next_part = current_variation;
+                            } else {
+                                current_part = next_part;
                             }
-                            current_part = current_variation;
+                            Application.event_bus.style_break_changed (false);
                             return seek_measure (part_bounds_map.get (next_part).start);
                     }
                 }
