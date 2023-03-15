@@ -30,6 +30,7 @@ namespace Ensembles.Services {
         public signal void style_break_changed (bool active);
 
         // Synthesizer
-        public signal void halt_notes (bool except_drums = false);
+        public signal void synth_halt_notes (bool except_drums = false);
+        public signal void synth_sounds_off ();
     }
 }

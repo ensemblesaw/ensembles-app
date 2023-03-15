@@ -121,14 +121,14 @@ namespace Ensembles.Core.MIDIPlayers {
                 }
             }
 
-            Application.event_bus.halt_notes (true);
+            Application.event_bus.synth_halt_notes (true);
         }
 
         private int parse_ticks (int ticks) {
             // If there is a chord change
             if (queue_chord_change) {
                 queue_chord_change = false;
-                Application.event_bus.halt_notes (true);
+                Application.event_bus.synth_halt_notes (true);
                 for (uint8 channel = 0; channel < 16; channel++) {
                     if ((channel < 9 || channel > 10) && channel_note_on[channel] >= 0) {
                         resend_key (channel_note_on[channel], channel);
@@ -160,6 +160,8 @@ namespace Ensembles.Core.MIDIPlayers {
                                 case StylePartType.VARIATION_D:
                                     current_part = StylePartType.FILL_C;
                                     break;
+                                default:
+                                break;
                             }
                             break;
                         case StylePartType.VARIATION_B:
@@ -176,6 +178,8 @@ namespace Ensembles.Core.MIDIPlayers {
                                 case StylePartType.VARIATION_D:
                                     current_part = StylePartType.FILL_C;
                                     break;
+                                default:
+                                break;
                             }
                             break;
                         case StylePartType.VARIATION_C:
@@ -192,6 +196,8 @@ namespace Ensembles.Core.MIDIPlayers {
                                 case StylePartType.VARIATION_D:
                                     current_part = StylePartType.FILL_C;
                                     break;
+                                default:
+                                break;
                             }
                             break;
                         case StylePartType.VARIATION_D:
@@ -208,6 +214,8 @@ namespace Ensembles.Core.MIDIPlayers {
                                 case StylePartType.VARIATION_D:
                                     current_part = StylePartType.FILL_D;
                                     break;
+                                default:
+                                break;
                             }
                             break;
                         case StylePartType.BREAK:
@@ -224,8 +232,12 @@ namespace Ensembles.Core.MIDIPlayers {
                                 case StylePartType.VARIATION_D:
                                     current_part = StylePartType.FILL_D;
                                     break;
+                                default:
+                                break;
                             }
                             break;
+                        default:
+                        break;
                     }
                 } else {
                     switch (current_part) {
@@ -254,6 +266,8 @@ namespace Ensembles.Core.MIDIPlayers {
                             break;
                             case StylePartType.VARIATION_D:
                             current_part = StylePartType.FILL_D;
+                            break;
+                            default:
                             break;
                         }
                         break;
@@ -376,6 +390,8 @@ namespace Ensembles.Core.MIDIPlayers {
                             }
                             Application.event_bus.style_break_changed (false);
                             return seek_measure (part_bounds_map.get (next_part).start);
+                        default:
+                        break;
                     }
                 }
             }
@@ -506,6 +522,7 @@ namespace Ensembles.Core.MIDIPlayers {
         public void play () {
             if (style_player.get_status () != Fluid.PlayerStatus.PLAYING) {
                 next_part = current_part;
+                Application.event_bus.synth_sounds_off ();
                 style_player.seek (part_bounds_map.get (current_part).start);
                 style_player.play ();
             }
