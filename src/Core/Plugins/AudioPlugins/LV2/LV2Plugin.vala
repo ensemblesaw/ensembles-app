@@ -275,6 +275,42 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                 } else if (is_atom_port) {
 
                 }
+
+                var n_audio_in_ports = audio_in_port_list.length ();
+                audio_in_ports = new Port[n_audio_in_ports];
+                for (uint32 p = 0; p < n_audio_in_ports; p++) {
+                    var _port = audio_in_port_list.nth_data (p);
+                    audio_in_ports[p] = new Port (
+                        _port.name,
+                        _port.index
+                    );
+                }
+
+                var n_audio_out_ports = audio_out_port_list.length ();
+                audio_out_ports = new Port[n_audio_out_ports];
+                for (uint32 p = 0; p < n_audio_out_ports; p++) {
+                    var _port = audio_out_port_list.nth_data (p);
+                    audio_out_ports[p] = new Port (
+                        _port.name,
+                        _port.index
+                    );
+                }
+
+                var n_control_in_ports = control_in_port_list.length ();
+                control_in_ports = new LV2ControlPort[n_control_in_ports];
+                for (uint32 p = 0; p < n_control_in_ports; p++) {
+                    var _port = control_in_port_list.nth_data (p);
+                    control_in_ports[p] = new LV2ControlPort (
+                        _port.name,
+                        _port.index,
+                        _port.properties,
+                        _port.symbol,
+                        _port.min_value,
+                        _port.max_value,
+                        _port.default_value,
+                        _port.step
+                    );
+                }
             }
         }
 
