@@ -4,7 +4,7 @@
  */
 
 namespace Ensembles.Core.Plugins.AudioPlugins {
-    public class Port {
+    public class Port : Object {
         public string name { get; private set; }
         public uint32 index { get; private set; }
 

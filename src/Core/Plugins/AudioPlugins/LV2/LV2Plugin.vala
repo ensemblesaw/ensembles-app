@@ -9,10 +9,8 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
      * the standard set of sampled voices that Ensembles come with.
      */
     public class LV2Plugin : Plugins.AudioPlugins.AudioPlugin {
-        public Lilv.Plugin lilv_plugin;
+        public unowned Lilv.Plugin? lilv_plugin;
         public string plug_uri;
-
-        public unowned Lilv.World world;
 
         public LV2.Feature*[] features;
 
@@ -31,7 +29,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
         public LV2ControlPort[] control_in_ports;
         public LV2ControlPort[] control_out_ports;
 
-        public LV2Plugin (owned Lilv.Plugin lilv_plugin) throws PluginError {
+        public LV2Plugin (Lilv.Plugin? lilv_plugin) throws PluginError {
             if (!features_are_supported ()) {
                 throw new PluginError.UNSUPPORTED_FEATURE ("Feature not supported");
             }
@@ -164,14 +162,13 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
 
         private bool features_are_supported () {
             var lilv_features = lilv_plugin.get_required_features ();
-            var feat_iter = lilv_features.begin ();
-            while (!lilv_features.is_end (feat_iter)) {
-                string feat = lilv_features.get (feat_iter).as_uri ();
+            for (var iter = lilv_features.begin (); !lilv_features.is_end (iter);
+            iter = lilv_features.next (iter)) {
+                string feat = lilv_features.get (iter).as_uri ();
                 print (">>>>%s\n", feat);
                 if (feat == "") {
                     return false;
                 }
-                feat_iter = lilv_features.next (feat_iter);
             }
             return true;
         }
@@ -184,8 +181,8 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
         }
 
         private void fetch_ports () {
-            var audio_in_port_list = new List<Port> ();
-            var audio_out_port_list = new List<Port> ();
+            var audio_in_port_list = new List<LV2Port> ();
+            var audio_out_port_list = new List<LV2Port> ();
             var control_in_port_list = new List<LV2ControlPort> ();
             var control_out_port_list = new List<LV2ControlPort> ();
 
@@ -197,6 +194,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                 var name = lilv_plugin.port_get_name (port).as_string ();
                 var symbol = lilv_plugin.port_get_symbol (port).as_string ();
                 var turtle_token = lilv_plugin.port_get_symbol (port).get_turtle_token ();
+                var properties = get_port_properties (port);
 
                 // Plugin class flags
                 bool is_audio_port = false;
@@ -210,7 +208,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
 
                 for (var class_iter = port_classes.begin ();
                 !port_classes.is_end (class_iter);
-                port_classes.next (class_iter)) {
+                class_iter = port_classes.next (class_iter)) {
                     switch (port_classes.get (class_iter).as_string ()) {
                         case LV2.Core._AudioPort:
                             is_audio_port = true;
@@ -232,9 +230,12 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
 
                 if (is_audio_port) {
                     if (is_input_port) {
-                        audio_in_port_list.append (new Port (
+                        audio_in_port_list.append (new LV2Port (
                             name,
-                            i
+                            i,
+                            properties,
+                            symbol,
+                            turtle_token
                         ));
                     } else if (is_output_port) {
                         if (audio_out_ports == null) {
@@ -243,9 +244,12 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                             audio_out_ports.resize (audio_out_ports.length + 1);
                         }
 
-                        audio_out_port_list.append (new Port (
+                        audio_out_port_list.append (new LV2Port (
                             name,
-                            i
+                            i,
+                            properties,
+                            symbol,
+                            turtle_token
                         ));
                     }
                 } else if (is_control_port) {
@@ -259,7 +263,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                         control_in_port_list.append (new LV2ControlPort (
                             name,
                             i,
-                            get_port_properties (port),
+                            properties,
                             turtle_token,
                             symbol,
                             min_value.as_float (),
@@ -271,7 +275,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                         control_out_port_list.append (new LV2ControlPort (
                             name,
                             i,
-                            get_port_properties (port),
+                            properties,
                             turtle_token,
                             symbol,
                             min_value.as_float (),
@@ -285,14 +289,17 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                 }
             }
 
-            // Consolidate all ports
+            // Consolidate all ports into respective arrays
             var n_audio_in_ports = audio_in_port_list.length ();
             audio_in_ports = new Port[n_audio_in_ports];
             for (uint32 p = 0; p < n_audio_in_ports; p++) {
                 var _port = audio_in_port_list.nth_data (p);
-                audio_in_ports[p] = new Port (
+                audio_in_ports[p] = new LV2Port (
                     _port.name,
-                    _port.index
+                    _port.index,
+                    _port.properties,
+                    _port.symbol,
+                    _port.turtle_token
                 );
             }
 
@@ -300,9 +307,12 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
             audio_out_ports = new Port[n_audio_out_ports];
             for (uint32 p = 0; p < n_audio_out_ports; p++) {
                 var _port = audio_out_port_list.nth_data (p);
-                audio_out_ports[p] = new Port (
+                audio_out_ports[p] = new LV2Port (
                     _port.name,
-                    _port.index
+                    _port.index,
+                    _port.properties,
+                    _port.symbol,
+                    _port.turtle_token
                 );
             }
 

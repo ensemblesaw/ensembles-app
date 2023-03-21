@@ -17,25 +17,6 @@ sources = files (
     'Main.vala',
     'Application.vala',
 
-    # Services
-    'Services/EventBus.vala',
-    'Services/Settings.vala',
-    'Services/Theme.vala',
-
-    # Utilities
-    'Utils/Console.vala',
-    'Utils/ErrorDomains.vala',
-    'Utils/AccentColors.vala',
-    'Utils/StyleMIDIModifiers.vala',
-    'Utils/MIDI.vala',
-
-    # Models
-    'Models/Chord.vala',
-    'Models/Registry.vala',
-    'Models/Voice.vala',
-    'Models/Style.vala',
-    'Models/StylePart.vala',
-
     # Shell
     'Shell/MainWindow.vala',
     'Shell/Layouts/DesktopLayout.vala',
@@ -62,10 +43,35 @@ sources = files (
     'Core/MIDIPlayers/StyleEngine.vala',
     'Core/FileLoaders/StyleFileLoader.vala',
 
+    # Services
+    'Services/EventBus.vala',
+    'Services/Settings.vala',
+    'Services/Theme.vala',
+
+    # Utilities
+    'Utils/Console.vala',
+    'Utils/ErrorDomains.vala',
+    'Utils/AccentColors.vala',
+    'Utils/StyleMIDIModifiers.vala',
+    'Utils/MIDI.vala',
+
+    # Models
+    'Models/Chord.vala',
+    'Models/Registry.vala',
+    'Models/Voice.vala',
+    'Models/Style.vala',
+    'Models/StylePart.vala',
+
     # Plugins
     'Core/Plugins/Plugin.vala',
+    'Core/Plugins/PluginManager.vala',
+
+    # Audio Plugins
     'Core/Plugins/AudioPlugins/AudioPlugin.vala',
     'Core/Plugins/AudioPlugins/Port.vala',
+
+    # LV2 Plugins
+    'Core/Plugins/AudioPlugins/LV2/LV2Manager.vala',
     'Core/Plugins/AudioPlugins/LV2/LV2Plugin.vala',
     'Core/Plugins/AudioPlugins/LV2/LV2URID.vala',
     'Core/Plugins/AudioPlugins/LV2/LV2SyMap.vala',

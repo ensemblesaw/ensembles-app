@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
- namespace Ensembles.Core.Plugins.AudioPlugins {
+ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
     public class LV2ControlPort : LV2Port {
         public float default_value { get; private set; }
         public float min_value { get; private set; }

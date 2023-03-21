@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-namespace Ensembles.Core.Plugins.AudioPlugins {
+namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
     public class LV2Port : Port {
         public string[] properties { get; private set; }
         public string symbol { get; private set; }

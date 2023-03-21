@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
- namespace Ensembles.Core.PlugIns.LADSPAV2 {
+namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
     public class SyMap {
         private List<string> symbols;
         public SyMap () {

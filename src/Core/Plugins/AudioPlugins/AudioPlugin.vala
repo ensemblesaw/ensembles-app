@@ -32,15 +32,13 @@ namespace Ensembles.Core.Plugins.AudioPlugins {
         public bool stereo_source { get; protected set; }
         public bool stereo_sink { get; protected set; }
 
-        private float* _mix_gain;
+        protected float _mix_gain = 1;
         public float mix_gain {
             get {
-                return _mix_gain != null ? *_mix_gain : 0;
+                return _mix_gain;
             }
             set {
-                if (_mix_gain != null) {
-                    *_mix_gain = value;
-                }
+                _mix_gain = value;
             }
         }
 
