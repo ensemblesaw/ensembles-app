@@ -69,5 +69,6 @@ sources = files (
     'Core/Plugins/AudioPlugins/LV2/LV2Plugin.vala',
     'Core/Plugins/AudioPlugins/LV2/LV2URID.vala',
     'Core/Plugins/AudioPlugins/LV2/LV2SyMap.vala',
+    'Core/Plugins/AudioPlugins/LV2/Ports/LV2Port.vala',
     'Core/Plugins/AudioPlugins/LV2/Ports/LV2ControlPort.vala'
 )
