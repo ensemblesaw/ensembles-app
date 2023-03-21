@@ -16,7 +16,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
             world = new Lilv.World ();
         }
 
-        public unowned List<LV2Plugin> load_plugins () {
+        public void load_plugins (List<unowned AudioPlugin> audio_plugin_list) {
             assert (world != null);
 
             lv2_plugins = new List<LV2Plugin> ();
@@ -35,16 +35,15 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                     try {
                         var plugin = new LV2Plugin (lilv_plugin);
                         lv2_plugins.append (plugin);
+                        audio_plugin_list.append (plugin);
                     } catch (PluginError e) {
-                        Console.log ("Failed to load LV2 plugin: " + lilv_plugin.get_uri ().as_uri (),
+                        Console.log ("Skipped LV2 plugin: " + lilv_plugin.get_uri ().as_uri (),
                         Console.LogLevel.WARNING);
                     }
                 }
             }
 
-            Console.log ("LV2 Plugins Loaded Sucessfully!", Console.LogLevel.SUCCESS);
-
-            return lv2_plugins;
+            Console.log ("LV2 Plugins Loaded Successfully!", Console.LogLevel.SUCCESS);
         }
     }
 }

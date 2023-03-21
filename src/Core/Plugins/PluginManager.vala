@@ -5,17 +5,28 @@
 
 namespace Ensembles.Core.Plugins {
     public class PluginManager : Object {
+        // Audio Plugins
+        public List<unowned AudioPlugins.AudioPlugin> audio_plugins;
+
         private AudioPlugins.LADSPAV2.LV2Manager lv2_audio_plugin_manager;
 
         construct {
-            // Load Audio Plugins
+            // Load Audio Plugins //////////////////////////////////////////////
+            Console.log ("Loading Audio Plugins...");
+            audio_plugins = new List<unowned AudioPlugins.AudioPlugin> ();
+
+            // Load LADSPA Plugins
+
             // Load LV2 Plugins
             lv2_audio_plugin_manager = new AudioPlugins.LADSPAV2.LV2Manager ();
+            lv2_audio_plugin_manager.load_plugins (audio_plugins);
 
-            unowned List<AudioPlugins.LADSPAV2.LV2Plugin> lv2_plugins = lv2_audio_plugin_manager.load_plugins ();
+            // Load Carla Plugins
 
-            foreach (var lv2_plugin in lv2_plugins) {
-                switch (lv2_plugin.category) {
+            // Load Native Plugins
+
+            foreach (var audio_plugin in audio_plugins) {
+                switch (audio_plugin.category) {
                     case AudioPlugins.AudioPlugin.Category.DSP:
                     // Send to DSP Rack
                     break;
@@ -24,6 +35,9 @@ namespace Ensembles.Core.Plugins {
                     break;
                 }
             }
+
+            Console.log ("Audio Plugins Loaded Successfully!",
+            Console.LogLevel.SUCCESS);
         }
     }
 }
