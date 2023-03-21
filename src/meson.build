@@ -60,5 +60,14 @@ sources = files (
     'Core/Analysers/ChordAnalyser.vala',
     'Core/Analysers/StyleAnalyser.vala',
     'Core/MIDIPlayers/StyleEngine.vala',
-    'Core/FileLoaders/StyleFileLoader.vala'
+    'Core/FileLoaders/StyleFileLoader.vala',
+
+    # Plugins
+    'Core/Plugins/Plugin.vala',
+    'Core/Plugins/AudioPlugins/AudioPlugin.vala',
+    'Core/Plugins/AudioPlugins/Port.vala',
+    'Core/Plugins/AudioPlugins/LV2/LV2Plugin.vala',
+    'Core/Plugins/AudioPlugins/LV2/LV2URID.vala',
+    'Core/Plugins/AudioPlugins/LV2/LV2SyMap.vala',
+    'Core/Plugins/AudioPlugins/LV2/Ports/LV2ControlPort.vala'
 )

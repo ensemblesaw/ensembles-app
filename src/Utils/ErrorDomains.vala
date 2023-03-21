@@ -12,4 +12,8 @@ namespace Ensembles {
         INVALID_FILE,
         INVALID_LAYOUT,
     }
+
+    protected errordomain PluginError {
+        UNSUPPORTED_FEATURE
+    }
 }
