@@ -82,30 +82,30 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
         }
 
         public override void connect_source_buffer (void* in_l, void* in_r) {
-            for (uint8 i = 0; i < audio_in_ports.length; i++) {
-                if (i % 2 == 0) {
+            if (audio_in_ports.length > 1) {
+                for (uint8 i = 0; i < audio_in_ports.length; i++) {
                     if (lv2_instance_l != null) {
-                        lv2_instance_l.connect_port (audio_in_ports[i].index, in_l);
-                    }
-                } else {
-                    if (lv2_instance_r != null) {
-                        lv2_instance_r.connect_port (audio_in_ports[i].index, in_r);
+                        lv2_instance_l.connect_port (audio_in_ports[i].index,
+                            i % 2 == 0 ? in_l : in_r);
                     }
                 }
+            } else {
+                lv2_instance_l.connect_port (audio_in_ports[0].index, in_l);
+                lv2_instance_r.connect_port (audio_in_ports[0].index, in_r);
             }
         }
 
         public override void connect_sink_buffer (void* out_l, void* out_r) {
-            for (uint8 i = 0; i < audio_out_ports.length; i++) {
-                if (i % 2 == 0) {
+            if (audio_out_ports.length > 1) {
+                for (uint8 i = 0; i < audio_out_ports.length; i++) {
                     if (lv2_instance_l != null) {
-                        lv2_instance_l.connect_port (audio_out_ports[i].index, out_l);
-                    }
-                } else {
-                    if (lv2_instance_r != null) {
-                        lv2_instance_r.connect_port (audio_out_ports[i].index, out_r);
+                        lv2_instance_l.connect_port (audio_out_ports[i].index,
+                            i % 2 == 0 ? out_l : out_r);
                     }
                 }
+            } else {
+                lv2_instance_l.connect_port (audio_out_ports[0].index, out_l);
+                lv2_instance_r.connect_port (audio_out_ports[0].index, out_r);
             }
         }
 
@@ -127,6 +127,10 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
             if (lv2_instance_r != null) {
                 lv2_instance_r.run (sample_count);
             }
+        }
+
+        public override AudioPlugin duplicate () throws PluginError {
+            return new LV2Plugin (lilv_plugin);
         }
 
         private Category get_category_from_class (string plugin_class) {

@@ -64,5 +64,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins {
          * as per the functionality defined in this function
          */
         public abstract void process (uint32 sample_count);
+
+        public abstract AudioPlugin duplicate () throws PluginError;
     }
 }
