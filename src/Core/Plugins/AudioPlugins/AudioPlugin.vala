@@ -17,7 +17,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins {
             UNSUPPORTED
         }
 
-        public enum Type {
+        public enum Tech {
             NATIVE,
             LADSPA,
             LV2,
@@ -26,7 +26,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins {
 
         // Plugin Information
         public string license;
-        public Type type { get; protected set; }
+        public Tech tech { get; protected set; }
         public Category category { get; protected set; }
 
         public bool stereo_source { get; protected set; }

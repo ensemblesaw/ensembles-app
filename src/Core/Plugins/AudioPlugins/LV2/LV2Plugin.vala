@@ -9,7 +9,6 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
      * the standard set of sampled voices that Ensembles come with.
      */
     public class LV2Plugin : Plugins.AudioPlugins.AudioPlugin {
-        public unowned Lilv.Plugin? lilv_plugin;
         public string plug_uri;
 
         public LV2.Feature*[] features;
@@ -29,29 +28,32 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
         public LV2ControlPort[] control_in_ports;
         public LV2ControlPort[] control_out_ports;
 
+        public unowned Lilv.Plugin? lilv_plugin { get; protected set; }
+
         public LV2Plugin (Lilv.Plugin? lilv_plugin) throws PluginError {
+            Object (
+                lilv_plugin: lilv_plugin
+            );
+
             if (!features_are_supported ()) {
                 throw new PluginError.UNSUPPORTED_FEATURE ("Feature not supported");
             }
 
-            this.lilv_plugin = lilv_plugin;
             name = lilv_plugin.get_name ().as_string ();
             plug_uri = lilv_plugin.get_uri ().as_uri ();
             author_name = lilv_plugin.get_author_name ().as_string ();
             author_email = lilv_plugin.get_author_email ().as_string ();
             author_homepage = lilv_plugin.get_author_homepage ().as_string ();
 
-            type = Type.LV2;
+            tech = Tech.LV2;
             category = get_category_from_class (lilv_plugin.get_class ().get_label ().as_string ());
+        }
+
+        public override void instantiate () {
+            create_features ();
 
             // Get all ports from plugin
             fetch_ports ();
-
-            base ();
-        }
-
-        protected override void instantiate () {
-            create_features ();
 
             lv2_instance_l = lilv_plugin.instantiate (44100, features);
 
@@ -82,7 +84,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
         }
 
         public override void connect_source_buffer (void* in_l, void* in_r) {
-            if (audio_in_ports.length > 1) {
+            if (lv2_instance_r == null) {
                 for (uint8 i = 0; i < audio_in_ports.length; i++) {
                     if (lv2_instance_l != null) {
                         lv2_instance_l.connect_port (audio_in_ports[i].index,
@@ -96,7 +98,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
         }
 
         public override void connect_sink_buffer (void* out_l, void* out_r) {
-            if (audio_out_ports.length > 1) {
+            if (lv2_instance_r == null) {
                 for (uint8 i = 0; i < audio_out_ports.length; i++) {
                     if (lv2_instance_l != null) {
                         lv2_instance_l.connect_port (audio_out_ports[i].index,
@@ -193,7 +195,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
             var n_ports = lilv_plugin.get_num_ports ();
             for (uint32 i = 0; i < n_ports; i++) {
                 // Get port from plugin
-                var port = lilv_plugin.get_port_by_index (i);
+                unowned Lilv.Port port = lilv_plugin.get_port_by_index (i);
 
                 var name = lilv_plugin.port_get_name (port).as_string ();
                 var symbol = lilv_plugin.port_get_symbol (port).as_string ();
@@ -208,7 +210,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                 bool is_atom_port = false;
 
                 // Get all classes associated with this port
-                var port_classes = lilv_plugin.port_get_classes (port);
+                unowned Lilv.Nodes port_classes = lilv_plugin.port_get_classes (port);
 
                 for (var class_iter = port_classes.begin ();
                 !port_classes.is_end (class_iter);

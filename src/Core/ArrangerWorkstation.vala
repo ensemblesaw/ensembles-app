@@ -8,6 +8,7 @@ namespace Ensembles.Core {
         private Synthesizer.SynthProvider synth_provider;
         private Synthesizer.Synthesizer synthesizer;
         private MIDIPlayers.StyleEngine style_engine;
+        private Plugins.PluginManager plugin_manager;
 
          // Arranger Data
         private Models.Style[] styles;
@@ -47,6 +48,9 @@ namespace Ensembles.Core {
             Console.log ("Found %u styles".printf (n_styles), Console.LogLevel.SUCCESS);
 
             style_engine = new MIDIPlayers.StyleEngine (synth_provider, styles[0], 0);
+
+            // Load Plugins
+            plugin_manager = new Plugins.PluginManager ();
 
             // Send ready signal
             Idle.add (() => {
