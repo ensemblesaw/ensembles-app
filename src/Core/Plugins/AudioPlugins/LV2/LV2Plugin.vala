@@ -11,14 +11,18 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
     public class LV2Plugin : Plugins.AudioPlugins.AudioPlugin {
         public string plug_uri;
 
-        public LV2.Feature*[] features;
+        // LV2 Features
+        private LV2.Feature*[] features;
+        private const string[] supported_feature_uris = {
+            LV2.URID.URI + LV2.URID.PREFIX + LV2.URID._map
+        };
 
-        LV2.Feature map_feat;
-        LV2.Feature unmap_feat;
+        LV2.Feature urid_map_feature;
+        LV2.Feature urid_unmap_feature;
         //  LV2.Feature options_feat;
         //  LV2.Feature sched_feature;
 
-
+        // Feature Implementations
         LV2.URID.UridMap urid_map;
         LV2.URID.UridUnmap urid_unmap;
 
@@ -159,24 +163,34 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
             urid_unmap.unmap = LV2URID.unmap_uri;
 
             features = new LV2.Feature* [2];
-            map_feat = register_feature (LV2.URID._map, &urid_map);
-            unmap_feat = register_feature (LV2.URID._unmap, &urid_unmap);
+            urid_map_feature = register_feature (LV2.URID._map, &urid_map);
+            urid_unmap_feature = register_feature (LV2.URID._unmap, &urid_unmap);
 
-            features[0] = &map_feat;
-            features[1] = &unmap_feat;
+            features[0] = &urid_map_feature;
+            features[1] = &urid_unmap_feature;
         }
 
         private bool features_are_supported () {
             var lilv_features = lilv_plugin.get_required_features ();
             for (var iter = lilv_features.begin (); !lilv_features.is_end (iter);
             iter = lilv_features.next (iter)) {
-                string feat = lilv_features.get (iter).as_uri ();
-                print (">>>>%s\n", feat);
-                if (feat == "") {
+                string required_feature = lilv_features.get (iter).as_uri ();
+                if (!feature_supported (required_feature)) {
                     return false;
                 }
             }
+
             return true;
+        }
+
+        private bool feature_supported (string feature) {
+            for (uint8 i = 0; i < supported_feature_uris.length; i++) {
+                if (feature == supported_feature_uris[i]) {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private LV2.Feature register_feature (string uri, void* data) {
