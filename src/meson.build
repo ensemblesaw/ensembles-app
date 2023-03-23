@@ -42,6 +42,8 @@ sources = files (
     'Core/Analysers/StyleAnalyser.vala',
     'Core/MIDIPlayers/StyleEngine.vala',
     'Core/FileLoaders/StyleFileLoader.vala',
+    'Core/Racks/DSPRack.vala',
+    'Core/Racks/VoiceRack.vala',
 
     # Services
     'Services/EventBus.vala',

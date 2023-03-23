@@ -7,6 +7,10 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
     /**
      * An LV2 Plugin that can be used for DSP or as voices, expanding
      * the standard set of sampled voices that Ensembles come with.
+     *
+     * LV2 is an extensible open standard for audio plugins.
+     * LV2 has a simple core interface, which is accompanied by extensions
+     * that add more advanced functionality.
      */
     public class LV2Plugin : Plugins.AudioPlugins.AudioPlugin {
         public string plug_uri;
@@ -14,18 +18,18 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
         // LV2 Features
         private LV2.Feature*[] features;
         private const string[] supported_feature_uris = {
-            LV2.URID.URI + LV2.URID.PREFIX + LV2.URID._map
+            LV2.URID.URI + LV2.URID.PREFIX + LV2.URID._map,
+            LV2.URID.URI + LV2.URID.PREFIX + LV2.URID._unmap
         };
 
         LV2.Feature urid_map_feature;
         LV2.Feature urid_unmap_feature;
-        //  LV2.Feature options_feat;
-        //  LV2.Feature sched_feature;
+        //  LV2.Feature options_feature;
+        //  LV2.Feature scheduler_feature;
 
         // Feature Implementations
         LV2.URID.UridMap urid_map;
         LV2.URID.UridUnmap urid_unmap;
-
         private Lilv.Instance? lv2_instance_l; // Stereo audio / Mono L Processor
         private Lilv.Instance? lv2_instance_r; // Mono R Processor
 
@@ -53,17 +57,27 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
             category = get_category_from_class (lilv_plugin.get_class ().get_label ().as_string ());
         }
 
+        /**
+         * Creates a workable instance of the lv2 plugin.
+         * Instantiate must be called on this object before connecting any ports
+         * or running the plugin
+         */
         public override void instantiate () {
-            create_features ();
+            if (lv2_instance_l == null) {
+                active = false;
+                create_features ();
 
-            // Get all ports from plugin
-            fetch_ports ();
+                // Get all ports from plugin
+                fetch_ports ();
 
-            lv2_instance_l = lilv_plugin.instantiate (44100, features);
+                lv2_instance_l = lilv_plugin.instantiate (Synthesizer.Synthesizer.SAMPLE_RATE, features);
 
-            // Check if stereo source
-            if (audio_in_ports.length > 1) {
-                lv2_instance_r = lilv_plugin.instantiate (44100, features);
+                // Check if stereo source
+                if (audio_in_ports.length > 1) {
+                    lv2_instance_r = lilv_plugin.instantiate (Synthesizer.Synthesizer.SAMPLE_RATE, features);
+                }
+
+                build_ui ();
             }
         }
 
@@ -374,6 +388,42 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                 props[i] = prop_list.nth_data (i) + ""; // Make owned
             }
             return props;
+        }
+
+        private void build_ui () {
+            var main_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
+            plugin_ui = main_box;
+
+            var header_bar = new Gtk.HeaderBar () {
+                show_title_buttons = false,
+                valign = Gtk.Align.START
+            };
+
+            main_box.append (header_bar);
+
+            var close_button = new Gtk.Button.from_icon_name ("window-close-symbolic");
+            header_bar.pack_start (close_button);
+
+            Gtk.Image app_icon = new Gtk.Image.from_icon_name (
+                "com.github.subhadeepjasu.ensembles-symbolic") {
+                margin_top = 8,
+                margin_bottom = 8
+            };
+            header_bar.pack_start (app_icon);
+
+            var header_handle = new Gtk.WindowHandle () {
+                hexpand = true,
+                vexpand = true
+            };
+            header_bar.set_title_widget (header_handle);
+
+            var header_title = new Gtk.Label (name + "(LV2)") {
+                height_request = 48
+            };
+
+            header_handle.set_child (header_title);
+
+            // Make rest of the UI
         }
     }
 }

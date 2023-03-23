@@ -17,6 +17,10 @@ namespace Ensembles.Core.Plugins {
         public string author_homepage;
 
         private bool _active;
+
+        /**
+         * The plugin will only work if it's active
+         */
         public bool active {
             get {
                 return _active;
@@ -31,7 +35,16 @@ namespace Ensembles.Core.Plugins {
             }
         }
 
-        public bool has_custom_ui { get; protected set; }
+        private Gtk.Widget _plugin_ui;
+
+        public Gtk.Widget plugin_ui {
+            get {
+                return _plugin_ui;
+            }
+            protected set {
+                _plugin_ui = value;
+            }
+        }
 
         protected Plugin () {
             active = false;
@@ -43,7 +56,7 @@ namespace Ensembles.Core.Plugins {
          * This just means that the plugin data is created. A Plugin cannot be
          * used without instantiation.
          */
-        protected abstract void instantiate ();
+        public abstract void instantiate ();
 
         protected abstract void activate ();
 

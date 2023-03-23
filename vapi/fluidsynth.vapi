@@ -365,7 +365,7 @@ namespace Fluid {
         [CCode (cname = "new_fluid_synth")]
         public Synth (Settings? settings);
 
-        public Synth get_settings ();
+        public Settings get_settings ();
         /**
           * Get a textual representation of the last error.
           *

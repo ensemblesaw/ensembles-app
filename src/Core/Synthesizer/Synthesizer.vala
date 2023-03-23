@@ -12,6 +12,8 @@ namespace Ensembles.Core.Synthesizer {
         private SynthSettingsPresets.ModulatorSettings modulator_settings;
         private unowned Fluid.Synth rendering_synth;
 
+        public static double SAMPLE_RATE { get; private set; }
+
         private int soundfont_id;
 
         construct {
@@ -21,7 +23,13 @@ namespace Ensembles.Core.Synthesizer {
         }
 
         public Synthesizer (SynthProvider synth_provider, string soundfont) throws FluidError {
+            Console.log ("Initializing Synthesizer…");
             rendering_synth = synth_provider.rendering_synth;
+            double sample_rate = 1;
+            var s = rendering_synth.get_settings ();
+            s.getnum ("synth.sample-rate", out sample_rate);
+            Console.log ("Sample Rate: %0.1lf Hz".printf (sample_rate));
+            Synthesizer.SAMPLE_RATE = sample_rate;
 
             if (Fluid.is_soundfont (soundfont)) {
                 soundfont_id = synth_provider.rendering_synth.sfload (soundfont, true);
