@@ -20,9 +20,18 @@ namespace Ensembles.Core.Synthesizer {
             float** output_r
         );
 
+        private static float* wet_buffer_l;
+        private static float* wet_buffer_r;
+
         public static SynthRenderHandler synth_render_handler;
 
-        /** This synth instance is used for actually renderring audio
+        ~SynthProvider () {
+            Fluid.free (wet_buffer_l);
+            Fluid.free (wet_buffer_r);
+        }
+
+        /**
+         * This synth instance is used for actually renderring audio
          */
         public unowned Fluid.Synth rendering_synth {
             get {
@@ -55,35 +64,36 @@ namespace Ensembles.Core.Synthesizer {
                         }
 
                         // All processing is stereo // Repeat processing if the plugin is mono
-                        float* out_l_i = aout[0];
-                        float* out_r_i = aout[1];
+                        float* dry_buffer_l = aout[0];
+                        float* dry_buffer_r = aout[1];
 
                         // Apply effects here
-                        float *out_l_o = malloc (len * sizeof (float));
-                        float *out_r_o = malloc (len * sizeof (float));
+                        if (wet_buffer_l == null || wet_buffer_r == null) {
+                            wet_buffer_l = malloc (len * sizeof (float));
+                            wet_buffer_r = malloc (len * sizeof (float));
+                        }
+
                         //  int size_l, size_r;
 
                         if (synth_render_handler != null) {
                             for (int k = 0; k < len; k++) {
-                                out_l_o[k] = out_l_i[k];
-                                out_r_o[k] = out_r_i[k];
+                                wet_buffer_l[k] = dry_buffer_l[k];
+                                wet_buffer_r[k] = dry_buffer_r[k];
                             }
                             /*
                              * The audio buffer data is sent to the plugin system
                              */
                             synth_render_handler (len,
-                                out_l_i,
-                                out_r_i,
-                                &out_l_o,
-                                &out_r_o);
+                                dry_buffer_l,
+                                dry_buffer_r,
+                                &wet_buffer_l,
+                                &wet_buffer_r);
 
                             for (int k = 0; k < len; k++) {
-                                out_l_i[k] = out_l_o[k];
-                                out_r_i[k] = out_r_o[k];
+                                dry_buffer_l[k] = wet_buffer_l[k];
+                                dry_buffer_r[k] = wet_buffer_r[k];
                             }
                         }
-                        Fluid.free (out_l_o);
-                        Fluid.free (out_r_o);
 
                         return Fluid.OK;
                     }, _rendering_synth);

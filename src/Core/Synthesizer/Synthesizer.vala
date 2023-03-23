@@ -12,7 +12,7 @@ namespace Ensembles.Core.Synthesizer {
         private SynthSettingsPresets.ModulatorSettings modulator_settings;
         private unowned Fluid.Synth rendering_synth;
 
-        private List<unowned Racks.DSPRack> racks;
+        private List<unowned Racks.Rack> racks;
 
         public static double SAMPLE_RATE { get; private set; }
 
@@ -22,7 +22,7 @@ namespace Ensembles.Core.Synthesizer {
             chord_analyser = new Analysers.ChordAnalyser ();
             style_gain_settings = new SynthSettingsPresets.StyleGainSettings ();
             modulator_settings = new SynthSettingsPresets.ModulatorSettings ();
-            racks = new List<unowned Racks.DSPRack> ();
+            racks = new List<unowned Racks.Rack> ();
         }
 
         public Synthesizer (SynthProvider synth_provider, string soundfont) throws FluidError {
@@ -112,10 +112,16 @@ namespace Ensembles.Core.Synthesizer {
         float** output_r) {
             foreach (var rack in racks) {
                 rack.process_audio (len, input_l, input_r, output_l, output_r);
+
+                // Copy back to input for next rack
+                for (int i = 0; i < len; i++) {
+                    input_l[i] = *(*output_l + i);
+                    input_r[i] = *(*output_r + i);
+                }
             }
         }
 
-        public void add_rack (Racks.DSPRack rack) {
+        public void add_rack (Racks.Rack rack) {
             racks.append (rack);
         }
 
