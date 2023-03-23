@@ -14,6 +14,7 @@ namespace Ensembles {
     }
 
     protected errordomain PluginError {
-        UNSUPPORTED_FEATURE
+        UNSUPPORTED_FEATURE,
+        INVALID_CATEGORY
     }
 }

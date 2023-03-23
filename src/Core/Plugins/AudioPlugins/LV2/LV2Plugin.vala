@@ -30,8 +30,8 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
         // Feature Implementations
         LV2.URID.UridMap urid_map;
         LV2.URID.UridUnmap urid_unmap;
-        private Lilv.Instance? lv2_instance_l; // Stereo audio / Mono L Processor
-        private Lilv.Instance? lv2_instance_r; // Mono R Processor
+        private Lilv.Instance lv2_instance_l; // Stereo audio / Mono L Processor
+        private Lilv.Instance lv2_instance_r; // Mono R Processor
 
         public LV2ControlPort[] control_in_ports;
         public LV2ControlPort[] control_out_ports;

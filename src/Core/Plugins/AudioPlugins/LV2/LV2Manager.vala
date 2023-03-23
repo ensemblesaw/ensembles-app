@@ -10,16 +10,12 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
         internal static SyMap symap = new SyMap ();
         internal static Mutex symap_lock = Mutex ();
 
-        List<LV2Plugin> lv2_plugins;
-
         construct {
             world = new Lilv.World ();
         }
 
-        public void load_plugins (List<unowned AudioPlugin> audio_plugin_list) {
+        public void load_plugins (List<AudioPlugin> audio_plugin_list) {
             assert (world != null);
-
-            lv2_plugins = new List<LV2Plugin> ();
 
             Console.log ("Loading LV2 Plugins...");
             world.load_all ();
@@ -34,7 +30,6 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
 
                     try {
                         var plugin = new LV2Plugin (lilv_plugin);
-                        lv2_plugins.append (plugin);
                         audio_plugin_list.append (plugin);
                     } catch (PluginError e) {
                         Console.log ("Skipped LV2 plugin: " + lilv_plugin.get_uri ().as_uri (),
