@@ -97,36 +97,32 @@ namespace Ensembles.Core.Racks {
          * @param buffer_out_l Audio output buffer for left channel
          * @param buffer_out_r Audio output buffer for right channel
          */
-        public void process_audio (float[] buffer_in_l, float[] buffer_in_r,
-        out float[] buffer_out_l, out float[] buffer_out_r) {
-            // Fill out with dry audio initially
-            buffer_out_l = buffer_in_l;
-            buffer_out_r = buffer_in_r;
-
+        public void process_audio (int len, float* buffer_in_l, float* buffer_in_r,
+        float** buffer_out_l, float** buffer_out_r) {
             // If the main buffers aren't initialised
             // initialize them
             if (aud_buf_dry_l == null || aud_buf_dry_r == null ||
             aud_buf_mix_l == null || aud_buf_mix_r == null) {
-                aud_buf_dry_l = new float[buffer_in_l.length];
-                aud_buf_dry_r = new float[buffer_in_r.length];
-                aud_buf_mix_l = new float[buffer_in_l.length];
-                aud_buf_mix_r = new float[buffer_in_r.length];
+                aud_buf_dry_l = new float[len];
+                aud_buf_dry_r = new float[len];
+                aud_buf_mix_l = new float[len];
+                aud_buf_mix_r = new float[len];
             }
 
             // Fill main dry buffers with audio data
-            for (int i = 0; i < buffer_in_l.length; i++) {
+            for (int i = 0; i < len; i++) {
                 aud_buf_dry_l[i] = buffer_in_l[i];
                 aud_buf_dry_r[i] = buffer_in_r[i];
             }
 
             // Process audio using plugins
-            run_plugins (buffer_in_l.length);
+            run_plugins (len);
 
             // Fill out buffers using wet mix;
             // Wet mix has been copied to the dry buffer; See below
-            for (int i = 0; i < buffer_in_l.length; i++) {
-                buffer_out_l[i] = aud_buf_dry_l[i];
-                buffer_out_r[i] = aud_buf_dry_r[i];
+            for (int i = 0; i < len; i++) {
+                *(*buffer_out_l + i) = aud_buf_dry_l[i];
+                *(*buffer_out_r + i) = aud_buf_dry_r[i];
             }
         }
 

@@ -9,6 +9,7 @@ namespace Ensembles.Core {
         private Synthesizer.Synthesizer synthesizer;
         private MIDIPlayers.StyleEngine style_engine;
         private Plugins.PluginManager plugin_manager;
+        private Racks.DSPRack main_effect_rack;
 
          // Arranger Data
         private Models.Style[] styles;
@@ -27,6 +28,8 @@ namespace Ensembles.Core {
             } catch (FluidError e) {
                 Console.log (e.message, Console.LogLevel.ERROR);
             }
+            main_effect_rack = new Racks.DSPRack ();
+            synthesizer.add_rack (main_effect_rack);
 
             build_events ();
         }

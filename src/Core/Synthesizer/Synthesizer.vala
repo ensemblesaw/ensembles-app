@@ -12,6 +12,8 @@ namespace Ensembles.Core.Synthesizer {
         private SynthSettingsPresets.ModulatorSettings modulator_settings;
         private unowned Fluid.Synth rendering_synth;
 
+        private List<unowned Racks.DSPRack> racks;
+
         public static double SAMPLE_RATE { get; private set; }
 
         private int soundfont_id;
@@ -20,6 +22,7 @@ namespace Ensembles.Core.Synthesizer {
             chord_analyser = new Analysers.ChordAnalyser ();
             style_gain_settings = new SynthSettingsPresets.StyleGainSettings ();
             modulator_settings = new SynthSettingsPresets.ModulatorSettings ();
+            racks = new List<unowned Racks.DSPRack> ();
         }
 
         public Synthesizer (SynthProvider synth_provider, string soundfont) throws FluidError {
@@ -30,6 +33,7 @@ namespace Ensembles.Core.Synthesizer {
             s.getnum ("synth.sample-rate", out sample_rate);
             Console.log ("Sample Rate: %0.1lf Hz".printf (sample_rate));
             Synthesizer.SAMPLE_RATE = sample_rate;
+            SynthProvider.synth_render_handler = process_audio;
 
             if (Fluid.is_soundfont (soundfont)) {
                 soundfont_id = synth_provider.rendering_synth.sfload (soundfont, true);
@@ -99,6 +103,20 @@ namespace Ensembles.Core.Synthesizer {
 
             set_master_chorus_active (true);
             edit_master_chorus (2);
+        }
+
+        private void process_audio (int len,
+        float* input_l,
+        float* input_r,
+        float** output_l,
+        float** output_r) {
+            foreach (var rack in racks) {
+                rack.process_audio (len, input_l, input_r, output_l, output_r);
+            }
+        }
+
+        public void add_rack (Racks.DSPRack rack) {
+            racks.append (rack);
         }
 
         private void edit_master_reverb (int level) {

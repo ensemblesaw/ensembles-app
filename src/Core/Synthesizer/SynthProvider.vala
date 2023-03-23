@@ -12,6 +12,16 @@ namespace Ensembles.Core.Synthesizer {
         private Fluid.AudioDriver rendering_driver;
         private Fluid.Settings rendering_settings;
 
+        public delegate void SynthRenderHandler (
+            int len,
+            float* input_l,
+            float* input_r,
+            float** output_l,
+            float** output_r
+        );
+
+        public static SynthRenderHandler synth_render_handler;
+
         /** This synth instance is used for actually renderring audio
          */
         public unowned Fluid.Synth rendering_synth {
@@ -45,26 +55,35 @@ namespace Ensembles.Core.Synthesizer {
                         }
 
                         // All processing is stereo // Repeat processing if the plugin is mono
-                        //  float *out_l_i = aout[0];
-                        //  float *out_r_i = aout[1];
+                        float* out_l_i = aout[0];
+                        float* out_r_i = aout[1];
 
-                        //  // Apply effects here
-                        //  float *out_l_o = malloc (len * sizeof (float));
-                        //  float *out_r_o = malloc (len * sizeof (float));
+                        // Apply effects here
+                        float *out_l_o = malloc (len * sizeof (float));
+                        float *out_r_o = malloc (len * sizeof (float));
                         //  int size_l, size_r;
 
-                        //  if (fx_callback != NULL) {
-                        //      /*
-                        //       * The audio buffer data is sent to the plugin system
-                        //       */
-                        //      fx_callback (out_l_i, len, out_r_i, len, &out_l_o, &size_l, &out_r_o, &size_r);
-                        //      for (int k = 0; k < len; k++) {
-                        //          out_l_i[k] = out_l_o[k];
-                        //          out_r_i[k] = out_r_o[k];
-                        //      }
-                        //  }
-                        //  Fluid.free (out_l_o);
-                        //  Fluid.free (out_r_o);
+                        if (synth_render_handler != null) {
+                            for (int k = 0; k < len; k++) {
+                                out_l_o[k] = out_l_i[k];
+                                out_r_o[k] = out_r_i[k];
+                            }
+                            /*
+                             * The audio buffer data is sent to the plugin system
+                             */
+                            synth_render_handler (len,
+                                out_l_i,
+                                out_r_i,
+                                &out_l_o,
+                                &out_r_o);
+
+                            for (int k = 0; k < len; k++) {
+                                out_l_i[k] = out_l_o[k];
+                                out_r_i[k] = out_r_o[k];
+                            }
+                        }
+                        Fluid.free (out_l_o);
+                        Fluid.free (out_r_o);
 
                         return Fluid.OK;
                     }, _rendering_synth);
