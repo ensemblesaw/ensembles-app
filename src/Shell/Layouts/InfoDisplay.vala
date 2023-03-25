@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-using Ensembles.Shell.Layouts.DisplayScreens;
+using Ensembles.Shell.Layouts.Display;
 
 namespace Ensembles.Shell.Layouts {
     public class InfoDisplay : Gtk.Box {
@@ -12,8 +12,26 @@ namespace Ensembles.Shell.Layouts {
         private Gtk.Label splash_screen_label;
         private Gtk.Stack main_stack;
 
+        private bool _fill_screen;
+        public bool fill_screen {
+            get {
+                return _fill_screen;
+            }
+            set {
+                _fill_screen = value;
+                if (value) {
+                    get_style_context ().remove_class ("panel");
+                    main_overlay.get_style_context ().add_class ("fill");
+                } else {
+                    get_style_context ().add_class ("panel");
+                    main_overlay.get_style_context ().remove_class ("fill");
+                }
+            }
+        }
+
         // Screens
         private HomeScreen home_screen;
+        private StyleScreen style_screen;
 
         construct {
             build_ui ();
@@ -34,7 +52,8 @@ namespace Ensembles.Shell.Layouts {
 
             main_overlay = new Gtk.Overlay () {
                 hexpand = true,
-                vexpand = true
+                vexpand = true,
+                overflow = Gtk.Overflow.HIDDEN
             };
             main_overlay.get_style_context ().add_class ("display");
             append (main_overlay);
@@ -61,7 +80,9 @@ namespace Ensembles.Shell.Layouts {
             splash_screen_label.get_style_context ().add_class ("splash-screen-label");
             splash_screen.append (splash_screen_label);
 
-            main_stack = new Gtk.Stack ();
+            main_stack = new Gtk.Stack () {
+                transition_type = Gtk.StackTransitionType.OVER_UP_DOWN
+            };
             main_stack.get_style_context ().add_class ("display-stack");
             main_stack.get_style_context ().add_class ("fade-black");
             main_overlay.set_child (main_stack);
@@ -69,6 +90,8 @@ namespace Ensembles.Shell.Layouts {
             home_screen = new HomeScreen ();
             main_stack.add_named (home_screen, "home");
 
+            style_screen = new StyleScreen ();
+            main_stack.add_named (style_screen, "style");
         }
 
         private void build_events () {
@@ -82,6 +105,14 @@ namespace Ensembles.Shell.Layouts {
                     main_stack.get_style_context ().remove_class ("fade-black");
                     return false;
                 });
+            });
+
+            home_screen.change_screen.connect ((screen_name) => {
+                main_stack.set_visible_child_name (screen_name);
+            });
+
+            style_screen.close.connect (() => {
+                main_stack.set_visible_child_name ("home");
             });
         }
     }

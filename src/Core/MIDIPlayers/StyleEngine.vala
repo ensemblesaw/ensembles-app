@@ -664,7 +664,7 @@ namespace Ensembles.Core.MIDIPlayers {
             current_tempo = 0;
             if (style_player.get_status () == Fluid.PlayerStatus.PLAYING) {
                 sync_stop = true;
-                current_tempo = (uint8) style_player.midi_tempo;
+                current_tempo = (uint8) style_player.get_bpm ();
                 style_player.join ();
             }
         }

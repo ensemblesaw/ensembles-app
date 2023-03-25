@@ -33,9 +33,13 @@ sources = files (
     'Shell/Layouts/SynthControlPanel.vala',
     'Shell/Layouts/VoiceNavPanel.vala',
 
-    'Shell/Layouts/DisplayScreens/HomeScreen.vala',
+    'Shell/Layouts/Display/HomeScreen.vala',
+    'Shell/Layouts/Display/StyleScreen.vala',
 
     'Shell/Widgets/BeatVisualization.vala',
+
+    'Shell/Widgets/Display/WheelScrollableWidget.vala',
+    'Shell/Widgets/Display/DisplayWindow.vala',
 
     # Core
     'Core/ArrangerWorkstation.vala',

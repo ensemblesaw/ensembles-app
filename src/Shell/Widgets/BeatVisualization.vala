@@ -1,3 +1,8 @@
+/*
+ * Copyright 2020-2023 Subhadeep Jasu <subhajasu@gmail.com>
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
 namespace Ensembles.Shell.Widgets {
     public class BeatVisualization : Gtk.Box {
         Gtk.Fixed beat_counter_visual;

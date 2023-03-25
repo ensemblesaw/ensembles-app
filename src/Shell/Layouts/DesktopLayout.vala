@@ -111,6 +111,7 @@ namespace Ensembles.Shell.Layouts {
 
             top_row.set_start_widget (assignables_board);
             top_row.set_center_widget (info_display);
+            info_display.fill_screen = false;
             top_row.set_end_widget (synth_control_panel);
 
             middle_row.set_start_widget (voice_nav_panel);

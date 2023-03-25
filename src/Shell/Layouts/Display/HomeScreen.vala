@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-namespace Ensembles.Shell.Layouts.DisplayScreens {
+namespace Ensembles.Shell.Layouts.Display {
     public class HomeScreen : Gtk.Box {
         Gtk.Button style_button;
         Gtk.Button voice_l_button;
@@ -24,6 +24,8 @@ namespace Ensembles.Shell.Layouts.DisplayScreens {
         Gtk.Label chord_flat_label;
         Gtk.Label chord_type_label;
 
+        public signal void change_screen (string screen_name);
+
         public HomeScreen () {
             Object (
                 orientation: Gtk.Orientation.VERTICAL,
@@ -32,6 +34,11 @@ namespace Ensembles.Shell.Layouts.DisplayScreens {
         }
 
         construct {
+            build_ui ();
+            build_events ();
+        }
+
+        private void build_ui () {
             get_style_context ().add_class ("homescreen");
 
             // Top Panel ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -149,6 +156,12 @@ namespace Ensembles.Shell.Layouts.DisplayScreens {
             };
             append (bottom_panel);
             bottom_panel.get_style_context ().add_class ("homescreen-panel-bottom");
+        }
+
+        private void build_events () {
+            style_button.clicked.connect (() => {
+                change_screen ("style");
+            });
         }
     }
 }

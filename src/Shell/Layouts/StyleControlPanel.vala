@@ -445,6 +445,8 @@ namespace Ensembles.Shell.Layouts {
                 variation_d_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
                 variation_d_button.get_style_context ().add_class ("pulse-fill");
                 break;
+                default:
+                break;
             }
 
             if (current_part != next_part) {
@@ -568,6 +570,8 @@ namespace Ensembles.Shell.Layouts {
                     variation_b_button.get_style_context ().remove_class ("pulse");
                     variation_c_button.get_style_context ().remove_class ("pulse");
                     variation_d_button.get_style_context ().add_class ("pulse");
+                    break;
+                    default:
                     break;
                 }
             } else {

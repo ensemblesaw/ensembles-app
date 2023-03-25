@@ -140,6 +140,7 @@ namespace Ensembles.Shell.Layouts {
             keyboard.unparent ();
 
             infoview.attach (info_display, 0, 0);
+            info_display.fill_screen = true;
 
             style_controller_socket.append (style_control_panel);
             registry_socket.append (registry_panel);

@@ -194,7 +194,6 @@ flap > stack {
 
 stack.dimmed {
     filter: blur(4px);
-    transform: scale(0.9);
 }
 
 
@@ -202,7 +201,12 @@ stack.dimmed {
     background: #000;
     border-radius: 4px;
     box-shadow: inset 0 1px 0 #0004, 0 1px 0 #fff3;
-    border: 1px solid #000;
+    border: 2px solid #000;
+}
+
+.display.fill {
+    box-shadow: 0 0 0 4px #000;
+    border: none;
 }
 
 .ensembles-logo-splash {
