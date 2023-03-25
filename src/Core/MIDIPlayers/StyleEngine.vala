@@ -6,6 +6,14 @@
 using Ensembles.Models;
 
 namespace Ensembles.Core.MIDIPlayers {
+    /**
+     * ## Ensembles Style Engine
+     *
+     * A style engine object can be made to play a particular Ensembles style.
+     * An Ensembles style is a special MIDI file with `.enstl` extension.
+     * The style can take care of style playback using the appropriate chords
+     * and changing the style part
+     */
     public class StyleEngine : Object {
         // Style data
         private unowned Style style;
@@ -70,6 +78,14 @@ namespace Ensembles.Core.MIDIPlayers {
             part_bounds_map = new HashTable<StylePartType, StylePartBounds?> (direct_hash, direct_equal);
         }
 
+        /**
+         * Creates a new instance of a style engine object using the given style.
+         *
+         * @param synth_provider A synth provider object
+         * @param style The style to use for the style engine
+         * @param current_tempo If this value is greater than 0 then the style
+         * engine will be initialized with this value.
+         */
         public StyleEngine (Synthesizer.SynthProvider synth_provider, Models.Style? style,
             uint8? custom_tempo = 0) {
             this.style = style;
@@ -518,7 +534,9 @@ namespace Ensembles.Core.MIDIPlayers {
             Application.event_bus.style_midi_event (new_event);
         }
 
-
+        /**
+         * Starts style playback if not already playing.
+         */
         public void play () {
             if (style_player.get_status () != Fluid.PlayerStatus.PLAYING) {
                 next_part = current_part;
@@ -528,6 +546,9 @@ namespace Ensembles.Core.MIDIPlayers {
             }
         }
 
+        /**
+         * Stops the style playback if already playing.
+         */
         public void stop () {
             if (style_player.get_status () == Fluid.PlayerStatus.PLAYING) {
                 style_player.stop ();
@@ -536,6 +557,10 @@ namespace Ensembles.Core.MIDIPlayers {
             }
         }
 
+        /**
+         * Plays the style if not already playing
+         * or stops the style if playing.
+         */
         public void toggle_play () {
             if (style_player.get_status () != Fluid.PlayerStatus.PLAYING) {
                 play ();
@@ -548,28 +573,33 @@ namespace Ensembles.Core.MIDIPlayers {
             Application.event_bus.style_sync_changed (false);
         }
 
-        public void queue_next_part (StylePartType _part) {
+        /**
+         * Change the style variation level or trigger a fill-in.
+         *
+         * @param part The style part to queue
+         */
+        public void queue_next_part (StylePartType part) {
             // Wait for measure end if already playing else instantly change part
             if (style_player.get_status () == Fluid.PlayerStatus.PLAYING) {
-                if (_part != StylePartType.INTRO_1 &&
-                    _part != StylePartType.INTRO_2 &&
-                    _part != StylePartType.INTRO_3 &&
-                    _part != StylePartType.ENDING_1 &&
-                    _part != StylePartType.ENDING_2 &&
-                    _part != StylePartType.ENDING_3 &&
+                if (part != StylePartType.INTRO_1 &&
+                    part != StylePartType.INTRO_2 &&
+                    part != StylePartType.INTRO_3 &&
+                    part != StylePartType.ENDING_1 &&
+                    part != StylePartType.ENDING_2 &&
+                    part != StylePartType.ENDING_3 &&
                     current_part != StylePartType.INTRO_1 &&
                     current_part != StylePartType.INTRO_2 &&
                     current_part != StylePartType.INTRO_3 &&
                     current_part != StylePartType.ENDING_1 &&
                     current_part != StylePartType.ENDING_2 &&
                     current_part != StylePartType.ENDING_3) {
-                    if (next_part == _part || Ensembles.settings.autofill) {
+                    if (next_part == part || Ensembles.settings.autofill) {
                         queue_fill = true;
                     }
                 }
 
-                if (next_part != _part) {
-                    next_part = _part;
+                if (next_part != part) {
+                    next_part = part;
                 } else if (
                     current_part == StylePartType.INTRO_1 ||
                     current_part == StylePartType.INTRO_2 ||
@@ -578,23 +608,27 @@ namespace Ensembles.Core.MIDIPlayers {
                     current_part == StylePartType.ENDING_2 ||
                     current_part == StylePartType.ENDING_3
                 ) {
-                    next_part = _part;
+                    next_part = part;
                     force_change_part = true;
                 }
             } else {
-                current_part = _part;
-                if (_part == StylePartType.VARIATION_A ||
-                    _part == StylePartType.VARIATION_B ||
-                    _part == StylePartType.VARIATION_C ||
-                    _part == StylePartType.VARIATION_D) {
-                    next_part = _part;
-                    current_variation = _part;
+                current_part = part;
+                if (part == StylePartType.VARIATION_A ||
+                    part == StylePartType.VARIATION_B ||
+                    part == StylePartType.VARIATION_C ||
+                    part == StylePartType.VARIATION_D) {
+                    next_part = part;
+                    current_variation = part;
                 }
             }
 
             queue_break = false;
         }
 
+        /**
+         * Inserts a minimum voice section during playback. It could be a short
+         * build-up or a drop.
+         */
         public void break_play () {
             if (style_player.get_status () == Fluid.PlayerStatus.PLAYING) {
                 queue_break = true;
@@ -602,6 +636,10 @@ namespace Ensembles.Core.MIDIPlayers {
             }
         }
 
+        /**
+         * Start the style playback with chord input or stop the style
+         * playback on the next measure.
+         */
         public void sync () {
             if (style_player.get_status () == Fluid.PlayerStatus.PLAYING) {
                 sync_start = false;
@@ -614,8 +652,33 @@ namespace Ensembles.Core.MIDIPlayers {
             Application.event_bus.style_sync_changed (sync_start || sync_stop);
         }
 
-        public void change_chord (Chord _chord) {
-            if (_chord.root != ChordRoot.NONE) {
+        /**
+         * Ask the style player to stop and wait.
+         *
+         * **Note:** This is a blocking call, meaning the function will wait until the
+         * style player is done playing the current measure.
+         *
+         * @param current_tempo Variable to store the current tempo
+         */
+        public void stop_and_wait (out uint8 current_tempo) {
+            current_tempo = 0;
+            if (style_player.get_status () == Fluid.PlayerStatus.PLAYING) {
+                sync_stop = true;
+                current_tempo = (uint8) style_player.midi_tempo;
+                style_player.join ();
+            }
+        }
+
+        /**
+         * Change the chord of the style.
+         *
+         * This will stop all voices that are playing the current chord
+         * and restart them selectively with the new chord.
+         *
+         * @param chord The chord to change to
+         */
+        public void change_chord (Chord chord) {
+            if (chord.root != ChordRoot.NONE) {
                 queue_chord_change = true;
             }
 

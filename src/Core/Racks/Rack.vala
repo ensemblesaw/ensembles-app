@@ -23,7 +23,7 @@
          float[] aud_buf_mix_l;
          float[] aud_buf_mix_r;
 
-         protected Rack () {
+         construct {
             plugins = new List<AudioPlugin> ();
          }
 

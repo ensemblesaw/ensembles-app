@@ -12,7 +12,7 @@ namespace Ensembles.Core.Synthesizer {
         private SynthSettingsPresets.ModulatorSettings modulator_settings;
         private unowned Fluid.Synth rendering_synth;
 
-        private List<unowned Racks.Rack> racks;
+        public List<unowned Racks.Rack> racks;
 
         public static double SAMPLE_RATE { get; private set; }
 

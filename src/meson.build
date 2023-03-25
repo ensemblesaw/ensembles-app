@@ -19,6 +19,7 @@ sources = files (
 
     # Shell
     'Shell/MainWindow.vala',
+
     'Shell/Layouts/DesktopLayout.vala',
     'Shell/Layouts/MobileLayout.vala',
     'Shell/Layouts/KioskLayout.vala',
@@ -31,17 +32,25 @@ sources = files (
     'Shell/Layouts/StyleControlPanel.vala',
     'Shell/Layouts/SynthControlPanel.vala',
     'Shell/Layouts/VoiceNavPanel.vala',
+
+    'Shell/Layouts/DisplayScreens/HomeScreen.vala',
+
     'Shell/Widgets/BeatVisualization.vala',
 
     # Core
     'Core/ArrangerWorkstation.vala',
+
     'Core/Synthesizer/Synthesizer.vala',
     'Core/Synthesizer/SynthProvider.vala',
     'Core/Synthesizer/SynthSettingsPresets.vala',
+
     'Core/Analysers/ChordAnalyser.vala',
     'Core/Analysers/StyleAnalyser.vala',
+
     'Core/MIDIPlayers/StyleEngine.vala',
+
     'Core/FileLoaders/StyleFileLoader.vala',
+
     'Core/Racks/Rack.vala',
     'Core/Racks/DSPRack.vala',
     'Core/Racks/VoiceRack.vala',
@@ -57,6 +66,7 @@ sources = files (
     'Utils/AccentColors.vala',
     'Utils/StyleMIDIModifiers.vala',
     'Utils/MIDI.vala',
+    'Utils/DisplayTheme.vala',
 
     # Models
     'Models/Chord.vala',

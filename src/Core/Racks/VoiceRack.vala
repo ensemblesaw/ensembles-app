@@ -16,10 +16,11 @@ namespace Ensembles.Core.Racks {
         private List<DSPRack> dsp_racks;
 
         public VoiceRack () {
-            rack_type = AudioPlugin.Category.VOICE;
-            dsp_racks = new List<DSPRack> ();
+            Object (
+                rack_type: AudioPlugin.Category.VOICE
+            );
 
-            base ();
+            dsp_racks = new List<DSPRack> ();
         }
     }
 }

@@ -2,6 +2,7 @@
 <gresources>
   <gresource prefix="/com/github/subhadeepjasu/ensembles/theme">
     <file alias="Application.css">Themes/Application.css</file>
+    <file alias="Display.css">Themes/Display/Display.css</file>
   </gresource>
 
   <gresource prefix="/com/github/subhadeepjasu/ensembles/icons">
@@ -11,5 +12,11 @@
 
   <gresource prefix="/com/github/subhadeepjasu/ensembles/images">
     <file alias="beat_counter_map" compressed="true" preprocess="xml-stripblanks">Images/beat_counter.svg</file>
+  </gresource>
+
+  <gresource prefix="/com/github/subhadeepjasu/ensembles/images/display">
+    <file alias="splash_screen" compressed="true">Images/Display/splash_screen.png</file>
+    <file alias="home_background_default" compressed="false">Images/Display/catalin-sandru-7SxSkCvVM1U-unsplash.jpg</file>
+    <file alias="home_background_default_blurred" compressed="true">Images/Display/catalin-sandru-7SxSkCvVM1U-unsplash-blurred.jpg</file>
   </gresource>
 </gresources>

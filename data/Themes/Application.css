@@ -165,7 +165,7 @@ button.pulse-fill {
 
 .adw-listbox>row:selected {
     background: alpha(@accent_color, 0.2);
-    box-shadow: 0 2px 4px alpha(shade(@accent_color, 0.75), 0.5), inset 0 0 0 1px #fff1;
+    box-shadow: 0 2px 4px alpha(shade(@accent_color, 0.6), 0.5), inset 0 0 0 1px #fff1;
 }
 
 .adw-listbox>row>.header>.title>.subtitle {
@@ -196,3 +196,40 @@ stack.dimmed {
     filter: blur(4px);
     transform: scale(0.9);
 }
+
+
+.display {
+    background: #000;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 0 #0004, 0 1px 0 #fff3;
+    border: 1px solid #000;
+}
+
+.ensembles-logo-splash {
+    background-image: url("resource://com/github/subhadeepjasu/ensembles/images/display/splash_screen");
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.splash-screen-background {
+    background-color: #202020;
+    background-position: center;
+    background-size: cover;
+    animation: ripple 1s 0.2s;
+}
+
+.splash-screen-text {
+    color: #fff;
+}
+
+@keyframes ripple {
+    from {
+        background-image:radial-gradient(circle, #202020 0, #333 5%, #202020 6%);
+    }
+    to {
+        background-image:radial-gradient(circle, #202020 0, #202020 90%, #202020 100%);
+    }
+}
+
+@import url("resource://com/github/subhadeepjasu/ensembles/theme/Display.css");

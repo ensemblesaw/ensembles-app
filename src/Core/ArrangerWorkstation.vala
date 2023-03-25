@@ -3,16 +3,21 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+using Ensembles.Core.MIDIPlayers;
+using Ensembles.Models;
+
 namespace Ensembles.Core {
     public class ArrangerWorkstation : Object {
         private Synthesizer.SynthProvider synth_provider;
         private Synthesizer.Synthesizer synthesizer;
-        private MIDIPlayers.StyleEngine style_engine;
+        private StyleEngine style_engine;
         private Plugins.PluginManager plugin_manager;
         private Racks.DSPRack main_effect_rack;
 
          // Arranger Data
-        private Models.Style[] styles;
+        private Style[] styles;
+        private Style next_style;
+        private bool stopping_style;
 
         private const string SF_PATH = Constants.SF2DATADIR + "/EnsemblesGM.sf2";
 
@@ -38,6 +43,9 @@ namespace Ensembles.Core {
             new Thread<void> ("ensembles-data-discovery", load_data);
         }
 
+        /**
+         * Load all data like voices, styles and plugins
+         */
         public void load_data () {
             Thread.usleep (500000);
             // Load Styles
@@ -49,8 +57,7 @@ namespace Ensembles.Core {
                 Console.log (style.to_string ());
             }
             Console.log ("Found %u styles".printf (n_styles), Console.LogLevel.SUCCESS);
-
-            style_engine = new MIDIPlayers.StyleEngine (synth_provider, styles[0], 0);
+            queue_change_style (styles[0]);
 
             // Load Plugins
             plugin_manager = new Plugins.PluginManager ();
@@ -86,6 +93,27 @@ namespace Ensembles.Core {
                     style_engine.sync ();
                 }
             });
+        }
+
+        /**
+         * Creates a style engine with given style
+         *
+         * @param style A Style descriptor
+         */
+        public void queue_change_style (Models.Style style) {
+            next_style = style;
+            if (!stopping_style) {
+                stopping_style = true;
+                new Thread<void> ("queue-load-style", () => {
+                    uint8 current_tempo = 0;
+                    if (style_engine != null) {
+                        style_engine.stop_and_wait (out current_tempo);
+                    }
+
+                    style_engine = new StyleEngine (synth_provider, next_style, current_tempo);
+                    stopping_style = false;
+                });
+            }
         }
     }
 }

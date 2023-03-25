@@ -39,7 +39,8 @@
             Object (
                 application: ensembles_app,
                 icon_name: Constants.APP_ID,
-                title: "Ensembles"
+                title: "Ensembles",
+                default_height: 600
             );
         }
 

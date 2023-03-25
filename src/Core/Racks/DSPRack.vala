@@ -15,9 +15,9 @@ namespace Ensembles.Core.Racks {
      */
     public class DSPRack : Rack {
         public DSPRack () {
-            rack_type = AudioPlugin.Category.DSP;
-
-            base ();
+            Object (
+                rack_type: AudioPlugin.Category.DSP
+            );
         }
     }
 }
