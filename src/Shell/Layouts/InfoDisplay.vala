@@ -96,15 +96,21 @@ namespace Ensembles.Shell.Layouts {
 
         private void build_events () {
             Application.event_bus.arranger_ready.connect (() => {
-                main_overlay.remove_overlay (splash_screen);
-                if (splash_screen != null) {
-                    splash_screen.unref ();
-                }
+                splash_screen.get_style_context ().add_class ("fade-black");
 
-                Timeout.add (200, () => {
-                    main_stack.get_style_context ().remove_class ("fade-black");
+                Timeout.add_seconds (1, () => {
+                    main_overlay.remove_overlay (splash_screen);
+                    if (splash_screen != null) {
+                        splash_screen.unref ();
+                    }
+
+                    Timeout.add (50, () => {
+                        main_stack.get_style_context ().remove_class ("fade-black");
+                        return false;
+                    });
                     return false;
                 });
+
             });
 
             home_screen.change_screen.connect ((screen_name) => {
