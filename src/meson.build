@@ -40,6 +40,7 @@ sources = files (
 
     'Shell/Widgets/Display/WheelScrollableWidget.vala',
     'Shell/Widgets/Display/DisplayWindow.vala',
+    'Shell/Widgets/Display/StyleMenuItem.vala',
 
     # Core
     'Core/ArrangerWorkstation.vala',

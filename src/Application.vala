@@ -35,9 +35,6 @@ namespace Ensembles {
         }
 
         protected override void activate () {
-            Console.log ("Initializing Arranger Workstation");
-            arranger_workstation = new Core.ArrangerWorkstation ();
-
             Console.log ("Initializing GUI Theme");
             Services.Theme.init_theme ();
 
@@ -46,6 +43,9 @@ namespace Ensembles {
             this.add_window (main_window);
             main_window.show_ui ();
             Console.log ("GUI Initialization Complete!", Console.LogLevel.SUCCESS);
+
+            Console.log ("Initializing Arranger Workstation");
+            arranger_workstation = new Core.ArrangerWorkstation ();
 
             if (settings.version != Constants.VERSION) {
                 settings.version = Constants.VERSION;

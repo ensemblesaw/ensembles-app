@@ -17,7 +17,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
         public void load_plugins (List<AudioPlugin> audio_plugin_list) {
             assert (world != null);
 
-            Console.log ("Loading LV2 Plugins...");
+            Console.log ("Loading LV2 Plugins…");
             world.load_all ();
 
             var plugins = world.get_all_plugins ();

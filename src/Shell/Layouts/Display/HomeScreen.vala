@@ -10,6 +10,9 @@ namespace Ensembles.Shell.Layouts.Display {
         Gtk.Button voice_r1_button;
         Gtk.Button voice_r2_button;
 
+        Gtk.Button dsp_button;
+        Gtk.Button recorder_button;
+
         Gtk.Label selected_style_label;
         Gtk.Label selected_voice_l_label;
         Gtk.Label selected_voice_r1_label;
@@ -149,6 +152,18 @@ namespace Ensembles.Shell.Layouts.Display {
             append (middle_panel);
             middle_panel.get_style_context ().add_class ("homescreen-panel-middle");
 
+            dsp_button = new Gtk.Button.with_label (_("DSP")) {
+                valign = Gtk.Align.END,
+                hexpand = true
+            };
+            middle_panel.append (dsp_button);
+
+            recorder_button = new Gtk.Button.with_label (_("Recorder")) {
+                valign = Gtk.Align.END,
+                hexpand = true
+            };
+            middle_panel.append (recorder_button);
+
             // Bottom Panel ////////////////////////////////////////////////////////////////////////////////////////////
             var bottom_panel = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
                 vexpand = true,
@@ -161,6 +176,10 @@ namespace Ensembles.Shell.Layouts.Display {
         private void build_events () {
             style_button.clicked.connect (() => {
                 change_screen ("style");
+            });
+
+            dsp_button.clicked.connect (() => {
+                change_screen ("dsp");
             });
         }
     }

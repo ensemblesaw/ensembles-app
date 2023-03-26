@@ -15,7 +15,7 @@ namespace Ensembles.Core {
         private Racks.DSPRack main_effect_rack;
 
          // Arranger Data
-        private Style[] styles;
+        public Style[] styles { get; private set; }
         private Style next_style;
         private bool stopping_style;
 
@@ -53,11 +53,7 @@ namespace Ensembles.Core {
             var style_loader = new FileLoaders.StyleFileLoader ();
             uint n_styles = 0;
             styles = style_loader.get_styles (out n_styles);
-            foreach (var style in styles) {
-                Console.log (style.to_string ());
-            }
             Console.log ("Found %u styles".printf (n_styles), Console.LogLevel.SUCCESS);
-            queue_change_style (styles[0]);
 
             // Load Plugins
             plugin_manager = new Plugins.PluginManager ();
@@ -101,6 +97,7 @@ namespace Ensembles.Core {
          * @param style A Style descriptor
          */
         public void queue_change_style (Models.Style style) {
+            Console.log ("Changing style to the " + style.to_string ());
             next_style = style;
             if (!stopping_style) {
                 stopping_style = true;

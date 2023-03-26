@@ -12,7 +12,7 @@ namespace Ensembles.Core.Plugins {
 
         construct {
             // Load Audio Plugins //////////////////////////////////////////////
-            Console.log ("Loading Audio Plugins...");
+            Console.log ("Loading Audio Plugins…");
             audio_plugins = new List<AudioPlugins.AudioPlugin> ();
 
             // Load LADSPA Plugins
