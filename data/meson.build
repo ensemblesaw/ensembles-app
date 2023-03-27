@@ -27,6 +27,12 @@ i18n.merge_file (
     install_dir: join_paths (get_option ('datadir'), 'applications')
 )
 
+# Install our kiosk mode desktop file in xsessions
+install_data (
+    meson.project_name () + '.kiosk.desktop',
+    install_dir: join_paths (get_option ('datadir'), 'xsessions')
+)
+
 # Translate and install our .appdata.xml file so AppCenter will see it
 i18n.merge_file (
     input: meson.project_name () + '.appdata.xml.in',

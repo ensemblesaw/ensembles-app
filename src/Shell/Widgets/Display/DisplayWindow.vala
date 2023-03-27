@@ -10,6 +10,7 @@ namespace Ensembles.Shell.Layouts.Display {
         private Gtk.Button close_button;
         private Gtk.CenterBox header_bar;
         private Adw.WindowTitle window_title_box;
+        private Gtk.Box header_container;
 
         private string _title;
         public string title {
@@ -76,17 +77,27 @@ namespace Ensembles.Shell.Layouts.Display {
             close_button.clicked.connect (() => { close (); });
             header_bar.set_start_widget (close_button);
 
-            var window_handle = new Gtk.WindowHandle () {
-                hexpand = true
-            };
-            header_bar.set_center_widget (window_handle);
-
             window_title_box = new Adw.WindowTitle (title, subtitle);
-            window_handle.set_child (window_title_box);
+            if (Application.kiosk_mode) {
+                header_bar.set_center_widget (window_title_box);
+            } else {
+                var window_handle = new Gtk.WindowHandle () {
+                    hexpand = true
+                };
+                header_bar.set_center_widget (window_handle);
+                window_handle.set_child (window_title_box);
+            }
+
+            header_container = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 4);
+            header_bar.set_end_widget (header_container);
         }
 
         public void set_child (Gtk.Widget widget) {
             append (widget);
+        }
+
+        public void add_to_header (Gtk.Widget widget) {
+            header_container.append (widget);
         }
     }
 }

@@ -5,27 +5,28 @@
 
 namespace Ensembles.Shell.Layouts.Display {
     public class HomeScreen : Gtk.Box {
-        Gtk.Button style_button;
-        Gtk.Button voice_l_button;
-        Gtk.Button voice_r1_button;
-        Gtk.Button voice_r2_button;
+        private Gtk.Button power_button;
+        private Gtk.Button style_button;
+        private Gtk.Button voice_l_button;
+        private Gtk.Button voice_r1_button;
+        private Gtk.Button voice_r2_button;
 
-        Gtk.Button dsp_button;
-        Gtk.Button recorder_button;
+        private Gtk.Button dsp_button;
+        private Gtk.Button recorder_button;
 
-        Gtk.Label selected_style_label;
-        Gtk.Label selected_voice_l_label;
-        Gtk.Label selected_voice_r1_label;
-        Gtk.Label selected_voice_r2_label;
+        private Gtk.Label selected_style_label;
+        private Gtk.Label selected_voice_l_label;
+        private Gtk.Label selected_voice_r1_label;
+        private Gtk.Label selected_voice_r2_label;
 
-        Gtk.Label tempo_label;
-        Gtk.Label measure_label;
-        Gtk.Label beat_label;
-        Gtk.Label transpose_label;
-        Gtk.Label octave_shift_label;
-        Gtk.Label chord_label;
-        Gtk.Label chord_flat_label;
-        Gtk.Label chord_type_label;
+        private Gtk.Label tempo_label;
+        private Gtk.Label measure_label;
+        private Gtk.Label beat_label;
+        private Gtk.Label transpose_label;
+        private Gtk.Label octave_shift_label;
+        private Gtk.Label chord_label;
+        private Gtk.Label chord_flat_label;
+        private Gtk.Label chord_type_label;
 
         public signal void change_screen (string screen_name);
 
@@ -51,6 +52,15 @@ namespace Ensembles.Shell.Layouts.Display {
             };
             append (top_panel);
             top_panel.get_style_context ().add_class ("homescreen-panel-top");
+
+            if (Application.kiosk_mode) {
+                power_button = new Gtk.Button.from_icon_name ("system-shutdown-symbolic") {
+                    height_request = 48,
+                    width_request = 32
+                };
+                power_button.get_style_context ().add_class ("homescreen-panel-top-button");
+                top_panel.append (power_button);
+            }
 
             style_button = new Gtk.Button ();
             top_panel.append (style_button);
@@ -152,7 +162,7 @@ namespace Ensembles.Shell.Layouts.Display {
             append (middle_panel);
             middle_panel.get_style_context ().add_class ("homescreen-panel-middle");
 
-            dsp_button = new Gtk.Button.with_label (_("DSP")) {
+            dsp_button = new Gtk.Button.with_label (_("Main DSP Rack")) {
                 valign = Gtk.Align.END,
                 hexpand = true
             };
@@ -181,6 +191,14 @@ namespace Ensembles.Shell.Layouts.Display {
             dsp_button.clicked.connect (() => {
                 change_screen ("dsp");
             });
+
+            if (Application.kiosk_mode) {
+                power_button.clicked.connect (() => {
+                    var power_dialog = new Dialog.PowerDialog (Application.main_window);
+                    power_dialog.present ();
+                    power_dialog.show ();
+                });
+            }
         }
     }
 }

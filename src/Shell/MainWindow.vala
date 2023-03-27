@@ -55,6 +55,7 @@
                 fullscreened = true;
 
                 info_display = new Layouts.InfoDisplay ();
+                info_display.fill_screen = true;
                 mixer_board = new Layouts.MixerBoard ();
 
                 kiosk_layout = new Layouts.KioskLayout (info_display, mixer_board);
@@ -142,8 +143,8 @@
                 Console.log ("Arranger Workstation Initialized!", Console.LogLevel.SUCCESS);
             });
 
-            this.notify.connect ((p) => {
-                if (squeezer.transition_running && p.get_name () == "default-height") {
+            notify.connect ((p) => {
+                if (!Application.kiosk_mode && squeezer.transition_running && p.get_name () == "default-height") {
                     flap_button.visible = squeezer.get_visible_child () == mobile_layout;
                 }
             });
@@ -151,6 +152,16 @@
             Application.event_bus.menu_shown.connect ((shown) => {
                 flap_revealed = !shown;
                 flap_button.active = shown;
+            });
+
+            ((Gtk.Widget) this).realize.connect (() => {
+                if (Application.kiosk_mode) {
+                    var display = Gdk.Display.get_default ();
+                    var monitor = display.get_monitor_at_surface (get_surface ());
+                    set_default_size (monitor.geometry.width, monitor.geometry.height);
+                    kiosk_layout.width_request = monitor.geometry.width;
+                    kiosk_layout.height_request = monitor.geometry.height;
+                }
             });
         }
 

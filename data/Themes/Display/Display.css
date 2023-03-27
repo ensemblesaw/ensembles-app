@@ -32,6 +32,7 @@ Buttons
     background: alpha(#007367, 0.6);
     box-shadow: none;
     text-shadow: none;
+    color: #fff;
 }
 
 .display button:hover {
@@ -82,7 +83,7 @@ HomeScreen
 .display .homescreen-panel-top {
     background-image: linear-gradient(alpha(#007367, 0.6), alpha(#007367, 0.6)),
         url("resource://com/github/subhadeepjasu/ensembles/images/display/home_background_default_blurred");
-    background-size: auto 750%;
+    background-size: auto 800%;
     background-position: center 0;
     border-bottom: 1px solid alpha(#000, 0.5);
 }
@@ -96,6 +97,7 @@ HomeScreen
     text-shadow: none;
     text-decoration: none;
     border-radius: 0;
+    color: #fff;
 }
 
 .display .homescreen-panel-top-button:hover {
@@ -113,7 +115,7 @@ HomeScreen
 
 .display .homescreen-panel-middle button {
     background-color: #0000;
-    background-image: linear-gradient(#0000, #000a);
+    background-image: linear-gradient(#0000, #0006);
     padding: 8px;
     transition: all 0.3s linear;
     text-shadow: 0 0 8px #000;
@@ -132,7 +134,7 @@ HomeScreen
 .display .homescreen-panel-bottom {
     background-image: linear-gradient(alpha(#273445, 0.6), alpha(#273445, 0.6)),
         url("resource://com/github/subhadeepjasu/ensembles/images/display/home_background_default_blurred");
-    background-size: auto 235%;
+    background-size: auto 245%;
     background-position: center 100%;
     border-top: 1px solid alpha(#000, 0.5);
 }
@@ -160,18 +162,19 @@ Display Window
 
 .display .display-window-header-bar .title {
     font-size: 1rem;
+    color: #fff;
 }
 
 .display .display-window-header-bar .subtitle {
     font-size: 0.8rem;
     opacity: 0.75;
+    color: #fff;
 }
 
 
 /* /////////////////////////////////////////////////////////////////////////////
 Menu
 */
-
 
 .display .menu-box {
     background-color: #333;

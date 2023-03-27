@@ -35,12 +35,15 @@ sources = files (
 
     'Shell/Layouts/Display/HomeScreen.vala',
     'Shell/Layouts/Display/StyleScreen.vala',
+    'Shell/Layouts/Display/DSPScreen.vala',
 
     'Shell/Widgets/BeatVisualization.vala',
 
     'Shell/Widgets/Display/WheelScrollableWidget.vala',
     'Shell/Widgets/Display/DisplayWindow.vala',
     'Shell/Widgets/Display/StyleMenuItem.vala',
+
+    'Shell/Dialogs/PowerDialog.vala',
 
     # Core
     'Core/ArrangerWorkstation.vala',

@@ -32,6 +32,7 @@ namespace Ensembles.Shell.Layouts {
         // Screens
         private HomeScreen home_screen;
         private StyleScreen style_screen;
+        private DSPScreen dsp_screen;
 
         construct {
             build_ui ();
@@ -92,6 +93,9 @@ namespace Ensembles.Shell.Layouts {
 
             style_screen = new StyleScreen ();
             main_stack.add_named (style_screen, "style");
+
+            dsp_screen = new DSPScreen ();
+            main_stack.add_named (dsp_screen, "dsp");
         }
 
         private void build_events () {
@@ -118,6 +122,10 @@ namespace Ensembles.Shell.Layouts {
             });
 
             style_screen.close.connect (() => {
+                main_stack.set_visible_child_name ("home");
+            });
+
+            dsp_screen.close.connect (() => {
                 main_stack.set_visible_child_name ("home");
             });
         }
