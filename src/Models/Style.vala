@@ -67,6 +67,10 @@ namespace Ensembles.Models {
             return output;
         }
 
+        /**
+         * Updates a given hash table with `StylePartType` as the key and the
+         * part bounds as the value.
+         */
         public void update_part_hash_table (HashTable<StylePartType, StylePartBounds?>? hash_table) {
             for (uint8 i = 0; i < parts.length; i++) {
                 hash_table.insert (parts[i].style_part_type, StylePartBounds () {

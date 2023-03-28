@@ -11,6 +11,12 @@ namespace Ensembles.Core.Analysers {
         private uint8[] key_track;
         private uint8[] chord_possibility;
 
+        public enum ChordDetectionMode {
+            SPLIT_LONG = 0,
+            SPLIT_SHORT = 1,
+            FULL_RANGE = 2
+        }
+
         construct {
             key_track = new uint8[13];
             chord_possibility = new uint8[144];
@@ -384,4 +390,4 @@ namespace Ensembles.Core.Analysers {
             return ChordRoot.NONE;
         }
     }
- }
+}

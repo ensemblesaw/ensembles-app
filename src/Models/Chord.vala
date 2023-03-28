@@ -24,8 +24,8 @@ namespace Ensembles.Models {
     }
 
     /**
-      * Represents the type of chord
-      */
+     * Represents the type of chord
+     */
     public enum ChordType {
         MAJOR = 0,
         MINOR = 1,
@@ -42,8 +42,8 @@ namespace Ensembles.Models {
     }
 
     /**
-      * Represents musical chords
-      */
+     * Represents musical chords
+     */
     public struct Chord {
         public ChordRoot root;
         public ChordType type;

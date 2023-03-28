@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
+    <enum id="@SCHEMA_ID@.chord-detection-mode">
+		<value nick="split-long"  value="0" />
+		<value nick="split-short" value="1" />
+        <value nick="full-range" value="2" />
+    </enum>
     <schema id="@SCHEMA_ID@" path="@SCHEMA_PATH@" gettext-domain="@GETTEXT_PACKAGE@">
         <key name="version" type="s">
             <default>'0.0.0'</default>
@@ -38,10 +43,20 @@
             <summary>Display Unit Theme</summary>
         </key>
 
+        <!-- Arranger Core -->
+        <key name="style-path" type="s">
+            <default>''</default>
+            <summary>Enstl style path of the last used style</summary>
+        </key>
+
         <!-- Style Engine -->
         <key name="autofill" type="b">
             <default>false</default>
             <summary>Automatically trigger a fill-in when changing style variation</summary>
+        </key>
+        <key name="chord-detection-mode" enum="@SCHEMA_ID@.chord-detection-mode">
+            <default>"split-long"</default>
+            <summary>Style chord detection mode</summary>
         </key>
     </schema>
 </schemalist>

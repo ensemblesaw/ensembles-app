@@ -18,6 +18,7 @@ namespace Ensembles.Services {
         public signal void beat_reset ();
 
         // Style Player Events
+        public signal void style_change (Style style);
         public signal void style_chord_changed (Ensembles.Models.Chord chord);
         public signal int style_midi_event (Fluid.MIDIEvent event);
         public signal void style_play_toggle ();

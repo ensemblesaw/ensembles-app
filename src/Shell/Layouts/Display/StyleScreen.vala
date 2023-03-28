@@ -51,7 +51,7 @@ namespace Ensembles.Shell.Layouts.Display {
                     Idle.add (() => {
                         var row_to_select = main_list_box.get_row_at_index (0);
                         main_list_box.select_row (row_to_select);
-                        Application.arranger_workstation.queue_change_style (((StyleMenuItem) row_to_select).style);
+                        Application.event_bus.style_change (((StyleMenuItem) row_to_select).style);
                         return false;
                     });
                     return false;

@@ -199,6 +199,13 @@ namespace Ensembles.Shell.Layouts.Display {
                     power_dialog.show ();
                 });
             }
+
+            Application.event_bus.style_change.connect ((style) => {
+                Idle.add (() => {
+                    selected_style_label.set_text (style.name);
+                    return false;
+                });
+            });
         }
     }
 }

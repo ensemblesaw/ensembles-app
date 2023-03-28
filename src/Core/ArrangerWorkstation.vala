@@ -89,6 +89,10 @@ namespace Ensembles.Core {
                     style_engine.sync ();
                 }
             });
+
+            Application.event_bus.style_change.connect ((style) => {
+                queue_change_style (style);
+            });
         }
 
         /**

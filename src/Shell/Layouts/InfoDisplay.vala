@@ -102,13 +102,13 @@ namespace Ensembles.Shell.Layouts {
             Application.event_bus.arranger_ready.connect (() => {
                 splash_screen.get_style_context ().add_class ("fade-black");
 
-                Timeout.add_seconds (1, () => {
+                Timeout.add (1000, () => {
                     main_overlay.remove_overlay (splash_screen);
                     if (splash_screen != null) {
                         splash_screen.unref ();
                     }
 
-                    Timeout.add (50, () => {
+                    Timeout.add (200, () => {
                         main_stack.get_style_context ().remove_class ("fade-black");
                         return false;
                     });

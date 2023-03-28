@@ -25,7 +25,9 @@ namespace Ensembles.Shell.Layouts.Display {
             };
             add_to_header (dsp_switch);
 
-            dsp_repository_button = new Gtk.Button.from_icon_name ("list-add-symbolic");
+            dsp_repository_button = new Gtk.Button.from_icon_name ("plugin-add-symbolic") {
+                width_request = 36
+            };
             add_to_header (dsp_repository_button);
         }
     }
