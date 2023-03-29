@@ -7,6 +7,11 @@
     padding: 4px;
 }
 
+.blurred {
+    filter: blur(16px) brightness(0.9);
+    transition: filter 0.2s ease-out;
+}
+
 button {
     outline: 0;
     box-shadow: none;

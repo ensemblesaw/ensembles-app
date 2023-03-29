@@ -36,12 +36,14 @@ sources = files (
     'Shell/Layouts/Display/HomeScreen.vala',
     'Shell/Layouts/Display/StyleScreen.vala',
     'Shell/Layouts/Display/DSPScreen.vala',
+    'Shell/Layouts/Display/AudioPluginPicker.vala',
 
     'Shell/Widgets/BeatVisualization.vala',
 
     'Shell/Widgets/Display/WheelScrollableWidget.vala',
     'Shell/Widgets/Display/DisplayWindow.vala',
     'Shell/Widgets/Display/StyleMenuItem.vala',
+    'Shell/Widgets/Display/DSPMenuItem.vala',
 
     'Shell/Dialogs/PowerDialog.vala',
 

@@ -20,11 +20,11 @@ namespace Ensembles.Shell.Layouts {
             set {
                 _fill_screen = value;
                 if (value) {
-                    get_style_context ().remove_class ("panel");
-                    main_overlay.get_style_context ().add_class ("fill");
+                    remove_css_class ("panel");
+                    main_overlay.add_css_class ("fill");
                 } else {
-                    get_style_context ().add_class ("panel");
-                    main_overlay.get_style_context ().remove_class ("fill");
+                    add_css_class ("panel");
+                    main_overlay.remove_css_class ("fill");
                 }
             }
         }
@@ -49,25 +49,25 @@ namespace Ensembles.Shell.Layouts {
         }
 
         private void build_ui () {
-            get_style_context ().add_class ("panel");
+            add_css_class ("panel");
 
             main_overlay = new Gtk.Overlay () {
                 hexpand = true,
                 vexpand = true,
                 overflow = Gtk.Overflow.HIDDEN
             };
-            main_overlay.get_style_context ().add_class ("display");
+            main_overlay.add_css_class ("display");
             append (main_overlay);
 
             splash_screen = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-            splash_screen.get_style_context ().add_class ("splash-screen-background");
+            splash_screen.add_css_class ("splash-screen-background");
             main_overlay.add_overlay (splash_screen);
 
             var splash_banner = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
                 hexpand = true,
                 vexpand = true
             };
-            splash_banner.get_style_context ().add_class ("ensembles-logo-splash");
+            splash_banner.add_css_class ("ensembles-logo-splash");
             splash_screen.append (splash_banner);
 
             splash_screen_label = new Gtk.Label (_("Initializing…")) {
@@ -78,14 +78,14 @@ namespace Ensembles.Shell.Layouts {
                 margin_top = 8,
                 opacity = 0.5
             };
-            splash_screen_label.get_style_context ().add_class ("splash-screen-label");
+            splash_screen_label.add_css_class ("splash-screen-label");
             splash_screen.append (splash_screen_label);
 
             main_stack = new Gtk.Stack () {
                 transition_type = Gtk.StackTransitionType.OVER_UP_DOWN
             };
-            main_stack.get_style_context ().add_class ("display-stack");
-            main_stack.get_style_context ().add_class ("fade-black");
+            main_stack.add_css_class ("display-stack");
+            main_stack.add_css_class ("fade-black");
             main_overlay.set_child (main_stack);
 
             home_screen = new HomeScreen ();
@@ -100,7 +100,7 @@ namespace Ensembles.Shell.Layouts {
 
         private void build_events () {
             Application.event_bus.arranger_ready.connect (() => {
-                splash_screen.get_style_context ().add_class ("fade-black");
+                splash_screen.add_css_class ("fade-black");
 
                 Timeout.add (1000, () => {
                     main_overlay.remove_overlay (splash_screen);
@@ -109,7 +109,7 @@ namespace Ensembles.Shell.Layouts {
                     }
 
                     Timeout.add (200, () => {
-                        main_stack.get_style_context ().remove_class ("fade-black");
+                        main_stack.remove_css_class ("fade-black");
                         return false;
                     });
                     return false;
@@ -121,13 +121,12 @@ namespace Ensembles.Shell.Layouts {
                 main_stack.set_visible_child_name (screen_name);
             });
 
-            style_screen.close.connect (() => {
-                main_stack.set_visible_child_name ("home");
-            });
+            style_screen.close.connect (navigate_to_home);
+            dsp_screen.close.connect (navigate_to_home);
+        }
 
-            dsp_screen.close.connect (() => {
-                main_stack.set_visible_child_name ("home");
-            });
+        public void navigate_to_home () {
+            main_stack.set_visible_child_name ("home");
         }
     }
 }

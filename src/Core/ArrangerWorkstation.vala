@@ -4,6 +4,7 @@
  */
 
 using Ensembles.Core.MIDIPlayers;
+using Ensembles.Core.Plugins;
 using Ensembles.Models;
 
 namespace Ensembles.Core {
@@ -56,7 +57,7 @@ namespace Ensembles.Core {
             Console.log ("Found %u styles".printf (n_styles), Console.LogLevel.SUCCESS);
 
             // Load Plugins
-            plugin_manager = new Plugins.PluginManager ();
+            plugin_manager = new PluginManager ();
 
             // Send ready signal
             Idle.add (() => {
@@ -115,6 +116,10 @@ namespace Ensembles.Core {
                     stopping_style = false;
                 });
             }
+        }
+
+        public unowned List<AudioPlugins.AudioPlugin> get_audio_plugins () {
+            return plugin_manager.audio_plugins;
         }
     }
 }

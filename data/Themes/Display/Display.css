@@ -163,6 +163,7 @@ Display Window
 .display .display-window-header-bar .title {
     font-size: 1rem;
     color: #fff;
+    font-weight: bold;
 }
 
 .display .display-window-header-bar .subtitle {
@@ -225,4 +226,49 @@ Menu
     margin-right: -4px;
     border-radius: 3px 0 0 3px;
     box-shadow: 0 2px 4px alpha(#000, 0.5);
+}
+
+/* Plugin Menu ///////////////////////////////////////////////////////////////*/
+.display .plugin-flap dimming {
+    background: none;
+}
+
+.display .plugin-list {
+    background: none;
+}
+
+.display .plugin-item {
+    margin: 12px;
+    padding: 8px;
+    border-radius: 6px 32px 32px 6px;
+    border: 1px solid #000a;
+    background: linear-gradient(#444, #345);
+    box-shadow: 0 4px 12px #0002, inset 0 0 0 1px #fff2;
+    color: #fffc;
+    font-weight: bold;
+    font-size: 1.1rem;
+    text-shadow: 0 0 16px #fff0, 0 0 8px #fff7;
+    transition: all 1s ease-out;
+}
+
+.display .plugin-item:hover {
+    background: linear-gradient(#444, #356);
+    box-shadow: 0 4px 12px #0002, inset 0 0 0 1px #fff2, inset 0 -1px #47a;
+    text-shadow: 0 0 16px #fffa, 0 0 8px #fffd;
+    transition: all 0.2s ease;
+}
+
+
+.display .plugin-item-insert-button {
+    background: #fff2;
+    border-radius: 50px;
+    padding: 8px;
+    border: 1px solid #fff4;
+}
+
+.display .plugin-item-insert-button:hover {
+    background: #59b;
+    border-radius: 50px;
+    padding: 8px;
+    border: 1px solid #6bd;
 }

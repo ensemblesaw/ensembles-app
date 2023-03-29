@@ -43,7 +43,7 @@ namespace Ensembles.Shell.Layouts.Display {
         }
 
         private void build_ui () {
-            get_style_context ().add_class ("homescreen");
+            add_css_class ("homescreen");
 
             // Top Panel ///////////////////////////////////////////////////////////////////////////////////////////////
             var top_panel = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
@@ -51,20 +51,20 @@ namespace Ensembles.Shell.Layouts.Display {
                 hexpand = true
             };
             append (top_panel);
-            top_panel.get_style_context ().add_class ("homescreen-panel-top");
+            top_panel.add_css_class ("homescreen-panel-top");
 
             if (Application.kiosk_mode) {
                 power_button = new Gtk.Button.from_icon_name ("system-shutdown-symbolic") {
                     height_request = 48,
                     width_request = 32
                 };
-                power_button.get_style_context ().add_class ("homescreen-panel-top-button");
+                power_button.add_css_class ("homescreen-panel-top-button");
                 top_panel.append (power_button);
             }
 
             style_button = new Gtk.Button ();
             top_panel.append (style_button);
-            style_button.get_style_context ().add_class ("homescreen-panel-top-button");
+            style_button.add_css_class ("homescreen-panel-top-button");
 
             var style_button_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0) {
                 height_request = 48,
@@ -76,18 +76,18 @@ namespace Ensembles.Shell.Layouts.Display {
                 halign = Gtk.Align.CENTER
             };
             style_button_box.append (style_label);
-            style_label.get_style_context ().add_class ("homescreen-panel-top-button-header");
+            style_label.add_css_class ("homescreen-panel-top-button-header");
 
             selected_style_label = new Gtk.Label (_("Undefined")) {
                 ellipsize = Pango.EllipsizeMode.MIDDLE,
                 halign = Gtk.Align.CENTER
             };
             style_button_box.append (selected_style_label);
-            selected_style_label.get_style_context ().add_class ("homescreen-panel-top-button-subheader");
+            selected_style_label.add_css_class ("homescreen-panel-top-button-subheader");
 
             voice_l_button = new Gtk.Button ();
             top_panel.append (voice_l_button);
-            voice_l_button.get_style_context ().add_class ("homescreen-panel-top-button");
+            voice_l_button.add_css_class ("homescreen-panel-top-button");
 
             var voice_l_button_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0) {
                 height_request = 48,
@@ -99,18 +99,18 @@ namespace Ensembles.Shell.Layouts.Display {
                 halign = Gtk.Align.CENTER
             };
             voice_l_button_box.append (voice_l_label);
-            voice_l_label.get_style_context ().add_class ("homescreen-panel-top-button-header");
+            voice_l_label.add_css_class ("homescreen-panel-top-button-header");
 
             selected_voice_l_label = new Gtk.Label (_("Undefined")) {
                 ellipsize = Pango.EllipsizeMode.MIDDLE,
                 halign = Gtk.Align.CENTER
             };
             voice_l_button_box.append (selected_voice_l_label);
-            selected_voice_l_label.get_style_context ().add_class ("homescreen-panel-top-button-subheader");
+            selected_voice_l_label.add_css_class ("homescreen-panel-top-button-subheader");
 
             voice_r1_button = new Gtk.Button ();
             top_panel.append (voice_r1_button);
-            voice_r1_button.get_style_context ().add_class ("homescreen-panel-top-button");
+            voice_r1_button.add_css_class ("homescreen-panel-top-button");
 
             var voice_r1_button_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0) {
                 height_request = 48,
@@ -122,18 +122,18 @@ namespace Ensembles.Shell.Layouts.Display {
                 halign = Gtk.Align.CENTER
             };
             voice_r1_button_box.append (voice_r1_label);
-            voice_r1_label.get_style_context ().add_class ("homescreen-panel-top-button-header");
+            voice_r1_label.add_css_class ("homescreen-panel-top-button-header");
 
             selected_voice_r1_label = new Gtk.Label (_("Undefined")) {
                 ellipsize = Pango.EllipsizeMode.MIDDLE,
                 halign = Gtk.Align.CENTER
             };
             voice_r1_button_box.append (selected_voice_r1_label);
-            selected_voice_r1_label.get_style_context ().add_class ("homescreen-panel-top-button-subheader");
+            selected_voice_r1_label.add_css_class ("homescreen-panel-top-button-subheader");
 
             voice_r2_button = new Gtk.Button ();
             top_panel.append (voice_r2_button);
-            voice_r2_button.get_style_context ().add_class ("homescreen-panel-top-button");
+            voice_r2_button.add_css_class ("homescreen-panel-top-button");
 
             var voice_r2_button_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0) {
                 height_request = 48,
@@ -145,14 +145,14 @@ namespace Ensembles.Shell.Layouts.Display {
                 halign = Gtk.Align.CENTER
             };
             voice_r2_button_box.append (voice_r2_label);
-            voice_r2_label.get_style_context ().add_class ("homescreen-panel-top-button-header");
+            voice_r2_label.add_css_class ("homescreen-panel-top-button-header");
 
             selected_voice_r2_label = new Gtk.Label (_("Undefined")) {
                 ellipsize = Pango.EllipsizeMode.MIDDLE,
                 halign = Gtk.Align.CENTER
             };
             voice_r2_button_box.append (selected_voice_r2_label);
-            selected_voice_r2_label.get_style_context ().add_class ("homescreen-panel-top-button-subheader");
+            selected_voice_r2_label.add_css_class ("homescreen-panel-top-button-subheader");
 
             // Middle Panel ////////////////////////////////////////////////////////////////////////////////////////////
             var middle_panel = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
@@ -160,7 +160,7 @@ namespace Ensembles.Shell.Layouts.Display {
                 hexpand = true
             };
             append (middle_panel);
-            middle_panel.get_style_context ().add_class ("homescreen-panel-middle");
+            middle_panel.add_css_class ("homescreen-panel-middle");
 
             dsp_button = new Gtk.Button.with_label (_("Main DSP Rack")) {
                 valign = Gtk.Align.END,
@@ -180,7 +180,7 @@ namespace Ensembles.Shell.Layouts.Display {
                 hexpand = true
             };
             append (bottom_panel);
-            bottom_panel.get_style_context ().add_class ("homescreen-panel-bottom");
+            bottom_panel.add_css_class ("homescreen-panel-bottom");
         }
 
         private void build_events () {

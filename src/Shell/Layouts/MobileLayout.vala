@@ -66,7 +66,7 @@ namespace Ensembles.Shell.Layouts {
                 width_request = 200
             };
             flap.set_flap (menu_box);
-            menu_box.get_style_context ().add_class ("adw-listbox");
+            menu_box.add_css_class ("adw-listbox");
 
             var info_entry = new Adw.ActionRow () {
                 title = "Info Display",
@@ -108,15 +108,15 @@ namespace Ensembles.Shell.Layouts {
             style_registry_box.append (style_controller_socket);
 
             var start_button_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 2);
-            start_button_box.get_style_context ().add_class ("panel");
+            start_button_box.add_css_class ("panel");
             style_registry_box.append (start_button_box);
 
             start_button = new Gtk.Button.from_icon_name ("media-playback-start-symbolic") {
                 width_request = 64,
                 height_request = 32
             };
-            start_button.get_style_context ().add_class (Granite.STYLE_CLASS_DESTRUCTIVE_ACTION);
-            start_button.get_style_context ().remove_class ("image-button");
+            start_button.add_css_class (Granite.STYLE_CLASS_DESTRUCTIVE_ACTION);
+            start_button.remove_css_class ("image-button");
             start_button.clicked.connect (() => {
                 Application.event_bus.style_play_toggle ();
             });
@@ -162,9 +162,9 @@ namespace Ensembles.Shell.Layouts {
                     Application.event_bus.menu_shown (flap.reveal_flap);
                     Idle.add (() => {
                         if (flap.reveal_flap && flap.folded) {
-                            main_stack.get_style_context ().add_class ("dimmed");
+                            main_stack.add_css_class ("dimmed");
                         } else {
-                            main_stack.get_style_context ().remove_class ("dimmed");
+                            main_stack.remove_css_class ("dimmed");
                         }
                         return false;
                     });

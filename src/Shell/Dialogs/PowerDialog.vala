@@ -26,7 +26,7 @@ namespace Ensembles.Shell.Dialog {
         }
 
         private void build_ui () {
-            get_style_context ().add_class ("pseudowindow-actual");
+            add_css_class ("pseudowindow-actual");
 
             var main_grid = new Gtk.Grid () {
                 row_spacing = 8,
@@ -34,8 +34,8 @@ namespace Ensembles.Shell.Dialog {
                 halign = Gtk.Align.CENTER,
                 valign = Gtk.Align.CENTER
             };
-            main_grid.get_style_context ().add_class ("pseudowindow");
-            main_grid.get_style_context ().add_class ("opaque");
+            main_grid.add_css_class ("pseudowindow");
+            main_grid.add_css_class ("opaque");
 
             set_child (main_grid);
 
@@ -49,7 +49,7 @@ namespace Ensembles.Shell.Dialog {
             header = new Gtk.Label (_("Are you sure you want to Shut Down?")) {
                 halign = Gtk.Align.START
             };
-            header.get_style_context ().add_class (Granite.STYLE_CLASS_H3_LABEL);
+            header.add_css_class (Granite.STYLE_CLASS_H3_LABEL);
             main_grid.attach (header, 1, 0, 4);
 
             message = new Gtk.Label (_("This will turn off this device")) {
@@ -64,7 +64,7 @@ namespace Ensembles.Shell.Dialog {
             main_grid.attach (cancel_button, 3, 2);
 
             shutdown_button = new Gtk.Button.with_label (_("Shut Down"));
-            shutdown_button.get_style_context ().add_class (Granite.STYLE_CLASS_DESTRUCTIVE_ACTION);
+            shutdown_button.add_css_class (Granite.STYLE_CLASS_DESTRUCTIVE_ACTION);
             main_grid.attach (shutdown_button, 4, 2);
         }
 

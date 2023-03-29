@@ -62,14 +62,14 @@ namespace Ensembles.Shell.Layouts.Display {
         }
 
         private void build_ui () {
-            get_style_context ().add_class ("display-window-background");
+            add_css_class ("display-window-background");
             orientation = Gtk.Orientation.VERTICAL;
 
             header_bar = new Gtk.CenterBox () {
                 height_request = 48
             };
             append (header_bar);
-            header_bar.get_style_context ().add_class ("display-window-header-bar");
+            header_bar.add_css_class ("display-window-header-bar");
 
             close_button = new Gtk.Button.from_icon_name ("application-exit-symbolic") {
                 halign = Gtk.Align.START

@@ -9,7 +9,6 @@ using Ensembles.Models;
 namespace Ensembles.Shell.Layouts.Display {
     public class StyleScreen : DisplayWindow {
         private Gtk.ListBox main_list_box;
-        //  StyleMenuItem[] style_menu_items;
 
         public StyleScreen () {
             base (_("Style"), _("Pick a Rhythm to accompany you"));
@@ -34,7 +33,7 @@ namespace Ensembles.Shell.Layouts.Display {
             main_list_box = new Gtk.ListBox () {
                 selection_mode = Gtk.SelectionMode.SINGLE
             };
-            main_list_box.get_style_context ().add_class ("menu-box");
+            main_list_box.add_css_class ("menu-box");
             scrollable.set_child (main_list_box);
         }
 
@@ -46,9 +45,9 @@ namespace Ensembles.Shell.Layouts.Display {
             });
 
             Application.event_bus.arranger_ready.connect (() => {
-                Timeout.add_seconds (1, () => {
-                    populate (Application.arranger_workstation.styles);
+                Timeout.add (1000, () => {
                     Idle.add (() => {
+                        populate (Application.arranger_workstation.styles);
                         var row_to_select = main_list_box.get_row_at_index (0);
                         main_list_box.select_row (row_to_select);
                         Application.event_bus.style_change (((StyleMenuItem) row_to_select).style);
@@ -61,7 +60,6 @@ namespace Ensembles.Shell.Layouts.Display {
 
         public void populate (Style[] styles) {
             Console.log ("Populating style list…");
-            //  style_menu_items = new StyleMenuItem[styles.length];
 
             var temp_category = "";
             for (uint16 i = 0; i < styles.length; i++) {
@@ -72,7 +70,6 @@ namespace Ensembles.Shell.Layouts.Display {
                 }
 
                 var menu_item = new StyleMenuItem (styles[i], show_category);
-                //  style_menu_items[i] = menu_item;
                 main_list_box.insert (menu_item, -1);
             }
 

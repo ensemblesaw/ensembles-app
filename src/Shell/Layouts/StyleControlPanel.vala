@@ -37,7 +37,7 @@ namespace Ensembles.Shell.Layouts {
         }
 
         private void build_ui () {
-            get_style_context ().add_class ("panel");
+            add_css_class ("panel");
 
             var intro_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 2);
             append (intro_box);
@@ -46,7 +46,7 @@ namespace Ensembles.Shell.Layouts {
                 hexpand = true,
                 homogeneous = true
             };
-            intro_button_box.get_style_context ().add_class (Granite.STYLE_CLASS_LINKED);
+            intro_button_box.add_css_class (Granite.STYLE_CLASS_LINKED);
             intro_box.append (intro_button_box);
             intro_box.append (new Gtk.Label (_("INTRO")) { opacity = 0.5 } );
 
@@ -57,7 +57,7 @@ namespace Ensembles.Shell.Layouts {
                 hexpand = true,
                 homogeneous = true
             };
-            variation_button_box.get_style_context ().add_class (Granite.STYLE_CLASS_LINKED);
+            variation_button_box.add_css_class (Granite.STYLE_CLASS_LINKED);
             variation_box.append (variation_button_box);
             variation_box.append (new Gtk.Label (_("VARIATION/FILL-IN")) { opacity = 0.5 } );
 
@@ -70,7 +70,7 @@ namespace Ensembles.Shell.Layouts {
                 hexpand = true,
                 height_request = 32
             };
-            break_button.get_style_context ().remove_class ("image-button");
+            break_button.remove_css_class ("image-button");
             break_box.append (break_button);
             break_box.append (new Gtk.Label (_("BREAK")) { opacity = 0.5 } );
 
@@ -81,7 +81,7 @@ namespace Ensembles.Shell.Layouts {
                 hexpand = true,
                 homogeneous = true
             };
-            ending_button_box.get_style_context ().add_class (Granite.STYLE_CLASS_LINKED);
+            ending_button_box.add_css_class (Granite.STYLE_CLASS_LINKED);
             ending_box.append (ending_button_box);
             ending_box.append (new Gtk.Label (_("ENDING")) { opacity = 0.5 } );
 
@@ -136,7 +136,7 @@ namespace Ensembles.Shell.Layouts {
                 hexpand = true,
                 height_request = 32
             };
-            sync_start_button.get_style_context ().remove_class ("image-button");
+            sync_start_button.remove_css_class ("image-button");
             sync_start_box.append (sync_start_button);
             sync_start_box.append (new Gtk.Label (_("SYNC")) { opacity = 0.5 } );
 
@@ -200,9 +200,9 @@ namespace Ensembles.Shell.Layouts {
 
             Application.event_bus.style_sync_changed.connect ((active) => {
                 if (active) {
-                    sync_start_button.get_style_context ().add_class ("pulse");
+                    sync_start_button.add_css_class ("pulse");
                 } else {
-                    sync_start_button.get_style_context ().remove_class ("pulse");
+                    sync_start_button.remove_css_class ("pulse");
                 }
             });
 
@@ -212,9 +212,9 @@ namespace Ensembles.Shell.Layouts {
 
             Application.event_bus.style_break_changed.connect ((active) => {
                 if (active) {
-                    break_button.get_style_context ().add_class ("pulse");
+                    break_button.add_css_class ("pulse");
                 } else {
-                    break_button.get_style_context ().remove_class ("pulse");
+                    break_button.remove_css_class ("pulse");
                 }
             });
         }
@@ -222,228 +222,228 @@ namespace Ensembles.Shell.Layouts {
         private void highlight_part () {
             switch (current_part) {
                 case StylePartType.INTRO_1:
-                intro_1_button.get_style_context ().add_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_2_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_3_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_1_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_2_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_3_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_a_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_b_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_c_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_d_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_a_button.get_style_context ().remove_class ("pulse-fill");
-                variation_b_button.get_style_context ().remove_class ("pulse-fill");
-                variation_c_button.get_style_context ().remove_class ("pulse-fill");
-                variation_d_button.get_style_context ().remove_class ("pulse-fill");
+                intro_1_button.add_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                intro_2_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                intro_3_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_1_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_2_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_3_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_a_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_b_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_c_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_d_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_a_button.remove_css_class ("pulse-fill");
+                variation_b_button.remove_css_class ("pulse-fill");
+                variation_c_button.remove_css_class ("pulse-fill");
+                variation_d_button.remove_css_class ("pulse-fill");
                 break;
                 case StylePartType.INTRO_2:
-                intro_1_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_2_button.get_style_context ().add_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_3_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_1_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_2_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_3_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_a_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_b_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_c_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_d_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_a_button.get_style_context ().remove_class ("pulse-fill");
-                variation_b_button.get_style_context ().remove_class ("pulse-fill");
-                variation_c_button.get_style_context ().remove_class ("pulse-fill");
-                variation_d_button.get_style_context ().remove_class ("pulse-fill");
+                intro_1_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                intro_2_button.add_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                intro_3_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_1_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_2_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_3_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_a_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_b_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_c_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_d_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_a_button.remove_css_class ("pulse-fill");
+                variation_b_button.remove_css_class ("pulse-fill");
+                variation_c_button.remove_css_class ("pulse-fill");
+                variation_d_button.remove_css_class ("pulse-fill");
                 break;
                 case StylePartType.INTRO_3:
-                intro_1_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_2_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_3_button.get_style_context ().add_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_1_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_2_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_3_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_a_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_b_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_c_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_d_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_a_button.get_style_context ().remove_class ("pulse-fill");
-                variation_b_button.get_style_context ().remove_class ("pulse-fill");
-                variation_c_button.get_style_context ().remove_class ("pulse-fill");
-                variation_d_button.get_style_context ().remove_class ("pulse-fill");
+                intro_1_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                intro_2_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                intro_3_button.add_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_1_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_2_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_3_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_a_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_b_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_c_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_d_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_a_button.remove_css_class ("pulse-fill");
+                variation_b_button.remove_css_class ("pulse-fill");
+                variation_c_button.remove_css_class ("pulse-fill");
+                variation_d_button.remove_css_class ("pulse-fill");
                 break;
                 case StylePartType.ENDING_1:
-                intro_1_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_2_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_3_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_1_button.get_style_context ().add_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_2_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_3_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_a_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_b_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_c_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_d_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_a_button.get_style_context ().remove_class ("pulse-fill");
-                variation_b_button.get_style_context ().remove_class ("pulse-fill");
-                variation_c_button.get_style_context ().remove_class ("pulse-fill");
-                variation_d_button.get_style_context ().remove_class ("pulse-fill");
+                intro_1_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                intro_2_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                intro_3_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_1_button.add_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_2_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_3_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_a_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_b_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_c_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_d_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_a_button.remove_css_class ("pulse-fill");
+                variation_b_button.remove_css_class ("pulse-fill");
+                variation_c_button.remove_css_class ("pulse-fill");
+                variation_d_button.remove_css_class ("pulse-fill");
                 break;
                 case StylePartType.ENDING_2:
-                intro_1_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_2_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_3_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_1_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_2_button.get_style_context ().add_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_3_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_a_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_b_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_c_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_d_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_a_button.get_style_context ().remove_class ("pulse-fill");
-                variation_b_button.get_style_context ().remove_class ("pulse-fill");
-                variation_c_button.get_style_context ().remove_class ("pulse-fill");
-                variation_d_button.get_style_context ().remove_class ("pulse-fill");
+                intro_1_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                intro_2_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                intro_3_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_1_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_2_button.add_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_3_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_a_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_b_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_c_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_d_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_a_button.remove_css_class ("pulse-fill");
+                variation_b_button.remove_css_class ("pulse-fill");
+                variation_c_button.remove_css_class ("pulse-fill");
+                variation_d_button.remove_css_class ("pulse-fill");
                 break;
                 case StylePartType.ENDING_3:
-                intro_1_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_2_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_3_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_1_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_2_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_3_button.get_style_context ().add_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_a_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_b_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_c_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_d_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_a_button.get_style_context ().remove_class ("pulse-fill");
-                variation_b_button.get_style_context ().remove_class ("pulse-fill");
-                variation_c_button.get_style_context ().remove_class ("pulse-fill");
-                variation_d_button.get_style_context ().remove_class ("pulse-fill");
+                intro_1_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                intro_2_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                intro_3_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_1_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_2_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_3_button.add_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_a_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_b_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_c_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_d_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_a_button.remove_css_class ("pulse-fill");
+                variation_b_button.remove_css_class ("pulse-fill");
+                variation_c_button.remove_css_class ("pulse-fill");
+                variation_d_button.remove_css_class ("pulse-fill");
                 break;
                 case StylePartType.VARIATION_A:
-                intro_1_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_2_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_3_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_1_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_2_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_3_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_a_button.get_style_context ().add_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_a_button.get_style_context ().remove_class ("pulse-fill");
-                variation_b_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_b_button.get_style_context ().remove_class ("pulse-fill");
-                variation_c_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_c_button.get_style_context ().remove_class ("pulse-fill");
-                variation_d_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_d_button.get_style_context ().remove_class ("pulse-fill");
+                intro_1_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                intro_2_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                intro_3_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_1_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_2_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_3_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_a_button.add_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_a_button.remove_css_class ("pulse-fill");
+                variation_b_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_b_button.remove_css_class ("pulse-fill");
+                variation_c_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_c_button.remove_css_class ("pulse-fill");
+                variation_d_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_d_button.remove_css_class ("pulse-fill");
                 break;
                 case StylePartType.VARIATION_B:
-                intro_1_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_2_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_3_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_1_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_2_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_3_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_a_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_a_button.get_style_context ().remove_class ("pulse-fill");
-                variation_b_button.get_style_context ().add_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_b_button.get_style_context ().remove_class ("pulse-fill");
-                variation_c_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_c_button.get_style_context ().remove_class ("pulse-fill");
-                variation_d_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_d_button.get_style_context ().remove_class ("pulse-fill");
+                intro_1_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                intro_2_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                intro_3_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_1_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_2_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_3_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_a_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_a_button.remove_css_class ("pulse-fill");
+                variation_b_button.add_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_b_button.remove_css_class ("pulse-fill");
+                variation_c_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_c_button.remove_css_class ("pulse-fill");
+                variation_d_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_d_button.remove_css_class ("pulse-fill");
                 break;
                 case StylePartType.VARIATION_C:
-                intro_1_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_2_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_3_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_1_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_2_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_3_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_a_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_a_button.get_style_context ().remove_class ("pulse-fill");
-                variation_b_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_b_button.get_style_context ().remove_class ("pulse-fill");
-                variation_c_button.get_style_context ().add_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_c_button.get_style_context ().remove_class ("pulse-fill");
-                variation_d_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_d_button.get_style_context ().remove_class ("pulse-fill");
+                intro_1_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                intro_2_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                intro_3_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_1_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_2_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_3_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_a_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_a_button.remove_css_class ("pulse-fill");
+                variation_b_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_b_button.remove_css_class ("pulse-fill");
+                variation_c_button.add_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_c_button.remove_css_class ("pulse-fill");
+                variation_d_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_d_button.remove_css_class ("pulse-fill");
                 break;
                 case StylePartType.VARIATION_D:
-                intro_1_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_2_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_3_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_1_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_2_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_3_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_a_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_a_button.get_style_context ().remove_class ("pulse-fill");
-                variation_b_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_b_button.get_style_context ().remove_class ("pulse-fill");
-                variation_c_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_c_button.get_style_context ().remove_class ("pulse-fill");
-                variation_d_button.get_style_context ().add_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_d_button.get_style_context ().remove_class ("pulse-fill");
+                intro_1_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                intro_2_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                intro_3_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_1_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_2_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_3_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_a_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_a_button.remove_css_class ("pulse-fill");
+                variation_b_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_b_button.remove_css_class ("pulse-fill");
+                variation_c_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_c_button.remove_css_class ("pulse-fill");
+                variation_d_button.add_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_d_button.remove_css_class ("pulse-fill");
                 break;
                 case StylePartType.FILL_A:
-                intro_1_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_2_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_3_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_1_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_2_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_3_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_a_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_a_button.get_style_context ().add_class ("pulse-fill");
-                variation_b_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_b_button.get_style_context ().remove_class ("pulse-fill");
-                variation_c_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_c_button.get_style_context ().remove_class ("pulse-fill");
-                variation_d_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_d_button.get_style_context ().remove_class ("pulse-fill");
+                intro_1_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                intro_2_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                intro_3_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_1_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_2_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_3_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_a_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_a_button.add_css_class ("pulse-fill");
+                variation_b_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_b_button.remove_css_class ("pulse-fill");
+                variation_c_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_c_button.remove_css_class ("pulse-fill");
+                variation_d_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_d_button.remove_css_class ("pulse-fill");
                 break;
                 case StylePartType.FILL_B:
-                intro_1_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_2_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_3_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_1_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_2_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_3_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_a_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_a_button.get_style_context ().remove_class ("pulse-fill");
-                variation_b_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_b_button.get_style_context ().add_class ("pulse-fill");
-                variation_c_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_c_button.get_style_context ().remove_class ("pulse-fill");
-                variation_d_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_d_button.get_style_context ().remove_class ("pulse-fill");
+                intro_1_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                intro_2_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                intro_3_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_1_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_2_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_3_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_a_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_a_button.remove_css_class ("pulse-fill");
+                variation_b_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_b_button.add_css_class ("pulse-fill");
+                variation_c_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_c_button.remove_css_class ("pulse-fill");
+                variation_d_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_d_button.remove_css_class ("pulse-fill");
                 break;
                 case StylePartType.FILL_C:
-                intro_1_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_2_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_3_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_1_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_2_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_3_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_a_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_a_button.get_style_context ().remove_class ("pulse-fill");
-                variation_b_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_b_button.get_style_context ().remove_class ("pulse-fill");
-                variation_c_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_c_button.get_style_context ().add_class ("pulse-fill");
-                variation_d_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_d_button.get_style_context ().remove_class ("pulse-fill");
+                intro_1_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                intro_2_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                intro_3_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_1_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_2_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_3_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_a_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_a_button.remove_css_class ("pulse-fill");
+                variation_b_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_b_button.remove_css_class ("pulse-fill");
+                variation_c_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_c_button.add_css_class ("pulse-fill");
+                variation_d_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_d_button.remove_css_class ("pulse-fill");
                 break;
                 case StylePartType.FILL_D:
-                intro_1_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_2_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                intro_3_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_1_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_2_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                ending_3_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_a_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_a_button.get_style_context ().remove_class ("pulse-fill");
-                variation_b_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_b_button.get_style_context ().remove_class ("pulse-fill");
-                variation_c_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_c_button.get_style_context ().remove_class ("pulse-fill");
-                variation_d_button.get_style_context ().remove_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
-                variation_d_button.get_style_context ().add_class ("pulse-fill");
+                intro_1_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                intro_2_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                intro_3_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_1_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_2_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                ending_3_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_a_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_a_button.remove_css_class ("pulse-fill");
+                variation_b_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_b_button.remove_css_class ("pulse-fill");
+                variation_c_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_c_button.remove_css_class ("pulse-fill");
+                variation_d_button.remove_css_class (Granite.STYLE_CLASS_SUGGESTED_ACTION);
+                variation_d_button.add_css_class ("pulse-fill");
                 break;
                 default:
                 break;
@@ -452,139 +452,139 @@ namespace Ensembles.Shell.Layouts {
             if (current_part != next_part) {
                 switch (next_part) {
                     case StylePartType.INTRO_1:
-                    intro_1_button.get_style_context ().add_class ("pulse");
-                    intro_2_button.get_style_context ().remove_class ("pulse");
-                    intro_3_button.get_style_context ().remove_class ("pulse");
-                    ending_1_button.get_style_context ().remove_class ("pulse");
-                    ending_2_button.get_style_context ().remove_class ("pulse");
-                    ending_3_button.get_style_context ().remove_class ("pulse");
-                    variation_a_button.get_style_context ().remove_class ("pulse");
-                    variation_b_button.get_style_context ().remove_class ("pulse");
-                    variation_c_button.get_style_context ().remove_class ("pulse");
-                    variation_d_button.get_style_context ().remove_class ("pulse");
+                    intro_1_button.add_css_class ("pulse");
+                    intro_2_button.remove_css_class ("pulse");
+                    intro_3_button.remove_css_class ("pulse");
+                    ending_1_button.remove_css_class ("pulse");
+                    ending_2_button.remove_css_class ("pulse");
+                    ending_3_button.remove_css_class ("pulse");
+                    variation_a_button.remove_css_class ("pulse");
+                    variation_b_button.remove_css_class ("pulse");
+                    variation_c_button.remove_css_class ("pulse");
+                    variation_d_button.remove_css_class ("pulse");
                     break;
                     case StylePartType.INTRO_2:
-                    intro_1_button.get_style_context ().remove_class ("pulse");
-                    intro_2_button.get_style_context ().add_class ("pulse");
-                    intro_3_button.get_style_context ().remove_class ("pulse");
-                    ending_1_button.get_style_context ().remove_class ("pulse");
-                    ending_2_button.get_style_context ().remove_class ("pulse");
-                    ending_3_button.get_style_context ().remove_class ("pulse");
-                    variation_a_button.get_style_context ().remove_class ("pulse");
-                    variation_b_button.get_style_context ().remove_class ("pulse");
-                    variation_c_button.get_style_context ().remove_class ("pulse");
-                    variation_d_button.get_style_context ().remove_class ("pulse");
+                    intro_1_button.remove_css_class ("pulse");
+                    intro_2_button.add_css_class ("pulse");
+                    intro_3_button.remove_css_class ("pulse");
+                    ending_1_button.remove_css_class ("pulse");
+                    ending_2_button.remove_css_class ("pulse");
+                    ending_3_button.remove_css_class ("pulse");
+                    variation_a_button.remove_css_class ("pulse");
+                    variation_b_button.remove_css_class ("pulse");
+                    variation_c_button.remove_css_class ("pulse");
+                    variation_d_button.remove_css_class ("pulse");
                     break;
                     case StylePartType.INTRO_3:
-                    intro_1_button.get_style_context ().remove_class ("pulse");
-                    intro_2_button.get_style_context ().add_class ("pulse");
-                    intro_3_button.get_style_context ().remove_class ("pulse");
-                    ending_1_button.get_style_context ().remove_class ("pulse");
-                    ending_2_button.get_style_context ().remove_class ("pulse");
-                    ending_3_button.get_style_context ().remove_class ("pulse");
-                    variation_a_button.get_style_context ().remove_class ("pulse");
-                    variation_b_button.get_style_context ().remove_class ("pulse");
-                    variation_c_button.get_style_context ().remove_class ("pulse");
-                    variation_d_button.get_style_context ().remove_class ("pulse");
+                    intro_1_button.remove_css_class ("pulse");
+                    intro_2_button.add_css_class ("pulse");
+                    intro_3_button.remove_css_class ("pulse");
+                    ending_1_button.remove_css_class ("pulse");
+                    ending_2_button.remove_css_class ("pulse");
+                    ending_3_button.remove_css_class ("pulse");
+                    variation_a_button.remove_css_class ("pulse");
+                    variation_b_button.remove_css_class ("pulse");
+                    variation_c_button.remove_css_class ("pulse");
+                    variation_d_button.remove_css_class ("pulse");
                     break;
                     case StylePartType.ENDING_1:
-                    intro_1_button.get_style_context ().remove_class ("pulse");
-                    intro_2_button.get_style_context ().remove_class ("pulse");
-                    intro_3_button.get_style_context ().remove_class ("pulse");
-                    ending_1_button.get_style_context ().add_class ("pulse");
-                    ending_2_button.get_style_context ().remove_class ("pulse");
-                    ending_3_button.get_style_context ().remove_class ("pulse");
-                    variation_a_button.get_style_context ().remove_class ("pulse");
-                    variation_b_button.get_style_context ().remove_class ("pulse");
-                    variation_c_button.get_style_context ().remove_class ("pulse");
-                    variation_d_button.get_style_context ().remove_class ("pulse");
+                    intro_1_button.remove_css_class ("pulse");
+                    intro_2_button.remove_css_class ("pulse");
+                    intro_3_button.remove_css_class ("pulse");
+                    ending_1_button.add_css_class ("pulse");
+                    ending_2_button.remove_css_class ("pulse");
+                    ending_3_button.remove_css_class ("pulse");
+                    variation_a_button.remove_css_class ("pulse");
+                    variation_b_button.remove_css_class ("pulse");
+                    variation_c_button.remove_css_class ("pulse");
+                    variation_d_button.remove_css_class ("pulse");
                     break;
                     case StylePartType.ENDING_2:
-                    intro_1_button.get_style_context ().remove_class ("pulse");
-                    intro_2_button.get_style_context ().remove_class ("pulse");
-                    intro_3_button.get_style_context ().remove_class ("pulse");
-                    ending_1_button.get_style_context ().remove_class ("pulse");
-                    ending_2_button.get_style_context ().add_class ("pulse");
-                    ending_3_button.get_style_context ().remove_class ("pulse");
-                    variation_a_button.get_style_context ().remove_class ("pulse");
-                    variation_b_button.get_style_context ().remove_class ("pulse");
-                    variation_c_button.get_style_context ().remove_class ("pulse");
-                    variation_d_button.get_style_context ().remove_class ("pulse");
+                    intro_1_button.remove_css_class ("pulse");
+                    intro_2_button.remove_css_class ("pulse");
+                    intro_3_button.remove_css_class ("pulse");
+                    ending_1_button.remove_css_class ("pulse");
+                    ending_2_button.add_css_class ("pulse");
+                    ending_3_button.remove_css_class ("pulse");
+                    variation_a_button.remove_css_class ("pulse");
+                    variation_b_button.remove_css_class ("pulse");
+                    variation_c_button.remove_css_class ("pulse");
+                    variation_d_button.remove_css_class ("pulse");
                     break;
                     case StylePartType.ENDING_3:
-                    intro_1_button.get_style_context ().remove_class ("pulse");
-                    intro_2_button.get_style_context ().remove_class ("pulse");
-                    intro_3_button.get_style_context ().remove_class ("pulse");
-                    ending_1_button.get_style_context ().remove_class ("pulse");
-                    ending_2_button.get_style_context ().remove_class ("pulse");
-                    ending_3_button.get_style_context ().add_class ("pulse");
-                    variation_a_button.get_style_context ().remove_class ("pulse");
-                    variation_b_button.get_style_context ().remove_class ("pulse");
-                    variation_c_button.get_style_context ().remove_class ("pulse");
-                    variation_d_button.get_style_context ().remove_class ("pulse");
+                    intro_1_button.remove_css_class ("pulse");
+                    intro_2_button.remove_css_class ("pulse");
+                    intro_3_button.remove_css_class ("pulse");
+                    ending_1_button.remove_css_class ("pulse");
+                    ending_2_button.remove_css_class ("pulse");
+                    ending_3_button.add_css_class ("pulse");
+                    variation_a_button.remove_css_class ("pulse");
+                    variation_b_button.remove_css_class ("pulse");
+                    variation_c_button.remove_css_class ("pulse");
+                    variation_d_button.remove_css_class ("pulse");
                     break;
                     case StylePartType.VARIATION_A:
-                    intro_1_button.get_style_context ().remove_class ("pulse");
-                    intro_2_button.get_style_context ().remove_class ("pulse");
-                    intro_3_button.get_style_context ().remove_class ("pulse");
-                    ending_1_button.get_style_context ().remove_class ("pulse");
-                    ending_2_button.get_style_context ().remove_class ("pulse");
-                    ending_3_button.get_style_context ().remove_class ("pulse");
-                    variation_a_button.get_style_context ().add_class ("pulse");
-                    variation_b_button.get_style_context ().remove_class ("pulse");
-                    variation_c_button.get_style_context ().remove_class ("pulse");
-                    variation_d_button.get_style_context ().remove_class ("pulse");
+                    intro_1_button.remove_css_class ("pulse");
+                    intro_2_button.remove_css_class ("pulse");
+                    intro_3_button.remove_css_class ("pulse");
+                    ending_1_button.remove_css_class ("pulse");
+                    ending_2_button.remove_css_class ("pulse");
+                    ending_3_button.remove_css_class ("pulse");
+                    variation_a_button.add_css_class ("pulse");
+                    variation_b_button.remove_css_class ("pulse");
+                    variation_c_button.remove_css_class ("pulse");
+                    variation_d_button.remove_css_class ("pulse");
                     break;
                     case StylePartType.VARIATION_B:
-                    intro_1_button.get_style_context ().remove_class ("pulse");
-                    intro_2_button.get_style_context ().remove_class ("pulse");
-                    intro_3_button.get_style_context ().remove_class ("pulse");
-                    ending_1_button.get_style_context ().remove_class ("pulse");
-                    ending_2_button.get_style_context ().remove_class ("pulse");
-                    ending_3_button.get_style_context ().remove_class ("pulse");
-                    variation_a_button.get_style_context ().remove_class ("pulse");
-                    variation_b_button.get_style_context ().add_class ("pulse");
-                    variation_c_button.get_style_context ().remove_class ("pulse");
-                    variation_d_button.get_style_context ().remove_class ("pulse");
+                    intro_1_button.remove_css_class ("pulse");
+                    intro_2_button.remove_css_class ("pulse");
+                    intro_3_button.remove_css_class ("pulse");
+                    ending_1_button.remove_css_class ("pulse");
+                    ending_2_button.remove_css_class ("pulse");
+                    ending_3_button.remove_css_class ("pulse");
+                    variation_a_button.remove_css_class ("pulse");
+                    variation_b_button.add_css_class ("pulse");
+                    variation_c_button.remove_css_class ("pulse");
+                    variation_d_button.remove_css_class ("pulse");
                     break;
                     case StylePartType.VARIATION_C:
-                    intro_1_button.get_style_context ().remove_class ("pulse");
-                    intro_2_button.get_style_context ().remove_class ("pulse");
-                    intro_3_button.get_style_context ().remove_class ("pulse");
-                    ending_1_button.get_style_context ().remove_class ("pulse");
-                    ending_2_button.get_style_context ().remove_class ("pulse");
-                    ending_3_button.get_style_context ().remove_class ("pulse");
-                    variation_a_button.get_style_context ().remove_class ("pulse");
-                    variation_b_button.get_style_context ().remove_class ("pulse");
-                    variation_c_button.get_style_context ().add_class ("pulse");
-                    variation_d_button.get_style_context ().remove_class ("pulse");
+                    intro_1_button.remove_css_class ("pulse");
+                    intro_2_button.remove_css_class ("pulse");
+                    intro_3_button.remove_css_class ("pulse");
+                    ending_1_button.remove_css_class ("pulse");
+                    ending_2_button.remove_css_class ("pulse");
+                    ending_3_button.remove_css_class ("pulse");
+                    variation_a_button.remove_css_class ("pulse");
+                    variation_b_button.remove_css_class ("pulse");
+                    variation_c_button.add_css_class ("pulse");
+                    variation_d_button.remove_css_class ("pulse");
                     break;
                     case StylePartType.VARIATION_D:
-                    intro_1_button.get_style_context ().remove_class ("pulse");
-                    intro_2_button.get_style_context ().remove_class ("pulse");
-                    intro_3_button.get_style_context ().remove_class ("pulse");
-                    ending_1_button.get_style_context ().remove_class ("pulse");
-                    ending_2_button.get_style_context ().remove_class ("pulse");
-                    ending_3_button.get_style_context ().remove_class ("pulse");
-                    variation_a_button.get_style_context ().remove_class ("pulse");
-                    variation_b_button.get_style_context ().remove_class ("pulse");
-                    variation_c_button.get_style_context ().remove_class ("pulse");
-                    variation_d_button.get_style_context ().add_class ("pulse");
+                    intro_1_button.remove_css_class ("pulse");
+                    intro_2_button.remove_css_class ("pulse");
+                    intro_3_button.remove_css_class ("pulse");
+                    ending_1_button.remove_css_class ("pulse");
+                    ending_2_button.remove_css_class ("pulse");
+                    ending_3_button.remove_css_class ("pulse");
+                    variation_a_button.remove_css_class ("pulse");
+                    variation_b_button.remove_css_class ("pulse");
+                    variation_c_button.remove_css_class ("pulse");
+                    variation_d_button.add_css_class ("pulse");
                     break;
                     default:
                     break;
                 }
             } else {
-                intro_1_button.get_style_context ().remove_class ("pulse");
-                intro_2_button.get_style_context ().remove_class ("pulse");
-                intro_3_button.get_style_context ().remove_class ("pulse");
-                ending_1_button.get_style_context ().remove_class ("pulse");
-                ending_2_button.get_style_context ().remove_class ("pulse");
-                ending_3_button.get_style_context ().remove_class ("pulse");
-                variation_a_button.get_style_context ().remove_class ("pulse");
-                variation_b_button.get_style_context ().remove_class ("pulse");
-                variation_c_button.get_style_context ().remove_class ("pulse");
-                variation_d_button.get_style_context ().remove_class ("pulse");
+                intro_1_button.remove_css_class ("pulse");
+                intro_2_button.remove_css_class ("pulse");
+                intro_3_button.remove_css_class ("pulse");
+                ending_1_button.remove_css_class ("pulse");
+                ending_2_button.remove_css_class ("pulse");
+                ending_3_button.remove_css_class ("pulse");
+                variation_a_button.remove_css_class ("pulse");
+                variation_b_button.remove_css_class ("pulse");
+                variation_c_button.remove_css_class ("pulse");
+                variation_d_button.remove_css_class ("pulse");
             }
         }
     }

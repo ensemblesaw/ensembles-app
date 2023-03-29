@@ -6,7 +6,7 @@
 namespace Ensembles.Shell.Layouts {
     public class AssignablesBoard : Gtk.Grid {
         construct {
-            get_style_context ().add_class ("panel");
+            add_css_class ("panel");
         }
 
         public AssignablesBoard () {

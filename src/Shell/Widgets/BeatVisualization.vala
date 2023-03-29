@@ -22,7 +22,7 @@ namespace Ensembles.Shell.Widgets {
                 valign = Gtk.Align.CENTER
             };
 
-            beat_counter_visual.get_style_context ().add_class ("beat-counter-0");
+            beat_counter_visual.add_css_class ("beat-counter-0");
             append (beat_counter_visual);
 
             Application.event_bus.beat.connect ((measure, time_sig_n, time_sig_d) => {
@@ -58,39 +58,39 @@ namespace Ensembles.Shell.Widgets {
             Idle.add (() => {
                 switch (val) {
                     case 0:
-                    beat_counter_visual.get_style_context ().add_class ("beat-counter-0");
-                    beat_counter_visual.get_style_context ().remove_class ("beat-counter-1");
-                    beat_counter_visual.get_style_context ().remove_class ("beat-counter-2");
-                    beat_counter_visual.get_style_context ().remove_class ("beat-counter-3");
-                    beat_counter_visual.get_style_context ().remove_class ("beat-counter-4");
+                    beat_counter_visual.add_css_class ("beat-counter-0");
+                    beat_counter_visual.remove_css_class ("beat-counter-1");
+                    beat_counter_visual.remove_css_class ("beat-counter-2");
+                    beat_counter_visual.remove_css_class ("beat-counter-3");
+                    beat_counter_visual.remove_css_class ("beat-counter-4");
                     break;
                     case 1:
-                    beat_counter_visual.get_style_context ().remove_class ("beat-counter-0");
-                    beat_counter_visual.get_style_context ().add_class ("beat-counter-1");
-                    beat_counter_visual.get_style_context ().remove_class ("beat-counter-2");
-                    beat_counter_visual.get_style_context ().remove_class ("beat-counter-3");
-                    beat_counter_visual.get_style_context ().remove_class ("beat-counter-4");
+                    beat_counter_visual.remove_css_class ("beat-counter-0");
+                    beat_counter_visual.add_css_class ("beat-counter-1");
+                    beat_counter_visual.remove_css_class ("beat-counter-2");
+                    beat_counter_visual.remove_css_class ("beat-counter-3");
+                    beat_counter_visual.remove_css_class ("beat-counter-4");
                     break;
                     case 2:
-                    beat_counter_visual.get_style_context ().remove_class ("beat-counter-0");
-                    beat_counter_visual.get_style_context ().remove_class ("beat-counter-1");
-                    beat_counter_visual.get_style_context ().add_class ("beat-counter-2");
-                    beat_counter_visual.get_style_context ().remove_class ("beat-counter-3");
-                    beat_counter_visual.get_style_context ().remove_class ("beat-counter-4");
+                    beat_counter_visual.remove_css_class ("beat-counter-0");
+                    beat_counter_visual.remove_css_class ("beat-counter-1");
+                    beat_counter_visual.add_css_class ("beat-counter-2");
+                    beat_counter_visual.remove_css_class ("beat-counter-3");
+                    beat_counter_visual.remove_css_class ("beat-counter-4");
                     break;
                     case 3:
-                    beat_counter_visual.get_style_context ().remove_class ("beat-counter-0");
-                    beat_counter_visual.get_style_context ().remove_class ("beat-counter-1");
-                    beat_counter_visual.get_style_context ().remove_class ("beat-counter-2");
-                    beat_counter_visual.get_style_context ().add_class ("beat-counter-3");
-                    beat_counter_visual.get_style_context ().remove_class ("beat-counter-4");
+                    beat_counter_visual.remove_css_class ("beat-counter-0");
+                    beat_counter_visual.remove_css_class ("beat-counter-1");
+                    beat_counter_visual.remove_css_class ("beat-counter-2");
+                    beat_counter_visual.add_css_class ("beat-counter-3");
+                    beat_counter_visual.remove_css_class ("beat-counter-4");
                     break;
                     case 4:
-                    beat_counter_visual.get_style_context ().remove_class ("beat-counter-0");
-                    beat_counter_visual.get_style_context ().remove_class ("beat-counter-1");
-                    beat_counter_visual.get_style_context ().remove_class ("beat-counter-2");
-                    beat_counter_visual.get_style_context ().remove_class ("beat-counter-3");
-                    beat_counter_visual.get_style_context ().add_class ("beat-counter-4");
+                    beat_counter_visual.remove_css_class ("beat-counter-0");
+                    beat_counter_visual.remove_css_class ("beat-counter-1");
+                    beat_counter_visual.remove_css_class ("beat-counter-2");
+                    beat_counter_visual.remove_css_class ("beat-counter-3");
+                    beat_counter_visual.add_css_class ("beat-counter-4");
                     break;
                 }
 

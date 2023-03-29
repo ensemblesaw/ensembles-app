@@ -14,7 +14,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
             world = new Lilv.World ();
         }
 
-        public void load_plugins (List<AudioPlugin> audio_plugin_list) {
+        public void load_plugins (PluginManager plugin_manager) {
             assert (world != null);
 
             Console.log ("Loading LV2 Plugins…");
@@ -30,7 +30,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
 
                     try {
                         var plugin = new LV2Plugin (lilv_plugin);
-                        audio_plugin_list.append (plugin);
+                        plugin_manager.audio_plugins.append (plugin);
                     } catch (PluginError e) {
                         Console.log ("Skipped LV2 plugin: " + lilv_plugin.get_uri ().as_uri (),
                         Console.LogLevel.WARNING);

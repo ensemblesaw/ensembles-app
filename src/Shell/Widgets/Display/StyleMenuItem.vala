@@ -20,7 +20,7 @@ namespace Ensembles.Shell.Widgets.Display {
         }
 
         private void build_ui () {
-            get_style_context ().add_class ("menu-item");
+            add_css_class ("menu-item");
 
             var menu_item_grid = new Gtk.Grid ();
             set_child (menu_item_grid);
@@ -29,7 +29,7 @@ namespace Ensembles.Shell.Widgets.Display {
                 halign = Gtk.Align.START,
                 hexpand = true
             };
-            style_name_label.get_style_context ().add_class ("menu-item-name");
+            style_name_label.add_css_class ("menu-item-name");
             menu_item_grid.attach (style_name_label, 0, 0, 1, 2);
 
             var tempo_label = new Gtk.Label (style.time_signature_n.to_string () +
@@ -40,13 +40,13 @@ namespace Ensembles.Shell.Widgets.Display {
             "♩ =  " + style.tempo.to_string ()) {
                 halign = Gtk.Align.END
             };
-            tempo_label.get_style_context ().add_class ("menu-item-description");
+            tempo_label.add_css_class ("menu-item-description");
             menu_item_grid.attach (tempo_label, 1, 1, 1, 1);
 
             var category_label = new Gtk.Label ("");
             if (show_category) {
                 category_label.set_text (style.genre);
-                category_label.get_style_context ().add_class ("menu-item-category");
+                category_label.add_css_class ("menu-item-category");
             }
 
             menu_item_grid.attach (category_label, 1, 0, 2, 1);
@@ -58,7 +58,7 @@ namespace Ensembles.Shell.Widgets.Display {
                     margin_end = 4,
                     tooltip_text = style.copyright_notice
                 };
-                copyright_button.get_style_context ().add_class ("menu-item-icon");
+                copyright_button.add_css_class ("menu-item-icon");
                 menu_item_grid.attach (copyright_button, 2, 1, 1, 1);
             }
         }

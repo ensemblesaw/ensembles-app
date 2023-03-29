@@ -74,7 +74,7 @@
                 visible = false
             };
             flap_button.set_icon_name ("view-continuous-symbolic");
-            flap_button.get_style_context ().remove_class ("image-button");
+            flap_button.remove_css_class ("image-button");
             flap_button.clicked.connect (() => {
                 flap_revealed = Application.event_bus.show_menu (flap_revealed);
             });

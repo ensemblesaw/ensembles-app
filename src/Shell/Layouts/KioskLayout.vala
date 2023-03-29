@@ -9,7 +9,7 @@
         private unowned MixerBoard mixer_board;
 
         construct {
-            get_style_context ().add_class ("panel");
+            add_css_class ("panel");
         }
 
         public KioskLayout (InfoDisplay info_display, MixerBoard mixer_board) {

@@ -19,13 +19,13 @@ namespace Ensembles.Core.Plugins {
 
             // Load LV2 Plugins
             lv2_audio_plugin_manager = new AudioPlugins.LADSPAV2.LV2Manager ();
-            lv2_audio_plugin_manager.load_plugins (audio_plugins);
+            lv2_audio_plugin_manager.load_plugins (this);
 
             // Load Carla Plugins
 
             // Load Native Plugins
 
-            Console.log ("Audio Plugins Loaded Successfully!",
+            Console.log ("%u Audio Plugins Loaded Successfully!".printf (audio_plugins.length ()),
             Console.LogLevel.SUCCESS);
         }
     }
