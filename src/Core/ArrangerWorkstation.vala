@@ -13,7 +13,7 @@ namespace Ensembles.Core {
         private Synthesizer.Synthesizer synthesizer;
         private StyleEngine style_engine;
         private Plugins.PluginManager plugin_manager;
-        private Racks.DSPRack main_effect_rack;
+        private Racks.DSPRack main_dsp_rack;
 
          // Arranger Data
         public Style[] styles { get; private set; }
@@ -34,8 +34,8 @@ namespace Ensembles.Core {
             } catch (FluidError e) {
                 Console.log (e.message, Console.LogLevel.ERROR);
             }
-            main_effect_rack = new Racks.DSPRack ();
-            synthesizer.add_rack (main_effect_rack);
+            main_dsp_rack = new Racks.DSPRack ();
+            synthesizer.add_rack (main_dsp_rack);
 
             build_events ();
         }
@@ -120,6 +120,10 @@ namespace Ensembles.Core {
 
         public unowned List<AudioPlugins.AudioPlugin> get_audio_plugins () {
             return plugin_manager.audio_plugins;
+        }
+
+        public unowned Racks.DSPRack get_main_dsp_rack () {
+            return main_dsp_rack;
         }
     }
 }

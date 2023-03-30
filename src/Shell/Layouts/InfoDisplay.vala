@@ -93,9 +93,6 @@ namespace Ensembles.Shell.Layouts {
 
             style_screen = new StyleScreen ();
             main_stack.add_named (style_screen, "style");
-
-            dsp_screen = new DSPScreen ();
-            main_stack.add_named (dsp_screen, "dsp");
         }
 
         private void build_events () {
@@ -112,6 +109,13 @@ namespace Ensembles.Shell.Layouts {
                         main_stack.remove_css_class ("fade-black");
                         return false;
                     });
+
+                    Timeout.add (2200, () => {
+                        dsp_screen = new DSPScreen (Application.arranger_workstation.get_main_dsp_rack ());
+                        dsp_screen.close.connect (navigate_to_home);
+                        main_stack.add_named (dsp_screen, "dsp");
+                        return false;
+                    });
                     return false;
                 });
 
@@ -122,7 +126,6 @@ namespace Ensembles.Shell.Layouts {
             });
 
             style_screen.close.connect (navigate_to_home);
-            dsp_screen.close.connect (navigate_to_home);
         }
 
         public void navigate_to_home () {

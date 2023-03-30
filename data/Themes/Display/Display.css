@@ -252,6 +252,7 @@ Menu
 }
 
 .display .plugin-item:hover {
+    color: #fff;
     background: linear-gradient(#444, #356);
     box-shadow: 0 4px 12px #0002, inset 0 0 0 1px #fff2, inset 0 -1px #47a;
     text-shadow: 0 0 16px #fffa, 0 0 8px #fffd;
@@ -271,4 +272,18 @@ Menu
     border-radius: 50px;
     padding: 8px;
     border: 1px solid #6bd;
+    outline: 0;
+}
+
+.display .plugin-item-insert-button:active {
+    background: rgb(168, 187, 85);
+    border-radius: 50px;
+    padding: 8px;
+    border: 1px solid rgb(170, 221, 102);
+    outline: 0;
+}
+
+.display .plugin-item-tech {
+    filter: brightness(3);
+    opacity: 0.75;
 }

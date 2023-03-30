@@ -9,6 +9,7 @@
     <file alias="scalable/actions/style-break-symbolic.svg">Icons/scalable/actions/style-break-symbolic.svg</file>
     <file alias="scalable/actions/style-sync-start-symbolic.svg">Icons/scalable/actions/style-sync-start-symbolic.svg</file>
     <file alias="scalable/actions/plugin-add-symbolic.svg">Icons/scalable/actions/plugin-add-symbolic.svg</file>
+    <file alias="scalable/emblems/plugin-audio-lv2-symbolic.svg">Icons/scalable/emblems/plugin-audio-lv2-symbolic.svg</file>
   </gresource>
 
   <gresource prefix="/com/github/subhadeepjasu/ensembles/images">

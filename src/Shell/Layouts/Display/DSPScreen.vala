@@ -5,6 +5,8 @@
 
 using Ensembles.Shell.Widgets.Display;
 using Ensembles.Models;
+using Ensembles.Core.Plugins.AudioPlugins;
+using Ensembles.Core.Racks;
 
 namespace Ensembles.Shell.Layouts.Display {
     public class DSPScreen : DisplayWindow {
@@ -14,8 +16,12 @@ namespace Ensembles.Shell.Layouts.Display {
         private Gtk.ListBox main_list_box;
         private AudioPluginPicker plugin_picker;
 
-        public DSPScreen () {
+        private unowned DSPRack rack;
+
+        public DSPScreen (DSPRack rack) {
             base (_("Main DSP Rack"), _("Add Effects to the Rack to apply them globally"));
+
+            this.rack = rack;
         }
 
         construct {
@@ -79,6 +85,26 @@ namespace Ensembles.Shell.Layouts.Display {
                     });
                 }
             });
+
+            Application.event_bus.rack_reconnected.connect ((rack) => {
+                if (rack.rack_type == AudioPlugin.Category.DSP) {
+                    populate (rack.get_plugins ());
+                }
+            });
+        }
+
+        public void populate (List<AudioPlugin> plugins) {
+            while (main_list_box.get_first_child () != null) {
+                main_list_box.remove (main_list_box.get_first_child ());
+            }
+
+            for (uint16 i = 0; i < plugins.length (); i++) {
+                var menu_item = new DSPInstanceMenuItem (plugins.nth_data (i));
+                main_list_box.insert (menu_item, -1);
+            }
+
+            min_value = 0;
+            max_value = (int) plugins.length () - 1;
         }
     }
 }

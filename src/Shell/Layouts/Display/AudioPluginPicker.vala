@@ -8,17 +8,19 @@ using Ensembles.Shell.Widgets.Display;
 
 namespace Ensembles.Shell.Layouts.Display {
     public class AudioPluginPicker : WheelScrollableWidget {
-        public Core.Plugins.AudioPlugins.AudioPlugin.Category category {
+        public AudioPlugin.Category category {
             get;
             private set;
         }
         private Gtk.ListBox main_list_box;
 
-        public AudioPluginPicker (Core.Plugins.AudioPlugins.AudioPlugin.Category category) {
+        public AudioPluginPicker (AudioPlugin.Category category) {
             Object (
                 width_request: 500,
                 hexpand: false,
-                vexpand: true
+                vexpand: true,
+                orientation: Gtk.Orientation.VERTICAL,
+                spacing: 8
             );
             this.category = category;
 
@@ -27,6 +29,15 @@ namespace Ensembles.Shell.Layouts.Display {
         }
 
         public void build_ui () {
+            var plugin_picker_header = new Gtk.Label (_("A U D I O   P L U G I N S")) {
+                halign = Gtk.Align.END,
+                opacity = 0.5,
+                margin_end = 14,
+                margin_top = 24
+            };
+            plugin_picker_header.add_css_class (Granite.STYLE_CLASS_H3_LABEL);
+            append (plugin_picker_header);
+
             var scrollable = new Gtk.ScrolledWindow () {
                 hexpand = true,
                 vexpand = true
@@ -41,20 +52,13 @@ namespace Ensembles.Shell.Layouts.Display {
         }
 
         private void build_events () {
-            Application.event_bus.arranger_ready.connect (() => {
-                Timeout.add (2200, () => {
-                    Idle.add (() => {
-                        populate (Application.arranger_workstation.get_audio_plugins ());
-                        return false;
-                    });
-                    return false;
-                });
-            });
+            populate (Application.arranger_workstation.get_audio_plugins ());
         }
 
         public void populate (List<AudioPlugin> plugins) {
             for (uint16 i = 0; i < plugins.length (); i++) {
-                var menu_item = new DSPMenuItem (plugins.nth_data (i));
+                var menu_item = new DSPMenuItem (plugins.nth_data (i),
+                Application.arranger_workstation.get_main_dsp_rack ());
                 main_list_box.insert (menu_item, -1);
             }
 

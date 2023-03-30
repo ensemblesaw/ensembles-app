@@ -27,6 +27,10 @@
             plugins = new List<AudioPlugin> ();
          }
 
+         public unowned List<AudioPlugin> get_plugins () {
+            return plugins;
+         }
+
          /**
           * Add a plugin to the end of the rack
           *
@@ -157,6 +161,7 @@
              }
 
              active = was_active;
+             Application.event_bus.rack_reconnected (this);
          }
 
          protected float map_range (float x0, float y0, float x1, float y1, float xp) {

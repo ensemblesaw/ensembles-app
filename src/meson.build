@@ -44,6 +44,7 @@ sources = files (
     'Shell/Widgets/Display/DisplayWindow.vala',
     'Shell/Widgets/Display/StyleMenuItem.vala',
     'Shell/Widgets/Display/DSPMenuItem.vala',
+    'Shell/Widgets/Display/DSPInstanceMenuItem.vala',
 
     'Shell/Dialogs/PowerDialog.vala',
 

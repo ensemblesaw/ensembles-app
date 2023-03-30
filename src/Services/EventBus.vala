@@ -33,5 +33,8 @@ namespace Ensembles.Services {
         // Synthesizer
         public signal void synth_halt_notes (bool except_drums = false);
         public signal void synth_sounds_off ();
+
+        // Racks
+        public signal void rack_reconnected (Core.Racks.Rack rack);
     }
 }
