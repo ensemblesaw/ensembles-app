@@ -44,7 +44,7 @@
              plugins.append (plugin);
              plugin.instantiate ();
 
-             connect_audio_ports ();
+             connect_audio_ports ((int) plugins.length () - 1);
          }
 
          /**
@@ -62,7 +62,7 @@
              plugins.insert (plugin, position);
              plugin.instantiate ();
 
-             connect_audio_ports ();
+             connect_audio_ports (position);
          }
 
          /**
@@ -151,7 +151,7 @@
              }
          }
 
-         protected void connect_audio_ports () {
+         protected void connect_audio_ports (int change_index = -1) {
              var was_active = active;
              active = false;
 
@@ -161,7 +161,7 @@
              }
 
              active = was_active;
-             Application.event_bus.rack_reconnected (this);
+             Application.event_bus.rack_reconnected (this, change_index);
          }
 
          protected float map_range (float x0, float y0, float x1, float y1, float xp) {

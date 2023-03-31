@@ -32,5 +32,18 @@ namespace Ensembles.Shell.Widgets.Display {
             plugin_name_label.add_css_class ("menu-item-name");
             menu_item_grid.attach (plugin_name_label, 0, 0, 1, 2);
         }
+
+        public void capture_attention () {
+            Timeout.add (100, () => {
+                add_css_class ("capture-attention");
+
+                Timeout.add_seconds (1, () => {
+                    remove_css_class ("capture-attention");
+                    return false;
+                });
+
+                return false;
+            });
+        }
     }
 }

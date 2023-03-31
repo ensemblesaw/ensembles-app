@@ -62,7 +62,7 @@ namespace Ensembles.Shell.Layouts.Display {
             main_flap.set_content (scrollable);
 
             main_list_box = new Gtk.ListBox () {
-                selection_mode = Gtk.SelectionMode.SINGLE
+                selection_mode = Gtk.SelectionMode.NONE
             };
             main_list_box.add_css_class ("menu-box");
             scrollable.set_child (main_list_box);
@@ -81,19 +81,22 @@ namespace Ensembles.Shell.Layouts.Display {
                         } else {
                             main_flap.get_content ().remove_css_class ("blurred");
                         }
+
                         return false;
                     });
                 }
             });
 
-            Application.event_bus.rack_reconnected.connect ((rack) => {
+            Application.event_bus.rack_reconnected.connect ((rack, change_index) => {
                 if (rack.rack_type == AudioPlugin.Category.DSP) {
-                    populate (rack.get_plugins ());
+                    populate (rack.get_plugins (), change_index);
                 }
+
+                main_flap.reveal_flap = false;
             });
         }
 
-        public void populate (List<AudioPlugin> plugins) {
+        public void populate (List<AudioPlugin> plugins, int highlight_index) {
             while (main_list_box.get_first_child () != null) {
                 main_list_box.remove (main_list_box.get_first_child ());
             }
@@ -101,6 +104,10 @@ namespace Ensembles.Shell.Layouts.Display {
             for (uint16 i = 0; i < plugins.length (); i++) {
                 var menu_item = new DSPInstanceMenuItem (plugins.nth_data (i));
                 main_list_box.insert (menu_item, -1);
+
+                if (highlight_index == i) {
+                    menu_item.capture_attention ();
+                }
             }
 
             min_value = 0;

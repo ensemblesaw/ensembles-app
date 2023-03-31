@@ -287,3 +287,42 @@ Menu
     filter: brightness(3);
     opacity: 0.75;
 }
+
+.display .menu-item.capture-attention {
+    animation: capture_attention 1s ease;
+}
+
+@keyframes capture_attention {
+    0% {
+        transform: rotateZ(0) scale(1);
+        background: #333;
+        box-shadow: 0 0 24px rgba(100, 187, 85, 0);
+    }
+
+    10% {
+        transform: rotateZ(-2deg) scale(1.2);
+    }
+
+    20% {
+        transform: rotateZ(2deg) scale(1.2);
+    }
+
+    30% {
+        transform: rotateZ(-2deg) scale(1.2);
+    }
+
+    40% {
+        transform: rotateZ(2deg) scale(1.2);
+    }
+
+    50% {
+        transform: rotateZ(0) scale(1.1);
+        background: rgb(100, 187, 85);
+        box-shadow: 0 0 24px rgb(100, 187, 85);
+    }
+    100% {
+        transform: rotateZ(0) scale(1);
+        background: #333;
+        box-shadow: 0 0 24px rgba(100, 187, 85, 0);
+    }
+}

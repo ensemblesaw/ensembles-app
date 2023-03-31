@@ -35,6 +35,6 @@ namespace Ensembles.Services {
         public signal void synth_sounds_off ();
 
         // Racks
-        public signal void rack_reconnected (Core.Racks.Rack rack);
+        public signal void rack_reconnected (Core.Racks.Rack rack, int change_index);
     }
 }
