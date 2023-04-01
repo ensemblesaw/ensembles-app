@@ -15,12 +15,19 @@ namespace Ensembles.Shell.Widgets {
                 return adjustment.value;
             }
             set {
-                adjustment.value = value;
                 pointing_angle = map_range (adjustment.lower,
                 pointing_angle_lower,
                 adjustment.upper,
                 pointing_angle_lower + pointing_angle_upper,
                 value);
+
+                if (pointing_angle < pointing_angle_lower) {
+                    pointing_angle = pointing_angle_lower;
+                } else if (pointing_angle > pointing_angle_upper + pointing_angle_lower) {
+                    pointing_angle = pointing_angle_upper + pointing_angle_lower;
+                }
+
+                adjustment.value = value;
             }
         }
 
@@ -235,7 +242,23 @@ namespace Ensembles.Shell.Widgets {
                 }
 
                 adjustment.value = value;
+                value_changed ();
                 return true;
+            });
+
+            touch_rotation_gesture.angle_changed.connect ((angle, angle_delta) => {
+                pointing_angle += angle_delta;
+
+                if (pointing_angle < pointing_angle_lower) {
+                    pointing_angle = pointing_angle_lower;
+                } else if (pointing_angle > pointing_angle_upper + pointing_angle_lower) {
+                    pointing_angle = pointing_angle_upper + pointing_angle_lower;
+                }
+
+                adjustment.value = map_range (pointing_angle_lower,
+                    adjustment.lower, pointing_angle_lower + pointing_angle_upper,
+                    adjustment.upper, pointing_angle);
+                value_changed ();
             });
 
             adjustment.value_changed.connect (() => {
