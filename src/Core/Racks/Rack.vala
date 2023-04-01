@@ -139,9 +139,9 @@
 
                          // Copy wet audio to dry buffer as per mix amount
                          for (uint32 j = 0; j < sample_count; j++) {
-                             aud_buf_dry_l[j] = map_range (0.0f, aud_buf_dry_l[j],
+                             aud_buf_dry_l[j] = map_rangef (0.0f, aud_buf_dry_l[j],
                                  1.0f, aud_buf_mix_l[j], plugin.mix_gain);
-                             aud_buf_dry_r[j] = map_range (0.0f, aud_buf_dry_r[j],
+                             aud_buf_dry_r[j] = map_rangef (0.0f, aud_buf_dry_r[j],
                                  1.0f, aud_buf_mix_r[j], plugin.mix_gain);
                          }
 
@@ -164,7 +164,7 @@
              Application.event_bus.rack_reconnected (this, change_index);
          }
 
-         protected float map_range (float x0, float y0, float x1, float y1, float xp) {
+         protected float map_rangef (float x0, float y0, float x1, float y1, float xp) {
              return (y0 + ((y1 - y0) / (x1 - x0)) * (xp - x0));
          }
      }

@@ -320,9 +320,23 @@ Menu
         background: rgb(100, 187, 85);
         box-shadow: 0 0 24px rgb(100, 187, 85);
     }
+
     100% {
         transform: rotateZ(0) scale(1);
         background: #333;
         box-shadow: 0 0 24px rgba(100, 187, 85, 0);
     }
+}
+
+
+.display .knob-background {
+    background: #6660;
+    border-radius: 50%;
+}
+
+.display .knob-cover {
+    background: #0000;
+    border: 5px solid #000;
+    border-radius: 50%;
+    margin: 4px;
 }

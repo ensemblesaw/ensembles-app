@@ -30,7 +30,13 @@ namespace Ensembles.Shell.Widgets.Display {
                 hexpand = true
             };
             plugin_name_label.add_css_class ("menu-item-name");
-            menu_item_grid.attach (plugin_name_label, 0, 0, 1, 2);
+            menu_item_grid.attach (plugin_name_label, 0, 0, 1, 1);
+
+            var gain_knob = new Shell.Widgets.Knob () {
+                width_request = 40,
+                height_request = 40
+            };
+            menu_item_grid.attach (gain_knob, 1, 0);
         }
 
         public void capture_attention () {
