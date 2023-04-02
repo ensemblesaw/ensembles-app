@@ -79,6 +79,7 @@ sources = files (
     'Utils/StyleMIDIModifiers.vala',
     'Utils/MIDI.vala',
     'Utils/DisplayTheme.vala',
+    'Utils/Math.vala',
 
     # Models
     'Models/Chord.vala',

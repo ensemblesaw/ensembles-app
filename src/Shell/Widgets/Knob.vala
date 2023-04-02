@@ -5,21 +5,28 @@
 
 namespace Ensembles.Shell.Widgets {
     /**
-     * This widget represents a knob that can be rotate either using mouse,
-     * wheel or using finger gestures.
+     * A `Knob` is a rotary control used to select a numeric value
      */
     public class Knob : Gtk.Widget, Gtk.Accessible {
+        /**
+         * The adjustment that is controlled by the knob.
+         */
         public Gtk.Adjustment adjustment { get; set; }
+        /**
+         * Current value of the knob.
+         */
         public double value {
             get {
                 return adjustment.value;
             }
             set {
-                pointing_angle = map_range (adjustment.lower,
-                pointing_angle_lower,
-                adjustment.upper,
-                pointing_angle_lower + pointing_angle_upper,
-                value);
+                pointing_angle = Utils.Math.map_range_unclamped (
+                    value,
+                    adjustment.lower,
+                    adjustment.upper,
+                    pointing_angle_lower,
+                    pointing_angle_lower + pointing_angle_upper
+                );
 
                 if (pointing_angle < pointing_angle_lower) {
                     pointing_angle = pointing_angle_lower;
@@ -31,46 +38,99 @@ namespace Ensembles.Shell.Widgets {
             }
         }
 
+        // Knob UI
         private Gtk.BinLayout bin_layout;
         protected Gtk.Box knob_socket_graphic;
         protected Gtk.Box knob_cover;
         protected Gtk.DrawingArea knob_meter;
         protected Gtk.Box knob_background;
 
+        protected List<double?> marks;
+
         private Gtk.GestureRotate touch_rotation_gesture;
         private Gtk.GestureDrag drag_gesture;
         private Gtk.EventControllerScroll wheel_gesture;
 
+        /**
+         * The current angle in degrees towards which the knob is pointing.
+         */
         public double pointing_angle { get; private set; }
+        /**
+         * The angle in degrees which the knob will point towards
+         * when `value` is minimum.
+         */
         public double pointing_angle_lower { get; protected set; }
+        /**
+         * The angle in degrees which the knob will point towards
+         * when `value` is maximum.
+         */
         public double pointing_angle_upper { get; protected set; }
         private double current_deg;
         private double previous_deg;
 
-        public bool show_value { get; set; }
-        public bool show_lower_bar { get; set; }
-        public bool show_upper_bar { get; set; }
+        /**
+         * Number of decimal places that are displayed in the value.
+         */
+        public uint8 digits { get; set; }
+        /**
+         * Whether the current value is displayed as a string inside the knob.
+         */
+        public bool draw_value { get; set; }
 
         private uint radius = 0;
 
         public signal void value_changed ();
 
-        public Knob ()
+        /**
+         * Creates a new `Knob` widget.
+         *
+         * @param adjustment the [class@Gtk.Adjustment] which sets the range of
+         * the knob, or null to create a new adjustment.
+         */
+        public Knob (Gtk.Adjustment? adjustment = null)
         {
             Object (
                 name: "knob",
                 accessible_role: Gtk.AccessibleRole.SPIN_BUTTON
             );
 
+            if (adjustment != null) {
+                this.adjustment.lower = adjustment.lower;
+                this.adjustment.upper = adjustment.upper;
+                this.adjustment.step_increment = adjustment.step_increment;
+            }
+
+            pointing_angle = pointing_angle_lower;
+        }
+
+        /**
+         * Creates a new `Knob` widget with a range from min to max.
+         *
+         * Let's the user input a number between min and max (including min and
+         * max) with the increment step. step must be nonzero; it’s the distance
+         * the meter moves to adjust the knob value.
+         *
+         * @param min minimum value
+         * @param max maximum value
+         * @param step increment (tick size)
+         */
+        public Knob.with_range (double min, double max, double step) {
+            Object (
+                name: "knob",
+                accessible_role: Gtk.AccessibleRole.SPIN_BUTTON
+            );
+            this.adjustment.lower = min;
+            this.adjustment.upper = max;
+            this.adjustment.step_increment = step;
             pointing_angle = pointing_angle_lower;
         }
 
         construct {
+            adjustment = new Gtk.Adjustment (0, 0, 100,
+                1, 0, 0);
+            marks = new List<double?> ();
             pointing_angle_upper = 275;
             pointing_angle_lower = 135;
-            show_value = true;
-            show_upper_bar = true;
-            show_lower_bar = true;
             build_layout ();
             realize.connect (() => {
                 build_ui ();
@@ -79,8 +139,6 @@ namespace Ensembles.Shell.Widgets {
         }
 
         private void build_layout () {
-            adjustment = new Gtk.Adjustment (0, 0, 101,
-                1, 1, 1);
             bin_layout = new Gtk.BinLayout ();
             set_layout_manager (bin_layout);
         }
@@ -134,13 +192,15 @@ namespace Ensembles.Shell.Widgets {
             knob_meter.height_request = diameter;
         }
 
-        public override void size_allocate (int width, int height, int baseline) {
-            base.size_allocate (width, height, baseline);
-        }
-
         protected void draw_meter (Gtk.DrawingArea meter, Cairo.Context ctx, int width, int height) {
-            var gb = adjustment.value / (adjustment.upper - adjustment.lower);
-            // Draw arc
+            var gb = Utils.Math.map_range_unclamped (
+                adjustment.value,
+                adjustment.lower,
+                adjustment.upper,
+                0,
+                1
+            );
+            // Draw meter
             ctx.arc (radius + 0.2, radius, radius - 7,
                 pointing_angle_lower * (Math.PI/180.0),
                 pointing_angle * (Math.PI/180.0));
@@ -148,24 +208,31 @@ namespace Ensembles.Shell.Widgets {
             ctx.set_source_rgba (1 - gb, gb, gb, 1);
             ctx.stroke ();
 
-            if (show_lower_bar) {
-                ctx.arc (radius + 0.2, radius, radius - 2,
-                    pointing_angle_lower * (Math.PI/180.0),
-                    (pointing_angle_lower + 3) * (Math.PI/180.0));
-                ctx.set_line_width (4);
-                ctx.set_source_rgba (1, 1, 1, adjustment.value == adjustment.lower ? 1 : 0.3);
+            // Draw marks
+            foreach (var mark in marks) {
+                var average = (adjustment.lower + adjustment.upper) / 2;
+                var mark_angle = Utils.Math.map_range_unclamped (
+                    value,
+                    adjustment.lower,
+                    adjustment.upper,
+                    pointing_angle_lower,
+                    pointing_angle_lower + pointing_angle_upper
+                );
+                if (mark < average) {
+                    ctx.arc (radius + 0.2, radius, radius - 2,
+                    mark_angle * (Math.PI/180.0),
+                    (mark_angle + 3) * (Math.PI/180.0));
+                } else if (mark > average) {
+                    ctx.arc (radius + 0.2, radius, radius - 2,
+                    mark_angle * (Math.PI/180.0),
+                    (mark_angle - 3) * (Math.PI/180.0));
+                }
+
+                ctx.set_source_rgba (1, 1, 1, adjustment.value == mark ? 1 : 0.3);
                 ctx.stroke ();
             }
 
-            if (show_upper_bar) {
-                ctx.arc (radius + 0.2, radius, radius - 2,
-                    (pointing_angle_lower + pointing_angle_upper - 3) * (Math.PI/180.0),
-                    (pointing_angle_lower + pointing_angle_upper) * (Math.PI/180.0));
-                ctx.set_source_rgba (1, 1, 1, adjustment.value >= adjustment.upper - 1 ? 1 : 0.3);
-                ctx.stroke ();
-            }
-
-            if (show_value) {
+            if (draw_value) {
                 string text = (adjustment.step_increment >= 1 ? "%.lf" : "%.1lf").printf (adjustment.value);
                 ctx.select_font_face ("Sans", Cairo.FontSlant.NORMAL, Cairo.FontWeight.NORMAL);
                 ctx.set_font_size (10.0);
@@ -199,8 +266,6 @@ namespace Ensembles.Shell.Widgets {
 
                 current_deg = Math.atan2 (relative_x - radius, relative_y - radius) * (180 / Math.PI);
 
-                //  print ("current %lf, previous %lf\n", current_deg, previous_deg);
-
                 var delta_deg = previous_deg - current_deg;
 
                 if (delta_deg < 270 && delta_deg > -270) {
@@ -212,9 +277,13 @@ namespace Ensembles.Shell.Widgets {
                         pointing_angle = pointing_angle_upper + pointing_angle_lower;
                     }
 
-                    adjustment.value = map_range (pointing_angle_lower,
-                        adjustment.lower, pointing_angle_lower + pointing_angle_upper,
-                        adjustment.upper, pointing_angle);
+                    adjustment.value = Utils.Math.map_range_unclamped (
+                        pointing_angle,
+                        pointing_angle_lower,
+                        pointing_angle_lower + pointing_angle_upper,
+                        adjustment.lower,
+                        adjustment.upper
+                    );
                     value_changed ();
                 }
 
@@ -228,12 +297,20 @@ namespace Ensembles.Shell.Widgets {
             add_controller (wheel_gesture);
 
             wheel_gesture.scroll.connect ((dx, dy) => {
-                var value = adjustment.value + adjustment.step_increment * dy;
-                pointing_angle = map_range (adjustment.lower,
-                    pointing_angle_lower,
+                var value = adjustment.value - adjustment.step_increment * dy;
+                pointing_angle = Utils.Math.map_range_unclamped (
+                    value,
+                    adjustment.lower,
                     adjustment.upper,
-                    pointing_angle_lower + pointing_angle_upper,
-                    value);
+                    pointing_angle_lower,
+                    pointing_angle_lower + pointing_angle_upper
+                );
+
+                if (value > adjustment.upper) {
+                    value = adjustment.upper;
+                } else if (value < adjustment.lower) {
+                    value = adjustment.lower;
+                }
 
                 if (pointing_angle < pointing_angle_lower) {
                     pointing_angle = pointing_angle_lower;
@@ -255,9 +332,13 @@ namespace Ensembles.Shell.Widgets {
                     pointing_angle = pointing_angle_upper + pointing_angle_lower;
                 }
 
-                adjustment.value = map_range (pointing_angle_lower,
-                    adjustment.lower, pointing_angle_lower + pointing_angle_upper,
-                    adjustment.upper, pointing_angle);
+                adjustment.value = Utils.Math.map_range_unclamped (
+                    pointing_angle,
+                    pointing_angle_lower,
+                    pointing_angle_lower + pointing_angle_upper,
+                    adjustment.lower,
+                    adjustment.upper
+                );
                 value_changed ();
             });
 
@@ -269,8 +350,25 @@ namespace Ensembles.Shell.Widgets {
             });
         }
 
-        protected double map_range (double x0, double y0, double x1, double y1, double xp) {
-            return (y0 + ((y1 - y0) / (x1 - x0)) * (xp - x0));
+        /**
+         * Adds a mark at value.
+         *
+         * A mark is indicated visually by drawing a tick mark outside the knob.
+         *
+         * @param value the value at which the mark is placed, must be between
+         * the lower and upper limits of the scales’ adjustment
+         */
+        public void add_mark (double value) {
+            marks.append (value);
+        }
+
+        /**
+         * Removes any marks that have been added.
+         */
+        public void clear_marks () {
+            foreach (var mark in marks) {
+                marks.remove (mark);
+            }
         }
     }
 }

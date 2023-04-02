@@ -4,7 +4,7 @@
  */
 
 namespace Ensembles {
-    public class Utils {
+    //  public class Utils {
         //  static string display_theme_path = "";
         //  static Gtk.CssProvider display_theme_provider;
         //  public static string set_display_theme (string name) {
@@ -75,5 +75,5 @@ namespace Ensembles {
         //      }
         //      return name;
         //  }
-    }
+    //  }
 }

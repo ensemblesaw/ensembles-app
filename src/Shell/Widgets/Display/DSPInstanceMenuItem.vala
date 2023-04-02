@@ -10,6 +10,7 @@ namespace Ensembles.Shell.Widgets.Display {
     public class DSPInstanceMenuItem : Gtk.ListBoxRow {
         public unowned AudioPlugin plugin { get; set; }
         public bool show_category { get; set; }
+        public Knob gain_knob;
 
         public DSPInstanceMenuItem (AudioPlugin plugin) {
             Object (
@@ -17,6 +18,7 @@ namespace Ensembles.Shell.Widgets.Display {
             );
 
             build_ui ();
+            build_events ();
         }
 
         private void build_ui () {
@@ -32,11 +34,23 @@ namespace Ensembles.Shell.Widgets.Display {
             plugin_name_label.add_css_class ("menu-item-name");
             menu_item_grid.attach (plugin_name_label, 0, 0, 1, 1);
 
-            var gain_knob = new Shell.Widgets.Knob () {
+            gain_knob = new Shell.Widgets.Knob.with_range (-12, 0, 1) {
                 width_request = 40,
-                height_request = 40
+                height_request = 40,
+                draw_value = true
             };
+            gain_knob.value = 0;
             menu_item_grid.attach (gain_knob, 1, 0);
+        }
+
+        private void build_events () {
+            gain_knob.value_changed.connect (() => {
+                plugin.mix_gain = (float) (
+                    gain_knob.value == -12
+                    ? 0
+                    : Math.pow (10, gain_knob.value / 20)
+                );
+            });
         }
 
         public void capture_attention () {
@@ -53,3 +67,9 @@ namespace Ensembles.Shell.Widgets.Display {
         }
     }
 }
+
+/*
+20 * log (g) = db
+log (g) = db / 20
+g = 10 ^ (db /)
+*/
