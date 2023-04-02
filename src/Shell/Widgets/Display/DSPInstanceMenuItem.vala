@@ -11,6 +11,8 @@ namespace Ensembles.Shell.Widgets.Display {
         public unowned AudioPlugin plugin { get; set; }
         public bool show_category { get; set; }
         public Knob gain_knob;
+        public Gtk.Switch active_switch;
+        public Gtk.Button show_ui_button;
 
         public DSPInstanceMenuItem (AudioPlugin plugin) {
             Object (
@@ -24,7 +26,9 @@ namespace Ensembles.Shell.Widgets.Display {
         private void build_ui () {
             add_css_class ("menu-item");
 
-            var menu_item_grid = new Gtk.Grid ();
+            var menu_item_grid = new Gtk.Grid () {
+                column_spacing = 12
+            };
             set_child (menu_item_grid);
 
             var plugin_name_label = new Gtk.Label (plugin.name) {
@@ -34,22 +38,40 @@ namespace Ensembles.Shell.Widgets.Display {
             plugin_name_label.add_css_class ("menu-item-name");
             menu_item_grid.attach (plugin_name_label, 0, 0, 1, 1);
 
+            show_ui_button = new Gtk.Button.from_icon_name ("preferences-other-symbolic") {
+                width_request = 80
+            };
+            show_ui_button.remove_css_class ("image-button");
+            menu_item_grid.attach (show_ui_button, 1, 0);
+
             gain_knob = new Shell.Widgets.Knob.with_range (-12, 0, 1) {
                 width_request = 40,
                 height_request = 40,
                 draw_value = true
             };
-            gain_knob.value = 0;
-            menu_item_grid.attach (gain_knob, 1, 0);
+            // Convert from digital signal gain to decibel
+            gain_knob.value = 10 * Math.log10 (plugin.mix_gain);
+            gain_knob.add_mark (-12);
+            gain_knob.add_mark (0);
+            menu_item_grid.attach (gain_knob, 2, 0);
+
+            active_switch = new Gtk.Switch () {
+                valign = Gtk.Align.CENTER,
+                halign = Gtk.Align.CENTER,
+                margin_end = 8
+            };
+            active_switch.active = plugin.active;
+            menu_item_grid.attach (active_switch, 3, 0);
         }
 
         private void build_events () {
             gain_knob.value_changed.connect (() => {
-                plugin.mix_gain = (float) (
-                    gain_knob.value == -12
-                    ? 0
-                    : Math.pow (10, gain_knob.value / 20)
-                );
+                // Convert from decibels to digital signal gain
+                plugin.mix_gain = (float) Math.pow (10, gain_knob.value / 20);
+            });
+
+            active_switch.notify["active"].connect (() => {
+                plugin.active = active_switch.active;
             });
         }
 
@@ -67,9 +89,3 @@ namespace Ensembles.Shell.Widgets.Display {
         }
     }
 }
-
-/*
-20 * log (g) = db
-log (g) = db / 20
-g = 10 ^ (db /)
-*/

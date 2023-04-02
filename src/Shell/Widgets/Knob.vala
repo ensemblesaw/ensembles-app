@@ -210,23 +210,16 @@ namespace Ensembles.Shell.Widgets {
 
             // Draw marks
             foreach (var mark in marks) {
-                var average = (adjustment.lower + adjustment.upper) / 2;
                 var mark_angle = Utils.Math.map_range_unclamped (
-                    value,
+                    mark,
                     adjustment.lower,
                     adjustment.upper,
                     pointing_angle_lower,
                     pointing_angle_lower + pointing_angle_upper
                 );
-                if (mark < average) {
-                    ctx.arc (radius + 0.2, radius, radius - 2,
-                    mark_angle * (Math.PI/180.0),
-                    (mark_angle + 3) * (Math.PI/180.0));
-                } else if (mark > average) {
-                    ctx.arc (radius + 0.2, radius, radius - 2,
-                    mark_angle * (Math.PI/180.0),
-                    (mark_angle - 3) * (Math.PI/180.0));
-                }
+                ctx.arc (radius + 0.2, radius, radius - 2,
+                (mark_angle - 1) * (Math.PI/180.0),
+                (mark_angle + 1) * (Math.PI/180.0));
 
                 ctx.set_source_rgba (1, 1, 1, adjustment.value == mark ? 1 : 0.3);
                 ctx.stroke ();
