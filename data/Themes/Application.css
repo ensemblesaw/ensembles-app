@@ -7,6 +7,10 @@
     padding: 4px;
 }
 
+.can-be-blurred {
+    filter: blur(0) brightness(1);
+    transition: filter 0.5s cubic-bezier(0, 0, 0, 1);
+}
 .blurred {
     filter: blur(16px) brightness(0.9);
     transition: filter 0.2s ease-out;

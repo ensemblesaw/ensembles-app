@@ -186,7 +186,10 @@ Display Window
 */
 
 .display .display-window-background {
-    background: #222;
+    background-image: linear-gradient(alpha(#222, 0.8), alpha(#222, 0.8)),
+        url("resource://com/github/subhadeepjasu/ensembles/images/display/home_background_default_blurred");
+    background-position: center;
+    background-size: auto 100%;
     color: #fff;
 }
 
@@ -370,10 +373,11 @@ Menu
 }
 
 .display .menu-item button {
-    background: #444;
-    border: 1px solid #0008;
+    background: #fff1;
+    border: 1px solid #0006;
 }
 
 .display .menu-item button:hover {
-    background: #555;
+    background: #fff2;
+border: 1px solid #0008;
 }

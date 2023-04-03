@@ -59,6 +59,7 @@ namespace Ensembles.Shell.Layouts.Display {
                 margin_top = 8,
                 margin_bottom = 8
             };
+            scrollable.add_css_class ("can-be-blurred");
             main_flap.set_content (scrollable);
 
             main_list_box = new Gtk.ListBox () {
