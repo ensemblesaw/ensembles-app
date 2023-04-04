@@ -47,8 +47,8 @@ namespace Ensembles.Core.Plugins.AudioPlugins {
 
         public bool stereo { get; protected set; }
 
-        public bool has_generated_ui { get; set; }
-        public bool has_custom_ui { get; set; }
+        public bool has_generated_ui { get; protected set; }
+        public bool has_custom_ui { get; protected set; }
 
         protected AudioPlugin () {
             base ();
