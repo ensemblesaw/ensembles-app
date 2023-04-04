@@ -33,6 +33,7 @@ namespace Ensembles.Shell.Layouts {
         private HomeScreen home_screen;
         private StyleScreen style_screen;
         private DSPScreen dsp_screen;
+        private PluginScreen plugin_screen;
 
         construct {
             build_ui ();
@@ -126,10 +127,28 @@ namespace Ensembles.Shell.Layouts {
             });
 
             style_screen.close.connect (navigate_to_home);
+
+            Application.event_bus.show_plugin_ui.connect (show_plugin_screen);
         }
 
         public void navigate_to_home () {
             main_stack.set_visible_child_name ("home");
+        }
+
+        public void show_plugin_screen (Core.Plugins.AudioPlugins.AudioPlugin plugin) {
+            if (plugin_screen != null) {
+                main_stack.remove (plugin_screen);
+                plugin_screen = null;
+            }
+
+            plugin_screen = new PluginScreen (plugin) {
+                history = main_stack.get_visible_child_name ()
+            };
+            plugin_screen.close.connect (() => {
+                main_stack.set_visible_child_name (plugin_screen.history);
+            });
+            main_stack.add_named (plugin_screen, "plugin");
+            main_stack.set_visible_child_name ("plugin");
         }
     }
 }

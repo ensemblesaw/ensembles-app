@@ -45,6 +45,9 @@ namespace Ensembles.Core.Plugins.AudioPlugins {
         public Port[] audio_in_ports;
         public Port[] audio_out_ports;
 
+        public bool has_generated_ui { get; set; }
+        public bool has_custom_ui { get; set; }
+
         protected AudioPlugin () {
             base ();
         }
@@ -66,5 +69,9 @@ namespace Ensembles.Core.Plugins.AudioPlugins {
         public abstract void process (uint32 sample_count);
 
         public abstract AudioPlugin duplicate () throws PluginError;
+
+        public abstract Gtk.Widget? get_generated_ui ();
+
+        public abstract Gtk.Widget? get_custom_ui ();
     }
 }

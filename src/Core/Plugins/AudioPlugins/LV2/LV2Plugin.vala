@@ -34,6 +34,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
         private Lilv.Instance lv2_instance_r; // Mono R Processor
 
         public LV2ControlPort[] control_in_ports;
+        public float[] control_in_variables;
         public LV2ControlPort[] control_out_ports;
 
         public unowned Lilv.Plugin? lilv_plugin { get; protected set; }
@@ -76,8 +77,6 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                 if (audio_in_ports.length > 1) {
                     lv2_instance_r = lilv_plugin.instantiate (Synthesizer.Synthesizer.SAMPLE_RATE, features);
                 }
-
-                build_ui ();
             }
         }
 
@@ -390,40 +389,35 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
             return props;
         }
 
-        private void build_ui () {
-            var main_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-            plugin_ui = main_box;
-
-            var header_bar = new Gtk.HeaderBar () {
-                show_title_buttons = false,
-                valign = Gtk.Align.START
+        public override Gtk.Widget? get_generated_ui () {
+            var box = new Gtk.Box (
+                Gtk.Orientation.HORIZONTAL,
+                8
+            ) {
+                spacing = 4,
+                valign = Gtk.Align.CENTER,
+                homogeneous = control_in_ports.length < 4
             };
 
-            main_box.append (header_bar);
+            if (control_in_ports.length > 0) {
+                if (control_in_variables == null) {
+                    control_in_variables = new float[control_in_ports.length];
+                }
 
-            var close_button = new Gtk.Button.from_icon_name ("window-close-symbolic");
-            header_bar.pack_start (close_button);
+                for (uint i = 0; i < control_in_ports.length; i++) {
+                    var plugin_control = new Shell.Widgets.Plugins.AudioPluginControl (
+                        control_in_variables,
+                        control_in_ports[i]
+                    );
+                    box.append (plugin_control);
+                }
+            }
 
-            Gtk.Image app_icon = new Gtk.Image.from_icon_name (
-                "com.github.subhadeepjasu.ensembles-symbolic") {
-                margin_top = 8,
-                margin_bottom = 8
-            };
-            header_bar.pack_start (app_icon);
+            return box;
+        }
 
-            var header_handle = new Gtk.WindowHandle () {
-                hexpand = true,
-                vexpand = true
-            };
-            header_bar.set_title_widget (header_handle);
-
-            var header_title = new Gtk.Label (name + "(LV2)") {
-                height_request = 48
-            };
-
-            header_handle.set_child (header_title);
-
-            // Make rest of the UI
+        public override Gtk.Widget? get_custom_ui () {
+            return null;
         }
     }
 }

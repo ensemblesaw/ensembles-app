@@ -36,5 +36,6 @@ namespace Ensembles.Services {
 
         // Racks
         public signal void rack_reconnected (Core.Racks.Rack rack, int change_index);
+        public signal void show_plugin_ui (Core.Plugins.AudioPlugins.AudioPlugin plugin);
     }
 }

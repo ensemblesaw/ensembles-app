@@ -73,6 +73,10 @@ namespace Ensembles.Shell.Widgets.Display {
             active_switch.notify["active"].connect (() => {
                 plugin.active = active_switch.active;
             });
+
+            show_ui_button.clicked.connect (() => {
+                Application.event_bus.show_plugin_ui (plugin);
+            });
         }
 
         public void capture_attention () {

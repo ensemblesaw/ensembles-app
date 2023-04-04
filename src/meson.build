@@ -32,11 +32,13 @@ sources = files (
     'Shell/Layouts/StyleControlPanel.vala',
     'Shell/Layouts/SynthControlPanel.vala',
     'Shell/Layouts/VoiceNavPanel.vala',
+    'Shell/Layouts/PluginView.vala',
 
     'Shell/Layouts/Display/HomeScreen.vala',
     'Shell/Layouts/Display/StyleScreen.vala',
     'Shell/Layouts/Display/DSPScreen.vala',
     'Shell/Layouts/Display/AudioPluginPicker.vala',
+    'Shell/Layouts/Display/PluginScreen.vala',
 
     'Shell/Widgets/BeatVisualization.vala',
     'Shell/Widgets/Knob.vala',
@@ -46,6 +48,8 @@ sources = files (
     'Shell/Widgets/Display/StyleMenuItem.vala',
     'Shell/Widgets/Display/DSPMenuItem.vala',
     'Shell/Widgets/Display/DSPInstanceMenuItem.vala',
+
+    'Shell/Widgets/Plugins/AudioPluginControl.vala',
 
     'Shell/Dialogs/PowerDialog.vala',
 
