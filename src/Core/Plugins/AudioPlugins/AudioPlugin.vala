@@ -45,7 +45,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins {
         public Port[] audio_in_ports;
         public Port[] audio_out_ports;
 
-        public bool stereo { get; set; }
+        public bool stereo { get; protected set; }
 
         public bool has_generated_ui { get; set; }
         public bool has_custom_ui { get; set; }

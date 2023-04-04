@@ -74,13 +74,11 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                 lv2_instance_l = lilv_plugin.instantiate (Synthesizer.Synthesizer.SAMPLE_RATE, features);
 
                 // Check if plugin is mono
-                if (audio_in_ports.length == 1) {
+                if (!stereo) {
                     lv2_instance_r = lilv_plugin.instantiate (Synthesizer.Synthesizer.SAMPLE_RATE, features);
                 }
 
-                for (uint32 p = 0; p < control_in_ports.length; p++) {
-                    connect_port (control_in_ports[p], &control_in_variables[p]);
-                }
+                connect_other_ports ();
             }
         }
 
@@ -105,21 +103,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
         }
 
         public override void connect_source_buffer (void* in_l, void* in_r) {
-            // Mono plugin
-            if (lv2_instance_r != null) {
-                if (lv2_instance_l != null) {
-                    lv2_instance_l.connect_port (
-                        audio_in_ports[0].index,
-                        in_l
-                    );
-                }
-
-                lv2_instance_r.connect_port (
-                    audio_in_ports[0].index,
-                    in_r
-                );
-
-            } else {
+            if (stereo) {
                 // Stereo plugin
                 for (uint8 i = 0; i < audio_in_ports.length; i++) {
                     if (i % 2 == 0) {
@@ -138,25 +122,21 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                         }
                     }
                 }
+            } else {
+                lv2_instance_l.connect_port (
+                    audio_in_ports[0].index,
+                    in_l
+                );
+
+                lv2_instance_r.connect_port (
+                    audio_in_ports[0].index,
+                    in_r
+                );
             }
         }
 
         public override void connect_sink_buffer (void* out_l, void* out_r) {
-            // Mono plugin
-            if (lv2_instance_r != null) {
-                if (lv2_instance_l != null) {
-                    lv2_instance_l.connect_port (
-                        audio_out_ports[0].index,
-                        out_l
-                    );
-                }
-
-                lv2_instance_r.connect_port (
-                    audio_out_ports[0].index,
-                    out_r
-                );
-            } else {
-                // Stereo plugin
+            if (stereo) {
                 for (uint8 i = 0; i < audio_out_ports.length; i++) {
                     if (i % 2 == 0) {
                         if (lv2_instance_l != null) {
@@ -174,6 +154,16 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                         }
                     }
                 }
+            } else {
+                lv2_instance_l.connect_port (
+                    audio_out_ports[0].index,
+                    out_l
+                );
+
+                lv2_instance_r.connect_port (
+                    audio_out_ports[0].index,
+                    out_r
+                );
             }
         }
 
@@ -184,6 +174,12 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
 
             if (lv2_instance_r != null) {
                 lv2_instance_r.connect_port (port.index, data_pointer);
+            }
+        }
+
+        public void connect_other_ports () {
+            for (uint32 p = 0; p < control_in_ports.length; p++) {
+                connect_port (control_in_ports[p], &control_in_variables[p]);
             }
         }
 
@@ -374,6 +370,10 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
             // Consolidate all ports into respective arrays
             var n_audio_in_ports = audio_in_port_list.length ();
             audio_in_ports = new Port[n_audio_in_ports];
+
+            // If there's more than one audio in port then presume that
+            // the plugin is stereo
+            stereo = n_audio_in_ports > 1;
             for (uint32 p = 0; p < n_audio_in_ports; p++) {
                 var _port = audio_in_port_list.nth_data (p);
                 audio_in_ports[p] = new LV2Port (
