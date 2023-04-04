@@ -24,11 +24,11 @@ namespace Ensembles.Core.Racks {
         float[] aud_buf_mix_r;
 
         construct {
-        plugins = new List<AudioPlugin> ();
+            plugins = new List<AudioPlugin> ();
         }
 
         public unowned List<AudioPlugin> get_plugins () {
-        return plugins;
+            return plugins;
         }
 
         /**

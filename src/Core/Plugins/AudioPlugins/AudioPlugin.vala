@@ -45,6 +45,8 @@ namespace Ensembles.Core.Plugins.AudioPlugins {
         public Port[] audio_in_ports;
         public Port[] audio_out_ports;
 
+        public bool stereo { get; set; }
+
         public bool has_generated_ui { get; set; }
         public bool has_custom_ui { get; set; }
 
@@ -57,7 +59,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins {
         public abstract void connect_sink_buffer (void* out_l, void* out_r);
 
         /**
-         * Connect a port to the synth rack. Connect all ports before activating
+         * Connect a port to local variable. Connect all ports before activating
          * plugin
          */
         public abstract void connect_port (Port port, void* data_pointer);

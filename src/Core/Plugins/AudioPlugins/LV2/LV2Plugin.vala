@@ -73,9 +73,13 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
 
                 lv2_instance_l = lilv_plugin.instantiate (Synthesizer.Synthesizer.SAMPLE_RATE, features);
 
-                // Check if stereo source
-                if (audio_in_ports.length > 1) {
+                // Check if plugin is mono
+                if (audio_in_ports.length == 1) {
                     lv2_instance_r = lilv_plugin.instantiate (Synthesizer.Synthesizer.SAMPLE_RATE, features);
+                }
+
+                for (uint32 p = 0; p < control_in_ports.length; p++) {
+                    connect_port (control_in_ports[p], &control_in_variables[p]);
                 }
             }
         }
@@ -101,30 +105,75 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
         }
 
         public override void connect_source_buffer (void* in_l, void* in_r) {
-            if (lv2_instance_r == null) {
+            // Mono plugin
+            if (lv2_instance_r != null) {
+                if (lv2_instance_l != null) {
+                    lv2_instance_l.connect_port (
+                        audio_in_ports[0].index,
+                        in_l
+                    );
+                }
+
+                lv2_instance_r.connect_port (
+                    audio_in_ports[0].index,
+                    in_r
+                );
+
+            } else {
+                // Stereo plugin
                 for (uint8 i = 0; i < audio_in_ports.length; i++) {
-                    if (lv2_instance_l != null) {
-                        lv2_instance_l.connect_port (audio_in_ports[i].index,
-                            i % 2 == 0 ? in_l : in_r);
+                    if (i % 2 == 0) {
+                        if (lv2_instance_l != null) {
+                            lv2_instance_l.connect_port (
+                                audio_in_ports[i].index,
+                                in_l
+                            );
+                        }
+                    } else {
+                        if (lv2_instance_l != null) {
+                            lv2_instance_l.connect_port (
+                                audio_in_ports[i].index,
+                                in_r
+                            );
+                        }
                     }
                 }
-            } else {
-                lv2_instance_l.connect_port (audio_in_ports[0].index, in_l);
-                lv2_instance_r.connect_port (audio_in_ports[0].index, in_r);
             }
         }
 
         public override void connect_sink_buffer (void* out_l, void* out_r) {
-            if (lv2_instance_r == null) {
+            // Mono plugin
+            if (lv2_instance_r != null) {
+                if (lv2_instance_l != null) {
+                    lv2_instance_l.connect_port (
+                        audio_out_ports[0].index,
+                        out_l
+                    );
+                }
+
+                lv2_instance_r.connect_port (
+                    audio_out_ports[0].index,
+                    out_r
+                );
+            } else {
+                // Stereo plugin
                 for (uint8 i = 0; i < audio_out_ports.length; i++) {
-                    if (lv2_instance_l != null) {
-                        lv2_instance_l.connect_port (audio_out_ports[i].index,
-                            i % 2 == 0 ? out_l : out_r);
+                    if (i % 2 == 0) {
+                        if (lv2_instance_l != null) {
+                            lv2_instance_l.connect_port (
+                                audio_out_ports[i].index,
+                                out_l
+                            );
+                        }
+                    } else {
+                        if (lv2_instance_l != null) {
+                            lv2_instance_l.connect_port (
+                                audio_out_ports[i].index,
+                                out_r
+                            );
+                        }
                     }
                 }
-            } else {
-                lv2_instance_l.connect_port (audio_out_ports[0].index, out_l);
-                lv2_instance_r.connect_port (audio_out_ports[0].index, out_r);
             }
         }
 
@@ -351,6 +400,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
 
             var n_control_in_ports = control_in_port_list.length ();
             control_in_ports = new LV2ControlPort[n_control_in_ports];
+            control_in_variables = new float[n_control_in_ports];
             for (uint32 p = 0; p < n_control_in_ports; p++) {
                 var _port = control_in_port_list.nth_data (p);
                 control_in_ports[p] = new LV2ControlPort (
@@ -364,6 +414,8 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                     _port.default_value,
                     _port.step
                 );
+
+                control_in_variables[p] = _port.default_value;
             }
         }
 
@@ -376,7 +428,6 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
             !properties.is_end (props_iter);
             props_iter = properties.next (props_iter)) {
                 var prop = properties.get (props_iter).as_string ();
-                print ("  %s\n", prop);
                 prop_list.append (prop);
             }
 
@@ -400,14 +451,11 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
             };
 
             if (control_in_ports.length > 0) {
-                if (control_in_variables == null) {
-                    control_in_variables = new float[control_in_ports.length];
-                }
-
                 for (uint i = 0; i < control_in_ports.length; i++) {
                     var plugin_control = new Shell.Widgets.Plugins.AudioPluginControl (
-                        control_in_variables,
-                        control_in_ports[i]
+                        control_in_ports[i],
+                        &(control_in_variables[i]),
+                        Gtk.IconSize.LARGE
                     );
                     box.append (plugin_control);
                 }

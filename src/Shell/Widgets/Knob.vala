@@ -79,7 +79,7 @@ namespace Ensembles.Shell.Widgets {
 
         private uint radius = 0;
 
-        public signal void value_changed ();
+        public signal void value_changed (double value);
 
         /**
          * Creates a new `Knob` widget.
@@ -277,7 +277,7 @@ namespace Ensembles.Shell.Widgets {
                         adjustment.lower,
                         adjustment.upper
                     );
-                    value_changed ();
+                    value_changed (adjustment.value);
                 }
 
                 previous_deg = current_deg;
@@ -312,7 +312,7 @@ namespace Ensembles.Shell.Widgets {
                 }
 
                 adjustment.value = value;
-                value_changed ();
+                value_changed (value);
                 return true;
             });
 
@@ -332,7 +332,7 @@ namespace Ensembles.Shell.Widgets {
                     adjustment.lower,
                     adjustment.upper
                 );
-                value_changed ();
+                value_changed (adjustment.value);
             });
 
             adjustment.value_changed.connect (() => {

@@ -70,6 +70,10 @@ namespace Ensembles.Shell.Layouts.Display {
         }
 
         private void build_events () {
+            dsp_switch.notify["active"].connect (() => {
+                rack.active = dsp_switch.active;
+            });
+
             plugin_picker_button.clicked.connect (() => {
                 main_flap.reveal_flap = !main_flap.reveal_flap;
             });

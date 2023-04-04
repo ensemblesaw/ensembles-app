@@ -7,12 +7,13 @@ using Ensembles.Core.Plugins.AudioPlugins;
 
 namespace Ensembles.Shell.Widgets.Plugins {
     public class AudioPluginControl : Gtk.Box {
-        private unowned float[] variables;
+        private Gtk.IconSize widget_size;
+        private float* variable;
         private unowned Port port;
 
         private Gtk.Label control_label;
 
-        public AudioPluginControl (float[] variables, Port port) {
+        public AudioPluginControl (Port port, float* variable, Gtk.IconSize widget_size = Gtk.IconSize.NORMAL) {
             Object (
                 margin_start: 8,
                 margin_bottom: 8,
@@ -22,7 +23,8 @@ namespace Ensembles.Shell.Widgets.Plugins {
                 orientation: Gtk.Orientation.VERTICAL
             );
 
-            this.variables = variables;
+            this.widget_size = widget_size;
+            this.variable = variable;
             this.port = port;
 
             build_ui ();
@@ -39,7 +41,7 @@ namespace Ensembles.Shell.Widgets.Plugins {
             control_label.add_css_class (Granite.STYLE_CLASS_H2_LABEL);
             append (control_label);
 
-            if (variables.length < 4) {
+            if (widget_size == Gtk.IconSize.LARGE) {
                 var knob = new Knob () {
                     width_request = 150,
                     height_request = 150,
@@ -57,11 +59,17 @@ namespace Ensembles.Shell.Widgets.Plugins {
                     knob.adjustment.lower = lv2_control_port.min_value;
                     knob.adjustment.upper = lv2_control_port.max_value;
                     knob.adjustment.step_increment = lv2_control_port.step;
-                    knob.value = lv2_control_port.default_value;
+                    knob.value = *variable;
 
                     knob.add_mark (lv2_control_port.min_value);
                     knob.add_mark (lv2_control_port.max_value);
                 }
+
+                knob.value_changed.connect ((value) => {
+                    *variable = (float) value;
+                });
+            } else {
+
             }
         }
     }
