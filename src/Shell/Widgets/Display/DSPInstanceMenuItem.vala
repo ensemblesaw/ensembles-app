@@ -38,11 +38,13 @@ namespace Ensembles.Shell.Widgets.Display {
             plugin_name_label.add_css_class ("menu-item-name");
             menu_item_grid.attach (plugin_name_label, 0, 0, 1, 1);
 
-            show_ui_button = new Gtk.Button.from_icon_name ("preferences-other-symbolic") {
-                width_request = 80
-            };
-            show_ui_button.remove_css_class ("image-button");
-            menu_item_grid.attach (show_ui_button, 1, 0);
+            if (plugin.ui != null) {
+                show_ui_button = new Gtk.Button.from_icon_name ("preferences-other-symbolic") {
+                    width_request = 80
+                };
+                show_ui_button.remove_css_class ("image-button");
+                menu_item_grid.attach (show_ui_button, 1, 0);
+            }
 
             gain_knob = new Shell.Widgets.Knob.with_range (-12, 0, 1) {
                 width_request = 40,
@@ -74,9 +76,11 @@ namespace Ensembles.Shell.Widgets.Display {
                 plugin.active = active_switch.active;
             });
 
-            show_ui_button.clicked.connect (() => {
-                Application.event_bus.show_plugin_ui (plugin);
-            });
+            if (plugin.ui != null) {
+                show_ui_button.clicked.connect (() => {
+                    Application.event_bus.show_plugin_ui (plugin);
+                });
+            }
         }
 
         public void capture_attention () {

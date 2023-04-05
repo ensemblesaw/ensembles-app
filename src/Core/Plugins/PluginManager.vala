@@ -4,8 +4,21 @@
  */
 
 namespace Ensembles.Core.Plugins {
+    /**
+     * ## Ensembles PluginManager
+     *
+     * Plugins add additional functionality to Ensembles externally.
+     *
+     * The following types of plugins may be supported:
+     * - Audio Plugins
+     * - Style Plugins
+     * - Display Theme Plugins
+     * - Functional Plugins
+     */
     public class PluginManager : Object {
-        // Audio Plugins
+        /**
+         * Audio Plugins (Voices and DSP)
+         */
         public List<AudioPlugins.AudioPlugin> audio_plugins;
 
         private AudioPlugins.LADSPAV2.LV2Manager lv2_audio_plugin_manager;

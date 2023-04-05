@@ -25,7 +25,9 @@ namespace Ensembles.Core.Plugins.AudioPlugins {
         }
 
         // Plugin Information
-        public string license;
+        /**
+         * The technology this plugin is based on
+         */
         public Tech tech { get; protected set; }
         public Category category { get; protected set; }
 
@@ -42,13 +44,13 @@ namespace Ensembles.Core.Plugins.AudioPlugins {
             }
         }
 
-        public Port[] audio_in_ports;
-        public Port[] audio_out_ports;
+        protected Port[] audio_in_ports;
+        protected Port[] audio_out_ports;
 
+        /**
+         * Whether the audio plugin can process stereo audio.
+         */
         public bool stereo { get; protected set; }
-
-        public bool has_generated_ui { get; protected set; }
-        public bool has_custom_ui { get; protected set; }
 
         protected AudioPlugin () {
             base ();
@@ -71,9 +73,5 @@ namespace Ensembles.Core.Plugins.AudioPlugins {
         public abstract void process (uint32 sample_count);
 
         public abstract AudioPlugin duplicate () throws PluginError;
-
-        public abstract Gtk.Widget? get_generated_ui ();
-
-        public abstract Gtk.Widget? get_custom_ui ();
     }
 }

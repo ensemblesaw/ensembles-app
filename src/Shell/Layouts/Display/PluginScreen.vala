@@ -41,9 +41,9 @@ namespace Ensembles.Shell.Layouts.Display {
             };
             append (scrollable);
 
-            var generated_ui = plugin.get_generated_ui ();
-            if (generated_ui != null) {
-                scrollable.set_child (generated_ui);
+            var plugin_ui = plugin.ui;
+            if (plugin_ui != null) {
+                scrollable.set_child (plugin_ui);
             }
         }
     }

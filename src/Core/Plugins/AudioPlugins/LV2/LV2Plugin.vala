@@ -79,6 +79,8 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                 }
 
                 connect_other_ports ();
+
+                build_ui ();
             }
         }
 
@@ -440,7 +442,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
             return props;
         }
 
-        public override Gtk.Widget? get_generated_ui () {
+        private void build_ui () {
             var box = new Gtk.Box (
                 Gtk.Orientation.HORIZONTAL,
                 8
@@ -461,11 +463,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                 }
             }
 
-            return box;
-        }
-
-        public override Gtk.Widget? get_custom_ui () {
-            return null;
+            ui = box;
         }
     }
 }

@@ -11,15 +11,31 @@ namespace Ensembles.Core.Plugins {
      * or features to ensembles.
      */
     public abstract class Plugin : Object {
-        public string name;
-        public string author_name;
-        public string author_email;
-        public string author_homepage;
+        /**
+         * Name of the plugin.
+         */
+        public string name { get; protected set; }
+        /**
+         * Name of the author of this plugin.
+         */
+        public string author_name { get; protected set; }
+        /**
+         * Email address of the author of this plugin.
+         */
+        public string author_email { get; protected set; }
+        /**
+         * Homepage or the main URL of the plugin.
+         */
+        public string author_homepage { get; protected set; }
+        /**
+         * The license associated with this plugin.
+         */
+        public string license { get; protected set; }
 
         private bool _active;
 
         /**
-         * The plugin will only work if it's active
+         * The plugin will only work if it's active.
          */
         public bool active {
             get {
@@ -35,14 +51,20 @@ namespace Ensembles.Core.Plugins {
             }
         }
 
-        private Gtk.Widget _plugin_ui;
+        private Gtk.Widget _ui = null;
 
-        public Gtk.Widget plugin_ui {
+        /**
+         * Plugin's own UI which can be displayed inside the window management
+         * framework of Ensembles.
+         *
+         * If the plugin doesn't come with an UI then this value will be `null`.
+         */
+        public Gtk.Widget ui {
             get {
-                return _plugin_ui;
+                return _ui;
             }
             protected set {
-                _plugin_ui = value;
+                _ui = value;
             }
         }
 

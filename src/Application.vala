@@ -6,6 +6,15 @@
 namespace Ensembles {
     public Services.Settings settings;
 
+    /**
+     * ## Ensembles Application
+     * 
+     * Provides a GTK Application instance where only a single instance
+     *  is allowed.
+     * The Ensembles application works as a conjuncture of two components:
+     * - Core: The arranger system and all it's plugins
+     * - Shell: The user interface
+     */
     public class Application : Gtk.Application {
         static Application _instance = null;
 
@@ -29,7 +38,8 @@ namespace Ensembles {
         public static Core.ArrangerWorkstation arranger_workstation;
 
         construct {
-            flags |= ApplicationFlags.HANDLES_OPEN | ApplicationFlags.HANDLES_COMMAND_LINE;
+            flags |= ApplicationFlags.HANDLES_OPEN |
+            ApplicationFlags.HANDLES_COMMAND_LINE;
             application_id = Constants.APP_ID;
             settings = new Services.Settings ();
         }
@@ -42,7 +52,10 @@ namespace Ensembles {
             main_window = new Shell.MainWindow (this);
             this.add_window (main_window);
             main_window.show_ui ();
-            Console.log ("GUI Initialization Complete!", Console.LogLevel.SUCCESS);
+            Console.log (
+                "GUI Initialization Complete!",
+                Console.LogLevel.SUCCESS
+            );
 
             Console.log ("Initializing Arranger Workstation");
             arranger_workstation = new Core.ArrangerWorkstation ();
