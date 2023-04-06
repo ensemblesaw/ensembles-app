@@ -13,7 +13,7 @@ namespace Ensembles.Core.Racks {
     public abstract class Rack : Object {
         protected List<AudioPlugin> plugins;
 
-        public bool active = false;
+        public bool active = true;
 
         public AudioPlugin.Category rack_type { get; protected set; }
 
@@ -181,8 +181,6 @@ namespace Ensembles.Core.Racks {
         protected void connect_audio_ports (int change_index = -1) {
             var was_active = active;
             active = false;
-
-            print ("%u\n", plugins.length ());
 
             foreach (AudioPlugin plugin in plugins) {
                 plugin.connect_source_buffer (aud_buf_dry_l, aud_buf_dry_r);

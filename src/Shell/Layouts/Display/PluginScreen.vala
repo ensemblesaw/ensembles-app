@@ -11,6 +11,9 @@ namespace Ensembles.Shell.Layouts.Display {
         public unowned AudioPlugin plugin { get; private set; }
         public string? history { get; set; }
 
+        private Gtk.Switch active_switch;
+        private Widgets.Knob gain_knob;
+
         public PluginScreen (AudioPlugin plugin) {
             var plugin_tech = "";
             switch (plugin.tech) {
@@ -32,9 +35,30 @@ namespace Ensembles.Shell.Layouts.Display {
             this.plugin = plugin;
 
             build_ui ();
+            build_events ();
         }
 
         private void build_ui () {
+            gain_knob = new Widgets.Knob.with_range (-12, 0, 1) {
+                width_request = 40,
+                height_request = 40,
+                halign = Gtk.Align.CENTER,
+                valign = Gtk.Align.CENTER
+            };
+
+            gain_knob.value = Utils.Math.convert_gain_to_db (plugin.mix_gain);
+            gain_knob.add_mark (-12);
+            gain_knob.add_mark (0);
+            add_to_header (gain_knob);
+
+            active_switch = new Gtk.Switch () {
+                halign = Gtk.Align.CENTER,
+                valign =  Gtk.Align.CENTER,
+                margin_end = 8
+            };
+            active_switch.active = plugin.active;
+            add_to_header (active_switch);
+
             var scrollable = new Gtk.ScrolledWindow () {
                 vexpand = true,
                 hexpand = true
@@ -45,6 +69,16 @@ namespace Ensembles.Shell.Layouts.Display {
             if (plugin_ui != null) {
                 scrollable.set_child (plugin_ui);
             }
+        }
+
+        private void build_events () {
+            active_switch.notify["active"].connect (() => {
+                plugin.active = active_switch.active;
+            });
+
+            gain_knob.value_changed.connect ((db) => {
+                plugin.mix_gain = (float) Utils.Math.convert_db_to_gain (db);
+            });
         }
     }
 }

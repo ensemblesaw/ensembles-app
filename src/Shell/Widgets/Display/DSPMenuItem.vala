@@ -59,7 +59,9 @@ namespace Ensembles.Shell.Widgets.Display {
             if (extra_info_labels.length > 0) {
                 extra_info_box.append (
                     new Gtk.Label (string.joinv (" ⏺ ", extra_info_labels)) {
-                        opacity = 0.5
+                        opacity = 0.5,
+                        max_width_chars = 40,
+                        ellipsize = Pango.EllipsizeMode.END
                     }
                 );
             }
@@ -90,7 +92,9 @@ namespace Ensembles.Shell.Widgets.Display {
                 extra_info_box.append (icon);
             }
 
-            insert_button = new Gtk.Button.from_icon_name ("insert-object-symbolic");
+            insert_button = new Gtk.Button.from_icon_name ("insert-object-symbolic") {
+                valign = Gtk.Align.START
+            };
             insert_button.add_css_class ("plugin-item-insert-button");
             menu_item_grid.attach (insert_button, 1, 0, 1, 2);
         }

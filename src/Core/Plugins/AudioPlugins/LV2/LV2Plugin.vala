@@ -13,13 +13,14 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
      * that add more advanced functionality.
      */
     public class LV2Plugin : Plugins.AudioPlugins.AudioPlugin {
-        public string plug_uri;
+        public string plugin_uri { get; private set; }
+        public string plugin_class { get; private set; }
 
         // LV2 Features
         private LV2.Feature*[] features;
         private const string[] supported_feature_uris = {
-            LV2.URID.URI + LV2.URID.PREFIX + LV2.URID._map,
-            LV2.URID.URI + LV2.URID.PREFIX + LV2.URID._unmap
+            LV2.URID._map,
+            LV2.URID._unmap
         };
 
         LV2.Feature urid_map_feature;
@@ -49,13 +50,17 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
             }
 
             name = lilv_plugin.get_name ().as_string ();
-            plug_uri = lilv_plugin.get_uri ().as_uri ();
+            plugin_uri = lilv_plugin.get_uri ().as_uri ();
+            plugin_class = lilv_plugin.get_class ().get_label ().as_string ();
             author_name = lilv_plugin.get_author_name ().as_string ();
             author_email = lilv_plugin.get_author_email ().as_string ();
             author_homepage = lilv_plugin.get_author_homepage ().as_string ();
 
             tech = Tech.LV2;
-            category = get_category_from_class (lilv_plugin.get_class ().get_label ().as_string ());
+
+            // Get all ports from plugin
+            fetch_ports ();
+            category = get_category ();
         }
 
         /**
@@ -67,9 +72,6 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
             if (lv2_instance_l == null) {
                 active = false;
                 create_features ();
-
-                // Get all ports from plugin
-                fetch_ports ();
 
                 lv2_instance_l = lilv_plugin.instantiate (Synthesizer.Synthesizer.SAMPLE_RATE, features);
 
@@ -180,7 +182,9 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
         }
 
         public void connect_other_ports () {
+            control_in_variables = new float[control_in_ports.length];
             for (uint32 p = 0; p < control_in_ports.length; p++) {
+                control_in_variables[p] = control_in_ports[p].default_value;
                 connect_port (control_in_ports[p], &control_in_variables[p]);
             }
         }
@@ -199,13 +203,25 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
             return new LV2Plugin (lilv_plugin);
         }
 
-        private Category get_category_from_class (string plugin_class) {
-            switch (plugin_class) {
-                case "Instrument Plugin":
-                    return Category.VOICE;
-                case "Amplifier Plugin":
-                case "Utility Plugin":
-                    return Category.DSP;
+        private Category get_category () {
+            if ( // Check if it is DSP (effect) plugin
+                (
+                    plugin_class == "Amplifier Plugin" ||
+                    plugin_class == "Utility Plugin" ||
+                    plugin_class == "Reverb Plugin"
+                ) && (
+                    audio_in_ports.length > 0 &&
+                    audio_out_ports.length > 0
+                )
+            ) {
+                return Category.DSP;
+            } else if ( // Check if it is Voice (instrument) plugin
+                plugin_class == "Instrument Plugin" ||
+                (
+                    audio_out_ports.length > 0
+                )
+            ) {
+
             }
 
             return Category.UNSUPPORTED;
@@ -235,6 +251,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
             for (var iter = lilv_features.begin (); !lilv_features.is_end (iter);
             iter = lilv_features.next (iter)) {
                 string required_feature = lilv_features.get (iter).as_uri ();
+                print ("%s\n", required_feature);
                 if (!feature_supported (required_feature)) {
                     return false;
                 }
@@ -402,7 +419,6 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
 
             var n_control_in_ports = control_in_port_list.length ();
             control_in_ports = new LV2ControlPort[n_control_in_ports];
-            control_in_variables = new float[n_control_in_ports];
             for (uint32 p = 0; p < n_control_in_ports; p++) {
                 var _port = control_in_port_list.nth_data (p);
                 control_in_ports[p] = new LV2ControlPort (
@@ -416,8 +432,6 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                     _port.default_value,
                     _port.step
                 );
-
-                control_in_variables[p] = _port.default_value;
             }
         }
 

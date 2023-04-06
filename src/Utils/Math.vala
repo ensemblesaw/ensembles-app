@@ -40,5 +40,13 @@ namespace Ensembles.Utils {
                 (out_range_max - out_range_min) / (in_range_max - in_range_min)
             ) * (value - in_range_min);
         }
+
+        public static double convert_db_to_gain (double db) {
+            return GLib.Math.pow (10, db / 20);
+        }
+
+        public static double convert_gain_to_db (double gain) {
+            return 20 * GLib.Math.log10 (gain);
+        }
     }
 }

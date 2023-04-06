@@ -4,6 +4,9 @@
  */
 
 namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
+    /**
+     * The LV2 Manager object manages LV2 Plugins.
+     */
     public class LV2Manager : Object {
         Lilv.World world;
 

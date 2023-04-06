@@ -37,6 +37,7 @@ namespace Ensembles.Shell.Widgets.Display {
                 halign = Gtk.Align.CENTER,
                 margin_end = 16
             };
+            active_switch.add_css_class ("audio-switch");
             active_switch.active = plugin.active;
             menu_item_box.append (active_switch);
 
@@ -51,8 +52,7 @@ namespace Ensembles.Shell.Widgets.Display {
                 width_request = 40,
                 height_request = 40
             };
-            // Convert from digital signal gain to decibel
-            gain_knob.value = 10 * Math.log10 (plugin.mix_gain);
+            gain_knob.value = Utils.Math.convert_gain_to_db (plugin.mix_gain);
             gain_knob.add_mark (-12);
             gain_knob.add_mark (0);
             menu_item_box.append (gain_knob);
@@ -74,9 +74,8 @@ namespace Ensembles.Shell.Widgets.Display {
         }
 
         private void build_events () {
-            gain_knob.value_changed.connect (() => {
-                // Convert from decibels to digital signal gain
-                plugin.mix_gain = (float) Math.pow (10, gain_knob.value / 20);
+            gain_knob.value_changed.connect ((db) => {
+                plugin.mix_gain = (float) Utils.Math.convert_db_to_gain (db);
             });
 
             active_switch.notify["active"].connect (() => {
@@ -91,6 +90,14 @@ namespace Ensembles.Shell.Widgets.Display {
 
             delete_instance_button.clicked.connect (() => {
                 rack_shell.delete_plugin_item (this);
+            });
+
+            plugin.notify["active"].connect (() => {
+                active_switch.active = plugin.active;
+            });
+
+            plugin.notify["mix-gain"].connect (() => {
+                gain_knob.value = Utils.Math.convert_gain_to_db (plugin.mix_gain);
             });
         }
 

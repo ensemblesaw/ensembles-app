@@ -34,6 +34,7 @@ namespace Ensembles.Shell.Layouts.Display {
                 valign = Gtk.Align.CENTER,
                 halign = Gtk.Align.CENTER
             };
+            dsp_switch.active = true;
             add_to_header (dsp_switch);
 
             plugin_picker_button = new Gtk.Button.from_icon_name ("plugin-add-symbolic") {

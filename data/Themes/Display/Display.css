@@ -283,8 +283,9 @@ Menu
 
 .display .plugin-item {
     margin: 12px;
+    margin-right: 18px;
     padding: 8px;
-    border-radius: 6px 32px 32px 6px;
+    border-radius: 6px 24px 7px 6px;
     border: 1px solid #000a;
     background: linear-gradient(#444, #345);
     box-shadow: 0 4px 12px #0002, inset 0 0 0 1px #fff2;
@@ -396,4 +397,25 @@ Menu
     border: 1px solid #007367;
     box-shadow: none;
     color: #ccc;
+}
+
+
+.display .menu-item check {
+    background: #444;
+    box-shadow: none;
+    padding: 6px;
+    border: 1px solid #0008;
+    border-radius: 50%;
+    -gtk-icon-source: -gtk-icontheme("audio-volume-muted-symbolic");
+    -gtk-icon-shadow: none;
+}
+
+.display .menu-item check:hover {
+    background: #555;
+}
+
+
+.display .menu-item check:checked {
+    background: #02A594;
+    -gtk-icon-source: -gtk-icontheme("audio-volume-high-symbolic");
 }
