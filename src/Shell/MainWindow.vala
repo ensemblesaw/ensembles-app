@@ -110,6 +110,7 @@
                                                         registry_panel,
                                                         keyboard);
             squeezer.add (desktop_layout);
+            desktop_layout.reparent ();
 
 
             mobile_layout = new Layouts.MobileLayout (assignables_board,
@@ -143,9 +144,15 @@
                 Console.log ("Arranger Workstation Initialized!", Console.LogLevel.SUCCESS);
             });
 
-            notify.connect ((p) => {
-                if (!Application.kiosk_mode && squeezer.transition_running && p.get_name () == "default-height") {
+            notify["default-height"].connect (() => {
+                if (!Application.kiosk_mode) {
                     flap_button.visible = squeezer.get_visible_child () == mobile_layout;
+
+                    if (squeezer.get_visible_child () == desktop_layout) {
+                        desktop_layout.reparent ();
+                    } else {
+                        mobile_layout.reparent ();
+                    }
                 }
             });
 
@@ -165,16 +172,12 @@
             });
         }
 
-        protected override void size_allocate (int width, int height, int baseline) {
-            if (!Application.kiosk_mode) {
-                if (squeezer.get_visible_child () == desktop_layout) {
-                    desktop_layout.reparent ();
-                } else {
-                    mobile_layout.reparent ();
-                }
-            }
+        //  protected override void size_allocate (int width, int height, int baseline) {
+        //      base.size_allocate (width, height, baseline);
 
-            base.size_allocate (width, height, baseline);
-        }
+        //        if (!Application.kiosk_mode) {
+
+        //      }
+        //  }
     }
  }

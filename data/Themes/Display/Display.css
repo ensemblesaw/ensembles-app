@@ -296,6 +296,12 @@ Menu
     transition: all 1s ease-out;
 }
 
+.display .plugin-item-info {
+    font-size: 0.82em;
+    text-shadow: none;
+    line-height: normal;
+}
+
 .display .plugin-item:hover {
     color: #fff;
     background: linear-gradient(#444, #356);

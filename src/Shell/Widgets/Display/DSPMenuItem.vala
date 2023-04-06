@@ -43,25 +43,35 @@ namespace Ensembles.Shell.Widgets.Display {
             menu_item_grid.attach (plugin_name_label, 0, 0);
 
             var extra_info_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 4);
+            extra_info_box.add_css_class ("plugin-item-info");
             menu_item_grid.attach (extra_info_box, 0, 1);
 
             var extra_info_labels = new string[0];
             if (plugin.author_name != null && plugin.author_name.length > 0) {
                 extra_info_labels.resize (1);
-                extra_info_labels[0] = plugin.author_name;
+                if (plugin.author_name.length > 32) {
+                    extra_info_labels[0] = plugin.author_name.substring (0, 32) + "…";
+                } else {
+                    extra_info_labels[0] = plugin.author_name;
+                }
             }
 
             if (plugin.author_homepage != null && plugin.author_homepage.length > 0) {
                 extra_info_labels.resize (extra_info_labels.length + 1);
-                extra_info_labels[extra_info_labels.length - 1] = plugin.author_homepage;
+
+                if (plugin.author_homepage.length > 36) {
+                    extra_info_labels[extra_info_labels.length - 1] =
+                    plugin.author_homepage.substring (0, 36) + "…";
+                } else {
+                    extra_info_labels[extra_info_labels.length - 1] = plugin.author_homepage;
+                }
+
             }
 
             if (extra_info_labels.length > 0) {
                 extra_info_box.append (
                     new Gtk.Label (string.joinv (" ⏺ ", extra_info_labels)) {
-                        opacity = 0.5,
-                        max_width_chars = 40,
-                        ellipsize = Pango.EllipsizeMode.END
+                        opacity = 0.5
                     }
                 );
             }

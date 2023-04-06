@@ -57,9 +57,11 @@ namespace Ensembles.Shell.Layouts.Display {
 
         public void populate (List<AudioPlugin> plugins) {
             for (uint16 i = 0; i < plugins.length (); i++) {
-                var menu_item = new DSPMenuItem (plugins.nth_data (i),
-                Application.arranger_workstation.get_main_dsp_rack ());
-                main_list_box.insert (menu_item, -1);
+                if (plugins.nth_data (i).category == category) {
+                    var menu_item = new DSPMenuItem (plugins.nth_data (i),
+                    Application.arranger_workstation.get_main_dsp_rack ());
+                    main_list_box.insert (menu_item, -1);
+                }
             }
 
             min_value = 0;

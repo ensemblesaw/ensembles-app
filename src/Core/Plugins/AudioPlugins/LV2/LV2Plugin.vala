@@ -206,9 +206,9 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
         private Category get_category () {
             if ( // Check if it is DSP (effect) plugin
                 (
-                    plugin_class == "Amplifier Plugin" ||
-                    plugin_class == "Utility Plugin" ||
-                    plugin_class == "Reverb Plugin"
+                    plugin_class.contains ("Amplifier") ||
+                    plugin_class.contains ("Utility") ||
+                    plugin_class.contains ("Reverb")
                 ) && (
                     audio_in_ports.length > 0 &&
                     audio_out_ports.length > 0

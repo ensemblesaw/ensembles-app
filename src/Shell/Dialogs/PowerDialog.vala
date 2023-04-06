@@ -17,7 +17,7 @@ namespace Ensembles.Shell.Dialog {
             build_events ();
         }
 
-        public PowerDialog (Gtk.ApplicationWindow main_window) {
+        public PowerDialog (Gtk.Window main_window) {
             Object (
                 modal: true,
                 transient_for: main_window,
