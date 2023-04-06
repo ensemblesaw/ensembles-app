@@ -107,7 +107,7 @@ namespace Ensembles.Shell.Layouts.Display {
             }
 
             for (uint16 i = 0; i < plugins.length (); i++) {
-                var menu_item = new DSPInstanceMenuItem (plugins.nth_data (i));
+                var menu_item = new DSPInstanceMenuItem (plugins.nth_data (i), this);
                 main_list_box.insert (menu_item, -1);
 
                 if (highlight_index == i) {
@@ -117,6 +117,12 @@ namespace Ensembles.Shell.Layouts.Display {
 
             min_value = 0;
             max_value = (int) plugins.length () - 1;
+        }
+
+        public void delete_plugin_item (DSPInstanceMenuItem item) {
+            unowned AudioPlugin plugin = item.plugin;
+            main_list_box.remove (item);
+            rack.remove_data (plugin);
         }
     }
 }

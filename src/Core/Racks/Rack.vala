@@ -7,9 +7,9 @@ using Ensembles.Core.Plugins.AudioPlugins;
 
 namespace Ensembles.Core.Racks {
     /**
-    * Racks can be populated with plugins which are then used to
-    * process audio
-    */
+     * Racks can be populated with plugins which are then used to
+     * process audio
+     */
     public abstract class Rack : Object {
         protected List<AudioPlugin> plugins;
 
@@ -32,10 +32,10 @@ namespace Ensembles.Core.Racks {
         }
 
         /**
-        * Add a plugin to the end of the rack
-        *
-        * @param plugin AudioPlugin to append to the rack
-        */
+         * Add a plugin to the end of the rack
+         *
+         * @param plugin AudioPlugin to append to the rack
+         */
         public void append (AudioPlugin plugin) throws PluginError {
             if (plugin.category != rack_type) {
                 throw new PluginError.INVALID_CATEGORY ("Attempted to add plugin of different category");
@@ -48,12 +48,12 @@ namespace Ensembles.Core.Racks {
         }
 
         /**
-        * Add a plugin to the specified position
-        *
-        * @param plugin AudioPlugin to add to the rack
-        * @param position The position in the stack where the plugin must
-        * be added
-        */
+         * Add a plugin to the specified position
+         *
+         * @param plugin AudioPlugin to add to the rack
+         * @param position The position in the stack where the plugin must
+         * be added
+         */
         public void insert (AudioPlugin plugin, int position) throws PluginError {
             if (plugin.category != rack_type) {
                 throw new PluginError.INVALID_CATEGORY ("Attempted to add plugin of different category");
@@ -66,11 +66,11 @@ namespace Ensembles.Core.Racks {
         }
 
         /**
-        * Remove a plugin from the rack
-        *
-        * @param position The position in the stack from where the plugin will
-        * be removed
-        */
+         * Remove a plugin from a given position on the rack
+         *
+         * @param position position in the stack from where the plugin will
+         * be removed
+         */
         public void remove (int position) {
             AudioPlugin plugin = plugins.nth_data (position);
             plugin.active = false;
@@ -80,27 +80,39 @@ namespace Ensembles.Core.Racks {
         }
 
         /**
-        * Activate or deactivate a plugin
-        *
-        * A plugin will not process audio if it's not active
-        *
-        * @param position The position of the plugin in the rack
-        * @param active Whether the plugin should be enabled or not
-        */
+         * Remove a plugin from the rack
+         *
+         * @param plugin plugin to remove
+         */
+        public void remove_data (AudioPlugin plugin) {
+            plugin.active = false;
+            plugins.remove (plugin);
+
+            connect_audio_ports ();
+        }
+
+        /**
+         * Activate or deactivate a plugin
+         *
+         * A plugin will not process audio if it's not active
+         *
+         * @param position The position of the plugin in the rack
+         * @param active Whether the plugin should be enabled or not
+         */
         public void set_plugin_active (int position, bool active = true) {
             AudioPlugin plugin = plugins.nth_data (position);
             plugin.active = active;
         }
 
         /**
-        * Process a given stereo audio buffer using plugins
-        *
-        * @param len Length of buffer to process
-        * @param buffer_in_l Audio input buffer for left channel
-        * @param buffer_in_r Audio input buffer for right channel
-        * @param buffer_out_l Audio output buffer for left channel
-        * @param buffer_out_r Audio output buffer for right channel
-        */
+         * Process a given stereo audio buffer using plugins
+         *
+         * @param len Length of buffer to process
+         * @param buffer_in_l Audio input buffer for left channel
+         * @param buffer_in_r Audio input buffer for right channel
+         * @param buffer_out_l Audio output buffer for left channel
+         * @param buffer_out_r Audio output buffer for right channel
+         */
         public void process_audio (int len, float* buffer_in_l, float* buffer_in_r,
         float** buffer_out_l, float** buffer_out_r) {
             // If the main buffers aren't initialised
@@ -132,39 +144,45 @@ namespace Ensembles.Core.Racks {
 
         protected void run_plugins (uint32 sample_count) {
             if (active) {
-                foreach (AudioPlugin plugin in plugins) {
-                    if (plugin.active) {
-                        // Have the plugin process the audio buffer
-                        plugin.process (sample_count);
+                var rack_thread = new Thread<void> ("rack_thread", () => {
+                    foreach (AudioPlugin plugin in plugins) {
+                        if (plugin.active) {
+                            // Have the plugin process the audio buffer
+                            plugin.process (sample_count);
 
-                        // Copy wet audio to dry buffer as per mix amount
-                        for (uint32 j = 0; j < sample_count; j++) {
-                            aud_buf_dry_l[j] = Utils.Math.map_range_unclampedf (
-                                plugin.mix_gain,
-                                0,
-                                1,
-                                aud_buf_dry_l[j],
-                                aud_buf_mix_l[j]
-                            );
+                            // Copy wet audio to dry buffer as per mix amount
+                            for (uint32 j = 0; j < sample_count; j++) {
+                                aud_buf_dry_l[j] = Utils.Math.map_range_unclampedf (
+                                    plugin.mix_gain,
+                                    0,
+                                    1,
+                                    aud_buf_dry_l[j],
+                                    aud_buf_mix_l[j]
+                                );
 
-                            aud_buf_dry_r[j] = Utils.Math.map_range_unclampedf (
-                                plugin.mix_gain,
-                                0,
-                                1,
-                                aud_buf_dry_r[j],
-                                aud_buf_mix_r[j]
-                            );
+                                aud_buf_dry_r[j] = Utils.Math.map_range_unclampedf (
+                                    plugin.mix_gain,
+                                    0,
+                                    1,
+                                    aud_buf_dry_r[j],
+                                    aud_buf_mix_r[j]
+                                );
+                            }
+
+                            // Next plugin ready to run
                         }
-
-                        // Next plugin ready to run
                     }
-                }
+                });
+
+                rack_thread.join ();
             }
         }
 
         protected void connect_audio_ports (int change_index = -1) {
             var was_active = active;
             active = false;
+
+            print ("%u\n", plugins.length ());
 
             foreach (AudioPlugin plugin in plugins) {
                 plugin.connect_source_buffer (aud_buf_dry_l, aud_buf_dry_r);

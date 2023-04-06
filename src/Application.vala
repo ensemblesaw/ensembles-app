@@ -8,9 +8,9 @@ namespace Ensembles {
 
     /**
      * ## Ensembles Application
-     * 
+     *
      * Provides a GTK Application instance where only a single instance
-     *  is allowed.
+     * is allowed.
      * The Ensembles application works as a conjuncture of two components:
      * - Core: The arranger system and all it's plugins
      * - Shell: The user interface
@@ -112,14 +112,6 @@ namespace Ensembles {
 
             activate ();
             return 0;
-        }
-
-        public unowned Services.EventBus get_event_bus () {
-            if (event_bus == null) {
-                event_bus = new Services.EventBus ();
-            }
-
-            return event_bus;
         }
 
         public void init (string[] args) {
