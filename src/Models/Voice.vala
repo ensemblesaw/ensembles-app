@@ -1,19 +1,35 @@
 
 /*
- * Copyright 2020-2023 Subhadeep Jasu <subhajasu@gmail.com>
+ * Copyright 2020-2023 Subhadeep Jasu <subhadeep107@proton.me>
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-namespace Ensembles.Models {
+namespace Ensembles {
     /**
-     * Data structure representing voice or timbre data in soundfont
+     * Describes which hand is playing the voice
      */
-    public struct Voice {
-        public uint index;
-        public uint8 bank;
-        public uint preset;
-        public string name;
-        public string category;
-        public string sf_path;
+    public enum VoiceHandPosition {
+        /** Playing on left hand of split */
+        LEFT,
+        /** Playing on right hand of split as the main voice*/
+        RIGHT,
+        /** Playing on the right side of split layered with main voice */
+        RIGHT_LAYERED
+    }
+
+    namespace Models {
+        /**
+        * Data structure representing voice or timbre data in soundfont
+        */
+        public struct Voice {
+            public uint index;
+            public uint8 bank;
+            public uint preset;
+            public string name;
+            public string category;
+            public string sf_path;
+
+            public uint32 rack_index;
+        }
     }
 }

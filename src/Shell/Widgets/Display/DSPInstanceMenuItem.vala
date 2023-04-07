@@ -1,5 +1,5 @@
 /*
-* Copyright 2020-2023 Subhadeep Jasu <subhajasu@gmail.com>
+* Copyright 2020-2023 Subhadeep Jasu <subhadeep107@proton.me>
 * SPDX-License-Identifier: GPL-3.0-or-later
 */
 
@@ -50,7 +50,8 @@ namespace Ensembles.Shell.Widgets.Display {
 
             gain_knob = new Shell.Widgets.Knob.with_range (-12, 0, 1) {
                 width_request = 40,
-                height_request = 40
+                height_request = 40,
+                tooltip_text = _("Dry / Wet Mix")
             };
             gain_knob.value = Utils.Math.convert_gain_to_db (plugin.mix_gain);
             gain_knob.add_mark (-12);
@@ -65,11 +66,19 @@ namespace Ensembles.Shell.Widgets.Display {
             menu_item_box.append (button_box);
 
             if (plugin.ui != null) {
-                show_ui_button = new Gtk.Button.from_icon_name ("preferences-other-symbolic");
+                show_ui_button = new Gtk.Button.from_icon_name (
+                    "preferences-other-symbolic"
+                ) {
+                    tooltip_text = _("Show Plugin UI")
+                };
                 button_box.append (show_ui_button);
             }
 
-            delete_instance_button = new Gtk.Button.from_icon_name ("edit-delete-symbolic");
+            delete_instance_button = new Gtk.Button.from_icon_name (
+                "edit-delete-symbolic"
+            ) {
+                tooltip_text = _("Remove Plugin from Rack")
+            };
             button_box.append(delete_instance_button);
         }
 

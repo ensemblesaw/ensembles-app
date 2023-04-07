@@ -36,6 +36,7 @@ sources = files (
 
     'Shell/Layouts/Display/HomeScreen.vala',
     'Shell/Layouts/Display/StyleScreen.vala',
+    'Shell/Layouts/Display/VoiceScreen.vala',
     'Shell/Layouts/Display/DSPScreen.vala',
     'Shell/Layouts/Display/AudioPluginPicker.vala',
     'Shell/Layouts/Display/PluginScreen.vala',

@@ -64,9 +64,9 @@ At this point, you're ready to make your changes! Feel free to ask for help; eve
 * Installing the app and soundfont
 
     You can install Ensembles by compiling it from source
-    
+
     1. Install the required dependencies:
-    
+
         - `elementary-sdk`
         - `gtk+-3.0>=3.18`
         - `granite>=5.3.0`
@@ -88,7 +88,7 @@ At this point, you're ready to make your changes! Feel free to ask for help; eve
         meson _build --prefix=/usr
         sudo ninja -C _build install
         ```
-    
+
     4. Clone the SoundFont repository and change directory
         ```
         cd ..
@@ -107,12 +107,12 @@ At this point, you're ready to make your changes! Feel free to ask for help; eve
 
 ### Security vulnerability
 
-**If you find a security vulnerability, do NOT open an issue. Email _subhajasu@gmail.com_ instead.**
+**If you find a security vulnerability, do NOT open an issue. Email _subhadeep107@proton.me_ instead.**
 
 * Can I access something that's not mine, or something I shouldn't have access to?
 * Can I interfere with other Apps or Devices connected to the PC via Ensembles in ways that I am not supposed to? Can any other App or Device interfere with Ensembles in ways it's not supposed to?
 * Can I disable something for other people?
-If the answer to any of those three questions is "yes", then you're probably dealing with a security issue. Note that even if you answer "no" to all questions, you may still be dealing with a security issue, so if you're unsure, just email us at _subhajasu@gmail.com_.
+If the answer to any of those three questions is "yes", then you're probably dealing with a security issue. Note that even if you answer "no" to all questions, you may still be dealing with a security issue, so if you're unsure, just email us at _subhadeep107@proton.me_.
 
 ### Bugs/Issues
 

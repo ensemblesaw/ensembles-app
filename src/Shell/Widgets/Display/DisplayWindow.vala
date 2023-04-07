@@ -1,11 +1,15 @@
 /*
- * Copyright 2020-2023 Subhadeep Jasu <subhajasu@gmail.com>
+ * Copyright 2020-2023 Subhadeep Jasu <subhadeep107@proton.me>
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
 using Ensembles.Shell.Widgets.Display;
 
 namespace Ensembles.Shell.Layouts.Display {
+    /**
+     * Display Window is a window that may contain other widgets
+     * that are to be displayed inside the info display of Ensembles
+     */
     public class DisplayWindow : WheelScrollableWidget {
         private Gtk.Button close_button;
         private Gtk.CenterBox header_bar;

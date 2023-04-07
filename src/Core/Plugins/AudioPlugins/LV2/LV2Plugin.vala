@@ -1,6 +1,50 @@
 /*
- * Copyright 2020-2023 Subhadeep Jasu <subhajasu@gmail.com>
+ * Copyright 2020-2023 Subhadeep Jasu <subhadeep107@proton.me>
  * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+/*
+ * This file incorporates work covered by the following copyright and
+ * permission notices:
+ *
+ * ---
+ *
+  Copyright 2007-2016 David Robillard <http://drobilla.net>
+  Permission to use, copy, modify, and/or distribute this software for any
+  purpose with or without fee is hereby granted, provided that the above
+  copyright notice and this permission notice appear in all copies.
+  THIS SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+  ---
+ * Copyright (C) 2008-2012 Carl Hetherington <carl@carlh.net>
+ * Copyright (C) 2008-2017 Paul Davis <paul@linuxaudiosystems.com>
+ * Copyright (C) 2008-2019 David Robillard <d@drobilla.net>
+ * Copyright (C) 2012-2019 Robin Gareus <robin@gareus.org>
+ * Copyright (C) 2013-2018 John Emmas <john@creativepost.co.uk>
+ * Copyright (C) 2013 Michael R. Fisher <mfisher@bketech.com>
+ * Copyright (C) 2014-2016 Tim Mayberry <mojofunk@gmail.com>
+ * Copyright (C) 2016-2017 Damien Zammit <damien@zamaudio.com>
+ * Copyright (C) 2016 Nick Mainsbridge <mainsbridge@gmail.com>
+ * Copyright (C) 2017 Johannes Mueller <github@johannes-mueller.org>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ * ---
  */
 
 namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {

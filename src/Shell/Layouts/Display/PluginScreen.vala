@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2023 Subhadeep Jasu <subhajasu@gmail.com>
+ * Copyright 2020-2023 Subhadeep Jasu <subhadeep107@proton.me>
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -7,6 +7,9 @@ using Ensembles.Shell.Widgets.Display;
 using Ensembles.Core.Plugins.AudioPlugins;
 
 namespace Ensembles.Shell.Layouts.Display {
+    /**
+     * Shows the plugin UI.
+     */
     public class PluginScreen : DisplayWindow {
         public unowned AudioPlugin plugin { get; private set; }
         public string? history { get; set; }

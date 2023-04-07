@@ -1,5 +1,5 @@
 /*
- * Copyright 2020-2023 Subhadeep Jasu <subhajasu@gmail.com>
+ * Copyright 2020-2023 Subhadeep Jasu <subhadeep107@proton.me>
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -171,13 +171,5 @@
                 }
             });
         }
-
-        //  protected override void size_allocate (int width, int height, int baseline) {
-        //      base.size_allocate (width, height, baseline);
-
-        //        if (!Application.kiosk_mode) {
-
-        //      }
-        //  }
     }
  }

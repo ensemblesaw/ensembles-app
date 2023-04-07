@@ -8,13 +8,32 @@ using Ensembles.Models;
 
 namespace Ensembles.Shell.Layouts.Display {
     /**
-     * Shows a list of styles.
+     * Shows a list of voices from SoundFont and Voice plugins
      */
-    public class StyleScreen : DisplayWindow {
+    public class VoiceScreen : DisplayWindow {
         private Gtk.ListBox main_list_box;
 
-        public StyleScreen () {
-            base (_("Style"), _("Pick a Rhythm to accompany you"));
+        public VoiceScreen (VoiceHandPosition hand_position) {
+            var title_by_position = "";
+            var subtitle_by_position = "";
+            switch (hand_position) {
+                case VoiceHandPosition.LEFT:
+                    title_by_position = _("Left (Split)");
+                    subtitle_by_position = _("Pick a Voice to play on the left hand side of split");
+                    break;
+                case VoiceHandPosition.RIGHT:
+                    title_by_position = _("Right 1 (Main)");
+                    subtitle_by_position = _("Pick a Voice to play");
+                    break;
+                case VoiceHandPosition.RIGHT_LAYERED:
+                    title_by_position = _("Right 2 (Layered)");
+                    subtitle_by_position = _("Pick a Voice to play on another layer");
+                    break;
+            }
+            base (
+                _("Voice - %s").printf (title_by_position),
+                subtitle_by_position
+            );
         }
 
         construct {
@@ -41,43 +60,11 @@ namespace Ensembles.Shell.Layouts.Display {
         }
 
         public void build_events () {
-            main_list_box.row_activated.connect ((item) => {
-                var style_item = (StyleMenuItem) item;
 
-                Application.arranger_workstation.queue_change_style (style_item.style);
-            });
-
-            Application.event_bus.arranger_ready.connect (() => {
-                Timeout.add (1000, () => {
-                    Idle.add (() => {
-                        populate (Application.arranger_workstation.styles);
-                        var row_to_select = main_list_box.get_row_at_index (0);
-                        main_list_box.select_row (row_to_select);
-                        Application.event_bus.style_change (((StyleMenuItem) row_to_select).style);
-                        return false;
-                    });
-                    return false;
-                });
-            });
         }
 
-        public void populate (Style[] styles) {
-            Console.log ("Populating style list…");
+        public void populate (Voice[] voices) {
 
-            var temp_category = "";
-            for (uint16 i = 0; i < styles.length; i++) {
-                var show_category = false;
-                if (temp_category != styles[i].genre) {
-                    temp_category = styles[i].genre;
-                    show_category = true;
-                }
-
-                var menu_item = new StyleMenuItem (styles[i], show_category);
-                main_list_box.insert (menu_item, -1);
-            }
-
-            min_value = 0;
-            max_value = styles.length - 1;
         }
 
         public void scroll_to_selected_row () {
