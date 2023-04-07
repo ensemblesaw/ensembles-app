@@ -14,6 +14,9 @@ namespace Ensembles.Core {
         private StyleEngine style_engine;
         private Plugins.PluginManager plugin_manager;
         private Racks.DSPRack main_dsp_rack;
+        private Racks.VoiceRack voice_l_rack;
+        private Racks.VoiceRack voice_r1_rack;
+        private Racks.VoiceRack voice_r2_rack;
 
          // Arranger Data
         public Style[] styles { get; private set; }
@@ -34,8 +37,19 @@ namespace Ensembles.Core {
             } catch (FluidError e) {
                 Console.log (e.message, Console.LogLevel.ERROR);
             }
+
+            Console.log ("Initializing Plugin Racks");
             main_dsp_rack = new Racks.DSPRack ();
             synthesizer.add_rack (main_dsp_rack);
+
+            voice_l_rack = new Racks.VoiceRack ();
+            synthesizer.add_rack (voice_l_rack);
+
+            voice_r1_rack = new Racks.VoiceRack ();
+            synthesizer.add_rack (voice_r1_rack);
+
+            voice_r2_rack = new Racks.VoiceRack ();
+            synthesizer.add_rack (voice_r2_rack);
 
             build_events ();
         }
@@ -54,7 +68,10 @@ namespace Ensembles.Core {
             var style_loader = new FileLoaders.StyleFileLoader ();
             uint n_styles = 0;
             styles = style_loader.get_styles (out n_styles);
-            Console.log ("Found %u styles".printf (n_styles), Console.LogLevel.SUCCESS);
+            Console.log (
+                "Found %u styles".printf (n_styles),
+                Console.LogLevel.SUCCESS
+            );
 
             // Load Plugins
             plugin_manager = new PluginManager ();
@@ -73,11 +90,13 @@ namespace Ensembles.Core {
                 }
             });
 
-            Application.event_bus.style_set_part.connect ((part) => {
-                if (style_engine != null) {
-                    style_engine.queue_next_part (part);
+            Application.event_bus.style_set_part.connect (
+                (part) => {
+                    if (style_engine != null) {
+                        style_engine.queue_next_part (part);
+                    }
                 }
-            });
+            );
 
             Application.event_bus.style_break.connect (() => {
                 if (style_engine != null) {
@@ -91,7 +110,8 @@ namespace Ensembles.Core {
                 }
             });
 
-            Application.event_bus.style_change.connect ((style) => {
+            Application.event_bus.style_change.connect (
+                (style) => {
                 queue_change_style (style);
             });
         }
@@ -112,7 +132,11 @@ namespace Ensembles.Core {
                         style_engine.stop_and_wait (out current_tempo);
                     }
 
-                    style_engine = new StyleEngine (synth_provider, next_style, current_tempo);
+                    style_engine = new StyleEngine (
+                        synth_provider,
+                        next_style,
+                        current_tempo
+                    );
                     stopping_style = false;
                 });
             }
@@ -124,6 +148,19 @@ namespace Ensembles.Core {
 
         public unowned Racks.DSPRack get_main_dsp_rack () {
             return main_dsp_rack;
+        }
+
+        public unowned Racks.VoiceRack get_voice_rack (
+            VoiceHandPosition position
+        ) {
+            switch (position) {
+                case VoiceHandPosition.LEFT:
+                return voice_l_rack;
+                case VoiceHandPosition.RIGHT_LAYERED:
+                return voice_r2_rack;
+                default:
+                return voice_r1_rack;
+            }
         }
     }
 }

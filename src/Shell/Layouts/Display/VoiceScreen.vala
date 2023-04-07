@@ -5,13 +5,17 @@
 
 using Ensembles.Shell.Widgets.Display;
 using Ensembles.Models;
+using Ensembles.Core.Plugins.AudioPlugins;
 
 namespace Ensembles.Shell.Layouts.Display {
     /**
      * Shows a list of voices from SoundFont and Voice plugins
      */
     public class VoiceScreen : DisplayWindow {
+        public VoiceHandPosition hand_position { get; private set; }
         private Gtk.ListBox main_list_box;
+
+        private uint16 last_voice_index = 1;
 
         public VoiceScreen (VoiceHandPosition hand_position) {
             var title_by_position = "";
@@ -34,6 +38,7 @@ namespace Ensembles.Shell.Layouts.Display {
                 _("Voice - %s").printf (title_by_position),
                 subtitle_by_position
             );
+            this.hand_position = hand_position;
         }
 
         construct {
@@ -60,11 +65,41 @@ namespace Ensembles.Shell.Layouts.Display {
         }
 
         public void build_events () {
-
+            Application.event_bus.arranger_ready.connect (() => {
+                populate_plugins (
+                    Application.arranger_workstation.get_audio_plugins ()
+                );
+            });
         }
 
         public void populate (Voice[] voices) {
 
+        }
+
+        public void populate_plugins (List<AudioPlugin> plugins) {
+            var temp_category = AudioPlugin.Tech.NATIVE;
+            for (uint16 i = 0; i < plugins.length (); i++) {
+                try {
+                    if (plugins.nth_data (i).category == AudioPlugin.Category.VOICE) {
+                        var show_category = false;
+                        if (temp_category != plugins.nth_data (i).tech) {
+                            temp_category = plugins.nth_data (i).tech;
+                            show_category = true;
+                        }
+                        var menu_item = new VoiceMenuItem (
+                            last_voice_index++,
+                            null,
+                            plugins.nth_data (i),
+                            show_category);
+                        main_list_box.insert (menu_item, -1);
+                        Application.arranger_workstation.get_voice_rack (
+                            hand_position
+                        ).append (plugins.nth_data (i));
+                    }
+                } catch (PluginError e) {
+
+                }
+            }
         }
 
         public void scroll_to_selected_row () {

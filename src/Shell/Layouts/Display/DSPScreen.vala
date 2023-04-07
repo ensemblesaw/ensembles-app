@@ -38,7 +38,8 @@ namespace Ensembles.Shell.Layouts.Display {
             add_to_header (dsp_switch);
 
             plugin_picker_button = new Gtk.Button.from_icon_name ("plugin-add-symbolic") {
-                width_request = 36
+                width_request = 36,
+                tooltip_text = _("Add plugin to DSP Rack")
             };
             add_to_header (plugin_picker_button);
 

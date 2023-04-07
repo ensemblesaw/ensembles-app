@@ -11,8 +11,8 @@ namespace Ensembles.Core.MIDIPlayers {
      *
      * A style engine object can be made to play a particular Ensembles style.
      * An Ensembles style is a special MIDI file with `.enstl` extension.
-     * The style can take care of style playback using the appropriate chords
-     * and changing the style part
+     * The style engine can take care of style playback using the appropriate
+     * chords and changing the style part.
      */
     public class StyleEngine : Object {
         // Style data

@@ -38,7 +38,7 @@ namespace Ensembles.Shell.Widgets.Plugins {
                 margin_start = 16,
                 margin_end = 16
             };
-            control_label.add_css_class (Granite.STYLE_CLASS_H2_LABEL);
+            control_label.add_css_class (Granite.STYLE_CLASS_H3_LABEL);
             append (control_label);
 
             if (widget_size == Gtk.IconSize.LARGE) {
@@ -62,6 +62,7 @@ namespace Ensembles.Shell.Widgets.Plugins {
                     knob.value = *variable;
 
                     knob.add_mark (lv2_control_port.min_value);
+                    knob.add_mark (lv2_control_port.default_value);
                     knob.add_mark (lv2_control_port.max_value);
                 }
 
@@ -69,7 +70,43 @@ namespace Ensembles.Shell.Widgets.Plugins {
                     *variable = (float) value;
                 });
             } else {
+                var scale = new Gtk.Scale (Gtk.Orientation.VERTICAL, null) {
+                    height_request = 150,
+                    margin_start = 16,
+                    margin_end = 16,
+                    margin_top = 16,
+                    margin_bottom = 16,
+                    inverted = true
+                };
 
+                append (scale);
+
+                if (port is Core.Plugins.AudioPlugins.LADSPAV2.LV2ControlPort) {
+                    var lv2_control_port = (Core.Plugins.AudioPlugins.LADSPAV2.LV2ControlPort) port;
+                    scale.adjustment.lower = lv2_control_port.min_value;
+                    scale.adjustment.upper = lv2_control_port.max_value;
+                    scale.adjustment.step_increment = lv2_control_port.step;
+                    scale.adjustment.value = *variable;
+
+                    scale.add_mark (
+                        lv2_control_port.min_value, Gtk.PositionType.RIGHT,
+                        null
+                    );
+                    scale.add_mark (
+                        lv2_control_port.default_value,
+                        Gtk.PositionType.RIGHT,
+                        null
+                    );
+                    scale.add_mark (
+                        lv2_control_port.max_value,
+                        Gtk.PositionType.RIGHT,
+                        null
+                    );
+                }
+
+                scale.value_changed.connect ((range) => {
+                    *variable = (float) range.get_value ();
+                });
             }
         }
     }

@@ -26,6 +26,7 @@ namespace Ensembles.Shell.Layouts.Display {
 
             build_ui ();
             build_events ();
+            populate (Application.arranger_workstation.get_audio_plugins ());
         }
 
         public void build_ui () {
@@ -52,7 +53,7 @@ namespace Ensembles.Shell.Layouts.Display {
         }
 
         private void build_events () {
-            populate (Application.arranger_workstation.get_audio_plugins ());
+
         }
 
         public void populate (List<AudioPlugin> plugins) {

@@ -188,6 +188,18 @@ namespace Ensembles.Shell.Layouts.Display {
                 change_screen ("style");
             });
 
+            voice_l_button.clicked.connect (() => {
+                change_screen ("voice-l");
+            });
+
+            voice_r1_button.clicked.connect (() => {
+                change_screen ("voice-r1");
+            });
+
+            voice_r2_button.clicked.connect (() => {
+                change_screen ("voice-r2");
+            });
+
             dsp_button.clicked.connect (() => {
                 change_screen ("dsp");
             });

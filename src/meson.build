@@ -46,6 +46,7 @@ sources = files (
 
     'Shell/Widgets/Display/WheelScrollableWidget.vala',
     'Shell/Widgets/Display/DisplayWindow.vala',
+    'Shell/Widgets/Display/VoiceMenuItem.vala',
     'Shell/Widgets/Display/StyleMenuItem.vala',
     'Shell/Widgets/Display/DSPMenuItem.vala',
     'Shell/Widgets/Display/DSPInstanceMenuItem.vala',

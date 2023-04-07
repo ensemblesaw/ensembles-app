@@ -1,6 +1,6 @@
 
 /*
- * Copyright 2020-2023 Subhadeep Jasu <subhadeep107@proton.me>
+ * Copyright 2020-2023 Subhadeep Jasu <subhajasu@gmail.com>
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -28,8 +28,6 @@ namespace Ensembles {
             public string name;
             public string category;
             public string sf_path;
-
-            public uint32 rack_index;
         }
     }
 }

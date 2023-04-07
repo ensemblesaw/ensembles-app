@@ -32,6 +32,9 @@ namespace Ensembles.Shell.Layouts {
         // Screens
         private HomeScreen home_screen;
         private StyleScreen style_screen;
+        private VoiceScreen voice_l_screen;
+        private VoiceScreen voice_r1_screen;
+        private VoiceScreen voice_r2_screen;
         private DSPScreen dsp_screen;
         private PluginScreen plugin_screen;
 
@@ -94,6 +97,15 @@ namespace Ensembles.Shell.Layouts {
 
             style_screen = new StyleScreen ();
             main_stack.add_named (style_screen, "style");
+
+            voice_l_screen = new VoiceScreen (Ensembles.VoiceHandPosition.LEFT);
+            main_stack.add_named (voice_l_screen, "voice-l");
+
+            voice_r1_screen = new VoiceScreen (Ensembles.VoiceHandPosition.RIGHT);
+            main_stack.add_named (voice_r1_screen, "voice-r1");
+
+            voice_r2_screen = new VoiceScreen (Ensembles.VoiceHandPosition.RIGHT_LAYERED);
+            main_stack.add_named (voice_r2_screen, "voice-r2");
         }
 
         private void build_events () {
@@ -111,7 +123,7 @@ namespace Ensembles.Shell.Layouts {
                         return false;
                     });
 
-                    Timeout.add (2200, () => {
+                    Timeout.add (400, () => {
                         dsp_screen = new DSPScreen (Application.arranger_workstation.get_main_dsp_rack ());
                         dsp_screen.close.connect (navigate_to_home);
                         main_stack.add_named (dsp_screen, "dsp");
@@ -127,6 +139,9 @@ namespace Ensembles.Shell.Layouts {
             });
 
             style_screen.close.connect (navigate_to_home);
+            voice_l_screen.close.connect (navigate_to_home);
+            voice_r1_screen.close.connect (navigate_to_home);
+            voice_r2_screen.close.connect (navigate_to_home);
 
             Application.event_bus.show_plugin_ui.connect (show_plugin_screen);
         }

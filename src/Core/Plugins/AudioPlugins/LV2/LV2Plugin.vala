@@ -265,7 +265,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                     audio_out_ports.length > 0
                 )
             ) {
-
+                return Category.VOICE;
             }
 
             return Category.UNSUPPORTED;
@@ -515,7 +515,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                     var plugin_control = new Shell.Widgets.Plugins.AudioPluginControl (
                         control_in_ports[i],
                         &(control_in_variables[i]),
-                        Gtk.IconSize.LARGE
+                        control_in_ports.length > 3 ? Gtk.IconSize.NORMAL : Gtk.IconSize.LARGE
                     );
                     box.append (plugin_control);
                 }
