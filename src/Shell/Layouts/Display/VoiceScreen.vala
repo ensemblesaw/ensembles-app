@@ -6,6 +6,7 @@
 using Ensembles.Shell.Widgets.Display;
 using Ensembles.Models;
 using Ensembles.Core.Plugins.AudioPlugins;
+using Ensembles.Core.Racks;
 
 namespace Ensembles.Shell.Layouts.Display {
     /**
@@ -66,9 +67,7 @@ namespace Ensembles.Shell.Layouts.Display {
 
         public void build_events () {
             Application.event_bus.arranger_ready.connect (() => {
-                populate_plugins (
-                    Application.arranger_workstation.get_audio_plugins ()
-                );
+                populate_plugins (Application.arranger_workstation.get_voice_rack (hand_position).get_plugins ());
             });
         }
 
@@ -79,25 +78,18 @@ namespace Ensembles.Shell.Layouts.Display {
         public void populate_plugins (List<AudioPlugin> plugins) {
             var temp_category = AudioPlugin.Tech.NATIVE;
             for (uint16 i = 0; i < plugins.length (); i++) {
-                try {
-                    if (plugins.nth_data (i).category == AudioPlugin.Category.VOICE) {
-                        var show_category = false;
-                        if (temp_category != plugins.nth_data (i).tech) {
-                            temp_category = plugins.nth_data (i).tech;
-                            show_category = true;
-                        }
-                        var menu_item = new VoiceMenuItem (
-                            last_voice_index++,
-                            null,
-                            plugins.nth_data (i),
-                            show_category);
-                        main_list_box.insert (menu_item, -1);
-                        Application.arranger_workstation.get_voice_rack (
-                            hand_position
-                        ).append (plugins.nth_data (i));
+                if (plugins.nth_data (i).category == AudioPlugin.Category.VOICE) {
+                    var show_category = false;
+                    if (temp_category != plugins.nth_data (i).tech) {
+                        temp_category = plugins.nth_data (i).tech;
+                        show_category = true;
                     }
-                } catch (PluginError e) {
-
+                    var menu_item = new VoiceMenuItem (
+                        last_voice_index++,
+                        null,
+                        plugins.nth_data (i),
+                        show_category);
+                    main_list_box.insert (menu_item, -1);
                 }
             }
         }

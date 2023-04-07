@@ -76,6 +76,8 @@ namespace Ensembles.Core {
             // Load Plugins
             plugin_manager = new PluginManager ();
 
+            add_plugins_to_voice_racks ();
+
             // Send ready signal
             Idle.add (() => {
                 Ensembles.Application.event_bus.arranger_ready ();
@@ -140,6 +142,26 @@ namespace Ensembles.Core {
                     stopping_style = false;
                 });
             }
+        }
+
+        private void add_plugins_to_voice_racks () {
+            unowned List<AudioPlugins.AudioPlugin> plugins =
+            plugin_manager.audio_plugins;
+            for (uint32 i = 0; i < plugins.length (); i++) {
+                if (plugins.nth_data (i).category ==
+                AudioPlugins.AudioPlugin.Category.VOICE) {
+                    try {
+                        voice_l_rack.append (plugins.nth_data (i).duplicate ());
+                        voice_r1_rack.append (plugins.nth_data (i).duplicate ());
+                        voice_r2_rack.append (plugins.nth_data (i).duplicate ());
+                    } catch (PluginError e) {
+
+                    }
+                }
+            }
+            voice_l_rack.active = true;
+            voice_r1_rack.active = true;
+            voice_r2_rack.active = true;
         }
 
         public unowned List<AudioPlugins.AudioPlugin> get_audio_plugins () {

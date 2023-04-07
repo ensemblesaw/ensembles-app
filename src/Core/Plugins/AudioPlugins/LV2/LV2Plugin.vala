@@ -78,9 +78,15 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
         private Lilv.Instance lv2_instance_l; // Stereo audio / Mono L Processor
         private Lilv.Instance lv2_instance_r; // Mono R Processor
 
+        // Control ports
         public LV2ControlPort[] control_in_ports;
         public float[] control_in_variables;
         public LV2ControlPort[] control_out_ports;
+
+        // Atom ports
+        public LV2AtomPort[] atom_in_ports;
+        public LV2.Atom.Atom[] atom_in_variables;
+        public LV2AtomPort[] atom_out_ports;
 
         public unowned Lilv.Plugin? lilv_plugin { get; protected set; }
 
@@ -125,7 +131,6 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                 }
 
                 connect_other_ports ();
-
                 build_ui ();
             }
         }
@@ -226,10 +231,17 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
         }
 
         public void connect_other_ports () {
+            // Connect control ports
             control_in_variables = new float[control_in_ports.length];
             for (uint32 p = 0; p < control_in_ports.length; p++) {
                 control_in_variables[p] = control_in_ports[p].default_value;
                 connect_port (control_in_ports[p], &control_in_variables[p]);
+            }
+
+            // Connect atom ports
+            atom_in_variables = new LV2.Atom.Atom[atom_in_ports.length];
+            for (uint32 p = 0; p < atom_in_ports.length; p++) {
+                connect_port (atom_in_ports[p], &atom_in_variables[p]);
             }
         }
 
@@ -262,6 +274,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
             } else if ( // Check if it is Voice (instrument) plugin
                 plugin_class == "Instrument Plugin" ||
                 (
+                    audio_in_ports.length > 0 &&
                     audio_out_ports.length > 0
                 )
             ) {
@@ -295,7 +308,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
             for (var iter = lilv_features.begin (); !lilv_features.is_end (iter);
             iter = lilv_features.next (iter)) {
                 string required_feature = lilv_features.get (iter).as_uri ();
-                print ("%s\n", required_feature);
+                print ("checking: %s\n", required_feature);
                 if (!feature_supported (required_feature)) {
                     return false;
                 }
@@ -326,6 +339,8 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
             var audio_out_port_list = new List<LV2Port> ();
             var control_in_port_list = new List<LV2ControlPort> ();
             var control_out_port_list = new List<LV2ControlPort> ();
+            var atom_in_port_list = new List<LV2AtomPort> ();
+            var atom_out_port_list = new List<LV2AtomPort> ();
 
             var n_ports = lilv_plugin.get_num_ports ();
             for (uint32 i = 0; i < n_ports; i++) {
@@ -405,8 +420,8 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                             name,
                             i,
                             properties,
-                            turtle_token,
                             symbol,
+                            turtle_token,
                             min_value.as_float (),
                             max_value.as_float (),
                             default_value.as_float (),
@@ -417,8 +432,8 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                             name,
                             i,
                             properties,
-                            turtle_token,
                             symbol,
+                            turtle_token,
                             min_value.as_float (),
                             max_value.as_float (),
                             default_value.as_float (),
@@ -427,6 +442,25 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                     }
                 } else if (is_atom_port) {
 
+                    if (is_input_port) {
+                        atom_in_port_list.append (
+                            new LV2AtomPort (
+                                name,
+                                i,
+                                properties,
+                                symbol,
+                                turtle_token)
+                        );
+                    } else if (is_output_port) {
+                        atom_out_port_list.append (
+                            new LV2AtomPort (
+                                name,
+                                i,
+                                properties,
+                                symbol,
+                                turtle_token)
+                        );
+                    }
                 }
             }
 
@@ -475,6 +509,19 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                     _port.max_value,
                     _port.default_value,
                     _port.step
+                );
+            }
+
+            var n_atom_in_ports = atom_in_port_list.length ();
+            atom_in_ports = new LV2AtomPort[n_atom_in_ports];
+            for (uint32 p = 0; p < n_atom_in_ports; p++) {
+                var _port = atom_in_port_list.nth_data (p);
+                atom_in_ports[p] = new LV2AtomPort (
+                    _port.name,
+                    _port.index,
+                    _port.properties,
+                    _port.symbol,
+                    _port.turtle_token
                 );
             }
         }
