@@ -109,15 +109,79 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
             uint32 size = 0;
 
             size = ((Atom.Event?)
-            ((char*)LV2.Atom.contents<Atom.Sequence?>(evbuf.atom)
+            ((char*) Atom.contents<Atom.Sequence?> (evbuf.atom)
             + offset)).body.size;
+
             offset += pad_size ((uint32) sizeof (Atom.Event) + size);
 
             var next = Iter () {
                 evbuf = evbuf,
                 offset = offset
             };
+
             return next;
+        }
+
+        public bool get_frames_and_data (
+            Iter iter,
+            out uint32 frames,
+            out uint32 subframes,
+            out uint32 type,
+            out uint32 size,
+            out uint8[] data
+        ) {
+            frames = subframes = type = size = 0;
+            data = null;
+
+            if (!is_valid (iter)) {
+                return false;
+            }
+
+            unowned Atom.Sequence aseq = iter.evbuf.atom;
+            unowned Atom.Event aev = ((Atom.Event?)
+            ((char*) Atom.contents<Atom.Sequence?> (aseq)
+            + iter.offset));
+
+            frames = (uint32) aev.time_frames;
+            subframes = 0;
+            type = aev.body.type;
+            size = aev.body.size;
+            data = (uint8[]) Atom.body (aev.body);
+
+            return true;
+        }
+
+        public bool write (
+            Iter iter,
+            uint32 frames,
+            uint32 subframes,
+            uint32 type,
+            uint32 size,
+            uint8[] data
+        ) {
+            unowned Atom.Sequence aseq = iter.evbuf.atom;
+
+            if (
+                iter.evbuf.capacity - sizeof (Atom.Atom) - aseq.atom.size <
+                sizeof (Atom.Event) + size
+            ) {
+                return false;
+            }
+
+            unowned Atom.Event aev = ((Atom.Event?)
+            ((char*) Atom.contents<Atom.Sequence?> (aseq)
+            + iter.offset));
+
+            aev.time_frames = frames;
+            aev.body.type = type;
+            aev.body.size = size;
+
+            Memory.copy (Atom.body (aev.body), data, size);
+            size = pad_size ((uint32) sizeof (Atom.Event) + size);
+            aseq.atom.size += size;
+            iter.offset += size;
+
+            return true;
         }
 
         private static uint32 pad_size (uint32 size) {

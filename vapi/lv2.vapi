@@ -283,7 +283,10 @@ namespace LV2.Atom {
     public const string _timeUnit;
 
     [CCode (cname = "LV2_ATOM_CONTENTS", generic_type_pos = 0)]
-    public static unowned void* contents<T>(T atom);
+    public static unowned void* contents<T> (T atom);
+
+    [CCode (cname = "LV2_ATOM_BODY", generic_type_pos = 0)]
+    public static unowned void* body (Atom atom);
 
     [CCode (cname = "LV2_Atom", destroy_function = "", has_type_id = false)]
     public struct Atom {
