@@ -60,6 +60,8 @@ namespace Ensembles.Core.Plugins.AudioPlugins {
 
         public abstract void connect_sink_buffer (void* out_l, void* out_r);
 
+        public abstract void send_midi_event (Fluid.MIDIEvent midi_event);
+
         /**
          * Connect a port to local variable. Connect all ports before activating
          * plugin

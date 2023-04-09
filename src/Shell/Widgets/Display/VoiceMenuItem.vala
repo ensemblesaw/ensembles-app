@@ -88,7 +88,7 @@ namespace Ensembles.Shell.Widgets.Display {
 
             menu_item_grid.attach (category_label, 1, 0, 2, 1);
 
-            if (is_plugin) {
+            if (is_plugin && plugin.ui != null) {
                 show_ui_button = new Gtk.Button.from_icon_name ("preferences-other-symbolic") {
                     margin_top = 6,
                     margin_start = 4,

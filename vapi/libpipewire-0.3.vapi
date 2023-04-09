@@ -24,5 +24,4 @@ namespace Pipewire {
     namespace Debug {
         bool is_category_enabled (string name);
     }
-
 }

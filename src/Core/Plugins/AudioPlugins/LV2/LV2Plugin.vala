@@ -245,6 +245,20 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
             }
         }
 
+        public override void send_midi_event (Fluid.MIDIEvent midi_event) {
+            for (uint16 i = 0; i < atom_in_ports.length; i++) {
+                if (
+                    (
+                        atom_in_ports[i].flags &
+                        LV2AtomPort.Flags.SUPPORTS_MIDI_EVENT
+                    ) > LV2AtomPort.Flags.NONE
+                ) {
+                    // This is a midi input port
+                    // Fill this before running plugin
+                }
+            }
+        }
+
         public override void process (uint32 sample_count) {
             if (lv2_instance_l != null) {
                 lv2_instance_l.run (sample_count);
@@ -352,6 +366,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
 
         private void create_ports () {
             var port_analyser = new LV2PortAnalyser (lilv_plugin);
+
             var n_audio_in_ports = port_analyser.audio_in_port_list.length ();
             audio_in_ports = new Port[n_audio_in_ports];
 
@@ -428,6 +443,8 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                 homogeneous = control_in_ports.length < 4
             };
 
+            bool is_ui_required = false;
+
             if (control_in_ports.length > 0) {
                 for (uint i = 0; i < control_in_ports.length; i++) {
                     var plugin_control = new Shell.Plugins.AudioPlugins.Widgets.AudioPluginControl (
@@ -437,9 +454,13 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                     );
                     box.append (plugin_control);
                 }
+
+                is_ui_required = true;
             }
 
-            ui = box;
+            if (is_ui_required) {
+                ui = box;
+            }
         }
     }
 }

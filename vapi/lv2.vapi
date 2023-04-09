@@ -282,47 +282,50 @@ namespace LV2.Atom {
     public const string _supports;
     public const string _timeUnit;
 
+    [CCode (cname = "LV2_ATOM_CONTENTS", generic_type_pos = 0)]
+    public static unowned void* contents<T>(T atom);
+
     [CCode (cname = "LV2_Atom", destroy_function = "", has_type_id = false)]
     public struct Atom {
         uint32 size;
         uint32 type;
     }
 
-    [CCode (destroy_function = "", has_type_id = false)]
+    [CCode (cname = "LV2_Atom_Int", destroy_function = "", has_type_id = false)]
     public struct Int {
         Atom atom;
         int32 body;
     }
 
-    [CCode (destroy_function = "", has_type_id = false)]
+    [CCode (cname = "LV2_Atom_Long", destroy_function = "", has_type_id = false)]
     public struct Long {
         Atom atom;
         int64 body;
     }
 
-    [CCode (destroy_function = "", has_type_id = false)]
+    [CCode (cname = "LV2_Atom_Float", destroy_function = "", has_type_id = false)]
     public struct Float {
         Atom atom;
         float body;
     }
 
-    [CCode (destroy_function = "", has_type_id = false)]
+    [CCode (cname = "LV2_Atom_Double", destroy_function = "", has_type_id = false)]
     public struct Double {
         Atom atom;
         double body;
     }
 
     [SimpleType]
-    [CCode (destroy_function = "", has_type_id = false)]
+    [CCode (cname = "LV2_Atom_Bool", destroy_function = "", has_type_id = false)]
     public struct Bool : Int {}
 
-    [CCode (destroy_function = "", has_type_id = false)]
+    [CCode (cname = "LV2_Atom_URID", destroy_function = "", has_type_id = false)]
     public struct URID {
         Atom atom;
         uint32 body;
     }
 
-    [CCode (destroy_function = "", has_type_id = false)]
+    [CCode (cname = "LV2_Atom_String", destroy_function = "", has_type_id = false)]
     public struct String {
         Atom atom;
     }
@@ -333,13 +336,13 @@ namespace LV2.Atom {
         uint32 lang;
     }
 
-    [CCode (destroy_function = "", has_type_id = false)]
+    [CCode (cname = "LV2_Atom_Literal", destroy_function = "", has_type_id = false)]
     public struct Literal {
         Atom atom;
         LiteralBody body;
     }
 
-    [CCode (destroy_function = "", has_type_id = false)]
+    [CCode (cname = "LV2_Atom_Tuple", destroy_function = "", has_type_id = false)]
     public struct Tuple {
         Atom atom;
     }
@@ -350,7 +353,7 @@ namespace LV2.Atom {
         uint32 child_type;
     }
 
-    [CCode (destroy_function = "", has_type_id = false)]
+    [CCode (cname = "LV2_Atom_Vector", destroy_function = "", has_type_id = false)]
     public struct Vector {
         Atom atom;
         VectorBody body;
@@ -363,7 +366,7 @@ namespace LV2.Atom {
         Atom value;
     }
 
-    [CCode (destroy_function = "", has_type_id = false)]
+    [CCode (cname = "LV2_Atom_Property", destroy_function = "", has_type_id = false)]
     public struct Property {
         Atom atom;
         PropertyBody body;
@@ -375,13 +378,13 @@ namespace LV2.Atom {
         uint32 otype;
     }
 
-    [CCode (destroy_function = "", has_type_id = false)]
+    [CCode (cname = "LV2_Atom_Object", destroy_function = "", has_type_id = false)]
     public struct Object {
         Atom atom;
         ObjectBody body;
     }
 
-    [CCode (destroy_function = "", has_type_id = false)]
+    [CCode (cname = "LV2_Atom_Event", destroy_function = "", has_type_id = false)]
     public struct Event {
         [CCode (cname = "time.frames")]
         int64 time_frames;
@@ -397,7 +400,7 @@ namespace LV2.Atom {
         uint32 pad;
     }
 
-    [CCode (destroy_function = "", has_type_id = false)]
+    [CCode (cname = "LV2_Atom_Sequence", destroy_function = "", has_type_id = false)]
     public struct Sequence {
         Atom atom;
         SequenceBody body;
@@ -450,12 +453,12 @@ namespace LV2.MIDI {
     public const string _statusMask;
     public const string _velocity;
 
-    [CCode (has_inline = true)]
-    public static bool is_voice_message (unowned uint8 msg);
+    [CCode (ctype="inline")]
+    public static bool is_voice_message (uint8 msg);
 
-    [CCode (has_inline = true)]
-    public static bool is_system_message (unowned uint8 msg);
+    [CCode (ctype="inline")]
+    public static bool is_system_message (uint8 msg);
 
-    [CCode (has_inline = true)]
-    public static uint8 message_type (unowned uint8 msg);
+    [CCode (ctype="inline")]
+    public static uint8 message_type (uint8 msg);
 }
