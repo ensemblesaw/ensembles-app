@@ -1,3 +1,32 @@
+/*
+ * Copyright 2020-2023 Subhadeep Jasu <subhadeep107@proton.me>
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+/*
+ * This file incorporates work covered by the following copyright and
+ * permission notices:
+ *
+ * ---
+ *
+  Copyright 2006-2012 Steve Harris, David Robillard.
+  Copyright 2000-2002 Richard W.E. Furse, Paul Barton-Davis, Stefan Westerfeld.
+
+  Permission to use, copy, modify, and/or distribute this software for any
+  purpose with or without fee is hereby granted, provided that the above
+  copyright notice and this permission notice appear in all copies.
+
+  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+  REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
+  FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+  INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+  LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+  OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+  PERFORMANCE OF THIS SOFTWARE.
+ *
+ * ---
+ */
+
+// LV2 Core ////////////////////////////////////////////////////////////////////
 [CCode(cheader_filename="lv2.h", cprefix="LV2_", lower_case_cprefix="lv2_")]
 namespace LV2 {
     [CCode(cname="LV2_Feature", has_destroy_function=false, has_copy_function=false)]
@@ -10,9 +39,8 @@ namespace LV2 {
         string URI;
     }
 
-    [Compact]
-    [CCode (cname = "void")]
-    public class Handle {
+    [SimpleType]
+    public struct Handle {
     }
 
     public class Core {
@@ -109,18 +137,78 @@ namespace LV2 {
 
 
 
-// Extensions
+// Extensions //////////////////////////////////////////////////////////////////
+
+/**
+ * User interfaces of any type for plugins.
+ * See <http://lv2plug.in/ns/extensions/ui> for details.
+*/
+[CCode (cheader_filename = "lv2/lv2plug.in/ns/extensions/ui/ui.h")]
+namespace LV2.UI {
+    public const string URI;
+
+    public const string PREFIX;
+
+    public const string _CocoaUI;
+    public const string _Gtk3UI;
+    public const string _GtkUI;
+    public const string _PortNotification;
+    public const string _PortProtocol;
+    public const string _Qt4UI;
+    public const string _Qt5UI;
+    public const string _UI;
+    public const string _WindowsUI;
+    public const string _X11UI;
+    public const string _binary;
+    public const string _fixedSize;
+    public const string _idleInterface;
+    public const string _noUserResize;
+    public const string _notifyType;
+    public const string _parent;
+    public const string _plugin;
+    public const string _portIndex;
+    public const string _portMap;
+    public const string _portNotification;
+    public const string _portSubscribe;
+    public const string _protocol;
+    public const string _requestValue;
+    public const string _floatProtocol;
+    public const string _peakProtocol;
+    public const string _resize;
+    public const string _showInterface;
+    public const string _touch;
+    public const string _ui;
+    public const string _updateRate;
+    public const string _windowTitle;
+    public const string _scaleFactor;
+    public const string _foregroundColor;
+    public const string _backgroundColor;
+
+    [CCode (cname = "LV2UI_INVALID_PORT_INDEX")]
+    public const uint32 INVALID_PORT_INDEX;
+
+    [SimpleType]
+    [CCode (cname = "LV2UI_Widget")]
+    public struct Widget {
+    }
+
+    [SimpleType]
+    [CCode (cname = "LV2UI_Handle")]
+    public struct Handle {
+    }
+}
+
 
 [CCode(cheader_filename="lv2/lv2plug.in/ns/ext/urid/urid.h")]
 namespace LV2.URID {
     [SimpleType]
-    [CCode (cname = "LV2_URID_Map_Handle", has_type_id = false)]
-    public struct LV2URIDMapHandle {
+    [CCode (cname = "LV2_URID_Map_Handle")]
+    public struct MapHandle {
     }
 
     [SimpleType]
-    [CCode (cname = "LV2_URID_Unmap_Handle", has_type_id = false)]
-    public struct LV2URIDUnmapHandle {
+    [CCode (cname = "LV2_URID_Unmap_Handle")]
+    public struct UnmapHandle {
     }
 
     [SimpleType]
@@ -136,14 +224,14 @@ namespace LV2.URID {
 
     [CCode (cname = "LV2_URID_Map", destroy_function = "")]
     public struct UridMap {
-        public void* handle;
+        public MapHandle handle;
         [CCode (cname = "map", has_target = false, delegate_target_cname = "")]
         public unowned map_call_back map;
     }
 
     [CCode (cname = "LV2_URID_Unmap", destroy_function = "")]
     public struct UridUnmap {
-        public void* handle;
+        public UnmapHandle handle;
         [CCode (cname = "unmap", has_target = false, delegate_target_cname = "")]
         public unowned unmap_call_back unmap;
     }
@@ -158,6 +246,41 @@ namespace LV2.URID {
 
 [CCode(cheader_filename="lv2/lv2plug.in/ns/ext/atom/atom.h")]
 namespace LV2.Atom {
+    public const string URI;
+
+    public const string PREFIX;
+
+    public const string _Atom;
+    public const string _AtomPort;
+    public const string _Blank;
+    public const string _Bool;
+    public const string _Chunk;
+    public const string _Double;
+    public const string _Event;
+    public const string _Float;
+    public const string _Int;
+    public const string _Literal;
+    public const string _Long;
+    public const string _Number;
+    public const string _Object;
+    public const string _Path;
+    public const string _Property;
+    public const string _Resource;
+    public const string _Sequence;
+    public const string _Sound;
+    public const string _String;
+    public const string _Tuple;
+    public const string _URI;
+    public const string _URID;
+    public const string _Vector;
+    public const string _atomTransfer;
+    public const string _beatTime;
+    public const string _bufferType;
+    public const string _childType;
+    public const string _eventTransfer;
+    public const string _frameTime;
+    public const string _supports;
+    public const string _timeUnit;
 
     [CCode (cname = "LV2_Atom", destroy_function = "", has_type_id = false)]
     public struct Atom {
@@ -279,40 +402,60 @@ namespace LV2.Atom {
         Atom atom;
         SequenceBody body;
     }
+}
 
+[CCode(cheader_filename="lv2/lv2plug.in/ns/ext/midi/midi.h")]
+namespace LV2.MIDI {
     public const string URI;
 
     public const string PREFIX;
 
-    public const string _Atom;
-    public const string _AtomPort;
-    public const string _Blank;
-    public const string _Bool;
+    public const string _ActiveSense;
+    public const string _Aftertouch;
+    public const string _Bender;
     public const string _Chunk;
-    public const string _Double;
-    public const string _Event;
-    public const string _Float;
-    public const string _Int;
-    public const string _Literal;
-    public const string _Long;
-    public const string _Number;
-    public const string _Object;
-    public const string _Path;
-    public const string _Property;
-    public const string _Resource;
-    public const string _Sequence;
-    public const string _Sound;
-    public const string _String;
-    public const string _Tuple;
-    public const string _URI;
-    public const string _URID;
-    public const string _Vector;
-    public const string _atomTransfer;
-    public const string _beatTime;
-    public const string _bufferType;
-    public const string _childType;
-    public const string _eventTransfer;
-    public const string _frameTime;
-    public const string _supports;
-    public const string _timeUnit;
+    public const string _Continue;
+    public const string _Controller;
+    public const string _MidiEvent;
+    public const string _NoteOff;
+    public const string _NoteOn;
+    public const string _ProgramChange;
+    public const string _QuarterFrame;
+    public const string _Reset;
+    public const string _SongPosition;
+    public const string _SongSelect;
+    public const string _Start;
+    public const string _Stop;
+    public const string _SystemCommon;
+    public const string _SystemExclusive;
+    public const string _SystemMessage;
+    public const string _SystemRealtime;
+    public const string _Tick;
+    public const string _TuneRequest;
+    public const string _VoiceMessage;
+    public const string _benderValue;
+    public const string _binding;
+    public const string _byteNumber;
+    public const string _channel;
+    public const string _chunk;
+    public const string _controllerNumber;
+    public const string _controllerValue;
+    public const string _noteNumber;
+    public const string _pressure;
+    public const string _programNumber;
+    public const string _property;
+    public const string _songNumber;
+    public const string _songPosition;
+    public const string _status;
+    public const string _statusMask;
+    public const string _velocity;
+
+    [CCode (has_inline = true)]
+    public static bool is_voice_message (unowned uint8 msg);
+
+    [CCode (has_inline = true)]
+    public static bool is_system_message (unowned uint8 msg);
+
+    [CCode (has_inline = true)]
+    public static uint8 message_type (unowned uint8 msg);
 }

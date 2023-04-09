@@ -159,6 +159,7 @@ namespace Ensembles.Core {
                     }
                 }
             }
+
             voice_l_rack.active = true;
             voice_r1_rack.active = true;
             voice_r2_rack.active = true;

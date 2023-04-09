@@ -5,7 +5,7 @@
 
 using Ensembles.Core.Plugins.AudioPlugins;
 
-namespace Ensembles.Shell.Widgets.Plugins {
+namespace Ensembles.Shell.Plugins.AudioPlugins.Widgets {
     public class AudioPluginControl : Gtk.Box {
         private Gtk.IconSize widget_size;
         private float* variable;
@@ -42,7 +42,7 @@ namespace Ensembles.Shell.Widgets.Plugins {
             append (control_label);
 
             if (widget_size == Gtk.IconSize.LARGE) {
-                var knob = new Knob () {
+                var knob = new Shell.Widgets.Knob () {
                     width_request = 150,
                     height_request = 150,
                     margin_start = 16,

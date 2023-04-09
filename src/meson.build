@@ -51,7 +51,7 @@ sources = files (
     'Shell/Widgets/Display/DSPMenuItem.vala',
     'Shell/Widgets/Display/DSPInstanceMenuItem.vala',
 
-    'Shell/Widgets/Plugins/AudioPluginControl.vala',
+    'Shell/Plugins/AudioPlugins/Widgets/AudioPluginControl.vala',
 
     'Shell/Dialogs/PowerDialog.vala',
 
@@ -107,6 +107,7 @@ sources = files (
     'Core/Plugins/AudioPlugins/LV2/LV2Plugin.vala',
     'Core/Plugins/AudioPlugins/LV2/LV2URID.vala',
     'Core/Plugins/AudioPlugins/LV2/LV2SyMap.vala',
+    'Core/Plugins/AudioPlugins/LV2/LV2PortAnalyser.vala',
     'Core/Plugins/AudioPlugins/LV2/Ports/LV2Port.vala',
     'Core/Plugins/AudioPlugins/LV2/Ports/LV2ControlPort.vala',
     'Core/Plugins/AudioPlugins/LV2/Ports/LV2AtomPort.vala'

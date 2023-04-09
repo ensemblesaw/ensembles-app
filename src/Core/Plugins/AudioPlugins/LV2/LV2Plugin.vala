@@ -81,7 +81,6 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
         // Control ports
         public LV2ControlPort[] control_in_ports;
         public float[] control_in_variables;
-        public LV2ControlPort[] control_out_ports;
 
         // Atom ports
         public LV2AtomPort[] atom_in_ports;
@@ -100,6 +99,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
             }
 
             name = lilv_plugin.get_name ().as_string ();
+            print("plugin: %s\n--------------\n".printf (name));
             plugin_uri = lilv_plugin.get_uri ().as_uri ();
             plugin_class = lilv_plugin.get_class ().get_label ().as_string ();
             author_name = lilv_plugin.get_author_name ().as_string ();
@@ -109,14 +109,14 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
             tech = Tech.LV2;
 
             // Get all ports from plugin
-            fetch_ports ();
+            create_ports ();
             category = get_category ();
         }
 
         /**
          * Creates a workable instance of the lv2 plugin.
          * Instantiate must be called on this object before connecting any ports
-         * or running the plugin
+         * or running the plugin.
          */
         public override void instantiate () {
             if (lv2_instance_l == null) {
@@ -274,6 +274,10 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
             } else if ( // Check if it is Voice (instrument) plugin
                 plugin_class == "Instrument Plugin" ||
                 (
+                    atom_ports_length_by_flag (
+                        atom_in_ports,
+                        LV2AtomPort.Flags.SUPPORTS_MIDI_EVENT
+                    ) > 0 &&
                     audio_in_ports.length > 0 &&
                     audio_out_ports.length > 0
                 )
@@ -284,15 +288,26 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
             return Category.UNSUPPORTED;
         }
 
+        private uint16 atom_ports_length_by_flag (LV2AtomPort[] ports, LV2AtomPort.Flags flag) {
+            uint16 count = 0;
+            for (uint16 i = 0; i < ports.length; i++) {
+                if ((flag & ports[i].flags) > LV2AtomPort.Flags.NONE) {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
         /**
          * Create plugin features
          */
          private void create_features () {
             urid_map = LV2.URID.UridMap ();
-            urid_map.handle = this;
+            urid_map.handle = (LV2.URID.MapHandle) this;
             urid_map.map = LV2URID.map_uri;
             urid_unmap = LV2.URID.UridUnmap ();
-            urid_unmap.handle = this;
+            urid_unmap.handle = (LV2.URID.UnmapHandle) this;
             urid_unmap.unmap = LV2URID.unmap_uri;
 
             features = new LV2.Feature* [2];
@@ -301,6 +316,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
 
             features[0] = &urid_map_feature;
             features[1] = &urid_unmap_feature;
+
         }
 
         private bool features_are_supported () {
@@ -334,145 +350,17 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
             };
         }
 
-        private void fetch_ports () {
-            var audio_in_port_list = new List<LV2Port> ();
-            var audio_out_port_list = new List<LV2Port> ();
-            var control_in_port_list = new List<LV2ControlPort> ();
-            var control_out_port_list = new List<LV2ControlPort> ();
-            var atom_in_port_list = new List<LV2AtomPort> ();
-            var atom_out_port_list = new List<LV2AtomPort> ();
-
-            var n_ports = lilv_plugin.get_num_ports ();
-            for (uint32 i = 0; i < n_ports; i++) {
-                // Get port from plugin
-                unowned Lilv.Port port = lilv_plugin.get_port_by_index (i);
-
-                var name = lilv_plugin.port_get_name (port).as_string ();
-                var symbol = lilv_plugin.port_get_symbol (port).as_string ();
-                var turtle_token = lilv_plugin.port_get_symbol (port).get_turtle_token ();
-                var properties = get_port_properties (port);
-
-                // Plugin class flags
-                bool is_audio_port = false;
-                bool is_input_port = false;
-                bool is_output_port = false;
-                bool is_control_port = false;
-                bool is_atom_port = false;
-
-                // Get all classes associated with this port
-                unowned Lilv.Nodes port_classes = lilv_plugin.port_get_classes (port);
-
-                for (var class_iter = port_classes.begin ();
-                !port_classes.is_end (class_iter);
-                class_iter = port_classes.next (class_iter)) {
-                    switch (port_classes.get (class_iter).as_string ()) {
-                        case LV2.Core._AudioPort:
-                            is_audio_port = true;
-                        break;
-                        case LV2.Core._ControlPort:
-                            is_control_port = true;
-                        break;
-                        case LV2.Atom._AtomPort:
-                            is_atom_port = true;
-                        break;
-                        case LV2.Core._InputPort:
-                            is_input_port = true;
-                        break;
-                        case LV2.Core._OutputPort:
-                            is_output_port = true;
-                        break;
-                    }
-                }
-
-                if (is_audio_port) {
-                    if (is_input_port) {
-                        audio_in_port_list.append (new LV2Port (
-                            name,
-                            i,
-                            properties,
-                            symbol,
-                            turtle_token
-                        ));
-                    } else if (is_output_port) {
-                        if (audio_out_ports == null) {
-                            audio_out_ports = new Port[1];
-                        } else {
-                            audio_out_ports.resize (audio_out_ports.length + 1);
-                        }
-
-                        audio_out_port_list.append (new LV2Port (
-                            name,
-                            i,
-                            properties,
-                            symbol,
-                            turtle_token
-                        ));
-                    }
-                } else if (is_control_port) {
-                    Lilv.Node default_value;
-                    Lilv.Node min_value;
-                    Lilv.Node max_value;
-
-                    lilv_plugin.port_get_range (port, out default_value, out min_value, out max_value);
-
-                    if (is_input_port) {
-                        control_in_port_list.append (new LV2ControlPort (
-                            name,
-                            i,
-                            properties,
-                            symbol,
-                            turtle_token,
-                            min_value.as_float (),
-                            max_value.as_float (),
-                            default_value.as_float (),
-                            0.1f
-                        ));
-                    } else if (is_output_port) {
-                        control_out_port_list.append (new LV2ControlPort (
-                            name,
-                            i,
-                            properties,
-                            symbol,
-                            turtle_token,
-                            min_value.as_float (),
-                            max_value.as_float (),
-                            default_value.as_float (),
-                            0.1f
-                        ));
-                    }
-                } else if (is_atom_port) {
-
-                    if (is_input_port) {
-                        atom_in_port_list.append (
-                            new LV2AtomPort (
-                                name,
-                                i,
-                                properties,
-                                symbol,
-                                turtle_token)
-                        );
-                    } else if (is_output_port) {
-                        atom_out_port_list.append (
-                            new LV2AtomPort (
-                                name,
-                                i,
-                                properties,
-                                symbol,
-                                turtle_token)
-                        );
-                    }
-                }
-            }
-
-            // Consolidate all ports into respective arrays
-            var n_audio_in_ports = audio_in_port_list.length ();
+        private void create_ports () {
+            var port_analyser = new LV2PortAnalyser (lilv_plugin);
+            var n_audio_in_ports = port_analyser.audio_in_port_list.length ();
             audio_in_ports = new Port[n_audio_in_ports];
 
             // If there's more than one audio in port then presume that
             // the plugin is stereo
             stereo = n_audio_in_ports > 1;
             for (uint32 p = 0; p < n_audio_in_ports; p++) {
-                var _port = audio_in_port_list.nth_data (p);
+                unowned LV2Port _port =
+                    port_analyser.audio_in_port_list.nth_data (p);
                 audio_in_ports[p] = new LV2Port (
                     _port.name,
                     _port.index,
@@ -482,10 +370,11 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                 );
             }
 
-            var n_audio_out_ports = audio_out_port_list.length ();
+            var n_audio_out_ports = port_analyser.audio_out_port_list.length ();
             audio_out_ports = new Port[n_audio_out_ports];
             for (uint32 p = 0; p < n_audio_out_ports; p++) {
-                var _port = audio_out_port_list.nth_data (p);
+                unowned LV2Port _port =
+                    port_analyser.audio_out_port_list.nth_data (p);
                 audio_out_ports[p] = new LV2Port (
                     _port.name,
                     _port.index,
@@ -495,10 +384,11 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                 );
             }
 
-            var n_control_in_ports = control_in_port_list.length ();
+            var n_control_in_ports = port_analyser.control_in_port_list.length ();
             control_in_ports = new LV2ControlPort[n_control_in_ports];
             for (uint32 p = 0; p < n_control_in_ports; p++) {
-                var _port = control_in_port_list.nth_data (p);
+                unowned LV2ControlPort _port =
+                    port_analyser.control_in_port_list.nth_data (p);
                 control_in_ports[p] = new LV2ControlPort (
                     _port.name,
                     _port.index,
@@ -512,39 +402,20 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                 );
             }
 
-            var n_atom_in_ports = atom_in_port_list.length ();
+            var n_atom_in_ports = port_analyser.atom_in_port_list.length ();
             atom_in_ports = new LV2AtomPort[n_atom_in_ports];
             for (uint32 p = 0; p < n_atom_in_ports; p++) {
-                var _port = atom_in_port_list.nth_data (p);
+                unowned LV2AtomPort _port =
+                    port_analyser.atom_in_port_list.nth_data (p);
                 atom_in_ports[p] = new LV2AtomPort (
                     _port.name,
                     _port.index,
                     _port.properties,
                     _port.symbol,
-                    _port.turtle_token
+                    _port.turtle_token,
+                    _port.flags
                 );
             }
-        }
-
-        private string[] get_port_properties (Lilv.Port port) {
-            var prop_list = new List<string> ();;
-
-            var properties = lilv_plugin.port_get_properties (port);
-
-            for (var props_iter = properties.begin ();
-            !properties.is_end (props_iter);
-            props_iter = properties.next (props_iter)) {
-                var prop = properties.get (props_iter).as_string ();
-                prop_list.append (prop);
-            }
-
-            var n = prop_list.length ();
-
-            var props = new string[n];
-            for (uint32 i = 0; i < n; i++) {
-                props[i] = prop_list.nth_data (i) + ""; // Make owned
-            }
-            return props;
         }
 
         private void build_ui () {
@@ -559,7 +430,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
 
             if (control_in_ports.length > 0) {
                 for (uint i = 0; i < control_in_ports.length; i++) {
-                    var plugin_control = new Shell.Widgets.Plugins.AudioPluginControl (
+                    var plugin_control = new Shell.Plugins.AudioPlugins.Widgets.AudioPluginControl (
                         control_in_ports[i],
                         &(control_in_variables[i]),
                         control_in_ports.length > 3 ? Gtk.IconSize.NORMAL : Gtk.IconSize.LARGE
