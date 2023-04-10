@@ -84,6 +84,10 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
          */
         public List<LV2AtomPort> atom_out_port_list;
 
+        // Atom ports classifications
+        public uint16 n_atom_midi_in_ports { get; private set; }
+        public uint16 n_atom_midi_out_ports { get; private set; }
+
         /**
          * Creates a new `LV2PortAnalyser` instance.
          *
@@ -219,6 +223,8 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                                 flags
                             )
                         );
+
+                        n_atom_midi_in_ports++;
                     } else if (is_output_port) {
                         atom_out_port_list.append (
                             new LV2AtomPort (
@@ -230,6 +236,8 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                                 flags
                             )
                         );
+
+                        n_atom_midi_out_ports++;
                     }
                 }
             }

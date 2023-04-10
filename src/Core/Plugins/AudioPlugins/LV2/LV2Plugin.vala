@@ -60,7 +60,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
         public string plugin_uri { get; private set; }
         public string plugin_class { get; private set; }
 
-        // LV2 Features
+        // LV2 Features ////////////////////////////////////////////////////////
         private LV2.Feature*[] features;
         private const string[] supported_feature_uris = {
             LV2.URID._map,
@@ -78,14 +78,15 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
         private Lilv.Instance lv2_instance_l; // Stereo audio / Mono L Processor
         private Lilv.Instance lv2_instance_r; // Mono R Processor
 
+        // Ports ///////////////////////////////////////////////////////////////
         // Control ports
         public LV2ControlPort[] control_in_ports;
         public float[] control_in_variables;
 
         // Atom ports
-        public LV2AtomPort[] atom_in_ports;
-        public LV2.Atom.Atom[] atom_in_variables;
-        public LV2AtomPort[] atom_out_ports;
+        // MIDI
+        public LV2AtomPort[] atom_midi_in_ports;
+        public LV2EvBuf[] atom_midi_in_variables;
 
         public unowned Lilv.Plugin? lilv_plugin { get; protected set; }
 
@@ -109,8 +110,34 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
             tech = Tech.LV2;
 
             // Get all ports from plugin
-            create_ports ();
             category = get_category ();
+        }
+
+        private Category get_category () {
+            var port_analyser = new LV2PortAnalyser (lilv_plugin);
+            if ( // Check if it is DSP (effect) plugin
+                (
+                    plugin_class.contains ("Amplifier") ||
+                    plugin_class.contains ("Utility") ||
+                    plugin_class.contains ("Reverb")
+                ) && (
+                    port_analyser.audio_in_port_list.length () > 0 &&
+                    port_analyser.audio_out_port_list.length () > 0
+                )
+            ) {
+                return Category.DSP;
+            } else if ( // Check if it is Voice (instrument) plugin
+                plugin_class == "Instrument Plugin" ||
+                (
+                    port_analyser.n_atom_midi_in_ports > 0 &&
+                    port_analyser.audio_in_port_list.length () > 0 &&
+                    port_analyser.audio_out_port_list.length () > 0
+                )
+            ) {
+                return Category.VOICE;
+            }
+
+            return Category.UNSUPPORTED;
         }
 
         /**
@@ -130,9 +157,40 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                     lv2_instance_r = lilv_plugin.instantiate (Synthesizer.Synthesizer.SAMPLE_RATE, features);
                 }
 
-                connect_other_ports ();
+                create_ports ();
+                allocate_control_ports ();
+                allocate_midi_port_buffers ();
                 build_ui ();
             }
+        }
+
+        private void allocate_control_ports () {
+            control_in_variables = new float[control_in_ports.length];
+            for (uint32 i = 0; i < control_in_ports.length; i++) {
+                control_in_variables[i] = control_in_ports[i].default_value;
+                connect_port (control_in_ports[i], &control_in_variables[i]);
+            }
+        }
+
+        private void allocate_midi_port_buffers () {
+            atom_midi_in_variables = new LV2EvBuf [atom_midi_in_ports.length];
+
+            for (uint16 i = 0; i < atom_midi_in_ports.length; i++) {
+                const uint32 buffer_size = 8192;
+                atom_midi_in_variables[i] = new LV2EvBuf (
+                    buffer_size,
+                    LV2URID.map_uri (this, LV2.Atom._Chunk),
+                    LV2URID.map_uri (this, LV2.Atom._Sequence)
+                );
+
+                atom_midi_in_variables[i].reset (true);
+
+                connect_port (atom_midi_in_ports[i], (void*) atom_midi_in_variables[i].get_buffer ());
+            }
+        }
+
+        public override AudioPlugin duplicate () throws PluginError {
+            return new LV2Plugin (lilv_plugin);
         }
 
         protected override void activate () {
@@ -230,33 +288,8 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
             }
         }
 
-        public void connect_other_ports () {
-            // Connect control ports
-            control_in_variables = new float[control_in_ports.length];
-            for (uint32 p = 0; p < control_in_ports.length; p++) {
-                control_in_variables[p] = control_in_ports[p].default_value;
-                connect_port (control_in_ports[p], &control_in_variables[p]);
-            }
-
-            // Connect atom ports
-            atom_in_variables = new LV2.Atom.Atom[atom_in_ports.length];
-            for (uint32 p = 0; p < atom_in_ports.length; p++) {
-                connect_port (atom_in_ports[p], &atom_in_variables[p]);
-            }
-        }
-
         public override void send_midi_event (Fluid.MIDIEvent midi_event) {
-            for (uint16 i = 0; i < atom_in_ports.length; i++) {
-                if (
-                    (
-                        atom_in_ports[i].flags &
-                        LV2AtomPort.Flags.SUPPORTS_MIDI_EVENT
-                    ) > LV2AtomPort.Flags.NONE
-                ) {
-                    // This is a midi input port
-                    // Fill this before running plugin
-                }
-            }
+
         }
 
         public override void process (uint32 sample_count) {
@@ -267,50 +300,6 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
             if (lv2_instance_r != null) {
                 lv2_instance_r.run (sample_count);
             }
-        }
-
-        public override AudioPlugin duplicate () throws PluginError {
-            return new LV2Plugin (lilv_plugin);
-        }
-
-        private Category get_category () {
-            if ( // Check if it is DSP (effect) plugin
-                (
-                    plugin_class.contains ("Amplifier") ||
-                    plugin_class.contains ("Utility") ||
-                    plugin_class.contains ("Reverb")
-                ) && (
-                    audio_in_ports.length > 0 &&
-                    audio_out_ports.length > 0
-                )
-            ) {
-                return Category.DSP;
-            } else if ( // Check if it is Voice (instrument) plugin
-                plugin_class == "Instrument Plugin" ||
-                (
-                    atom_ports_length_by_flag (
-                        atom_in_ports,
-                        LV2AtomPort.Flags.SUPPORTS_MIDI_EVENT
-                    ) > 0 &&
-                    audio_in_ports.length > 0 &&
-                    audio_out_ports.length > 0
-                )
-            ) {
-                return Category.VOICE;
-            }
-
-            return Category.UNSUPPORTED;
-        }
-
-        private uint16 atom_ports_length_by_flag (LV2AtomPort[] ports, LV2AtomPort.Flags flag) {
-            uint16 count = 0;
-            for (uint16 i = 0; i < ports.length; i++) {
-                if ((flag & ports[i].flags) > LV2AtomPort.Flags.NONE) {
-                    count++;
-                }
-            }
-
-            return count;
         }
 
         /**
@@ -418,18 +407,22 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
             }
 
             var n_atom_in_ports = port_analyser.atom_in_port_list.length ();
-            atom_in_ports = new LV2AtomPort[n_atom_in_ports];
-            for (uint32 p = 0; p < n_atom_in_ports; p++) {
+            // MIDI Ports
+            atom_midi_in_ports = new LV2AtomPort[port_analyser.n_atom_midi_in_ports];
+
+            for (uint32 p = 0, i = 0; p < n_atom_in_ports; p++) {
                 unowned LV2AtomPort _port =
                     port_analyser.atom_in_port_list.nth_data (p);
-                atom_in_ports[p] = new LV2AtomPort (
-                    _port.name,
-                    _port.index,
-                    _port.properties,
-                    _port.symbol,
-                    _port.turtle_token,
-                    _port.flags
-                );
+                if ((_port.flags & LV2AtomPort.Flags.SUPPORTS_MIDI_EVENT) > LV2AtomPort.Flags.NONE) {
+                    atom_midi_in_ports[i++] = new LV2AtomPort (
+                        _port.name,
+                        _port.index,
+                        _port.properties,
+                        _port.symbol,
+                        _port.turtle_token,
+                        _port.flags
+                    );
+                }
             }
         }
 
