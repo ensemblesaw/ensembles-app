@@ -182,11 +182,11 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
             return (size + 7) & (~7);
         }
 
-        public static void* atom_contents (Atom.Sequence atom) {
+        public static void* atom_contents (Atom.Sequence? atom) {
             return (void*)((uint8*)(atom) + sizeof(Atom.Sequence));
         }
 
-        public static void* atom_body (Atom.Atom atom) {
+        public static void* atom_body (Atom.Atom? atom) {
             return (void*)((uint8*)(atom) + sizeof(Atom.Atom));
         }
     }
