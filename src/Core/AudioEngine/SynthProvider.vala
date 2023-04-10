@@ -5,7 +5,9 @@
 
 namespace Ensembles.Core.AudioEngine {
     /**
-     * Manages fluid synth instances and driver configurations
+     * ## Synthesizer Instance Provider
+     *
+     * Manages FluidSynth instances and driver configurations.
      */
     public class SynthProvider : Object {
         private Fluid.Synth _rendering_synth;

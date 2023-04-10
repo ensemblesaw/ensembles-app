@@ -4,6 +4,18 @@
  */
 
 namespace Ensembles.Core.AudioEngine {
+    /**
+     * ## Synthesizer
+     *
+     * The FluidSynth SoundFont™ Synthesizer forms the base audio engine for the
+     * app.
+     *
+     * All midi events either from the midi players or from the plugins will be
+     * to and from here.
+     *
+     * All sound from the plugins and samplers are also channel through this
+     * synthesizer.
+     */
     public class Synthesizer : Object {
         private bool input_enabled = true;
 

@@ -7,6 +7,8 @@ using Ensembles.Core.Plugins.AudioPlugins;
 
 namespace Ensembles.Core.Racks {
     /**
+     * ## Voice Rack
+     *
      * This rack supports voice / instrument plugins.
      *
      * Every individual voice plugin can be associated with an instance

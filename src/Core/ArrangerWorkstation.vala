@@ -5,18 +5,25 @@
 
 using Ensembles.Core.MIDIPlayers;
 using Ensembles.Core.Plugins;
+using Ensembles.Core.Racks;
 using Ensembles.Models;
 
 namespace Ensembles.Core {
+    /**
+     * ## Arranger Workstation
+     *
+     * This forms the core of the app. This houses all the behind the scenes
+     * stuff that make every beat beat and every sound sound.
+     */
     public class ArrangerWorkstation : Object {
         private AudioEngine.SynthProvider synth_provider;
         private AudioEngine.Synthesizer synthesizer;
         private StyleEngine style_engine;
-        private Plugins.PluginManager plugin_manager;
-        private Racks.DSPRack main_dsp_rack;
-        private Racks.VoiceRack voice_l_rack;
-        private Racks.VoiceRack voice_r1_rack;
-        private Racks.VoiceRack voice_r2_rack;
+        private PluginManager plugin_manager;
+        private DSPRack main_dsp_rack;
+        private VoiceRack voice_l_rack;
+        private VoiceRack voice_r1_rack;
+        private VoiceRack voice_r2_rack;
 
          // Arranger Data
         private Style[] styles;
@@ -39,16 +46,16 @@ namespace Ensembles.Core {
             }
 
             Console.log ("Initializing Plugin Racks");
-            main_dsp_rack = new Racks.DSPRack ();
+            main_dsp_rack = new DSPRack ();
             synthesizer.add_rack (main_dsp_rack);
 
-            voice_l_rack = new Racks.VoiceRack ();
+            voice_l_rack = new VoiceRack ();
             synthesizer.add_rack (voice_l_rack);
 
-            voice_r1_rack = new Racks.VoiceRack ();
+            voice_r1_rack = new VoiceRack ();
             synthesizer.add_rack (voice_r1_rack);
 
-            voice_r2_rack = new Racks.VoiceRack ();
+            voice_r2_rack = new VoiceRack ();
             synthesizer.add_rack (voice_r2_rack);
 
             build_events ();

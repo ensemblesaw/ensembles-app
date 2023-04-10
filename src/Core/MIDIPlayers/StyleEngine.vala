@@ -7,7 +7,7 @@ using Ensembles.Models;
 
 namespace Ensembles.Core.MIDIPlayers {
     /**
-     * ## Ensembles Style Engine
+     * ## Style Engine
      *
      * A style engine object can be made to play a particular Ensembles style.
      * An Ensembles style is a special MIDI file with `.enstl` extension.

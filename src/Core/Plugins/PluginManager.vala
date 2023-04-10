@@ -5,7 +5,7 @@
 
 namespace Ensembles.Core.Plugins {
     /**
-     * ## Ensembles PluginManager
+     * ## Plugin Manager
      *
      * Plugins add additional functionality to Ensembles externally.
      *

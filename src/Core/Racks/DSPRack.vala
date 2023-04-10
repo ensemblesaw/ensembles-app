@@ -7,11 +7,13 @@ using Ensembles.Core.Plugins.AudioPlugins;
 
 namespace Ensembles.Core.Racks {
     /**
+     * ## DSP Rack
+     *
      * This defines a rack which gets populated with DSP plugins.
      * The final output of the synthesizer / voice plugin is processed by all
      * the plugins in this rack.
      *
-     * DSP - Digital Signal Processing
+     * _**Note:** DSP - Digital Signal Processing_
      */
     public class DSPRack : Rack {
         public DSPRack () {
