@@ -19,7 +19,7 @@ namespace Ensembles.Core {
         private Racks.VoiceRack voice_r2_rack;
 
          // Arranger Data
-        public Style[] styles { get; private set; }
+        private Style[] styles;
         private Style next_style;
         private bool stopping_style;
 
@@ -142,6 +142,10 @@ namespace Ensembles.Core {
                     stopping_style = false;
                 });
             }
+        }
+
+        public unowned Style[] get_styles () {
+            return styles;
         }
 
         private void add_plugins_to_voice_racks () {

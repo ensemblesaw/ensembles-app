@@ -224,7 +224,12 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                             )
                         );
 
-                        n_atom_midi_in_ports++;
+                        if (
+                            (flags & LV2AtomPort.Flags.SUPPORTS_MIDI_EVENT) >
+                            LV2AtomPort.Flags.NONE
+                        ) {
+                            n_atom_midi_in_ports++;
+                        }
                     } else if (is_output_port) {
                         atom_out_port_list.append (
                             new LV2AtomPort (
@@ -237,7 +242,12 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                             )
                         );
 
-                        n_atom_midi_out_ports++;
+                        if (
+                            (flags & LV2AtomPort.Flags.SUPPORTS_MIDI_EVENT) >
+                            LV2AtomPort.Flags.NONE
+                        ) {
+                            n_atom_midi_out_ports++;
+                        }
                     }
                 }
             }

@@ -185,7 +185,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
 
                 atom_midi_in_variables[i].reset (true);
 
-                connect_port (atom_midi_in_ports[i], (void*) atom_midi_in_variables[i].buffer);
+                connect_port (atom_midi_in_ports[i], (void*) atom_midi_in_variables[i].get_buffer ());
             }
         }
 

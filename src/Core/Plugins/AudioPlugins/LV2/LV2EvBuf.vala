@@ -33,8 +33,8 @@ using LV2.URID;
 namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
     public class LV2EvBuf : Object {
         public uint32 capacity { get; private set; }
-        public Urid atom_chunk { get; private set; }
-        public Urid atom_sequence { get; private set; }
+        private Urid atom_chunk;
+        private Urid atom_sequence;
         private Atom.Sequence buf;
 
         public uint32 size {
@@ -47,22 +47,15 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
             }
         }
 
-        public unowned Atom.Sequence? buffer {
-            get {
-                return buf;
-            }
-        }
-
         public LV2EvBuf (uint32 capacity, Urid atom_chunk, Urid atom_sequence) {
             return_if_fail (capacity > 0);
 
-            this.capacity = capacity;
+            Object (
+                capacity: capacity
+            );
+
             this.atom_chunk = atom_chunk;
             this.atom_sequence = atom_sequence;
-
-            //  size_t buffer_size = (uint32) sizeof(Atom.Sequence) + capacity;
-            //  var _buf = (Atom.Sequence?) Aligned.alloc0 (size, buffer_size, 64);
-            //  Memory.copy (&buf, &_buf, buffer_size);
             buf = Atom.Sequence ();
 
             reset (true);
@@ -76,6 +69,10 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                 buf.atom.size = (uint32) capacity;
                 buf.atom.type = (uint32) atom_chunk;
             }
+        }
+
+        public unowned Atom.Sequence? get_buffer () {
+            return buf;
         }
 
         public struct Iter {
