@@ -73,7 +73,6 @@ else
 endif
 gettext_package = application_id
 
-config_h_dir = include_directories('src')
 subdir ('src')
 
 # Define executable
@@ -82,7 +81,6 @@ executable (
     asresources,
     sources,
     config_header,
-    include_directories: config_h_dir,
     dependencies: dependencies,
     install: true
 )

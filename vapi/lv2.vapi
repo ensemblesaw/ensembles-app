@@ -288,106 +288,106 @@ namespace LV2.Atom {
     [CCode (cname = "LV2_ATOM_BODY", generic_type_pos = 0)]
     public static unowned void* body (Atom atom);
 
-    [CCode (cname = "LV2_Atom", destroy_function = "", has_type_id = false)]
+    [CCode (cname = "LV2_Atom", destroy_function = "", has_type_id = false, has_copy_function = false)]
     public struct Atom {
         uint32 size;
         uint32 type;
     }
 
-    [CCode (cname = "LV2_Atom_Int", destroy_function = "", has_type_id = false)]
+    [CCode (cname = "LV2_Atom_Int", destroy_function = "", has_type_id = false, has_copy_function = false)]
     public struct Int {
         Atom atom;
         int32 body;
     }
 
-    [CCode (cname = "LV2_Atom_Long", destroy_function = "", has_type_id = false)]
+    [CCode (cname = "LV2_Atom_Long", destroy_function = "", has_type_id = false, has_copy_function = false)]
     public struct Long {
         Atom atom;
         int64 body;
     }
 
-    [CCode (cname = "LV2_Atom_Float", destroy_function = "", has_type_id = false)]
+    [CCode (cname = "LV2_Atom_Float", destroy_function = "", has_type_id = false, has_copy_function = false)]
     public struct Float {
         Atom atom;
         float body;
     }
 
-    [CCode (cname = "LV2_Atom_Double", destroy_function = "", has_type_id = false)]
+    [CCode (cname = "LV2_Atom_Double", destroy_function = "", has_type_id = false, has_copy_function = false)]
     public struct Double {
         Atom atom;
         double body;
     }
 
     [SimpleType]
-    [CCode (cname = "LV2_Atom_Bool", destroy_function = "", has_type_id = false)]
+    [CCode (cname = "LV2_Atom_Bool", destroy_function = "", has_type_id = false, has_copy_function = false)]
     public struct Bool : Int {}
 
-    [CCode (cname = "LV2_Atom_URID", destroy_function = "", has_type_id = false)]
+    [CCode (cname = "LV2_Atom_URID", destroy_function = "", has_type_id = false, has_copy_function = false)]
     public struct URID {
         Atom atom;
         uint32 body;
     }
 
-    [CCode (cname = "LV2_Atom_String", destroy_function = "", has_type_id = false)]
+    [CCode (cname = "LV2_Atom_String", destroy_function = "", has_type_id = false, has_copy_function = false)]
     public struct String {
         Atom atom;
     }
 
-    [CCode (cname = "LV2_Atom_Literal_Body", destroy_function = "", has_type_id = false)]
+    [CCode (cname = "LV2_Atom_Literal_Body", destroy_function = "", has_type_id = false, has_copy_function = false)]
     public struct LiteralBody {
         uint32 datatype;
         uint32 lang;
     }
 
-    [CCode (cname = "LV2_Atom_Literal", destroy_function = "", has_type_id = false)]
+    [CCode (cname = "LV2_Atom_Literal", destroy_function = "", has_type_id = false, has_copy_function = false)]
     public struct Literal {
         Atom atom;
         LiteralBody body;
     }
 
-    [CCode (cname = "LV2_Atom_Tuple", destroy_function = "", has_type_id = false)]
+    [CCode (cname = "LV2_Atom_Tuple", destroy_function = "", has_type_id = false, has_copy_function = false)]
     public struct Tuple {
         Atom atom;
     }
 
-    [CCode (cname = "LV2_Atom_Vector_Body", destroy_function = "", has_type_id = false)]
+    [CCode (cname = "LV2_Atom_Vector_Body", destroy_function = "", has_type_id = false, has_copy_function = false)]
     public struct VectorBody {
         uint32 child_size;
         uint32 child_type;
     }
 
-    [CCode (cname = "LV2_Atom_Vector", destroy_function = "", has_type_id = false)]
+    [CCode (cname = "LV2_Atom_Vector", destroy_function = "", has_type_id = false, has_copy_function = false)]
     public struct Vector {
         Atom atom;
         VectorBody body;
     }
 
-    [CCode (cname = "LV2_Atom_Property_Body", destroy_function = "", has_type_id = false)]
+    [CCode (cname = "LV2_Atom_Property_Body", destroy_function = "", has_type_id = false, has_copy_function = false)]
     public struct PropertyBody {
         uint32 key;
         uint32 context;
         Atom value;
     }
 
-    [CCode (cname = "LV2_Atom_Property", destroy_function = "", has_type_id = false)]
+    [CCode (cname = "LV2_Atom_Property", destroy_function = "", has_type_id = false, has_copy_function = false)]
     public struct Property {
         Atom atom;
         PropertyBody body;
     }
 
-    [CCode (cname = "LV2_Atom_Object_Body", destroy_function = "", has_type_id = false)]
+    [CCode (cname = "LV2_Atom_Object_Body", destroy_function = "", has_type_id = false, has_copy_function = false)]
     public struct ObjectBody {
         uint32 id;
         uint32 otype;
     }
 
-    [CCode (cname = "LV2_Atom_Object", destroy_function = "", has_type_id = false)]
+    [CCode (cname = "LV2_Atom_Object", destroy_function = "", has_type_id = false, has_copy_function = false)]
     public struct Object {
         Atom atom;
         ObjectBody body;
     }
 
-    [CCode (cname = "LV2_Atom_Event", destroy_function = "", has_type_id = false)]
+    [CCode (cname = "LV2_Atom_Event", destroy_function = "", has_type_id = false, has_copy_function = false)]
     public struct Event {
         [CCode (cname = "time.frames")]
         int64 time_frames;
@@ -397,13 +397,13 @@ namespace LV2.Atom {
     }
 
 
-    [CCode (cname = "LV2_Atom_Sequence_Body", destroy_function = "", has_type_id = false)]
+    [CCode (cname = "LV2_Atom_Sequence_Body", destroy_function = "", has_type_id = false, has_copy_function = false)]
     public struct SequenceBody {
         uint32 unit;
         uint32 pad;
     }
 
-    [CCode (cname = "LV2_Atom_Sequence", destroy_function = "", has_type_id = false)]
+    [CCode (cname = "LV2_Atom_Sequence", destroy_function = "", has_type_id = false, has_copy_function = false)]
     public struct Sequence {
         Atom atom;
         SequenceBody body;

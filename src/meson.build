@@ -13,7 +13,7 @@ config_header = configure_file (
     configuration: conf_data
 )
 
-vala_sources = files (
+sources = files (
     'Main.vala',
     'Application.vala',
 
@@ -107,18 +107,9 @@ vala_sources = files (
     'Core/Plugins/AudioPlugins/LV2/LV2Plugin.vala',
     'Core/Plugins/AudioPlugins/LV2/LV2URID.vala',
     'Core/Plugins/AudioPlugins/LV2/LV2SyMap.vala',
-    'Core/Plugins/AudioPlugins/LV2/LV2EvBuf/LV2EvBuf.vala',
+    'Core/Plugins/AudioPlugins/LV2/LV2EvBuf.vala',
     'Core/Plugins/AudioPlugins/LV2/LV2PortAnalyser.vala',
     'Core/Plugins/AudioPlugins/LV2/Ports/LV2Port.vala',
     'Core/Plugins/AudioPlugins/LV2/Ports/LV2ControlPort.vala',
     'Core/Plugins/AudioPlugins/LV2/Ports/LV2AtomPort.vala'
 )
-
-c_sources = files (
-'Core/Plugins/AudioPlugins/LV2/LV2EvBuf/lv2_evbuf.c',
-)
-
-sources = [
-    c_sources,
-    vala_sources
-]
