@@ -32,7 +32,7 @@ using LV2.URID;
 
 namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
     public class LV2EvBuf : Object {
-        public uint32 capacity { get; private set; }
+        public uint32 capacity { get; protected set; }
         private Urid atom_chunk;
         private Urid atom_sequence;
         private Atom.Sequence buf;

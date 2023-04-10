@@ -105,7 +105,6 @@ sources = files (
     # LV2 Plugins
     'Core/Plugins/AudioPlugins/LV2/LV2Manager.vala',
     'Core/Plugins/AudioPlugins/LV2/LV2Plugin.vala',
-    'Core/Plugins/AudioPlugins/LV2/LV2URID.vala',
     'Core/Plugins/AudioPlugins/LV2/LV2SyMap.vala',
     'Core/Plugins/AudioPlugins/LV2/LV2EvBuf.vala',
     'Core/Plugins/AudioPlugins/LV2/LV2PortAnalyser.vala',

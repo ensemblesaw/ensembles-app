@@ -179,8 +179,8 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                 const uint32 BUFFER_SIZE = 8192;
                 atom_midi_in_variables[i] = new LV2EvBuf (
                     BUFFER_SIZE,
-                    LV2URID.map_uri (this, LV2.Atom._Chunk),
-                    LV2URID.map_uri (this, LV2.Atom._Sequence)
+                    LV2Manager.map_uri (this, LV2.Atom._Chunk),
+                    LV2Manager.map_uri (this, LV2.Atom._Sequence)
                 );
 
                 atom_midi_in_variables[i].reset (true);
@@ -308,10 +308,10 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
          private void create_features () {
             urid_map = LV2.URID.UridMap ();
             urid_map.handle = (LV2.URID.MapHandle) this;
-            urid_map.map = LV2URID.map_uri;
+            urid_map.map = LV2Manager.map_uri;
             urid_unmap = LV2.URID.UridUnmap ();
             urid_unmap.handle = (LV2.URID.UnmapHandle) this;
-            urid_unmap.unmap = LV2URID.unmap_uri;
+            urid_unmap.unmap = LV2Manager.unmap_uri;
 
             features = new LV2.Feature* [2];
             urid_map_feature = register_feature (LV2.URID._map, &urid_map);
