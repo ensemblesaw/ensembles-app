@@ -60,9 +60,10 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
             this.atom_chunk = atom_chunk;
             this.atom_sequence = atom_sequence;
 
-            size_t buffer_size = (uint32) sizeof(Atom.Sequence) + capacity;
-            var _buf = (Atom.Sequence?) malloc0 (buffer_size);
-            Memory.copy (&buf, &_buf, buffer_size);
+            //  size_t buffer_size = (uint32) sizeof(Atom.Sequence) + capacity;
+            //  var _buf = (Atom.Sequence?) Aligned.alloc0 (size, buffer_size, 64);
+            //  Memory.copy (&buf, &_buf, buffer_size);
+            buf = Atom.Sequence ();
 
             reset (true);
         }
@@ -182,10 +183,16 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
             return (size + 7) & (~7);
         }
 
+        /**
+         * Extract the contents of an atom.
+         */
         public static void* atom_contents (Atom.Sequence? atom) {
             return (void*)((uint8*)(atom) + sizeof(Atom.Sequence));
         }
 
+        /**
+         * Extract the body of an atom.
+         */
         public static void* atom_body (Atom.Atom? atom) {
             return (void*)((uint8*)(atom) + sizeof(Atom.Atom));
         }
