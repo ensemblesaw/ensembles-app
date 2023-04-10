@@ -62,7 +62,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
 
         // LV2 Features ////////////////////////////////////////////////////////
         private LV2.Feature*[] features;
-        private const string[] supported_feature_uris = {
+        private const string[] SUPPORTED_FEATURE_URIS = {
             LV2.URID._map,
             LV2.URID._unmap
         };
@@ -100,7 +100,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
             }
 
             name = lilv_plugin.get_name ().as_string ();
-            print("plugin: %s\n--------------\n".printf (name));
+            print ("plugin: %s\n--------------\n".printf (name));
             plugin_uri = lilv_plugin.get_uri ().as_uri ();
             plugin_class = lilv_plugin.get_class ().get_label ().as_string ();
             author_name = lilv_plugin.get_author_name ().as_string ();
@@ -150,11 +150,11 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                 active = false;
                 create_features ();
 
-                lv2_instance_l = lilv_plugin.instantiate (Synthesizer.Synthesizer.SAMPLE_RATE, features);
+                lv2_instance_l = lilv_plugin.instantiate (AudioEngine.Synthesizer.sample_rate, features);
 
                 // Check if plugin is mono
                 if (!stereo) {
-                    lv2_instance_r = lilv_plugin.instantiate (Synthesizer.Synthesizer.SAMPLE_RATE, features);
+                    lv2_instance_r = lilv_plugin.instantiate (AudioEngine.Synthesizer.sample_rate, features);
                 }
 
                 create_ports ();
@@ -176,9 +176,9 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
             atom_midi_in_variables = new LV2EvBuf [atom_midi_in_ports.length];
 
             for (uint16 i = 0; i < atom_midi_in_ports.length; i++) {
-                const uint32 buffer_size = 8192;
+                const uint32 BUFFER_SIZE = 8192;
                 atom_midi_in_variables[i] = new LV2EvBuf (
-                    buffer_size,
+                    BUFFER_SIZE,
                     LV2URID.map_uri (this, LV2.Atom._Chunk),
                     LV2URID.map_uri (this, LV2.Atom._Sequence)
                 );
@@ -337,8 +337,8 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
         }
 
         private bool feature_supported (string feature) {
-            for (uint8 i = 0; i < supported_feature_uris.length; i++) {
-                if (feature == supported_feature_uris[i]) {
+            for (uint8 i = 0; i < SUPPORTED_FEATURE_URIS.length; i++) {
+                if (feature == SUPPORTED_FEATURE_URIS[i]) {
                     return true;
                 }
             }
@@ -347,7 +347,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
         }
 
         private LV2.Feature register_feature (string uri, void* data) {
-            return LV2.Feature() {
+            return LV2.Feature () {
                 URI = uri,
                 data = data
             };
@@ -442,7 +442,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                 for (uint i = 0; i < control_in_ports.length; i++) {
                     var plugin_control = new Shell.Plugins.AudioPlugins.Widgets.AudioPluginControl (
                         control_in_ports[i],
-                        &(control_in_variables[i]),
+                        & (control_in_variables[i]),
                         control_in_ports.length > 3 ? Gtk.IconSize.NORMAL : Gtk.IconSize.LARGE
                     );
                     box.append (plugin_control);

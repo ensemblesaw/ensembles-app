@@ -17,7 +17,7 @@ namespace Ensembles.Core.Analysers {
         private bool scale_type;
         private StylePart[] parts;
 
-        private const string[] expected_parts = {
+        private const string[] EXPECTED_PARTS = {
             "CONFIG",
             "INT_1",
             "INT_2",
@@ -151,12 +151,12 @@ namespace Ensembles.Core.Analysers {
                             };
                         }
 
-                        if (marker_name != expected_parts[expected_part_index++]) {
+                        if (marker_name != EXPECTED_PARTS[expected_part_index++]) {
                             if (expected_part_index == 1) {
                                 throw new StyleError.INVALID_LAYOUT ("Expected config marker");
                             } else {
                                 throw new StyleError.INVALID_LAYOUT ("Expected %s marker after %s marker",
-                                expected_parts[expected_part_index - 1], expected_parts[expected_part_index - 2]);
+                                EXPECTED_PARTS[expected_part_index - 1], EXPECTED_PARTS[expected_part_index - 2]);
                             }
                         }
                     }

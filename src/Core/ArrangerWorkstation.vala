@@ -9,8 +9,8 @@ using Ensembles.Models;
 
 namespace Ensembles.Core {
     public class ArrangerWorkstation : Object {
-        private Synthesizer.SynthProvider synth_provider;
-        private Synthesizer.Synthesizer synthesizer;
+        private AudioEngine.SynthProvider synth_provider;
+        private AudioEngine.Synthesizer synthesizer;
         private StyleEngine style_engine;
         private Plugins.PluginManager plugin_manager;
         private Racks.DSPRack main_dsp_rack;
@@ -27,13 +27,13 @@ namespace Ensembles.Core {
 
         construct {
             #if PIPEWIRE_CORE_DRIVER
-            Pipewire.init(null, null);
+            Pipewire.init (null, null);
             #endif
-            synth_provider = new Synthesizer.SynthProvider ();
+            synth_provider = new AudioEngine.SynthProvider ();
             synth_provider.init_driver ("pulseaudio", 0.3);
             Console.log ("Loading Soundfont from %s".printf (SF_PATH));
             try {
-                synthesizer = new Synthesizer.Synthesizer (synth_provider, SF_PATH);
+                synthesizer = new AudioEngine.Synthesizer (synth_provider, SF_PATH);
             } catch (FluidError e) {
                 Console.log (e.message, Console.LogLevel.ERROR);
             }
@@ -144,6 +144,9 @@ namespace Ensembles.Core {
             }
         }
 
+        /**
+         * Returns an array of styles loaded by the arranger workstation.
+         */
         public unowned Style[] get_styles () {
             return styles;
         }

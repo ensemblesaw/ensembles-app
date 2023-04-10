@@ -3,13 +3,13 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
- namespace Ensembles.Core.SynthSettingsPresets {
+ namespace Ensembles.Core.AudioEngine.SynthSettingsPresets {
     /** Reverb presets
         */
     public class ReverbPresets {
         public const double[] ROOM_SIZE = { 0.0, 0.1, 0.2, 0.3, 0.4, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9};
-        public const double[] WIDTH     = { 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20 };
-        public const double[] LEVEL     = { 0, 0.05, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1 };
+        public const double[] WIDTH = { 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20 };
+        public const double[] LEVEL = { 0, 0.05, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1 };
     }
 
     /** Chorus presets
@@ -75,8 +75,7 @@
         /** Gets the modulator value of style channel by modulator number
             */
         public int16 get_mod_buffer_value (uint8 modulator, uint8 channel) {
-            switch (modulator)
-            {
+            switch (modulator) {
                 case 1:
                 return modulation_value[channel];
                 case 10:
@@ -100,8 +99,7 @@
         /** Sets the modulator value of style channel by modulator number
         */
         public void set_mod_buffer_value (uint8 modulator, uint8 channel, int16 value) {
-            switch (modulator)
-            {
+            switch (modulator) {
                 case 1:
                 modulation_value[channel] = value;
                 break;

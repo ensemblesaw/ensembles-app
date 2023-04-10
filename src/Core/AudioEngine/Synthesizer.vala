@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-namespace Ensembles.Core.Synthesizer {
+namespace Ensembles.Core.AudioEngine {
     public class Synthesizer : Object {
         private bool input_enabled = true;
 
@@ -14,7 +14,7 @@ namespace Ensembles.Core.Synthesizer {
 
         public List<unowned Racks.Rack> racks;
 
-        public static double SAMPLE_RATE { get; private set; }
+        public static double sample_rate { get; private set; }
 
         private int soundfont_id;
 
@@ -32,7 +32,7 @@ namespace Ensembles.Core.Synthesizer {
             var s = rendering_synth.get_settings ();
             s.getnum ("synth.sample-rate", out sample_rate);
             Console.log ("Sample Rate: %0.1lf Hz".printf (sample_rate));
-            Synthesizer.SAMPLE_RATE = sample_rate;
+            Synthesizer.sample_rate = sample_rate;
             SynthProvider.synth_render_handler = process_audio;
 
             if (Fluid.is_soundfont (soundfont)) {
@@ -111,12 +111,14 @@ namespace Ensembles.Core.Synthesizer {
         float** output_l,
         float** output_r) {
             foreach (var rack in racks) {
-                rack.process_audio (len, input_l, input_r, output_l, output_r);
+                rack.process_audio (
+                    len, input_l, input_r, output_l, output_r
+                );
 
                 // Copy back to input for next rack
                 for (int i = 0; i < len; i++) {
-                    input_l[i] = *(*output_l + i);
-                    input_r[i] = *(*output_r + i);
+                    input_l[i] = * (* output_l + i);
+                    input_r[i] = * (* output_r + i);
                 }
             }
         }
@@ -163,13 +165,16 @@ namespace Ensembles.Core.Synthesizer {
         }
 
         private int handle_midi_event_from_player (Fluid.MIDIEvent event) {
-            int type = event.get_type();
-            int chan = event.get_channel();
-            int cont = event.get_control();
+            int type = event.get_type ();
+            int chan = event.get_channel ();
+            int cont = event.get_control ();
             int value= event.get_value ();
 
             if (type == MIDI.EventType.CONTROL) {
-                if (cont == MIDI.Control.EXPLICIT_BANK_SELECT && (value == 1 || value == 8 || value == 16 || value == 126)) {
+                if (
+                    cont == MIDI.Control.EXPLICIT_BANK_SELECT &&
+                    (value == 1 || value == 8 || value == 16 || value == 126)
+                ) {
                     int sf_id, program_id, bank_id;
                     rendering_synth.get_program (chan, out sf_id, out bank_id, out program_id);
                     rendering_synth.program_select (chan, soundfont_id, value, program_id);
@@ -187,13 +192,14 @@ namespace Ensembles.Core.Synthesizer {
                     }
                 } else {
                     if (modulator_settings.get_mod_buffer_value ((uint8)cont, (uint8)chan) >= 0) {
-                        event.set_value (modulator_settings.get_mod_buffer_value ((uint8)cont, (uint8)chan));
+                        event.set_value (
+                            modulator_settings.get_mod_buffer_value ((uint8)cont, (uint8)chan)
+                        );
                     }
                 }
             }
 
-            if (type == MIDI.EventType.NOTE_ON)
-            {
+            if (type == MIDI.EventType.NOTE_ON) {
                 //  velocity_buffer[chan] = value;
             }
 

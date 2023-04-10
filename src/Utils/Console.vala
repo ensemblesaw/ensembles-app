@@ -39,10 +39,10 @@ namespace Ensembles {
             ERROR,
         }
 
-        public static void log <T>(T object, LogLevel log_level = LogLevel.TRACE) {
+        public static void log <T> (T object, LogLevel log_level = LogLevel.TRACE) {
             DateTime date_time = new DateTime.now_utc ();
             string message = "";
-            if (typeof(T) == Type.STRING) {
+            if (typeof (T) == Type.STRING) {
                 message = (string) object;
             } else if (typeof (T) == typeof (Error)) {
                 message = ((Error) object).domain.to_string ()

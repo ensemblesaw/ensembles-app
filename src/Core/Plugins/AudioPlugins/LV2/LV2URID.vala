@@ -6,16 +6,16 @@
 namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
     public class LV2URID {
         public static LV2.URID.Urid map_uri (void* handle, string uri) {
-            LADSPAV2.LV2Manager.symap_lock.lock();
+            LADSPAV2.LV2Manager.symap_lock.lock ();
             LV2.URID.Urid urid = LADSPAV2.LV2Manager.symap.map (uri);
             LADSPAV2.LV2Manager.symap_lock.unlock ();
             return urid;
         }
 
         public static string unmap_uri (void* handle, LV2.URID.Urid urid) {
-            LADSPAV2.LV2Manager.symap_lock.lock();
+            LADSPAV2.LV2Manager.symap_lock.lock ();
             string uri = LADSPAV2.LV2Manager.symap.unmap ((uint32)urid);
-            LADSPAV2.LV2Manager.symap_lock.unlock();
+            LADSPAV2.LV2Manager.symap_lock.unlock ();
             return uri;
         }
     }

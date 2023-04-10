@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-namespace Ensembles.Core.Synthesizer {
+namespace Ensembles.Core.AudioEngine {
     /**
      * Manages fluid synth instances and driver configurations
      */

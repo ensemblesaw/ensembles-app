@@ -255,7 +255,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
 
 
         private string[] get_port_properties (Lilv.Port port) {
-            var prop_list = new List<string> ();;
+            var prop_list = new List<string> ();
 
             var properties = lilv_plugin.port_get_properties (port);
 
@@ -263,7 +263,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
             !properties.is_end (props_iter);
             props_iter = properties.next (props_iter)) {
                 var prop = properties.get (props_iter).as_string ();
-                print("port prop:" + prop + "\n");
+                print ("port prop:" + prop + "\n");
                 prop_list.append (prop);
             }
 

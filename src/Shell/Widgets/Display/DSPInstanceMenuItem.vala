@@ -79,7 +79,7 @@ namespace Ensembles.Shell.Widgets.Display {
             ) {
                 tooltip_text = _("Remove Plugin from Rack")
             };
-            button_box.append(delete_instance_button);
+            button_box.append (delete_instance_button);
         }
 
         private void build_events () {

@@ -184,14 +184,14 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
          * Extract the contents of an atom.
          */
         public static void* atom_contents (Atom.Sequence? atom) {
-            return (void*)((uint8*)(atom) + sizeof(Atom.Sequence));
+            return (void*) ((uint8*) (atom) + sizeof (Atom.Sequence));
         }
 
         /**
          * Extract the body of an atom.
          */
         public static void* atom_body (Atom.Atom? atom) {
-            return (void*)((uint8*)(atom) + sizeof(Atom.Atom));
+            return (void*) ((uint8*) (atom) + sizeof (Atom.Atom));
         }
     }
 }

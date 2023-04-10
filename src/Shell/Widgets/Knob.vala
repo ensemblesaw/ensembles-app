@@ -87,8 +87,7 @@ namespace Ensembles.Shell.Widgets {
          * @param adjustment the [class@Gtk.Adjustment] which sets the range of
          * the knob, or null to create a new adjustment.
          */
-        public Knob (Gtk.Adjustment? adjustment = null)
-        {
+        public Knob (Gtk.Adjustment? adjustment = null) {
             Object (
                 name: "knob",
                 accessible_role: Gtk.AccessibleRole.SPIN_BUTTON
@@ -202,8 +201,8 @@ namespace Ensembles.Shell.Widgets {
             );
             // Draw meter
             ctx.arc (radius + 0.2, radius, radius - 7,
-                pointing_angle_lower * (Math.PI/180.0),
-                pointing_angle * (Math.PI/180.0));
+                pointing_angle_lower * (Math.PI / 180.0),
+                pointing_angle * (Math.PI / 180.0));
             ctx.set_line_width (2);
             ctx.set_source_rgba (1 - gb, gb, gb, 1);
             ctx.stroke ();
@@ -217,9 +216,11 @@ namespace Ensembles.Shell.Widgets {
                     pointing_angle_lower,
                     pointing_angle_lower + pointing_angle_upper
                 );
-                ctx.arc (radius + 0.2, radius, radius - 2,
-                (mark_angle - 1) * (Math.PI/180.0),
-                (mark_angle + 1) * (Math.PI/180.0));
+                ctx.arc (
+                    radius + 0.2, radius, radius - 2,
+                    (mark_angle - 1) * (Math.PI / 180.0),
+                    (mark_angle + 1) * (Math.PI / 180.0)
+                );
 
                 ctx.set_source_rgba (1, 1, 1, adjustment.value == mark ? 1 : 0.3);
                 ctx.stroke ();

@@ -86,7 +86,7 @@ namespace Ensembles.Core.MIDIPlayers {
          * @param current_tempo If this value is greater than 0 then the style
          * engine will be initialized with this value.
          */
-        public StyleEngine (Synthesizer.SynthProvider synth_provider, Models.Style? style,
+        public StyleEngine (AudioEngine.SynthProvider synth_provider, Models.Style? style,
             uint8? custom_tempo = 0) {
             this.style = style;
             utility_synth = synth_provider.utility_synth;
@@ -109,16 +109,11 @@ namespace Ensembles.Core.MIDIPlayers {
                 actual_tempo = custom_tempo;
             }
 
-            if (actual_tempo < 130)
-            {
+            if (actual_tempo < 130) {
                 time_resolution_limit = 1;
-            }
-            else if (actual_tempo < 182)
-            {
+            } else if (actual_tempo < 182) {
                 time_resolution_limit = 2;
-            }
-            else
-            {
+            } else {
                 time_resolution_limit = 3;
             }
 
@@ -506,13 +501,11 @@ namespace Ensembles.Core.MIDIPlayers {
 
             // Modify tonal channels with chord
             if (channel != 9 && channel != 10 &&
-               (type == MIDI.EventType.NOTE_ON || type == MIDI.EventType.NOTE_OFF))
-            {
+               (type == MIDI.EventType.NOTE_ON || type == MIDI.EventType.NOTE_OFF)) {
                 new_event.set_key (StyleMIDIModifers.modify_key_by_chord (key, chord,
                     style.scale_type, alt_channels_active));
             }
-            else
-            {
+            else {
                 new_event.set_key (key);
             }
 

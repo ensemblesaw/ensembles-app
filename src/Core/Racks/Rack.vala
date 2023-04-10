@@ -137,8 +137,8 @@ namespace Ensembles.Core.Racks {
             // Fill out buffers using wet mix;
             // Wet mix has been copied to the dry buffer; See below
             for (int i = 0; i < len; i++) {
-                *(*buffer_out_l + i) = aud_buf_dry_l[i];
-                *(*buffer_out_r + i) = aud_buf_dry_r[i];
+                * (* buffer_out_l + i) = aud_buf_dry_l[i];
+                * (* buffer_out_r + i) = aud_buf_dry_r[i];
             }
         }
 

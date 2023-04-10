@@ -26,18 +26,20 @@ namespace Ensembles.Models {
             for (uint8 i = 0; i < 48 - (name.length + genre.length); i++) {output += " ";}
             output += "│\n";
             output += "│ Tempo: %u BPM, Time Signature: %u/%u".printf (tempo, time_signature_n, time_signature_d);
-            for (uint8 i = 0;
+            for (
+                uint8 i = 0;
                 i < 27 - (tempo.to_string ().length + time_signature_n.to_string ().length
                 + time_signature_d.to_string ().length);
-                i++)
-            {output += " ";}
+                i++
+            ) { output += " "; }
             output += "│\n";
             output += "│ " + copyright_notice;
             if (copyright_notice.length < 60) {
-                for (uint8 i = 0;
+                for (
+                    uint8 i = 0;
                     i < 57 - copyright_notice.length;
-                    i++)
-                {output += " ";}
+                    i++
+                ) { output += " "; }
                 output += "│";
             }
 

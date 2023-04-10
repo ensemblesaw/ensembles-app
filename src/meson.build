@@ -58,9 +58,9 @@ sources = files (
     # Core
     'Core/ArrangerWorkstation.vala',
 
-    'Core/Synthesizer/Synthesizer.vala',
-    'Core/Synthesizer/SynthProvider.vala',
-    'Core/Synthesizer/SynthSettingsPresets.vala',
+    'Core/AudioEngine/Synthesizer.vala',
+    'Core/AudioEngine/SynthProvider.vala',
+    'Core/AudioEngine/SynthSettingsPresets.vala',
 
     'Core/Analysers/ChordAnalyser.vala',
     'Core/Analysers/StyleAnalyser.vala',

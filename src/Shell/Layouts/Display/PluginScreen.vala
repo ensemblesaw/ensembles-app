@@ -57,7 +57,7 @@ namespace Ensembles.Shell.Layouts.Display {
 
             active_switch = new Gtk.Switch () {
                 halign = Gtk.Align.CENTER,
-                valign =  Gtk.Align.CENTER,
+                valign = Gtk.Align.CENTER,
                 margin_end = 8
             };
             active_switch.active = plugin.active;
