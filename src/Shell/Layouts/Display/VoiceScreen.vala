@@ -66,6 +66,22 @@ namespace Ensembles.Shell.Layouts.Display {
         }
 
         public void build_events () {
+            main_list_box.row_selected.connect ((item) => {
+                for (
+                    var c = main_list_box.get_first_child ();
+                    c != null;
+                    c = c.get_next_sibling ()
+                ) {
+                    if (c != item && ((VoiceMenuItem) item).is_plugin) {
+                        ((VoiceMenuItem) item).plugin.active = false;
+                    }
+                }
+
+                var voice_item = (VoiceMenuItem) item;
+                if (voice_item.is_plugin) {
+                    voice_item.plugin.active = true;
+                }
+            });
             Application.event_bus.arranger_ready.connect (() => {
                 populate_plugins (Application.arranger_workstation.get_voice_rack (hand_position).get_plugins ());
             });

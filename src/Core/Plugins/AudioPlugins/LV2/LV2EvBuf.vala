@@ -71,8 +71,8 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
             }
         }
 
-        public unowned Atom.Sequence? get_buffer () {
-            return buf;
+        public Atom.Sequence* get_buffer () {
+            return &buf;
         }
 
         public struct Iter {

@@ -73,6 +73,10 @@ namespace Ensembles.Core.Plugins {
             instantiate ();
         }
 
+        ~Plugin () {
+            active = false;
+        }
+
         /**
          * This function is called when the plugin is instantiated.
          * This just means that the plugin data is created. A Plugin cannot be
