@@ -190,23 +190,23 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                     var flags = LV2AtomPort.Flags.NONE;
                     Lilv.Nodes buffer_types = lilv_plugin.port_get_value (
                         port,
-                        LV2Manager.get_node (LV2.Atom._bufferType)
+                        LV2Manager.get_node_by_uri (LV2.Atom._bufferType)
                     );
 
                     Lilv.Nodes atom_supports = lilv_plugin.port_get_value (
                         port,
-                        LV2Manager.get_node (LV2.Atom._supports)
+                        LV2Manager.get_node_by_uri (LV2.Atom._supports)
                     );
 
                     if (
                         buffer_types.contains (
-                            LV2Manager.get_node (LV2.Atom._Sequence)
+                            LV2Manager.get_node_by_uri (LV2.Atom._Sequence)
                         )
                     ) {
                         flags |= LV2AtomPort.Flags.SEQUENCE;
 
                         if (atom_supports.contains (
-                            LV2Manager.get_node (LV2.MIDI._MidiEvent)
+                            LV2Manager.get_node_by_uri (LV2.MIDI._MidiEvent)
                         )) {
                             flags |= LV2AtomPort.Flags.SUPPORTS_MIDI_EVENT;
                         }

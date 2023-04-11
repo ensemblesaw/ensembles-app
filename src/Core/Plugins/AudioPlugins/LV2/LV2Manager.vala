@@ -77,7 +77,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
         }
 
         // URI -> Lilv Node Mapping
-        internal static unowned Lilv.Node get_node (string uri) {
+        internal static unowned Lilv.Node get_node_by_uri (string uri) {
             if (node_map.contains (uri)) {
                 return node_map.get (uri);
             }

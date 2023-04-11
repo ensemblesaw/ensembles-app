@@ -72,9 +72,11 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
         //  LV2.Feature options_feature;
         //  LV2.Feature scheduler_feature;
 
-        // Feature Implementations
+        // Feature Structures
         LV2.URID.UridMap urid_map;
         LV2.URID.UridUnmap urid_unmap;
+
+        // Plugin Instances ////////////////////////////////////////////////////
         private Lilv.Instance lv2_instance_l; // Stereo audio / Mono L Processor
         private Lilv.Instance lv2_instance_r; // Mono R Processor
 
