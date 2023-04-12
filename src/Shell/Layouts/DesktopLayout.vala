@@ -37,7 +37,7 @@ namespace Ensembles.Shell.Layouts {
             Layouts.Keyboard? keyboard) {
             Object (
                 width_request: 812,
-                height_request: 428,
+                height_request: 600,
                 hexpand: true,
                 vexpand: true
             );

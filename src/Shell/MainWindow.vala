@@ -40,7 +40,7 @@
                 application: ensembles_app,
                 icon_name: Constants.APP_ID,
                 title: "Ensembles",
-                default_height: 600
+                default_height: 700
             );
         }
 
@@ -145,6 +145,18 @@
             });
 
             notify["default-height"].connect (() => {
+                if (!Application.kiosk_mode) {
+                    flap_button.visible = squeezer.get_visible_child () == mobile_layout;
+
+                    if (squeezer.get_visible_child () == desktop_layout) {
+                        desktop_layout.reparent ();
+                    } else {
+                        mobile_layout.reparent ();
+                    }
+                }
+            });
+
+            notify["maximized"].connect (() => {
                 if (!Application.kiosk_mode) {
                     flap_button.visible = squeezer.get_visible_child () == mobile_layout;
 

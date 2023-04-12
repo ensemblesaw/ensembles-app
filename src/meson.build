@@ -43,6 +43,8 @@ sources = files (
 
     'Shell/Widgets/BeatVisualization.vala',
     'Shell/Widgets/Knob.vala',
+    'Shell/Widgets/Key.vala',
+    'Shell/Widgets/Octave.vala',
 
     'Shell/Widgets/Display/WheelScrollableWidget.vala',
     'Shell/Widgets/Display/DisplayWindow.vala',
