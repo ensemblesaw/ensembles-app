@@ -7,34 +7,20 @@ namespace Ensembles.Shell.Widgets {
     public class Key : Gtk.Box {
         public uint8 index { get; protected set; }
         public bool is_black { get; protected set; }
-        public Gtk.EventControllerMotion motion_controller;
+        private Gtk.EventControllerMotion motion_controller;
+        private Gtk.GestureClick click_gesture;
 
-        private bool _hovering;
-        public bool hovering {
+        private bool _activated;
+        public bool activated {
             get {
-                return _hovering;
+                return _activated;
             }
             set {
-                _hovering = value;
+                _activated = value;
                 if (value) {
-                    add_css_class ("hovering");
+                    add_css_class ("activated");
                 } else {
-                    remove_css_class ("hovering");
-                }
-            }
-        }
-
-        private bool _pressed;
-        public bool pressed {
-            get {
-                return _pressed;
-            }
-            set {
-                _pressed = value;
-                if (value) {
-                    add_css_class ("pressed");
-                } else {
-                    remove_css_class ("pressed");
+                    remove_css_class ("activated");
                 }
             }
         }
@@ -61,13 +47,16 @@ namespace Ensembles.Shell.Widgets {
 
         private void build_event () {
             motion_controller = new Gtk.EventControllerMotion ();
-            motion_controller.enter.connect (() => {
-                hovering = true;
-            });
-            motion_controller.leave.connect (() => {
-                hovering = false;
-            });
             add_controller (motion_controller);
+
+            click_gesture = new Gtk.GestureClick ();
+            click_gesture.pressed.connect (() => {
+                activated = true;
+            });
+            click_gesture.released.connect (() => {
+                activated = false;
+            });
+            add_controller (click_gesture);
         }
 
         public bool inside (Octave parent, double x, double y) {

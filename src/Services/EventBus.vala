@@ -8,6 +8,7 @@ using Ensembles.Models;
 namespace Ensembles.Services {
     public class EventBus : Object {
         // Shell Events
+        public signal void size_change ();
         public signal bool show_menu (bool show);
         public signal void menu_shown (bool shown);
 

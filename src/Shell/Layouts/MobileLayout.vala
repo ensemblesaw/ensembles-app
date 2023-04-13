@@ -13,7 +13,7 @@ namespace Ensembles.Shell.Layouts {
         private weak Layouts.SamplerPadsPanel sampler_pads_panel;
         private weak Layouts.StyleControlPanel style_control_panel;
         private weak Layouts.RegistryPanel registry_panel;
-        private weak Layouts.Keyboard keyboard;
+        private weak Layouts.KeyboardPanel keyboard;
 
         private Gtk.Grid infoview;
         private Gtk.Grid keyboardview;
@@ -41,7 +41,7 @@ namespace Ensembles.Shell.Layouts {
             Layouts.SamplerPadsPanel? sampler_pads_panel,
             Layouts.StyleControlPanel? style_control_panel,
             Layouts.RegistryPanel? registry_panel,
-            Layouts.Keyboard? keyboard) {
+            Layouts.KeyboardPanel? keyboard) {
             Object (
                 width_request: 812,
                 height_request: 375

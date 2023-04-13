@@ -24,7 +24,7 @@ sources = files (
     'Shell/Layouts/MobileLayout.vala',
     'Shell/Layouts/KioskLayout.vala',
     'Shell/Layouts/InfoDisplay.vala',
-    'Shell/Layouts/Keyboard.vala',
+    'Shell/Layouts/KeyboardPanel.vala',
     'Shell/Layouts/MixerBoard.vala',
     'Shell/Layouts/AssignablesBoard.vala',
     'Shell/Layouts/RegistryPanel.vala',
@@ -45,6 +45,7 @@ sources = files (
     'Shell/Widgets/Knob.vala',
     'Shell/Widgets/Key.vala',
     'Shell/Widgets/Octave.vala',
+    'Shell/Widgets/Keyboard.vala',
 
     'Shell/Widgets/Display/WheelScrollableWidget.vala',
     'Shell/Widgets/Display/DisplayWindow.vala',

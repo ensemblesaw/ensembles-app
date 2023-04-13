@@ -30,7 +30,7 @@
         private Layouts.SamplerPadsPanel sampler_pads_panel;
         private Layouts.StyleControlPanel style_control_panel;
         private Layouts.RegistryPanel registry_panel;
-        private Layouts.Keyboard keyboard;
+        private Layouts.KeyboardPanel keyboard;
 
         // Headerbar
         private Widgets.BeatVisualization beat_visualization;
@@ -98,7 +98,7 @@
             sampler_pads_panel = new Layouts.SamplerPadsPanel ();
             style_control_panel = new Layouts.StyleControlPanel ();
             registry_panel = new Layouts.RegistryPanel ();
-            keyboard = new Layouts.Keyboard ();
+            keyboard = new Layouts.KeyboardPanel ();
 
             desktop_layout = new Layouts.DesktopLayout (assignables_board,
                                                         info_display,
@@ -154,18 +154,29 @@
                         mobile_layout.reparent ();
                     }
                 }
+
+                Application.event_bus.size_change ();
+            });
+
+            notify["default-width"].connect (() => {
+                Application.event_bus.size_change ();
             });
 
             notify["maximized"].connect (() => {
-                if (!Application.kiosk_mode) {
-                    flap_button.visible = squeezer.get_visible_child () == mobile_layout;
+                Timeout.add (100, () => {
+                    if (!Application.kiosk_mode) {
+                        flap_button.visible = squeezer.get_visible_child () == mobile_layout;
 
-                    if (squeezer.get_visible_child () == desktop_layout) {
-                        desktop_layout.reparent ();
-                    } else {
-                        mobile_layout.reparent ();
+                        if (squeezer.get_visible_child () == desktop_layout) {
+                            desktop_layout.reparent ();
+                        } else {
+                            mobile_layout.reparent ();
+                        }
                     }
-                }
+
+                    Application.event_bus.size_change ();
+                    return false;
+                });
             });
 
             Application.event_bus.menu_shown.connect ((shown) => {
