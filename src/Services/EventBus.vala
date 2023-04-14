@@ -36,8 +36,9 @@ namespace Ensembles.Services {
         public signal void synth_received_note (uint8 note_number, bool on);
         public signal void synth_halt_notes (bool except_drums = false);
         public signal void synth_sounds_off ();
+        public signal int synth_midi_reroute (int channel, Fluid.MIDIEvent event);
 
-        // Racks
+        // Plugins
         public signal void rack_reconnected (Core.Racks.Rack rack, int change_index);
         public signal void show_plugin_ui (Core.Plugins.AudioPlugins.AudioPlugin plugin);
     }

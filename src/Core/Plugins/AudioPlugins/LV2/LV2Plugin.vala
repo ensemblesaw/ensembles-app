@@ -290,8 +290,9 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
             }
         }
 
-        public override void send_midi_event (Fluid.MIDIEvent midi_event) {
-
+        public override int send_midi_event (Fluid.MIDIEvent midi_event) {
+            print ("midi, %d\n", midi_event.get_key ());
+            return Fluid.OK;
         }
 
         public override void process (uint32 sample_count) {

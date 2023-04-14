@@ -85,6 +85,7 @@ namespace Ensembles.Shell.Layouts.Display {
             Application.event_bus.arranger_ready.connect (() => {
                 populate_plugins (Application.arranger_workstation.get_voice_rack (hand_position).get_plugins ());
             });
+            Application.event_bus.synth_midi_reroute.connect_after (midi_reroute_handler);
         }
 
         public void populate (Voice[] voices) {
@@ -126,6 +127,30 @@ namespace Ensembles.Shell.Layouts.Display {
                 //      });
                 //  }
             }
+        }
+
+        private int midi_reroute_handler (int channel, Fluid.MIDIEvent event) {
+            int expected_channel = 17;
+            switch (hand_position) {
+                case VoiceHandPosition.LEFT:
+                expected_channel += 2;
+                break;
+                case VoiceHandPosition.RIGHT_LAYERED:
+                expected_channel += 1;
+                break;
+                default:
+                break;
+            }
+            if (channel == expected_channel) {
+            var item = (VoiceMenuItem) main_list_box.get_selected_row ();
+                if (item != null && item.is_plugin) {
+                    return item.plugin.send_midi_event (event);
+                }
+            }
+
+            // If no plugin handled the event return failure response,
+            // This doesn't neccesarily mean any error has occured.
+            return Fluid.FAILED;
         }
     }
 }

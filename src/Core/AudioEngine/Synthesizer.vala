@@ -169,10 +169,15 @@ namespace Ensembles.Core.AudioEngine {
             }
         }
 
-
         private int handle_midi_event (Fluid.MIDIEvent event) {
             var type = event.get_type ();
             var key = event.get_key ();
+            var channel = event.get_channel ();
+
+            if (Application.event_bus.synth_midi_reroute (channel, event) == Fluid.OK) {
+                return Fluid.OK;
+            }
+
             switch (type) {
                 case MIDI.EventType.NOTE_ON:
                 Application.event_bus.synth_received_note ((uint8) key, true);
