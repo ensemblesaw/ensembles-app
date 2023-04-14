@@ -21,6 +21,7 @@ namespace Ensembles.Shell.Layouts {
         construct {
             add_css_class ("keyboard");
             build_ui ();
+            build_events ();
         }
 
         private void build_ui () {
@@ -65,8 +66,19 @@ namespace Ensembles.Shell.Layouts {
             keyboard_scrollable.set_placement (Gtk.CornerType.BOTTOM_LEFT);
             attach (keyboard_scrollable, 0, 1);
 
-            keyboard = new Keyboard (5);
+            keyboard = new Keyboard (5) {
+                octave_offset = 3
+            };
             keyboard_scrollable.set_child (keyboard);
+        }
+
+        private void build_events () {
+            keyboard.key_event.connect ((event) => {
+                Application.event_bus.synth_send_event (event);
+            });
+            Application.event_bus.synth_received_note.connect ((note, on) => {
+                keyboard.set_key_illumination (note, on);
+            });
         }
     }
 }

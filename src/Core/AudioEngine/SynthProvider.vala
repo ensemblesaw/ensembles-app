@@ -207,7 +207,7 @@ namespace Ensembles.Core.AudioEngine {
  *  RENDER SYNTH CHANNEL UTILIZATION SCHEMATICS
  * ----------------------------------------------
  *
- *  LFO, Style, Song:
+ *  Style, Song:
  *  0 - 15
  *
  *  Metronome:

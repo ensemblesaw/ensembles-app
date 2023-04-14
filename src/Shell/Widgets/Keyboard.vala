@@ -27,6 +27,11 @@ namespace Ensembles.Shell.Widgets {
             }
         }
 
+        public int8 octave_offset { get; set; }
+        public bool layer_active { get; set; }
+
+        public signal void key_event (Fluid.MIDIEvent midi_event);
+
         public Keyboard (uint8 n_octaves) {
             Object (
                 accessible_role: Gtk.AccessibleRole.TABLE,
@@ -51,8 +56,11 @@ namespace Ensembles.Shell.Widgets {
         private void build_ui () {
             octaves = new Octave[n_octaves];
             for (uint8 i = 0; i < n_octaves; i++) {
-                octaves[i] = new Octave (this, i);
-                octaves[i].set_parent (this);
+                var octave = new Octave (this, i);
+                octave.key_pressed.connect(handle_key_press);
+                octave.key_released.connect(handle_key_release);
+                octave.set_parent (this);
+                octaves[i] = (owned) octave;
             }
 
             Timeout.add (80, () => {
@@ -76,6 +84,42 @@ namespace Ensembles.Shell.Widgets {
             this.destroy.connect (() => {
                 update = false;
             });
+        }
+
+        private void handle_key_press (uint8 key_index) {
+            var event = new Fluid.MIDIEvent ();
+            event.set_channel (17); // Channel 17 handles user key events
+            event.set_type (MIDI.EventType.NOTE_ON);
+            event.set_key (key_index + 12 * octave_offset);
+            event.set_velocity (100);
+
+            key_event (event);
+
+            if (layer_active) {
+                var layer_event = (owned) event;
+                layer_event.set_channel (18);
+                key_event (layer_event);
+            }
+        }
+
+        private void handle_key_release (uint8 key_index) {
+            var event = new Fluid.MIDIEvent ();
+            event.set_channel (17); // Channel 17 handles user key events
+            event.set_type (MIDI.EventType.NOTE_OFF);
+            event.set_key (key_index + 12 * octave_offset);
+
+            key_event (event);
+
+            if (layer_active) {
+                var layer_event = (owned) event;
+                layer_event.set_channel (18);
+                key_event (layer_event);
+            }
+        }
+
+        public void set_key_illumination (uint8 key_index, bool active) {
+            uint8 octave_index = (key_index / 12) - octave_offset;
+            octaves[octave_index].set_key_illumination (key_index - (octave_offset * 12), active);
         }
     }
 }

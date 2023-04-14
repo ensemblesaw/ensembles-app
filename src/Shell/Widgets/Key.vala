@@ -10,13 +10,13 @@ namespace Ensembles.Shell.Widgets {
         private Gtk.EventControllerMotion motion_controller;
         private Gtk.GestureClick click_gesture;
 
-        private bool _activated;
-        public bool activated {
+        private bool _active;
+        public bool active {
             get {
-                return _activated;
+                return _active;
             }
             set {
-                _activated = value;
+                _active = value;
                 if (value) {
                     add_css_class ("activated");
                 } else {
@@ -24,6 +24,9 @@ namespace Ensembles.Shell.Widgets {
                 }
             }
         }
+
+        public signal void pressed (uint8 index);
+        public signal void released (uint8 index);
 
         public Key (uint8 index, bool is_black) {
             Object (
@@ -51,10 +54,10 @@ namespace Ensembles.Shell.Widgets {
 
             click_gesture = new Gtk.GestureClick ();
             click_gesture.pressed.connect (() => {
-                activated = true;
+                pressed (index);
             });
             click_gesture.released.connect (() => {
-                activated = false;
+                released (index);
             });
             add_controller (click_gesture);
         }

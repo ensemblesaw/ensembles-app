@@ -32,6 +32,8 @@ namespace Ensembles.Services {
         public signal void style_break_changed (bool active);
 
         // Synthesizer
+        public signal int synth_send_event (Fluid.MIDIEvent event);
+        public signal void synth_received_note (uint8 note_number, bool on);
         public signal void synth_halt_notes (bool except_drums = false);
         public signal void synth_sounds_off ();
 

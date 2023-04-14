@@ -216,7 +216,12 @@ stack.dimmed {
 .keyboard {
     background: shade(@bg_color, 0.9);
     border-top: 1px solid #0006;
-    background-image: linear-gradient(#fff7 0, #fff4 17px, #fff0 18px, #fff4 34px, #0004 35px, #000);
+    background-image: linear-gradient(
+        shade(@bg_color, 1.8) 0,
+        shade(@bg_color, 0.9) 16px,
+        alpha(shade(@bg_color, 0.4), 0.3) 17px,
+        shade(@bg_color, 1.8) 34px, #000 35px
+    );
 }
 
 .keyboard-info-bar button {
@@ -244,13 +249,21 @@ stack.dimmed {
     background: @fg_color;
     background-image: linear-gradient(alpha(shade(@bg_color, 2), 0.4), alpha(shade(@bg_color, 0.3), 0.5));
     box-shadow: inset 0 0 0 1px #fff2;
-    border-radius: 0px 0px 4px 4px;
+    border-radius: 0px 0px 5px 5px;
     transition: all 1s ease-out;
 }
 
 .key:hover {
     box-shadow: inset 0 0 0 1px #fff2, inset 0 -4px 12px #fff4;
     filter: brightness(1.1);
+    transition: all 0.1s linear;
+}
+
+
+.key.black.activated {
+    box-shadow: inset 0 0 0 1px shade(@accent_color, 1.2), inset 0 -4px 12px alpha(shade(@accent_color, 1.5), 0.6), 0 0 12px alpha(@accent_color, 0.5);
+    background-color: mix(@accent_color, @fg_color, 0.2);
+    filter: brightness(1);
     transition: all 0.1s linear;
 }
 

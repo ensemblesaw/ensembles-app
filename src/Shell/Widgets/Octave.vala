@@ -34,10 +34,6 @@ namespace Ensembles.Shell.Widgets {
             build_ui ();
         }
 
-        construct {
-            build_events ();
-        }
-
         private void build_ui () {
             white_key_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
                 hexpand = true,
@@ -50,6 +46,8 @@ namespace Ensembles.Shell.Widgets {
             // Arrange all the white keys
             for (uint8 i = 0; i < 7; i++) {
                 var key = new Key (WHITE_KEYS[i], false);
+                key.pressed.connect(handle_key_press);
+                key.released.connect(handle_key_release);
                 white_key_box.append (key);
                 keys[WHITE_KEYS[i]] = (owned) key;
             }
@@ -57,6 +55,8 @@ namespace Ensembles.Shell.Widgets {
             // Arrange all the black keys
             for (uint8 i = 0; i < 5; i++) {
                 var key = new Key (BLACK_KEYS[i], true);
+                key.pressed.connect(handle_key_press);
+                key.released.connect(handle_key_release);
                 key.set_parent (this);
                 keys[BLACK_KEYS[i]] = (owned) key;
             }
@@ -70,7 +70,7 @@ namespace Ensembles.Shell.Widgets {
             int black_key_height = (int) (h_max / 1.5);
 
             for (uint8 i = 0; i < 5; i++) {
-                int left, right, top, bottom;
+                int left, right, bottom;
                 box_to_margins (
                     (int) (BLACK_KEY_OFFSETS[i] * offset),
                     0,
@@ -80,7 +80,6 @@ namespace Ensembles.Shell.Widgets {
                     h_max,
                     out left,
                     out right,
-                    out top,
                     out bottom
                 );
                 keys[BLACK_KEYS[i]].margin_start = left;
@@ -89,16 +88,29 @@ namespace Ensembles.Shell.Widgets {
             }
         }
 
-        private void build_events () {
-
-        }
-
-        private void box_to_margins(int x, int y, int width, int height, int w_max, int h_max, out int left, out int right, out int top, out int bottom) {
-            // Calculate margins based on the given box and parent box dimensions
+        /**
+         * Calculate margins based on the given box and parent box dimensions
+         */
+        private void box_to_margins (
+            int x, int y, int width, int height, int w_max, int h_max,
+            out int left, out int right, out int bottom
+        ) {
             left = x;
             right = w_max - (x + width);
-            top = y;
             bottom = h_max - (y + height);
+        }
+
+        private void handle_key_press (uint8 key_index) {
+            key_pressed (index * 12 + key_index);
+        }
+
+        private void handle_key_release (uint8 key_index) {
+            key_released (index * 12 + key_index);
+        }
+
+        public void set_key_illumination (uint8 key_index, bool active) {
+            uint8 actual_key_index = key_index - (index * 12);
+            keys[actual_key_index].active = active;
         }
     }
 }

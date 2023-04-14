@@ -70,6 +70,7 @@ namespace Ensembles.Core.AudioEngine {
             set_synth_defaults ();
 
             Application.event_bus.style_midi_event.connect (handle_midi_event_from_player);
+            Application.event_bus.synth_send_event.connect (handle_midi_event);
             Application.event_bus.synth_halt_notes.connect (halt_notes);
             Application.event_bus.synth_sounds_off.connect (stop_all_sounds);
         }
@@ -168,12 +169,22 @@ namespace Ensembles.Core.AudioEngine {
             }
         }
 
-        public void send_notes_realtime (int channel, int key, int velocity, bool on) {
-            if (on) {
-                rendering_synth.noteon (channel, key, velocity);
-            } else {
-                rendering_synth.noteoff (channel, key);
+
+        private int handle_midi_event (Fluid.MIDIEvent event) {
+            var type = event.get_type ();
+            var key = event.get_key ();
+            switch (type) {
+                case MIDI.EventType.NOTE_ON:
+                Application.event_bus.synth_received_note ((uint8) key, true);
+                break;
+                case MIDI.EventType.NOTE_OFF:
+                Application.event_bus.synth_received_note ((uint8) key, false);
+                break;
+                default:
+                break;
             }
+
+            return rendering_synth.handle_midi_event (event);
         }
 
         private int handle_midi_event_from_player (Fluid.MIDIEvent event) {
@@ -182,7 +193,7 @@ namespace Ensembles.Core.AudioEngine {
             int cont = event.get_control ();
             int value= event.get_value ();
 
-            if (type == MIDI.EventType.CONTROL) {
+            if (type == MIDI.EventType.CONTROL_CHANGE) {
                 if (
                     cont == MIDI.Control.EXPLICIT_BANK_SELECT &&
                     (value == 1 || value == 8 || value == 16 || value == 126)
