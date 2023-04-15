@@ -56,7 +56,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
 
             this.atom_chunk = atom_chunk;
             this.atom_sequence = atom_sequence;
-            buf = Atom.Sequence ();
+            buf = (Atom.Sequence?) Aligned.alloc0 (sizeof (Atom.Sequence) + capacity, 1, 64);
 
             reset (true);
         }
@@ -90,7 +90,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
         }
 
         public struct Iter {
-            public unowned LV2EvBuf? evbuf;
+            public unowned LV2EvBuf evbuf;
             public uint32 offset;
 
             public bool is_valid () {
@@ -102,44 +102,41 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                     return this;
                 }
 
-                Atom.Event? aev = (
-                    (Atom.Event?)
-                    ((char*) atom_sequence_contents (evbuf.buf) + offset)
-                );
+                Atom.Event* aev = atom_sequence_contents (&evbuf.buf, offset);
 
                 return Iter () {
                     evbuf = evbuf,
                     offset = offset + pad_size (
-                        (uint32) sizeof (Atom.Event) + aev.body.size
+                        (uint32) sizeof (Atom.Event) + aev->body.size
                     )
                 };
             }
 
-            public bool get (
-                out uint32 frames,
-                out uint32 subframes,
-                out uint32 type,
-                out uint32 size,
-                out uint8* data
-            ) {
-                frames = subframes = type = size = 0;
-                data = null;
+            //  public bool get (
+            //      out uint32 frames,
+            //      out uint32 subframes,
+            //      out uint32 type,
+            //      out uint32 size,
+            //      out uint8* data
+            //  ) {
+            //      frames = subframes = type = size = 0;
+            //      data = null;
 
-                if (!is_valid ()) {
-                    return false;
-                }
+            //      if (!is_valid ()) {
+            //          return false;
+            //      }
 
-                unowned Atom.Event? aev = (
-                    (Atom.Event?)
-                    ((char*) atom_sequence_contents (evbuf.buf) + offset
-                ));
+            //      unowned Atom.Event? aev = (
+            //          (Atom.Event?)
+            //          ((char*) atom_sequence_contents (evbuf.buf) + offset
+            //      ));
 
-                frames = (uint32) aev.time_frames;
-                subframes = 0;
-                type = aev.body.type;
-                size = aev.body.size;
-                return true;
-            }
+            //      frames = (uint32) aev.time_frames;
+            //      subframes = 0;
+            //      type = aev.body.type;
+            //      size = aev.body.size;
+            //      return true;
+            //  }
 
             public bool write (
                 uint32 frames,
@@ -148,24 +145,26 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                 uint32 size,
                 uint8* data
             ) {
-                if (
-                    (evbuf.capacity - sizeof (Atom.Atom) - evbuf.buf.atom.size)
-                    < (sizeof (Atom.Event) + size)
-                ) {
-                    return false;
-                }
+                //  if (
+                //      (evbuf.capacity - sizeof (Atom.Atom) - evbuf.buf.atom.size)
+                //      < (sizeof (Atom.Event) + size)
+                //  ) {
+                //      return false;
+                //  }
 
-                Atom.Event? aev = (
-                    (Atom.Event?)
-                    ((char*) atom_sequence_contents (evbuf.buf) + offset)
-                );
-                aev.time_frames = frames;
-                aev.body.type = type;
-                aev.body.size = size;
+                //  unowned Atom.Event aev = (
+                //      (Atom.Event)
+                //      ((char*) atom_sequence_contents (evbuf.buf) + offset)
+                //  );
+                Atom.Event* aev = atom_sequence_contents (&evbuf.buf, offset);
+                //  *aev = 6;
+                aev->time_frames = frames;
+                aev->body.type = type;
+                aev->body.size = size;
 
-                print("writing: %ld\n", (long) aev.time_frames);
+                //  print("writing: %ld\n", (long) aev.time_frames);
 
-                Memory.copy (atom_body (aev.body), data, size);
+                Memory.copy (atom_body (&aev->body), data, size);
 
                 var _size = pad_size ((uint32) sizeof (Atom.Event) + size);
                 evbuf.buf.atom.size += _size;
@@ -185,15 +184,15 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
         /**
          * Extract the contents of an atom sequene.
          */
-        public static void* atom_sequence_contents (Atom.Sequence? atom) {
-            return (void*) ((uint8*) (atom) + sizeof (Atom.Sequence));
+        public static Atom.Event* atom_sequence_contents (Atom.Sequence* atom, uint32 offset) {
+            return (Atom.Event*) (((uint8*) atom) + sizeof (Atom.Sequence) + offset);
         }
 
         /**
          * Extract the body of an atom.
          */
-        public static void* atom_body (Atom.Atom? atom) {
-            return (void*) ((uint8*) (atom) + sizeof (Atom.Atom));
+        public static void* atom_body (Atom.Atom* atom) {
+            return (void*) (((uint8*) atom) + sizeof (Atom.Atom));
         }
     }
 }

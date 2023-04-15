@@ -33,17 +33,29 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
         }
 
         public uint32 map (string sym) {
-            uint32 index = symbols.index (sym);
+            int index = search (sym);
+
             if (index < 0) {
                 symbols.append (sym);
                 return symbols.length () - 1;
             }
 
-            return index;
+            return (uint32) index;
         }
 
         public string unmap (uint32 index) {
             return symbols.nth_data (index);
+        }
+
+        private int search (string sym) {
+            int index = -1;
+            for (int i = 0; i < symbols.length (); i++) {
+                if (symbols.nth_data (i) == sym) {
+                    index = i;
+                }
+            }
+
+            return index;
         }
     }
 }

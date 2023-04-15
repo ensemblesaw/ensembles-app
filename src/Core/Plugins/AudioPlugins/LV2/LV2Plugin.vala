@@ -330,6 +330,8 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                         3,
                         buffer
                     );
+
+                    iter = iter.next ();
                 }
             }
 
@@ -338,7 +340,6 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
 
         public override void process (uint32 sample_count) {
             fill_event_buffers ();
-            print("Processing\n");
 
             if (lv2_instance_l != null) {
                 lv2_instance_l.run (sample_count);
