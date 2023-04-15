@@ -88,6 +88,9 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
         // Atom ports
         // MIDI
         public LV2AtomPort[] atom_midi_in_ports;
+        public Fluid.MIDIEvent[] midi_event_buffer;
+        public uint[] midi_time_buffer;
+        public uint midi_split_time;
         public LV2EvBuf[] atom_midi_in_variables;
 
         public unowned Lilv.Plugin? lilv_plugin { get; protected set; }
@@ -291,11 +294,52 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
         }
 
         public override int send_midi_event (Fluid.MIDIEvent midi_event) {
-            print ("midi, %d\n", midi_event.get_key ());
+            //  print ("midi, %d\n", midi_event.get_key ());
+            if (midi_event_buffer == null) {
+                midi_event_buffer = new Fluid.MIDIEvent [0];
+            }
+
+            midi_event_buffer.resize (midi_event_buffer.length + 1);
+            midi_event_buffer[midi_event_buffer.length - 1] = new Fluid.MIDIEvent ();
+            midi_event_buffer[midi_event_buffer.length - 1].set_type (midi_event.get_type ());
+            midi_event_buffer[midi_event_buffer.length - 1].set_key (midi_event.get_key ());
+            midi_event_buffer[midi_event_buffer.length - 1].set_velocity (midi_event.get_velocity ());
+
             return Fluid.OK;
         }
 
+        private void fill_event_buffers () {
+            for (uint16 p = 0; p < atom_midi_in_ports.length; p++) {
+                //  unowned LV2AtomPort port = atom_midi_in_ports[p];
+                unowned LV2EvBuf evbuf = atom_midi_in_variables[p];
+                evbuf.reset (true);
+                var iter = evbuf.begin ();
+
+                //  print ("midi buffer size %d\n", midi_event_buffer.length);
+
+                for (uint i = 0; i < midi_event_buffer.length; i++) {
+                    unowned Fluid.MIDIEvent midi_event = midi_event_buffer[i];
+                    var buffer = new uint8[3];
+                    buffer[0] = (uint8) midi_event.get_type ();
+                    buffer[1] = (uint8) midi_event.get_key ();
+                    buffer[2] = (uint8) midi_event.get_velocity ();
+                    iter.write (
+                        2,
+                        0,
+                        (uint32) LV2Manager.map_uri (this, LV2.MIDI._MidiEvent),
+                        3,
+                        buffer
+                    );
+                }
+            }
+
+            midi_event_buffer = null;
+        }
+
         public override void process (uint32 sample_count) {
+            fill_event_buffers ();
+            print("Processing\n");
+
             if (lv2_instance_l != null) {
                 lv2_instance_l.run (sample_count);
             }

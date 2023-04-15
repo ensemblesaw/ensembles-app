@@ -75,23 +75,23 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
             return &buf;
         }
 
+        public Iter begin () {
+            return Iter () {
+                evbuf = this,
+                offset = 0
+            };
+        }
+
+        public Iter end () {
+            return Iter () {
+                evbuf = this,
+                offset = pad_size (this.size)
+            };
+        }
+
         public struct Iter {
             public unowned LV2EvBuf? evbuf;
             public uint32 offset;
-
-            public Iter begin (LV2EvBuf evbuf) {
-                return Iter () {
-                    evbuf = evbuf,
-                    offset = 0
-                };
-            }
-
-            public Iter end (LV2EvBuf evbuf) {
-                return Iter () {
-                    evbuf = evbuf,
-                    offset = pad_size (evbuf.size)
-                };
-            }
 
             public bool is_valid () {
                 return offset < evbuf.size;
@@ -104,7 +104,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
 
                 Atom.Event? aev = (
                     (Atom.Event?)
-                    ((char*) atom_contents (evbuf.buf) + offset)
+                    ((char*) atom_sequence_contents (evbuf.buf) + offset)
                 );
 
                 return Iter () {
@@ -131,7 +131,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
 
                 unowned Atom.Event? aev = (
                     (Atom.Event?)
-                    ((char*) atom_contents (evbuf.buf) + offset
+                    ((char*) atom_sequence_contents (evbuf.buf) + offset
                 ));
 
                 frames = (uint32) aev.time_frames;
@@ -157,11 +157,13 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
 
                 Atom.Event? aev = (
                     (Atom.Event?)
-                    ((char*) atom_contents (evbuf.buf) + offset)
+                    ((char*) atom_sequence_contents (evbuf.buf) + offset)
                 );
                 aev.time_frames = frames;
                 aev.body.type = type;
                 aev.body.size = size;
+
+                print("writing: %ld\n", (long) aev.time_frames);
 
                 Memory.copy (atom_body (aev.body), data, size);
 
@@ -181,9 +183,9 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
         }
 
         /**
-         * Extract the contents of an atom.
+         * Extract the contents of an atom sequene.
          */
-        public static void* atom_contents (Atom.Sequence? atom) {
+        public static void* atom_sequence_contents (Atom.Sequence? atom) {
             return (void*) ((uint8*) (atom) + sizeof (Atom.Sequence));
         }
 
