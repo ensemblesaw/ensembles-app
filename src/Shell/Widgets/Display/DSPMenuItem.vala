@@ -76,29 +76,29 @@ namespace Ensembles.Shell.Widgets.Display {
                 );
             }
 
-            var plugin_tech_icon = "";
-            switch (plugin.tech) {
-                case AudioPlugin.Tech.LV2:
-                plugin_tech_icon = "lv2";
+            var plugin_protocol_icon = "";
+            switch (plugin.protocol) {
+                case AudioPlugin.Protocol.LV2:
+                plugin_protocol_icon = "lv2";
                 break;
-                case AudioPlugin.Tech.CARLA:
-                plugin_tech_icon = "carla";
+                case AudioPlugin.Protocol.CARLA:
+                plugin_protocol_icon = "carla";
                 break;
-                case AudioPlugin.Tech.LADSPA:
-                plugin_tech_icon = "ladspa";
+                case AudioPlugin.Protocol.LADSPA:
+                plugin_protocol_icon = "ladspa";
                 break;
-                case AudioPlugin.Tech.NATIVE:
-                plugin_tech_icon = "native";
+                case AudioPlugin.Protocol.NATIVE:
+                plugin_protocol_icon = "native";
                 break;
             }
 
-            if (plugin_tech_icon.length > 0) {
-                plugin_tech_icon =
+            if (plugin_protocol_icon.length > 0) {
+                plugin_protocol_icon =
                 "/com/github/subhadeepjasu/ensembles/icons/scalable/emblems/plugin-audio-" +
-                plugin_tech_icon + "-symbolic.svg";
+                plugin_protocol_icon + "-symbolic.svg";
 
-                var icon = new Gtk.Image.from_resource (plugin_tech_icon);
-                icon.add_css_class ("plugin-item-tech");
+                var icon = new Gtk.Image.from_resource (plugin_protocol_icon);
+                icon.add_css_class ("plugin-item-protocol");
                 extra_info_box.append (icon);
             }
 

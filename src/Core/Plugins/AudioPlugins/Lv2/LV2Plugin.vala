@@ -112,7 +112,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
             author_email = lilv_plugin.get_author_email ().as_string ();
             author_homepage = lilv_plugin.get_author_homepage ().as_string ();
 
-            tech = Tech.LV2;
+            protocol = Protocol.LV2;
 
             // Get all ports from plugin
             category = get_category ();

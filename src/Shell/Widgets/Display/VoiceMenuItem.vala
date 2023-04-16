@@ -62,26 +62,26 @@ namespace Ensembles.Shell.Widgets.Display {
             var category_label = new Gtk.Label ("");
 
             if (show_category) {
-                var plugin_tech = "";
+                var protocol_name = "";
                 if (is_plugin) {
-                    switch (plugin.tech) {
-                        case AudioPlugin.Tech.LV2:
-                            plugin_tech = "LV2";
+                    switch (plugin.protocol) {
+                        case AudioPlugin.Protocol.LV2:
+                            protocol_name = "LV2";
                             break;
-                        case AudioPlugin.Tech.CARLA:
-                            plugin_tech = "Carla";
+                        case AudioPlugin.Protocol.CARLA:
+                            protocol_name = "Carla";
                             break;
-                        case AudioPlugin.Tech.LADSPA:
-                            plugin_tech = "LADSPA";
+                        case AudioPlugin.Protocol.LADSPA:
+                            protocol_name = "LADSPA";
                             break;
-                        case AudioPlugin.Tech.NATIVE:
-                            plugin_tech = "GTK";
+                        case AudioPlugin.Protocol.NATIVE:
+                            protocol_name = "GTK";
                             break;
                     }
                 }
 
                 category_label.set_text (
-                    is_plugin ? plugin_tech + " Plugins" : voice.category
+                    is_plugin ? protocol_name + " Plugins" : voice.category
                 );
                 category_label.add_css_class ("menu-item-category");
             }

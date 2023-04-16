@@ -334,7 +334,7 @@ Menu
     outline: 0;
 }
 
-.display .plugin-item-tech {
+.display .plugin-item-protocol {
     filter: brightness(3);
     opacity: 0.75;
 }

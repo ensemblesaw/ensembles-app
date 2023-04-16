@@ -17,7 +17,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins {
             UNSUPPORTED
         }
 
-        public enum Tech {
+        public enum Protocol {
             NATIVE,
             LADSPA,
             LV2,
@@ -28,7 +28,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins {
         /**
          * The technology this plugin is based on
          */
-        public Tech tech { get; protected set; }
+        public Protocol protocol { get; protected set; }
         public Category category { get; protected set; }
 
         public bool stereo_source { get; protected set; }

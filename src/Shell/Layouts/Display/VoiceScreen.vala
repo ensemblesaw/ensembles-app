@@ -93,12 +93,12 @@ namespace Ensembles.Shell.Layouts.Display {
         }
 
         public void populate_plugins (List<AudioPlugin> plugins) {
-            var temp_category = AudioPlugin.Tech.NATIVE;
+            var temp_category = AudioPlugin.Protocol.NATIVE;
             for (uint16 i = 0; i < plugins.length (); i++) {
                 if (plugins.nth_data (i).category == AudioPlugin.Category.VOICE) {
                     var show_category = false;
-                    if (temp_category != plugins.nth_data (i).tech) {
-                        temp_category = plugins.nth_data (i).tech;
+                    if (temp_category != plugins.nth_data (i).protocol) {
+                        temp_category = plugins.nth_data (i).protocol;
                         show_category = true;
                     }
                     var menu_item = new VoiceMenuItem (

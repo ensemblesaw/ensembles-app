@@ -18,23 +18,23 @@ namespace Ensembles.Shell.Layouts.Display {
         private Widgets.Knob gain_knob;
 
         public PluginScreen (AudioPlugin plugin) {
-            var plugin_tech = "";
-            switch (plugin.tech) {
-                case AudioPlugin.Tech.LV2:
-                plugin_tech += "L V 2";
+            var protocol_name = "";
+            switch (plugin.protocol) {
+                case AudioPlugin.Protocol.LV2:
+                protocol_name += "L V 2";
                 break;
-                case AudioPlugin.Tech.CARLA:
-                plugin_tech += "C A R L A";
+                case AudioPlugin.Protocol.CARLA:
+                protocol_name += "C A R L A";
                 break;
-                case AudioPlugin.Tech.LADSPA:
-                plugin_tech += "L A D S P A";
+                case AudioPlugin.Protocol.LADSPA:
+                protocol_name += "L A D S P A";
                 break;
-                case AudioPlugin.Tech.NATIVE:
-                plugin_tech += "E N S E M B L E S   G T K";
+                case AudioPlugin.Protocol.NATIVE:
+                protocol_name += "E N S E M B L E S   G T K";
                 break;
             }
 
-            base (_(plugin.name), _(plugin_tech));
+            base (_(plugin.name), _(protocol_name));
             this.plugin = plugin;
 
             build_ui ();
