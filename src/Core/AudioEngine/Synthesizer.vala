@@ -17,7 +17,21 @@ namespace Ensembles.Core.AudioEngine {
      * synthesizer.
      */
     public class Synthesizer : Object {
-        private bool input_enabled = true;
+
+        private bool _input_enabled = true;
+
+        public bool input_enabled {
+            get {
+                return _input_enabled;
+            }
+            set {
+                _input_enabled = value;
+            }
+        }
+
+        public static int64 processing_start_time;
+
+        private static uint32 buffer_size;
 
         private Analysers.ChordAnalyser chord_analyser;
         private SynthSettingsPresets.StyleGainSettings style_gain_settings;
@@ -40,6 +54,7 @@ namespace Ensembles.Core.AudioEngine {
         public Synthesizer (SynthProvider synth_provider, string soundfont) throws FluidError {
             Console.log ("Initializing Synthesizer…");
             rendering_synth = synth_provider.rendering_synth;
+            buffer_size = rendering_synth.get_internal_bufsize ();
             double sample_rate = 1;
             var s = rendering_synth.get_settings ();
             s.getnum ("synth.sample-rate", out sample_rate);
@@ -138,6 +153,14 @@ namespace Ensembles.Core.AudioEngine {
 
         public void add_rack (Racks.Rack rack) {
             racks.append (rack);
+        }
+
+        public static uint32 get_buffer_size () {
+            return buffer_size;
+        }
+
+        public static int64 get_process_start_time () {
+            return processing_start_time;
         }
 
         private void edit_master_reverb (int level) {

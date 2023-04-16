@@ -89,9 +89,8 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
         // MIDI
         public LV2AtomPort[] atom_midi_in_ports;
         public Fluid.MIDIEvent[] midi_event_buffer;
-        public uint[] midi_time_buffer;
-        public uint midi_split_time;
         public LV2EvBuf[] atom_midi_in_variables;
+        public uint8 midi_input_event_count;
 
         public unowned Lilv.Plugin? lilv_plugin { get; protected set; }
 
@@ -180,10 +179,9 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
         private void allocate_midi_port_buffers () {
             atom_midi_in_variables = new LV2EvBuf [atom_midi_in_ports.length];
 
-            for (uint16 i = 0; i < atom_midi_in_ports.length; i++) {
-                const uint32 BUFFER_SIZE = 8192;
+            for (uint8 i = 0; i < atom_midi_in_ports.length; i++) {
                 atom_midi_in_variables[i] = new LV2EvBuf (
-                    BUFFER_SIZE,
+                    AudioEngine.Synthesizer.get_buffer_size (),
                     LV2Manager.map_uri (this, LV2.Atom._Chunk),
                     LV2Manager.map_uri (this, LV2.Atom._Sequence)
                 );
@@ -296,15 +294,13 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
         public override int send_midi_event (Fluid.MIDIEvent midi_event) {
             //  print ("midi, %d\n", midi_event.get_key ());
             if (midi_event_buffer == null) {
-                midi_event_buffer = new Fluid.MIDIEvent [0];
+                midi_event_buffer = new Fluid.MIDIEvent [AudioEngine.Synthesizer.get_buffer_size ()];
             }
 
-            midi_event_buffer.resize (midi_event_buffer.length + 1);
-            midi_event_buffer[midi_event_buffer.length - 1] = new Fluid.MIDIEvent ();
-            midi_event_buffer[midi_event_buffer.length - 1].set_type (midi_event.get_type ());
-            midi_event_buffer[midi_event_buffer.length - 1].set_key (midi_event.get_key ());
-            midi_event_buffer[midi_event_buffer.length - 1].set_velocity (midi_event.get_velocity ());
-
+            midi_event_buffer[midi_input_event_count] = new Fluid.MIDIEvent ();
+            midi_event_buffer[midi_input_event_count].set_type (midi_event.get_type ());
+            midi_event_buffer[midi_input_event_count].set_key (midi_event.get_key ());
+            midi_event_buffer[midi_input_event_count++].set_velocity (midi_event.get_velocity ());
             return Fluid.OK;
         }
 
@@ -317,14 +313,16 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
 
                 //  print ("midi buffer size %d\n", midi_event_buffer.length);
 
-                for (uint i = 0; i < midi_event_buffer.length; i++) {
+                for (uint8 i = 0; i < midi_input_event_count; i++) {
                     unowned Fluid.MIDIEvent midi_event = midi_event_buffer[i];
                     var buffer = new uint8[3];
                     buffer[0] = (uint8) midi_event.get_type ();
                     buffer[1] = (uint8) midi_event.get_key ();
                     buffer[2] = (uint8) midi_event.get_velocity ();
                     iter.write (
-                        2,
+                        (uint32) (
+                            new DateTime.now_utc ().to_unix () - AudioEngine.Synthesizer.get_process_start_time ()
+                        ),
                         0,
                         (uint32) LV2Manager.map_uri (this, LV2.MIDI._MidiEvent),
                         3,
@@ -333,7 +331,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
                 }
             }
 
-            midi_event_buffer = null;
+            midi_input_event_count = 0;
         }
 
         public override void process (uint32 sample_count) {

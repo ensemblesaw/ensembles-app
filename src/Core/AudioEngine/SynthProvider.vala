@@ -46,8 +46,12 @@ namespace Ensembles.Core.AudioEngine {
                     rendering_settings.setint ("synth.polyphony", 1024);
 
                     _rendering_synth = new Fluid.Synth (rendering_settings);
-                    rendering_driver = new Fluid.AudioDriver.with_audio_callback (rendering_settings,
+                    rendering_driver = new Fluid.AudioDriver.with_audio_callback (
+                        rendering_settings,
                         (synth, len, fx, aout) => {
+                        // Log current unix time before the synthesizer processes audio
+                        Synthesizer.processing_start_time = new DateTime.now_utc ().to_unix ();
+
                         if (fx == null) {
                             /* Note that some audio drivers may not provide buffers for effects like
                              * reverb and chorus. In this case it's your decision what to do. If you

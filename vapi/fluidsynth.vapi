@@ -621,6 +621,10 @@ namespace Fluid {
         public int sfunload (int id, bool reset_presets);
 
         public int handle_midi_event (MIDIEvent? event);
+
+        // Synthesis Parameters
+        /** Get the internal synthesis buffer size value. */
+        public int get_internal_bufsize ();
     }
 
     /**
