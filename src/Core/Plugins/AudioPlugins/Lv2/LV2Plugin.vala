@@ -330,8 +330,6 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
                         3,
                         buffer
                     );
-
-                    iter = iter.next ();
                 }
             }
 

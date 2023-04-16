@@ -35,8 +35,14 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
         public uint32 capacity { get; protected set; }
         private Urid atom_chunk;
         private Urid atom_sequence;
+        // Unlike the original implementation, it was not possible to allocate
+        // the EvBuf struct with a custom capacity in Vala. So using a pointer
+        // to dynamically allocate just the buffer instead.
         private Atom.Sequence* buf;
 
+        /**
+         * Size of the atom event sequence
+         */
         public uint32 size {
             get {
                 if (buf.atom.type != atom_sequence) {
@@ -47,6 +53,13 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
             }
         }
 
+        /**
+         * Creates a new event buffer instance.
+         *
+         * @param capacity maximum capacity of event buffer
+         * @param atom_chunk URID of an atom chunk
+         * @param atom_sequence URID of an atom sequence
+         */
         public LV2EvBuf (uint32 capacity, Urid atom_chunk, Urid atom_sequence) {
             return_if_fail (capacity > 0);
 
@@ -61,6 +74,11 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
             reset (true);
         }
 
+        /**
+         * "Clears" the event buffer by resetting it's size.
+         *
+         * @param input whether the buffer is associated with an input port
+         */
         public void reset (bool input) {
             if (input) {
                 buf.atom.size = (uint32) sizeof (Atom.SequenceBody);
@@ -71,10 +89,17 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
             }
         }
 
+        /**
+         * Returns a pointer to the event sequence.
+         */
         public Atom.Sequence* get_buffer () {
             return buf;
         }
 
+        /**
+         * Returns an iterator which can be used to iterate through
+         * the event sequence from the beginning.
+         */
         public Iter begin () {
             return Iter () {
                 evbuf = this,
@@ -82,6 +107,10 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
             };
         }
 
+        /**
+         * Returns an iterator which can be used to iterate through
+         * the event sequence from the end.
+         */
         public Iter end () {
             return Iter () {
                 evbuf = this,
@@ -89,14 +118,29 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
             };
         }
 
+        /**
+         * Iterator which allows iterating through the event sequence.
+         */
         public struct Iter {
-            public unowned LV2EvBuf evbuf;
-            public uint32 offset;
+            /**
+             * The event buffer which this iterator is associated with.
+             */
+            unowned LV2EvBuf evbuf;
+            /**
+             * Current position of the iterator.
+             */
+            uint32 offset;
 
+            /**
+             * If the iterator position is within the buffer size.
+             */
             public bool is_valid () {
                 return offset < evbuf.size;
             }
 
+            /**
+             * Get the iterator to the next event in the sequence.
+             */
             public Iter next () {
                 if (!is_valid ()) {
                     return this;
@@ -112,32 +156,48 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
                 };
             }
 
-            //  public bool get (
-            //      out uint32 frames,
-            //      out uint32 subframes,
-            //      out uint32 type,
-            //      out uint32 size,
-            //      out uint8* data
-            //  ) {
-            //      frames = subframes = type = size = 0;
-            //      data = null;
+            /**
+             * Retrieve event data from the current iterator position in the
+             * sequence.
+             *
+             * @param frames MIDI clock times when the event is to be activated
+             * @param subframes MIDI clock time subdivisions
+             * @param size length of the event sequence
+             * @param data pointer to the event sequence data
+             */
+            public bool get (
+                out uint32 frames,
+                out uint32 subframes,
+                out uint32 type,
+                out uint32 size,
+                out uint8* data
+            ) {
+                frames = subframes = type = size = 0;
+                data = null;
 
-            //      if (!is_valid ()) {
-            //          return false;
-            //      }
+                if (!is_valid ()) {
+                    return false;
+                }
 
-            //      unowned Atom.Event? aev = (
-            //          (Atom.Event?)
-            //          ((char*) atom_sequence_contents (evbuf.buf) + offset
-            //      ));
+                Atom.Event* aev = atom_sequence_contents (evbuf.buf, offset);
 
-            //      frames = (uint32) aev.time_frames;
-            //      subframes = 0;
-            //      type = aev.body.type;
-            //      size = aev.body.size;
-            //      return true;
-            //  }
+                frames = (uint32) aev->time_frames;
+                subframes = 0;
+                type = aev->body.type;
+                size = aev->body.size;
+                data = atom_body (&aev->body);
+                return true;
+            }
 
+            /**
+             * Wrties event data in the current iterator position in the
+             * sequence.
+             *
+             * @param frames MIDI clock times when the event is to be activated
+             * @param subframes MIDI clock time subdivisions
+             * @param size length of the event sequence
+             * @param data pointer to the event sequence data
+             */
             public bool write (
                 uint32 frames,
                 uint32 subframes,

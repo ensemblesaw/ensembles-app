@@ -46,8 +46,8 @@ namespace Ensembles.Shell.Widgets {
             // Arrange all the white keys
             for (uint8 i = 0; i < 7; i++) {
                 var key = new Key (WHITE_KEYS[i], false);
-                key.pressed.connect(handle_key_press);
-                key.released.connect(handle_key_release);
+                key.pressed.connect (handle_key_press);
+                key.released.connect (handle_key_release);
                 white_key_box.append (key);
                 keys[WHITE_KEYS[i]] = (owned) key;
             }
@@ -55,8 +55,8 @@ namespace Ensembles.Shell.Widgets {
             // Arrange all the black keys
             for (uint8 i = 0; i < 5; i++) {
                 var key = new Key (BLACK_KEYS[i], true);
-                key.pressed.connect(handle_key_press);
-                key.released.connect(handle_key_release);
+                key.pressed.connect (handle_key_press);
+                key.released.connect (handle_key_release);
                 key.set_parent (this);
                 keys[BLACK_KEYS[i]] = (owned) key;
             }

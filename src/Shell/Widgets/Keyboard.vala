@@ -57,8 +57,8 @@ namespace Ensembles.Shell.Widgets {
             octaves = new Octave[n_octaves];
             for (uint8 i = 0; i < n_octaves; i++) {
                 var octave = new Octave (this, i);
-                octave.key_pressed.connect(handle_key_press);
-                octave.key_released.connect(handle_key_release);
+                octave.key_pressed.connect (handle_key_press);
+                octave.key_released.connect (handle_key_release);
                 octave.set_parent (this);
                 octaves[i] = (owned) octave;
             }
