@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
+namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
     public class LV2AtomPort : LV2Port {
         [Flags]
         public enum Flags {

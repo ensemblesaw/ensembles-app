@@ -47,7 +47,7 @@
  * ---
  */
 
-namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
+namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
     /**
      * The LV2PortAnalyser object is used to analyse LV2 ports
      * and provide port descriptors which the plugin object can the use to

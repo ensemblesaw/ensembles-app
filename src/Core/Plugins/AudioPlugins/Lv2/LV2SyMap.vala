@@ -25,7 +25,7 @@
  * ---
  */
 
-namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
+namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
     public class SyMap {
         private List<string> symbols;
         public SyMap () {

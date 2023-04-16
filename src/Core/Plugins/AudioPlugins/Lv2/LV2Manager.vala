@@ -25,7 +25,7 @@
  * ---
  */
 
-namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
+namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
     /**
      * The LV2 Manager object manages LV2 Plugins.
      */
@@ -92,16 +92,16 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
 
         // LV2 URID
         internal static LV2.URID.Urid map_uri (void* handle, string uri) {
-            LADSPAV2.LV2Manager.symap_lock.lock ();
-            LV2.URID.Urid urid = LADSPAV2.LV2Manager.symap.map (uri);
-            LADSPAV2.LV2Manager.symap_lock.unlock ();
+            Lv2.LV2Manager.symap_lock.lock ();
+            LV2.URID.Urid urid = Lv2.LV2Manager.symap.map (uri);
+            Lv2.LV2Manager.symap_lock.unlock ();
             return urid;
         }
 
         internal static string unmap_uri (void* handle, LV2.URID.Urid urid) {
-            LADSPAV2.LV2Manager.symap_lock.lock ();
-            string uri = LADSPAV2.LV2Manager.symap.unmap ((uint32)urid);
-            LADSPAV2.LV2Manager.symap_lock.unlock ();
+            Lv2.LV2Manager.symap_lock.lock ();
+            string uri = Lv2.LV2Manager.symap.unmap ((uint32)urid);
+            Lv2.LV2Manager.symap_lock.unlock ();
             return uri;
         }
 

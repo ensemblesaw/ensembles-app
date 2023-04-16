@@ -47,7 +47,7 @@
  * ---
  */
 
-namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
+namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
     /**
      * An LV2 Plugin that can be used for DSP or as voices, expanding
      * the standard set of sampled voices that Ensembles come with.

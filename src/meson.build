@@ -106,12 +106,12 @@ sources = files (
     'Core/Plugins/AudioPlugins/Port.vala',
 
     # LV2 Plugins
-    'Core/Plugins/AudioPlugins/LV2/LV2Manager.vala',
-    'Core/Plugins/AudioPlugins/LV2/LV2Plugin.vala',
-    'Core/Plugins/AudioPlugins/LV2/LV2SyMap.vala',
-    'Core/Plugins/AudioPlugins/LV2/LV2EvBuf.vala',
-    'Core/Plugins/AudioPlugins/LV2/LV2PortAnalyser.vala',
-    'Core/Plugins/AudioPlugins/LV2/Ports/LV2Port.vala',
-    'Core/Plugins/AudioPlugins/LV2/Ports/LV2ControlPort.vala',
-    'Core/Plugins/AudioPlugins/LV2/Ports/LV2AtomPort.vala'
+    'Core/Plugins/AudioPlugins/Lv2/LV2Manager.vala',
+    'Core/Plugins/AudioPlugins/Lv2/LV2Plugin.vala',
+    'Core/Plugins/AudioPlugins/Lv2/LV2SyMap.vala',
+    'Core/Plugins/AudioPlugins/Lv2/LV2EvBuf.vala',
+    'Core/Plugins/AudioPlugins/Lv2/LV2PortAnalyser.vala',
+    'Core/Plugins/AudioPlugins/Lv2/Ports/LV2Port.vala',
+    'Core/Plugins/AudioPlugins/Lv2/Ports/LV2ControlPort.vala',
+    'Core/Plugins/AudioPlugins/Lv2/Ports/LV2AtomPort.vala'
 )

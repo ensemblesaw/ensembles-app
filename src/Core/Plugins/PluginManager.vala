@@ -21,7 +21,7 @@ namespace Ensembles.Core.Plugins {
          */
         public List<AudioPlugins.AudioPlugin> audio_plugins;
 
-        private AudioPlugins.LADSPAV2.LV2Manager lv2_audio_plugin_manager;
+        private AudioPlugins.Lv2.LV2Manager lv2_audio_plugin_manager;
 
         construct {
             // Load Audio Plugins //////////////////////////////////////////////
@@ -31,7 +31,7 @@ namespace Ensembles.Core.Plugins {
             // Load LADSPA Plugins
 
             // Load LV2 Plugins
-            lv2_audio_plugin_manager = new AudioPlugins.LADSPAV2.LV2Manager ();
+            lv2_audio_plugin_manager = new AudioPlugins.Lv2.LV2Manager ();
             lv2_audio_plugin_manager.load_plugins (this);
 
             // Load Carla Plugins

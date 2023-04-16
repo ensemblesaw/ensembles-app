@@ -30,12 +30,12 @@
 using LV2;
 using LV2.URID;
 
-namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
+namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
     public class LV2EvBuf : Object {
         public uint32 capacity { get; protected set; }
         private Urid atom_chunk;
         private Urid atom_sequence;
-        private Atom.Sequence buf;
+        private Atom.Sequence* buf;
 
         public uint32 size {
             get {
@@ -56,7 +56,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
 
             this.atom_chunk = atom_chunk;
             this.atom_sequence = atom_sequence;
-            buf = (Atom.Sequence?) Aligned.alloc0 (sizeof (Atom.Sequence) + capacity, 1, 64);
+            buf = (Atom.Sequence*) Aligned.alloc0 (sizeof (Atom.Sequence) + capacity, 1, 64);
 
             reset (true);
         }
@@ -72,7 +72,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
         }
 
         public Atom.Sequence* get_buffer () {
-            return &buf;
+            return buf;
         }
 
         public Iter begin () {
@@ -102,7 +102,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                     return this;
                 }
 
-                Atom.Event* aev = atom_sequence_contents (&evbuf.buf, offset);
+                Atom.Event* aev = atom_sequence_contents (evbuf.buf, offset);
 
                 return Iter () {
                     evbuf = evbuf,
@@ -145,19 +145,14 @@ namespace Ensembles.Core.Plugins.AudioPlugins.LADSPAV2 {
                 uint32 size,
                 uint8* data
             ) {
-                //  if (
-                //      (evbuf.capacity - sizeof (Atom.Atom) - evbuf.buf.atom.size)
-                //      < (sizeof (Atom.Event) + size)
-                //  ) {
-                //      return false;
-                //  }
+                if (
+                    (evbuf.capacity - sizeof (Atom.Atom) - evbuf.buf.atom.size)
+                    < (sizeof (Atom.Event) + size)
+                ) {
+                    return false;
+                }
 
-                //  unowned Atom.Event aev = (
-                //      (Atom.Event)
-                //      ((char*) atom_sequence_contents (evbuf.buf) + offset)
-                //  );
-                Atom.Event* aev = atom_sequence_contents (&evbuf.buf, offset);
-                //  *aev = 6;
+                Atom.Event* aev = atom_sequence_contents (evbuf.buf, offset);
                 aev->time_frames = frames;
                 aev->body.type = type;
                 aev->body.size = size;

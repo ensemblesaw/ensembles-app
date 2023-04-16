@@ -54,8 +54,8 @@ namespace Ensembles.Shell.Plugins.AudioPlugins.Widgets {
 
                 append (knob);
 
-                if (port is Core.Plugins.AudioPlugins.LADSPAV2.LV2ControlPort) {
-                    var lv2_control_port = (Core.Plugins.AudioPlugins.LADSPAV2.LV2ControlPort) port;
+                if (port is Core.Plugins.AudioPlugins.Lv2.LV2ControlPort) {
+                    var lv2_control_port = (Core.Plugins.AudioPlugins.Lv2.LV2ControlPort) port;
                     knob.adjustment.lower = lv2_control_port.min_value;
                     knob.adjustment.upper = lv2_control_port.max_value;
                     knob.adjustment.step_increment = lv2_control_port.step;
@@ -81,8 +81,8 @@ namespace Ensembles.Shell.Plugins.AudioPlugins.Widgets {
 
                 append (scale);
 
-                if (port is Core.Plugins.AudioPlugins.LADSPAV2.LV2ControlPort) {
-                    var lv2_control_port = (Core.Plugins.AudioPlugins.LADSPAV2.LV2ControlPort) port;
+                if (port is Core.Plugins.AudioPlugins.Lv2.LV2ControlPort) {
+                    var lv2_control_port = (Core.Plugins.AudioPlugins.Lv2.LV2ControlPort) port;
                     scale.adjustment.lower = lv2_control_port.min_value;
                     scale.adjustment.upper = lv2_control_port.max_value;
                     scale.adjustment.step_increment = lv2_control_port.step;
