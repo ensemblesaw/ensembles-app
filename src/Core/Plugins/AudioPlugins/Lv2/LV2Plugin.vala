@@ -292,16 +292,21 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
         }
 
         public override int send_midi_event (Fluid.MIDIEvent midi_event) {
-            //  print ("midi, %d\n", midi_event.get_key ());
-            if (midi_event_buffer == null) {
-                midi_event_buffer = new Fluid.MIDIEvent [AudioEngine.Synthesizer.get_buffer_size ()];
+            if (active) {
+                //  print ("midi, %d\n", midi_event.get_key ());
+                if (midi_event_buffer == null) {
+                    midi_event_buffer = new Fluid.MIDIEvent [AudioEngine.Synthesizer.get_buffer_size ()];
+                }
+
+                midi_event_buffer[midi_input_event_count] = new Fluid.MIDIEvent ();
+                midi_event_buffer[midi_input_event_count].set_type (midi_event.get_type ());
+                midi_event_buffer[midi_input_event_count].set_key (midi_event.get_key ());
+                midi_event_buffer[midi_input_event_count++].set_velocity (midi_event.get_velocity ());
+
+                return Fluid.OK;
             }
 
-            midi_event_buffer[midi_input_event_count] = new Fluid.MIDIEvent ();
-            midi_event_buffer[midi_input_event_count].set_type (midi_event.get_type ());
-            midi_event_buffer[midi_input_event_count].set_key (midi_event.get_key ());
-            midi_event_buffer[midi_input_event_count++].set_velocity (midi_event.get_velocity ());
-            return Fluid.OK;
+            return Fluid.FAILED;
         }
 
         private void fill_event_buffers () {

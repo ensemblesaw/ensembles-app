@@ -12,6 +12,9 @@ namespace Ensembles.Services {
         public signal bool show_menu (bool show);
         public signal void menu_shown (bool shown);
 
+        // Homescreen
+        public signal void voice_chosen (VoiceHandPosition position, string name);
+
         // Core Events
         public signal void arranger_ready ();
 

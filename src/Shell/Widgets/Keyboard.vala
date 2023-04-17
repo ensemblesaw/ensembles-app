@@ -28,7 +28,6 @@ namespace Ensembles.Shell.Widgets {
         }
 
         public int8 octave_offset { get; set; }
-        public bool layer_active { get; set; }
 
         public signal void key_event (Fluid.MIDIEvent midi_event);
 
@@ -94,12 +93,6 @@ namespace Ensembles.Shell.Widgets {
             event.set_velocity (100);
 
             key_event (event);
-
-            if (layer_active) {
-                var layer_event = (owned) event;
-                layer_event.set_channel (18);
-                key_event (layer_event);
-            }
         }
 
         private void handle_key_release (uint8 key_index) {
@@ -109,12 +102,6 @@ namespace Ensembles.Shell.Widgets {
             event.set_key (key_index + 12 * octave_offset);
 
             key_event (event);
-
-            if (layer_active) {
-                var layer_event = (owned) event;
-                layer_event.set_channel (18);
-                key_event (layer_event);
-            }
         }
 
         public void set_key_illumination (uint8 key_index, bool active) {

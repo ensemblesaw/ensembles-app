@@ -838,7 +838,7 @@ namespace Fluid {
         public int add_rule (MIDIRouterRule rule, MIDIRouterRuleType type);
         public int clear_rules ();
         [CCode (has_target = false)]
-        public int handle_midi_event (void* data, MIDIEvent event);
+        public int handle_midi_event (MIDIEvent event);
         public int set_default_rules ();
     }
 

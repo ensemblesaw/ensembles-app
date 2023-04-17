@@ -218,6 +218,20 @@ namespace Ensembles.Shell.Layouts.Display {
                     return false;
                 });
             });
+
+            Application.event_bus.voice_chosen.connect ((position, name) => {
+                switch (position) {
+                    case VoiceHandPosition.LEFT:
+                    selected_voice_l_label.set_text (name);
+                    break;
+                    case VoiceHandPosition.RIGHT:
+                    selected_voice_r1_label.set_text (name);
+                    break;
+                    case VoiceHandPosition.RIGHT_LAYERED:
+                    selected_voice_r2_label.set_text (name);
+                    break;
+                }
+            });
         }
     }
 }

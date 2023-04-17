@@ -29,6 +29,9 @@ namespace Ensembles.Core.AudioEngine {
             }
         }
 
+        public bool layer { get; set; }
+        public bool split { get; set; }
+
         public static int64 processing_start_time;
 
         private static uint32 buffer_size;
@@ -84,6 +87,10 @@ namespace Ensembles.Core.AudioEngine {
 
             set_synth_defaults ();
 
+            build_events ();
+        }
+
+        private void build_events () {
             Application.event_bus.style_midi_event.connect (handle_midi_event_from_player);
             Application.event_bus.synth_send_event.connect (handle_midi_event);
             Application.event_bus.synth_halt_notes.connect (halt_notes);
@@ -133,11 +140,13 @@ namespace Ensembles.Core.AudioEngine {
             edit_master_chorus (2);
         }
 
-        private void process_audio (int len,
-        float* input_l,
-        float* input_r,
-        float** output_l,
-        float** output_r) {
+        private void process_audio (
+            int len,
+            float* input_l,
+            float* input_r,
+            float** output_l,
+            float** output_r
+        ) {
             foreach (var rack in racks) {
                 rack.process_audio (
                     len, input_l, input_r, output_l, output_r
@@ -193,13 +202,18 @@ namespace Ensembles.Core.AudioEngine {
         }
 
         private int handle_midi_event (Fluid.MIDIEvent event) {
+            bool handled = false;
+            foreach (var rack in racks) {
+                var voice_rack = rack as Racks.VoiceRack;
+                if (voice_rack != null) {
+                    if (voice_rack.send_midi_event (event) == Fluid.OK) {
+                        handled = true;
+                    }
+                }
+            }
+
             var type = event.get_type ();
             var key = event.get_key ();
-            var channel = event.get_channel ();
-
-            if (Application.event_bus.synth_midi_reroute (channel, event) == Fluid.OK) {
-                return Fluid.OK;
-            }
 
             switch (type) {
                 case MIDI.EventType.NOTE_ON:
@@ -210,6 +224,10 @@ namespace Ensembles.Core.AudioEngine {
                 break;
                 default:
                 break;
+            }
+
+            if (handled) {
+                return Fluid.OK;
             }
 
             return rendering_synth.handle_midi_event (event);

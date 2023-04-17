@@ -24,5 +24,16 @@ namespace Ensembles.Core.Racks {
 
             dsp_racks = new List<DSPRack> ();
         }
+
+        public int send_midi_event (Fluid.MIDIEvent event) {
+            bool handled = false;
+            foreach (var plugin in plugins) {
+                if (plugin.send_midi_event (event) == Fluid.OK) {
+                    handled = true;
+                }
+            }
+
+            return handled ? Fluid.OK : Fluid.FAILED;
+        }
     }
 }
