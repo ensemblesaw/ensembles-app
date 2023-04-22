@@ -107,6 +107,8 @@ namespace Ensembles.Core {
 
             add_plugins_to_voice_racks ();
 
+            Application.event_bus.send_initial_status ("");
+
             // Send ready signal
             Idle.add (() => {
                 Ensembles.Application.event_bus.arranger_ready ();

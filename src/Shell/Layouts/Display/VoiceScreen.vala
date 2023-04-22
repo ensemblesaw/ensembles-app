@@ -85,7 +85,7 @@ namespace Ensembles.Shell.Layouts.Display {
             });
         }
 
-        public void populate (unowned Voice[] voices) {
+        public void populate (Voice[] voices) {
             var temp_category = "";
             for (uint16 i = 0; i < voices.length; i++) {
                 var show_category = false;

@@ -81,6 +81,9 @@ namespace Ensembles.Core.AudioEngine {
 
                 // Initialize metronome voice
                 rendering_synth.program_select (16, soundfont_id, 128, 0);
+
+                // Initialize intro chime voice
+                rendering_synth.program_select (23, soundfont_id, 0, 11);
             } else {
                 throw new FluidError.INVALID_SF (_("SoundFont from path: %s is either missing or invalid"), soundfont);
             }
@@ -95,6 +98,7 @@ namespace Ensembles.Core.AudioEngine {
             Application.event_bus.synth_send_event.connect (handle_midi_event);
             Application.event_bus.synth_halt_notes.connect (halt_notes);
             Application.event_bus.synth_sounds_off.connect (stop_all_sounds);
+            Application.event_bus.arranger_ready.connect (play_intro_sound);
         }
 
         private void set_synth_defaults () {
@@ -106,6 +110,10 @@ namespace Ensembles.Core.AudioEngine {
             // Reverb and Chorus for R1 voice
             rendering_synth.cc (17, MIDI.Control.REVERB, 100);
             rendering_synth.cc (17, MIDI.Control.CHORUS, 100);
+
+            // Reverb and Chorus for intro tone
+            rendering_synth.cc (23, MIDI.Control.REVERB, 127);
+            rendering_synth.cc (23, MIDI.Control.CHORUS, 50);
 
             // Reverb and Chorus for Metronome
             rendering_synth.cc (16, MIDI.Control.REVERB, 0);
@@ -138,6 +146,27 @@ namespace Ensembles.Core.AudioEngine {
 
             set_master_chorus_active (true);
             edit_master_chorus (2);
+        }
+
+        private void play_intro_sound () {
+            rendering_synth.noteon (23, 72, 110);
+
+            Timeout.add (100, () => {
+                rendering_synth.noteon (23, 67, 100);
+                return false;
+            });
+
+            Timeout.add (200, () => {
+                rendering_synth.noteon (23, 60, 120);
+                return false;
+            });
+
+            Timeout.add (400, () => {
+                rendering_synth.noteoff (23, 67);
+                rendering_synth.noteoff (23, 60);
+                rendering_synth.noteoff (23, 72);
+                return false;
+            });
         }
 
         private void process_audio (

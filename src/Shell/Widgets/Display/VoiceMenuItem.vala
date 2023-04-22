@@ -25,7 +25,7 @@ namespace Ensembles.Shell.Widgets.Display {
 
         public VoiceMenuItem (
             uint16 index,
-            Voice voice = null,
+            Voice voice,
             AudioPlugin? plugin = null,
             bool show_category = false
         ) {

@@ -11,6 +11,7 @@ namespace Ensembles.Services {
         public signal void size_change ();
         public signal bool show_menu (bool show);
         public signal void menu_shown (bool shown);
+        public signal void send_initial_status (string status);
 
         // Homescreen
         public signal void voice_chosen (VoiceHandPosition position, string name);

@@ -9,6 +9,8 @@ namespace Ensembles.Core.Analysers {
     public class VoiceAnalyser : Object {
         private List<Voice?> voice_list;
 
+        public signal void voice_analysed (string name);
+
         public VoiceAnalyser (
             AudioEngine.SynthProvider synth_provider,
             string sf_path,
@@ -54,11 +56,14 @@ namespace Ensembles.Core.Analysers {
                     sf_path = sf_path
                 });
 
+                Application.event_bus.send_initial_status (_("Loading voice: ") + voice_name + "…");
+                Thread.usleep (15000);
+
                 sf_preset = soundfont.iteration_next ();
             }
         }
 
-        public owned Voice[] get_voices () {
+        public Voice[] get_voices () {
             var n = voice_list.length ();
             var voices = new Voice[n];
 

@@ -138,6 +138,8 @@ namespace Ensembles.Shell.Layouts {
                 main_stack.set_visible_child_name (screen_name);
             });
 
+            Application.event_bus.send_initial_status.connect (update_status);
+
             style_screen.close.connect (navigate_to_home);
             voice_l_screen.close.connect (navigate_to_home);
             voice_r1_screen.close.connect (navigate_to_home);
@@ -164,6 +166,13 @@ namespace Ensembles.Shell.Layouts {
             });
             main_stack.add_named (plugin_screen, "plugin");
             main_stack.set_visible_child_name ("plugin");
+        }
+
+        public void update_status (string status) {
+            Idle.add (() => {
+                splash_screen_label.set_text (status);
+                return false;
+            });
         }
     }
 }

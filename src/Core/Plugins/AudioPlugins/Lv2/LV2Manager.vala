@@ -55,11 +55,11 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
                 var lilv_plugin = plugins.get (iter);
 
                 if (lilv_plugin != null) {
-                    Thread.usleep (10000);
-
                     try {
                         var plugin = new LV2Plugin (lilv_plugin);
                         plugin_manager.audio_plugins.append (plugin);
+
+                        Application.event_bus.send_initial_status (_("Loading LV2 plugin: ") + plugin.name + "…");
                     } catch (PluginError e) {
                         Console.log (
                             "Skipped LV2 plugin: " +
@@ -67,6 +67,8 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
                             Console.LogLevel.WARNING
                         );
                     }
+
+                    Thread.usleep (20000);
                 }
             }
 
