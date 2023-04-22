@@ -30,7 +30,10 @@ namespace Ensembles.Core {
         private Style next_style;
         private bool stopping_style;
 
+        private Voice[] voices;
+
         private const string SF_PATH = Constants.SF2DATADIR + "/EnsemblesGM.sf2";
+        private const string SF_SCHEMA_PATH = Constants.SF2DATADIR + "/EnsemblesGMSchema.csv";
 
         construct {
             #if PIPEWIRE_CORE_DRIVER
@@ -80,8 +83,27 @@ namespace Ensembles.Core {
                 Console.LogLevel.SUCCESS
             );
 
+            // Load Voices
+            Console.log ("Loading voices…");
+            var voice_loader = new Analysers.VoiceAnalyser (
+                synth_provider,
+                SF_PATH,
+                SF_SCHEMA_PATH
+            );
+            Console.log (
+                "Voices loaded successfully!",
+                Console.LogLevel.SUCCESS
+            );
+            voices = voice_loader.get_voices ();
+
             // Load Plugins
+            Console.log ("Loading Audio Plugins…");
             plugin_manager = new PluginManager ();
+            Console.log (
+                "%u Audio Plugins Loaded Successfully!"
+                .printf (plugin_manager.audio_plugins.length ()),
+                Console.LogLevel.SUCCESS
+            );
 
             add_plugins_to_voice_racks ();
 
@@ -156,6 +178,13 @@ namespace Ensembles.Core {
          */
         public unowned Style[] get_styles () {
             return styles;
+        }
+
+        /**
+         * Returns an array of voices loaded by the arranger workstation.
+         */
+        public unowned Voice[] get_voices () {
+            return voices;
         }
 
         private void add_plugins_to_voice_racks () {

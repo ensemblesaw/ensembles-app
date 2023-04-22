@@ -17,6 +17,7 @@ namespace Ensembles.Shell.Layouts.Display {
         private Gtk.ListBox main_list_box;
 
         private uint16 last_voice_index = 1;
+        private uint16 plugin_start_index = 1;
 
         public VoiceScreen (VoiceHandPosition hand_position) {
             var title_by_position = "";
@@ -67,33 +68,42 @@ namespace Ensembles.Shell.Layouts.Display {
 
         public void build_events () {
             main_list_box.row_selected.connect ((item) => {
-                for (
-                    var c = main_list_box.get_first_child ();
-                    c != null;
-                    c = c.get_next_sibling ()
-                ) {
-                    if (c != item && ((VoiceMenuItem) item).is_plugin) {
-                        ((VoiceMenuItem) item).plugin.active = false;
-                    }
-                }
-
                 var voice_item = (VoiceMenuItem) item;
                 if (voice_item.is_plugin) {
-                    voice_item.plugin.active = true;
                     Application.event_bus.voice_chosen (hand_position, voice_item.plugin.name);
+                    Application.arranger_workstation.get_voice_rack (hand_position).active = true;
+                    Application.arranger_workstation.get_voice_rack (hand_position)
+                    .set_plugin_active (item.get_index () - plugin_start_index, true);
                 } else {
+                    Application.arranger_workstation.get_voice_rack (hand_position).active = false;
                     Application.event_bus.voice_chosen (hand_position, voice_item.voice.name);
                 }
-
-
             });
             Application.event_bus.arranger_ready.connect (() => {
+                populate (Application.arranger_workstation.get_voices ());
                 populate_plugins (Application.arranger_workstation.get_voice_rack (hand_position).get_plugins ());
             });
         }
 
-        public void populate (Voice[] voices) {
+        public void populate (unowned Voice[] voices) {
+            var temp_category = "";
+            for (uint16 i = 0; i < voices.length; i++) {
+                var show_category = false;
+                if (temp_category != voices[i].category) {
+                    temp_category = voices[i].category;
+                    show_category = true;
+                }
 
+                var menu_item = new VoiceMenuItem (
+                    last_voice_index++,
+                    voices[i],
+                    null,
+                    show_category
+                );
+                main_list_box.insert (menu_item, -1);
+            }
+
+            plugin_start_index = last_voice_index - 1;
         }
 
         public void populate_plugins (List<AudioPlugin> plugins) {
@@ -105,11 +115,13 @@ namespace Ensembles.Shell.Layouts.Display {
                         temp_category = plugins.nth_data (i).protocol;
                         show_category = true;
                     }
+
                     var menu_item = new VoiceMenuItem (
                         last_voice_index++,
-                        null,
+                        Voice (),
                         plugins.nth_data (i),
-                        show_category);
+                        show_category
+                    );
                     main_list_box.insert (menu_item, -1);
                 }
             }

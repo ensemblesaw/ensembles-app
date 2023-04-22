@@ -1,10 +1,19 @@
+/*
+ * Copyright 2020-2023 Subhadeep Jasu <subhadeep107@proton.me>
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
 using Ensembles.Models;
 
 namespace Ensembles.Core.Analysers {
+    /**
+     * A style analyser can analyse an `enstl` style and describe it.
+     * The analysis takes place when the object is created using the given path
+     * and the resulting `Style` object can be retreived using the
+     * `get_style ()` method.
+     */
     public class StyleAnalyser : Object {
         public bool valid = false;
-
-        //  private const char[] config_delimiters = { ':', ';', ',' };
 
         private string enstl_path;
         private string name;
@@ -39,6 +48,12 @@ namespace Ensembles.Core.Analysers {
             "EOS"
         };
 
+        /**
+         * Creates a new `StyleAnalyser` object for analysing the style in the
+         * given path.
+         *
+         * @param enstl_path path to the enstl file
+         */
         public StyleAnalyser (string enstl_path) throws StyleError, Error {
             this.enstl_path = enstl_path;
 

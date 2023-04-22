@@ -376,17 +376,17 @@ namespace Fluid {
     public delegate int handle_midi_tick_func_t (void* data, int tick);
 
     /**
-      * SoundFont synthesizer.
-      *
-      * You have to load a SoundFont in order to hear any sound. For that you use
-      * the {@link sfload} function.
-      *
-      * You can use the audio driver functions to open the audio device and
-      * create a background audio thread.
-      *
-      * The API for sending MIDI events is probably
-      * what you expect: {@link noteon}, {@link noteoff}, ...
-      */
+     * SoundFont synthesizer.
+     *
+     * You have to load a SoundFont in order to hear any sound. For that you use
+     * the {@link sfload} function.
+     *
+     * You can use the audio driver functions to open the audio device and
+     * create a background audio thread.
+     *
+     * The API for sending MIDI events is probably
+     * what you expect: {@link noteon}, {@link noteoff}, ...
+     */
     [Compact]
     [CCode (cname = "fluid_synth_t", cprefix = "fluid_synth_", free_function = "delete_fluid_synth", has_type_id = false)]
     public class Synth {
@@ -395,18 +395,18 @@ namespace Fluid {
 
         public Settings get_settings ();
         /**
-          * Get a textual representation of the last error.
-          *
-          * @return Pointer to string of last error message. Valid until the
-          * same calling thread calls another FluidSynth function which fails.
-          * String is internal and should not be modified or freed.
-          *
-          * @deprecated
-          */
+         * Get a textual representation of the last error.
+         *
+         * @return Pointer to string of last error message. Valid until the
+         * same calling thread calls another FluidSynth function which fails.
+         * String is internal and should not be modified or freed.
+         *
+         * @deprecated
+         */
         public string error ();
         /** Get the synth CPU load value.
-          *
-          * @return Estimated CPU load value in percent (0-100) */
+         *
+         * @return Estimated CPU load value in percent (0-100) */
         public double get_cpu_load ();
 
         // Audio Rendering
@@ -610,10 +610,11 @@ namespace Fluid {
          */
         public int sfload (string filename, bool reset_presets);
         public int add_sfont (SoundFont? sfont);
+        public unowned Preset get_channel_preset (int chan);
         public int get_bank_offset (int sfont_id);
-        public SoundFont get_sfont (uint num);
-        public SoundFont get_sfont_by_id (int id);
-        public SoundFont get_sfont_by_name (string name);
+        public unowned SoundFont? get_sfont (uint num);
+        public unowned SoundFont? get_sfont_by_id (int id);
+        public unowned SoundFont? get_sfont_by_name (string name);
         public int remove_sfont (SoundFont? sfont);
         public int set_bank_offset (int sfont_id, int offset);
         public int sfcount ();
@@ -628,8 +629,8 @@ namespace Fluid {
     }
 
     /**
-      * Functions for settings management.
-      */
+     * Functions for settings management.
+     */
     [Compact]
     [CCode (cname = "fluid_settings_t", cprefix = "fluid_settings_", free_function = "delete_fluid_settings", has_type_id = false)]
     public class Settings {
@@ -668,11 +669,26 @@ namespace Fluid {
     [Compact]
     [CCode (cname = "fluid_sfont_t", cprefix = "fluid_sfont_", free_function = "delete_fluid_sfont", has_type_id = false)]
     public class SoundFont {
+        public unowned string get_name ();
+        public unowned Preset get_preset (int bank, int prenum);
+        public void iteration_start ();
+        public unowned Preset? iteration_next ();
+    }
+
+    [Compact]
+    [CCode (cname = "fluid_preset_t", cprefix = "fluid_preset_", free_function = "delete_fluid_preset", has_type_id = false)]
+    public class Preset {
+        public int get_banknum ();
+        public unowned void* get_data ();
+        public unowned string get_name ();
+        public int get_num ();
+        public unowned SoundFont get_sfont ();
+        public int set_data (void* data);
     }
 
     /**
-      * Functions for managing audio drivers.
-      */
+     * Functions for managing audio drivers.
+     */
     [Compact]
     [CCode (cname = "fluid_audio_driver_t", cprefix = "fluid_audio_", free_function = "delete_fluid_audio_driver", has_type_id = false)]
     public class AudioDriver {
@@ -724,8 +740,8 @@ namespace Fluid {
     }
 
     /**
-      * Parse standard MIDI files and emit MIDI events.
-      */
+     * Parse standard MIDI files and emit MIDI events.
+     */
     [Compact]
     [CCode (cname = "fluid_player_t", cprefix = "fluid_player_", free_function = "delete_fluid_player", has_type_id = false)]
     public class Player {

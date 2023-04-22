@@ -99,7 +99,7 @@ namespace Ensembles.Core.Racks {
          * @param position The position of the plugin in the rack
          * @param active Whether the plugin should be enabled or not
          */
-        public void set_plugin_active (int position, bool active = true) {
+        public virtual void set_plugin_active (int position, bool active = true) {
             AudioPlugin plugin = plugins.nth_data (position);
             plugin.active = active;
         }

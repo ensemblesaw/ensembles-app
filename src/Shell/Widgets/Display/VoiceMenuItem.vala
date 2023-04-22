@@ -19,13 +19,13 @@ namespace Ensembles.Shell.Widgets.Display {
         public Gtk.Button show_ui_button;
 
         // If the voice is from the SoundFont
-        public unowned Voice? voice { get; protected set; }
+        public Voice voice { get; protected set; }
 
         public bool show_category { get; set; }
 
         public VoiceMenuItem (
             uint16 index,
-            Voice? voice = null,
+            Voice voice = null,
             AudioPlugin? plugin = null,
             bool show_category = false
         ) {
@@ -86,7 +86,7 @@ namespace Ensembles.Shell.Widgets.Display {
                 category_label.add_css_class ("menu-item-category");
             }
 
-            menu_item_grid.attach (category_label, 1, 0, 2, 1);
+            menu_item_grid.attach (category_label, 1, 0, 1, 1);
 
             if (is_plugin && plugin.ui != null) {
                 show_ui_button = new Gtk.Button.from_icon_name ("preferences-other-symbolic") {

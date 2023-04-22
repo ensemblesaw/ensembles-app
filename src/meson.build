@@ -67,6 +67,7 @@ sources = files (
 
     'Core/Analysers/ChordAnalyser.vala',
     'Core/Analysers/StyleAnalyser.vala',
+    'Core/Analysers/VoiceAnalyser.vala',
 
     'Core/MIDIPlayers/StyleEngine.vala',
 

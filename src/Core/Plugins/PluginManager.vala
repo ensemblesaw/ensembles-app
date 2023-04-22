@@ -25,7 +25,6 @@ namespace Ensembles.Core.Plugins {
 
         construct {
             // Load Audio Plugins //////////////////////////////////////////////
-            Console.log ("Loading Audio Plugins…");
             audio_plugins = new List<AudioPlugins.AudioPlugin> ();
 
             // Load LADSPA Plugins
@@ -37,9 +36,6 @@ namespace Ensembles.Core.Plugins {
             // Load Carla Plugins
 
             // Load Native Plugins
-
-            Console.log ("%u Audio Plugins Loaded Successfully!".printf (audio_plugins.length ()),
-            Console.LogLevel.SUCCESS);
         }
     }
 }
