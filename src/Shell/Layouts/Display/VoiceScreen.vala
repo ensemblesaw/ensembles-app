@@ -70,13 +70,15 @@ namespace Ensembles.Shell.Layouts.Display {
             main_list_box.row_selected.connect ((item) => {
                 var voice_item = (VoiceMenuItem) item;
                 if (voice_item.is_plugin) {
-                    Application.event_bus.voice_chosen (hand_position, voice_item.plugin.name);
+                    Application.event_bus.voice_chosen (hand_position, voice_item.plugin.name, 0, 0);
                     Application.arranger_workstation.get_voice_rack (hand_position).active = true;
                     Application.arranger_workstation.get_voice_rack (hand_position)
                     .set_plugin_active (item.get_index () - plugin_start_index, true);
                 } else {
                     Application.arranger_workstation.get_voice_rack (hand_position).active = false;
-                    Application.event_bus.voice_chosen (hand_position, voice_item.voice.name);
+                    Application.event_bus.voice_chosen (
+                        hand_position, voice_item.voice.name, voice_item.voice.bank, voice_item.voice.preset
+                    );
                 }
             });
             Application.event_bus.arranger_ready.connect (() => {

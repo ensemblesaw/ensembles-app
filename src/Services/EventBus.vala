@@ -14,7 +14,7 @@ namespace Ensembles.Services {
         public signal void send_initial_status (string status);
 
         // Homescreen
-        public signal void voice_chosen (VoiceHandPosition position, string name);
+        public signal void voice_chosen (VoiceHandPosition position, string name, uint8 bank, uint8 preset);
 
         // Core Events
         public signal void arranger_ready ();

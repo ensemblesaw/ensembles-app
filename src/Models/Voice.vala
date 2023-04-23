@@ -24,7 +24,7 @@ namespace Ensembles {
         public struct Voice {
             public uint index;
             public uint8 bank;
-            public uint preset;
+            public uint8 preset;
             public string name;
             public string category;
             public string sf_path;

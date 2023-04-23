@@ -49,7 +49,7 @@ namespace Ensembles.Core.Analysers {
 
                 voice_list.append (Voice () {
                     index = index++,
-                    preset = preset_num,
+                    preset = (uint8) preset_num,
                     bank = (uint8) bank_num,
                     name = voice_name,
                     category = category,
