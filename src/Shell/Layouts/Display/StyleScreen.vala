@@ -44,7 +44,7 @@ namespace Ensembles.Shell.Layouts.Display {
             main_list_box.row_activated.connect ((item) => {
                 var style_item = (StyleMenuItem) item;
 
-                Application.arranger_workstation.queue_change_style (style_item.style);
+                Application.event_bus.style_change (style_item.style);
             });
 
             Application.event_bus.arranger_ready.connect (() => {

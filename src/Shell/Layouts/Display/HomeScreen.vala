@@ -213,10 +213,8 @@ namespace Ensembles.Shell.Layouts.Display {
             }
 
             Application.event_bus.style_change.connect ((style) => {
-                Idle.add (() => {
-                    selected_style_label.set_text (style.name);
-                    return false;
-                });
+                print ("%s\n", style.name);
+                selected_style_label.set_text (style.name);
             });
 
             Application.event_bus.voice_chosen.connect ((position, name) => {

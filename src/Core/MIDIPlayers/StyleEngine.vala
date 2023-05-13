@@ -28,11 +28,11 @@ namespace Ensembles.Core.MIDIPlayers {
         private uint32 absolute_beat_number = 0;
         private uint32 absolute_measure_number = 0;
         private StylePartType _current_part;
-        private StylePartType current_part {
+        public StylePartType current_part {
             get {
                 return _current_part;
             }
-            set {
+            private set {
                 _current_part = value;
                 Application.event_bus.style_current_part_changed (value);
             }
@@ -653,13 +653,17 @@ namespace Ensembles.Core.MIDIPlayers {
          *
          * @param current_tempo Variable to store the current tempo
          */
-        public void stop_and_wait (out uint8 current_tempo) {
+        public bool stop_and_wait (out uint8 current_tempo) {
             current_tempo = 0;
             if (style_player.get_status () == Fluid.PlayerStatus.PLAYING) {
                 sync_stop = true;
                 current_tempo = (uint8) style_player.get_bpm ();
                 style_player.join ();
+                Application.event_bus.style_sync_changed (false);
+                return true;
             }
+
+            return false;
         }
 
         /**

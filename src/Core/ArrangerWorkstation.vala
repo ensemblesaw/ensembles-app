@@ -161,8 +161,11 @@ namespace Ensembles.Core {
                 stopping_style = true;
                 new Thread<void> ("queue-load-style", () => {
                     uint8 current_tempo = 0;
+                    bool was_playing = false;
+                    StylePartType current_part = StylePartType.VARIATION_A;
                     if (style_engine != null) {
-                        style_engine.stop_and_wait (out current_tempo);
+                        current_part = style_engine.current_part;
+                        was_playing = style_engine.stop_and_wait (out current_tempo);
                     }
 
                     style_engine = new StyleEngine (
@@ -171,6 +174,12 @@ namespace Ensembles.Core {
                         current_tempo
                     );
                     stopping_style = false;
+
+                    style_engine.queue_next_part (current_part);
+
+                    if (was_playing) {
+                        style_engine.play ();
+                    }
                 });
             }
         }
