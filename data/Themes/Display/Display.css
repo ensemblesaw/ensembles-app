@@ -156,6 +156,7 @@ HomeScreen
 
 .display .homescreen-link-panel-top-button {
     background: none;
+    opacity: 1;
     border: 0;
     padding: 0;
     box-shadow: none;
@@ -192,6 +193,8 @@ HomeScreen
     border: none;
     border-radius: 0;
     font-weight: 700;
+    opacity: 1;
+    text-shadow: 0 1px 8px #0002;
     color: shade(@accent_color, 1.3);
     font-size: 13px;
     padding: 4px;
