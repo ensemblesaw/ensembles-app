@@ -16,8 +16,8 @@ namespace Ensembles.Shell.Layouts.Display {
         public VoiceHandPosition hand_position { get; private set; }
         private Gtk.ListBox main_list_box;
 
-        private uint16 last_voice_index = 1;
-        private uint16 plugin_start_index = 1;
+        private uint16 last_voice_index = 0;
+        private uint16 plugin_start_index = 0;
 
         public VoiceScreen (VoiceHandPosition hand_position) {
             var title_by_position = "";
@@ -36,6 +36,7 @@ namespace Ensembles.Shell.Layouts.Display {
                     subtitle_by_position = _("Pick a Voice to play on another layer");
                     break;
             }
+
             base (
                 _("Voice - %s").printf (title_by_position),
                 subtitle_by_position
@@ -105,7 +106,7 @@ namespace Ensembles.Shell.Layouts.Display {
                 main_list_box.insert (menu_item, -1);
             }
 
-            plugin_start_index = last_voice_index - 1;
+            plugin_start_index = last_voice_index;
         }
 
         public void populate_plugins (List<AudioPlugin> plugins) {

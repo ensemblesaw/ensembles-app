@@ -8,6 +8,10 @@
 Mother class for the central display section
 */
 
+.display {
+    font-family: "Exo2";
+}
+
 .display .display-stack {
     filter: brightness(1);
     transform: scale(1);
@@ -27,46 +31,58 @@ General Gtk Widgets
 Buttons
 */
 .display button {
-    border: none;
-    border-radius: 0;
-    background: alpha(#007367, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
     box-shadow: none;
     text-shadow: none;
+    opacity: 0.6;
     color: #fff;
+    padding: 0 0;
+    margin: 0;
+    transition: opacity 0.3s ease-out;
+}
+
+.display button.accented {
+    border: 1px solid shade(@accent_color, 1);
+    background: shade(@accent_color, 0.75);
+    color: shade(@accent_color, 1.3);
 }
 
 .display button:hover {
-    background: alpha(#007367, 1);
+    opacity: 1;
 }
 
 .display button:active {
-    background: #007367;
+    background: alpha(#fff, 0.07);
 }
 
 .display .flat,
 .display .image-button {
     border: none;
     background: alpha(#fff, 0.0);
-    border-radius: 0;
 }
 
 .display .flat:hover,
-.display .image-button:disabled {
-    opacity: 0.5;
-}
+.display .image-button:disabled {}
 
 .display .flat:focus,
-.display .image-button:focus {
-    border: none;
-    background: alpha(#fff, 0.0);
-    border-radius: 0;
-    box-shadow: inset 0 -2px 0 0 #02A594;
-}
+.display .image-button:focus {}
 
 .display .flat:hover,
-.display .image-button:hover {
-    background: alpha(#fff, 0.1);
-    opacity: 1;
+.display .image-button:hover {}
+
+.display .linked button {
+    border-radius: 0;
+}
+
+.display .linked button:first-child {
+    border-radius: 6px 0 0 6px;
+    border-right: transparent;
+}
+
+.display .linked button:last-child {
+    border-radius: 0 6px 6px 0;
 }
 
 /*
@@ -116,20 +132,29 @@ HomeScreen
 */
 
 .display .homescreen {
-    background-image: url("resource://com/github/subhadeepjasu/ensembles/images/display/home_background_default");
+    background: radial-gradient(112% 112% at 50% 105%, mix(shade(@accent_color_complimentary, 0.6), #222, 0.84) 0%, #000 100%);
+}
+
+.display .homescreen .homescreen-links-section {
+    background-image: linear-gradient(88deg, alpha(shade(@accent_color, 0.6), 0.75), alpha(shade(@accent_color_complimentary, 0.5), 0.75)), url("resource://com/github/subhadeepjasu/ensembles/images/display/home_background_default");
     background-position: center;
     background-size: auto 100%;
 }
 
-.display .homescreen-panel-top {
-    background-image: linear-gradient(alpha(#007367, 0.6), alpha(#007367, 0.6)),
-        url("resource://com/github/subhadeepjasu/ensembles/images/display/home_background_default_blurred");
-    background-size: auto 800%;
-    background-position: center 0;
-    border-bottom: 1px solid alpha(#000, 0.5);
+.homescreen-link-panel-top {
+    background: linear-gradient(92deg,
+            shade(@accent_color, 0.54) 12%,
+            mix(shade(@accent_color, 0.65), shade(@accent_color_complimentary, 0.5), 0.25) 18%,
+            mix(shade(@accent_color, 0.5), shade(@accent_color_complimentary, 0.5), 0.5) 74%,
+            mix(shade(@accent_color, 0.4), shade(@accent_color_complimentary, 0.55), 0.6) 100%);
+    margin: 8px;
+    border-radius: 6px;
+    border: 1px solid #fff2;
+    padding: 2px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
 }
 
-.display .homescreen-panel-top-button {
+.display .homescreen-link-panel-top-button {
     background: none;
     border: 0;
     padding: 0;
@@ -137,66 +162,123 @@ HomeScreen
     outline: none;
     text-shadow: none;
     text-decoration: none;
-    border-radius: 0;
+    border-radius: 2px;
     color: #fff;
+    margin: 2px;
+    transition: all 0.2s ease-out;
 }
 
-.display .homescreen-panel-top-button:hover {
-    background-color: alpha(#fff, 0.1);
+.display .homescreen-link-panel-top-button:hover {
+    background: linear-gradient(91.74deg, alpha(@accent_color, 0.5), alpha(@accent_color, 0.3));
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
 }
 
-.display .homescreen-panel-top-button-header {
-    font-size: 1.15em;
+.display .homescreen-link-panel-top-button:active {
+    background: linear-gradient(91.74deg, alpha(@accent_color_complimentary, 0.5), alpha(@accent_color, 0.75));
+}
+
+.display .homescreen-link-panel-top-button-header {
+    font-size: 14px;
+    font-weight: 700;
     margin-top: 8px;
 }
 
-.display .homescreen-panel-top-button-subheader {
-    font-size: 0.8em;
+.display .homescreen-link-panel-top-button-subheader {
+    font-size: 12px;
 }
 
-.display .homescreen-panel-middle button {
-    background-color: #0000;
-    background-image: linear-gradient(#0000, #0006);
-    padding: 8px;
-    transition: all 0.3s linear;
-    text-shadow: 0 0 8px #000;
-    font-size: 1rem;
+.display .homescreen-link-panel-bottom-button {
+    background: #fff0;
+    border: none;
+    border-radius: 0;
     font-weight: 700;
-    color: #aaa;
+    color: shade(@accent_color, 1.3);
+    font-size: 13px;
+    padding: 4px;
+    padding-left: 0px;
+    transition: all 0.4s ease;
 }
 
-.display .homescreen-panel-middle button:hover {
-    box-shadow: inset 0 -2px 0 #fff8;
-    text-shadow: 0 0 8px #fff;
-    padding: 8px;
+.display .homescreen-link-panel-bottom-button-status {
+    background: #fff0;
+    font-weight: 400;
+    opacity: 0.5;
+    transition: all 0.4s ease;
+}
+
+.display .homescreen-link-panel-bottom-button:hover {
+    background: #fff0;
     color: #fff;
 }
 
-.display .homescreen-panel-bottom {
-    background-image: linear-gradient(alpha(#273445, 0.6), alpha(#273445, 0.6)),
-        url("resource://com/github/subhadeepjasu/ensembles/images/display/home_background_default_blurred");
-    background-size: auto 245%;
-    background-position: center 100%;
-    border-top: 1px solid alpha(#000, 0.5);
+.display .homescreen-link-panel-bottom-button separator {
+    background: shade(@accent_color, 1.3);
+    opacity: 0;
+    border: none;
+    border-radius: 2px;
+    margin-right: 8px;
+    padding: 1px;
+    transform: translateX(0);
+    transition: all 0.4s ease;
 }
 
+.display .homescreen-link-panel-bottom-button:hover .homescreen-link-panel-bottom-button-status {
+    opacity: 1;
+    color: shade(@accent_color, 1.3);
+}
+
+.display .homescreen-link-panel-bottom-button:hover separator {
+    opacity: 1;
+    transform: translateX(4px);
+}
+
+.display .homescreen-panel-status {
+    border-top: 1px solid alpha(#000, 0.5);
+    padding-top: 8px;
+}
+
+.display .homescreen-panel-status-header {
+    padding: 4px;
+    font-weight: 700;
+    opacity: 0.75;
+    font-size: 14px;
+    color: @accent_color;
+}
+
+.display .homescreen-panel-status-label {
+    padding: 4px;
+    padding-top: 0;
+    opacity: 0.75;
+    color: #fff;
+    font-family: 'Michroma';
+    font-weight: 400;
+    font-size: 24px;
+    color: shade(@accent_color, 2);
+}
+
+.display .homescreen-panel-status-label-small {
+    font-weight: 600;
+    font-size: 14px;
+    font-style: italic;
+    color: shade(@accent_color, 2);
+}
 
 /* /////////////////////////////////////////////////////////////////////////////
 Display Window
 */
 
 .display .display-window-background {
-    background-image: linear-gradient(alpha(#222, 0.8), alpha(#222, 0.8)),
-        url("resource://com/github/subhadeepjasu/ensembles/images/display/home_background_default_blurred");
-    background-position: center;
-    background-size: auto 100%;
+    background: radial-gradient(13.25% 17.73% at 8.54% 9.2%, alpha(@accent_color, 0.25) 0%, alpha(@accent_color, 0) 100%),
+        radial-gradient(17.27% 44.85% at 55.57% 47.73%, alpha(@accent_color_complimentary, 0.15) 0%, alpha(@accent_color_complimentary, 0) 100%),
+        radial-gradient(112% 112% at 50% 105%, mix(shade(@accent_color_complimentary, 0.6), #222, 0.84) 0%, #000 100%);
     color: #fff;
 }
 
 .display .display-window-header-bar {
+    padding: 18px;
     box-shadow: none;
     border-bottom: none;
-    background-color: #007367;
+    background: none;
     color: #fff;
     text-shadow: none;
     -gtk-icon-shadow: none;
@@ -205,15 +287,16 @@ Display Window
 }
 
 .display .display-window-header-bar .title {
-    font-size: 1rem;
+    font-size: 20px;
     color: #fff;
-    font-weight: bold;
+    font-weight: 500;
 }
 
 .display .display-window-header-bar .subtitle {
-    font-size: 0.8rem;
+    font-size: 12px;
+    font-weight: 400;
     opacity: 0.75;
-    color: #fff;
+    color: shade(@accent_color, 1.5);
 }
 
 
@@ -222,34 +305,36 @@ Menu
 */
 
 .display .menu-box {
-    background-color: #333;
-    color: #f3f3f3;
-    border: 1px solid #000000;
+    background: none;
+    color: #fff;
+    padding-left: 12px;
+    padding-right: 12px;
 }
 
 .display .menu-box>.activatable {
-    padding: 4px;
-    padding-left: 8px;
-    color: #aaa;
-    border-top: 1px solid alpha(#000, 0.2);
-    border-bottom: 1px solid alpha(#000, 0.2);
+    color: #fff;
+    border-bottom: 1px solid alpha(@accent_color_complimentary, 0.1);
 }
 
 .display .menu-box>.activatable:selected {
-    border-top: 1px solid #000;
-    border-bottom: 1px solid #000;
     box-shadow: none;
-    background-image: none;
-    background-color: #740;
-    color: #fff;
+    background: linear-gradient(270deg, alpha(@accent_color_complimentary, 0) 0%, alpha(@accent_color_complimentary, 0.25) 51.04%, alpha(@accent_color_complimentary, 0) 100%);
+    background-size: 100% 54px;
+    background-repeat: no-repeat;
+    background-position: 0 100%;
 }
 
-.display .menu-item-label {
-    font-size: 1.2em;
+.display .menu-item-name {
+    font-size: 16px;
 }
 
 .display .menu-box>.activatable:selected .menu-item-label {
     text-shadow: none;
+}
+
+.display .menu-item-index {
+    font-size: 13px;
+    font-family: 'Michroma';
 }
 
 .display .menu-item-description {
@@ -263,14 +348,20 @@ Menu
 }
 
 .display .menu-item-category {
-    background-color: alpha(#fff, 0.7);
-    color: #333;
+    background: none;
+    color: @accent_color_complimentary;
+    border-radius: 0;
     padding-left: 8px;
-    padding-right: 8px;
-    margin-right: -4px;
-    border-radius: 3px 0 0 3px;
-    box-shadow: 0 2px 4px alpha(#000, 0.5);
+    padding-top: 4px;
+    padding-bottom: 4px;
+    margin-bottom: 4px;
+    margin-left: -8px;
+    font-size: 16px;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    border-bottom: 1px solid alpha(@accent_color_complimentary, 0.5);
 }
+
 
 /* Plugin Menu ///////////////////////////////////////////////////////////////*/
 .display .plugin-flap dimming {
@@ -380,13 +471,8 @@ Menu
 }
 
 .display .menu-item button {
-    background: #fff1;
-    border: 1px solid #0006;
-}
-
-.display .menu-item button:hover {
-    background: #fff2;
-    border: 1px solid #0008;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .display .card {

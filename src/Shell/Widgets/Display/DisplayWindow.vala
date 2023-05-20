@@ -12,8 +12,10 @@ namespace Ensembles.Shell.Layouts.Display {
      */
     public class DisplayWindow : WheelScrollableWidget {
         private Gtk.Button close_button;
-        private Gtk.CenterBox header_bar;
-        private Adw.WindowTitle window_title_box;
+        private Gtk.Box header_bar;
+        private Gtk.Box window_title_box;
+        private Gtk.Label title_label;
+        private Gtk.Label subtitle_label;
         private Gtk.Box header_container;
 
         private string _title;
@@ -23,8 +25,8 @@ namespace Ensembles.Shell.Layouts.Display {
             }
             set {
                 _title = value;
-                if (window_title_box != null) {
-                    window_title_box.title = value;
+                if (title_label != null) {
+                    title_label.set_text (value);
                 }
             }
         }
@@ -36,8 +38,8 @@ namespace Ensembles.Shell.Layouts.Display {
             }
             set {
                 _subtitle = value;
-                if (window_title_box != null) {
-                    window_title_box.subtitle = value;
+                if (subtitle_label != null) {
+                    subtitle_label.set_text (value);
                 }
             }
         }
@@ -69,31 +71,51 @@ namespace Ensembles.Shell.Layouts.Display {
             add_css_class ("display-window-background");
             orientation = Gtk.Orientation.VERTICAL;
 
-            header_bar = new Gtk.CenterBox () {
-                height_request = 48
+            header_bar = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
+                spacing = 16
             };
             append (header_bar);
             header_bar.add_css_class ("display-window-header-bar");
 
             close_button = new Gtk.Button.from_icon_name ("application-exit-symbolic") {
-                halign = Gtk.Align.START
+                halign = Gtk.Align.START,
+                valign = Gtk.Align.CENTER,
+                width_request = 36,
+                height_request = 36
             };
+            close_button.add_css_class ("accented");
             close_button.clicked.connect (() => { close (); });
-            header_bar.set_start_widget (close_button);
+            header_bar.append (close_button);
 
-            window_title_box = new Adw.WindowTitle (title, subtitle);
+            window_title_box = new Gtk.Box (Gtk.Orientation.VERTICAL, 0) {
+                halign = Gtk.Align.START,
+                valign = Gtk.Align.CENTER
+            };
+
+            title_label = new Gtk.Label (title) {
+                xalign = 0
+            };
+            title_label.add_css_class ("title");
+            window_title_box.append (title_label);
+
+            subtitle_label = new Gtk.Label (subtitle) {
+                xalign = 0
+            };
+            subtitle_label.add_css_class ("subtitle");
+            window_title_box.append (subtitle_label);
+
             if (Application.kiosk_mode) {
-                header_bar.set_center_widget (window_title_box);
+                header_bar.append (window_title_box);
             } else {
                 var window_handle = new Gtk.WindowHandle () {
                     hexpand = true
                 };
-                header_bar.set_center_widget (window_handle);
+                header_bar.append (window_handle);
                 window_handle.set_child (window_title_box);
             }
 
             header_container = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 4);
-            header_bar.set_end_widget (header_container);
+            header_bar.append (header_container);
         }
 
         public void set_child (Gtk.Widget widget) {

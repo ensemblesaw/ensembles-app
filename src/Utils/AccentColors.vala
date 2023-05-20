@@ -22,13 +22,13 @@ namespace Ensembles {
         private static string complimentary_accent_colors_mint
         = COMPLIMENTARY_ACCENT_COLORS_TEMPLATE.printf ("@BANANA_500", "@SILVER_500");
         private static string complimentary_accent_colors_blueberry
-        = COMPLIMENTARY_ACCENT_COLORS_TEMPLATE.printf ("@BANANA_500", "@MINT_500");
+        = COMPLIMENTARY_ACCENT_COLORS_TEMPLATE.printf ("@GRAPE_500", "@MINT_500");
         private static string complimentary_accent_colors_bubblegum
         = COMPLIMENTARY_ACCENT_COLORS_TEMPLATE.printf ("@MINT_500", "@GRAPE_500");
         private static string complimentary_accent_colors_cocoa
-        = COMPLIMENTARY_ACCENT_COLORS_TEMPLATE.printf ("@BANANA_500", "@MINT_500");
+        = COMPLIMENTARY_ACCENT_COLORS_TEMPLATE.printf ("@MINT_500", "@BANANA_500");
         private static string complimentary_accent_colors_grape
-        = COMPLIMENTARY_ACCENT_COLORS_TEMPLATE.printf ("@BANANA_500", "@BUBBLEGUM_500");
+        = COMPLIMENTARY_ACCENT_COLORS_TEMPLATE.printf ("@STRAWBERRY_300", "@BUBBLEGUM_500");
         private static string complimentary_accent_colors_silver
         = COMPLIMENTARY_ACCENT_COLORS_TEMPLATE.printf ("@BLUEBERRY_300", "@STRAWBERRY_300");
         private static string complimentary_accent_colors_slate
@@ -46,13 +46,13 @@ namespace Ensembles {
             complimentary_accent_colors_mint
             = COMPLIMENTARY_ACCENT_COLORS_TEMPLATE.printf ("@BANANA_500", "@SILVER_500");
             complimentary_accent_colors_blueberry
-            = COMPLIMENTARY_ACCENT_COLORS_TEMPLATE.printf ("@BANANA_500", "@MINT_500");
+            = COMPLIMENTARY_ACCENT_COLORS_TEMPLATE.printf ("@GRAPE_500", "@MINT_500");
             complimentary_accent_colors_bubblegum
             = COMPLIMENTARY_ACCENT_COLORS_TEMPLATE.printf ("@MINT_500", "@GRAPE_500");
             complimentary_accent_colors_cocoa
-            = COMPLIMENTARY_ACCENT_COLORS_TEMPLATE.printf ("@BANANA_500", "@MINT_500");
+            = COMPLIMENTARY_ACCENT_COLORS_TEMPLATE.printf ("@MINT_500", "@BANANA_500");
             complimentary_accent_colors_grape
-            = COMPLIMENTARY_ACCENT_COLORS_TEMPLATE.printf ("@BANANA_500", "@BUBBLEGUM_500");
+            = COMPLIMENTARY_ACCENT_COLORS_TEMPLATE.printf ("@STRAWBERRY_300", "@BUBBLEGUM_500");
             complimentary_accent_colors_silver
             = COMPLIMENTARY_ACCENT_COLORS_TEMPLATE.printf ("@BLUEBERRY_300", "@STRAWBERRY_300");
             complimentary_accent_colors_slate

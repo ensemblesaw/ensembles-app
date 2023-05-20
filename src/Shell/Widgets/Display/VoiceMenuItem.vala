@@ -43,25 +43,16 @@ namespace Ensembles.Shell.Widgets.Display {
         private void build_ui () {
             add_css_class ("menu-item");
 
-            var menu_item_grid = new Gtk.Grid ();
+            var menu_item_grid = new Gtk.Grid () {
+                 column_spacing = 16,
+                 row_spacing = 0
+            };
             set_child (menu_item_grid);
 
-            var voice_name_label = new Gtk.Label (is_plugin ? plugin.name : voice.name) {
-                halign = Gtk.Align.START,
-                hexpand = true
-            };
-            voice_name_label.add_css_class ("menu-item-name");
-            menu_item_grid.attach (voice_name_label, 0, 0, 1, 2);
-
-            var index_label = new Gtk.Label (index.to_string ()) {
-                halign = Gtk.Align.END
-            };
-            index_label.add_css_class ("menu-item-description");
-            menu_item_grid.attach (index_label, 1, 1, 1, 1);
-
-            var category_label = new Gtk.Label ("");
-
             if (show_category) {
+                var category_label = new Gtk.Label ("") {
+                    xalign = 0
+                };
                 var protocol_name = "";
                 if (is_plugin) {
                     switch (plugin.protocol) {
@@ -81,12 +72,26 @@ namespace Ensembles.Shell.Widgets.Display {
                 }
 
                 category_label.set_text (
-                    is_plugin ? protocol_name + " Plugins" : voice.category
+                    is_plugin ? protocol_name.up () + " PLUGINS" : voice.category.up ()
                 );
                 category_label.add_css_class ("menu-item-category");
+                menu_item_grid.attach (category_label, 0, 0, 3, 1);
             }
 
-            menu_item_grid.attach (category_label, 1, 0, 1, 1);
+            var index_label = new Gtk.Label ("%03d".printf (index)) {
+                width_chars = 3,
+                xalign = 0
+            };
+            index_label.add_css_class ("menu-item-index");
+            menu_item_grid.attach (index_label, 0, 1);
+
+            var voice_name_label = new Gtk.Label (is_plugin ? plugin.name : voice.name) {
+                halign = Gtk.Align.START,
+                hexpand = true,
+                height_request = 48
+            };
+            voice_name_label.add_css_class ("menu-item-name");
+            menu_item_grid.attach (voice_name_label, 1, 1);
 
             if (is_plugin && plugin.ui != null) {
                 show_ui_button = new Gtk.Button.from_icon_name ("preferences-other-symbolic") {

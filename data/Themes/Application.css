@@ -300,6 +300,7 @@ stack.dimmed {
     animation: ripple 1s 0.2s;
     filter: brightness(1);
     transition: filter 0.5s ease-in;
+    color: #fff;
 }
 
 .splash-screen-background.fade-black {

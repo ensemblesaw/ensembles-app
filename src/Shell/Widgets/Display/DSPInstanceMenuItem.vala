@@ -60,7 +60,8 @@ namespace Ensembles.Shell.Widgets.Display {
 
             var button_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0) {
                 homogeneous = true,
-                width_request = 120
+                height_request = 36,
+                width_request = 80
             };
             button_box.add_css_class (Granite.STYLE_CLASS_LINKED);
             menu_item_box.append (button_box);
