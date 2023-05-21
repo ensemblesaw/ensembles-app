@@ -14,8 +14,12 @@ namespace Ensembles.Shell.Widgets {
         Gtk.Box white_key_box;
         private Key[] keys = new Key[12];
 
+        private double[] motion_x = new double[12];
+        private double[] motion_y = new double[12];
+
         public signal void key_pressed (uint8 index);
         public signal void key_released (uint8 index);
+        public signal void key_motion (uint8 index, double x, double y);
 
         public Octave (Keyboard keyboard, uint8 index) {
             Object (
@@ -30,6 +34,11 @@ namespace Ensembles.Shell.Widgets {
                 hexpand: true,
                 vexpand: true
             );
+
+            for (uint8 i = 0; i < 12; i++) {
+                motion_x[i] = 0;
+                motion_y[i] = 0;
+            }
 
             build_ui ();
         }
@@ -48,6 +57,7 @@ namespace Ensembles.Shell.Widgets {
                 var key = new Key (WHITE_KEYS[i], false);
                 key.pressed.connect (handle_key_press);
                 key.released.connect (handle_key_release);
+                key.motion.connect (handle_key_motion);
                 white_key_box.append (key);
                 keys[WHITE_KEYS[i]] = (owned) key;
             }
@@ -57,6 +67,7 @@ namespace Ensembles.Shell.Widgets {
                 var key = new Key (BLACK_KEYS[i], true);
                 key.pressed.connect (handle_key_press);
                 key.released.connect (handle_key_release);
+                key.motion.connect (handle_key_motion);
                 key.set_parent (this);
                 keys[BLACK_KEYS[i]] = (owned) key;
             }
@@ -106,6 +117,21 @@ namespace Ensembles.Shell.Widgets {
 
         private void handle_key_release (uint8 key_index) {
             key_released (index * 12 + key_index);
+        }
+
+        private void handle_key_motion (uint8 key_index, double x, double y) {
+            motion_x[key_index] = x;
+            motion_y[key_index] = y;
+
+            double avg_x = 0;
+            double avg_y = 0;
+
+            for (uint8 i = 0; i < 12; i++) {
+                avg_x += motion_x[key_index];
+                avg_y += motion_y[key_index];
+            }
+
+            key_motion (index, avg_x / 12, avg_y / 12);
         }
 
         public void set_key_illumination (uint8 key_index, bool active) {

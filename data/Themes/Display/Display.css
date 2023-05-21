@@ -310,8 +310,8 @@ Menu
 .display .menu-box {
     background: none;
     color: #fff;
-    padding-left: 12px;
-    padding-right: 12px;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 .display .menu-box>.activatable {

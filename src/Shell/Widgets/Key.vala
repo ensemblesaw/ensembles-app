@@ -7,7 +7,7 @@ namespace Ensembles.Shell.Widgets {
     public class Key : Gtk.Box {
         public uint8 index { get; protected set; }
         public bool is_black { get; protected set; }
-        private Gtk.EventControllerMotion motion_controller;
+        private Gtk.GestureDrag motion_controller;
         private Gtk.GestureClick click_gesture;
 
         private bool _active;
@@ -27,6 +27,7 @@ namespace Ensembles.Shell.Widgets {
 
         public signal void pressed (uint8 index);
         public signal void released (uint8 index);
+        public signal void motion (uint8 index, double x, double y);
 
         public Key (uint8 index, bool is_black) {
             Object (
@@ -49,15 +50,21 @@ namespace Ensembles.Shell.Widgets {
         }
 
         private void build_event () {
-            motion_controller = new Gtk.EventControllerMotion ();
+            motion_controller = new Gtk.GestureDrag ();
             add_controller (motion_controller);
 
             click_gesture = new Gtk.GestureClick ();
-            click_gesture.pressed.connect (() => {
+            click_gesture.pressed.connect ((n_press, x, y) => {
                 pressed (index);
             });
             click_gesture.released.connect (() => {
                 released (index);
+            });
+
+            motion_controller.drag_update.connect ((x, y) => {
+                if (active) {
+                    this.motion (index, x / get_allocated_width (), y / get_allocated_height ());
+                }
             });
             add_controller (click_gesture);
         }

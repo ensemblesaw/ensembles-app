@@ -52,11 +52,7 @@ namespace Ensembles.Shell.Layouts.Display {
         private void build_ui () {
             var scrollable = new Gtk.ScrolledWindow () {
                 hexpand = true,
-                vexpand = true,
-                margin_start = 8,
-                margin_end = 8,
-                margin_top = 8,
-                margin_bottom = 8
+                vexpand = true
             };
             append (scrollable);
 
