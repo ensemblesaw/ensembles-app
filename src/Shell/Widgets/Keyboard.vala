@@ -162,7 +162,7 @@ namespace Ensembles.Shell.Widgets {
                 event_x.set_channel (17); // Channel 17 handles user key events
                 event_x.set_type (MIDI.EventType.CONTROL_CHANGE);
                 event_x.set_control (motion_x_control);
-                control_x = (64 + (int) (64 * avg_x / n));
+                control_x = (64 + (int) (127 * avg_x / n));
                 event_x.set_value (control_x);
                 if (control_x > 127) {
                     control_x = 127;
