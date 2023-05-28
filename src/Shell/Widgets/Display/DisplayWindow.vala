@@ -114,7 +114,7 @@ namespace Ensembles.Shell.Layouts.Display {
                 window_handle.set_child (window_title_box);
             }
 
-            header_container = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 4);
+            header_container = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 12);
             header_bar.append (header_container);
         }
 

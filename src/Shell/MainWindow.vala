@@ -163,6 +163,7 @@
             });
 
             notify["maximized"].connect (() => {
+                fullscreen ();
                 Timeout.add (100, () => {
                     if (!Application.kiosk_mode) {
                         flap_button.visible = squeezer.get_visible_child () == mobile_layout;

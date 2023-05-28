@@ -49,6 +49,7 @@ namespace Ensembles.Shell.Layouts.Display {
                 valign = Gtk.Align.CENTER,
                 tooltip_text = _("Dry / Wet Mix")
             };
+            gain_knob.add_css_class ("small");
 
             gain_knob.value = Utils.Math.convert_gain_to_db (plugin.mix_gain);
             gain_knob.add_mark (-12);

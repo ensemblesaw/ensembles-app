@@ -228,8 +228,8 @@ namespace Ensembles.Shell.Widgets {
 
             if (draw_value) {
                 string text = (adjustment.step_increment >= 1 ? "%.lf" : "%.1lf").printf (adjustment.value);
-                ctx.select_font_face ("Sans", Cairo.FontSlant.NORMAL, Cairo.FontWeight.NORMAL);
-                ctx.set_font_size (Math.fmax (10, radius / 2));
+                ctx.select_font_face ("Michroma", Cairo.FontSlant.NORMAL, Cairo.FontWeight.NORMAL);
+                ctx.set_font_size (Math.fmax (10, radius / 3));
 
                 Cairo.TextExtents extents;
                 ctx.text_extents (text, out extents);

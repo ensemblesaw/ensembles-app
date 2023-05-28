@@ -90,22 +90,30 @@ Switches
 */
 
 .display switch {
-    background: #222;
-    box-shadow: none;
+    background: linear-gradient(#6668, mix(#6668, @accent_color, 0.2));
+    box-shadow: inset 0 0 0 1px alpha(mix(#ccc, @accent_color, 0.4), 0.2);
     border: 1px solid #000;
-}
-
-.display switch:checked {
-    background: #02A594;
 }
 
 .display switch slider {
-    background: #ccc;
-    box-shadow: none;
+    background: linear-gradient(45deg, #666, alpha(mix(#333, @accent_color, 0.7), 0.2));
+    box-shadow: 4px -8px 28px #fff0, -4px 8px 32px #fff0, inset 0 0 0 1px #fff2, 0 4px 8px #0002;
     outline: 0;
-    border: 1px solid #000;
+    margin: 2px;
+    border: none;
+    transition: all 0.4s cubic-bezier(0, 0, 0, 1);
 }
 
+.display switch:checked {
+    background: linear-gradient(45deg, #6668, mix(#6668, @accent_color, 0.2));
+    box-shadow: inset 0 0 0 1px alpha(mix(#ccc, @accent_color, 0.4), 0.2), inset 1px 0 0 alpha(@accent_color, 0.6),
+        inset -1px 0 0 @accent_color_complimentary;
+}
+
+.display switch:checked slider {
+    background: linear-gradient(45deg, @accent_color, @accent_color_complimentary);
+    box-shadow: 4px -8px 28px alpha(@accent_color_complimentary, 0.75), -4px 8px 32px alpha(@accent_color, 0.75), inset 0 0 0 1px #fff4, 0 4px 8px #0002;
+}
 
 /*
 Custom Widgets
@@ -115,16 +123,48 @@ Knobs
 */
 
 .display .knob {
-    background: #444;
+    background: none;
     border-radius: 50%;
-    box-shadow: inset 0 0 0 1px #0008;
+    box-shadow: inset 0 0 0 1px #0008, inset 0 3px 6px #0008, 0 1px 0 #fff3, 0 8px 16px #0004, 0 -8px 16px #fff2;
 }
 
 .display .knob-cover {
-    background: #0000;
-    border: 6px solid #000;
+    background: radial-gradient(75% 75% at 50% 25%, #444, #2227);
+    box-shadow: 0 0 0 12px #2228, 0 2px 8px #000a, inset 0 1px 1px #fff4, inset 0 -1px 1px #0008;
+    border: none;
     border-radius: 50%;
-    margin: 4px;
+    margin: 12px;
+    transition: background 0.2s linear;
+}
+
+.display .knob:hover .knob-cover {
+    background: radial-gradient(75% 75% at 50% 25%, #555, #3337);
+}
+
+.display .knob.small {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    opacity: 0.6;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.display .knob.small .knob-cover {
+    background: #fff1;
+    box-shadow: 0 0 0 2px #fff2;
+    border: none;
+    border-radius: 50%;
+    margin: 8px;
+    transition: background 0.2s linear;
+}
+
+.display .knob.small:hover {
+    opacity: 1;
+}
+
+
+.display .knob.small:hover .knob-cover {
+    background: #fff3;
+    box-shadow: 0 0 0 2px #0004;
 }
 
 /* /////////////////////////////////////////////////////////////////////////////
@@ -479,38 +519,52 @@ Menu
 }
 
 .display .card {
-    background-image: linear-gradient(#333, #282828);
-    border-radius: 3px;
-    border: 1px solid #ccc2;
-    box-shadow: none;
-    color: #666;
-    transition: all 0.4s cubic-bezier(0, 0, 0, 1);
+    background-image: linear-gradient(#444, mix(@accent_color_complimentary, #444, 0.9));
+    border-radius: 16px;
+    border: 1px solid mix(@accent_color_complimentary, #666, 0.9);
+    outline: 0;
+    box-shadow: 0 12px 36px alpha(@accent_color_complimentary, 0.1), 0 2px 8px #0004;
+    color: mix(@accent_color_complimentary, #ccc, 0.8);
+    transition: all 1.2s cubic-bezier(0, 0, 0, 1);
 }
 
 .display .card:hover {
-    background-image: linear-gradient(#3c3c3c, #333);
-    border: 1px solid #007367;
-    box-shadow: none;
-    color: #ccc;
+    background-image: linear-gradient(#444, mix(@accent_color_complimentary, #444, 0.75));
+    border: 1px solid mix(@accent_color_complimentary, #666, 0.75);
+    box-shadow: 0 12px 36px alpha(@accent_color_complimentary, 0.5), 0 2px 12px #0008;
+    color: #fff;
+    transform: scale(1);
 }
 
-
 .display .menu-item check {
-    background: #444;
+    background: rgba(255, 255, 255, 0.14);
+    opacity: 0.6;
+    color: #fff;
     box-shadow: none;
     padding: 6px;
-    border: 1px solid #0008;
+    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 50%;
-    -gtk-icon-source: -gtk-icontheme("audio-volume-muted-symbolic");
-    -gtk-icon-shadow: none;
+    transition: all 0.3s ease-out;
 }
 
 .display .menu-item check:hover {
-    background: #555;
+    opacity: 1;
 }
 
 
 .display .menu-item check:checked {
-    background: #02A594;
-    -gtk-icon-source: -gtk-icontheme("audio-volume-high-symbolic");
+    border: 1px solid alpha(shade(@accent_color, 1.3), 0.5);
+    background: alpha(@accent_color, 0.5);
+    opacity: 1;
+    box-shadow: 0px 6px 32px alpha(@accent_color, 0.75);
+}
+
+.display .audio-switch check {
+    -gtk-icon-source: -gtk-icontheme("system-shutdown-symbolic");
+    -gtk-icon-shadow: none;
+}
+
+.display .menu-item.p-8 {
+    padding-top: 8px;
+    padding-bottom: 8px;
 }

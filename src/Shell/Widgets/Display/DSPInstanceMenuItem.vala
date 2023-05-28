@@ -28,6 +28,7 @@ namespace Ensembles.Shell.Widgets.Display {
 
         private void build_ui () {
             add_css_class ("menu-item");
+            add_css_class ("p-8");
 
             var menu_item_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 12);
             set_child (menu_item_box);
@@ -53,6 +54,7 @@ namespace Ensembles.Shell.Widgets.Display {
                 height_request = 40,
                 tooltip_text = _("Dry / Wet Mix")
             };
+            gain_knob.add_css_class ("small");
             gain_knob.value = Utils.Math.convert_gain_to_db (plugin.mix_gain);
             gain_knob.add_mark (-12);
             gain_knob.add_mark (0);
