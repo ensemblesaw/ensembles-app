@@ -111,6 +111,7 @@ sources = files (
     'Core/Plugins/AudioPlugins/Lv2/LV2Plugin.vala',
     'Core/Plugins/AudioPlugins/Lv2/LV2SyMap.vala',
     'Core/Plugins/AudioPlugins/Lv2/LV2EvBuf.vala',
+    'Core/Plugins/AudioPlugins/Lv2/LV2Worker.vala',
     'Core/Plugins/AudioPlugins/Lv2/LV2PortAnalyser.vala',
     'Core/Plugins/AudioPlugins/Lv2/Ports/LV2Port.vala',
     'Core/Plugins/AudioPlugins/Lv2/Ports/LV2ControlPort.vala',

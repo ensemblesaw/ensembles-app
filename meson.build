@@ -3,6 +3,11 @@ project (
     'com.github.subhadeepjasu.ensembles',
     'c', 'vala',
     version: '0.1.0',
+    meson_version: '>=0.57.0',
+    default_options: [
+        'buildtype=debugoptimized',
+        'wrap_mode=nofallback'
+    ]
 )
 
 # Common Display Version
@@ -56,6 +61,10 @@ dependencies = [
     dependency ('lv2'),
     dependency ('lilv-0'),
     dependency ('suil-0'),
+    dependency ('zix-0', fallback: ['zix', 'zix_dep'], default_options: [
+    'tests=disabled', 'default_library=static',
+    'docs=disabled', 'tests_cpp=disabled',
+    ]),
     dependency ('libpipewire-0.3'),
     meson.get_compiler ('vala').find_library ('posix'),
     meson.get_compiler ('c').find_library ('m', required : true),

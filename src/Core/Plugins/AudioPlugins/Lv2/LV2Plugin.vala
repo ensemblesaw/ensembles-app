@@ -220,7 +220,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
             if (stereo) {
                 // Stereo plugin
                 for (uint8 i = 0; i < audio_in_ports.length; i++) {
-                    if (i % 2 == 0) {
+                    if ((i & 1) == 0) { // If even
                         if (lv2_instance_l != null) {
                             lv2_instance_l.connect_port (
                                 audio_in_ports[i].index,
@@ -252,7 +252,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
         public override void connect_sink_buffer (void* out_l, void* out_r) {
             if (stereo) {
                 for (uint8 i = 0; i < audio_out_ports.length; i++) {
-                    if (i % 2 == 0) {
+                    if ((i & 1) == 0) { // If even
                         if (lv2_instance_l != null) {
                             lv2_instance_l.connect_port (
                                 audio_out_ports[i].index,
