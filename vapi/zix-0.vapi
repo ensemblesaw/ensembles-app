@@ -122,4 +122,18 @@ namespace Zix {
         public Status try_wait ();
         public Status timed_wait (uint32 seconds, uint32 nanoseconds);
     }
+
+    [Compact]
+    [CCode (cheader_filename = "zix/thread.h", cname = "ZixThread", cprefix = "zix_thread_", free_function = "", has_type_id = false)]
+    public class Thread {
+        [SimpleType]
+        [CCode (cname = "ZixThreadResult")]
+        public struct Result {
+        }
+
+        public delegate Result ThreadFunc ();
+
+        public static Status create (out Thread thread, size_t stack_size, ThreadFunc function);
+        public Status join ();
+    }
 }

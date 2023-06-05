@@ -37,17 +37,15 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
         private unowned Zix.Sem zix_lock;
         private bool queue_exit;
         private Zix.Sem sem;
-        private GLib.Thread<void*> thread;
-        private Handle handle;
+        private Zix.Thread thread;
+        public Handle handle;
         private unowned Worker.Interface? iface;
         public bool threaded { get; private set; }
 
         private const uint MAX_PACKET_SIZE = 4096U;
 
         public LV2Worker (Zix.Sem zix_lock, bool threaded) {
-            Object (
-                threaded: threaded
-            );
+            this.threaded = threaded;
             responses = new Zix.Ring (null, MAX_PACKET_SIZE);;
             response = Posix.calloc (1, MAX_PACKET_SIZE);;
             this.zix_lock = zix_lock;
@@ -80,7 +78,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
             return write_packet (((LV2Worker) handle).responses, size, data);
         }
 
-        public void* func () {
+        public Zix.Thread.Result func () {
             void* buf = null;
 
             while (true) {
@@ -117,7 +115,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
             }
 
             free (buf);
-            return null;
+            return (Zix.Thread.Result) null;
         }
 
         public Zix.Status launch () {
@@ -126,15 +124,9 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
             if (st != Zix.Status.SUCCESS) {
                 return st;
             } else {
-                try {
-                    thread = new Thread<void*>.try ("lv2-worker", func);
+                st = Zix.Thread.create (out thread, MAX_PACKET_SIZE, func);
 
-                    if (thread == null) {
-                        st = Zix.Status.ERROR;
-                        return st;
-                    }
-                } catch (Error e) {
-                    st = Zix.Status.ERROR;
+                if (st != Zix.Status.SUCCESS) {
                     return st;
                 }
             }

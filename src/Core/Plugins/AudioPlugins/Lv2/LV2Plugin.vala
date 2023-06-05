@@ -64,17 +64,23 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
         private LV2.Feature*[] features;
         private const string[] SUPPORTED_FEATURE_URIS = {
             LV2.URID._map,
-            LV2.URID._unmap
+            LV2.URID._unmap,
+            LV2.Worker._schedule
         };
 
         LV2.Feature urid_map_feature;
         LV2.Feature urid_unmap_feature;
-        //  LV2.Feature options_feature;
-        //  LV2.Feature scheduler_feature;
+        LV2.Feature scheduler_feature;
+        LV2.Feature options_feature;
 
-        // Feature Structures
+        // Feature Maps
         LV2.URID.UridMap urid_map;
         LV2.URID.UridUnmap urid_unmap;
+        LV2.Worker.Schedule schedule;
+
+        // Plugin Worker Thread
+        LV2Worker worker;
+        Zix.Sem plugin_semaphore;
 
         // Plugin Instances ////////////////////////////////////////////////////
         private Lilv.Instance lv2_instance_l; // Stereo audio / Mono L Processor
@@ -93,10 +99,12 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
         public uint8 midi_input_event_count;
 
         public unowned Lilv.Plugin? lilv_plugin { get; protected set; }
+        public unowned LV2Manager? lv2_manager { get; protected set; }
 
-        public LV2Plugin (Lilv.Plugin? lilv_plugin) throws PluginError {
+        public LV2Plugin (Lilv.Plugin? lilv_plugin, LV2Manager? manager) throws PluginError {
             Object (
-                lilv_plugin: lilv_plugin
+                lilv_plugin: lilv_plugin,
+                lv2_manager: manager
             );
 
             if (!features_are_supported ()) {
@@ -152,6 +160,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
         public override void instantiate () {
             if (lv2_instance_l == null) {
                 active = false;
+                setup_workers ();
                 create_features ();
 
                 lv2_instance_l = lilv_plugin.instantiate (AudioEngine.Synthesizer.sample_rate, features);
@@ -182,8 +191,8 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
             for (uint8 i = 0; i < atom_midi_in_ports.length; i++) {
                 atom_midi_in_variables[i] = new LV2EvBuf (
                     AudioEngine.Synthesizer.get_buffer_size (),
-                    LV2Manager.map_uri (this, LV2.Atom._Chunk),
-                    LV2Manager.map_uri (this, LV2.Atom._Sequence)
+                    lv2_manager.map_uri (LV2.Atom._Chunk),
+                    lv2_manager.map_uri (LV2.Atom._Sequence)
                 );
 
                 atom_midi_in_variables[i].reset (true);
@@ -193,7 +202,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
         }
 
         public override AudioPlugin duplicate () throws PluginError {
-            return new LV2Plugin (lilv_plugin);
+            return new LV2Plugin (lilv_plugin, lv2_manager);
         }
 
         protected override void activate () {
@@ -329,7 +338,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
                             new DateTime.now_utc ().to_unix () - AudioEngine.Synthesizer.get_process_start_time ()
                         ),
                         0,
-                        (uint32) LV2Manager.map_uri (this, LV2.MIDI._MidiEvent),
+                        (uint32) lv2_manager.map_uri (LV2.MIDI._MidiEvent),
                         3,
                         buffer
                     );
@@ -351,24 +360,33 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
             }
         }
 
+        private void setup_workers () {
+            Zix.Sem.init (out plugin_semaphore, 1);
+            worker = new LV2Worker (plugin_semaphore, true);
+            worker.handle = (LV2.Handle) this;
+        }
+
         /**
          * Create plugin features
          */
          private void create_features () {
             urid_map = LV2.URID.UridMap ();
-            urid_map.handle = (LV2.URID.MapHandle) this;
-            urid_map.map = LV2Manager.map_uri;
+            urid_map.map = lv2_manager.map_uri;
+
             urid_unmap = LV2.URID.UridUnmap ();
-            urid_unmap.handle = (LV2.URID.UnmapHandle) this;
-            urid_unmap.unmap = LV2Manager.unmap_uri;
+            urid_unmap.unmap = lv2_manager.unmap_uri;
+
+            schedule = LV2.Worker.Schedule ();
+            schedule.schedule_work = worker.schedule;
 
             features = new LV2.Feature* [2];
             urid_map_feature = register_feature (LV2.URID._map, &urid_map);
             urid_unmap_feature = register_feature (LV2.URID._unmap, &urid_unmap);
+            scheduler_feature = register_feature (LV2.Worker._schedule, &schedule);
 
             features[0] = &urid_map_feature;
             features[1] = &urid_unmap_feature;
-
+            features[2] = &scheduler_feature;
         }
 
         private bool features_are_supported () {

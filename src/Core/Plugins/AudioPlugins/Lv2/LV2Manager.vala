@@ -56,7 +56,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
 
                 if (lilv_plugin != null) {
                     try {
-                        var plugin = new LV2Plugin (lilv_plugin);
+                        var plugin = new LV2Plugin (lilv_plugin, this);
                         plugin_manager.audio_plugins.append (plugin);
 
                         Application.event_bus.send_initial_status (_("Loading LV2 plugin: ") + plugin.name + "…");
@@ -78,6 +78,8 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
             );
         }
 
+        // LV2 Feature Implementations
+
         // URI -> Lilv Node Mapping
         internal static unowned Lilv.Node get_node_by_uri (string uri) {
             if (node_map.contains (uri)) {
@@ -93,14 +95,14 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
         }
 
         // LV2 URID
-        internal static LV2.URID.Urid map_uri (void* handle, string uri) {
+        public LV2.URID.Urid map_uri (string uri) {
             Lv2.LV2Manager.symap_lock.lock ();
             LV2.URID.Urid urid = Lv2.LV2Manager.symap.map (uri);
             Lv2.LV2Manager.symap_lock.unlock ();
             return urid;
         }
 
-        internal static string unmap_uri (void* handle, LV2.URID.Urid urid) {
+        public string unmap_uri (LV2.URID.Urid urid) {
             Lv2.LV2Manager.symap_lock.lock ();
             string uri = Lv2.LV2Manager.symap.unmap ((uint32)urid);
             Lv2.LV2Manager.symap_lock.unlock ();

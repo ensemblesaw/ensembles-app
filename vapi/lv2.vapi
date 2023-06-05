@@ -217,22 +217,22 @@ namespace LV2.URID {
     public struct Urid {
     }
 
-    [CCode (has_target = false)]
-    public delegate Urid map_call_back (void* handle, string uri);
-    [CCode (has_target = false)]
-    public delegate string unmap_call_back (void* handle, Urid urid);
+    public delegate Urid map_call_back (string uri);
+    public delegate string unmap_call_back (Urid urid);
 
     [CCode (cname = "LV2_URID_Map", destroy_function = "")]
     public struct UridMap {
+        [CCode (cname = "handle")]
         public MapHandle handle;
-        [CCode (cname = "map", has_target = false, delegate_target_cname = "")]
+        [CCode (cname = "map", has_target = false, delegate_target_cname = "handle")]
         public unowned map_call_back map;
     }
 
     [CCode (cname = "LV2_URID_Unmap", destroy_function = "")]
     public struct UridUnmap {
+        [CCode (cname = "handle")]
         public UnmapHandle handle;
-        [CCode (cname = "unmap", has_target = false, delegate_target_cname = "")]
+        [CCode (cname = "unmap", has_target = false, delegate_target_cname = "handle")]
         public unowned unmap_call_back unmap;
     }
 
@@ -521,5 +521,14 @@ namespace LV2.Worker {
     public struct ScheduleHandle {
     }
 
+    public delegate Status SchedulerFunc (uint32 size, void* data);
+
+    [CCode (cname = "LV2_Worker_Schedule", destroy_function = "")]
+    public struct Schedule {
+        [CCode (cname = "handle")]
+        public ScheduleHandle handle;
+        [CCode (cname = "schedule_work", has_target = false, delegate_target_cname = "handle")]
+        public unowned SchedulerFunc schedule_work;
+    }
 
 }
