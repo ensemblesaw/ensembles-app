@@ -476,14 +476,24 @@ namespace LV2.Worker {
     public const string _schedule;
 
     [CCode (cname = "interface_work_t", has_target = false)]
-    public delegate Status interface_work_t (LV2.Handle instance, respond_func_t respond, RespondHandle handle, uint32 size, void* data);
+    public delegate Status InterfaceWorkFunc (LV2.Handle instance, RespondFunc respond, RespondHandle handle, uint32 size, [CCode (type="const void*")] void* data);
+
+    [CCode (cname = "interface_work_reponse_t", has_target = false)]
+    public delegate Status InterfaceWorkResponseFunc (LV2.Handle instance, uint32 size, [CCode (type="const void*")] void* body);
+
+    [CCode (cname = "interface_end_run_t", has_target = false)]
+    public delegate Status InterfaceEndRunFunc (LV2.Handle instance);
 
     [Compact]
     [SimpleType]
     [CCode (cname = "LV2_Worker_Interface", has_type_id = false, free_function = "")]
     public class Interface {
         [CCode (cname = "work", has_target = false, delegate_target_cname = "", simple_generics = true)]
-        public unowned interface_work_t work;
+        public unowned InterfaceWorkFunc work;
+        [CCode (cname = "work_response", has_target = false, delegate_target_cname = "", simple_generics = true)]
+        public unowned InterfaceWorkResponseFunc work_response;
+        [CCode (cname = "end_run", has_target = false, delegate_target_cname = "", simple_generics = true)]
+        public unowned InterfaceEndRunFunc end_run;
     }
 
     /* Status code for worker functions.  */
@@ -504,7 +514,7 @@ namespace LV2.Worker {
 
     [SimpleType]
     [CCode (cname = "LV2_Worker_Respond_Function", has_target = false)]
-    public delegate Status respond_func_t (RespondHandle handle, uint32 size, [CCode (type="const void*")] void* data);
+    public delegate Status RespondFunc (RespondHandle handle, uint32 size, [CCode (type="const void*")] void* data);
 
     [SimpleType]
     [CCode (cname = "LV2_Worker_Schedule_Handle")]

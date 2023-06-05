@@ -34,13 +34,36 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
         private Zix.Ring requests;                          ///< Requests to the worker
         private Zix.Ring responses;                         ///< Responses from the worker
         private void* response;
-        private Zix.Sem lock;
-        private bool exit;
+        private unowned Zix.Sem zix_lock;
+        private bool queue_exit;
         private Zix.Sem sem;
-        private GLib.Thread thread;
-        private LV2.Handle handle;
-        private LV2.Worker.Interface? iface;
-        private bool threaded;
+        private GLib.Thread<void*> thread;
+        private Handle handle;
+        private unowned Worker.Interface? iface;
+        public bool threaded { get; private set; }
+
+        private const uint MAX_PACKET_SIZE = 4096U;
+
+        public LV2Worker (Zix.Sem zix_lock, bool threaded) {
+            Object (
+                threaded: threaded
+            );
+            responses = new Zix.Ring (null, MAX_PACKET_SIZE);;
+            response = Posix.calloc (1, MAX_PACKET_SIZE);;
+            this.zix_lock = zix_lock;
+            queue_exit = false;
+
+            responses.mlock ();
+
+            if (threaded && launch () != SUCCESS) {
+                free (response);
+            }
+        }
+
+        ~LV2Worker () {
+            exit ();
+            free (response);
+        }
 
         private static Worker.Status write_packet (Zix.Ring target, [CCode (type="const uint32_t")] uint32 size, [CCode (type="const void*")] void* data) {
             Zix.Ring.Transaction tx = target.begin_write ();
@@ -57,49 +80,146 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
             return write_packet (((LV2Worker) handle).responses, size, data);
         }
 
-        public static void* func ([CCode (type="void* const")] void* data) {
-            LV2Worker worker = (LV2Worker) data;
+        public void* func () {
             void* buf = null;
 
             while (true) {
                 // Wait for a request
-                worker.sem.wait ();
-                if (worker.exit) {
+                sem.wait ();
+                if (queue_exit) {
                     break;
                 }
 
                 // Read the size header of request
                 uint32 size = 0;
-                worker.requests.read (&size, (uint32) sizeof(uint32));
+                requests.read (&size, (uint32) sizeof(uint32));
 
                 // Reallocate buffer to allocate request if necessary
                 void* new_buf = realloc (buf, size);
                 if (new_buf != null) {
                     // Read request into buffer
                     buf = new_buf;
-                    worker.requests.read (buf, size);
+                    requests.read (buf, size);
 
                     // Lock and dispatch request to plugin's work handler
-                    worker.lock.wait ();
-                    worker.iface.work (
-                        worker.handle,
+                    zix_lock.wait ();
+                    iface.work (
+                        handle,
                         respond,
-                        (LV2.Worker.RespondHandle) worker,
+                        (LV2.Worker.RespondHandle) this,
                         size, buf
                     );
-                    worker.lock.post ();
+                    zix_lock.post ();
                 } else {
                     // Reallocation failed, skip request to avoid corrupting ring
-                    worker.requests.skip (size);
+                    requests.skip (size);
                 }
             }
 
             free (buf);
             return null;
         }
+
+        public Zix.Status launch () {
+            var st = Zix.Sem.init (out sem, 0);
+
+            if (st != Zix.Status.SUCCESS) {
+                return st;
+            } else {
+                try {
+                    thread = new Thread<void*>.try ("lv2-worker", func);
+
+                    if (thread == null) {
+                        st = Zix.Status.ERROR;
+                        return st;
+                    }
+                } catch (Error e) {
+                    st = Zix.Status.ERROR;
+                    return st;
+                }
+            }
+
+            var _requests = new Zix.Ring (null, MAX_PACKET_SIZE);
+
+            if (_requests == null) {
+                thread.join ();
+                sem.destroy ();
+                st = Zix.Status.NO_MEM;
+                return st;
+            }
+
+            _requests.mlock ();
+            requests = (owned) _requests;
+            return st;
+        }
+
+        public void start (Worker.Interface iface, Handle handle) {
+            this.iface = iface;
+            this.handle = handle;
+        }
+
+        public void exit () {
+            if (threaded) {
+                queue_exit = true;
+                sem.post ();
+                thread.join ();
+                threaded = false;
+            }
+        }
+
+        public Worker.Status schedule (uint32 size, void* data) {
+            var st = Worker.Status.SUCCESS;
+
+            if (size == 0) {
+                st = Worker.Status.ERR_UNKNOWN;
+            }
+
+            if (threaded) {
+                 // Schedule a request to be executed by the worker thread
+                st = write_packet (requests, size, data);
+                if (st == Worker.Status.SUCCESS) {
+                    sem.post ();
+                }
+            } else {
+                zix_lock.wait ();
+                st = iface.work (
+                    handle,
+                    respond,
+                    (LV2.Worker.RespondHandle) this,
+                    size,
+                    data
+                );
+                zix_lock.post ();
+            }
+
+            return st;
+        }
+
+        public void emit_responses (Handle lv2_handle) {
+            const uint32 size_size = (uint32) sizeof(uint32);
+
+            if (responses != null) {
+                uint32 size = 0U;
+                while (responses.read (&size, size_size) == size_size) {
+                    if (responses.read (response, size) == size) {
+                        iface.work_response (lv2_handle, size, response);
+                    }
+                }
+            }
+        }
+
+        public void end_run () {
+            if (iface != null && iface.end_run != null) {
+                iface.end_run (handle);
+            }
+        }
     }
 }
 
-// This is required as the library zix doesn't yet have typedefs for this function pointer
+// These are required as the library Worker doesn't yet have typedefs for these function pointers in Interface
 [CCode (cname = " interface_work_t", has_target = false)]
-public extern delegate LV2.Worker.Status interface_work_t (LV2.Handle instance, LV2.Worker.respond_func_t respond, LV2.Worker.RespondHandle handle, uint32 size, void* data);
+extern delegate Worker.Status InterfaceWorkFunc (Handle instance, Worker.RespondFunc respond, Worker.RespondHandle handle, uint32 size, void* data);
+[CCode (cname = " interface_work_reponse_t", has_target = false)]
+extern delegate Worker.Status InterfaceWorkResponseFunc (Handle instance, uint32 size, [CCode (type="const void*")] void* body);
+[CCode (cname = " interface_end_run_t", has_target = false)]
+extern delegate Worker.Status InterfaceEndRunFunc (Handle instance);

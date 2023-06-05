@@ -78,7 +78,7 @@ namespace Zix {
          * @param allocator allocator for the ring object and its array
          * @param size size of the ring in bytes (note this may be rounded up)
          */
-        public Ring (Allocator allocator, uint32 size);
+        public Ring (Allocator? allocator, uint32 size);
         /**
          * Lock the ring data into physical memory.
          *
