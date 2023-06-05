@@ -465,3 +465,51 @@ namespace LV2.MIDI {
     [CCode (ctype="inline")]
     public static uint8 message_type (uint8 msg);
 }
+
+[CCode(cheader_filename="lv2/lv2plug.in/ns/ext/worker/worker.h")]
+namespace LV2.Worker {
+    public const string URI;
+
+    public const string PREFIX;
+
+    public const string _Interface;
+    public const string _schedule;
+
+    [CCode (cname = "interface_work_t", has_target = false)]
+    public delegate Status interface_work_t (LV2.Handle instance, respond_func_t respond, RespondHandle handle, uint32 size, void* data);
+
+    [Compact]
+    [SimpleType]
+    [CCode (cname = "LV2_Worker_Interface", has_type_id = false, free_function = "")]
+    public class Interface {
+        [CCode (cname = "work", has_target = false, delegate_target_cname = "", simple_generics = true)]
+        public unowned interface_work_t work;
+    }
+
+    /* Status code for worker functions.  */
+    [CCode (cname = "LV2_Worker_Status", has_type_id = false, cprefix = "LV2_WORKER_")]
+    public enum Status {
+        /** Completed successfully. */
+        SUCCESS = 0,
+        /** Unknown error. */
+        ERR_UNKNOWN = 1,
+        /** Failed due to lack of space. */
+        ERR_NO_SPACE = 2
+    }
+
+    [SimpleType]
+    [CCode (cname = "LV2_Worker_Respond_Handle")]
+    public struct RespondHandle {
+    }
+
+    [SimpleType]
+    [CCode (cname = "LV2_Worker_Respond_Function", has_target = false)]
+    public delegate Status respond_func_t (RespondHandle handle, uint32 size, [CCode (type="const void*")] void* data);
+
+    [SimpleType]
+    [CCode (cname = "LV2_Worker_Schedule_Handle")]
+    public struct ScheduleHandle {
+    }
+
+
+}

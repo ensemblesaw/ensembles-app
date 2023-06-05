@@ -28,7 +28,7 @@
 [CCode (cprefix="ZIX_", lower_case_cprefix="zix_")]
 namespace Zix {
     /** A status code returned by functions. */
-    [CCode (cname = "enum ZixStatus ", has_type_id = false, cprefix = "ZIX_STATUS_")]
+    [CCode (cname = "ZixStatus", has_type_id = false, cprefix = "ZIX_STATUS_")]
     public enum Status {
         /** Success. */
         SUCCESS,
@@ -61,7 +61,7 @@ namespace Zix {
     }
 
     [Compact]
-    [CCode (cheader_filename = "zix/allocator.h", cname = "Zix", cprefix = "zix_", free_function = "zix_free", has_type_id = false)]
+    [CCode (cheader_filename = "zix/allocator.h", cname = "ZixAllocator", cprefix = "zix_", free_function = "zix_free", has_type_id = false)]
     public class Allocator {
 
     }
@@ -75,8 +75,8 @@ namespace Zix {
          *
          * At most size - 1 bytes may be stored in the ring at once.
          *
-         * @param allocator allocator for the ring object and its array.
-         * @param size size of the ring in bytes (note this may be rounded up).
+         * @param allocator allocator for the ring object and its array
+         * @param size size of the ring in bytes (note this may be rounded up)
          */
         public Ring (Allocator allocator, uint32 size);
         /**
@@ -97,6 +97,7 @@ namespace Zix {
         public uint32 skip (uint32 size);
 
         // Writing
+        [SimpleType]
         [CCode (cname = "ZixRingTransaction", cprefix = "", free_function = "", destroy_function = "", has_type_id = false)]
         public struct Transaction {
             uint32 read_head;
@@ -104,10 +105,21 @@ namespace Zix {
         }
 
         public uint32 write_space ();
-        public uint32 write ([CCode (type="const void*")]void* src, uint32 size);
+        public uint32 write ([CCode (type="const void*")] void* src, uint32 size);
         public Transaction begin_write ();
+        public Status amend_write (Transaction? tx, [CCode (type="const void*")] void* src, uint32 size);
+        public Status commit_write (Transaction? tx);
 
     }
 
-
+    [Compact]
+    [CCode (cheader_filename = "zix/sem.h", cname = "ZixSem", cprefix = "zix_sem_", free_function = "", has_type_id = false)]
+    public class Sem {
+        public static Status init (out Sem sem, uint initial);
+        public Status destroy ();
+        public Status post ();
+        public Status wait ();
+        public Status try_wait ();
+        public Status timed_wait (uint32 seconds, uint32 nanoseconds);
+    }
 }
