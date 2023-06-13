@@ -112,9 +112,8 @@ namespace Zix {
 
     }
 
-    [Compact]
-    [CCode (cheader_filename = "zix/sem.h", cname = "ZixSem", cprefix = "zix_sem_", free_function = "", has_type_id = false)]
-    public class Sem {
+    [CCode (cheader_filename = "zix/sem.h", cname = "ZixSem", cprefix = "zix_sem_", destroy_function = "", has_type_id = false)]
+    public struct Sem {
         public static Status init (out Sem sem, uint initial);
         public Status destroy ();
         public Status post ();
@@ -123,17 +122,17 @@ namespace Zix {
         public Status timed_wait (uint32 seconds, uint32 nanoseconds);
     }
 
-    [Compact]
-    [CCode (cheader_filename = "zix/thread.h", cname = "ZixThread", cprefix = "zix_thread_", free_function = "", has_type_id = false)]
-    public class Thread {
-        [SimpleType]
-        [CCode (cname = "ZixThreadResult")]
-        public struct Result {
-        }
-
-        public delegate Result ThreadFunc ();
-
+    [SimpleType]
+    [CCode (cheader_filename = "zix/thread.h", cname = "ZixThread", cprefix = "zix_thread_", destroy_function = "", has_type_id = false)]
+    public struct Thread {
         public static Status create (out Thread thread, size_t stack_size, ThreadFunc function);
         public Status join ();
     }
+
+    [SimpleType]
+    [CCode (cheader_filename = "zix/thread.h", cname = "ZixThreadResult")]
+    public struct ThreadResult {
+    }
+
+    public delegate ThreadResult ThreadFunc ();
 }

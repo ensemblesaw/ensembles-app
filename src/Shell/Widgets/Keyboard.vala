@@ -18,7 +18,7 @@ namespace Ensembles.Shell.Widgets {
 
         public uint8 motion_x_control = MIDI.Control.EXPLICIT_PITCH;
         public uint8 motion_y_control = MIDI.Control.CUT_OFF;
-        public bool motion_control_enabled = true;
+        public bool motion_control_enabled = false;
 
         private int control_x = 64;
         private int previous_control_y = 64;

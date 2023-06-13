@@ -217,15 +217,17 @@ namespace LV2.URID {
     public struct Urid {
     }
 
-    public delegate Urid map_call_back (string uri);
-    public delegate string unmap_call_back (Urid urid);
+    [CCode(instance_pos=0)]
+    public delegate Urid UridMapFunc (string uri);
+    [CCode(instance_pos=0)]
+    public delegate string UridUnmapFunc (Urid urid);
 
     [CCode (cname = "LV2_URID_Map", destroy_function = "")]
     public struct UridMap {
         [CCode (cname = "handle")]
         public MapHandle handle;
         [CCode (cname = "map", has_target = false, delegate_target_cname = "handle")]
-        public unowned map_call_back map;
+        public unowned UridMapFunc map;
     }
 
     [CCode (cname = "LV2_URID_Unmap", destroy_function = "")]
@@ -233,7 +235,7 @@ namespace LV2.URID {
         [CCode (cname = "handle")]
         public UnmapHandle handle;
         [CCode (cname = "unmap", has_target = false, delegate_target_cname = "handle")]
-        public unowned unmap_call_back unmap;
+        public unowned UridUnmapFunc unmap;
     }
 
     public const string URI;

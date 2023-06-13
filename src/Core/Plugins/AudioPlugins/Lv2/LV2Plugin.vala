@@ -64,23 +64,23 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
         private LV2.Feature*[] features;
         private const string[] SUPPORTED_FEATURE_URIS = {
             LV2.URID._map,
-            LV2.URID._unmap,
-            LV2.Worker._schedule
+            LV2.URID._unmap
+            //  LV2.Worker._schedule
         };
 
         LV2.Feature urid_map_feature;
         LV2.Feature urid_unmap_feature;
-        LV2.Feature scheduler_feature;
-        LV2.Feature options_feature;
+        //  LV2.Feature scheduler_feature;
+        //  LV2.Feature options_feature;
 
         // Feature Maps
         LV2.URID.UridMap urid_map;
         LV2.URID.UridUnmap urid_unmap;
-        LV2.Worker.Schedule schedule;
+        //  LV2.Worker.Schedule schedule;
 
         // Plugin Worker Thread
         LV2Worker worker;
-        Zix.Sem plugin_semaphore;
+        Zix.Sem plugin_sem_lock;
 
         // Plugin Instances ////////////////////////////////////////////////////
         private Lilv.Instance lv2_instance_l; // Stereo audio / Mono L Processor
@@ -112,7 +112,6 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
             }
 
             name = lilv_plugin.get_name ().as_string ();
-            print ("plugin: %s\n--------------\n".printf (name));
             plugin_uri = lilv_plugin.get_uri ().as_uri ();
             plugin_class = lilv_plugin.get_class ().get_label ().as_string ();
             author_name = lilv_plugin.get_author_name ().as_string ();
@@ -159,12 +158,12 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
          */
         public override void instantiate () {
             if (lv2_instance_l == null) {
+                Console.log("Instantiating LV2 Plugin %s, with URI: %s".printf(name, plugin_uri));
                 active = false;
                 setup_workers ();
                 create_features ();
 
                 lv2_instance_l = lilv_plugin.instantiate (AudioEngine.Synthesizer.sample_rate, features);
-
                 // Check if plugin is mono
                 if (!stereo) {
                     lv2_instance_r = lilv_plugin.instantiate (AudioEngine.Synthesizer.sample_rate, features);
@@ -361,32 +360,32 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
         }
 
         private void setup_workers () {
-            Zix.Sem.init (out plugin_semaphore, 1);
-            worker = new LV2Worker (plugin_semaphore, true);
+            Zix.Sem.init (out plugin_sem_lock, 1);
+            worker = new LV2Worker (plugin_sem_lock, true);
             worker.handle = (LV2.Handle) this;
         }
 
         /**
          * Create plugin features
          */
-         private void create_features () {
+        private void create_features () {
             urid_map = LV2.URID.UridMap ();
             urid_map.map = lv2_manager.map_uri;
 
             urid_unmap = LV2.URID.UridUnmap ();
             urid_unmap.unmap = lv2_manager.unmap_uri;
 
-            schedule = LV2.Worker.Schedule ();
-            schedule.schedule_work = worker.schedule;
+            //  schedule = LV2.Worker.Schedule ();
+            //  schedule.schedule_work = worker.schedule;
 
             features = new LV2.Feature* [2];
             urid_map_feature = register_feature (LV2.URID._map, &urid_map);
             urid_unmap_feature = register_feature (LV2.URID._unmap, &urid_unmap);
-            scheduler_feature = register_feature (LV2.Worker._schedule, &schedule);
+            //  scheduler_feature = register_feature (LV2.Worker._schedule, &schedule);
 
             features[0] = &urid_map_feature;
             features[1] = &urid_unmap_feature;
-            features[2] = &scheduler_feature;
+            //  features[2] = &scheduler_feature;
         }
 
         private bool features_are_supported () {

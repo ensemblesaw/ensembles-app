@@ -34,7 +34,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
         private Zix.Ring requests;                          ///< Requests to the worker
         private Zix.Ring responses;                         ///< Responses from the worker
         private void* response;
-        private unowned Zix.Sem zix_lock;
+        private unowned Zix.Sem plugin_instance_lock;
         private bool queue_exit;
         private Zix.Sem sem;
         private Zix.Thread thread;
@@ -44,11 +44,11 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
 
         private const uint MAX_PACKET_SIZE = 4096U;
 
-        public LV2Worker (Zix.Sem zix_lock, bool threaded) {
+        public LV2Worker (Zix.Sem? plugin_instance_lock, bool threaded) {
             this.threaded = threaded;
             responses = new Zix.Ring (null, MAX_PACKET_SIZE);;
             response = Posix.calloc (1, MAX_PACKET_SIZE);;
-            this.zix_lock = zix_lock;
+            this.plugin_instance_lock = plugin_instance_lock;
             queue_exit = false;
 
             responses.mlock ();
@@ -78,7 +78,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
             return write_packet (((LV2Worker) handle).responses, size, data);
         }
 
-        public Zix.Thread.Result func () {
+        public Zix.ThreadResult func () {
             void* buf = null;
 
             while (true) {
@@ -100,14 +100,14 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
                     requests.read (buf, size);
 
                     // Lock and dispatch request to plugin's work handler
-                    zix_lock.wait ();
+                    plugin_instance_lock.wait ();
                     iface.work (
                         handle,
                         respond,
                         (LV2.Worker.RespondHandle) this,
                         size, buf
                     );
-                    zix_lock.post ();
+                    plugin_instance_lock.post ();
                 } else {
                     // Reallocation failed, skip request to avoid corrupting ring
                     requests.skip (size);
@@ -115,7 +115,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
             }
 
             free (buf);
-            return (Zix.Thread.Result) null;
+            return (Zix.ThreadResult) null;
         }
 
         public Zix.Status launch () {
@@ -173,7 +173,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
                     sem.post ();
                 }
             } else {
-                zix_lock.wait ();
+                plugin_instance_lock.wait ();
                 st = iface.work (
                     handle,
                     respond,
@@ -181,7 +181,7 @@ namespace Ensembles.Core.Plugins.AudioPlugins.Lv2 {
                     size,
                     data
                 );
-                zix_lock.post ();
+                plugin_instance_lock.post ();
             }
 
             return st;
