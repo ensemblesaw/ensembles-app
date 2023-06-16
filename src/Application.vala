@@ -3,9 +3,9 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-namespace Ensembles {
-    public Services.Settings settings;
+using Ensembles.ArrangerWorkstation;
 
+namespace Ensembles {
     /**
      * ## Ensembles Application
      *
@@ -27,41 +27,44 @@ namespace Ensembles {
             }
         }
 
-        public static Services.EventBus event_bus = new Services.EventBus ();
+        //  public static Services.EventBus event_bus = new Services.EventBus ();
 
         private string[] ? arg_file = null;
         public static bool raw_midi_input = false;
         public static bool kiosk_mode = false;
         public static bool verbose = false;
 
-        public static Shell.MainWindow main_window;
-        public static Core.ArrangerWorkstation arranger_workstation;
+        //  public static Shell.MainWindow main_window;
+        //  public static Core.ArrangerWorkstation arranger_workstation;
+        public AWCore aw_core;
 
         construct {
             flags |= ApplicationFlags.HANDLES_OPEN |
             ApplicationFlags.HANDLES_COMMAND_LINE;
             application_id = Constants.APP_ID;
-            settings = new Services.Settings ();
         }
 
         protected override void activate () {
             Console.log ("Initializing GUI Theme");
-            Services.Theme.init_theme ();
+            //  Services.Theme.init_theme ();
 
             Console.log ("Initializing Main Window");
-            main_window = new Shell.MainWindow (this);
-            this.add_window (main_window);
-            main_window.show_ui ();
-            Console.log (
-                "GUI Initialization Complete!",
-                Console.LogLevel.SUCCESS
-            );
+            //  main_window = new Shell.MainWindow (this);
+            //  this.add_window (main_window);
+            //  main_window.show_ui ();
+            //  Console.log (
+            //      "GUI Initialization Complete!",
+            //      Console.LogLevel.SUCCESS
+            //  );
 
             Console.log ("Initializing Arranger Workstation");
-            arranger_workstation = new Core.ArrangerWorkstation ();
+            aw_core = AWCore.instance
+            .load_soundfont_from_path (Constants.SF2DATADIR)
+            .load_style_from_path (Constants.PKGDATADIR);
 
-            if (settings.version != Constants.VERSION) {
-                settings.version = Constants.VERSION;
+            if (Settings.instance.version != Constants.VERSION) {
+                Settings.instance.version = Constants.VERSION;
+                // Show welcome screen
             }
 
             if (Constants.PROFILE == "development") {
@@ -90,7 +93,7 @@ namespace Ensembles {
             }
 
             if (verbose || raw_midi_input || kiosk_mode) {
-                Console.get_console_header ();
+                Console.get_console_header (Constants.VERSION, Constants.DISPLAYVER);
             }
 
             if (raw_midi_input) {

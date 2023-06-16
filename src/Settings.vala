@@ -3,10 +3,22 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-namespace Ensembles.Services {
+namespace Ensembles {
     public class Settings : GLib.Settings {
-        public Settings () {
+        private Settings () {
             Object (schema_id: Constants.APP_ID);
+        }
+
+        private static Settings _instance;
+
+        public static Settings instance {
+            get {
+                if (_instance == null) {
+                    _instance = new Settings ();
+                }
+
+                return _instance;
+            }
         }
 
         public string version {
@@ -68,19 +80,19 @@ namespace Ensembles.Services {
             set { set_boolean ("autofill", value); }
         }
 
-        /**
-         * How chord should be interpreted from the keyboard input.
-         *
-         * - `SPLIT_LONG`: Determine chord from multiple keys only on left side
-         * of split point
-         * - `SPLIT_SHORT`: Determine chord from two fingers only on left side
-         * of split point
-         * - `FULL_RANGE`: Determine chord from multiple fingers from any place
-         * on the keyboard
-         */
-        public Core.Analysers.ChordAnalyser.ChordDetectionMode chord_detection_mode {
-            get { return get_enum ("chord-detection-mode"); }
-            set { set_enum ("chord-detection-mode", value); }
-        }
+        //  /**
+        //   * How chord should be interpreted from the keyboard input.
+        //   *
+        //   * - `SPLIT_LONG`: Determine chord from multiple keys only on left side
+        //   * of split point
+        //   * - `SPLIT_SHORT`: Determine chord from two fingers only on left side
+        //   * of split point
+        //   * - `FULL_RANGE`: Determine chord from multiple fingers from any place
+        //   * on the keyboard
+        //   */
+        //  public Core.Analysers.ChordAnalyser.ChordDetectionMode chord_detection_mode {
+        //      get { return get_enum ("chord-detection-mode"); }
+        //      set { set_enum ("chord-detection-mode", value); }
+        //  }
     }
 }
