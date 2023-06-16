@@ -93,7 +93,7 @@ namespace Ensembles {
             }
 
             if (verbose || raw_midi_input || kiosk_mode) {
-                Console.get_console_header (Constants.VERSION, Constants.DISPLAYVER);
+                Console.print_greetings (Constants.VERSION, Constants.DISPLAYVER);
             }
 
             if (raw_midi_input) {
