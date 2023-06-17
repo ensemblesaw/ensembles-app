@@ -60,7 +60,8 @@ namespace Ensembles {
             Console.log ("Initializing Arranger Workstation");
             aw_core = AWCore.instance
             .load_soundfont_from_path (Constants.SF2DATADIR)
-            .load_style_from_path (Constants.PKGDATADIR);
+            .load_style_from_path (Constants.PKGDATADIR)
+            .initialize ();
 
             if (Settings.instance.version != Constants.VERSION) {
                 Settings.instance.version = Constants.VERSION;
@@ -93,15 +94,15 @@ namespace Ensembles {
             }
 
             if (verbose || raw_midi_input || kiosk_mode) {
-                Console.print_greetings (Constants.VERSION, Constants.DISPLAYVER);
+                Console.greet (Constants.VERSION, Constants.DISPLAYVER);
             }
 
             if (raw_midi_input) {
-                print ("Raw MIDI Input Enabled! You can now enable midi input and connect your DAW\n");
+                Console.log ("Raw MIDI Input Enabled! You can now enable midi input and connect your DAW\n");
             }
 
             if (kiosk_mode) {
-                print ("Starting Ensembles in Kiosk Mode\n");
+                Console.log ("Starting Ensembles in Kiosk Mode\n");
             }
 
             if (arg_file != null && arg_file[0] != null) {
