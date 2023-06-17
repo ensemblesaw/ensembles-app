@@ -59,9 +59,14 @@ namespace Ensembles {
 
             Console.log ("Initializing Arranger Workstation");
             aw_core = AWCore.instance
+            .use_driver ("alsa")
             .load_soundfont_from_path (Constants.SF2DATADIR)
-            .load_style_from_path (Constants.PKGDATADIR)
-            .initialize ();
+            .load_style_from_path (Constants.PKGDATADIR + "/StyleFiles")
+            .load_style_from_path (Environment.get_user_special_dir (
+                GLib.UserDirectory.DOCUMENTS) +
+                "/ensembles" +
+                "/styles")
+            .build_synth_engine ();
 
             if (Settings.instance.version != Constants.VERSION) {
                 Settings.instance.version = Constants.VERSION;
