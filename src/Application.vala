@@ -35,8 +35,6 @@ namespace Ensembles {
         public static bool kiosk_mode = false;
         public static bool verbose = false;
 
-        //  public static Shell.MainWindow main_window;
-        //  public static Core.ArrangerWorkstation arranger_workstation;
         //  public MainWindow main_window;
         public AWCore aw_core;
 
@@ -51,7 +49,7 @@ namespace Ensembles {
             aw_core = AWCore.Builder ()
             .using_driver ("alsa")
             .load_sf_from (Constants.SF2DATADIR)
-            .add_style_search_path (Constants.PKGDATADIR + "/StyleFiles")
+            .add_style_search_path (StyleRepository.get_style_dir ())
             .add_style_search_path (Environment.get_user_special_dir (
                 GLib.UserDirectory.DOCUMENTS) +
                 "/ensembles" +

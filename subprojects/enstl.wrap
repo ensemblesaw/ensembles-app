@@ -1,0 +1,4 @@
+[wrap-git]
+url = https://github.com/ensemblesaw/styles
+depth = 1
+revision = main
