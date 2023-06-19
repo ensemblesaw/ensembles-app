@@ -49,6 +49,7 @@ dependencies = [
     dependency ('x11'),
     dependency ('gtk4'),
     dependency ('glib-2.0'),
+    # dependency ('ens-gui-shell-0', fallback: ['ens-gui-shell', 'ens_gui_shell_dep']),
     dependency ('ens-aw-core-0', fallback: ['ens-aw-core', 'ens_aw_core_dep']),
     dependency ('ens-tui-shell-0', fallback: ['ens-tui-shell', 'ens_tui_shell_dep'])
 ]

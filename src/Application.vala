@@ -3,6 +3,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+//  using Ensembles.Shell;
 using Ensembles.ArrangerWorkstation;
 
 namespace Ensembles {
@@ -36,6 +37,7 @@ namespace Ensembles {
 
         //  public static Shell.MainWindow main_window;
         //  public static Core.ArrangerWorkstation arranger_workstation;
+        //  public MainWindow main_window;
         public AWCore aw_core;
 
         construct {
@@ -45,8 +47,16 @@ namespace Ensembles {
         }
 
         protected override void activate () {
-            Console.log ("Initializing GUI Theme");
-            //  Services.Theme.init_theme ();
+            Console.log ("Initializing Arranger Workstation");
+            aw_core = AWCore.Builder ()
+            .using_driver ("alsa")
+            .load_sf_from (Constants.SF2DATADIR)
+            .add_style_search_path (Constants.PKGDATADIR + "/StyleFiles")
+            .add_style_search_path (Environment.get_user_special_dir (
+                GLib.UserDirectory.DOCUMENTS) +
+                "/ensembles" +
+                "/styles")
+            .build ();
 
             Console.log ("Initializing Main Window");
             //  main_window = new Shell.MainWindow (this);
@@ -57,16 +67,6 @@ namespace Ensembles {
             //      Console.LogLevel.SUCCESS
             //  );
 
-            Console.log ("Initializing Arranger Workstation");
-            aw_core = AWCore.instance
-            .use_driver ("alsa")
-            .add_soundfont (Constants.SF2DATADIR)
-            .add_style_search_path (Constants.PKGDATADIR + "/StyleFiles")
-            .add_style_search_path (Environment.get_user_special_dir (
-                GLib.UserDirectory.DOCUMENTS) +
-                "/ensembles" +
-                "/styles")
-            .build_synth_engine ();
             aw_core.load_data_async ();
 
             if (Settings.instance.version != Constants.VERSION) {
