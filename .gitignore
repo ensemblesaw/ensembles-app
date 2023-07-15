@@ -11,7 +11,3 @@ null.d
 *~
 .~lock*
 xtleak.kcg.*
-subprojects/enstl/
-subprojects/ens-aw-core/
-subprojects/ens-gui-shell/
-subprojects/ens-tui-shell/

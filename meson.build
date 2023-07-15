@@ -46,13 +46,13 @@ message(build_dir.split('/')[-1])
 
 # Listing dependencies
 dependencies = [
-    dependency ('x11'),
-    dependency ('gtk4'),
     dependency ('glib-2.0'),
+    dependency ('gee-0.8'),
+    dependency ('libvinject-0.0.0', fallback: ['libvinject', 'vinject_dep']),
     dependency ('ens-enstl-0', fallback: ['enstl', 'enstl_dep']),
-    # dependency ('ens-gui-shell-0', fallback: ['ens-gui-shell', 'ens_gui_shell_dep']),
-    dependency ('ens-aw-core-0', fallback: ['ens-aw-core', 'ens_aw_core_dep']),
-    dependency ('ens-tui-shell-0', fallback: ['ens-tui-shell', 'ens_tui_shell_dep'])
+    dependency ('ens-shell-cli-0', fallback: ['ens-shell-cli', 'ens_shell_cli_dep']),
+    dependency ('ens-shell-gtk-0', fallback: ['ens-shell-gtk', 'ens_shell_gtk_dep']),
+    dependency ('ens-aw-core-0', fallback: ['ens-aw-core', 'ens_aw_core_dep'])
 ]
 
 # Set up the profile

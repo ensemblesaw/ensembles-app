@@ -15,6 +15,5 @@ config_header = configure_file (
 
 sources = files (
     'Main.vala',
-    'Application.vala',
-    'Settings.vala'
+    'Services.vala'
 )

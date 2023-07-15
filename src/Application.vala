@@ -35,8 +35,7 @@ namespace Ensembles {
         public static bool kiosk_mode = false;
         public static bool verbose = false;
 
-        //  public MainWindow main_window;
-        public AWCore aw_core;
+        private Vinject.Injector di_container;
 
         construct {
             flags |= ApplicationFlags.HANDLES_OPEN |
@@ -46,15 +45,25 @@ namespace Ensembles {
 
         protected override void activate () {
             Console.log ("Initializing Arranger Workstation");
-            aw_core = AWCore.Builder ()
-            .using_driver ("alsa")
-            .load_sf_from (Constants.SF2DATADIR)
-            .add_style_search_path (StyleRepository.get_style_dir ())
-            .add_style_search_path (Environment.get_user_special_dir (
-                GLib.UserDirectory.DOCUMENTS) +
-                "/ensembles" +
-                "/styles")
-            .build ();
+            di_container = Services.create_di_container (
+                new ArrangerWorkstationBuilder ()
+                .using_driver ("alsa")
+                .load_sf_from (Constants.SF2DATADIR)
+                .add_style_search_path (StyleRepository.get_style_dir ())
+                .add_style_search_path (Environment.get_user_special_dir (
+                        GLib.UserDirectory.DOCUMENTS) +
+                        "/ensembles" +
+                        "/styles")
+            );
+            //  aw_core = AWCore.Builder ()
+            //  .using_driver ("alsa")
+            //  .load_sf_from (Constants.SF2DATADIR)
+            //  .add_style_search_path (StyleRepository.get_style_dir ())
+            //  .add_style_search_path (Environment.get_user_special_dir (
+            //      GLib.UserDirectory.DOCUMENTS) +
+            //      "/ensembles" +
+            //      "/styles")
+            //  .build ();
 
             Console.log ("Initializing Main Window");
             //  main_window = new Shell.MainWindow (this);
@@ -64,8 +73,11 @@ namespace Ensembles {
             //      "GUI Initialization Complete!",
             //      Console.LogLevel.SUCCESS
             //  );
-
-            aw_core.load_data_async ();
+            try {
+                di_container.obtain (Services.aw_core).load_data_async ();
+            } catch (Error e) {
+                Console.log(e.message, Console.LogLevel.ERROR);
+            }
 
             if (Settings.instance.version != Constants.VERSION) {
                 Settings.instance.version = Constants.VERSION;
