@@ -1,4 +1,4 @@
 [wrap-git]
-url = https://github.com/ensemblesaw/arranger-workstation-core
+url = https://github.com/ensemblesaw/ens-aw-core
 depth = 1
 revision = main
