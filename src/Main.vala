@@ -35,7 +35,7 @@ public static int main (string[] args) {
             .has_version (Constants.VERSION, Constants.DISPLAYVER);
         });
 
-        return Services.di_container.obtain (Services.st_application).run ();
+        return Services.di_container.obtain (Services.st_application).run (args);
 
         // QT 3
 
