@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2021-2022 Subhadeep Jasu <subhadeep107@proton.me> -->
 <component type="desktop-application">
-  <id>com.github.subhadeepjasu.ensembles</id>
+  <id>com.github.ensemblesaw.ensembles</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0+</project_license>
   <name>Ensembles</name>
