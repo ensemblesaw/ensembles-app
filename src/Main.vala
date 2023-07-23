@@ -35,14 +35,11 @@ public static int main (string[] args) {
             .has_version (Constants.VERSION, Constants.DISPLAYVER);
         });
 
+        Console.log ("Starting application");
         return Services.di_container.obtain (Services.st_application).run (args);
-
-        // QT 3
 
         // Windows UI 3
     } catch (Vinject.VinjectErrors e) {
-        Services.handle_di_error (e);
+        error (e.message);
     }
-
-    return 0;
 }
