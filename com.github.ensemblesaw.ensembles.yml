@@ -1,8 +1,8 @@
-app-id: com.github.subhadeepjasu.ensembles
+app-id: com.github.ensemblesaw.ensembles
 runtime: io.elementary.Platform
 runtime-version: '7.1'
 sdk: io.elementary.Sdk
-command: com.github.subhadeepjasu.ensembles
+command: com.github.ensemblesaw.ensembles
 finish-args:
   - '--share=ipc'
   - '--socket=fallback-x11'

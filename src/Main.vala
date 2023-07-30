@@ -16,7 +16,9 @@ public static int main (string[] args) {
     try {
         // Arranger Workstation Service
         Services.configure_aw_service ((aw_builder) => {
-           aw_builder.use_driver (Ensembles.ArrangerWorkstation.AWCore.Driver.ALSA)
+           aw_builder.use_driver (
+            Ensembles.ArrangerWorkstation.AudioEngine.ISynthEngine.Driver.ALSA
+            )
            .load_soundfont_with_name ("EnsemblesGM")
            .load_soundfont_from_dir (Constants.SF2DATADIR)
            .add_style_search_path (StyleRepository.get_style_dir ())
