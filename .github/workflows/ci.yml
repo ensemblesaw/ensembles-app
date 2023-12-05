@@ -24,7 +24,7 @@ jobs:
         uses: bilelmoussaoui/flatpak-github-actions/flatpak-builder@v3
         with:
           bundle: Ensembles.flatpak
-          manifest-path: com.github.subhadeepjasu.ensembles.yml
+          manifest-path: com.github.ensemblesaw.ensembles.yml
           run-tests: true
           repository-name: appcenter
           repository-url: https://flatpak.elementary.io/repo.flatpakrepo
