@@ -1,6 +1,6 @@
 app-id: com.github.ensemblesaw.ensembles
 runtime: io.elementary.Platform
-runtime-version: '7.1'
+runtime-version: '7.3'
 sdk: io.elementary.Sdk
 command: com.github.ensemblesaw.ensembles
 finish-args:
@@ -21,105 +21,90 @@ finish-args:
 modules:
   # Adds support for lv2 virtual instruments and effects plugins
   - name: lv2
-    buildsystem: simple
+    buildsystem: meson
     cleanup:
       - /bin
       - /include
-      - /pkgconfig
+      - /lib/pkgconfig
       - /share
-    build-commands:
-      - python3 ./waf configure --prefix=$FLATPAK_DEST --lv2dir=$FLATPAK_DEST/lib/lv2 --copy-headers
-      - python3 ./waf build -j $FLATPAK_BUILDER_N_JOBS
-      - python3 ./waf install
     sources:
       - type: archive
-        url: https://lv2plug.in/spec/lv2-1.18.2.tar.bz2
-        sha256: 4e891fbc744c05855beb5dfa82e822b14917dd66e98f82b8230dbd1c7ab2e05e
+        url: https://lv2plug.in/spec/lv2-1.18.10.tar.xz
+        sha256: 78c51bcf21b54e58bb6329accbb4dae03b2ed79b520f9a01e734bd9de530953f
     post-install:
-      - install -Dm644 -t $FLATPAK_DEST/share/licenses/lv2 COPYING
+      - install -Dm644 -t $FLATPAK_DEST/share/licenses/lv2 ../COPYING
       - ln -sf lv2.pc $FLATPAK_DEST/lib/pkgconfig/lv2core.pc
 
   # Allows Ensembles to act as a lv2 host
   - name: lilv
-    buildsystem: simple
-    build-commands:
-      - python3 ./waf configure --prefix=$FLATPAK_DEST
-      - python3 ./waf build -j $FLATPAK_BUILDER_N_JOBS
-      - python3 ./waf install
+    buildsystem: meson
     modules:
       - name: serd
-        buildsystem: simple
-        build-commands:
-          - python3 ./waf configure --prefix=$FLATPAK_DEST
-          - python3 ./waf build -j $FLATPAK_BUILDER_N_JOBS
-          - python3 ./waf install
+        buildsystem: meson
         sources:
           - type: archive
-            url: https://download.drobilla.net/serd-0.30.10.tar.bz2
-            sha256: affa80deec78921f86335e6fc3f18b80aefecf424f6a5755e9f2fa0eb0710edf
+            url: https://download.drobilla.net/serd-0.30.16.tar.xz
+            sha256: f50f486da519cdd8d03b20c9e42414e459133f5a244411d8e63caef8d9ac9146
         post-install:
-          - install -Dm644 -t /app/share/licenses/serd COPYING
+          - install -Dm644 -t $FLATPAK_DEST/share/licenses/serd ../COPYING
         cleanup:
           - /bin
           - /include
           - /lib/pkgconfig
           - /share/man
       - name: sord
-        buildsystem: simple
-        build-commands:
-          - python3 ./waf configure --prefix=$FLATPAK_DEST
-          - python3 ./waf build -j $FLATPAK_BUILDER_N_JOBS
-          - python3 ./waf install
+        buildsystem: meson
         sources:
           - type: archive
-            url: https://download.drobilla.net/sord-0.16.8.tar.bz2
-            sha256: 7c289d2eaabf82fa6ac219107ce632d704672dcfb966e1a7ff0bbc4ce93f5e14
+            url: https://download.drobilla.net/sord-0.16.14.tar.xz
+            sha256: 220fd97d5fcb216e7b85db66f685bfdaad7dc58a50d1f96dfb2558dbc6c4731b
         post-install:
-          - install -Dm644 -t /app/share/licenses/sord COPYING
+          - install -Dm644 -t $FLATPAK_DEST/share/licenses/sord ../COPYING
         cleanup:
           - /bin
           - /include
           - /lib/pkgconfig
+          - /share/doc
           - /share/man
       - name: sratom
-        buildsystem: simple
-        build-commands:
-          - python3 ./waf configure --prefix=$FLATPAK_DEST
-          - python3 ./waf build -j $FLATPAK_BUILDER_N_JOBS
-          - python3 ./waf install
+        buildsystem: meson
         sources:
           - type: archive
-            url: https://download.drobilla.net/sratom-0.6.8.tar.bz2
-            sha256: 3acb32b1adc5a2b7facdade2e0818bcd6c71f23f84a1ebc17815bb7a0d2d02df
+            url: https://download.drobilla.net/sratom-0.6.14.tar.xz
+            sha256: 9982faf40db83aedd9b3850e499fecd6852b8b4ba6dede514013655cffaca1e6
         post-install:
-          - install -Dm644 -t /app/share/licenses/sratom COPYING
+          - install -Dm644 -t $FLATPAK_DEST/share/licenses/sratom ../COPYING
         cleanup:
           - /include
           - /lib/pkgconfig
     sources:
       - type: archive
-        url: https://download.drobilla.net/lilv-0.24.12.tar.bz2
-        sha256: 26a37790890c9c1f838203b47f5b2320334fe92c02a4d26ebbe2669dbd769061
+        url: https://download.drobilla.net/lilv-0.24.20.tar.xz
+        sha256: 4fb082b9b8b286ea92bbb71bde6b75624cecab6df0cc639ee75a2a096212eebc
     post-install:
-      - install -Dm644 -t /app/share/licenses/lilv COPYING
+      - install -Dm644 -t $FLATPAK_DEST/share/licenses/lilv ../COPYING
     cleanup:
       - /bin
       - /etc
+      - /include
       - /lib/pkgconfig
       - /share/man
 
+  - name: zix
+    buildsystem: meson
+    sources:
+      - type: git
+        url: https://github.com/drobilla/zix.git
+        tag: v0.4.2
+
   - name: suil
-    buildsystem: simple
-    build-commands:
-      - python3 ./waf configure --prefix=$FLATPAK_DEST
-      - python3 ./waf build -j $FLATPAK_BUILDER_N_JOBS
-      - python3 ./waf install
+    buildsystem: meson
     sources:
       - type: archive
-        url: http://download.drobilla.net/suil-0.10.10.tar.bz2
-        sha256: 750f08e6b7dc941a5e694c484aab02f69af5aa90edcc9fb2ffb4fb45f1574bfb
+        url: https://download.drobilla.net/suil-0.10.20.tar.xz
+        sha256: 334a3ed3e73d5e17ff400b3db9801f63809155b0faa8b1b9046f9dd3ffef934e
     post-install:
-      - install -Dm644 -t /app/share/licenses/suil COPYING
+      - install -Dm644 -t $FLATPAK_DEST/share/licenses/suil ../COPYING
     cleanup:
       - /bin
       - /include
@@ -127,56 +112,26 @@ modules:
       - /share/man
 
   # Synthesizer backend
-  # - name: fluidsynth
-  #   buildsystem: cmake-ninja
-  #   config-opts:
-  #     - -DLIB_SUFFIX=
-  #   cleanup:
-  #     - /bin
-  #     - /include
-  #     - /lib/pkgconfig
-  #     - /share/man
-  #     - '*.so'
-  #   sources:
-  #     - type: archive
-  #       url: https://github.com/FluidSynth/fluidsynth/archive/v2.2.4.tar.gz
-  #       sha256: 83cb1dba04c632ede74f0c0717018b062c0e00b639722203b23f77a961afd390
   - name: fluidsynth
     buildsystem: cmake-ninja
-    config-opts:
-      - -DLIB_SUFFIX=
     cleanup:
       - /bin
       - /include
       - /lib/pkgconfig
       - /share/man
       - '*.so'
-      - '*.a'
     sources:
-      - type: git
-        url: https://github.com/FluidSynth/fluidsynth
+      - type: archive
+        url: https://github.com/FluidSynth/fluidsynth/archive/v2.3.4.tar.gz
+        sha256: 1529ef5bc3b9ef3adc2a7964505912f7305103e269e50cc0316f500b22053ac9
 
   # MIDI controller support
   - name: portmidi
-    buildsystem: cmake-ninja
-    config-opts:
-      - -DCMAKE_LIBRARY_OUTPUT_DIRECTORY=/app/lib
-      - -DCMAKE_ARCHIVE_OUTPUT_DIRECTORY=/app/lib
-      - -DCMAKE_RUNTIME_OUTPUT_DIRECTORY=/app/bin
-    post-install:
-      - ln -s libportmidi.so /app/lib/libporttime.so
+    buildsystem: cmake
     sources:
-      - type: archive
-        url: https://sourceforge.net/projects/portmedia/files/portmidi/217/portmidi-src-217.zip
-        sha256: 08e9a892bd80bdb1115213fb72dc29a7bf2ff108b378180586aa65f3cfd42e0f
-      - type: patch
-        path: patches/portmidi-no-java.patch
-    cleanup:
-      - /bin
-      - /lib/pkgconfig
-      - /include
-      - '*.a'
-      - '*.la'
+      - type: git
+        url: https://github.com/PortMidi/portmidi.git
+        tag: v2.0.3
 
   # The app itself
   - name: ensembles

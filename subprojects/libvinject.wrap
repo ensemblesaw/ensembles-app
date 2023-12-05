@@ -1,6 +1,6 @@
 [wrap-git]
 url=https://gitlab.com/geeky_endeavours/vinject.git
-revision=main
+revision=9.1-unit-tests-using-boxed-values-fix
 depth=1
 
 [provide]
