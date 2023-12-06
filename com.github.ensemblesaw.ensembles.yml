@@ -19,6 +19,17 @@ finish-args:
   - '--filesystem=xdg-run/pipewire-0'
   - '--system-talk-name=org.freedesktop.RealtimeKit1'
 modules:
+  # Adds dependency injection
+  - name: vinject
+    buildsystem: meson
+    cleanup:
+      - /include
+    sources:
+      - type: git
+        url: https://gitlab.com/geeky_endeavours/vinject.git
+        branch: 9.1-unit-tests-using-boxed-values-fix
+
+
   # Adds support for lv2 virtual instruments and effects plugins
   - name: lv2
     buildsystem: meson
