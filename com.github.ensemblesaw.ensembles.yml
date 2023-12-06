@@ -22,8 +22,6 @@ modules:
   # Adds dependency injection
   - name: vinject
     buildsystem: meson
-    cleanup:
-      - /include
     sources:
       - type: git
         url: https://gitlab.com/geeky_endeavours/vinject.git
@@ -147,6 +145,12 @@ modules:
   # The app itself
   - name: ensembles
     buildsystem: meson
+    build-options:
+      config-opts:
+        - -Dprofile=default
+        - -Dbuildtype=release
+        - --wrap-mode=nofallback
+        - --force-fallback-for=ens-enstl-0,ens-shell-cli-0,ens-shell-gtk-0,ens-aw-core-0
     sources:
       - type: dir
         path: .

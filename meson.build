@@ -51,7 +51,7 @@ gettext_package = application_id
 dependencies = [
     dependency ('glib-2.0'),
     dependency ('gee-0.8'),
-    dependency ('libvinject-0.0.0', fallback: ['libvinject', 'vinject_dep']),
+    dependency ('Vinject-0.0.0', fallback: ['libvinject', 'vinject_dep']),
     dependency ('ens-enstl-0', fallback: ['enstl', 'enstl_dep']),
     dependency ('ens-shell-cli-0', fallback: ['ens-shell-cli', 'ens_shell_cli_dep']),
     dependency ('ens-shell-gtk-0', fallback: ['ens-shell-gtk', 'ens_shell_gtk_dep'],
