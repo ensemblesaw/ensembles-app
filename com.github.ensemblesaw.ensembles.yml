@@ -1,0 +1,203 @@
+app-id: com.github.ensemblesaw.ensembles
+runtime: io.elementary.Platform
+runtime-version: '7.3'
+sdk: io.elementary.Sdk
+command: com.github.ensemblesaw.ensembles
+finish-args:
+  - '--share=ipc'
+  - '--socket=fallback-x11'
+  - '--socket=wayland'
+  - '--socket=pulseaudio'
+  - '--device=all'
+  - '--filesystem=home'
+  # Required for system wide dark style preference
+  - '--system-talk-name=org.freedesktop.Accounts'
+  # Required for media keys and MPRIS access
+  - '--own-name=org.mpris.MediaPlayer2.com.github.subhadeepjasu.ensembles'
+  - '--talk-name=org.gnome.SettingsDaemon.MediaKeys'
+  # For PipeWire
+  - '--filesystem=xdg-run/pipewire-0'
+  - '--system-talk-name=org.freedesktop.RealtimeKit1'
+modules:
+  # Adds dependency injection
+  - name: vinject
+    buildsystem: meson
+    sources:
+      - type: git
+        url: https://gitlab.com/geeky_endeavours/vinject.git
+        branch: 9.1-unit-tests-using-boxed-values-fix
+
+
+  # Adds support for lv2 virtual instruments and effects plugins
+  - name: lv2
+    buildsystem: meson
+    cleanup:
+      - /bin
+      - /include
+      - /lib/pkgconfig
+      - /share
+    sources:
+      - type: archive
+        url: https://lv2plug.in/spec/lv2-1.18.10.tar.xz
+        sha256: 78c51bcf21b54e58bb6329accbb4dae03b2ed79b520f9a01e734bd9de530953f
+    post-install:
+      - install -Dm644 -t $FLATPAK_DEST/share/licenses/lv2 ../COPYING
+      - ln -sf lv2.pc $FLATPAK_DEST/lib/pkgconfig/lv2core.pc
+
+  # Allows Ensembles to act as a lv2 host
+  - name: lilv
+    buildsystem: meson
+    modules:
+      - name: serd
+        buildsystem: meson
+        sources:
+          - type: archive
+            url: https://download.drobilla.net/serd-0.30.16.tar.xz
+            sha256: f50f486da519cdd8d03b20c9e42414e459133f5a244411d8e63caef8d9ac9146
+        post-install:
+          - install -Dm644 -t $FLATPAK_DEST/share/licenses/serd ../COPYING
+        cleanup:
+          - /bin
+          - /include
+          - /lib/pkgconfig
+          - /share/man
+      - name: sord
+        buildsystem: meson
+        sources:
+          - type: archive
+            url: https://download.drobilla.net/sord-0.16.14.tar.xz
+            sha256: 220fd97d5fcb216e7b85db66f685bfdaad7dc58a50d1f96dfb2558dbc6c4731b
+        post-install:
+          - install -Dm644 -t $FLATPAK_DEST/share/licenses/sord ../COPYING
+        cleanup:
+          - /bin
+          - /include
+          - /lib/pkgconfig
+          - /share/doc
+          - /share/man
+      - name: sratom
+        buildsystem: meson
+        sources:
+          - type: archive
+            url: https://download.drobilla.net/sratom-0.6.14.tar.xz
+            sha256: 9982faf40db83aedd9b3850e499fecd6852b8b4ba6dede514013655cffaca1e6
+        post-install:
+          - install -Dm644 -t $FLATPAK_DEST/share/licenses/sratom ../COPYING
+        cleanup:
+          - /include
+          - /lib/pkgconfig
+    sources:
+      - type: archive
+        url: https://download.drobilla.net/lilv-0.24.20.tar.xz
+        sha256: 4fb082b9b8b286ea92bbb71bde6b75624cecab6df0cc639ee75a2a096212eebc
+    post-install:
+      - install -Dm644 -t $FLATPAK_DEST/share/licenses/lilv ../COPYING
+    cleanup:
+      - /bin
+      - /etc
+      - /include
+      - /lib/pkgconfig
+      - /share/man
+
+  - name: zix
+    buildsystem: meson
+    sources:
+      - type: git
+        url: https://github.com/drobilla/zix.git
+        tag: v0.4.2
+
+  - name: suil
+    buildsystem: meson
+    sources:
+      - type: archive
+        url: https://download.drobilla.net/suil-0.10.20.tar.xz
+        sha256: 334a3ed3e73d5e17ff400b3db9801f63809155b0faa8b1b9046f9dd3ffef934e
+    post-install:
+      - install -Dm644 -t $FLATPAK_DEST/share/licenses/suil ../COPYING
+    cleanup:
+      - /bin
+      - /include
+      - /lib/pkgconfig
+      - /share/man
+
+  # Synthesizer backend
+  - name: fluidsynth
+    buildsystem: cmake-ninja
+    cleanup:
+      - /bin
+      - /include
+      - /lib/pkgconfig
+      - /share/man
+      - '*.so'
+    sources:
+      - type: archive
+        url: https://github.com/FluidSynth/fluidsynth/archive/v2.3.4.tar.gz
+        sha256: 1529ef5bc3b9ef3adc2a7964505912f7305103e269e50cc0316f500b22053ac9
+
+  # MIDI controller support
+  - name: portmidi
+    buildsystem: cmake
+    sources:
+      - type: git
+        url: https://github.com/PortMidi/portmidi.git
+        tag: v2.0.3
+
+
+  # Install styles
+  - name: styles
+    buildsystem: meson
+    sources:
+      - type: git
+        url: https://github.com/ensemblesaw/styles.git
+        branch: main
+
+  # CLI shell
+  - name: ens-shell-cli
+    buildsystem: meson
+    sources:
+      - type: git
+        url: https://github.com/ensemblesaw/ens-shell-cli.git
+        branch: main
+
+  # Arranger Workstation Core
+  - name: ens-aw-core
+    buildsystem: meson
+    build-options:
+      config-opts:
+        - -Dprofile=default
+        - -Dbuildtype=release
+    sources:
+      - type: git
+        url: https://github.com/ensemblesaw/ens-aw-core.git
+        branch: main
+
+  # GTK Shell
+  - name: ens-shell-gtk
+    buildsystem: meson
+    build-options:
+      config-opts:
+        - -Dprofile=default
+        - -Dbuildtype=release
+    sources:
+      - type: git
+        url: https://github.com/ensemblesaw/ens-shell-gtk.git
+        branch: main
+
+  # The app itself
+  - name: ensembles
+    buildsystem: meson
+    build-options:
+      config-opts:
+        - -Dprofile=default
+        - -Dbuildtype=release
+    sources:
+      - type: dir
+        path: .
+
+  # Adds default soundfont
+  - name: ensemblesGMSoundfonts
+    buildsystem: meson
+    sources:
+      - type: archive
+        url: https://gitlab.com/SubhadeepJasu/ensemblesgmsoundfont/-/archive/v0.0.3/ensemblesgmsoundfont-v0.0.3.tar.gz
+        sha256: 0b5ecca24623dabc9ea546c49cc25ebb3f419d6b61c035c603133a1032a4f2bc

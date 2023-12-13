@@ -1,7 +1,0 @@
-[Desktop Entry]
-Name=Ensembles
-Comment=This session launches Ensembles Arranger Workstation in kiosk mode
-Exec=com.github.subhadeepjasu.ensembles --kiosk
-Icon=
-DesktopNames=Ensembles
-Type=Application

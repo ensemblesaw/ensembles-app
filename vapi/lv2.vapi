@@ -142,7 +142,7 @@ namespace LV2 {
 /**
  * User interfaces of any type for plugins.
  * See <http://lv2plug.in/ns/extensions/ui> for details.
-*/
+ */
 [CCode (cheader_filename = "lv2/lv2plug.in/ns/extensions/ui/ui.h")]
 namespace LV2.UI {
     public const string URI;
@@ -474,7 +474,7 @@ namespace LV2.Worker {
 
     public const string PREFIX;
 
-    public const string _Interface;
+    public const string _interface;
     public const string _schedule;
 
     [CCode (cname = "interface_work_t", has_target = false)]
@@ -523,6 +523,7 @@ namespace LV2.Worker {
     public struct ScheduleHandle {
     }
 
+    [CCode (instance_pos = 0)]
     public delegate Status SchedulerFunc (uint32 size, void* data);
 
     [CCode (cname = "LV2_Worker_Schedule", destroy_function = "")]
@@ -533,4 +534,426 @@ namespace LV2.Worker {
         public unowned SchedulerFunc schedule_work;
     }
 
+}
+
+
+[CCode(cheader_filename="lv2/units/units.h")]
+namespace LV2.Units {
+    public const string URI;
+
+    public const string PREFIX;
+
+    public const string _Conversion;
+    public const string _Unit;
+    public const string _bar;
+    public const string _beat;
+    public const string _bpm;
+    public const string _cent;
+    public const string _cm;
+    public const string _coef;
+    public const string _conversion;
+    public const string _db;
+    public const string _degree;
+    public const string _frame;
+    public const string _hz;
+    public const string _inch;
+    public const string _khz;
+    public const string _km;
+    public const string _m;
+    public const string _mhz;
+    public const string _midiNote;
+    public const string _mile;
+    public const string _min;
+    public const string _mm;
+    public const string _ms;
+    public const string _name;
+    public const string _oct;
+    public const string _pc;
+    public const string _prefixConversion;
+    public const string _render;
+    public const string _s;
+    public const string _semitone12TET;
+    public const string _symbol;
+    public const string _unit;
+}
+
+
+[CCode(cheader_filename="lv2/options/options.h")]
+namespace LV2.Options {
+    public const string URI;
+
+    public const string PREFIX;
+
+    public const string _Option;
+    public const string _interface;
+    public const string _options;
+    public const string _requiredOption;
+    public const string _supportedOption;
+
+    /**
+     * The context of an Option, which defines the subject it applies to.
+     */
+    [CCode (cname = "LV2_Options_Context", has_type_id = false, cprefix = "LV2_OPTIONS_")]
+    public enum Context {
+        /**
+         * This option applies to the instance itself.
+         *
+         * The subject must be ignored.
+         */
+        INSTANCE,
+        /**
+         * This option applies to some named resource.
+         *
+         * The subject is a URI mapped to an integer (a LV2_URID, like the key)
+         */
+        RESOURCE,
+        /**
+         * This option applies to some blank node.
+         *
+         * The subject is a blank node identifier, which is valid only within the current local scope.
+         */
+        BLANK,
+        /**
+         * This option applies to a port on the instance.
+         *
+         * The subject is the port's index.
+         */
+        PORT
+    }
+
+    /**
+     * A status code for option functions.
+     */
+    [CCode (cname = "LV2_Options_Status", has_type_id = false, cprefix = "LV2_OPTIONS_")]
+    public enum Status {
+        SUCCESS,
+        ERR_UNKNOWN,
+        ERR_BAD_SUBJECT,
+        ERR_BAD_KEY,
+        ERR_BAD_VALUE
+    }
+
+    /**
+     * An option.
+     *
+     * ----------
+     * This is a property with a subject, also known as a triple or statement.
+     *
+     * This struct is useful anywhere a statement needs to be passed where no memory ownership issues are present
+     * (since the value is a const pointer).
+     *
+     * Options can be passed to an instance via the feature `LV2_OPTIONS__options` with data pointed to an array of
+     * options terminated by a zeroed option, or accessed/manipulated using `LV2_Options_Interface`.
+     */
+    [SimpleType]
+    [CCode (cname = "LV2_Options_Option")]
+    public struct Option {
+        public Context context;
+        public uint32 subject;
+        public URID.Urid key;
+        public uint32 size;
+        public URID.Urid type;
+        public void* value;
+    }
+
+    [CCode (cname = "lv2_options_interface_get_t", has_target = false)]
+    public delegate uint32 InterfaceGetFunc (LV2.Handle instance, out Option options);
+
+    [CCode (cname = "lv2_options_interface_set_t", has_target = false)]
+    public delegate uint32 InterfaceSetFunc (LV2.Handle instance, Option options);
+
+    /**
+     * Interface for dynamically setting options `(LV2_OPTIONS__interface)`.
+     */
+    [Compact]
+    [SimpleType]
+    [CCode (cname = "LV2_Options_Interface", has_type_id = false, free_function = "")]
+    public class Interface {
+        /**
+         * Get the given options.
+         *
+         * ----------------------
+         * Each element of the passed options array MUST have type, subject, and key set. All other fields (size, type,
+         * value) MUST be initialised to zero, and are set to the option value if such an option is found.
+         *
+         * This function is in the "instantiation" LV2 threading class, so no other instance functions may be called
+         * concurrently.
+         *
+         * @returns Bitwise OR of LV2_Options_Status values.
+         */
+        [CCode (cname = "get", has_target = false, delegate_target_cname = "", simple_generics = true)]
+        public unowned InterfaceGetFunc get;
+        /**
+         * Set the given options.
+         *
+         * ----------------------
+         * This function is in the "instantiation" LV2 threading class, so no other instance functions may be called concurrently.
+         *
+         * @returns Bitwise OR of LV2_Options_Status values.
+         */
+        [CCode (cname = "set", has_target = false, delegate_target_cname = "", simple_generics = true)]
+        public unowned InterfaceSetFunc set;
+    }
+}
+
+
+[CCode(cheader_filename="lv2/parameters/parameters.h")]
+namespace LV2.Parameters {
+    public const string URI;
+
+    public const string PREFIX;
+
+    public const string _CompressorControls;
+    public const string _ControlGroup;
+    public const string _EnvelopeControls;
+    public const string _FilterControls;
+    public const string _OscillatorControls;
+    public const string _amplitude;
+    public const string _attack;
+    public const string _bypass;
+    public const string _cutoffFrequency;
+    public const string _decay;
+    public const string _delay;
+    public const string _dryLevel;
+    public const string _frequency;
+    public const string _gain;
+    public const string _hold;
+    public const string _pulseWidth;
+    public const string _ratio;
+    public const string _release;
+    public const string _resonance;
+    public const string _sampleRate;
+    public const string _sustain;
+    public const string _threshold;
+    public const string _waveform;
+    public const string _wetDryRatio;
+    public const string _wetLevel;
+}
+
+
+[CCode(cheader_filename="lv2/buf-size/buf-size.h")]
+namespace LV2.BufSize {
+    public const string URI;
+
+    public const string PREFIX;
+
+    public const string _boundedBlockLength;
+    public const string _coarseBlockLength;
+    public const string _fixedBlockLength;
+    public const string _maxBlockLength;
+    public const string _minBlockLength;
+    public const string _nominalBlockLength;
+    public const string _powerOf2BlockLength;
+    public const string _sequenceSize;
+}
+
+
+[CCode(cheader_filename="lv2/log/log.h")]
+namespace LV2.Log {
+    public const string URI;
+
+    public const string PREFIX;
+
+    public const string _Entry;
+    public const string _Error;
+    public const string _Note;
+    public const string _Trace;
+    public const string _Warning;
+    public const string _log;
+
+    [SimpleType]
+    [CCode (cname = "LV2_Log_Handle")]
+    public struct LogHandle {
+    }
+
+    [CCode (instance_pos = 0)]
+    public delegate int PrintFunc (URID.Urid type, string fmt, ...);
+
+    [CCode (instance_pos = 0)]
+    public delegate int VPrintFunc (URID.Urid type, string fmt, va_list ap);
+
+    [CCode (cname = "LV2_Log_Log", destroy_function = "")]
+    public struct Log {
+        [CCode (cname = "handle")]
+        public LogHandle handle;
+        [CCode (cname = "printf", has_target = false, delegate_target_cname = "handle")]
+        public unowned PrintFunc printf;
+        [CCode (cname = "vprintf", has_target = false, delegate_target_cname = "handle")]
+        public unowned VPrintFunc vprintf;
+    }
+}
+
+
+[CCode(cheader_filename="lv2/patch/patch.h")]
+namespace LV2.Patch {
+    public const string URI;
+
+    public const string PREFIX;
+
+    public const string _Ack;
+    public const string _Delete;
+    public const string _Copy;
+    public const string _Error;
+    public const string _Get;
+    public const string _Message;
+    public const string _Move;
+    public const string _Patch;
+    public const string _Post;
+    public const string _Put;
+    public const string _Request;
+    public const string _Response;
+    public const string _Set;
+    public const string _accept;
+    public const string _add;
+    public const string _body;
+    public const string _context;
+    public const string _destination;
+    public const string _property;
+    public const string _readable;
+    public const string _remove;
+    public const string _request;
+    public const string _subject;
+    public const string _sequenceNumber;
+    public const string _value;
+    public const string _wildcard;
+    public const string _writable;
+}
+
+
+[CCode(cheader_filename="lv2/time/time.h")]
+namespace LV2.Time {
+    public const string URI;
+
+    public const string PREFIX;
+
+    public const string _Time;
+    public const string _Position;
+    public const string _Rate;
+    public const string _position;
+    public const string _barBeat;
+    public const string _bar;
+    public const string _beat;
+    public const string _beatUnit;
+    public const string _beatsPerBar;
+    public const string _beatsPerMinute;
+    public const string _frame;
+    public const string _framesPerSecond;
+    public const string _speed;
+}
+
+
+[CCode(cheader_filename="lv2/port-groups/port-groups.h")]
+namespace LV2.PortGroups {
+    public const string URI;
+
+    public const string PREFIX;
+
+    public const string _DiscreteGroup;
+    public const string _Element;
+    public const string _FivePointOneGroup;
+    public const string _FivePointZeroGroup;
+    public const string _FourPointZeroGroup;
+    public const string _Group;
+    public const string _InputGroup;
+    public const string _MidSideGroup;
+    public const string _MonoGroup;
+    public const string _OutputGroup;
+    public const string _SevenPointOneGroup;
+    public const string _SevenPointOneWideGroup;
+    public const string _SixPointOneGroup;
+    public const string _StereoGroup;
+    public const string _ThreePointZeroGroup;
+    public const string _center;
+    public const string _centerLeft;
+    public const string _centerRight;
+    public const string _element;
+    public const string _group;
+    public const string _left;
+    public const string _lowFrequencyEffects;
+    public const string _mainInput;
+    public const string _mainOutput;
+    public const string _rearCenter;
+    public const string _rearLeft;
+    public const string _rearRight;
+    public const string _right;
+    public const string _side;
+    public const string _sideChainOf;
+    public const string _sideLeft;
+    public const string _sideRight;
+    public const string _source;
+    public const string _subGroupOf;
+}
+
+
+[CCode(cheader_filename="lv2/port-props/port-props.h")]
+namespace LV2.PortProps {
+    public const string URI;
+
+    public const string PREFIX;
+
+    public const string _causesArtifacts;
+    public const string _continuousCV;
+    public const string _discreteCV;
+    public const string _displayProperty;
+    public const string _expensive;
+    public const string _hasStrictBounds;
+    public const string _logarithmic;
+    public const string _notAutomatic;
+    public const string _notOnGUI;
+    public const string _rangeSteps;
+    public const string _supportsStrictBounds;
+    public const string _trigger;
+}
+
+
+[CCode(cheader_filename="lv2/presets/presets.h")]
+namespace LV2.Presets {
+    public const string URI;
+
+    public const string PREFIX;
+
+    public const string _Bank;
+    public const string _Preset;
+    public const string _bank;
+    public const string _preset;
+    public const string _value;
+}
+
+
+[CCode(cheader_filename="lv2/resize-port/resize-port.h")]
+namespace LV2.ResizePort {
+    public const string URI;
+
+    public const string PREFIX;
+
+    public const string _asLargeAs;
+    public const string _minimumSize;
+    public const string _resize;
+
+    /**
+     * A status code for state functions.
+     */
+    [CCode (cname = "LV2_Resize_Port_Status", has_type_id = false, cprefix = "LV2_RESIZE_PORT_")]
+    public enum Status {
+        SUCCESS,
+        ERR_UNKNOWN,
+        ERR_NO_SPACE
+    }
+
+    [SimpleType]
+    [CCode (cname = "LV2_Resize_Port_Feature_Data")]
+    public struct FeatureData {
+    }
+
+    [CCode (cname = "lv2_port_resize_func_t", has_target = false)]
+    public delegate Status ResizeFunc (FeatureData data, uint32 index, size_t size);
+
+    [Compact]
+    [SimpleType]
+    [CCode (cname = "LV2_Resize_Port_Resize", has_type_id = false, free_function = "")]
+    public class PortResize {
+        FeatureData data;
+        [CCode (cname = "resize", has_target = false, delegate_target_cname = "", simple_generics = true)]
+        public unowned ResizeFunc resize;
+    }
 }

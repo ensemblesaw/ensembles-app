@@ -11,3 +11,8 @@ null.d
 *~
 .~lock*
 xtleak.kcg.*
+subprojects/ens-shell-gtk
+subprojects/ens-shell-cli
+subprojects/ens-aw-core
+subprojects/enstl
+subprojects/libvinject

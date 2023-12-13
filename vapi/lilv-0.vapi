@@ -66,6 +66,7 @@ namespace Lilv {
         public unowned PluginClass get_class();
         public Nodes get_value(Node predicate);
         public bool has_feature(Node feature_uri);
+        public bool has_extension_data(Node uri);
         public Nodes get_supported_features();
         public Nodes get_required_features();
         public Nodes get_optional_features();
@@ -84,28 +85,6 @@ namespace Lilv {
         public Instance? instantiate(double sample_rate,
             [CCode (array_length = false, array_null_terminated = true)] LV2.Feature*[] features);
         public UIs get_uis();
-
-        // port methods
-        [CCode (cname = "lilv_port_get_value")]
-        public Nodes port_get_value(Port port, Node predicate);
-        [CCode (cname = "lilv_port_get_properties")]
-        public Nodes port_get_properties(Port port);
-        [CCode (cname = "lilv_port_has_property")]
-        public bool port_has_property(Port port, Node property_uri);
-        [CCode (cname = "lilv_port_supports_event")]
-        public bool port_supports_event(Port port, Node event_uri);
-        [CCode (cname = "lilv_port_get_symbol")]
-        public unowned Node port_get_symbol(Port port);
-        [CCode (cname = "lilv_port_get_name")]
-        public Node port_get_name(Port port);
-        [CCode (cname = "lilv_port_get_classes")]
-        public unowned Nodes port_get_classes(Port port);
-        [CCode (cname = "lilv_port_is_a")]
-        public bool port_is_a(Port port, Node port_class);
-        [CCode (cname = "lilv_port_get_range")]
-        public void port_get_range(Port port, out Node deflt, out Node min, out Node max);
-        [CCode (cname = "lilv_port_get_scale_points")]
-        public ScalePoints port_get_scale_points(Port port);
     }
 
     [Compact]
@@ -125,6 +104,32 @@ namespace Lilv {
     [Immutable]
     [CCode (free_function = "")]
     public class Port {
+        [CCode (instance_pos=1.5)]
+        public unowned Node get_node (Plugin plugin);
+        [CCode (instance_pos=1.5)]
+        public Nodes get_value (Plugin plugin, Node predicate);
+        [CCode (cname="lilv_plugin_get", instance_pos=1.5)]
+        public unowned Node get_property (Plugin plugin, Node predicate);
+        [CCode (instance_pos=1.5)]
+        public Nodes get_properties (Plugin plugin);
+        [CCode (instance_pos=1.5)]
+        public bool has_property (Plugin plugin, Node property);
+        [CCode (instance_pos=1.5)]
+        public bool supports_event (Plugin plugin, Node event_type);
+        [CCode (instance_pos=1.5)]
+        public uint32 get_index (Plugin plugin);
+        [CCode (instance_pos=1.5)]
+        public unowned Node get_symbol (Plugin plugin);
+        [CCode (instance_pos=1.5)]
+        public unowned Node get_name (Plugin plugin);
+        [CCode (instance_pos=1.5)]
+        public unowned Nodes get_classes (Plugin plugin);
+        [CCode (instance_pos=1.5)]
+        public bool is_a (Plugin plugin, Node port_class);
+        [CCode (instance_pos=1.5)]
+        public void get_range (Plugin plugin, out Node def, out Node min, out Node max);
+        [CCode (instance_pos=1.5)]
+        public ScalePoints get_scale_points (Plugin plugin);
     }
 
     [Compact]

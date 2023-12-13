@@ -835,7 +835,7 @@ namespace Fluid {
     [CCode (cname = "fluid_midi_driver_t", cprefix = "fluid_midi_driver_", free_function = "delete_fluid_midi_driver", has_type_id = false)]
     public class MIDIDriver {
         [CCode (cname = "new_fluid_midi_driver")]
-        public MIDIDriver ();
+        public MIDIDriver (Settings? settings, handle_midi_event_func_t handler, void* event_handler_data);
     }
 
     /**
