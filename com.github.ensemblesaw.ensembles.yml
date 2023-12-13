@@ -142,6 +142,47 @@ modules:
         url: https://github.com/PortMidi/portmidi.git
         tag: v2.0.3
 
+
+  # Install styles
+  - name: styles
+    buildsystem: meson
+    sources:
+      - type: git
+        url: https://github.com/ensemblesaw/styles.git
+        branch: main
+
+  # CLI shell
+  - name: ens-shell-cli
+    buildsystem: meson
+    sources:
+      - type: git
+        url: https://github.com/ensemblesaw/ens-shell-cli.git
+        branch: main
+
+  # Arranger Workstation Core
+  - name: ens-aw-core
+    buildsystem: meson
+    build-options:
+      config-opts:
+        - -Dprofile=default
+        - -Dbuildtype=release
+    sources:
+      - type: git
+        url: https://github.com/ensemblesaw/ens-aw-core.git
+        branch: main
+
+  # GTK Shell
+  - name: ens-shell-gtk
+    buildsystem: meson
+    build-options:
+      config-opts:
+        - -Dprofile=default
+        - -Dbuildtype=release
+    sources:
+      - type: git
+        url: https://github.com/ensemblesaw/ens-shell-gtk.git
+        branch: main
+
   # The app itself
   - name: ensembles
     buildsystem: meson
@@ -149,8 +190,6 @@ modules:
       config-opts:
         - -Dprofile=default
         - -Dbuildtype=release
-        - --wrap-mode=nofallback
-        - --force-fallback-for=ens-enstl-0,ens-shell-cli-0,ens-shell-gtk-0,ens-aw-core-0
     sources:
       - type: dir
         path: .
